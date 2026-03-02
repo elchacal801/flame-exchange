@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.674450+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "46cbb236-28e6-4e86-9988-382e66880652",
+    "dl_id": "DL-0032",
+    "title": "Beneficiary Country Mismatch with Business Profile",
+    "status": "experimental",
+    "description": "Detects wire transfers to countries where the account holder has no established business relationship or prior transaction history. Combined with other indicators, this can reveal business email compromise where payment instructions are altered to redirect funds to attacker-controlled accounts in foreign jurisdictions.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "WIRE_INITIATION",
+        "wire_type": "international",
+        "beneficiary_country_in_business_profile": false,
+        "transaction_amount|gte": 5000
+      },
+      "filter_consumer_remittance": {
+        "account_type": "personal",
+        "transaction_amount|lt": 3000
+      },
+      "condition": "selection and not filter_consumer_remittance"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "wire_system"
+    },
+    "threat_path_ids": [
+      "TP-0006",
+      "TP-0020"
+    ],
+    "fraud_types": [
+      "payment-diversion",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.wire_ach"
+    ],
+    "falsepositives": [
+      "Companies sourcing from a new international supplier for the first time",
+      "One-time international consulting or service payments"
+    ]
+  }
+}

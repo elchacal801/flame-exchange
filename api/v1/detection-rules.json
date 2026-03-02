@@ -1,0 +1,3193 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.582953+00:00",
+    "total": 67
+  },
+  "data": [
+    {
+      "id": "5a4b11f2-7b0b-4de0-8fb3-a8c3d7031911",
+      "dl_id": "DL-0001",
+      "title": "Mule Account Velocity Pattern",
+      "status": "experimental",
+      "description": "Detects rapid inbound transfers from multiple unique senders followed by immediate outbound movement, typical of money mule activity. This rule is a shared component applicable to TP-0001, TP-0002, TP-0011, and TP-0022.",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_inbound": {
+          "transaction_type": "ACH_IN"
+        },
+        "timeframe": "30d",
+        "condition": "selection_inbound | count(distinct originator_name) by account_id > 3"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0002",
+        "TP-0011",
+        "TP-0022"
+      ],
+      "fraud_types": [
+        "money-mule"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase5.monetization",
+        "flame.shared"
+      ],
+      "falsepositives": [
+        "Legitimate payroll processing accounts receiving from multiple employers",
+        "Business accounts with normal multi-party receivables"
+      ]
+    },
+    {
+      "id": "ea53b54f-b0f3-4660-a072-40db4491bc11",
+      "dl_id": "DL-0002",
+      "title": "Infostealer Credential Dump Velocity",
+      "status": "experimental",
+      "description": "Detects rapid credential dump patterns where many unique credentials are harvested from a single host in a short timeframe. Infostealers such as RedLine, Lumma, and Vidar typically exfiltrate dozens to hundreds of stored credentials within seconds of execution, producing a burst of credential-access events from one endpoint.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "credential_access",
+          "action": "credential_read"
+        },
+        "filter_legitimate": {
+          "process_name|endswith": [
+            "\\lsass.exe",
+            "\\services.exe"
+          ]
+        },
+        "timeframe": "5m",
+        "condition": "selection and not filter_legitimate | count(distinct target_credential) by host_id > 20"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "endpoint_detection"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0023"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "data-theft",
+        "malware"
+      ],
+      "tags": [
+        "attack.t1555",
+        "attack.t1555.003",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Legitimate credential manager software performing bulk synchronization",
+        "Enterprise password vault agents rotating stored credentials"
+      ]
+    },
+    {
+      "id": "4fafa273-ef85-4b98-94b1-7489a94a2b81",
+      "dl_id": "DL-0003",
+      "title": "Session Cookie Exfiltration Pattern",
+      "status": "experimental",
+      "description": "Detects session token and cookie theft patterns in log data indicative of infostealer activity. Stealers like Lumma and Raccoon target browser cookie stores to extract active session tokens, enabling session hijacking without requiring credentials. This rule monitors for suspicious access to cookie databases and exfiltration of session-bearing data.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_cookie_db": {
+          "file_path|contains": [
+            "\\Cookies",
+            "\\cookies.sqlite",
+            "\\Network\\Cookies"
+          ],
+          "file_access_type": "read"
+        },
+        "selection_process": {
+          "process_name|endswith": [
+            ".exe"
+          ],
+          "process_signed": false
+        },
+        "filter_browsers": {
+          "process_name|endswith": [
+            "\\chrome.exe",
+            "\\firefox.exe",
+            "\\msedge.exe",
+            "\\brave.exe"
+          ]
+        },
+        "condition": "(selection_cookie_db and selection_process) and not filter_browsers"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "endpoint_detection"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "data-theft",
+        "malware"
+      ],
+      "tags": [
+        "attack.t1005",
+        "attack.t1539",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Third-party browser extensions with legitimate cookie management functionality",
+        "Endpoint backup solutions that include browser profile data"
+      ]
+    },
+    {
+      "id": "d2368323-0cb9-48b1-bb41-1050d7f26e2d",
+      "dl_id": "DL-0004",
+      "title": "Browser Credential Store Access",
+      "status": "experimental",
+      "description": "Detects unusual access to browser credential stores (Login Data, logins.json, key3.db/key4.db) by non-browser processes. Infostealers such as RedLine and Vidar systematically read these SQLite databases to extract saved usernames and passwords for banking portals and other financial services.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "file_path|endswith": [
+            "\\Login Data",
+            "\\Login Data-journal",
+            "\\logins.json",
+            "\\key4.db",
+            "\\key3.db",
+            "\\signons.sqlite"
+          ],
+          "file_access_type|contains": [
+            "read",
+            "open"
+          ]
+        },
+        "filter_browser_processes": {
+          "process_name|endswith": [
+            "\\chrome.exe",
+            "\\firefox.exe",
+            "\\msedge.exe",
+            "\\brave.exe",
+            "\\opera.exe",
+            "\\vivaldi.exe"
+          ]
+        },
+        "filter_av": {
+          "process_name|contains": [
+            "antivirus",
+            "defender",
+            "security"
+          ]
+        },
+        "condition": "selection and not filter_browser_processes and not filter_av"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "endpoint_detection"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0023"
+      ],
+      "fraud_types": [
+        "credential-stuffing",
+        "data-theft",
+        "malware"
+      ],
+      "tags": [
+        "attack.t1005",
+        "attack.t1555.003",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Password migration tools used during browser transitions",
+        "IT-managed credential audit tools on corporate endpoints"
+      ]
+    },
+    {
+      "id": "5d0a68f0-fbab-4bcb-86da-cebf51c0e6d9",
+      "dl_id": "DL-0005",
+      "title": "Stealer C2 Beacon Pattern",
+      "status": "experimental",
+      "description": "Detects command-and-control callback patterns typical of Malware-as-a-Service (MaaS) stealers. RedLine, Lumma, and StealC use distinctive C2 communication patterns including HTTP POST requests with base64-encoded payloads to newly registered domains, often on non-standard ports or with characteristic URI patterns.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_method": {
+          "http_method": "POST"
+        },
+        "selection_uri_pattern": {
+          "url_path|contains": [
+            "/gate.php",
+            "/index.php?id=",
+            "/panel/gate",
+            "/api/check",
+            "/loader/"
+          ]
+        },
+        "selection_payload": {
+          "request_body_length|gte": 5000,
+          "content_type|contains": "application/x-www-form-urlencoded"
+        },
+        "selection_domain_age": {
+          "domain_age_days|lte": 30
+        },
+        "condition": "selection_method and (selection_uri_pattern or (selection_payload and selection_domain_age))"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "web_proxy"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0023"
+      ],
+      "fraud_types": [
+        "data-theft",
+        "malware"
+      ],
+      "tags": [
+        "attack.t1041",
+        "attack.t1071.001",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Legitimate PHP-based applications using similar URI naming conventions",
+        "New SaaS platforms with recently registered domains"
+      ]
+    },
+    {
+      "id": "f9dda8eb-82b7-4ada-a9c9-058569025928",
+      "dl_id": "DL-0006",
+      "title": "Credential Testing After Dump",
+      "status": "experimental",
+      "description": "Detects rapid credential validation attempts occurring shortly after a credential dump event. After infostealers exfiltrate harvested credentials, threat actors typically run automated validation to identify which stolen credentials are still active, producing a burst of login attempts across multiple banking portals from the attacker's infrastructure.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "login_attempt",
+          "auth_result|contains": [
+            "failure",
+            "success"
+          ]
+        },
+        "timeframe": "15m",
+        "condition": "selection | count(distinct user_id) by source_ip > 10"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1110.004",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Corporate SSO gateways performing health checks against multiple accounts",
+        "Automated monitoring systems testing service account connectivity"
+      ]
+    },
+    {
+      "id": "95681bb1-0586-4ae0-9c7a-7de0bd359b94",
+      "dl_id": "DL-0007",
+      "title": "Infostealer Exfiltration Archive Creation",
+      "status": "experimental",
+      "description": "Detects creation of archive files containing credential-related file patterns consistent with infostealer packaging behavior. Stealers like RedLine and Vidar collect credentials, cookies, autofill data, and crypto wallet files into a ZIP or RAR archive before exfiltrating them to the C2 server.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_archive_creation": {
+          "event_type": "file_create",
+          "file_extension|contains": [
+            ".zip",
+            ".rar",
+            ".7z"
+          ]
+        },
+        "selection_archive_contents": {
+          "archive_file_list|contains": [
+            "passwords",
+            "Login Data",
+            "Cookies",
+            "autofill",
+            "wallet.dat",
+            "seed",
+            "credit_cards"
+          ]
+        },
+        "selection_process_unsigned": {
+          "process_signed": false,
+          "process_path|contains": [
+            "\\AppData\\Local\\Temp",
+            "\\Users\\Public",
+            "\\ProgramData"
+          ]
+        },
+        "condition": "selection_archive_creation and (selection_archive_contents or selection_process_unsigned)"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "endpoint_detection"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0023"
+      ],
+      "fraud_types": [
+        "data-theft",
+        "malware"
+      ],
+      "tags": [
+        "attack.t1005",
+        "attack.t1560.001",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Legitimate backup software creating archives of user profile data",
+        "IT support tools collecting diagnostic bundles that include browser data"
+      ]
+    },
+    {
+      "id": "3356cb1e-e2f7-4831-a23d-af57358f0495",
+      "dl_id": "DL-0008",
+      "title": "Multiple Account Access from Single Source",
+      "status": "experimental",
+      "description": "Detects multiple distinct banking accounts being accessed from a single device or IP address within a short timeframe. This pattern is consistent with an attacker using stolen credentials from an infostealer dump to sequentially access compromised accounts for reconnaissance or initial positioning before fraudulent transactions.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "login_success"
+        },
+        "timeframe": "1h",
+        "condition": "selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1078.004",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Shared corporate NAT gateways where multiple employees access accounts from same public IP",
+        "Household devices shared among family members with separate accounts"
+      ]
+    },
+    {
+      "id": "61fe961a-eb9d-48dc-8a80-18a3a4c6bcb8",
+      "dl_id": "DL-0009",
+      "title": "Stolen Session Token Replay",
+      "status": "experimental",
+      "description": "Detects session token replay from a different geographic location or device than the original authenticating session. When infostealers exfiltrate active session cookies, attackers import them into antidetect browsers to hijack authenticated sessions without triggering login-based detections. This rule correlates session token usage across differing geolocations and device fingerprints.\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "event_type": "session_activity",
+          "session_token|exists": true
+        },
+        "filter_same_context": {
+          "geo_country": "%original_session_country%",
+          "device_fingerprint": "%original_device_fingerprint%"
+        },
+        "condition": "selection and not filter_same_context | count() by session_token > 1"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "data-theft"
+      ],
+      "tags": [
+        "attack.t1539",
+        "attack.t1550.004",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Users connecting via VPN whose egress IP changes geographic region mid-session",
+        "Mobile users roaming internationally with active banking sessions"
+      ]
+    },
+    {
+      "id": "a71a2d8b-6843-415c-9c2a-8993b4ee95a4",
+      "dl_id": "DL-0010",
+      "title": "Autofill Data Harvesting",
+      "status": "experimental",
+      "description": "Detects form autofill data extraction patterns consistent with infostealer behavior. Stealers like RedLine and Raccoon target browser autofill databases (Web Data, formhistory.sqlite) to harvest stored PII including names, addresses, phone numbers, and payment card details that facilitate downstream fraud.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "file_path|endswith": [
+            "\\Web Data",
+            "\\Web Data-journal",
+            "\\formhistory.sqlite",
+            "\\Form History"
+          ],
+          "file_access_type": "read"
+        },
+        "filter_browsers": {
+          "process_name|endswith": [
+            "\\chrome.exe",
+            "\\firefox.exe",
+            "\\msedge.exe",
+            "\\brave.exe"
+          ]
+        },
+        "filter_system": {
+          "process_integrity_level": "System"
+        },
+        "condition": "selection and not filter_browsers and not filter_system"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "endpoint_detection"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0023"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "data-theft",
+        "malware"
+      ],
+      "tags": [
+        "attack.t1005",
+        "attack.t1555.003",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Browser profile migration utilities reading autofill databases during import",
+        "Form-filling accessibility tools for users with disabilities"
+      ]
+    },
+    {
+      "id": "52bf262a-15e1-40a4-934e-9c8b461aef21",
+      "dl_id": "DL-0011",
+      "title": "Crypto Wallet Seed Phrase Exfiltration",
+      "status": "experimental",
+      "description": "Detects wallet seed phrase and private key extraction attempts targeting cryptocurrency wallets. Infostealers such as RedLine, Vidar, and StealC include dedicated modules that search for wallet.dat files, seed phrase backups, and keystore directories for MetaMask, Exodus, Electrum, and other popular wallets to enable cryptocurrency theft.\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection_wallet_files": {
+          "file_path|contains": [
+            "\\Ethereum\\keystore",
+            "\\Exodus\\exodus.wallet",
+            "\\Electrum\\wallets",
+            "\\Bitcoin\\wallet.dat",
+            "\\Atomic\\Local Storage",
+            "\\Coinomi\\wallets"
+          ],
+          "file_access_type": "read"
+        },
+        "selection_metamask": {
+          "file_path|contains": [
+            "\\nkbihfbeogaeaoehlefnkodbefgpgknn",
+            "\\ejbalbakoplchlghecdalmeeeajnimhm"
+          ],
+          "file_access_type": "read"
+        },
+        "selection_seed_files": {
+          "file_name|contains": [
+            "seed",
+            "mnemonic",
+            "recovery",
+            "backup"
+          ],
+          "file_extension|contains": [
+            ".txt",
+            ".json",
+            ".dat"
+          ]
+        },
+        "filter_wallet_apps": {
+          "process_name|contains": [
+            "Exodus",
+            "Electrum",
+            "Atomic",
+            "Coinomi",
+            "MetaMask"
+          ]
+        },
+        "condition": "(selection_wallet_files or selection_metamask or selection_seed_files) and not filter_wallet_apps"
+      },
+      "logsource": {
+        "product": "crypto",
+        "service": "endpoint_detection"
+      },
+      "threat_path_ids": [
+        "TP-0008",
+        "TP-0023"
+      ],
+      "fraud_types": [
+        "data-theft",
+        "malware"
+      ],
+      "tags": [
+        "attack.t1005",
+        "attack.t1555",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Legitimate wallet backup procedures initiated by the user",
+        "Crypto portfolio management tools that aggregate across multiple wallets"
+      ]
+    },
+    {
+      "id": "8bc12d63-f909-4e07-93a3-a342d10e65f3",
+      "dl_id": "DL-0012",
+      "title": "Login Velocity Anomaly",
+      "status": "experimental",
+      "description": "Detects abnormal login attempt velocity from a single source IP or subnet, indicative of automated credential stuffing tools. Legitimate users produce low single-digit login attempts per minute; credential stuffing tools generate dozens to hundreds, often targeting the authentication API directly rather than the web login form.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "login_attempt"
+        },
+        "filter_internal": {
+          "source_ip|cidr": [
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16"
+          ]
+        },
+        "timeframe": "5m",
+        "condition": "selection and not filter_internal | count() by source_ip > 50"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0013"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1110",
+        "attack.t1110.004",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Load testing or penetration testing activities against authentication endpoints",
+        "Misconfigured monitoring scripts with aggressive polling intervals"
+      ]
+    },
+    {
+      "id": "ee20082a-9729-4d14-bd2e-642e837edafe",
+      "dl_id": "DL-0013",
+      "title": "Geographic Impossibility Login",
+      "status": "experimental",
+      "description": "Detects login attempts from geographically impossible locations within a short timeframe. When a user authenticates from one country and a second authentication occurs from a distant country within a window that makes physical travel impossible, it strongly indicates credential compromise and concurrent use by an attacker.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type|contains": [
+            "login_success",
+            "login_attempt"
+          ]
+        },
+        "timeframe": "60m",
+        "condition": "selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0008",
+        "TP-0013"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1110.004",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Users employing VPN services that change egress country between sessions",
+        "Corporate proxy chains routing through geographically distributed data centers"
+      ]
+    },
+    {
+      "id": "cd48e061-1318-4a62-b2e7-efa4010e5403",
+      "dl_id": "DL-0014",
+      "title": "Device Fingerprint Anomaly",
+      "status": "experimental",
+      "description": "Detects a known device fingerprint presenting with changed underlying characteristics such as OS version, screen resolution, timezone, or installed fonts. Attackers using antidetect browsers (Multilogin, GoLogin, Dolphin Anty) import stolen device fingerprints but often have mismatches in lower-level hardware attributes that this rule correlates.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type": "session_start",
+          "device_fingerprint|exists": true
+        },
+        "condition": "selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezone_offset\n  or webgl_renderer != baseline.webgl_renderer\n  or canvas_hash != baseline.canvas_hash\n)\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "web_gateway"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1036",
+        "attack.t1078",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Users who updated their OS or browser, changing underlying fingerprint attributes",
+        "Legitimate device reconfigurations such as connecting external monitors"
+      ]
+    },
+    {
+      "id": "735a9eb8-b6a9-409c-aeb2-766ceb8818f4",
+      "dl_id": "DL-0015",
+      "title": "Combo List Iteration Pattern",
+      "status": "experimental",
+      "description": "Detects sequential username patterns typical of combo list iteration during credential stuffing attacks. Attackers feed sorted credential lists into stuffing tools, producing login attempts where usernames appear in alphabetical or near-alphabetical order with minimal timing variation between attempts, a pattern never seen in organic user behavior.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "login_attempt",
+          "auth_result": "failure"
+        },
+        "timeframe": "10m",
+        "condition": "selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0013"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1110.004",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Automated batch user provisioning systems that test accounts sequentially",
+        "QA test suites running ordered account validation during deployments"
+      ]
+    },
+    {
+      "id": "4802a77f-cc87-4dc5-b861-aacaf4a21d7c",
+      "dl_id": "DL-0016",
+      "title": "Distributed Credential Stuffing",
+      "status": "experimental",
+      "description": "Detects low-and-slow distributed credential stuffing attacks spread across multiple source IPs to evade per-IP rate limiting. Advanced attackers use residential proxy networks and botnets to distribute attempts, making each source IP appear benign while the aggregate attack targets many accounts. This rule aggregates failed login patterns across source IPs sharing common characteristics.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type": "login_attempt",
+          "auth_result": "failure"
+        },
+        "selection_characteristics": {
+          "user_agent|re": "^Mozilla/5\\.0.*$"
+        },
+        "timeframe": "30m",
+        "condition": "selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0013"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1090",
+        "attack.t1110.004",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Large-scale legitimate user activity from a popular browser version during peak hours",
+        "CDN or reverse-proxy traffic aggregation that normalizes user-agent strings"
+      ]
+    },
+    {
+      "id": "1556d369-1abb-4769-8d09-d3b952a6e3f3",
+      "dl_id": "DL-0017",
+      "title": "Residential Proxy Login Attempt",
+      "status": "experimental",
+      "description": "Detects login attempts originating from known residential proxy networks. Credential stuffing actors increasingly route attacks through residential proxies (Luminati/Bright Data, Oxylabs, SmartProxy) to appear as legitimate home users and bypass IP-reputation blocklists. This rule correlates source IPs against residential proxy threat intelligence feeds.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type|contains": [
+            "login_attempt",
+            "login_success"
+          ]
+        },
+        "selection_proxy": {
+          "source_ip_threat_intel|contains": [
+            "residential_proxy",
+            "proxy_network"
+          ],
+          "source_ip_category": "residential",
+          "source_asn_type": "isp"
+        },
+        "selection_additional": {
+          "auth_result": "success"
+        },
+        "condition": "selection and selection_proxy and selection_additional"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0008",
+        "TP-0013"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1090.002",
+        "attack.t1110.004",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Legitimate users whose ISP IP ranges overlap with residential proxy exit nodes",
+        "Privacy-conscious users routing through VPN services that share residential IP pools"
+      ]
+    },
+    {
+      "id": "be590f67-0d6b-4f3d-a796-9a013327aae7",
+      "dl_id": "DL-0018",
+      "title": "Credential Spray Single Password",
+      "status": "experimental",
+      "description": "Detects password spraying attacks where a single password (or small set of passwords) is tested across many accounts. Unlike traditional credential stuffing which uses unique username-password pairs, password spraying tries common or recently breached passwords against a large account population to avoid per-account lockout thresholds.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "login_attempt",
+          "auth_result": "failure"
+        },
+        "timeframe": "30m",
+        "condition": "selection | count(distinct username) by password_hash > 20 and count(distinct password_hash) by source_ip < 3\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auth_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0013"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1110.003",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Batch account creation workflows where a default password is assigned to many accounts",
+        "Automated test frameworks using a shared test password across test accounts"
+      ]
+    },
+    {
+      "id": "5cf74ef7-5066-4957-bdb3-8b26d823d01d",
+      "dl_id": "DL-0019",
+      "title": "Beneficiary Change Velocity Anomaly",
+      "status": "experimental",
+      "description": "Detects multiple beneficiary additions or modifications on a single account within a short time window. Rapid beneficiary changes are a strong pre-cursor to payment diversion fraud, where an attacker positions new destination accounts before initiating unauthorized wires.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": [
+            "BENEFICIARY_ADD",
+            "BENEFICIARY_MODIFY",
+            "BENEFICIARY_DELETE"
+          ]
+        },
+        "timeframe": "24h",
+        "condition": "selection | count(distinct beneficiary_id) by account_id > 3"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "core_banking"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0004",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1098",
+        "cfpf.phase3.positioning",
+        "flame.account_modification"
+      ],
+      "falsepositives": [
+        "Corporate treasury teams onboarding multiple new vendors during month-end",
+        "Business accounts setting up payroll beneficiaries for the first time"
+      ]
+    },
+    {
+      "id": "5a835760-af28-492f-a741-a4478ecb238c",
+      "dl_id": "DL-0020",
+      "title": "Rapid Contact Information Change",
+      "status": "experimental",
+      "description": "Detects when email, phone number, and mailing address are all changed on an account within a short window. A full contact information swap is a hallmark of account takeover where the attacker locks out the legitimate owner before executing fraud.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection_email": {
+          "event_type": "CONTACT_CHANGE",
+          "field_changed": "email"
+        },
+        "selection_phone": {
+          "event_type": "CONTACT_CHANGE",
+          "field_changed": "phone"
+        },
+        "selection_address": {
+          "event_type": "CONTACT_CHANGE",
+          "field_changed": "mailing_address"
+        },
+        "timeframe": "72h",
+        "condition": "(selection_email and selection_phone and selection_address) | count() by account_id >= 3"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "identity_management"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0005"
+      ],
+      "fraud_types": [
+        "account-takeover"
+      ],
+      "tags": [
+        "attack.t1098",
+        "cfpf.phase3.positioning",
+        "flame.account_modification"
+      ],
+      "falsepositives": [
+        "Customer relocating and updating all contact details with their bank simultaneously",
+        "Account remediation after a legitimate customer service request"
+      ]
+    },
+    {
+      "id": "5fa193cc-8e4e-4a02-a05c-da7004124f42",
+      "dl_id": "DL-0021",
+      "title": "MFA Method Switch Before High-Value Transaction",
+      "status": "experimental",
+      "description": "Detects when an account's multi-factor authentication method is changed (e.g., from hardware token to SMS or email OTP) shortly before a high-value wire or ACH transaction is initiated. Attackers downgrade MFA to a method they control prior to executing fraud.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection_mfa_change": {
+          "event_type": "MFA_METHOD_CHANGE",
+          "new_mfa_method": [
+            "sms_otp",
+            "email_otp",
+            "voice_call"
+          ]
+        },
+        "selection_high_value_txn": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_DEBIT"
+          ],
+          "transaction_amount|gte": 5000
+        },
+        "timeframe": "4h",
+        "condition": "selection_mfa_change | near selection_high_value_txn by account_id"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "identity_management"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0005",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1098",
+        "attack.t1556",
+        "cfpf.phase3.positioning",
+        "flame.account_modification"
+      ],
+      "falsepositives": [
+        "Customer who lost their hardware token and is making a legitimate scheduled payment",
+        "Planned MFA migration events by IT or security teams"
+      ]
+    },
+    {
+      "id": "c94fce3e-816a-4968-9836-ad36a4889b82",
+      "dl_id": "DL-0022",
+      "title": "Dormant Account Reactivation",
+      "status": "experimental",
+      "description": "Detects accounts with no transactional activity for 90 or more days that suddenly initiate financial transactions. Dormant accounts are frequently targeted by attackers because they are less likely to be monitored and credential compromise may go unnoticed.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection_reactivation": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_DEBIT",
+            "ACH_CREDIT",
+            "INTERNAL_TRANSFER"
+          ],
+          "account_dormancy_days|gte": 90
+        },
+        "filter_scheduled": {
+          "transaction_type": "RECURRING_SCHEDULED"
+        },
+        "condition": "selection_reactivation and not filter_scheduled"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "core_banking"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0004"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1098",
+        "cfpf.phase3.positioning",
+        "flame.account_modification"
+      ],
+      "falsepositives": [
+        "Seasonal businesses that operate on annual cycles (e.g., tax preparation firms)",
+        "Estate or trust accounts activated for legitimate distributions"
+      ]
+    },
+    {
+      "id": "f62df3c4-71c6-49de-8ea3-bf2db3b0f90b",
+      "dl_id": "DL-0023",
+      "title": "Alert Threshold Modification",
+      "status": "experimental",
+      "description": "Detects when a user modifies their own transaction alert thresholds or disables notifications via online banking or mobile app. Attackers raise alert thresholds or suppress notifications to prevent the legitimate account holder from being alerted to unauthorized transactions.\n",
+      "cfpf_phase": "P3",
+      "level": "medium",
+      "detection": {
+        "selection_threshold_raise": {
+          "event_type": "ALERT_SETTINGS_CHANGE",
+          "action": [
+            "threshold_increase",
+            "notification_disable",
+            "alert_suppress"
+          ]
+        },
+        "selection_channel": {
+          "channel": [
+            "online_banking",
+            "mobile_app",
+            "api"
+          ]
+        },
+        "condition": "selection_threshold_raise and selection_channel"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "core_banking"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0005"
+      ],
+      "fraud_types": [
+        "account-takeover"
+      ],
+      "tags": [
+        "attack.t1098",
+        "cfpf.phase3.positioning",
+        "flame.account_modification"
+      ],
+      "falsepositives": [
+        "Customers who intentionally adjust alert settings to reduce notification fatigue",
+        "Business accounts adjusting thresholds for expected high-value transactions"
+      ]
+    },
+    {
+      "id": "2a45817b-a0bb-4253-ae49-f2b534afc1c2",
+      "dl_id": "DL-0024",
+      "title": "Wire Beneficiary Name Mismatch",
+      "status": "experimental",
+      "description": "Detects when the wire beneficiary name provided by the originator does not match the account holder name at the receiving institution. Name mismatches on wire transfers are a strong indicator of payment diversion fraud where funds are redirected to accounts controlled by the attacker.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "WIRE_INITIATION",
+          "beneficiary_name_match": false,
+          "transaction_amount|gte": 1000
+        },
+        "filter_known_dba": {
+          "beneficiary_account_type": "DBA"
+        },
+        "condition": "selection and not filter_known_dba"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "wire_system"
+      },
+      "threat_path_ids": [
+        "TP-0004",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1098",
+        "cfpf.phase3.positioning",
+        "flame.account_modification"
+      ],
+      "falsepositives": [
+        "Payments to businesses using a DBA (doing business as) name different from legal entity name",
+        "Wire transfers to joint accounts where one holder's name is provided"
+      ]
+    },
+    {
+      "id": "4c0ba92e-b598-4c70-bfd0-8f0fcc60017c",
+      "dl_id": "DL-0025",
+      "title": "Power of Attorney or Authorized Signer Change",
+      "status": "experimental",
+      "description": "Detects changes to power of attorney designations or authorized signers on commercial and business accounts. Fraudsters may socially engineer or forge POA documents to gain control of business accounts, enabling them to initiate high-value transactions.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": [
+            "POA_ADD",
+            "POA_MODIFY",
+            "AUTHORIZED_SIGNER_ADD",
+            "AUTHORIZED_SIGNER_MODIFY"
+          ],
+          "account_type": [
+            "commercial",
+            "business",
+            "corporate",
+            "trust"
+          ]
+        },
+        "selection_high_value": {
+          "account_balance|gte": 50000
+        },
+        "condition": "selection and selection_high_value"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "core_banking"
+      },
+      "threat_path_ids": [
+        "TP-0004",
+        "TP-0005",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1098",
+        "cfpf.phase3.positioning",
+        "flame.account_modification"
+      ],
+      "falsepositives": [
+        "Legitimate corporate governance changes such as new CFO or treasurer appointment",
+        "Succession planning updates on trust accounts"
+      ]
+    },
+    {
+      "id": "bc6400fa-4411-4a97-ab10-cfd48b15a347",
+      "dl_id": "DL-0026",
+      "title": "Account Type Conversion Anomaly",
+      "status": "experimental",
+      "description": "Detects suspicious account type conversions such as savings-to-checking or personal-to-business. These conversions can unlock higher transaction limits, wire capabilities, or ACH origination, which attackers exploit to move larger amounts after taking over a limited account.\n",
+      "cfpf_phase": "P3",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type": "ACCOUNT_TYPE_CONVERSION",
+          "conversion_type": [
+            "savings_to_checking",
+            "personal_to_business",
+            "basic_to_premium"
+          ]
+        },
+        "selection_recent_credential_change": {
+          "days_since_last_credential_change|lte": 7
+        },
+        "condition": "selection and selection_recent_credential_change"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "core_banking"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0005"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1098",
+        "cfpf.phase3.positioning",
+        "flame.account_modification"
+      ],
+      "falsepositives": [
+        "Small business owners legitimately converting a personal account to a business account",
+        "Customers upgrading account tiers for better interest rates or features"
+      ]
+    },
+    {
+      "id": "e43cb234-667e-4940-bef1-65d5a41c8926",
+      "dl_id": "DL-0027",
+      "title": "First-Time International Wire to New Country",
+      "status": "experimental",
+      "description": "Detects international wire transfers sent to a country that has no prior transaction history for the originating account. First-time international wires, especially to high-risk corridors, are a key indicator of business email compromise and payment diversion schemes.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "WIRE_INITIATION",
+          "wire_type": "international",
+          "beneficiary_country_first_time": true,
+          "transaction_amount|gte": 5000
+        },
+        "filter_known_correspondent": {
+          "beneficiary_bank_relationship": "established"
+        },
+        "condition": "selection and not filter_known_correspondent"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "wire_system"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "Companies expanding into new international markets with legitimate vendor payments",
+        "Individual customers sending family remittances to a new country for the first time"
+      ]
+    },
+    {
+      "id": "792fa821-b18b-4745-9977-a533feec41b6",
+      "dl_id": "DL-0028",
+      "title": "Transaction Amount Clustering Near Reporting Threshold",
+      "status": "experimental",
+      "description": "Detects transactions that cluster just below regulatory reporting thresholds ($3,000 for international transfers, $10,000 for CTR filing). Structuring transactions to evade reporting requirements is itself a federal offense and a strong indicator of money laundering or fraud monetization.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_under_10k": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_DEBIT",
+            "CASH_DEPOSIT"
+          ],
+          "transaction_amount|gte": 9000,
+          "transaction_amount|lt": 10000
+        },
+        "selection_under_3k": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "INTERNATIONAL_TRANSFER"
+          ],
+          "transaction_amount|gte": 2800,
+          "transaction_amount|lt": 3000
+        },
+        "timeframe": "7d",
+        "condition": "(selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0020"
+      ],
+      "fraud_types": [
+        "money-mule",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase5.monetization",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "Small business owners with legitimately recurring transactions that happen to fall near thresholds",
+        "Payroll deposits that naturally cluster at consistent amounts"
+      ]
+    },
+    {
+      "id": "f74ea92f-6a23-4c07-9bdb-c1c5a5cc393c",
+      "dl_id": "DL-0029",
+      "title": "Split Transfer Chain Detection",
+      "status": "experimental",
+      "description": "Detects when a large inbound amount is split into multiple smaller outbound transfers to different beneficiaries in sequence. This layering technique is used to obscure the origin and destination of fraudulently obtained funds.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_large_inbound": {
+          "event_type": [
+            "WIRE_CREDIT",
+            "ACH_CREDIT"
+          ],
+          "transaction_amount|gte": 25000
+        },
+        "selection_multiple_outbound": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_DEBIT",
+            "INTERNAL_TRANSFER"
+          ],
+          "transaction_amount|lt": 10000
+        },
+        "timeframe": "48h",
+        "condition": "selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "wire_system"
+      },
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0006",
+        "TP-0020"
+      ],
+      "fraud_types": [
+        "money-mule",
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "Businesses receiving large payments and distributing to multiple sub-contractors",
+        "Investment accounts rebalancing across multiple fund positions"
+      ]
+    },
+    {
+      "id": "5ef0b936-e74f-4bac-9f40-8b8b318a7296",
+      "dl_id": "DL-0030",
+      "title": "After-Hours Wire Transfer Initiation",
+      "status": "experimental",
+      "description": "Detects wire transfers initiated outside the account's established normal business hours. Attackers often execute unauthorized wires during evenings, weekends, or holidays when fraud detection staff and account holders are less likely to notice.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "WIRE_INITIATION",
+          "transaction_amount|gte": 5000,
+          "initiated_outside_business_hours": true
+        },
+        "selection_channel": {
+          "channel": [
+            "online_banking",
+            "mobile_app",
+            "api"
+          ]
+        },
+        "filter_pre_authorized": {
+          "wire_status": "pre_authorized_recurring"
+        },
+        "condition": "selection and selection_channel and not filter_pre_authorized"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "wire_system"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "International businesses operating across time zones with legitimate after-hours activity",
+        "Business owners making urgent payments during personal hours"
+      ]
+    },
+    {
+      "id": "fac3da03-fbae-4854-b7e2-ebab675e4c06",
+      "dl_id": "DL-0031",
+      "title": "Rapid Outbound Wire After Large Inbound",
+      "status": "experimental",
+      "description": "Detects a large outbound wire or ACH transfer initiated within hours of receiving a large inbound deposit. This pass-through pattern is characteristic of compromised accounts being used as intermediary conduits in fraud or money laundering schemes.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_inbound": {
+          "event_type": [
+            "WIRE_CREDIT",
+            "ACH_CREDIT"
+          ],
+          "transaction_amount|gte": 10000
+        },
+        "selection_outbound": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_DEBIT"
+          ],
+          "transaction_amount|gte": 8000
+        },
+        "timeframe": "6h",
+        "condition": "selection_inbound | near selection_outbound by account_id"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0002",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "money-mule",
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "Real estate escrow closings with same-day receipt and disbursement",
+        "Business accounts receiving client payments and immediately paying suppliers"
+      ]
+    },
+    {
+      "id": "46cbb236-28e6-4e86-9988-382e66880652",
+      "dl_id": "DL-0032",
+      "title": "Beneficiary Country Mismatch with Business Profile",
+      "status": "experimental",
+      "description": "Detects wire transfers to countries where the account holder has no established business relationship or prior transaction history. Combined with other indicators, this can reveal business email compromise where payment instructions are altered to redirect funds to attacker-controlled accounts in foreign jurisdictions.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "WIRE_INITIATION",
+          "wire_type": "international",
+          "beneficiary_country_in_business_profile": false,
+          "transaction_amount|gte": 5000
+        },
+        "filter_consumer_remittance": {
+          "account_type": "personal",
+          "transaction_amount|lt": 3000
+        },
+        "condition": "selection and not filter_consumer_remittance"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "wire_system"
+      },
+      "threat_path_ids": [
+        "TP-0006",
+        "TP-0020"
+      ],
+      "fraud_types": [
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "Companies sourcing from a new international supplier for the first time",
+        "One-time international consulting or service payments"
+      ]
+    },
+    {
+      "id": "f68065c0-e598-4a1b-b5b2-132b8ca3c448",
+      "dl_id": "DL-0033",
+      "title": "Round-Dollar Wire Amount Pattern",
+      "status": "experimental",
+      "description": "Detects unusual patterns of wire transfers in round dollar amounts (e.g., $5,000, $10,000, $25,000). While individual round-amount wires are common, a pattern of multiple round-amount wires is atypical for legitimate business payments and may indicate structured or test transactions by fraudsters.\n",
+      "cfpf_phase": "P4",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type": "WIRE_INITIATION",
+          "transaction_amount|gte": 1000,
+          "transaction_amount_is_round": true
+        },
+        "timeframe": "30d",
+        "condition": "selection | count() by account_id > 4"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "wire_system"
+      },
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "Loan disbursements or payments that are inherently round amounts",
+        "Recurring fixed-amount business payments (rent, retainers)"
+      ]
+    },
+    {
+      "id": "48a0f270-8aff-4f84-a211-b622b5898c9d",
+      "dl_id": "DL-0034",
+      "title": "ACH Return Rate Anomaly",
+      "status": "experimental",
+      "description": "Detects ACH originators with an elevated return or reversal rate exceeding normal thresholds. High ACH return rates (especially R10 unauthorized, R29 corporate not authorized) may indicate the account is being used to initiate unauthorized debits against victim accounts.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_returns": {
+          "event_type": "ACH_RETURN",
+          "return_code": [
+            "R10",
+            "R29",
+            "R07",
+            "R08"
+          ]
+        },
+        "timeframe": "30d",
+        "condition": "selection_returns | count() by originator_id > 5"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "ach_processing"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0002"
+      ],
+      "fraud_types": [
+        "ACH-fraud",
+        "payment-diversion"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase5.monetization",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "Legitimate businesses with high dispute rates due to subscription billing models",
+        "Payroll processors during seasonal employment transitions"
+      ]
+    },
+    {
+      "id": "cbadea79-ead5-4450-bc9e-843779bc773b",
+      "dl_id": "DL-0035",
+      "title": "Wire to FATF High-Risk Jurisdiction",
+      "status": "experimental",
+      "description": "Detects wire transfers to jurisdictions on the FATF high-risk or increased monitoring lists. While not inherently fraudulent, wires to these jurisdictions combined with other risk factors (new beneficiary, unusual amount, after-hours) significantly elevate the risk of money laundering or fraud monetization.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "WIRE_INITIATION",
+          "wire_type": "international",
+          "beneficiary_country": [
+            "MM",
+            "KP",
+            "IR",
+            "YE",
+            "SY",
+            "HT",
+            "VU",
+            "PH",
+            "NG",
+            "SS"
+          ],
+          "transaction_amount|gte": 1000
+        },
+        "filter_established_relationship": {
+          "beneficiary_relationship_days|gte": 365,
+          "prior_transaction_count|gte": 10
+        },
+        "condition": "selection and not filter_established_relationship"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "wire_system"
+      },
+      "threat_path_ids": [
+        "TP-0006",
+        "TP-0020"
+      ],
+      "fraud_types": [
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "NGOs and charitable organizations with legitimate operations in high-risk countries",
+        "International companies with established supply chains in monitored jurisdictions"
+      ]
+    },
+    {
+      "id": "ab337b60-bba6-4fba-bc7d-81374d37f4de",
+      "dl_id": "DL-0036",
+      "title": "Payment Instruction Velocity Spike",
+      "status": "experimental",
+      "description": "Detects when multiple payment instructions (wires, ACH batches, or internal transfers) are submitted in rapid succession from a single account or user session. High-velocity payment submissions suggest automated or scripted fraud execution, often seen after credential compromise.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_BATCH_SUBMIT",
+            "INTERNAL_TRANSFER",
+            "PAYMENT_INSTRUCTION"
+          ]
+        },
+        "timeframe": "30m",
+        "condition": "selection | count() by session_id > 5",
+        "enrichment": {
+          "aggregate": "sum(transaction_amount) by account_id",
+          "threshold_multiplier": 3.0
+        }
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0006"
+      ],
+      "fraud_types": [
+        "ACH-fraud",
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.wire_ach"
+      ],
+      "falsepositives": [
+        "Corporate treasury operations submitting batch payments during end-of-day processing",
+        "Payroll administrators processing multi-entity payroll batches"
+      ]
+    },
+    {
+      "id": "b0175f36-f97b-4e8f-9111-1a3e7d8dfa40",
+      "dl_id": "DL-0037",
+      "title": "Mule Rapid ATM Withdrawal After Inbound Transfer",
+      "status": "experimental",
+      "description": "Detects cash withdrawals at ATMs occurring shortly after an inbound wire or ACH transfer. Money mules frequently convert electronically received fraud proceeds to cash as quickly as possible to prevent recovery, often hitting daily ATM limits across multiple machines.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_inbound": {
+          "event_type": [
+            "WIRE_CREDIT",
+            "ACH_CREDIT"
+          ],
+          "transaction_amount|gte": 2000
+        },
+        "selection_atm_withdrawal": {
+          "event_type": "ATM_WITHDRAWAL",
+          "transaction_amount|gte": 500
+        },
+        "timeframe": "4h",
+        "condition": "selection_inbound | near selection_atm_withdrawal by account_id"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0011",
+        "TP-0022"
+      ],
+      "fraud_types": [
+        "money-mule",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase5.monetization",
+        "flame.mule_indicator"
+      ],
+      "falsepositives": [
+        "Small business owners depositing and immediately withdrawing cash for operational expenses",
+        "Individuals receiving legitimate payroll via direct deposit and withdrawing cash"
+      ]
+    },
+    {
+      "id": "37ad82e6-17e7-4be0-b5e9-839b29cd1ed3",
+      "dl_id": "DL-0038",
+      "title": "Account Age vs Transaction Volume Mismatch",
+      "status": "experimental",
+      "description": "Detects accounts less than 90 days old that exhibit transaction volumes exceeding the typical profile for mature accounts. Newly opened accounts with abnormally high volume are a primary indicator of purpose-built mule accounts created specifically to funnel illicit funds.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_age_days|lt": 90
+        },
+        "selection_high_volume": {
+          "event_type": [
+            "WIRE_CREDIT",
+            "ACH_CREDIT",
+            "WIRE_INITIATION",
+            "ACH_DEBIT",
+            "INTERNAL_TRANSFER"
+          ]
+        },
+        "timeframe": "30d",
+        "condition": "selection and selection_high_volume | count() by account_id > 20",
+        "enrichment": {
+          "peer_comparison": {
+            "metric": "transaction_count",
+            "threshold": "percentile_95"
+          }
+        }
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0011",
+        "TP-0022"
+      ],
+      "fraud_types": [
+        "money-mule"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase5.monetization",
+        "flame.mule_indicator"
+      ],
+      "falsepositives": [
+        "Legitimate new business accounts with immediate high transaction needs",
+        "Student accounts receiving financial aid disbursements at semester start"
+      ]
+    },
+    {
+      "id": "1090ec4d-01b4-489f-bd55-6170d4413643",
+      "dl_id": "DL-0039",
+      "title": "Multi-Bank Funnel Pattern",
+      "status": "experimental",
+      "description": "Detects accounts receiving funds from multiple external financial institutions that are then consolidated and sent outbound to a single destination. This funnel pattern is a hallmark of money mule operations where proceeds from multiple fraud victims are aggregated before being laundered.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_inbound": {
+          "event_type": [
+            "WIRE_CREDIT",
+            "ACH_CREDIT"
+          ],
+          "originating_bank_external": true
+        },
+        "selection_outbound": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_DEBIT"
+          ]
+        },
+        "timeframe": "7d",
+        "condition": "selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0011",
+        "TP-0022"
+      ],
+      "fraud_types": [
+        "money-mule",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase5.monetization",
+        "flame.mule_indicator"
+      ],
+      "falsepositives": [
+        "Freelancers or consultants receiving payments from multiple clients via different banks",
+        "Small businesses with receivables from diverse customer base"
+      ]
+    },
+    {
+      "id": "b2b07a01-733a-47f1-addd-0dc4af07cab5",
+      "dl_id": "DL-0040",
+      "title": "Crypto Off-Ramp After Wire or ACH Receipt",
+      "status": "experimental",
+      "description": "Detects a pattern where an account receives a wire or ACH credit and then promptly initiates a transfer to a known cryptocurrency exchange or digital asset platform. Converting fraud proceeds to cryptocurrency provides near-irreversible laundering, making this a critical monetization indicator.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_inbound": {
+          "event_type": [
+            "WIRE_CREDIT",
+            "ACH_CREDIT"
+          ],
+          "transaction_amount|gte": 1000
+        },
+        "selection_crypto_outbound": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_DEBIT"
+          ],
+          "beneficiary_category": "crypto_exchange",
+          "beneficiary_name|contains": [
+            "Coinbase",
+            "Binance",
+            "Kraken",
+            "FTX",
+            "Gemini",
+            "Crypto.com",
+            "Bitfinex"
+          ]
+        },
+        "timeframe": "24h",
+        "condition": "selection_inbound | near selection_crypto_outbound by account_id"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0022"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "money-mule"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase5.monetization",
+        "flame.mule_indicator"
+      ],
+      "falsepositives": [
+        "Legitimate cryptocurrency investors or traders funding exchange accounts from bank proceeds",
+        "Businesses with crypto treasury strategies converting fiat after receivables"
+      ]
+    },
+    {
+      "id": "15f60f3c-3d76-4875-99e3-15929947b2ee",
+      "dl_id": "DL-0041",
+      "title": "Peer-to-Peer Transfer Chain (Smurfing Pattern)",
+      "status": "experimental",
+      "description": "Detects chains of peer-to-peer transfers across multiple accounts where funds move through a sequence of intermediary accounts (A to B to C to D). This smurfing pattern is used to layer fraud proceeds through multiple hops, making tracing difficult.\n",
+      "cfpf_phase": "P5",
+      "level": "medium",
+      "detection": {
+        "selection_p2p": {
+          "event_type": [
+            "P2P_TRANSFER",
+            "INTERNAL_TRANSFER",
+            "ZELLE_SEND",
+            "VENMO_TRANSFER"
+          ],
+          "transaction_amount|gte": 500
+        },
+        "selection_chain": {
+          "inbound_event": "P2P_CREDIT",
+          "outbound_event": "P2P_DEBIT"
+        },
+        "timeframe": "2h",
+        "condition": "selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0011",
+        "TP-0022"
+      ],
+      "fraud_types": [
+        "money-mule",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase5.monetization",
+        "flame.mule_indicator"
+      ],
+      "falsepositives": [
+        "Group event organizers collecting and redistributing shared expenses",
+        "Family members transferring funds between accounts for household management"
+      ]
+    },
+    {
+      "id": "2573a85a-fc13-40ab-bbf9-0578fe82b907",
+      "dl_id": "DL-0042",
+      "title": "Mule Recruitment Test Deposit Pattern",
+      "status": "experimental",
+      "description": "Detects accounts receiving multiple small \"test\" deposits from many distinct external sources. Mule recruiters validate new mule accounts by sending micro-deposits from various fraud proceeds before routing larger amounts. The pattern of many small inbound transfers from unrelated senders is highly anomalous for personal accounts.\n",
+      "cfpf_phase": "P5",
+      "level": "medium",
+      "detection": {
+        "selection_small_deposits": {
+          "event_type": [
+            "ACH_CREDIT",
+            "P2P_CREDIT",
+            "WIRE_CREDIT"
+          ],
+          "transaction_amount|lte": 100,
+          "transaction_amount|gte": 1
+        },
+        "timeframe": "14d",
+        "condition": "selection_small_deposits | count(distinct originator_id) by account_id > 8"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "ach_processing"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0011"
+      ],
+      "fraud_types": [
+        "money-mule"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase5.monetization",
+        "flame.mule_indicator"
+      ],
+      "falsepositives": [
+        "Account verification micro-deposits from legitimate fintech platforms linking accounts",
+        "Social media influencers receiving many small tips or donations"
+      ]
+    },
+    {
+      "id": "2e8cd716-a403-4eae-9d32-f051697dad67",
+      "dl_id": "DL-0043",
+      "title": "Rapid Fund Layering Through Shell Accounts",
+      "status": "experimental",
+      "description": "Detects rapid fund movement through multiple accounts with minimal retention time, indicative of layering through shell or pass-through accounts. Funds transit through each account within hours with near-zero balance retention, suggesting the accounts exist solely to obscure the money trail.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_pass_through": {
+          "event_type": [
+            "WIRE_CREDIT",
+            "ACH_CREDIT",
+            "INTERNAL_TRANSFER_IN"
+          ],
+          "transaction_amount|gte": 5000
+        },
+        "selection_rapid_egress": {
+          "event_type": [
+            "WIRE_INITIATION",
+            "ACH_DEBIT",
+            "INTERNAL_TRANSFER_OUT"
+          ]
+        },
+        "selection_low_retention": {
+          "post_transaction_balance|lte": 500
+        },
+        "timeframe": "12h",
+        "condition": "selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0011",
+        "TP-0022"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "money-mule",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase5.monetization",
+        "flame.mule_indicator"
+      ],
+      "falsepositives": [
+        "Escrow or settlement accounts that legitimately have rapid pass-through flows",
+        "Operating accounts of payment processors or money service businesses"
+      ]
+    },
+    {
+      "id": "26bb606a-5507-42e3-8405-a5e48094aac8",
+      "dl_id": "DL-0044",
+      "title": "Carrier Change Authentication Correlation",
+      "status": "experimental",
+      "description": "Detects a carrier or SIM change event immediately followed by an authentication attempt on a banking platform. SIM swap attacks involve social engineering or insider compromise at a mobile carrier to port the victim's phone number to an attacker-controlled SIM, after which the attacker uses SMS-based MFA to access accounts. The tight temporal correlation between carrier change and login is the key indicator.\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection_carrier_change": {
+          "event_type|contains": [
+            "sim_swap",
+            "carrier_change",
+            "number_port"
+          ],
+          "status": "completed"
+        },
+        "selection_auth": {
+          "event_type": "login_attempt",
+          "mfa_method": "sms",
+          "mfa_result": "success"
+        },
+        "timeframe": "120m",
+        "condition": "selection_carrier_change | followed_by selection_auth on phone_number within 120m\n"
+      },
+      "logsource": {
+        "product": "telecom",
+        "service": "identity_management"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "esim-hijacking"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1111",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Legitimate users who switch carriers and immediately log in to their banking apps",
+        "Planned device upgrades where users authenticate on new hardware right after activation"
+      ]
+    },
+    {
+      "id": "f4bfdc2d-a85c-40b9-a4d8-cc415d3fbae7",
+      "dl_id": "DL-0045",
+      "title": "New Device High-Value Transaction",
+      "status": "experimental",
+      "description": "Detects a high-value financial transaction initiated from a new or previously unknown device shortly after initial authentication. Attackers who have compromised credentials and bypassed MFA via SIM swap typically move quickly to execute high-value transfers from a device with no prior history on the account, exploiting the narrow window before the victim notices.\n",
+      "cfpf_phase": "P3",
+      "level": "critical",
+      "detection": {
+        "selection_new_device": {
+          "device_trust_level": "new",
+          "device_first_seen_days": 0
+        },
+        "selection_high_value": {
+          "event_type": "wire_transfer",
+          "transaction_amount|gte": 5000
+        },
+        "selection_timing": {
+          "time_since_auth_minutes|lte": 30
+        },
+        "condition": "selection_new_device and selection_high_value and selection_timing"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "esim-hijacking"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1111",
+        "cfpf.phase3.positioning"
+      ],
+      "falsepositives": [
+        "Customers logging in from a newly purchased device to make a planned large payment",
+        "Joint account holders using a device not previously associated with the account"
+      ]
+    },
+    {
+      "id": "90bc08ab-511f-42d5-9fe1-21af23617d9f",
+      "dl_id": "DL-0046",
+      "title": "MFA Push Bombing",
+      "status": "experimental",
+      "description": "Detects rapid repeated MFA push notifications sent to the same user, a technique known as MFA fatigue or push bombing. Attackers who have obtained valid credentials bombard the victim with push authentication requests, hoping the user will approve one out of frustration or confusion, thereby granting the attacker access.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "mfa_push_sent",
+          "mfa_method": "push"
+        },
+        "selection_denied": {
+          "mfa_result|contains": [
+            "denied",
+            "timeout",
+            "ignored"
+          ]
+        },
+        "timeframe": "10m",
+        "condition": "selection | count() by user_id > 5 and count(selection_denied) by user_id > 3\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "mfa_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1621",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Connectivity issues causing MFA push retries from legitimate authentication flows",
+        "Users who accidentally trigger multiple login attempts from different app instances"
+      ]
+    },
+    {
+      "id": "87100baf-ac95-4cb4-bf81-dcfb1ddb9575",
+      "dl_id": "DL-0047",
+      "title": "SIM Swap Indicator Chain",
+      "status": "experimental",
+      "description": "Detects the full SIM swap attack chain: phone number change followed by password reset followed by high-value account action in rapid sequence. This multi-stage correlation captures the complete attack lifecycle where the attacker first takes over the phone number, then uses it to reset the account password via SMS OTP, and finally executes a high-value transfer or account modification.\n",
+      "cfpf_phase": "P3",
+      "level": "critical",
+      "detection": {
+        "stage1_sim_change": {
+          "event_type|contains": [
+            "phone_number_change",
+            "sim_swap",
+            "mobile_update"
+          ]
+        },
+        "stage2_password_reset": {
+          "event_type": "password_reset",
+          "reset_method": "sms_otp"
+        },
+        "stage3_high_value_action": {
+          "event_type|contains": [
+            "wire_transfer",
+            "beneficiary_add",
+            "address_change",
+            "email_change"
+          ],
+          "transaction_amount|gte": 1000
+        },
+        "timeframe": "24h",
+        "condition": "stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "identity_management"
+      },
+      "threat_path_ids": [
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "esim-hijacking"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1098",
+        "attack.t1111",
+        "cfpf.phase3.positioning"
+      ],
+      "falsepositives": [
+        "Legitimate users who change carriers, reset a forgotten password, and then make a large purchase in the same day"
+      ]
+    },
+    {
+      "id": "8869f4cf-29c9-4297-af0a-0fcb92c3e7f8",
+      "dl_id": "DL-0048",
+      "title": "VoIP Number MFA Enrollment",
+      "status": "experimental",
+      "description": "Detects MFA enrollment using VoIP or virtual phone numbers instead of legitimate mobile carrier numbers. Attackers who have compromised an account often enroll a disposable VoIP number (Google Voice, TextNow, Twilio) as the MFA phone to maintain persistent access and intercept future OTP codes without relying on SIM swap persistence.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type|contains": [
+            "mfa_enrollment",
+            "mfa_phone_update",
+            "phone_number_add"
+          ],
+          "mfa_method": "sms"
+        },
+        "selection_voip": {
+          "phone_number_type|contains": [
+            "voip",
+            "virtual",
+            "toll_free"
+          ],
+          "phone_carrier|contains": [
+            "Google Voice",
+            "TextNow",
+            "Twilio",
+            "Bandwidth",
+            "Vonage",
+            "Pinger"
+          ]
+        },
+        "condition": "selection and selection_voip"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "mfa_logs"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "esim-hijacking"
+      ],
+      "tags": [
+        "attack.t1098.005",
+        "attack.t1556.006",
+        "cfpf.phase2.initial_access"
+      ],
+      "falsepositives": [
+        "Legitimate users who use VoIP as their primary phone service",
+        "Business accounts that use virtual phone systems for operations"
+      ]
+    },
+    {
+      "id": "77608ced-3ecb-4275-920c-b29214e86231",
+      "dl_id": "DL-0049",
+      "title": "MFA Method Downgrade",
+      "status": "experimental",
+      "description": "Detects when an account's MFA method is changed from a strong phishing-resistant factor (FIDO2/WebAuthn, hardware token, authenticator app) to a weaker method (SMS OTP, voice call). Attackers who compromise account credentials may downgrade the MFA method to one they can intercept via SIM swap or SS7 exploitation, enabling persistent account takeover.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type|contains": [
+            "mfa_method_change",
+            "mfa_update",
+            "authenticator_change"
+          ]
+        },
+        "selection_downgrade": {
+          "previous_mfa_method|contains": [
+            "fido2",
+            "webauthn",
+            "hardware_token",
+            "authenticator_app",
+            "totp"
+          ],
+          "new_mfa_method|contains": [
+            "sms",
+            "voice",
+            "email"
+          ]
+        },
+        "condition": "selection and selection_downgrade"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "identity_management"
+      },
+      "threat_path_ids": [
+        "TP-0001",
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover"
+      ],
+      "tags": [
+        "attack.t1098.005",
+        "attack.t1111",
+        "attack.t1556.006",
+        "cfpf.phase3.positioning"
+      ],
+      "falsepositives": [
+        "Users who lose their hardware security key or authenticator app and fall back to SMS temporarily",
+        "Account recovery workflows that require temporary MFA method changes"
+      ]
+    },
+    {
+      "id": "d44fc65a-1d6c-4666-aa2e-d1615ad7e49b",
+      "dl_id": "DL-0050",
+      "title": "Voice Biometric Confidence Score Anomaly for Known Caller",
+      "status": "experimental",
+      "description": "Detects when a voice biometric verification score for a previously enrolled caller falls below an acceptable confidence threshold, which may indicate a deepfake or voice-clone attempt impersonating a legitimate customer. Legitimate callers typically produce scores above 85; scores between 40-70 with a previously stable voiceprint warrant investigation.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "voice_biometric_verify",
+          "enrollment_status": "enrolled"
+        },
+        "filter_low_score": {
+          "voice_confidence_score|lt": 70
+        },
+        "filter_historical_high": {
+          "historical_avg_score|gte": 85
+        },
+        "condition": "selection and filter_low_score and filter_historical_high"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "voice_authentication"
+      },
+      "threat_path_ids": [
+        "TP-0007",
+        "TP-0018"
+      ],
+      "fraud_types": [
+        "deepfake-fraud",
+        "impersonation"
+      ],
+      "tags": [
+        "attack.t1656",
+        "cfpf.phase4.execution",
+        "flame.deepfake"
+      ],
+      "falsepositives": [
+        "Caller with a cold, sore throat, or other temporary vocal condition",
+        "Poor telephone line quality or high background noise environment",
+        "Caller using a different handset or headset than during enrollment"
+      ]
+    },
+    {
+      "id": "e562b22c-4be6-483e-8fdd-d24bf33ef9b3",
+      "dl_id": "DL-0051",
+      "title": "Callback Number Mismatch for Claimed Institution",
+      "status": "experimental",
+      "description": "Detects when an inbound caller claims to represent a specific financial institution or internal department, but the originating ANI or callback number does not match the institution's known directory of outbound numbers. This is a common indicator of vishing and social engineering, especially when combined with voice-clone technology to impersonate bank officials.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "inbound_call",
+          "caller_claim|contains": [
+            "fraud department",
+            "security team",
+            "bank representative",
+            "account services"
+          ]
+        },
+        "filter_ani_mismatch": {
+          "ani_matches_directory": false
+        },
+        "filter_callback_mismatch": {
+          "callback_number_verified": false
+        },
+        "condition": "selection and (filter_ani_mismatch or filter_callback_mismatch)"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "voice_authentication"
+      },
+      "threat_path_ids": [
+        "TP-0007"
+      ],
+      "fraud_types": [
+        "deepfake-fraud",
+        "impersonation"
+      ],
+      "tags": [
+        "attack.t1598",
+        "attack.t1656",
+        "cfpf.phase2.targeting",
+        "flame.deepfake"
+      ],
+      "falsepositives": [
+        "Legitimate bank employee calling from a personal device during off-hours",
+        "Third-party call center using non-registered outbound numbers",
+        "Recent phone system migration with directory not yet updated"
+      ]
+    },
+    {
+      "id": "2559ff0f-dfe6-4001-9d12-aaac8396b5c1",
+      "dl_id": "DL-0052",
+      "title": "Audio Compression Artifacts Indicative of AI-Generated Speech",
+      "status": "experimental",
+      "description": "Detects audio streams exhibiting compression artifacts, spectral anomalies, or frequency-band irregularities characteristic of AI-generated or text-to-speech synthesis engines. These include unnaturally uniform pitch contours, missing micro-pauses, absence of breath sounds, and codec artifacts from re-encoding through real-time deepfake pipelines.\n",
+      "cfpf_phase": "P4",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "event_type": "voice_stream_analysis"
+        },
+        "filter_artifacts": {
+          "spectral_flatness_score|gt": 0.85,
+          "breath_sound_detected": false,
+          "pitch_variance|lt": 2.5
+        },
+        "filter_codec": {
+          "codec_reencoding_detected": true
+        },
+        "condition": "selection and (filter_artifacts or filter_codec)"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "voice_authentication"
+      },
+      "threat_path_ids": [
+        "TP-0007",
+        "TP-0018"
+      ],
+      "fraud_types": [
+        "deepfake-fraud"
+      ],
+      "tags": [
+        "attack.t1656",
+        "cfpf.phase4.execution",
+        "flame.deepfake"
+      ],
+      "falsepositives": [
+        "Callers using low-bandwidth VoIP connections with heavy compression",
+        "Speech impairment conditions producing monotone or atypical vocal patterns",
+        "Hearing-impaired callers using text-to-speech relay services legitimately"
+      ]
+    },
+    {
+      "id": "5c37b4de-19e8-483a-b781-57d2e0d77be8",
+      "dl_id": "DL-0053",
+      "title": "Deepfake Anomalies in Video KYC Session",
+      "status": "experimental",
+      "description": "Detects anomalies during video KYC (Know Your Customer) sessions that may indicate the use of deepfake technology. Indicators include irregular frame rates suggesting real-time face-swapping, inconsistent lighting between face and background, lip-sync desynchronization, unnatural eye-blink patterns, and face-boundary artifacts.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "video_kyc_session",
+          "session_status": "in_progress"
+        },
+        "filter_frame_anomaly": {
+          "frame_rate_variance|gt": 8.0
+        },
+        "filter_lipsync": {
+          "lip_sync_offset_ms|gt": 150
+        },
+        "filter_blink": {
+          "blink_rate_per_minute|lt": 3
+        },
+        "filter_lighting": {
+          "face_background_lighting_delta|gt": 40
+        },
+        "condition": "selection and (filter_frame_anomaly or filter_lipsync or filter_blink or filter_lighting)"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "video_kyc"
+      },
+      "threat_path_ids": [
+        "TP-0018"
+      ],
+      "fraud_types": [
+        "deepfake-fraud",
+        "impersonation"
+      ],
+      "tags": [
+        "attack.t1656",
+        "cfpf.phase2.targeting",
+        "flame.deepfake"
+      ],
+      "falsepositives": [
+        "Poor internet connection causing frame drops and variable frame rates",
+        "Unusual ambient lighting conditions in the caller's environment",
+        "Customer wearing heavy makeup or glasses affecting facial analysis"
+      ]
+    },
+    {
+      "id": "9cc885b0-9577-49e9-b7e2-9f559471c83c",
+      "dl_id": "DL-0054",
+      "title": "AI-Generated Document Detection in Verification",
+      "status": "experimental",
+      "description": "Detects indicators of AI-generated or synthetically created identity documents submitted during verification workflows. Flags include metadata anomalies (missing EXIF data, uniform noise patterns), font rendering inconsistencies, micro-printing irregularities, and GAN-generated portrait artifacts such as asymmetric earrings or irregular hair boundaries.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "document_verification_scan",
+          "document_type|contains": [
+            "drivers_license",
+            "passport",
+            "national_id",
+            "utility_bill"
+          ]
+        },
+        "filter_metadata": {
+          "exif_data_present": false,
+          "creation_tool_detected|contains": [
+            "stable-diffusion",
+            "midjourney",
+            "dall-e",
+            "photoshop-generative"
+          ]
+        },
+        "filter_visual": {
+          "gan_artifact_score|gt": 0.7,
+          "microprint_validation": "failed"
+        },
+        "filter_font": {
+          "font_consistency_score|lt": 0.5
+        },
+        "condition": "selection and (filter_metadata or filter_visual or filter_font)"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "document_verification"
+      },
+      "threat_path_ids": [
+        "TP-0018"
+      ],
+      "fraud_types": [
+        "ai-document-fraud",
+        "impersonation"
+      ],
+      "tags": [
+        "attack.t1588.002",
+        "attack.t1656",
+        "cfpf.phase2.targeting",
+        "flame.deepfake"
+      ],
+      "falsepositives": [
+        "Heavily compressed or photocopied documents with degraded visual quality",
+        "Older documents scanned with consumer-grade scanners losing metadata",
+        "Legitimately renewed documents with updated security features not yet in template database"
+      ]
+    },
+    {
+      "id": "41a7c627-83d0-4b80-8b21-28b8c92a0154",
+      "dl_id": "DL-0055",
+      "title": "Real-Time Payment to New Payee After Credential or Contact Change",
+      "status": "experimental",
+      "description": "Detects when a real-time or instant payment (Zelle, FedNow, RTP) is initiated to a previously unseen payee within 24 hours of a credential change (password reset, MFA re-enrollment) or contact information update (email, phone, address). This pattern is strongly associated with account takeover followed by immediate monetization via authorized push payment.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_payment": {
+          "event_type": "instant_payment_initiated",
+          "payment_rail|contains": [
+            "ZELLE",
+            "FEDNOW",
+            "RTP",
+            "ACH_SAMEDAY"
+          ],
+          "payee_relationship": "new"
+        },
+        "selection_recent_change": {
+          "credential_change_hours_ago|lt": 24
+        },
+        "condition": "selection_payment and selection_recent_change",
+        "timeframe": "24h"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "instant_payments"
+      },
+      "threat_path_ids": [
+        "TP-0012",
+        "TP-0024"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "payment-diversion"
+      ],
+      "tags": [
+        "attack.t1531",
+        "cfpf.phase4.execution",
+        "flame.a2a"
+      ],
+      "falsepositives": [
+        "Customer who legitimately updated their phone number and then paid a new contractor",
+        "Periodic password rotation coinciding with routine bill payment to a new provider"
+      ]
+    },
+    {
+      "id": "a6b63f49-b57c-44a8-8584-59cacee0ff2c",
+      "dl_id": "DL-0056",
+      "title": "Instant Payment Velocity Spike Above 30-Day Baseline",
+      "status": "experimental",
+      "description": "Detects a sudden spike in instant payment frequency that significantly exceeds the account's established 30-day baseline. A spike is defined as the current day's instant payment count exceeding 3 standard deviations above the rolling 30-day mean, indicating potential account compromise or mule activity where the account is being drained rapidly.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "instant_payment_initiated",
+          "payment_rail|contains": [
+            "ZELLE",
+            "FEDNOW",
+            "RTP",
+            "ACH_SAMEDAY"
+          ]
+        },
+        "condition": "selection | count() by account_id | compare(op=gt, period=30d, stdev=3)",
+        "timeframe": "1d"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0012",
+        "TP-0024"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase4.execution",
+        "flame.a2a"
+      ],
+      "falsepositives": [
+        "Small business owner processing seasonal surge in vendor payments",
+        "Customer making multiple legitimate payments on a move-in day (deposits, utilities, services)"
+      ]
+    },
+    {
+      "id": "3ba070d5-b6d5-452f-942b-955b2dcd4d44",
+      "dl_id": "DL-0057",
+      "title": "Cross-Platform Deposit and Withdrawal Chain",
+      "status": "experimental",
+      "description": "Detects a pattern where funds are received via one payment rail (e.g., ACH, wire) and then immediately sent out via a different payment rail (e.g., Zelle, FedNow) within a short window. This cross-rail chaining is a common layering technique used to obscure the origin of funds and complicate tracing, often associated with money mule operations and authorized push payment fraud monetization.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_inbound": {
+          "event_type": "payment_received",
+          "inbound_rail|contains": [
+            "ACH_IN",
+            "WIRE_IN",
+            "RTP_IN",
+            "FEDNOW_IN"
+          ]
+        },
+        "selection_outbound": {
+          "event_type": "instant_payment_initiated",
+          "outbound_rail|contains": [
+            "ZELLE",
+            "FEDNOW",
+            "RTP",
+            "ACH_SAMEDAY"
+          ]
+        },
+        "filter_amount": {
+          "outbound_amount_pct_of_inbound|gte": 80
+        },
+        "condition": "(selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)",
+        "timeframe": "4h"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0012",
+        "TP-0024"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase5.monetization",
+        "flame.a2a"
+      ],
+      "falsepositives": [
+        "Freelancer receiving ACH payroll and immediately paying rent via Zelle",
+        "Business account receiving wire payment and disbursing to vendors via instant payment"
+      ]
+    },
+    {
+      "id": "970e0f28-9acc-43a6-802f-b05e27b38dc0",
+      "dl_id": "DL-0058",
+      "title": "Repeated A2A Payments at Maximum Per-Transaction Limit",
+      "status": "experimental",
+      "description": "Detects multiple account-to-account payments where each transaction is at or near the maximum per-transaction limit (e.g., $2,500 for Zelle, $500,000 for FedNow). Fraudsters often structure payments at the exact limit to maximize extraction speed while avoiding aggregate-amount alerts, a behavior rarely seen in legitimate consumer transactions.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "a2a_payment_initiated",
+          "payment_rail|contains": [
+            "ZELLE",
+            "FEDNOW",
+            "RTP",
+            "ACH_SAMEDAY"
+          ]
+        },
+        "filter_at_limit": {
+          "amount_pct_of_rail_limit|gte": 95
+        },
+        "condition": "selection and filter_at_limit | count() by account_id > 3",
+        "timeframe": "24h"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "a2a_processing"
+      },
+      "threat_path_ids": [
+        "TP-0012",
+        "TP-0024"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase4.execution",
+        "flame.a2a"
+      ],
+      "falsepositives": [
+        "Customer making a large one-time purchase split across multiple payments at platform limits",
+        "Business account regularly transacting at high values for legitimate operations"
+      ]
+    },
+    {
+      "id": "0027c204-9449-4a75-8329-d18eddc7388b",
+      "dl_id": "DL-0059",
+      "title": "New Account Sending Multiple Instant Payments",
+      "status": "experimental",
+      "description": "Detects accounts less than 30 days old that initiate multiple instant payments within a short time window. Newly opened accounts used for rapid instant-payment disbursement are a strong indicator of synthetic identity fraud or mule accounts created specifically for the monetization phase of a fraud scheme.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "instant_payment_initiated",
+          "payment_rail|contains": [
+            "ZELLE",
+            "FEDNOW",
+            "RTP",
+            "ACH_SAMEDAY"
+          ]
+        },
+        "filter_new_account": {
+          "account_age_days|lt": 30
+        },
+        "condition": "selection and filter_new_account | count() by account_id > 5",
+        "timeframe": "48h"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "instant_payments"
+      },
+      "threat_path_ids": [
+        "TP-0024"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "wire-fraud"
+      ],
+      "tags": [
+        "attack.t1136",
+        "cfpf.phase5.monetization",
+        "flame.a2a"
+      ],
+      "falsepositives": [
+        "Newly opened business account setting up recurring vendor payments",
+        "College student opening account and paying multiple roommates for shared expenses"
+      ]
+    },
+    {
+      "id": "55286a0f-38de-4212-8c43-cd6dafc1683e",
+      "dl_id": "DL-0060",
+      "title": "Zelle Recipient Enumeration via Multiple Failed Lookups",
+      "status": "experimental",
+      "description": "Detects multiple failed Zelle recipient lookups from a single account or session, which may indicate enumeration activity. Attackers probe email addresses and phone numbers to identify which are registered with Zelle before launching targeted social engineering or authorized push payment attacks against confirmed users.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "zelle_recipient_lookup",
+          "lookup_result": "not_found"
+        },
+        "condition": "selection | count() by account_id > 10",
+        "timeframe": "1h"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "a2a_processing"
+      },
+      "threat_path_ids": [
+        "TP-0012",
+        "TP-0024"
+      ],
+      "fraud_types": [
+        "authorized-push-payment"
+      ],
+      "tags": [
+        "attack.t1589",
+        "cfpf.phase2.targeting",
+        "flame.a2a"
+      ],
+      "falsepositives": [
+        "User trying to send money to friends who have not yet enrolled in Zelle",
+        "Administrative staff searching for payees across a new vendor list"
+      ]
+    },
+    {
+      "id": "1896d9d2-a3a2-429a-ba32-478dd810bfd2",
+      "dl_id": "DL-0061",
+      "title": "Real-Time Payment Followed by Immediate Refund or Return Request",
+      "status": "experimental",
+      "description": "Detects a pattern where a real-time payment (RTP or FedNow) is sent and then an immediate refund, return, or Request for Return of Funds (RROF) is submitted within a short window. This pattern may indicate a double-dip fraud scheme where the sender initiates an irrevocable payment, then exploits the refund process to recover funds while the recipient also retains them.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection_payment": {
+          "event_type": "instant_payment_completed",
+          "payment_rail|contains": [
+            "RTP",
+            "FEDNOW"
+          ]
+        },
+        "selection_refund": {
+          "event_type|contains": [
+            "refund_request",
+            "return_request",
+            "rrof_submitted"
+          ]
+        },
+        "condition": "(selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)",
+        "timeframe": "2h"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "instant_payments"
+      },
+      "threat_path_ids": [
+        "TP-0024"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "payment-diversion"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase5.monetization",
+        "flame.a2a"
+      ],
+      "falsepositives": [
+        "Legitimate duplicate payment correction where customer realizes the error immediately",
+        "Merchant-initiated refund for cancelled service following immediate payment"
+      ]
+    },
+    {
+      "id": "dee21a57-2de4-4ca9-88e0-f10c5363b4df",
+      "dl_id": "DL-0062",
+      "title": "Fake Tracking ID (FTID) Refund Fraud Indicators",
+      "status": "experimental",
+      "description": "Detects indicators of fake tracking ID (FTID) refund fraud, where a customer claims a package was not received or returned by providing a manipulated or fabricated tracking number. Indicators include tracking numbers that show delivery to the carrier facility but not to the customer address, tracking IDs associated with lightweight packages inconsistent with the order, or reuse of known FTID patterns across multiple refund claims.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "refund_request",
+          "refund_reason|contains": [
+            "item_not_received",
+            "return_in_transit"
+          ]
+        },
+        "filter_tracking_anomaly": {
+          "tracking_delivery_address_match": false
+        },
+        "filter_weight": {
+          "tracking_package_weight_oz|lt": 4,
+          "order_expected_weight_oz|gt": 16
+        },
+        "filter_known_pattern": {
+          "tracking_id_pattern_match": "ftid_known_format"
+        },
+        "condition": "selection and (filter_tracking_anomaly or filter_weight or filter_known_pattern)"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "returns_processing"
+      },
+      "threat_path_ids": [
+        "TP-0013",
+        "TP-0031"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase4.execution",
+        "flame.ecommerce"
+      ],
+      "falsepositives": [
+        "Carrier mis-scan delivering to wrong address requiring legitimate reshipment",
+        "Lightweight promotional items or gift cards with valid low-weight tracking"
+      ]
+    },
+    {
+      "id": "2dc5fb46-78a2-416a-9516-db49e98a843a",
+      "dl_id": "DL-0063",
+      "title": "Abnormally High Refund Rate Per Customer Account",
+      "status": "experimental",
+      "description": "Detects customer accounts with an abnormally high refund-to-order ratio over a rolling window. Accounts exceeding a refund rate of 40% across 10 or more orders within 90 days are flagged as potential refund abusers or participants in refunding-as-a-service (RaaS) schemes, where professional refunders exploit return policies systematically.\n",
+      "cfpf_phase": "P5",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type|contains": [
+            "order_completed",
+            "refund_issued"
+          ]
+        },
+        "aggregation": {
+          "condition": "selection\n| groupby(customer_account_id)\n| where count(event_type='refund_issued') / count(event_type='order_completed') > 0.4\n| where count(event_type='order_completed') >= 10\n"
+        },
+        "timeframe": "90d",
+        "condition": "aggregation"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "order_management"
+      },
+      "threat_path_ids": [
+        "TP-0013",
+        "TP-0031"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase5.monetization",
+        "flame.ecommerce"
+      ],
+      "falsepositives": [
+        "Customers with legitimate sizing issues making frequent clothing returns",
+        "Product quality issues causing high return rates for specific SKUs across multiple customers"
+      ]
+    },
+    {
+      "id": "bc8cdbb5-644d-421f-a1c6-28f6bbe03182",
+      "dl_id": "DL-0064",
+      "title": "Triangulation Fraud Shipping Pattern Detection",
+      "status": "experimental",
+      "description": "Detects orders where the shipping address differs from the billing address and matches known drop-ship or reshipping patterns associated with triangulation fraud. In triangulation fraud, a fraudster lists goods on a marketplace, collects payment from a victim buyer, then purchases the item from a legitimate retailer using stolen payment credentials, shipping directly to the victim. Indicators include shipping to known drop addresses, freight forwarders, or addresses seen across multiple unrelated accounts.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "order_placed",
+          "billing_shipping_address_match": false
+        },
+        "filter_drop_address": {
+          "shipping_address_type|contains": [
+            "freight_forwarder",
+            "reshipper",
+            "po_box",
+            "commercial_mailbox"
+          ]
+        },
+        "filter_shared_address": {
+          "shipping_address_distinct_accounts|gt": 3
+        },
+        "filter_velocity": {
+          "shipping_address_orders_7d|gt": 5
+        },
+        "condition": "selection and (filter_drop_address or filter_shared_address or filter_velocity)"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "order_management"
+      },
+      "threat_path_ids": [
+        "TP-0013",
+        "TP-0030"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "identity-theft"
+      ],
+      "tags": [
+        "attack.t1583",
+        "cfpf.phase4.execution",
+        "flame.ecommerce"
+      ],
+      "falsepositives": [
+        "Legitimate gift orders shipped to recipients at different addresses",
+        "Corporate purchasing departments using centralized receiving addresses",
+        "Customers shipping to workplace address for package security"
+      ]
+    },
+    {
+      "id": "df3d2c33-c298-4391-9025-9de286065c39",
+      "dl_id": "DL-0065",
+      "title": "Return Without Receipt Clustering by Customer or Region",
+      "status": "experimental",
+      "description": "Detects clusters of product returns submitted without receipts or order references from the same customer identity or geographic region. Organized return fraud rings often exploit no-receipt return policies by using stolen merchandise or purchasing items specifically for return, concentrating activity across nearby store locations or using multiple accounts linked to the same region.\n",
+      "cfpf_phase": "P5",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type": "return_processed",
+          "receipt_provided": false,
+          "order_reference_matched": false
+        },
+        "aggregation_customer": {
+          "condition": "selection | count() by customer_account_id > 4"
+        },
+        "aggregation_region": {
+          "condition": "selection | count() by store_region_code > 15"
+        },
+        "condition": "aggregation_customer or aggregation_region",
+        "timeframe": "30d"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "returns_processing"
+      },
+      "threat_path_ids": [
+        "TP-0031"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase5.monetization",
+        "flame.ecommerce"
+      ],
+      "falsepositives": [
+        "Customers who frequently lose receipts for legitimate purchases",
+        "Holiday season returns where gift recipients do not have original receipts"
+      ]
+    },
+    {
+      "id": "7a3cda5a-2d65-4c95-bc68-1073db44a108",
+      "dl_id": "DL-0066",
+      "title": "High-Value Item Not Received Claims Exceeding Threshold",
+      "status": "experimental",
+      "description": "Detects \"item not received\" (INR) claims filed on high-value orders that exceed a configurable dollar threshold. High-value INR claims are a primary vector for refund fraud, particularly when the delivery confirmation shows successful delivery. Repeated INR claims on expensive items from the same account or device fingerprint are strong indicators of first-party fraud or professional refunding services.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "dispute_filed",
+          "dispute_reason": "item_not_received"
+        },
+        "filter_high_value": {
+          "order_total_usd|gte": 500
+        },
+        "filter_delivery_confirmed": {
+          "carrier_delivery_status": "delivered"
+        },
+        "filter_repeat": {
+          "account_inr_claims_90d|gte": 2
+        },
+        "condition": "selection and filter_high_value and (filter_delivery_confirmed or filter_repeat)"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "order_management"
+      },
+      "threat_path_ids": [
+        "TP-0013",
+        "TP-0031"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase4.execution",
+        "flame.ecommerce"
+      ],
+      "falsepositives": [
+        "Legitimate porch piracy where delivered package was stolen from doorstep",
+        "Carrier misdelivery to wrong address with GPS confirmation error"
+      ]
+    },
+    {
+      "id": "53c373d8-cca1-440f-924f-ba1a986c7b41",
+      "dl_id": "DL-0067",
+      "title": "Excessive Promotional Code or Coupon Abuse from Related Accounts",
+      "status": "experimental",
+      "description": "Detects excessive use of promotional codes, referral bonuses, or coupon offers from accounts that share common attributes such as device fingerprint, IP address, payment method, or shipping address. This pattern indicates promo abuse rings that create multiple accounts to exploit new-customer or referral promotions repeatedly, often using synthetic or stolen identities.\n",
+      "cfpf_phase": "P4",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type": "order_placed",
+          "promo_code_applied": true
+        },
+        "filter_device_cluster": {
+          "device_fingerprint_promo_uses_30d|gt": 5
+        },
+        "filter_ip_cluster": {
+          "source_ip_promo_uses_30d|gt": 10
+        },
+        "filter_payment_cluster": {
+          "payment_method_hash_promo_uses_30d|gt": 5
+        },
+        "filter_new_account": {
+          "account_age_days|lt": 7,
+          "promo_type|contains": [
+            "new_customer",
+            "referral_bonus",
+            "first_order"
+          ]
+        },
+        "condition": "selection and (filter_device_cluster or filter_ip_cluster or filter_payment_cluster or filter_new_account)"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "payment_gateway"
+      },
+      "threat_path_ids": [
+        "TP-0013",
+        "TP-0030"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "identity-theft"
+      ],
+      "tags": [
+        "attack.t1136",
+        "cfpf.phase4.execution",
+        "flame.ecommerce"
+      ],
+      "falsepositives": [
+        "Family members on shared household network legitimately using individual promotions",
+        "Corporate office where multiple employees order from same IP using valid individual accounts"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.604145+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "95681bb1-0586-4ae0-9c7a-7de0bd359b94",
+    "dl_id": "DL-0007",
+    "title": "Infostealer Exfiltration Archive Creation",
+    "status": "experimental",
+    "description": "Detects creation of archive files containing credential-related file patterns consistent with infostealer packaging behavior. Stealers like RedLine and Vidar collect credentials, cookies, autofill data, and crypto wallet files into a ZIP or RAR archive before exfiltrating them to the C2 server.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection_archive_creation": {
+        "event_type": "file_create",
+        "file_extension|contains": [
+          ".zip",
+          ".rar",
+          ".7z"
+        ]
+      },
+      "selection_archive_contents": {
+        "archive_file_list|contains": [
+          "passwords",
+          "Login Data",
+          "Cookies",
+          "autofill",
+          "wallet.dat",
+          "seed",
+          "credit_cards"
+        ]
+      },
+      "selection_process_unsigned": {
+        "process_signed": false,
+        "process_path|contains": [
+          "\\AppData\\Local\\Temp",
+          "\\Users\\Public",
+          "\\ProgramData"
+        ]
+      },
+      "condition": "selection_archive_creation and (selection_archive_contents or selection_process_unsigned)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "endpoint_detection"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0023"
+    ],
+    "fraud_types": [
+      "data-theft",
+      "malware"
+    ],
+    "tags": [
+      "attack.t1005",
+      "attack.t1560.001",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Legitimate backup software creating archives of user profile data",
+      "IT support tools collecting diagnostic bundles that include browser data"
+    ]
+  }
+}

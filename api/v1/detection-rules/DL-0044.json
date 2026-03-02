@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.708755+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "26bb606a-5507-42e3-8405-a5e48094aac8",
+    "dl_id": "DL-0044",
+    "title": "Carrier Change Authentication Correlation",
+    "status": "experimental",
+    "description": "Detects a carrier or SIM change event immediately followed by an authentication attempt on a banking platform. SIM swap attacks involve social engineering or insider compromise at a mobile carrier to port the victim's phone number to an attacker-controlled SIM, after which the attacker uses SMS-based MFA to access accounts. The tight temporal correlation between carrier change and login is the key indicator.\n",
+    "cfpf_phase": "P2",
+    "level": "critical",
+    "detection": {
+      "selection_carrier_change": {
+        "event_type|contains": [
+          "sim_swap",
+          "carrier_change",
+          "number_port"
+        ],
+        "status": "completed"
+      },
+      "selection_auth": {
+        "event_type": "login_attempt",
+        "mfa_method": "sms",
+        "mfa_result": "success"
+      },
+      "timeframe": "120m",
+      "condition": "selection_carrier_change | followed_by selection_auth on phone_number within 120m\n"
+    },
+    "logsource": {
+      "product": "telecom",
+      "service": "identity_management"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0008"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "esim-hijacking"
+    ],
+    "tags": [
+      "attack.t1078",
+      "attack.t1111",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Legitimate users who switch carriers and immediately log in to their banking apps",
+      "Planned device upgrades where users authenticate on new hardware right after activation"
+    ]
+  }
+}

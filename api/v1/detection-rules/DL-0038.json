@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.691696+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "37ad82e6-17e7-4be0-b5e9-839b29cd1ed3",
+    "dl_id": "DL-0038",
+    "title": "Account Age vs Transaction Volume Mismatch",
+    "status": "experimental",
+    "description": "Detects accounts less than 90 days old that exhibit transaction volumes exceeding the typical profile for mature accounts. Newly opened accounts with abnormally high volume are a primary indicator of purpose-built mule accounts created specifically to funnel illicit funds.\n",
+    "cfpf_phase": "P5",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "account_age_days|lt": 90
+      },
+      "selection_high_volume": {
+        "event_type": [
+          "WIRE_CREDIT",
+          "ACH_CREDIT",
+          "WIRE_INITIATION",
+          "ACH_DEBIT",
+          "INTERNAL_TRANSFER"
+        ]
+      },
+      "timeframe": "30d",
+      "condition": "selection and selection_high_volume | count() by account_id > 20",
+      "enrichment": {
+        "peer_comparison": {
+          "metric": "transaction_count",
+          "threshold": "percentile_95"
+        }
+      }
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0011",
+      "TP-0022"
+    ],
+    "fraud_types": [
+      "money-mule"
+    ],
+    "tags": [
+      "attack.t1583",
+      "cfpf.phase5.monetization",
+      "flame.mule_indicator"
+    ],
+    "falsepositives": [
+      "Legitimate new business accounts with immediate high transaction needs",
+      "Student accounts receiving financial aid disbursements at semester start"
+    ]
+  }
+}

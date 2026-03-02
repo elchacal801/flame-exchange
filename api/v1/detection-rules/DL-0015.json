@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.626179+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "735a9eb8-b6a9-409c-aeb2-766ceb8818f4",
+    "dl_id": "DL-0015",
+    "title": "Combo List Iteration Pattern",
+    "status": "experimental",
+    "description": "Detects sequential username patterns typical of combo list iteration during credential stuffing attacks. Attackers feed sorted credential lists into stuffing tools, producing login attempts where usernames appear in alphabetical or near-alphabetical order with minimal timing variation between attempts, a pattern never seen in organic user behavior.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "login_attempt",
+        "auth_result": "failure"
+      },
+      "timeframe": "10m",
+      "condition": "selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "auth_logs"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0013"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "credential-stuffing"
+    ],
+    "tags": [
+      "attack.t1078",
+      "attack.t1110.004",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Automated batch user provisioning systems that test accounts sequentially",
+      "QA test suites running ordered account validation during deployments"
+    ]
+  }
+}

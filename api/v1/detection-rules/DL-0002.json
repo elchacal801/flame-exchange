@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.589527+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "ea53b54f-b0f3-4660-a072-40db4491bc11",
+    "dl_id": "DL-0002",
+    "title": "Infostealer Credential Dump Velocity",
+    "status": "experimental",
+    "description": "Detects rapid credential dump patterns where many unique credentials are harvested from a single host in a short timeframe. Infostealers such as RedLine, Lumma, and Vidar typically exfiltrate dozens to hundreds of stored credentials within seconds of execution, producing a burst of credential-access events from one endpoint.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "credential_access",
+        "action": "credential_read"
+      },
+      "filter_legitimate": {
+        "process_name|endswith": [
+          "\\lsass.exe",
+          "\\services.exe"
+        ]
+      },
+      "timeframe": "5m",
+      "condition": "selection and not filter_legitimate | count(distinct target_credential) by host_id > 20"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "endpoint_detection"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0023"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "data-theft",
+      "malware"
+    ],
+    "tags": [
+      "attack.t1555",
+      "attack.t1555.003",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Legitimate credential manager software performing bulk synchronization",
+      "Enterprise password vault agents rotating stored credentials"
+    ]
+  }
+}

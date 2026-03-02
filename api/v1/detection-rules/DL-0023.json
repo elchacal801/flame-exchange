@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.648676+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "f62df3c4-71c6-49de-8ea3-bf2db3b0f90b",
+    "dl_id": "DL-0023",
+    "title": "Alert Threshold Modification",
+    "status": "experimental",
+    "description": "Detects when a user modifies their own transaction alert thresholds or disables notifications via online banking or mobile app. Attackers raise alert thresholds or suppress notifications to prevent the legitimate account holder from being alerted to unauthorized transactions.\n",
+    "cfpf_phase": "P3",
+    "level": "medium",
+    "detection": {
+      "selection_threshold_raise": {
+        "event_type": "ALERT_SETTINGS_CHANGE",
+        "action": [
+          "threshold_increase",
+          "notification_disable",
+          "alert_suppress"
+        ]
+      },
+      "selection_channel": {
+        "channel": [
+          "online_banking",
+          "mobile_app",
+          "api"
+        ]
+      },
+      "condition": "selection_threshold_raise and selection_channel"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "core_banking"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0005"
+    ],
+    "fraud_types": [
+      "account-takeover"
+    ],
+    "tags": [
+      "attack.t1098",
+      "cfpf.phase3.positioning",
+      "flame.account_modification"
+    ],
+    "falsepositives": [
+      "Customers who intentionally adjust alert settings to reduce notification fatigue",
+      "Business accounts adjusting thresholds for expected high-value transactions"
+    ]
+  }
+}

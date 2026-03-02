@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.671815+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "fac3da03-fbae-4854-b7e2-ebab675e4c06",
+    "dl_id": "DL-0031",
+    "title": "Rapid Outbound Wire After Large Inbound",
+    "status": "experimental",
+    "description": "Detects a large outbound wire or ACH transfer initiated within hours of receiving a large inbound deposit. This pass-through pattern is characteristic of compromised accounts being used as intermediary conduits in fraud or money laundering schemes.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_inbound": {
+        "event_type": [
+          "WIRE_CREDIT",
+          "ACH_CREDIT"
+        ],
+        "transaction_amount|gte": 10000
+      },
+      "selection_outbound": {
+        "event_type": [
+          "WIRE_INITIATION",
+          "ACH_DEBIT"
+        ],
+        "transaction_amount|gte": 8000
+      },
+      "timeframe": "6h",
+      "condition": "selection_inbound | near selection_outbound by account_id"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0002",
+      "TP-0006"
+    ],
+    "fraud_types": [
+      "money-mule",
+      "payment-diversion",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.wire_ach"
+    ],
+    "falsepositives": [
+      "Real estate escrow closings with same-day receipt and disbursement",
+      "Business accounts receiving client payments and immediately paying suppliers"
+    ]
+  }
+}

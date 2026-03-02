@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.688718+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "b0175f36-f97b-4e8f-9111-1a3e7d8dfa40",
+    "dl_id": "DL-0037",
+    "title": "Mule Rapid ATM Withdrawal After Inbound Transfer",
+    "status": "experimental",
+    "description": "Detects cash withdrawals at ATMs occurring shortly after an inbound wire or ACH transfer. Money mules frequently convert electronically received fraud proceeds to cash as quickly as possible to prevent recovery, often hitting daily ATM limits across multiple machines.\n",
+    "cfpf_phase": "P5",
+    "level": "high",
+    "detection": {
+      "selection_inbound": {
+        "event_type": [
+          "WIRE_CREDIT",
+          "ACH_CREDIT"
+        ],
+        "transaction_amount|gte": 2000
+      },
+      "selection_atm_withdrawal": {
+        "event_type": "ATM_WITHDRAWAL",
+        "transaction_amount|gte": 500
+      },
+      "timeframe": "4h",
+      "condition": "selection_inbound | near selection_atm_withdrawal by account_id"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0011",
+      "TP-0022"
+    ],
+    "fraud_types": [
+      "money-mule",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1583",
+      "cfpf.phase5.monetization",
+      "flame.mule_indicator"
+    ],
+    "falsepositives": [
+      "Small business owners depositing and immediately withdrawing cash for operational expenses",
+      "Individuals receiving legitimate payroll via direct deposit and withdrawing cash"
+    ]
+  }
+}

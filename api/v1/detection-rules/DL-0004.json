@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.595670+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "d2368323-0cb9-48b1-bb41-1050d7f26e2d",
+    "dl_id": "DL-0004",
+    "title": "Browser Credential Store Access",
+    "status": "experimental",
+    "description": "Detects unusual access to browser credential stores (Login Data, logins.json, key3.db/key4.db) by non-browser processes. Infostealers such as RedLine and Vidar systematically read these SQLite databases to extract saved usernames and passwords for banking portals and other financial services.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "file_path|endswith": [
+          "\\Login Data",
+          "\\Login Data-journal",
+          "\\logins.json",
+          "\\key4.db",
+          "\\key3.db",
+          "\\signons.sqlite"
+        ],
+        "file_access_type|contains": [
+          "read",
+          "open"
+        ]
+      },
+      "filter_browser_processes": {
+        "process_name|endswith": [
+          "\\chrome.exe",
+          "\\firefox.exe",
+          "\\msedge.exe",
+          "\\brave.exe",
+          "\\opera.exe",
+          "\\vivaldi.exe"
+        ]
+      },
+      "filter_av": {
+        "process_name|contains": [
+          "antivirus",
+          "defender",
+          "security"
+        ]
+      },
+      "condition": "selection and not filter_browser_processes and not filter_av"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "endpoint_detection"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0023"
+    ],
+    "fraud_types": [
+      "credential-stuffing",
+      "data-theft",
+      "malware"
+    ],
+    "tags": [
+      "attack.t1005",
+      "attack.t1555.003",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Password migration tools used during browser transitions",
+      "IT-managed credential audit tools on corporate endpoints"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.711362+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "f4bfdc2d-a85c-40b9-a4d8-cc415d3fbae7",
+    "dl_id": "DL-0045",
+    "title": "New Device High-Value Transaction",
+    "status": "experimental",
+    "description": "Detects a high-value financial transaction initiated from a new or previously unknown device shortly after initial authentication. Attackers who have compromised credentials and bypassed MFA via SIM swap typically move quickly to execute high-value transfers from a device with no prior history on the account, exploiting the narrow window before the victim notices.\n",
+    "cfpf_phase": "P3",
+    "level": "critical",
+    "detection": {
+      "selection_new_device": {
+        "device_trust_level": "new",
+        "device_first_seen_days": 0
+      },
+      "selection_high_value": {
+        "event_type": "wire_transfer",
+        "transaction_amount|gte": 5000
+      },
+      "selection_timing": {
+        "time_since_auth_minutes|lte": 30
+      },
+      "condition": "selection_new_device and selection_high_value and selection_timing"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0008"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "esim-hijacking"
+    ],
+    "tags": [
+      "attack.t1078",
+      "attack.t1111",
+      "cfpf.phase3.positioning"
+    ],
+    "falsepositives": [
+      "Customers logging in from a newly purchased device to make a planned large payment",
+      "Joint account holders using a device not previously associated with the account"
+    ]
+  }
+}

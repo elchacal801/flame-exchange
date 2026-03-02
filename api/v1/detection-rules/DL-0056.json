@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.743075+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "a6b63f49-b57c-44a8-8584-59cacee0ff2c",
+    "dl_id": "DL-0056",
+    "title": "Instant Payment Velocity Spike Above 30-Day Baseline",
+    "status": "experimental",
+    "description": "Detects a sudden spike in instant payment frequency that significantly exceeds the account's established 30-day baseline. A spike is defined as the current day's instant payment count exceeding 3 standard deviations above the rolling 30-day mean, indicating potential account compromise or mule activity where the account is being drained rapidly.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "instant_payment_initiated",
+        "payment_rail|contains": [
+          "ZELLE",
+          "FEDNOW",
+          "RTP",
+          "ACH_SAMEDAY"
+        ]
+      },
+      "condition": "selection | count() by account_id | compare(op=gt, period=30d, stdev=3)",
+      "timeframe": "1d"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0012",
+      "TP-0024"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1565",
+      "cfpf.phase4.execution",
+      "flame.a2a"
+    ],
+    "falsepositives": [
+      "Small business owner processing seasonal surge in vendor payments",
+      "Customer making multiple legitimate payments on a move-in day (deposits, utilities, services)"
+    ]
+  }
+}

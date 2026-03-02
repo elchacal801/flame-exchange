@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.609118+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "61fe961a-eb9d-48dc-8a80-18a3a4c6bcb8",
+    "dl_id": "DL-0009",
+    "title": "Stolen Session Token Replay",
+    "status": "experimental",
+    "description": "Detects session token replay from a different geographic location or device than the original authenticating session. When infostealers exfiltrate active session cookies, attackers import them into antidetect browsers to hijack authenticated sessions without triggering login-based detections. This rule correlates session token usage across differing geolocations and device fingerprints.\n",
+    "cfpf_phase": "P2",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "event_type": "session_activity",
+        "session_token|exists": true
+      },
+      "filter_same_context": {
+        "geo_country": "%original_session_country%",
+        "device_fingerprint": "%original_device_fingerprint%"
+      },
+      "condition": "selection and not filter_same_context | count() by session_token > 1"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "auth_logs"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0008"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "data-theft"
+    ],
+    "tags": [
+      "attack.t1539",
+      "attack.t1550.004",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Users connecting via VPN whose egress IP changes geographic region mid-session",
+      "Mobile users roaming internationally with active banking sessions"
+    ]
+  }
+}

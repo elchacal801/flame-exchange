@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.752415+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "0027c204-9449-4a75-8329-d18eddc7388b",
+    "dl_id": "DL-0059",
+    "title": "New Account Sending Multiple Instant Payments",
+    "status": "experimental",
+    "description": "Detects accounts less than 30 days old that initiate multiple instant payments within a short time window. Newly opened accounts used for rapid instant-payment disbursement are a strong indicator of synthetic identity fraud or mule accounts created specifically for the monetization phase of a fraud scheme.\n",
+    "cfpf_phase": "P5",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "instant_payment_initiated",
+        "payment_rail|contains": [
+          "ZELLE",
+          "FEDNOW",
+          "RTP",
+          "ACH_SAMEDAY"
+        ]
+      },
+      "filter_new_account": {
+        "account_age_days|lt": 30
+      },
+      "condition": "selection and filter_new_account | count() by account_id > 5",
+      "timeframe": "48h"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "instant_payments"
+    },
+    "threat_path_ids": [
+      "TP-0024"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1136",
+      "cfpf.phase5.monetization",
+      "flame.a2a"
+    ],
+    "falsepositives": [
+      "Newly opened business account setting up recurring vendor payments",
+      "College student opening account and paying multiple roommates for shared expenses"
+    ]
+  }
+}

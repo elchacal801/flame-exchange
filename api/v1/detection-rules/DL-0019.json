@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.637303+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "5cf74ef7-5066-4957-bdb3-8b26d823d01d",
+    "dl_id": "DL-0019",
+    "title": "Beneficiary Change Velocity Anomaly",
+    "status": "experimental",
+    "description": "Detects multiple beneficiary additions or modifications on a single account within a short time window. Rapid beneficiary changes are a strong pre-cursor to payment diversion fraud, where an attacker positions new destination accounts before initiating unauthorized wires.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": [
+          "BENEFICIARY_ADD",
+          "BENEFICIARY_MODIFY",
+          "BENEFICIARY_DELETE"
+        ]
+      },
+      "timeframe": "24h",
+      "condition": "selection | count(distinct beneficiary_id) by account_id > 3"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "core_banking"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0004",
+      "TP-0006"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "payment-diversion",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1098",
+      "cfpf.phase3.positioning",
+      "flame.account_modification"
+    ],
+    "falsepositives": [
+      "Corporate treasury teams onboarding multiple new vendors during month-end",
+      "Business accounts setting up payroll beneficiaries for the first time"
+    ]
+  }
+}

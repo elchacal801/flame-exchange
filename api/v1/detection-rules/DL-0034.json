@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.679867+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "48a0f270-8aff-4f84-a211-b622b5898c9d",
+    "dl_id": "DL-0034",
+    "title": "ACH Return Rate Anomaly",
+    "status": "experimental",
+    "description": "Detects ACH originators with an elevated return or reversal rate exceeding normal thresholds. High ACH return rates (especially R10 unauthorized, R29 corporate not authorized) may indicate the account is being used to initiate unauthorized debits against victim accounts.\n",
+    "cfpf_phase": "P5",
+    "level": "high",
+    "detection": {
+      "selection_returns": {
+        "event_type": "ACH_RETURN",
+        "return_code": [
+          "R10",
+          "R29",
+          "R07",
+          "R08"
+        ]
+      },
+      "timeframe": "30d",
+      "condition": "selection_returns | count() by originator_id > 5"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "ach_processing"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0002"
+    ],
+    "fraud_types": [
+      "ACH-fraud",
+      "payment-diversion"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase5.monetization",
+      "flame.wire_ach"
+    ],
+    "falsepositives": [
+      "Legitimate businesses with high dispute rates due to subscription billing models",
+      "Payroll processors during seasonal employment transitions"
+    ]
+  }
+}

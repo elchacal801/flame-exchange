@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.685991+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "ab337b60-bba6-4fba-bc7d-81374d37f4de",
+    "dl_id": "DL-0036",
+    "title": "Payment Instruction Velocity Spike",
+    "status": "experimental",
+    "description": "Detects when multiple payment instructions (wires, ACH batches, or internal transfers) are submitted in rapid succession from a single account or user session. High-velocity payment submissions suggest automated or scripted fraud execution, often seen after credential compromise.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": [
+          "WIRE_INITIATION",
+          "ACH_BATCH_SUBMIT",
+          "INTERNAL_TRANSFER",
+          "PAYMENT_INSTRUCTION"
+        ]
+      },
+      "timeframe": "30m",
+      "condition": "selection | count() by session_id > 5",
+      "enrichment": {
+        "aggregate": "sum(transaction_amount) by account_id",
+        "threshold_multiplier": 3.0
+      }
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0006"
+    ],
+    "fraud_types": [
+      "ACH-fraud",
+      "payment-diversion",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.wire_ach"
+    ],
+    "falsepositives": [
+      "Corporate treasury operations submitting batch payments during end-of-day processing",
+      "Payroll administrators processing multi-entity payroll batches"
+    ]
+  }
+}

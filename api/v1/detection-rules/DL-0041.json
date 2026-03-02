@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.700607+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "15f60f3c-3d76-4875-99e3-15929947b2ee",
+    "dl_id": "DL-0041",
+    "title": "Peer-to-Peer Transfer Chain (Smurfing Pattern)",
+    "status": "experimental",
+    "description": "Detects chains of peer-to-peer transfers across multiple accounts where funds move through a sequence of intermediary accounts (A to B to C to D). This smurfing pattern is used to layer fraud proceeds through multiple hops, making tracing difficult.\n",
+    "cfpf_phase": "P5",
+    "level": "medium",
+    "detection": {
+      "selection_p2p": {
+        "event_type": [
+          "P2P_TRANSFER",
+          "INTERNAL_TRANSFER",
+          "ZELLE_SEND",
+          "VENMO_TRANSFER"
+        ],
+        "transaction_amount|gte": 500
+      },
+      "selection_chain": {
+        "inbound_event": "P2P_CREDIT",
+        "outbound_event": "P2P_DEBIT"
+      },
+      "timeframe": "2h",
+      "condition": "selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0002",
+      "TP-0011",
+      "TP-0022"
+    ],
+    "fraud_types": [
+      "money-mule",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1583",
+      "cfpf.phase5.monetization",
+      "flame.mule_indicator"
+    ],
+    "falsepositives": [
+      "Group event organizers collecting and redistributing shared expenses",
+      "Family members transferring funds between accounts for household management"
+    ]
+  }
+}

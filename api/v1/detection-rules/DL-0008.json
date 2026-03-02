@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.606584+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "3356cb1e-e2f7-4831-a23d-af57358f0495",
+    "dl_id": "DL-0008",
+    "title": "Multiple Account Access from Single Source",
+    "status": "experimental",
+    "description": "Detects multiple distinct banking accounts being accessed from a single device or IP address within a short timeframe. This pattern is consistent with an attacker using stolen credentials from an infostealer dump to sequentially access compromised accounts for reconnaissance or initial positioning before fraudulent transactions.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "login_success"
+      },
+      "timeframe": "1h",
+      "condition": "selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "auth_logs"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0008"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "credential-stuffing"
+    ],
+    "tags": [
+      "attack.t1078",
+      "attack.t1078.004",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Shared corporate NAT gateways where multiple employees access accounts from same public IP",
+      "Household devices shared among family members with separate accounts"
+    ]
+  }
+}

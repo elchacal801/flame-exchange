@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.769546+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "df3d2c33-c298-4391-9025-9de286065c39",
+    "dl_id": "DL-0065",
+    "title": "Return Without Receipt Clustering by Customer or Region",
+    "status": "experimental",
+    "description": "Detects clusters of product returns submitted without receipts or order references from the same customer identity or geographic region. Organized return fraud rings often exploit no-receipt return policies by using stolen merchandise or purchasing items specifically for return, concentrating activity across nearby store locations or using multiple accounts linked to the same region.\n",
+    "cfpf_phase": "P5",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "event_type": "return_processed",
+        "receipt_provided": false,
+        "order_reference_matched": false
+      },
+      "aggregation_customer": {
+        "condition": "selection | count() by customer_account_id > 4"
+      },
+      "aggregation_region": {
+        "condition": "selection | count() by store_region_code > 15"
+      },
+      "condition": "aggregation_customer or aggregation_region",
+      "timeframe": "30d"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "returns_processing"
+    },
+    "threat_path_ids": [
+      "TP-0031"
+    ],
+    "fraud_types": [
+      "first-party-fraud",
+      "refunding-as-a-service"
+    ],
+    "tags": [
+      "attack.t1565",
+      "cfpf.phase5.monetization",
+      "flame.ecommerce"
+    ],
+    "falsepositives": [
+      "Customers who frequently lose receipts for legitimate purchases",
+      "Holiday season returns where gift recipients do not have original receipts"
+    ]
+  }
+}

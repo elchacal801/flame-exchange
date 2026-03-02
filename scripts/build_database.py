@@ -1111,6 +1111,231 @@ def export_index_md(conn: sqlite3.Connection, output_path: Path, stats: dict):
 
 
 # ---------------------------------------------------------------------------
+# Static JSON API v1
+# ---------------------------------------------------------------------------
+
+def _api_envelope(data, total=None):
+    """Wrap data in the standard API v1 envelope."""
+    if total is None:
+        total = len(data) if isinstance(data, list) else 1
+    return {
+        "meta": {
+            "version": "1.0",
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "total": total,
+        },
+        "data": data,
+    }
+
+
+def _write_api_json(filepath: Path, obj):
+    """Write a JSON API file, creating parent dirs as needed."""
+    filepath.parent.mkdir(parents=True, exist_ok=True)
+    filepath.write_text(
+        json.dumps(obj, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+
+def _build_detection_rule_entry(conn, row, columns):
+    """Build a single detection rule dict from a DB row (shared helper)."""
+    entry = dict(zip(columns, row))
+    rule_id = entry["id"]
+
+    # Parse detection_yaml back to dict
+    try:
+        entry["detection"] = json.loads(entry.pop("detection_yaml"))
+    except (json.JSONDecodeError, TypeError):
+        entry["detection"] = {}
+        entry.pop("detection_yaml", None)
+
+    # Reconstruct logsource object
+    entry["logsource"] = {
+        "product": entry.pop("logsource_product", ""),
+        "service": entry.pop("logsource_service", ""),
+    }
+
+    # Fetch related lists
+    tp_rows = conn.execute(
+        "SELECT tp_id FROM detection_rule_threat_paths WHERE rule_id = ? ORDER BY tp_id",
+        (rule_id,)
+    ).fetchall()
+    entry["threat_path_ids"] = [r[0] for r in tp_rows]
+
+    ft_rows = conn.execute(
+        "SELECT fraud_type FROM detection_rule_fraud_types WHERE rule_id = ? ORDER BY fraud_type",
+        (rule_id,)
+    ).fetchall()
+    entry["fraud_types"] = [r[0] for r in ft_rows]
+
+    tag_rows = conn.execute(
+        "SELECT tag FROM detection_rule_tags WHERE rule_id = ? ORDER BY tag",
+        (rule_id,)
+    ).fetchall()
+    entry["tags"] = [r[0] for r in tag_rows]
+
+    # Fetch falsepositives from the original YAML file
+    fp = Path(entry.get("file_path", ""))
+    if fp.exists():
+        try:
+            raw = yaml.safe_load(fp.read_text(encoding="utf-8"))
+            entry["falsepositives"] = raw.get("falsepositives", [])
+        except Exception:
+            entry["falsepositives"] = []
+    else:
+        entry["falsepositives"] = []
+
+    # Remove file_path from exported JSON
+    entry.pop("file_path", None)
+
+    return entry
+
+
+def export_api_v1(conn: sqlite3.Connection, root: Path,
+                  evidence_map: dict, stats: dict) -> int:
+    """Generate static JSON API files under api/v1/.
+
+    Returns the total number of JSON files written.
+    """
+    api_dir = root / "api" / "v1"
+    file_count = 0
+
+    # -------------------------------------------------------------------
+    # 1. threat-paths.json — list of all TPs (metadata, no body)
+    # -------------------------------------------------------------------
+    cursor = conn.execute(
+        "SELECT * FROM submissions WHERE lower(category) = 'threatpath' ORDER BY id"
+    )
+    columns = [desc[0] for desc in cursor.description]
+    tp_list = []
+
+    for row in cursor.fetchall():
+        entry = dict(zip(columns, row))
+        entry = _build_full_entry(conn, entry)
+        sub_id = entry["id"]
+        entry["evidence_count"] = len(evidence_map.get(sub_id, []))
+        # Remove body and file_path — metadata only
+        entry.pop("body", None)
+        entry.pop("file_path", None)
+        tp_list.append(entry)
+
+    _write_api_json(api_dir / "threat-paths.json", _api_envelope(tp_list))
+    file_count += 1
+
+    # -------------------------------------------------------------------
+    # 2. threat-paths/TP-XXXX.json — individual full TPs with body
+    # -------------------------------------------------------------------
+    tp_detail_dir = api_dir / "threat-paths"
+    cursor = conn.execute(
+        "SELECT * FROM submissions WHERE lower(category) = 'threatpath' ORDER BY id"
+    )
+    columns = [desc[0] for desc in cursor.description]
+
+    for row in cursor.fetchall():
+        entry = dict(zip(columns, row))
+        entry = _build_full_entry(conn, entry)
+        sub_id = entry["id"]
+        entry["evidence"] = evidence_map.get(sub_id, [])
+        entry["evidence_count"] = len(entry["evidence"])
+        entry.pop("file_path", None)
+
+        _write_api_json(
+            tp_detail_dir / f"{sub_id}.json",
+            _api_envelope(entry, total=1),
+        )
+        file_count += 1
+
+    # -------------------------------------------------------------------
+    # 3. detection-rules.json — all DL rules
+    # -------------------------------------------------------------------
+    dl_cursor = conn.execute(
+        "SELECT id, dl_id, title, status, description, cfpf_phase, level, "
+        "logsource_product, logsource_service, detection_yaml, file_path "
+        "FROM detection_rules ORDER BY dl_id"
+    )
+    dl_columns = [desc[0] for desc in dl_cursor.description]
+    dl_list = []
+
+    for row in dl_cursor.fetchall():
+        entry = _build_detection_rule_entry(conn, row, dl_columns)
+        dl_list.append(entry)
+
+    _write_api_json(api_dir / "detection-rules.json", _api_envelope(dl_list))
+    file_count += 1
+
+    # -------------------------------------------------------------------
+    # 4. detection-rules/DL-XXXX.json — individual DL rules
+    # -------------------------------------------------------------------
+    dl_detail_dir = api_dir / "detection-rules"
+    dl_cursor = conn.execute(
+        "SELECT id, dl_id, title, status, description, cfpf_phase, level, "
+        "logsource_product, logsource_service, detection_yaml, file_path "
+        "FROM detection_rules ORDER BY dl_id"
+    )
+    dl_columns = [desc[0] for desc in dl_cursor.description]
+
+    for row in dl_cursor.fetchall():
+        entry = _build_detection_rule_entry(conn, row, dl_columns)
+        dl_id = entry["dl_id"]
+
+        _write_api_json(
+            dl_detail_dir / f"{dl_id}.json",
+            _api_envelope(entry, total=1),
+        )
+        file_count += 1
+
+    # -------------------------------------------------------------------
+    # 5. baselines.json — all baselines (metadata from DB)
+    # -------------------------------------------------------------------
+    bl_cursor = conn.execute(
+        "SELECT * FROM submissions WHERE lower(category) = 'baseline' ORDER BY id"
+    )
+    bl_columns = [desc[0] for desc in bl_cursor.description]
+    bl_list = []
+
+    for row in bl_cursor.fetchall():
+        entry = dict(zip(bl_columns, row))
+        entry = _build_full_entry(conn, entry)
+        entry.pop("body", None)
+        entry.pop("file_path", None)
+        bl_list.append(entry)
+
+    _write_api_json(api_dir / "baselines.json", _api_envelope(bl_list))
+    file_count += 1
+
+    # -------------------------------------------------------------------
+    # 6. taxonomy.json — sectors + fraud types from flame_taxonomy.json
+    # -------------------------------------------------------------------
+    taxonomy_path = root / "flame_taxonomy.json"
+    if taxonomy_path.exists():
+        taxonomy_data = json.loads(taxonomy_path.read_text(encoding="utf-8"))
+    else:
+        log.warning("flame_taxonomy.json not found at %s", taxonomy_path)
+        taxonomy_data = {"sectors": [], "fraud_types": []}
+
+    _write_api_json(api_dir / "taxonomy.json", _api_envelope(taxonomy_data, total=1))
+    file_count += 1
+
+    # -------------------------------------------------------------------
+    # 7. coverage-matrix.json — phase x fraud-type coverage matrix
+    # -------------------------------------------------------------------
+    coverage_matrix = stats.get("coverageMatrix", [])
+    _write_api_json(
+        api_dir / "coverage-matrix.json",
+        _api_envelope(coverage_matrix),
+    )
+    file_count += 1
+
+    # -------------------------------------------------------------------
+    # 8. stats.json — aggregate statistics
+    # -------------------------------------------------------------------
+    _write_api_json(api_dir / "stats.json", _api_envelope(stats, total=1))
+    file_count += 1
+
+    return file_count
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -1265,6 +1490,11 @@ def main():
     md_index_path = root / "ThreatPaths" / "INDEX.md"
     export_index_md(conn, md_index_path, stats)
     log.info("Exported markdown index to %s", md_index_path)
+
+    # Export API v1
+    api_dir = root / "api" / "v1"
+    api_count = export_api_v1(conn, root, evidence_map, stats)
+    log.info("Exported API v1 to %s (%d files)", api_dir, api_count)
 
     conn.close()
 

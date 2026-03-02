@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.659596+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "e43cb234-667e-4940-bef1-65d5a41c8926",
+    "dl_id": "DL-0027",
+    "title": "First-Time International Wire to New Country",
+    "status": "experimental",
+    "description": "Detects international wire transfers sent to a country that has no prior transaction history for the originating account. First-time international wires, especially to high-risk corridors, are a key indicator of business email compromise and payment diversion schemes.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "WIRE_INITIATION",
+        "wire_type": "international",
+        "beneficiary_country_first_time": true,
+        "transaction_amount|gte": 5000
+      },
+      "filter_known_correspondent": {
+        "beneficiary_bank_relationship": "established"
+      },
+      "condition": "selection and not filter_known_correspondent"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "wire_system"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0006"
+    ],
+    "fraud_types": [
+      "payment-diversion",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.wire_ach"
+    ],
+    "falsepositives": [
+      "Companies expanding into new international markets with legitimate vendor payments",
+      "Individual customers sending family remittances to a new country for the first time"
+    ]
+  }
+}

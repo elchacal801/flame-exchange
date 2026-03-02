@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.714311+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "90bc08ab-511f-42d5-9fe1-21af23617d9f",
+    "dl_id": "DL-0046",
+    "title": "MFA Push Bombing",
+    "status": "experimental",
+    "description": "Detects rapid repeated MFA push notifications sent to the same user, a technique known as MFA fatigue or push bombing. Attackers who have obtained valid credentials bombard the victim with push authentication requests, hoping the user will approve one out of frustration or confusion, thereby granting the attacker access.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "mfa_push_sent",
+        "mfa_method": "push"
+      },
+      "selection_denied": {
+        "mfa_result|contains": [
+          "denied",
+          "timeout",
+          "ignored"
+        ]
+      },
+      "timeframe": "10m",
+      "condition": "selection | count() by user_id > 5 and count(selection_denied) by user_id > 3\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "mfa_logs"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0008"
+    ],
+    "fraud_types": [
+      "account-takeover"
+    ],
+    "tags": [
+      "attack.t1078",
+      "attack.t1621",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Connectivity issues causing MFA push retries from legitimate authentication flows",
+      "Users who accidentally trigger multiple login attempts from different app instances"
+    ]
+  }
+}

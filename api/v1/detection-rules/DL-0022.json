@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.645561+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "c94fce3e-816a-4968-9836-ad36a4889b82",
+    "dl_id": "DL-0022",
+    "title": "Dormant Account Reactivation",
+    "status": "experimental",
+    "description": "Detects accounts with no transactional activity for 90 or more days that suddenly initiate financial transactions. Dormant accounts are frequently targeted by attackers because they are less likely to be monitored and credential compromise may go unnoticed.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection_reactivation": {
+        "event_type": [
+          "WIRE_INITIATION",
+          "ACH_DEBIT",
+          "ACH_CREDIT",
+          "INTERNAL_TRANSFER"
+        ],
+        "account_dormancy_days|gte": 90
+      },
+      "filter_scheduled": {
+        "transaction_type": "RECURRING_SCHEDULED"
+      },
+      "condition": "selection_reactivation and not filter_scheduled"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "core_banking"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0004"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1098",
+      "cfpf.phase3.positioning",
+      "flame.account_modification"
+    ],
+    "falsepositives": [
+      "Seasonal businesses that operate on annual cycles (e.g., tax preparation firms)",
+      "Estate or trust accounts activated for legitimate distributions"
+    ]
+  }
+}

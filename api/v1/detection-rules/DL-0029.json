@@ -1,0 +1,58 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.665962+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "f74ea92f-6a23-4c07-9bdb-c1c5a5cc393c",
+    "dl_id": "DL-0029",
+    "title": "Split Transfer Chain Detection",
+    "status": "experimental",
+    "description": "Detects when a large inbound amount is split into multiple smaller outbound transfers to different beneficiaries in sequence. This layering technique is used to obscure the origin and destination of fraudulently obtained funds.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_large_inbound": {
+        "event_type": [
+          "WIRE_CREDIT",
+          "ACH_CREDIT"
+        ],
+        "transaction_amount|gte": 25000
+      },
+      "selection_multiple_outbound": {
+        "event_type": [
+          "WIRE_INITIATION",
+          "ACH_DEBIT",
+          "INTERNAL_TRANSFER"
+        ],
+        "transaction_amount|lt": 10000
+      },
+      "timeframe": "48h",
+      "condition": "selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "wire_system"
+    },
+    "threat_path_ids": [
+      "TP-0002",
+      "TP-0006",
+      "TP-0020"
+    ],
+    "fraud_types": [
+      "money-mule",
+      "payment-diversion",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.wire_ach"
+    ],
+    "falsepositives": [
+      "Businesses receiving large payments and distributing to multiple sub-contractors",
+      "Investment accounts rebalancing across multiple fund positions"
+    ]
+  }
+}

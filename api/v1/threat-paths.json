@@ -1,0 +1,3288 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.357527+00:00",
+    "total": 33
+  },
+  "data": [
+    {
+      "id": "TP-0001",
+      "title": "Treasury Management ATO via Malvertising and Vishing",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
+      "source": "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "tlp": "WHITE",
+      "summary": "Threat actors target commercial banking customers using a multi-phase scheme that begins with search engine malvertising (poisoned ads impersonating bank login pages), transitions to vishing (phone-based social engineering impersonating bank staff), and culminates in unauthorized wire transfers to mule accounts. One bank documented approximately 10 attacks per day with six-to-seven-figure losses per successful incident. Cross-functional analysis using the CFPF framework traced the full kill chain and identified that mitigating the malvertising entry point eliminated successful ATOs for 8 months, saving the institution hundreds of thousands of dollars per day.\n\n---",
+      "confidence_score": 82,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "banking"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "vishing",
+        "wire-fraud",
+        "malvertising"
+      ],
+      "tags": [
+        "treasury-management",
+        "commercial-banking",
+        "SEO-poisoning",
+        "social-engineering",
+        "money-mule",
+        "high-value"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1566.002",
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT011.001",
+        "FT016",
+        "FT028",
+        "FT003",
+        "FT007.009",
+        "FT008.002",
+        "FT052.003",
+        "FT006.001",
+        "FT017",
+        "FT031"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Credential Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0001",
+        "DL-0002",
+        "DL-0003",
+        "DL-0004",
+        "DL-0005",
+        "DL-0006",
+        "DL-0007",
+        "DL-0008",
+        "DL-0009",
+        "DL-0010",
+        "DL-0012",
+        "DL-0014",
+        "DL-0015",
+        "DL-0016",
+        "DL-0018",
+        "DL-0019",
+        "DL-0020",
+        "DL-0021",
+        "DL-0022",
+        "DL-0023",
+        "DL-0026",
+        "DL-0027",
+        "DL-0030",
+        "DL-0031",
+        "DL-0034",
+        "DL-0036",
+        "DL-0037",
+        "DL-0042",
+        "DL-0044",
+        "DL-0045",
+        "DL-0046",
+        "DL-0048",
+        "DL-0049"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0007",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0008",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0011",
+          "relationship": "provides-mules-for"
+        },
+        {
+          "id": "TP-0014",
+          "relationship": "enables"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0002",
+      "title": "Business Email Compromise — Vendor Impersonation Wire Fraud",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "FBI IC3 / FinCEN Advisory FIN-2019-A005 / multiple public reporting",
+      "tlp": "WHITE",
+      "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.",
+      "confidence_score": 88,
+      "source_reliability": "B",
+      "info_credibility": 1,
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "BEC",
+        "wire-fraud",
+        "invoice-fraud",
+        "payment-diversion"
+      ],
+      "tags": [
+        "vendor-impersonation",
+        "accounts-payable",
+        "email-compromise",
+        "high-value"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.001",
+        "T1534",
+        "T1114.003",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT052.003",
+        "FT026.001",
+        "FT028",
+        "FT031",
+        "FT012",
+        "FT027",
+        "FT039",
+        "FT042.001",
+        "FT043",
+        "FT053.001"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0001",
+        "DL-0028",
+        "DL-0029",
+        "DL-0031",
+        "DL-0033",
+        "DL-0034",
+        "DL-0039",
+        "DL-0040",
+        "DL-0041",
+        "DL-0043"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0007",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0011",
+          "relationship": "provides-mules-for"
+        },
+        {
+          "id": "TP-0020",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0003",
+      "title": "Synthetic Identity — Credit Card Bust-Out",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "Federal Reserve / FinCEN / ACFE reporting",
+      "tlp": "WHITE",
+      "summary": "Actors create fictitious identities by combining real SSNs (often belonging to children, elderly, deceased, or immigrants) with fabricated PII. They then \"nurture\" these synthetic identities over months or years — opening accounts, building credit history, and establishing legitimacy — before executing a coordinated \"bust-out\" where all available credit is maxed and the identities are abandoned. The Federal Reserve estimates synthetic identity fraud costs U.S. lenders $6B+ annually.",
+      "confidence_score": 80,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "fintech"
+      ],
+      "fraud_types": [
+        "synthetic-identity",
+        "new-account-fraud",
+        "application-fraud"
+      ],
+      "tags": [
+        "credit-building",
+        "bust-out",
+        "thin-file",
+        "long-game",
+        "organized-crime"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT052.002",
+        "FT026.004",
+        "FT049",
+        "FT010",
+        "FT011.005",
+        "FT020",
+        "FT025",
+        "FT033.004",
+        "FT005",
+        "FT012"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0009",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0013",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 2
+    },
+    {
+      "id": "TP-0004",
+      "title": "Payroll Diversion via HR Portal Compromise",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "FBI IC3 PSA I-091819-PSA / multiple industry reports",
+      "tlp": "WHITE",
+      "summary": "Actors compromise employee self-service HR portals (Workday, ADP, UKG, etc.) to change direct deposit routing information, diverting paychecks to actor-controlled accounts. Often combined with email rule manipulation to suppress payroll notifications. FBI IC3 flagged this as a growing BEC variant. Low per-incident amounts ($2,000-$10,000) but high volume and often undetected for multiple pay cycles.",
+      "confidence_score": 80,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "payroll-diversion",
+        "BEC",
+        "phishing",
+        "account-takeover"
+      ],
+      "tags": [
+        "HR-portal",
+        "direct-deposit",
+        "W2-theft",
+        "employee-targeting"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.001",
+        "T1078",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA008",
+        "FTA009",
+        "FTA010",
+        "FT011.002",
+        "FT028",
+        "FT016",
+        "FT003",
+        "FT037.002",
+        "FT038.002",
+        "FT042.001",
+        "FT001",
+        "FT006.001",
+        "FT008.002"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0019",
+        "DL-0022",
+        "DL-0024",
+        "DL-0025"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0014",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0015",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0005",
+      "title": "Insurance Premium Diversion via Agent Portal ATO",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "Coalition Against Insurance Fraud / industry reporting",
+      "tlp": "WHITE",
+      "summary": "Actors compromise insurance agent portals to modify policy payment routing, diverting premium payments from policyholders to actor-controlled accounts. Alternatively, actors gain access to agent trust accounts where premiums are held before remittance to the carrier. This scheme exploits the distributed nature of insurance distribution — independent agents operate semi-autonomously with significant system access. Discovery is often delayed because policyholders believe they've paid and carriers may not flag gaps until policy cancellation for non-payment.",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "insurance"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "premium-diversion",
+        "phishing"
+      ],
+      "tags": [
+        "insurance-agent",
+        "agent-portal",
+        "premium-trust-account",
+        "policy-servicing"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.001",
+        "T1078",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA008",
+        "FTA009",
+        "FTA010",
+        "FT011.002",
+        "FT028",
+        "FT016",
+        "FT037.002",
+        "FT042.001",
+        "FT001",
+        "FT003",
+        "FT008.003",
+        "FT018",
+        "FT038.002"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0020",
+        "DL-0021",
+        "DL-0023",
+        "DL-0025",
+        "DL-0026"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0008",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0014",
+          "relationship": "enables"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0006",
+      "title": "Real Estate Wire Fraud — Closing Scam",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "FBI IC3 / American Land Title Association (ALTA) reporting",
+      "tlp": "WHITE",
+      "summary": "Actors compromise email accounts of real estate agents, title companies, attorneys, or mortgage lenders to monitor pending transactions and send fraudulent wire instructions to homebuyers at closing. The scheme exploits the time-sensitive, high-value nature of real estate closings and the expectation that wire instructions will arrive via email. FBI IC3 reports real estate BEC as one of the fastest-growing BEC subcategories, with average losses of $150,000+ (often representing a buyer's entire down payment or full purchase price).",
+      "confidence_score": 88,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "BEC",
+        "wire-fraud",
+        "payment-diversion",
+        "impersonation"
+      ],
+      "tags": [
+        "real-estate",
+        "title-company",
+        "escrow",
+        "closing-funds",
+        "high-value",
+        "time-sensitive"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.001",
+        "T1114.003",
+        "T1534",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT052.003",
+        "FT055",
+        "FT012",
+        "FT026.001",
+        "FT031",
+        "FT008.002",
+        "FT016",
+        "FT018",
+        "FT020",
+        "FT021"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 2",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0019",
+        "DL-0021",
+        "DL-0024",
+        "DL-0025",
+        "DL-0027",
+        "DL-0029",
+        "DL-0030",
+        "DL-0031",
+        "DL-0032",
+        "DL-0033",
+        "DL-0035",
+        "DL-0036"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0002",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0007",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0011",
+          "relationship": "provides-mules-for"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0007",
+      "title": "Deepfake Voice Authorization for Wire Transfer",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "Wall Street Journal (2019 UK energy firm case) / Regula AI deepfake fraud surveys",
+      "tlp": "WHITE",
+      "summary": "Actors use AI-generated voice deepfakes to impersonate executives, clients, or authorized signers during phone-based wire transfer authorization. The first publicly documented case (2019) involved a UK energy firm's CEO impersonated via deepfake voice, resulting in a $243,000 transfer. As voice cloning technology becomes more accessible and convincing, this threat path is accelerating. It specifically targets institutions that rely on voice-based dual authorization as a fraud control — turning a security measure into an attack vector.",
+      "confidence_score": 68,
+      "source_reliability": "C",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "wire-fraud",
+        "impersonation",
+        "BEC",
+        "deepfake"
+      ],
+      "tags": [
+        "deepfake-voice",
+        "CEO-fraud",
+        "AI-enabled",
+        "dual-authorization-bypass",
+        "emerging-threat"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT052.003",
+        "FT026.001",
+        "FT020",
+        "FT007.009",
+        "FT016",
+        "FT028",
+        "FT031",
+        "FT055",
+        "FT008.002",
+        "FT018"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Defence Evasion",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 2",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0050",
+        "DL-0051",
+        "DL-0052"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0001",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0002",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0006",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0012",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0025",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0008",
+      "title": "SIM Swap to Cryptocurrency Exchange ATO",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "FBI IC3 / DOJ SIM swap prosecutions / industry reporting",
+      "tlp": "WHITE",
+      "summary": "Actors social-engineer mobile carriers to transfer a victim's phone number to an actor-controlled SIM card, then use intercepted SMS-based MFA codes to take over cryptocurrency exchange accounts and drain digital assets. FBI IC3 reported $68M+ in SIM swap losses in 2021 alone, with individual losses frequently exceeding $1M for high-net-worth crypto holders. DOJ has prosecuted multiple SIM swap rings targeting crypto investors specifically.",
+      "confidence_score": 82,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "crypto",
+        "fintech",
+        "banking"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "crypto-laundering"
+      ],
+      "tags": [
+        "SIM-swap",
+        "cryptocurrency",
+        "MFA-bypass",
+        "carrier-social-engineering",
+        "high-value-individual"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1111",
+        "T1078",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT011.002",
+        "FT043",
+        "FT003",
+        "FT006.002",
+        "FT038.002",
+        "FT044",
+        "FT005.001",
+        "FT008.001",
+        "FT013",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Credential Access",
+        "Account Access",
+        "Defence Evasion",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0003",
+        "DL-0006",
+        "DL-0008",
+        "DL-0009",
+        "DL-0011",
+        "DL-0013",
+        "DL-0014",
+        "DL-0017",
+        "DL-0044",
+        "DL-0045",
+        "DL-0046",
+        "DL-0047",
+        "DL-0048",
+        "DL-0049"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0001",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0005",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0013",
+          "relationship": "enables"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0009",
+      "title": "Check Washing and Fraudulent Mobile Deposit",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "USPS OIG / FinCEN / banking industry reporting",
+      "tlp": "WHITE",
+      "summary": "Actors steal checks from USPS mailboxes (using stolen arrow keys or by fishing mail from collection boxes), chemically wash the payee and amount fields, then rewrite checks to themselves or accomplices for higher amounts. Washed checks are deposited via mobile banking apps — sometimes the same stolen check is deposited multiple times across different institutions. FinCEN data shows check fraud SARs surged 200%+ from 2021-2023. Despite being a \"low-tech\" fraud, it's one of the fastest-growing categories due to the explosion of USPS mail theft and the ease of mobile deposit.",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "banking",
+        "credit-union"
+      ],
+      "fraud_types": [
+        "check-fraud"
+      ],
+      "tags": [
+        "check-washing",
+        "mail-theft",
+        "mobile-deposit",
+        "duplicate-deposit",
+        "USPS"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT026.002",
+        "FT052.001",
+        "FT024",
+        "FT041",
+        "FT006",
+        "FT010",
+        "FT012",
+        "FT015",
+        "FT018",
+        "FT023"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0011",
+          "relationship": "provides-mules-for"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0010",
+      "title": "Disability Insurance Fraud via Fabricated Medical Documentation",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "DOJ prosecution records / Coalition Against Insurance Fraud / industry experience",
+      "tlp": "WHITE",
+      "summary": "Actors file fraudulent long-term or short-term disability claims using fabricated, exaggerated, or collusively obtained medical documentation. Schemes range from individual claimants exaggerating symptoms with a complicit provider to organized rings where providers generate documentation for dozens of fictitious or exaggerated claims. DOJ prosecutions reveal schemes lasting years with cumulative payouts in the millions. The long-tail nature of disability payments means a single fraudulent claim can generate $100,000+ in benefits before detection.",
+      "confidence_score": 60,
+      "source_reliability": "C",
+      "info_credibility": 3,
+      "sectors": [
+        "insurance"
+      ],
+      "fraud_types": [
+        "fraudulent-claim",
+        "disability-fraud",
+        "provider-fraud"
+      ],
+      "tags": [
+        "disability",
+        "group-benefits",
+        "medical-documentation",
+        "provider-collusion",
+        "claims-fraud",
+        "long-tail"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT026.001",
+        "FT052",
+        "FT051.002",
+        "FT053.001",
+        "FT006",
+        "FT010",
+        "FT016",
+        "FT024",
+        "FT025",
+        "FT028"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0021",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0011",
+      "title": "Romance Scam to Money Mule Recruitment Pipeline",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "FBI IC3 / FinCEN Advisory FIN-2020-A008 / INTERPOL",
+      "tlp": "WHITE",
+      "summary": "Actors operating from organized scam compounds (primarily Southeast Asia) cultivate fake romantic or investment relationships with victims over weeks to months, then exploit the relationship to either extract money directly (romance scam) or recruit the victim as an unwitting money mule. Romance scams generated $1.1B+ in reported losses in 2023 per FBI IC3. This threat path is unique because victims are simultaneously targets AND infrastructure — recruited mules enable other fraud schemes (BEC wire fraud, check fraud, ATO). The \"pig butchering\" variant combines romance cultivation with fake cryptocurrency investment platforms.",
+      "confidence_score": 88,
+      "source_reliability": "A",
+      "info_credibility": 1,
+      "sectors": [
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "romance-scam",
+        "money-mule"
+      ],
+      "tags": [
+        "pig-butchering",
+        "social-engineering",
+        "mule-recruitment",
+        "crypto-investment-scam",
+        "elder-fraud",
+        "human-trafficking"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT021",
+        "FT043",
+        "FT007.009",
+        "FT008.003",
+        "FT010.003",
+        "FT052.001",
+        "FT018",
+        "FT051.004",
+        "FT016",
+        "FT020"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0001",
+        "DL-0037",
+        "DL-0038",
+        "DL-0039",
+        "DL-0041",
+        "DL-0042",
+        "DL-0043"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0001",
+          "relationship": "provides-mules-for"
+        },
+        {
+          "id": "TP-0002",
+          "relationship": "provides-mules-for"
+        },
+        {
+          "id": "TP-0006",
+          "relationship": "provides-mules-for"
+        },
+        {
+          "id": "TP-0009",
+          "relationship": "provides-mules-for"
+        },
+        {
+          "id": "TP-0025",
+          "relationship": "escalates-from"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0012",
+      "title": "Authorized Push Payment Fraud — Tech Support / Bank Impersonation",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "FBI IC3 / UK PSR APP fraud data / FTC consumer reports",
+      "tlp": "WHITE",
+      "summary": "Actors contact victims impersonating bank fraud departments, tech support (Microsoft, Apple, Amazon), or government agencies (IRS, SSA), convincing them that their accounts are compromised and they must urgently transfer funds to a \"safe account.\" Unlike traditional ATO, the victim themselves authorizes and executes the payment — making recovery extremely difficult. The UK's Payment Systems Regulator reported £460M+ in APP fraud losses in 2023. FBI IC3 reports tech support fraud as one of the highest-loss categories for victims over 60.",
+      "confidence_score": 82,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "credit-union"
+      ],
+      "fraud_types": [
+        "vishing",
+        "impersonation",
+        "account-takeover"
+      ],
+      "tags": [
+        "authorized-push-payment",
+        "APP-fraud",
+        "tech-support-scam",
+        "bank-impersonation",
+        "remote-access",
+        "screen-sharing",
+        "elder-fraud"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT011.002",
+        "FT016",
+        "FT018",
+        "FT021",
+        "FT028",
+        "FT008.002",
+        "FT052.003",
+        "FT001",
+        "FT003",
+        "FT007.009"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0055",
+        "DL-0056",
+        "DL-0057",
+        "DL-0058",
+        "DL-0060"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0007",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0014",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0024",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0013",
+      "title": "Credential Stuffing to Loyalty Point / Gift Card Account Drain",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "Akamai State of the Internet reports / industry reporting",
+      "tlp": "WHITE",
+      "summary": "Actors use large-scale credential stuffing (automated testing of stolen username/password pairs from unrelated breaches) against loyalty program portals, bank rewards platforms, and gift card balance-check sites. Successful logins are used to drain stored value — transferring loyalty points to actor-controlled accounts, converting rewards to gift cards, or transferring gift card balances. Loyalty points and gift cards are attractive targets because they're less monitored than bank accounts, rarely have MFA, and can be monetized quickly through resale markets. Akamai reports billions of credential stuffing attempts per year targeting financial services.",
+      "confidence_score": 64,
+      "source_reliability": "C",
+      "info_credibility": 3,
+      "sectors": [
+        "fintech",
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "tags": [
+        "loyalty-fraud",
+        "rewards-points",
+        "gift-card",
+        "stored-value",
+        "automated-attack",
+        "credential-reuse"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1110.004",
+        "T1078",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FTA012",
+        "FT011.002",
+        "FT003",
+        "FT006.002",
+        "FT048",
+        "FT005.001",
+        "FT008",
+        "FT013",
+        "FT016",
+        "FT027",
+        "FT018"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Account Access",
+        "Defence Evasion",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0012",
+        "DL-0013",
+        "DL-0015",
+        "DL-0016",
+        "DL-0017",
+        "DL-0018",
+        "DL-0062",
+        "DL-0063",
+        "DL-0064",
+        "DL-0066",
+        "DL-0067"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0008",
+          "relationship": "enables"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0014",
+      "title": "Insider-Enabled Account Fraud at Financial Institution",
+      "category": "ThreatPath",
+      "date": "2026-02-12",
+      "author": "FLAME Project",
+      "source": "DOJ prosecution records / ACFE / FinCEN SAR data / FDIC enforcement actions",
+      "tlp": "WHITE",
+      "summary": "Employees of financial institutions abuse their legitimate system access to commit or enable fraud — opening accounts with stolen identities, modifying customer records to facilitate unauthorized transactions, exfiltrating customer data to external fraud rings, or directly siphoning funds. The ACFE estimates that insider fraud accounts for 5% of organizational revenue globally. Financial institution insiders are particularly dangerous because they understand internal controls and know how to avoid triggering detection. Schemes often involve collusion with external actors who provide stolen identities or receive diverted funds.",
+      "confidence_score": 80,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "credit-union",
+        "insurance"
+      ],
+      "fraud_types": [
+        "insider-threat",
+        "collusion",
+        "account-takeover",
+        "data-theft"
+      ],
+      "tags": [
+        "insider",
+        "employee-fraud",
+        "collusion",
+        "customer-data",
+        "access-abuse",
+        "branch-operations"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1078",
+        "T1530",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA008",
+        "FTA009",
+        "FTA010",
+        "FT011.002",
+        "FT038",
+        "FT003",
+        "FT006",
+        "FT007.005",
+        "FT039.001",
+        "FT016",
+        "FT028",
+        "FT037.002",
+        "FT042"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Account Access",
+        "Defence Evasion",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0001",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0005",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0008",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0012",
+          "relationship": "enables"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0015",
+      "title": "Employment Fraud via Brand Impersonation",
+      "category": "ThreatPath",
+      "date": "2026-02-19",
+      "author": "FLAME Project",
+      "source": "domain_intel DEA investigation / FBI IC3 employment scam advisories",
+      "tlp": "WHITE",
+      "summary": "Actors impersonate legitimate employers — particularly in healthcare staffing, home care, and remote work sectors — by registering lookalike domains and creating fake job postings. Victims are \"hired\" through a fake onboarding process that harvests PII (SSN, banking info, government ID) for identity theft, or are charged advance fees for equipment, training, or background checks. The FBI IC3 reported $367M in employment fraud losses in 2023, with fake job scams increasing 118% year-over-year. This threat path is distinct from BEC in that the victim is the job applicant, not an employee of the impersonated company.",
+      "confidence_score": 64,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "healthcare",
+        "staffing",
+        "employment"
+      ],
+      "fraud_types": [
+        "impersonation",
+        "advance-fee-fraud",
+        "identity-theft"
+      ],
+      "tags": [
+        "employment-fraud",
+        "brand-impersonation",
+        "job-scam",
+        "advance-fee",
+        "pii-harvesting",
+        "disposable-email",
+        "healthcare-staffing"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.001",
+        "T1583.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT052.003",
+        "FT026.001",
+        "FT018",
+        "FT020",
+        "FT021",
+        "FT016",
+        "FT055",
+        "FT005.001",
+        "FT007.009",
+        "FT011.002"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 2",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0004",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0016",
+      "title": "First-Party Fraud (Bust-Out)",
+      "category": "ThreatPath",
+      "date": "2026-02-20",
+      "author": "FLAME Project",
+      "source": "Internal Knowledge Base",
+      "tlp": "WHITE",
+      "summary": "First-party fraud occurs when an individual intentionally misrepresents their identity, intent, or financial situation to obtain credit or services with no intention of repayment. This threat path focuses on the \"bust-out\" variation, where a customer establishes a seemingly legitimate relationship with an institution, uses the account normally for a period, and then suddenly maximizes their credit utilization before abandoning the account.\n\n---",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "banking",
+        "credit-union"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "bust-out"
+      ],
+      "tags": [
+        "first-party",
+        "credit-card",
+        "consumer-banking"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT023",
+        "FT035",
+        "FT022",
+        "FT036",
+        "FT032",
+        "FT011",
+        "FT016",
+        "FT012",
+        "FT015",
+        "FT017"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0031",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0017",
+      "title": "Pig Butchering (Investment Scam)",
+      "category": "ThreatPath",
+      "date": "2026-02-20",
+      "author": "FLAME Project",
+      "source": "Internal Knowledge Base",
+      "tlp": "WHITE",
+      "summary": "\"Pig Butchering\" (Sha Zhu Pan) is an orchestrated, long-term social engineering scheme where perpetrators build trust with targets over weeks or months (often via dating apps or misdirected text messages) before convincing them to invest in fraudulent cryptocurrency platforms. The scam is characterized by an extended \"fattening\" phase where the victim sees fake returns on small initial investments, prompting them to invest massive sums before the platform disappears.\n\n---",
+      "confidence_score": 88,
+      "source_reliability": "A",
+      "info_credibility": 1,
+      "sectors": [
+        "banking",
+        "crypto",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "investment-scam",
+        "social-engineering",
+        "authorized-push-payment"
+      ],
+      "tags": [
+        "pig-butchering",
+        "crypto-scam",
+        "romance-scam",
+        "app-fraud"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.002",
+        "T1656"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT028",
+        "FT016",
+        "FT007.009",
+        "FT008.003",
+        "FT021",
+        "FT051.003",
+        "FT052.003",
+        "FT001",
+        "FT011",
+        "FT031"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "End-user Interaction",
+        "Trust Abuse",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0026",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0032",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0018",
+      "title": "Deepfake Document Fraud",
+      "category": "ThreatPath",
+      "date": "2026-02-20",
+      "author": "FLAME Project",
+      "source": "Internal Knowledge Base",
+      "tlp": "WHITE",
+      "summary": "Deepfake document fraud targets the Know Your Customer (KYC) and remote account onboarding processes. Criminals utilize advanced generative AI models (GANs, diffusion models) to manufacture highly realistic, synthetic identifying documents (e.g., driver's licenses, passports, utility bills) that match the details of a synthetic or stolen identity. This bypasses automated optical character recognition (OCR) and facial recognition checks used by financial institutions during self-service digital onboarding.\n\n---",
+      "confidence_score": 60,
+      "source_reliability": "C",
+      "info_credibility": 3,
+      "sectors": [
+        "banking",
+        "credit-union",
+        "fintech"
+      ],
+      "fraud_types": [
+        "documentary-fraud",
+        "identity-theft",
+        "synthetic-identity",
+        "new-account-fraud"
+      ],
+      "tags": [
+        "deepfake",
+        "kyc-bypass",
+        "onboarding",
+        "synthetic-identity"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "mitre_attack": [
+        "T1583"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FT052.002",
+        "FT026.001",
+        "FT020",
+        "FT049",
+        "FT005.001",
+        "FT016.001",
+        "FT010",
+        "FT011.002",
+        "FT018",
+        "FT006"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Trust Abuse",
+        "Account Access"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0050",
+        "DL-0052",
+        "DL-0053",
+        "DL-0054"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0002",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0020",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0019",
+      "title": "Business Identity Theft",
+      "category": "ThreatPath",
+      "date": "2026-02-20",
+      "author": "FLAME Project",
+      "source": "Internal Knowledge Base",
+      "tlp": "WHITE",
+      "summary": "Business Identity Theft (or Corporate Hijacking) involves threat actors impersonating a legitimate, functioning business — typically a small to medium-sized enterprise (SME) — to open financial accounts, lines of credit, or secure loans. They exploit public corporate registration details, file fraudulent amendments with the Secretary of State, and forge documents to assume the identity of corporate officers.\n\n---",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "banking",
+        "investment"
+      ],
+      "fraud_types": [
+        "identity-theft",
+        "business-email-compromise",
+        "loan-fraud",
+        "account-takeover"
+      ],
+      "tags": [
+        "corporate-hijacking",
+        "commercial-banking",
+        "ppp-fraud-typology",
+        "business-loans"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566",
+        "T1589"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT052",
+        "FT011.002",
+        "FT008.002",
+        "FT003",
+        "FT007.009",
+        "FT026.001",
+        "FT005.001",
+        "FT016",
+        "FT020",
+        "FT028"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Account Access",
+        "Trust Abuse",
+        "Perform Fraud"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0022",
+          "relationship": "feeds-into"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0020",
+      "title": "Supply Chain Payment Fraud",
+      "category": "ThreatPath",
+      "date": "2026-02-20",
+      "author": "FLAME Project",
+      "source": "Internal Knowledge Base",
+      "tlp": "WHITE",
+      "summary": "Supply Chain Payment Fraud (a variant of Vendor Impersonation / BEC) involves threat actors compromising the email account of a legitimate vendor or supplier. The actors monitor email traffic to identify upcoming large invoice payments, insert themselves into the communication chain, and provide updated, fraudulent banking instructions to the buyer. When the buyer processes the invoice, the funds are wired to a threat-actor-controlled account instead of the true vendor.\n\n---",
+      "confidence_score": 68,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "business-email-compromise",
+        "vendor-impersonation",
+        "wire-fraud"
+      ],
+      "tags": [
+        "supply-chain",
+        "b2b-payments",
+        "invoice-fraud",
+        "vendor-fraud"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.001",
+        "T1586",
+        "T1562.012"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT007.009",
+        "FT028",
+        "FT008.002",
+        "FT014",
+        "FT043",
+        "FT003",
+        "FT031",
+        "FT042.001",
+        "FT052.003",
+        "FT011.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Account Access",
+        "Trust Abuse",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0028",
+        "DL-0029",
+        "DL-0032",
+        "DL-0035"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0002",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0018",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0021",
+      "title": "Healthcare Provider Billing Fraud",
+      "category": "ThreatPath",
+      "date": "2026-02-20",
+      "author": "FLAME Project",
+      "source": "Internal Knowledge Base",
+      "tlp": "WHITE",
+      "summary": "Healthcare Provider Billing Fraud involves legitimate or seemingly legitimate medical providers intentionally submitting false or inflated claims to health insurance networks or government programs (like Medicare/Medicaid) for financial gain. This typically takes the form of \"phantom billing\" (billing for services never rendered), \"upcoding\" (billing for a more expensive service than provided), or \"unbundling\" (billing stages of a procedure separately to increase total payout).\n\n---",
+      "confidence_score": 82,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "sectors": [
+        "healthcare",
+        "insurance"
+      ],
+      "fraud_types": [
+        "healthcare-fraud",
+        "phantom-billing",
+        "upcoding"
+      ],
+      "tags": [
+        "medicare-fraud",
+        "medical-billing",
+        "upcoding",
+        "phantom-billing"
+      ],
+      "cfpf_phases": [
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [],
+      "ft3_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT026.001",
+        "FT051.002",
+        "FT053.001",
+        "FT052",
+        "FT016",
+        "FT024",
+        "FT025",
+        "FT028",
+        "FT029",
+        "FT031"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Trust Abuse",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 4",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0010",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0028",
+          "relationship": "escalates-from"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0022",
+      "title": "Government Program Fraud (Unemployment/Tax)",
+      "category": "ThreatPath",
+      "date": "2026-02-20",
+      "author": "FLAME Project",
+      "source": "Internal Knowledge Base",
+      "tlp": "WHITE",
+      "summary": "Government Program Fraud involves threat actors leveraging stolen Personally Identifiable Information (PII) to file fraudulent claims for government benefits (e.g., UI, SNAP, FEMA disaster relief) or tax refunds. The actor directs the government payout to a pre-paid debit card, a digitally opened neo-bank account, or an established mule account, depriving the legitimate citizen of their benefits and defrauding the state.\n\n---",
+      "confidence_score": 82,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "sectors": [
+        "government",
+        "banking"
+      ],
+      "fraud_types": [
+        "benefit-fraud",
+        "identity-theft",
+        "synthetic-identity",
+        "tax-fraud"
+      ],
+      "tags": [
+        "benefits-scam",
+        "irs-fraud",
+        "targeted-demographics"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT052.004",
+        "FT026.004",
+        "FT016.001",
+        "FT020",
+        "FT005.001",
+        "FT011.002",
+        "FT018",
+        "FT025",
+        "FT051.003",
+        "FT006"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 4",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0001",
+        "DL-0037",
+        "DL-0038",
+        "DL-0039",
+        "DL-0040",
+        "DL-0041",
+        "DL-0043"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0011",
+          "relationship": "provides-mules-for"
+        },
+        {
+          "id": "TP-0033",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0023",
+      "title": "Mobile Banking Trojan / Overlay Attack",
+      "category": "ThreatPath",
+      "date": "2026-02-20",
+      "author": "FLAME Project",
+      "source": "Internal Knowledge Base",
+      "tlp": "WHITE",
+      "summary": "Mobile Banking Trojans (primarily targeting Android environments) are sophisticated malware variants that deceive users into granting extensive device \"Accessibility\" permissions. Once installed, the malware monitors the foreground applications. When the user launches a targeted banking app, the malware draws a pixel-perfect \"overlay\" (a fake login screen) on top of the legitimate app. It captures the user's credentials and SMS MFA tokens, sending them to the threat actor, or uses an Automated Transfer System (ATS) to initiate fraudulent transactions invisibly on the victim's device.\n\n---",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "fintech",
+        "crypto"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "malware",
+        "unauthorized-transaction"
+      ],
+      "tags": [
+        "mbanking",
+        "android-malware",
+        "overlay-attack",
+        "ats"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1624",
+        "T1626",
+        "T1417",
+        "T1636"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT011.001",
+        "FT013",
+        "FT003",
+        "FT016.001",
+        "FT006",
+        "FT007.001",
+        "FT008.002",
+        "FT015",
+        "FT018",
+        "FT031"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Initial Access",
+        "Execution",
+        "Credential Access",
+        "Perform Fraud"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 4",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 4"
+      },
+      "detection_rule_ids": [
+        "DL-0002",
+        "DL-0004",
+        "DL-0005",
+        "DL-0007",
+        "DL-0010",
+        "DL-0011"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0001",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0008",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0024",
+      "title": "Account-to-Account Instant Payment Fraud (Zelle / FedNow / Pix / UPI)",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "Original Research — multi-source intelligence compilation",
+      "tlp": "WHITE",
+      "summary": "Threat actors exploit account-to-account (A2A) instant payment rails (Zelle, FedNow, Pix, UPI, UK Faster Payments) to execute irrevocable fund transfers via social engineering, account takeover, or payment diversion schemes. The defining characteristic of this threat path is finality: real-time payment systems settle in seconds with no native chargeback mechanism, eliminating the recall window available in traditional wire and ACH channels. Attack vectors range from socially engineered authorized push payments (where the victim initiates the transfer themselves) to full account takeover on RTP-connected accounts, with monetization through layered mule account networks that rapidly disperse funds across multiple institutions within minutes of the initial transfer.\n\n---",
+      "confidence_score": 82,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "fintech",
+        "payments"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "wire-fraud",
+        "payment-diversion"
+      ],
+      "tags": [
+        "real-time-payments",
+        "instant-payments",
+        "zelle",
+        "fednow",
+        "pix",
+        "upi",
+        "irrevocable",
+        "money-mule",
+        "social-engineering",
+        "cross-border"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.001",
+        "T1566.002",
+        "T1656",
+        "T1657",
+        "T1589.001",
+        "T1098"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT006.001",
+        "FT007.009",
+        "FT008.002",
+        "FT017",
+        "FT028",
+        "FT031",
+        "FT052.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Credential Access",
+        "Account Access",
+        "Defence Evasion",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0055",
+        "DL-0056",
+        "DL-0057",
+        "DL-0058",
+        "DL-0059",
+        "DL-0060",
+        "DL-0061"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0001",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0011",
+          "relationship": "provides-mules-for"
+        },
+        {
+          "id": "TP-0012",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0025",
+      "title": "GenAI-Enhanced Authorized Push Payment Fraud — Romance Variant",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "Original Research — multi-source intelligence compilation",
+      "tlp": "WHITE",
+      "summary": "Threat actors leverage generative AI capabilities — including deepfake voice cloning, AI-generated profile imagery, and large language model-driven chatbots — to operate romance scam campaigns at unprecedented scale and sophistication. Unlike traditional romance scams that require skilled human operators for each victim relationship, GenAI-enhanced variants enable a single operator to maintain dozens of simultaneous romantic personas with consistent, emotionally intelligent conversations. The attack culminates in authorized push payments where the victim willingly transfers funds based on fabricated emotional bonds, with average losses of $64,000 per victim (FTC) making romance fraud the highest per-incident loss category among APP fraud types. The integration of deepfake voice and video into relationship grooming eliminates many of the traditional red flags (refusal to video call, inconsistent accents) that historically helped victims identify romance scams.\n\n---",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "romance-scam",
+        "deepfake-fraud",
+        "social-engineering"
+      ],
+      "tags": [
+        "genai",
+        "deepfake",
+        "romance-scam",
+        "social-engineering",
+        "authorized-push-payment",
+        "voice-cloning",
+        "scam-compounds",
+        "pig-butchering",
+        "ai-chatbot",
+        "cross-border"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.001",
+        "T1566.003",
+        "T1656",
+        "T1657",
+        "T1589.002",
+        "T1583.001",
+        "T1585.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT006.001",
+        "FT007.009",
+        "FT016",
+        "FT017",
+        "FT028",
+        "FT031",
+        "FT052.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Account Access",
+        "Defence Evasion",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 4"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0007",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0011",
+          "relationship": "escalates-from"
+        },
+        {
+          "id": "TP-0026",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0026",
+      "title": "GenAI-Enhanced Authorized Push Payment Fraud — Investment Variant",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "Original Research — multi-source intelligence compilation",
+      "tlp": "WHITE",
+      "summary": "Threat actors deploy generative AI to create and operate fraudulent investment schemes at industrial scale, combining deepfake celebrity endorsement videos, AI-generated trading dashboards showing fabricated returns, and LLM-powered \"financial advisor\" personas to convince victims to invest in non-existent opportunities. This threat path represents the AI-enhanced evolution of \"pig butchering\" (sha zhu pan) operations where victims are \"fattened\" with apparent early returns before being slaughtered with total loss. The FBI IC3 reported $6.57 billion in investment fraud losses in 2024 — the single largest fraud category — with cryptocurrency investment fraud accounting for $5.8 billion of that total. Chainalysis research indicates that AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI-enhanced variants ($719K average), demonstrating the direct revenue impact of GenAI adoption by fraud operators.\n\n---",
+      "confidence_score": 82,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "crypto",
+        "investment"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "investment-scam",
+        "deepfake-fraud",
+        "crypto-laundering"
+      ],
+      "tags": [
+        "genai",
+        "deepfake",
+        "investment-scam",
+        "pig-butchering",
+        "cryptocurrency",
+        "social-engineering",
+        "authorized-push-payment",
+        "ai-generated-content",
+        "fake-trading-platform",
+        "celebrity-impersonation",
+        "cross-border"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1583.006",
+        "T1585.001",
+        "T1656",
+        "T1657",
+        "T1566.002",
+        "T1589.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT006.001",
+        "FT007.009",
+        "FT008.002",
+        "FT016",
+        "FT017",
+        "FT028",
+        "FT031",
+        "FT052.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Account Access",
+        "Defence Evasion",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 4"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0017",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0025",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0032",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0027",
+      "title": "Elder Financial Exploitation (Multi-Vector)",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "https://www.ic3.gov/AnnualReport/Reports/2024_IC3ElderFraudReport.pdf",
+      "tlp": "WHITE",
+      "summary": "Threat actors exploit adults aged 60 and older through multiple converging fraud vectors including tech support scams, romance scams, investment fraud, and government impersonation schemes. FBI IC3 reported $4.885B in losses from 101,068 complaints filed by victims 60+ in 2024, a 43% year-over-year increase, while academic estimates place the true annual figure closer to $28.3B when accounting for unreported cases. This threat path is distinguished by its multi-vector nature, the involvement of caregivers or family members in approximately 30% of cases, and the exploitation of cognitive decline, social isolation, and Power of Attorney relationships as force multipliers that enable sustained, repeated victimization.\n\n---",
+      "confidence_score": 88,
+      "source_reliability": "A",
+      "info_credibility": 1,
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "social-engineering",
+        "authorized-push-payment",
+        "account-takeover",
+        "romance-scam"
+      ],
+      "tags": [
+        "elder-fraud",
+        "vulnerable-populations",
+        "tech-support-scam",
+        "romance-scam",
+        "investment-fraud",
+        "government-impersonation",
+        "power-of-attorney-abuse",
+        "caregiver-fraud",
+        "money-mule",
+        "high-value"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656",
+        "T1598",
+        "T1657",
+        "T1566.001",
+        "T1566.004"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT006.001",
+        "FT007.009",
+        "FT016",
+        "FT017",
+        "FT028",
+        "FT031",
+        "FT052.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Credential Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0011",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0012",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0025",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0028",
+      "title": "DME Phantom Billing (Medicare Fraud)",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "https://oig.hhs.gov/reports-and-publications/featured-topics/dme/",
+      "tlp": "WHITE",
+      "summary": "Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered to patients. Operation Gold Rush and related DOJ prosecutions have documented $4.45B in fraudulent DME billing, with over 5,800 defendants prosecuted since 2007. The scheme exploits stolen Medicare beneficiary data to create phantom patient lists, registers shell companies as DME suppliers across multiple states, and bills Medicare for expensive equipment (wheelchairs, orthotic braces, CPAP machines) that beneficiaries never ordered or received. The scale of the fraud prompted CMS to impose a 6-month moratorium on new DME supplier enrollment in high-fraud geographic areas.\n\n---",
+      "confidence_score": 85,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "sectors": [
+        "healthcare",
+        "insurance",
+        "government"
+      ],
+      "fraud_types": [
+        "healthcare-fraud",
+        "phantom-billing",
+        "provider-fraud",
+        "synthetic-medical-fraud"
+      ],
+      "tags": [
+        "durable-medical-equipment",
+        "medicare-fraud",
+        "phantom-billing",
+        "organized-crime",
+        "provider-enrollment",
+        "beneficiary-data-theft",
+        "cms",
+        "operation-gold-rush",
+        "transnational"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1589.001",
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FT005.001",
+        "FT006.001",
+        "FT016",
+        "FT017"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0021",
+          "relationship": "escalates-from"
+        },
+        {
+          "id": "TP-0022",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0029",
+      "title": "AI Synthetic Identity & Document Forgery",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20240715a.htm",
+      "tlp": "WHITE",
+      "summary": "Threat actors are leveraging generative AI to produce high-fidelity forged identity documents, synthetic facial images, and behavioral biometric mimicry to bypass KYC/identity verification controls at scale. Digital document forgery surpassed physical forgery in 2024, reaching 57% of all detected forgeries (a 244% increase), while AI-generated document fraud overall increased 311%. Underground services like OnlyFake and ProKYC have democratized access to convincing forged IDs, selfie-matching images, and video-based liveness check bypasses for as little as $30 per identity package. Combined with traditional synthetic identity techniques (CPN/SSN manipulation, credit farming), AI-enabled document forgery represents an evolution that threatens to overwhelm current identity verification defenses. The Federal Reserve Board estimates synthetic identity fraud generates $6B+ in annual losses to the US financial system.\n\n---",
+      "confidence_score": 68,
+      "source_reliability": "C",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "fintech"
+      ],
+      "fraud_types": [
+        "synthetic-identity",
+        "ai-document-fraud",
+        "new-account-fraud",
+        "application-fraud"
+      ],
+      "tags": [
+        "ai-generated",
+        "synthetic-identity",
+        "document-forgery",
+        "deepfake",
+        "kyc-bypass",
+        "onlyfake",
+        "prokyc",
+        "behavioral-biometrics",
+        "new-account-fraud",
+        "bust-out",
+        "credit-farming"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1585.001",
+        "T1588.005",
+        "T1656",
+        "T1657",
+        "T1204"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT005.001",
+        "FT006.001",
+        "FT007.009",
+        "FT008.002",
+        "FT016",
+        "FT017",
+        "FT028"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Credential Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 4",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 4"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "escalates-from"
+        },
+        {
+          "id": "TP-0015",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0030",
+      "title": "E-Commerce Triangulation Fraud",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "https://www.chargebackgurus.com/blog/triangulation-fraud",
+      "tlp": "WHITE",
+      "summary": "Triangulation fraud is a three-party e-commerce scheme where fraudsters list legitimate products on marketplace platforms (Amazon, eBay, Walmart Marketplace) at competitive prices, accept orders from unsuspecting customers, then fulfill those orders by purchasing the same products from legitimate retailers using stolen payment card data and shipping directly to the customer. The customer receives the product and is unaware that it was purchased with stolen credentials, while the legitimate retailer absorbs the chargeback when the stolen card is reported. This scheme generates an estimated $48B+ in annual marketplace fraud losses, with North American e-commerce fraud growing 207%. Organized rings operating via Telegram manage hundreds of storefronts simultaneously, creating a scalable fraud infrastructure that exploits the separation between marketplace platforms and payment processing.\n\n---",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "retail"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "identity-theft",
+        "payment-diversion"
+      ],
+      "tags": [
+        "triangulation-fraud",
+        "marketplace-fraud",
+        "e-commerce",
+        "stolen-payment-cards",
+        "dropshipping-abuse",
+        "organized-retail-crime",
+        "chargeback-fraud",
+        "telegram-rings",
+        "return-fraud"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1589.001",
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT006.001",
+        "FT007.009",
+        "FT008.002",
+        "FT016",
+        "FT017",
+        "FT028"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0064",
+        "DL-0067"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0016",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0031",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0031",
+      "title": "Refund-as-a-Service (FTID / RaaS)",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "Original Research — aggregated from NRF, industry reporting, and underground market analysis",
+      "tlp": "WHITE",
+      "summary": "Organized Refund-as-a-Service (RaaS) operations monetize retailer return policies at industrial scale by filing fraudulent refund claims on behalf of paying customers. Professional \"refunders\" operating through Telegram channels and underground forums charge 15-40% commission per successful refund, employing techniques such as Fake Tracking ID (FTID), Did Not Arrive (DNA), and Significantly Not As Described (SNAD) claims. With return fraud contributing to an estimated $103B in annual losses across U.S. retail, and some RaaS operations processing over 1,000 refunds per month, this threat path represents a mature, professionalized fraud-as-a-service ecosystem operating in the gray zone between first-party fraud and organized crime.\n\n---",
+      "confidence_score": 72,
+      "source_reliability": "C",
+      "info_credibility": 2,
+      "sectors": [
+        "retail"
+      ],
+      "fraud_types": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "tags": [
+        "refund-fraud",
+        "FTID",
+        "DNA",
+        "SNAD",
+        "e-commerce",
+        "return-abuse",
+        "social-engineering",
+        "organized-fraud",
+        "telegram"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1589.002",
+        "T1585.001",
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA004",
+        "FTA006",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT006.001",
+        "FT016",
+        "FT028",
+        "FT031",
+        "FT052.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0062",
+        "DL-0063",
+        "DL-0065",
+        "DL-0066"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0016",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0030",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0032",
+      "title": "Web3 Wallet Drainer / Approval Phishing",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "Original Research — aggregated from ScamSniffer, Chainalysis, Elliptic, and on-chain analysis",
+      "tlp": "WHITE",
+      "summary": "Wallet drainer operations exploit blockchain token approval mechanisms to steal cryptocurrency assets at scale. Threat actors deploy Drainer-as-a-Service (DaaS) kits — most notably Inferno Drainer (commanding 40-45% market share) — that lure victims to phishing sites impersonating legitimate Web3 projects, then trick them into signing malicious token approval or Permit/Permit2 transactions that grant the attacker unlimited access to their wallet assets. ScamSniffer reported $494M stolen via wallet drainers in 2024, and while early 2025 saw an 83% decline to approximately $84M, the DaaS model persists with new entrants replacing shuttered operations. Stolen funds are laundered through cross-chain bridges, mixers, and crypto money laundering networks (CMLNs) processing an estimated $16.1B in 2025, making attribution and recovery extremely difficult.\n\n---",
+      "confidence_score": 82,
+      "source_reliability": "B",
+      "info_credibility": 1,
+      "sectors": [
+        "web3",
+        "crypto"
+      ],
+      "fraud_types": [
+        "approval-phishing",
+        "crypto-laundering",
+        "phishing"
+      ],
+      "tags": [
+        "wallet-drainer",
+        "approval-phishing",
+        "DaaS",
+        "permit-signature",
+        "ERC-20",
+        "inferno-drainer",
+        "angel-drainer",
+        "pink-drainer",
+        "token-approval",
+        "smart-contract",
+        "blockchain",
+        "laundering"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.002",
+        "T1583.001",
+        "T1539",
+        "T1657",
+        "T1036"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT006.001",
+        "FT007.009",
+        "FT008.002",
+        "FT016",
+        "FT017",
+        "FT028",
+        "FT031",
+        "FT052.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Credential Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0017",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0026",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0033",
+      "title": "Ghost Student Financial Aid Botnets",
+      "category": "ThreatPath",
+      "date": "2026-03-02",
+      "author": "FLAME Project",
+      "source": "Original Research — aggregated from Equifax, California Community Colleges Chancellor's Office, DOE-OIG, and GAO reporting",
+      "tlp": "WHITE",
+      "summary": "Organized fraud networks exploit the open-enrollment admissions model of community colleges and universities to create thousands of \"ghost student\" identities — synthetic or stolen identities enrolled solely to siphon federal financial aid (primarily Pell Grants via FAFSA). Bot-driven application systems submit fraudulent enrollment applications at industrial scale, with California community colleges alone flagging 31-34% of applications as potentially fraudulent. Equifax reported preventing $180M in ghost student fraud in a single year, and nationwide detection systems have prevented over $1B in fraudulent disbursements. The monetization path follows Pell Grant disbursement to student accounts, with funds immediately withdrawn or transferred before the institution can detect non-attendance, creating a systematic drain on federal education funding that simultaneously inflates enrollment figures and degrades institutional resources.\n\n---",
+      "confidence_score": 68,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "sectors": [
+        "education",
+        "government"
+      ],
+      "fraud_types": [
+        "ghost-student-fraud",
+        "synthetic-identity",
+        "benefit-fraud"
+      ],
+      "tags": [
+        "ghost-student",
+        "financial-aid",
+        "FAFSA",
+        "Pell-Grant",
+        "synthetic-identity",
+        "bot-driven",
+        "education-fraud",
+        "open-enrollment",
+        "community-college",
+        "benefit-fraud",
+        "federal-programs"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1585.001",
+        "T1136.001",
+        "T1059",
+        "T1657",
+        "T1583.003"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA004",
+        "FTA006",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT006.001",
+        "FT016",
+        "FT028",
+        "FT031",
+        "FT052.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Credential Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0022",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    }
+  ]
+}

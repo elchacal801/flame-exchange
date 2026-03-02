@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.754900+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "55286a0f-38de-4212-8c43-cd6dafc1683e",
+    "dl_id": "DL-0060",
+    "title": "Zelle Recipient Enumeration via Multiple Failed Lookups",
+    "status": "experimental",
+    "description": "Detects multiple failed Zelle recipient lookups from a single account or session, which may indicate enumeration activity. Attackers probe email addresses and phone numbers to identify which are registered with Zelle before launching targeted social engineering or authorized push payment attacks against confirmed users.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "zelle_recipient_lookup",
+        "lookup_result": "not_found"
+      },
+      "condition": "selection | count() by account_id > 10",
+      "timeframe": "1h"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "a2a_processing"
+    },
+    "threat_path_ids": [
+      "TP-0012",
+      "TP-0024"
+    ],
+    "fraud_types": [
+      "authorized-push-payment"
+    ],
+    "tags": [
+      "attack.t1589",
+      "cfpf.phase2.targeting",
+      "flame.a2a"
+    ],
+    "falsepositives": [
+      "User trying to send money to friends who have not yet enrolled in Zelle",
+      "Administrative staff searching for payees across a new vendor list"
+    ]
+  }
+}

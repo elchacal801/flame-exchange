@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.775356+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "53c373d8-cca1-440f-924f-ba1a986c7b41",
+    "dl_id": "DL-0067",
+    "title": "Excessive Promotional Code or Coupon Abuse from Related Accounts",
+    "status": "experimental",
+    "description": "Detects excessive use of promotional codes, referral bonuses, or coupon offers from accounts that share common attributes such as device fingerprint, IP address, payment method, or shipping address. This pattern indicates promo abuse rings that create multiple accounts to exploit new-customer or referral promotions repeatedly, often using synthetic or stolen identities.\n",
+    "cfpf_phase": "P4",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "event_type": "order_placed",
+        "promo_code_applied": true
+      },
+      "filter_device_cluster": {
+        "device_fingerprint_promo_uses_30d|gt": 5
+      },
+      "filter_ip_cluster": {
+        "source_ip_promo_uses_30d|gt": 10
+      },
+      "filter_payment_cluster": {
+        "payment_method_hash_promo_uses_30d|gt": 5
+      },
+      "filter_new_account": {
+        "account_age_days|lt": 7,
+        "promo_type|contains": [
+          "new_customer",
+          "referral_bonus",
+          "first_order"
+        ]
+      },
+      "condition": "selection and (filter_device_cluster or filter_ip_cluster or filter_payment_cluster or filter_new_account)"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "payment_gateway"
+    },
+    "threat_path_ids": [
+      "TP-0013",
+      "TP-0030"
+    ],
+    "fraud_types": [
+      "first-party-fraud",
+      "identity-theft"
+    ],
+    "tags": [
+      "attack.t1136",
+      "cfpf.phase4.execution",
+      "flame.ecommerce"
+    ],
+    "falsepositives": [
+      "Family members on shared household network legitimately using individual promotions",
+      "Corporate office where multiple employees order from same IP using valid individual accounts"
+    ]
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.618612+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "8bc12d63-f909-4e07-93a3-a342d10e65f3",
+    "dl_id": "DL-0012",
+    "title": "Login Velocity Anomaly",
+    "status": "experimental",
+    "description": "Detects abnormal login attempt velocity from a single source IP or subnet, indicative of automated credential stuffing tools. Legitimate users produce low single-digit login attempts per minute; credential stuffing tools generate dozens to hundreds, often targeting the authentication API directly rather than the web login form.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "login_attempt"
+      },
+      "filter_internal": {
+        "source_ip|cidr": [
+          "10.0.0.0/8",
+          "172.16.0.0/12",
+          "192.168.0.0/16"
+        ]
+      },
+      "timeframe": "5m",
+      "condition": "selection and not filter_internal | count() by source_ip > 50"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "auth_logs"
+    },
+    "threat_path_ids": [
+      "TP-0001",
+      "TP-0013"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "credential-stuffing"
+    ],
+    "tags": [
+      "attack.t1110",
+      "attack.t1110.004",
+      "cfpf.phase2.initial_access"
+    ],
+    "falsepositives": [
+      "Load testing or penetration testing activities against authentication endpoints",
+      "Misconfigured monitoring scripts with aggressive polling intervals"
+    ]
+  }
+}

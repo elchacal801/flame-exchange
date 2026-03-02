@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.746476+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "3ba070d5-b6d5-452f-942b-955b2dcd4d44",
+    "dl_id": "DL-0057",
+    "title": "Cross-Platform Deposit and Withdrawal Chain",
+    "status": "experimental",
+    "description": "Detects a pattern where funds are received via one payment rail (e.g., ACH, wire) and then immediately sent out via a different payment rail (e.g., Zelle, FedNow) within a short window. This cross-rail chaining is a common layering technique used to obscure the origin of funds and complicate tracing, often associated with money mule operations and authorized push payment fraud monetization.\n",
+    "cfpf_phase": "P5",
+    "level": "high",
+    "detection": {
+      "selection_inbound": {
+        "event_type": "payment_received",
+        "inbound_rail|contains": [
+          "ACH_IN",
+          "WIRE_IN",
+          "RTP_IN",
+          "FEDNOW_IN"
+        ]
+      },
+      "selection_outbound": {
+        "event_type": "instant_payment_initiated",
+        "outbound_rail|contains": [
+          "ZELLE",
+          "FEDNOW",
+          "RTP",
+          "ACH_SAMEDAY"
+        ]
+      },
+      "filter_amount": {
+        "outbound_amount_pct_of_inbound|gte": 80
+      },
+      "condition": "(selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)",
+      "timeframe": "4h"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0012",
+      "TP-0024"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "payment-diversion",
+      "wire-fraud"
+    ],
+    "tags": [
+      "attack.t1565",
+      "cfpf.phase5.monetization",
+      "flame.a2a"
+    ],
+    "falsepositives": [
+      "Freelancer receiving ACH payroll and immediately paying rent via Zelle",
+      "Business account receiving wire payment and disbursing to vendors via instant payment"
+    ]
+  }
+}

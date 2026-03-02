@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-02T21:30:17.737816+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "9cc885b0-9577-49e9-b7e2-9f559471c83c",
+    "dl_id": "DL-0054",
+    "title": "AI-Generated Document Detection in Verification",
+    "status": "experimental",
+    "description": "Detects indicators of AI-generated or synthetically created identity documents submitted during verification workflows. Flags include metadata anomalies (missing EXIF data, uniform noise patterns), font rendering inconsistencies, micro-printing irregularities, and GAN-generated portrait artifacts such as asymmetric earrings or irregular hair boundaries.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "document_verification_scan",
+        "document_type|contains": [
+          "drivers_license",
+          "passport",
+          "national_id",
+          "utility_bill"
+        ]
+      },
+      "filter_metadata": {
+        "exif_data_present": false,
+        "creation_tool_detected|contains": [
+          "stable-diffusion",
+          "midjourney",
+          "dall-e",
+          "photoshop-generative"
+        ]
+      },
+      "filter_visual": {
+        "gan_artifact_score|gt": 0.7,
+        "microprint_validation": "failed"
+      },
+      "filter_font": {
+        "font_consistency_score|lt": 0.5
+      },
+      "condition": "selection and (filter_metadata or filter_visual or filter_font)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "document_verification"
+    },
+    "threat_path_ids": [
+      "TP-0018"
+    ],
+    "fraud_types": [
+      "ai-document-fraud",
+      "impersonation"
+    ],
+    "tags": [
+      "attack.t1588.002",
+      "attack.t1656",
+      "cfpf.phase2.targeting",
+      "flame.deepfake"
+    ],
+    "falsepositives": [
+      "Heavily compressed or photocopied documents with degraded visual quality",
+      "Older documents scanned with consumer-grade scanners losing metadata",
+      "Legitimately renewed documents with updated security features not yet in template database"
+    ]
+  }
+}
