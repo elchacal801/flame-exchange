@@ -30,6 +30,14 @@ groupib_stages:               # Group-IB Fraud Matrix (reference)
   - "Perform Fraud"
   - "Monetization"
   - "Laundering"
+ucff_domains:
+  commit: "Level 3"
+  assess: "Level 3"
+  plan: "Level 3"
+  act: "Level 4"
+  monitor: "Level 3"
+  report: "Level 3"
+  improve: "Level 3"
 tags:
   - SIM-swap
   - cryptocurrency

@@ -29,6 +29,14 @@ groupib_stages:
   - "Resource Development"
   - "Perform Fraud"
   - "Monetization"
+ucff_domains:
+  commit: "Level 3"
+  assess: "Level 3"
+  plan: "Level 3"
+  act: "Level 3"
+  monitor: "Level 3"
+  report: "Level 4"
+  improve: "Level 3"
 tags:
   - benefits-scam
   - irs-fraud

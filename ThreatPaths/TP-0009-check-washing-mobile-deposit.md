@@ -24,6 +24,14 @@ groupib_stages:
   - "Account Access"
   - "Perform Fraud"
   - "Monetization"
+ucff_domains:
+  commit: "Level 2"
+  assess: "Level 2"
+  plan: "Level 2"
+  act: "Level 3"
+  monitor: "Level 3"
+  report: "Level 3"
+  improve: "Level 2"
 tags:
   - check-washing
   - mail-theft

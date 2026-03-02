@@ -28,6 +28,14 @@ groupib_stages:
   - "Perform Fraud"
   - "Monetization"
   - "Laundering"
+ucff_domains:
+  commit: "Level 2"
+  assess: "Level 3"
+  plan: "Level 2"
+  act: "Level 3"
+  monitor: "Level 3"
+  report: "Level 3"
+  improve: "Level 3"
 tags:
   - authorized-push-payment
   - APP-fraud

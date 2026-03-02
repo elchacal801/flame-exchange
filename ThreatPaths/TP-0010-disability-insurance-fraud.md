@@ -25,6 +25,14 @@ groupib_stages:
   - "Trust Abuse"
   - "Perform Fraud"
   - "Monetization"
+ucff_domains:
+  commit: "Level 3"
+  assess: "Level 3"
+  plan: "Level 3"
+  act: "Level 3"
+  monitor: "Level 4"
+  report: "Level 3"
+  improve: "Level 3"
 tags:
   - disability
   - group-benefits

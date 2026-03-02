@@ -33,6 +33,14 @@ groupib_stages:
   - "Account Access"
   - "Trust Abuse"
   - "Perform Fraud"
+ucff_domains:
+  commit: "Level 3"
+  assess: "Level 3"
+  plan: "Level 3"
+  act: "Level 3"
+  monitor: "Level 3"
+  report: "Level 3"
+  improve: "Level 2"
 tags:
   - corporate-hijacking
   - commercial-banking

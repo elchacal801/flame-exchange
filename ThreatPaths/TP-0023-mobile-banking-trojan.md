@@ -36,6 +36,14 @@ groupib_stages:
   - "Execution"
   - "Credential Access"
   - "Perform Fraud"
+ucff_domains:
+  commit: "Level 3"
+  assess: "Level 4"
+  plan: "Level 3"
+  act: "Level 4"
+  monitor: "Level 3"
+  report: "Level 2"
+  improve: "Level 4"
 tags:
   - mbanking
   - android-malware

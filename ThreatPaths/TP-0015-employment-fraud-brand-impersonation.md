@@ -28,6 +28,14 @@ groupib_stages:
   - "End-user Interaction"
   - "Perform Fraud"
   - "Monetization"
+ucff_domains:
+  commit: "Level 2"
+  assess: "Level 2"
+  plan: "Level 2"
+  act: "Level 3"
+  monitor: "Level 2"
+  report: "Level 2"
+  improve: "Level 2"
 tags:
   - employment-fraud
   - brand-impersonation

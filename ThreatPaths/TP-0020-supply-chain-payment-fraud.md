@@ -34,6 +34,14 @@ groupib_stages:
   - "Trust Abuse"
   - "Perform Fraud"
   - "Monetization"
+ucff_domains:
+  commit: "Level 3"
+  assess: "Level 3"
+  plan: "Level 3"
+  act: "Level 3"
+  monitor: "Level 3"
+  report: "Level 2"
+  improve: "Level 3"
 tags:
   - supply-chain
   - b2b-payments

@@ -29,6 +29,14 @@ groupib_stages:
   - "Perform Fraud"
   - "Monetization"
   - "Laundering"
+ucff_domains:
+  commit: "Level 3"
+  assess: "Level 3"
+  plan: "Level 3"
+  act: "Level 3"
+  monitor: "Level 3"
+  report: "Level 2"
+  improve: "Level 3"
 tags:
   - vendor-impersonation
   - accounts-payable
