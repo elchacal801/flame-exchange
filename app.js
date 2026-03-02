@@ -76,6 +76,12 @@
         dom.heatMapModal = document.getElementById('heat-map-modal');
         dom.heatMapClose = document.getElementById('heat-map-close');
         dom.heatMapBody = document.getElementById('heat-map-body');
+        dom.assessBtn = document.getElementById('assess-btn');
+        dom.assessModal = document.getElementById('assess-modal');
+        dom.assessClose = document.getElementById('assess-close');
+        dom.graphBtn = document.getElementById('graph-btn');
+        dom.graphModal = document.getElementById('graph-modal');
+        dom.graphClose = document.getElementById('graph-close');
     }
 
     // -----------------------------------------------------------------------
@@ -187,6 +193,23 @@
         dom.heatMapModal.addEventListener('click', function (e) {
             if (e.target === dom.heatMapModal) dom.heatMapModal.style.display = 'none';
         });
+
+        // Coverage Assessment
+        dom.assessBtn.addEventListener('click', function () {
+            dom.assessModal.style.display = 'flex';
+            renderCoverageAssessment();
+        });
+        dom.assessClose.addEventListener('click', function () { dom.assessModal.style.display = 'none'; });
+        dom.assessModal.addEventListener('click', function (e) { if (e.target === dom.assessModal) dom.assessModal.style.display = 'none'; });
+        document.getElementById('assess-run-btn').addEventListener('click', runCoverageAssessment);
+
+        // Relationship Graph
+        dom.graphBtn.addEventListener('click', function () {
+            dom.graphModal.style.display = 'flex';
+            renderRelationshipGraph();
+        });
+        dom.graphClose.addEventListener('click', function () { dom.graphModal.style.display = 'none'; });
+        dom.graphModal.addEventListener('click', function (e) { if (e.target === dom.graphModal) dom.graphModal.style.display = 'none'; });
 
         // Hash routing
         window.addEventListener('hashchange', handleRoute);
@@ -435,6 +458,10 @@
         // Card header
         html += '<div class="card-header">';
         html += '<span class="card-id">' + escapeHtml(item.id) + '</span>';
+        if (item.confidence_score != null) {
+            var confClass = item.confidence_score >= 70 ? 'conf-high' : (item.confidence_score >= 40 ? 'conf-med' : 'conf-low');
+            html += '<span class="conf-dot ' + confClass + '" title="Confidence: ' + item.confidence_score + '"></span>';
+        }
         html += '<span class="card-date">' + escapeHtml(item.date || '') + '</span>';
         html += '</div>';
 
@@ -496,6 +523,13 @@
         html += '<span><strong>Author:</strong> ' + escapeHtml(item.author || 'Unknown') + '</span>';
         html += '<span><strong>Date:</strong> ' + escapeHtml(item.date || 'N/A') + '</span>';
         html += '<span><strong>TLP:</strong> <span class="tlp-badge">' + escapeHtml(item.tlp || 'WHITE') + '</span></span>';
+        if (item.confidence_score != null) {
+            var detailConfClass = item.confidence_score >= 70 ? 'conf-high' : (item.confidence_score >= 40 ? 'conf-med' : 'conf-low');
+            html += '<span><strong>Confidence:</strong> <span class="conf-badge ' + detailConfClass + '">' + item.confidence_score + '</span>';
+            if (item.source_reliability) html += ' (Reliability: ' + escapeHtml(item.source_reliability) + ')';
+            if (item.info_credibility) html += ' (Credibility: ' + item.info_credibility + ')';
+            html += '</span>';
+        }
         html += '</div>';
         if (item.source) {
             html += '<div class="detail-source"><strong>Source:</strong> ';
@@ -1103,6 +1137,417 @@
         // Initial table render
         renderRegTable();
 
+    }
+
+    // -----------------------------------------------------------------------
+    // Coverage Self-Assessment
+    // -----------------------------------------------------------------------
+
+    function renderCoverageAssessment() {
+        // Populate checkboxes from stats
+        var stats = FlameData.getStats();
+        var sectorsDiv = document.getElementById('assess-sectors');
+        var fraudTypesDiv = document.getElementById('assess-fraud-types');
+
+        sectorsDiv.innerHTML = (stats.sectorList || []).map(function (s) {
+            return '<label class="assess-check"><input type="checkbox" value="' + escapeHtml(s) + '"> ' + formatLabel(s) + '</label>';
+        }).join('');
+
+        fraudTypesDiv.innerHTML = (stats.fraudTypeList || []).map(function (ft) {
+            return '<label class="assess-check"><input type="checkbox" value="' + escapeHtml(ft) + '"> ' + formatLabel(ft) + '</label>';
+        }).join('');
+
+        // Reset view to selection step
+        document.getElementById('assess-selection').style.display = 'block';
+        document.getElementById('assess-results').style.display = 'none';
+    }
+
+    function runCoverageAssessment() {
+        var selectedSectors = Array.from(document.querySelectorAll('#assess-sectors input:checked')).map(function (i) { return i.value; });
+        var selectedFraudTypes = Array.from(document.querySelectorAll('#assess-fraud-types input:checked')).map(function (i) { return i.value; });
+
+        if (selectedSectors.length === 0 && selectedFraudTypes.length === 0) {
+            alert('Please select at least one sector or fraud type.');
+            return;
+        }
+
+        var data = FlameData.getData();
+
+        // Filter TPs by selected sectors
+        var relevantTPs = data;
+        if (selectedSectors.length > 0) {
+            relevantTPs = relevantTPs.filter(function (tp) {
+                return tp.sectors && tp.sectors.some(function (s) { return selectedSectors.indexOf(s) !== -1; });
+            });
+        }
+        // Further filter by fraud types
+        if (selectedFraudTypes.length > 0) {
+            relevantTPs = relevantTPs.filter(function (tp) {
+                return tp.fraud_types && tp.fraud_types.some(function (ft) { return selectedFraudTypes.indexOf(ft) !== -1; });
+            });
+        }
+
+        // Coverage per fraud type (phase coverage)
+        var coverageByFT = {};
+        selectedFraudTypes.forEach(function (ft) {
+            var ftTPs = relevantTPs.filter(function (tp) { return tp.fraud_types && tp.fraud_types.indexOf(ft) !== -1; });
+            var coveredPhases = {};
+            ftTPs.forEach(function (tp) {
+                (tp.cfpf_phases || []).forEach(function (p) { coveredPhases[p] = true; });
+            });
+            var allPhases = ['P1', 'P2', 'P3', 'P4', 'P5'];
+            var covered = allPhases.filter(function (p) { return coveredPhases[p]; });
+            coverageByFT[ft] = {
+                count: ftTPs.length,
+                covered: covered,
+                gaps: allPhases.filter(function (p) { return !coveredPhases[p]; }),
+            };
+        });
+
+        // Phase weakness (count TPs per phase)
+        var phaseCount = { P1: 0, P2: 0, P3: 0, P4: 0, P5: 0 };
+        relevantTPs.forEach(function (tp) {
+            (tp.cfpf_phases || []).forEach(function (p) {
+                if (phaseCount[p] !== undefined) phaseCount[p]++;
+            });
+        });
+        var maxPhase = Math.max(phaseCount.P1, phaseCount.P2, phaseCount.P3, phaseCount.P4, phaseCount.P5, 1);
+
+        // Coverage score = % of selected fraud types with at least 1 TP
+        var coveredFTs = 0;
+        Object.keys(coverageByFT).forEach(function (ft) {
+            if (coverageByFT[ft].count > 0) coveredFTs++;
+        });
+        var coverageScore = selectedFraudTypes.length > 0
+            ? Math.round(coveredFTs / selectedFraudTypes.length * 100)
+            : 0;
+
+        // Average confidence
+        var scores = relevantTPs.filter(function (tp) { return tp.confidence_score != null; }).map(function (tp) { return tp.confidence_score; });
+        var avgConf = scores.length > 0 ? Math.round(scores.reduce(function (a, b) { return a + b; }, 0) / scores.length) : null;
+
+        // Detection rule count
+        var recommendedRuleIds = {};
+        relevantTPs.forEach(function (tp) {
+            (tp.detection_rule_ids || []).forEach(function (id) { recommendedRuleIds[id] = true; });
+        });
+        var ruleCount = Object.keys(recommendedRuleIds).length;
+
+        // Render results
+        var html = '<button class="assess-back-btn" id="assess-back-btn">\u2190 Back to Selection</button>';
+
+        // Score summary
+        html += '<div class="assess-score-row">';
+        html += '<div class="assess-score-card">';
+        html += '<div class="assess-score-value">' + coverageScore + '%</div>';
+        html += '<div class="assess-score-label">Coverage Score</div>';
+        html += '</div>';
+        html += '<div class="assess-score-card">';
+        html += '<div class="assess-score-value">' + relevantTPs.length + '</div>';
+        html += '<div class="assess-score-label">Matching Threat Paths</div>';
+        html += '</div>';
+        html += '<div class="assess-score-card">';
+        html += '<div class="assess-score-value">' + ruleCount + '</div>';
+        html += '<div class="assess-score-label">Detection Rules</div>';
+        html += '</div>';
+        if (avgConf !== null) {
+            html += '<div class="assess-score-card">';
+            html += '<div class="assess-score-value">' + avgConf + '</div>';
+            html += '<div class="assess-score-label">Avg Confidence</div>';
+            html += '</div>';
+        }
+        html += '</div>';
+
+        // Phase weakness chart (CSS bar chart)
+        html += '<div class="assess-section">';
+        html += '<h3>CFPF Phase Coverage</h3>';
+        html += '<div class="assess-phase-chart">';
+        PHASE_ORDER.forEach(function (p) {
+            var pct = maxPhase > 0 ? Math.round(phaseCount[p] / maxPhase * 100) : 0;
+            var info = PHASE_INFO[p];
+            html += '<div class="assess-phase-bar">';
+            html += '<span class="assess-phase-label">' + p + '</span>';
+            html += '<div class="assess-bar-track">';
+            html += '<div class="assess-bar-fill" style="width: ' + pct + '%; background: ' + info.color + ';"></div>';
+            html += '</div>';
+            html += '<span class="assess-phase-count">' + phaseCount[p] + '</span>';
+            html += '</div>';
+        });
+        html += '</div></div>';
+
+        // Gap list
+        var gapFTs = [];
+        Object.keys(coverageByFT).forEach(function (ft) {
+            if (coverageByFT[ft].count === 0) gapFTs.push(ft);
+        });
+        if (gapFTs.length > 0) {
+            html += '<div class="assess-section">';
+            html += '<h3>Uncovered Fraud Types</h3>';
+            html += '<div class="assess-gap-list">';
+            gapFTs.forEach(function (ft) {
+                html += '<span class="assess-gap-tag">' + formatLabel(ft) + '</span>';
+            });
+            html += '</div></div>';
+        }
+
+        // Coverage table
+        var coveredFTEntries = [];
+        Object.keys(coverageByFT).forEach(function (ft) {
+            if (coverageByFT[ft].count > 0) coveredFTEntries.push([ft, coverageByFT[ft]]);
+        });
+        if (coveredFTEntries.length > 0) {
+            html += '<div class="assess-section">';
+            html += '<h3>Fraud Type Coverage Detail</h3>';
+            html += '<table class="assess-table"><thead><tr><th>Fraud Type</th><th>TPs</th><th>Phases Covered</th><th>Gaps</th></tr></thead><tbody>';
+            coveredFTEntries.forEach(function (entry) {
+                var ft = entry[0];
+                var c = entry[1];
+                html += '<tr>';
+                html += '<td>' + formatLabel(ft) + '</td>';
+                html += '<td>' + c.count + '</td>';
+                html += '<td>' + c.covered.join(', ') + '</td>';
+                html += '<td>' + (c.gaps.length > 0 ? c.gaps.join(', ') : '<span style="color:var(--color-success)">Full</span>') + '</td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+        }
+
+        document.getElementById('assess-results').innerHTML = html;
+        document.getElementById('assess-selection').style.display = 'none';
+        document.getElementById('assess-results').style.display = 'block';
+
+        // Back button
+        document.getElementById('assess-back-btn').addEventListener('click', function () {
+            document.getElementById('assess-selection').style.display = 'block';
+            document.getElementById('assess-results').style.display = 'none';
+        });
+    }
+
+    // -----------------------------------------------------------------------
+    // Relationship Graph (D3.js)
+    // -----------------------------------------------------------------------
+
+    var REL_COLORS = {
+        'feeds-into': '#ef4444',
+        'enables': '#3b82f6',
+        'enhances': '#a855f7',
+        'provides-mules-for': '#22c55e',
+        'shares-infrastructure': '#f97316',
+        'escalates-from': '#eab308',
+        'related-to': '#6b7280',
+    };
+
+    var SECTOR_COLORS = [
+        '#0ea5e9', '#f43f5e', '#a78bfa', '#34d399', '#fbbf24',
+        '#06b6d4', '#fb923c', '#e879f9', '#4ade80', '#f87171'
+    ];
+
+    function renderRelationshipGraph() {
+        var container = document.getElementById('graph-container');
+        var legendDiv = document.getElementById('graph-legend');
+        if (!container) return;
+
+        // Clear previous
+        container.innerHTML = '';
+        legendDiv.innerHTML = '';
+
+        var data = FlameData.getData();
+        if (!data || data.length === 0) return;
+
+        // Build node and link data
+        var nodeMap = {};
+        var sectorSet = {};
+        data.forEach(function (tp) {
+            var primarySector = (tp.sectors && tp.sectors.length > 0) ? tp.sectors[0] : 'other';
+            sectorSet[primarySector] = true;
+            nodeMap[tp.id] = {
+                id: tp.id,
+                title: tp.title || tp.id,
+                sector: primarySector,
+                confidence: tp.confidence_score,
+                phases: (tp.cfpf_phases || []).length,
+            };
+        });
+
+        var sectorList = Object.keys(sectorSet).sort();
+        var sectorColorMap = {};
+        sectorList.forEach(function (s, i) {
+            sectorColorMap[s] = SECTOR_COLORS[i % SECTOR_COLORS.length];
+        });
+
+        var nodes = [];
+        Object.keys(nodeMap).forEach(function (id) { nodes.push(nodeMap[id]); });
+
+        var links = [];
+        var linkSet = {};
+        data.forEach(function (tp) {
+            (tp.related_tps || []).forEach(function (rel) {
+                if (nodeMap[rel.id]) {
+                    var key = tp.id + '->' + rel.id;
+                    if (!linkSet[key]) {
+                        linkSet[key] = true;
+                        links.push({
+                            source: tp.id,
+                            target: rel.id,
+                            relationship: rel.relationship || 'related-to',
+                        });
+                    }
+                }
+            });
+        });
+
+        // SVG setup
+        var width = container.clientWidth || 800;
+        var height = Math.max(container.clientHeight || 500, 500);
+
+        var svg = d3.select(container)
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('viewBox', '0 0 ' + width + ' ' + height);
+
+        // Zoom group
+        var g = svg.append('g');
+
+        var zoom = d3.zoom()
+            .scaleExtent([0.2, 4])
+            .on('zoom', function (event) {
+                g.attr('transform', event.transform);
+            });
+
+        svg.call(zoom);
+
+        // Arrow markers for each relationship type
+        var defs = svg.append('defs');
+        Object.keys(REL_COLORS).forEach(function (rel) {
+            defs.append('marker')
+                .attr('id', 'arrow-' + rel)
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 20)
+                .attr('refY', 0)
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', REL_COLORS[rel]);
+        });
+
+        // Force simulation
+        var simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links).id(function (d) { return d.id; }).distance(120))
+            .force('charge', d3.forceManyBody().strength(-300))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(30));
+
+        // Draw links
+        var link = g.append('g')
+            .attr('class', 'graph-links')
+            .selectAll('line')
+            .data(links)
+            .enter()
+            .append('line')
+            .attr('stroke', function (d) { return REL_COLORS[d.relationship] || REL_COLORS['related-to']; })
+            .attr('stroke-width', 1.5)
+            .attr('stroke-opacity', 0.6)
+            .attr('marker-end', function (d) { return 'url(#arrow-' + (d.relationship || 'related-to') + ')'; });
+
+        // Draw nodes
+        var node = g.append('g')
+            .attr('class', 'graph-nodes')
+            .selectAll('g')
+            .data(nodes)
+            .enter()
+            .append('g')
+            .attr('cursor', 'pointer')
+            .call(d3.drag()
+                .on('start', function (event, d) {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                })
+                .on('drag', function (event, d) {
+                    d.fx = event.x;
+                    d.fy = event.y;
+                })
+                .on('end', function (event, d) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    d.fx = null;
+                    d.fy = null;
+                })
+            );
+
+        node.append('circle')
+            .attr('r', function (d) { return 6 + (d.phases || 0) * 1.5; })
+            .attr('fill', function (d) { return sectorColorMap[d.sector] || '#6b7280'; })
+            .attr('stroke', '#000')
+            .attr('stroke-width', 1);
+
+        node.append('text')
+            .attr('class', 'graph-node-label')
+            .attr('dx', 12)
+            .attr('dy', 4)
+            .text(function (d) { return d.id; });
+
+        // Tooltip
+        var tooltip = d3.select(container)
+            .append('div')
+            .attr('class', 'graph-tooltip')
+            .style('display', 'none');
+
+        node.on('mouseover', function (event, d) {
+            tooltip.style('display', 'block')
+                .html('<strong>' + escapeHtml(d.id) + '</strong><br>' + escapeHtml(d.title));
+            // Highlight connected links
+            link.attr('stroke-opacity', function (l) {
+                return (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.15;
+            }).attr('stroke-width', function (l) {
+                return (l.source.id === d.id || l.target.id === d.id) ? 2.5 : 1;
+            });
+        })
+        .on('mousemove', function (event) {
+            var rect = container.getBoundingClientRect();
+            tooltip.style('left', (event.clientX - rect.left + 12) + 'px')
+                .style('top', (event.clientY - rect.top - 10) + 'px');
+        })
+        .on('mouseout', function () {
+            tooltip.style('display', 'none');
+            link.attr('stroke-opacity', 0.6).attr('stroke-width', 1.5);
+        })
+        .on('click', function (event, d) {
+            // Close modal and navigate to detail view
+            dom.graphModal.style.display = 'none';
+            navigateTo('detail', d.id);
+        });
+
+        // Simulation tick
+        simulation.on('tick', function () {
+            link
+                .attr('x1', function (d) { return d.source.x; })
+                .attr('y1', function (d) { return d.source.y; })
+                .attr('x2', function (d) { return d.target.x; })
+                .attr('y2', function (d) { return d.target.y; });
+
+            node.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
+        });
+
+        // Legend — relationship types
+        var legendHtml = '';
+        Object.keys(REL_COLORS).forEach(function (rel) {
+            legendHtml += '<span class="graph-legend-item">';
+            legendHtml += '<span class="graph-legend-swatch" style="background: ' + REL_COLORS[rel] + ';"></span>';
+            legendHtml += formatLabel(rel);
+            legendHtml += '</span>';
+        });
+        // Sector colors
+        legendHtml += '<span class="graph-legend-item" style="margin-left: 16px; font-weight: 600;">Sectors:</span>';
+        sectorList.forEach(function (s) {
+            legendHtml += '<span class="graph-legend-item">';
+            legendHtml += '<span class="graph-legend-swatch" style="background: ' + sectorColorMap[s] + '; width: 12px; height: 12px; border-radius: 50%;"></span>';
+            legendHtml += formatLabel(s);
+            legendHtml += '</span>';
+        });
+        legendDiv.innerHTML = legendHtml;
     }
 
     // -----------------------------------------------------------------------

@@ -51,6 +51,21 @@
                         <rect x="14" y="14" width="7" height="7" />
                     </svg>
                 </button>
+                <button class="heat-map-btn" id="assess-btn" title="Coverage Assessment">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 11l3 3L22 4" />
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                    </svg>
+                </button>
+                <button class="heat-map-btn" id="graph-btn" title="Relationship Graph">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="5" cy="12" r="3" />
+                        <circle cx="19" cy="5" r="3" />
+                        <circle cx="19" cy="19" r="3" />
+                        <line x1="8" y1="12" x2="16" y2="5" />
+                        <line x1="8" y1="12" x2="16" y2="19" />
+                    </svg>
+                </button>
             </div>
             <div class="header-actions">
                 <button class="pulse-toggle-btn" id="pulse-toggle-btn" title="Regulatory Pulse">
@@ -209,6 +224,53 @@
 
 
     <!-- ================================================================ -->
+    <!-- Coverage Assessment Modal                                        -->
+    <!-- ================================================================ -->
+    <div class="modal-overlay" id="assess-modal" style="display:none;">
+        <div class="modal-content modal-wide">
+            <div class="modal-header">
+                <h2>Coverage Self-Assessment</h2>
+                <button class="modal-close" id="assess-close">&times;</button>
+            </div>
+            <div class="modal-body" id="assess-body">
+                <!-- Step 1: Selection -->
+                <div id="assess-selection">
+                    <p class="assess-intro">Select your organization's sectors and fraud types to identify coverage gaps in your detection program.</p>
+                    <div class="assess-columns">
+                        <div class="assess-col">
+                            <h3>Sectors</h3>
+                            <div class="assess-checkboxes" id="assess-sectors"></div>
+                        </div>
+                        <div class="assess-col">
+                            <h3>Fraud Types</h3>
+                            <div class="assess-checkboxes" id="assess-fraud-types"></div>
+                        </div>
+                    </div>
+                    <button class="assess-btn" id="assess-run-btn">Assess Coverage</button>
+                </div>
+                <!-- Step 2: Results -->
+                <div id="assess-results" style="display:none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- Relationship Graph Modal                                         -->
+    <!-- ================================================================ -->
+    <div class="modal-overlay" id="graph-modal" style="display:none;">
+        <div class="modal-content modal-wide modal-graph">
+            <div class="modal-header">
+                <h2>Threat Path Relationship Graph</h2>
+                <button class="modal-close" id="graph-close">&times;</button>
+            </div>
+            <div class="modal-body" id="graph-body">
+                <div id="graph-container"></div>
+                <div class="graph-legend" id="graph-legend"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
     <!-- About Modal                                                      -->
     <!-- ================================================================ -->
     <div class="modal-overlay" id="about-modal" style="display:none;">
@@ -249,6 +311,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
     <script src="flame-data.js"></script>
     <script src="app.js"></script>
 </body>
