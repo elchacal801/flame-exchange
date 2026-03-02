@@ -1,0 +1,91 @@
+# FLAME Detection Logic Rule Template (DL-XXXX)
+# Naming convention: DL-XXXX-descriptive-name.yml
+# All rules stored in DetectionLogic/ directory
+#
+# This format is Sigma-compatible for portability to Splunk SPL,
+# Elastic EQL, Sentinel KQL, QRadar AQL via pySigma backends.
+
+# A short, descriptive name for the detection rule.
+title: "<Descriptive rule name>"
+
+# Unique identifier for this rule. Generate with:
+#   python -c "import uuid; print(uuid.uuid4())"
+id: "<UUID v4>"
+
+# Rule maturity lifecycle:
+#   experimental - newly created, not yet validated in production
+#   test         - under active testing / tuning
+#   stable       - validated, production-ready
+#   deprecated   - superseded or no longer relevant
+status: experimental
+
+# Explain what the rule detects and why it matters for fraud prevention.
+# Include the behavioral pattern and its significance.
+description: "<What this rule detects and why it matters for fraud prevention>"
+
+# Links to source intelligence, research papers, or advisories that
+# informed this rule's logic.
+references:
+  - "<URL to source intelligence or research>"
+
+# Which FLAME Threat Paths this rule supports.
+# A rule may map to multiple TPs if it is a shared detection component.
+threat_paths:
+  - TP-XXXX
+
+# Cyber-enabled Fraud Prevention Framework phase this rule addresses:
+#   P1 - Recon
+#   P2 - Initial Access
+#   P3 - Positioning
+#   P4 - Execution
+#   P5 - Monetization
+cfpf_phase: P2
+
+# Fraud type(s) detected. Values should align with flame_taxonomy.json.
+# Examples: account-takeover, money-mule, synthetic-identity,
+#           authorized-push-payment, card-not-present, check-fraud
+fraud_types:
+  - account-takeover
+
+# Sigma-compatible log source definition.
+# product: the industry vertical or platform generating logs
+#   Values: banking | insurance | ecommerce | crypto | healthcare | government | telecom
+# service: the specific log source within the product
+logsource:
+  product: banking
+  service: transaction_monitoring
+
+# Sigma-compatible detection logic.
+# Define one or more selection blocks, optional filters, and a condition
+# that combines them. Use Sigma syntax for field matching.
+#
+# Supported Sigma modifiers: contains, endswith, startswith, all, re, etc.
+# Aggregation: count, min, max, avg, sum with by-clause grouping.
+# Timeframe: optional time window for aggregation-based rules.
+detection:
+  selection:
+    field_name: 'value'
+  condition: selection
+
+# Known scenarios that may trigger this rule without actual fraud.
+# Helps analysts triage alerts and tune thresholds.
+falsepositives:
+  - "<Known false positive scenario>"
+
+# Alert severity:
+#   informational - context enrichment, no direct action needed
+#   low           - minor anomaly, review during normal workflow
+#   medium        - notable activity, investigate within SLA
+#   high          - strong fraud indicator, escalate promptly
+#   critical      - confirmed or near-certain fraud, immediate action
+level: high
+
+# Tags for categorization and cross-referencing.
+# Include at minimum:
+#   - cfpf.<phase>.<sub_phase>   CFPF phase tag
+#   - attack.tXXXX               MITRE ATT&CK technique (where applicable)
+#   - flame.shared                if rule applies to multiple Threat Paths
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1566
+  - flame.shared
