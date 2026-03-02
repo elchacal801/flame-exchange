@@ -37,6 +37,18 @@ ucff_domains:
   monitor: "Level 4"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 80
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0001
+    relationship: enables
+  - id: TP-0005
+    relationship: enables
+  - id: TP-0008
+    relationship: enables
+  - id: TP-0012
+    relationship: enables
 tags:
   - insider
   - employee-fraud

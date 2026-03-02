@@ -34,6 +34,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 2"
+confidence_score: 64
+source_reliability: C
+info_credibility: 3
+related_tps:
+  - id: TP-0003
+    relationship: feeds-into
+  - id: TP-0008
+    relationship: enables
 tags:
   - loyalty-fraud
   - rewards-points

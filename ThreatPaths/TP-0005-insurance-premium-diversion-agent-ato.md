@@ -34,6 +34,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 3"
   improve: "Level 2"
+confidence_score: 72
+source_reliability: B
+info_credibility: 3
+related_tps:
+  - id: TP-0008
+    relationship: enables
+  - id: TP-0014
+    relationship: enables
 tags:
   - insurance-agent
   - agent-portal

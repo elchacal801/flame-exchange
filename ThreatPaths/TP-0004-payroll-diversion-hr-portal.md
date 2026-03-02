@@ -35,6 +35,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 2"
+confidence_score: 80
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0014
+    relationship: enables
+  - id: TP-0015
+    relationship: related-to
 tags:
   - HR-portal
   - direct-deposit

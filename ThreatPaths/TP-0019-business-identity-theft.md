@@ -41,6 +41,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 3"
   improve: "Level 2"
+confidence_score: 72
+source_reliability: B
+info_credibility: 3
+related_tps:
+  - id: TP-0003
+    relationship: related-to
+  - id: TP-0022
+    relationship: feeds-into
 tags:
   - corporate-hijacking
   - commercial-banking

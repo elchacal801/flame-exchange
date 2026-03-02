@@ -35,6 +35,14 @@ ucff_domains:
   monitor: "Level 4"
   report: "Level 4"
   improve: "Level 3"
+confidence_score: 82
+source_reliability: A
+info_credibility: 2
+related_tps:
+  - id: TP-0010
+    relationship: related-to
+  - id: TP-0028
+    relationship: escalates-from
 tags:
   - medicare-fraud
   - medical-billing

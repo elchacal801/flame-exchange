@@ -36,6 +36,16 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 82
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0007
+    relationship: enhances
+  - id: TP-0014
+    relationship: enables
+  - id: TP-0024
+    relationship: related-to
 tags:
   - authorized-push-payment
   - APP-fraud

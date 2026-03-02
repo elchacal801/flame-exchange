@@ -37,6 +37,16 @@ ucff_domains:
   monitor: "Level 2"
   report: "Level 2"
   improve: "Level 2"
+confidence_score: 88
+source_reliability: A
+info_credibility: 2
+related_tps:
+  - id: TP-0002
+    relationship: related-to
+  - id: TP-0007
+    relationship: enhances
+  - id: TP-0011
+    relationship: provides-mules-for
 tags:
   - real-estate
   - title-company

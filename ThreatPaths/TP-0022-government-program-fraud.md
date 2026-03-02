@@ -37,6 +37,16 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 4"
   improve: "Level 3"
+confidence_score: 82
+source_reliability: A
+info_credibility: 2
+related_tps:
+  - id: TP-0003
+    relationship: feeds-into
+  - id: TP-0011
+    relationship: provides-mules-for
+  - id: TP-0033
+    relationship: related-to
 tags:
   - benefits-scam
   - irs-fraud

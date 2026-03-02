@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:elchacal801.github.io)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git log --oneline origin/main --not 4fa5a9d)",
+      "Bash(git checkout --ours database/flame-data.json database/flame-stats.json database/flame.db database/flame_stix_bundle.json)",
+      "Bash(git add database/flame-data.json database/flame-stats.json database/flame.db database/flame_stix_bundle.json)",
+      "Bash(git rebase --continue)",
+      "Bash(GIT_EDITOR=true git rebase --continue)"
     ]
   }
 }

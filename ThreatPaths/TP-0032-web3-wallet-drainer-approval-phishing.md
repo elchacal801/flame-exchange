@@ -48,6 +48,14 @@ ucff_domains:
   monitor: "Level 4"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 82
+source_reliability: B
+info_credibility: 1
+related_tps:
+  - id: TP-0017
+    relationship: shares-infrastructure
+  - id: TP-0026
+    relationship: related-to
 tags:
   - wallet-drainer
   - approval-phishing

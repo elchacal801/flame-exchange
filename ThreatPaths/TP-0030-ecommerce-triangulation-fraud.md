@@ -45,6 +45,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 3"
+confidence_score: 72
+source_reliability: B
+info_credibility: 3
+related_tps:
+  - id: TP-0031
+    relationship: shares-infrastructure
+  - id: TP-0016
+    relationship: related-to
 tags:
   - triangulation-fraud
   - marketplace-fraud

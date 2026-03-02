@@ -42,6 +42,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 3"
+confidence_score: 68
+source_reliability: B
+info_credibility: 3
+related_tps:
+  - id: TP-0002
+    relationship: related-to
+  - id: TP-0018
+    relationship: related-to
 tags:
   - supply-chain
   - b2b-payments

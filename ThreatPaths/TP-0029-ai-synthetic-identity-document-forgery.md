@@ -49,6 +49,14 @@ ucff_domains:
   monitor: "Level 4"
   report: "Level 3"
   improve: "Level 4"
+confidence_score: 68
+source_reliability: C
+info_credibility: 2
+related_tps:
+  - id: TP-0003
+    relationship: escalates-from
+  - id: TP-0015
+    relationship: related-to
 tags:
   - ai-generated
   - synthetic-identity

@@ -8,6 +8,9 @@
     "source": "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
     "tlp": "WHITE",
     "summary": "Threat actors target commercial banking customers using a multi-phase scheme that begins with search engine malvertising (poisoned ads impersonating bank login pages), transitions to vishing (phone-ba...",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "sectors": [
       "banking"
     ],
@@ -115,6 +118,24 @@
       "DL-0048",
       "DL-0049"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0007",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0008",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0011",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0014",
+        "relationship": "enables"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -126,6 +147,9 @@
     "source": "FBI IC3 / FinCEN Advisory FIN-2019-A005 / multiple public reporting",
     "tlp": "WHITE",
     "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 ...",
+    "confidence_score": 88,
+    "source_reliability": "B",
+    "info_credibility": 1,
     "sectors": [
       "banking",
       "cross-sector"
@@ -207,6 +231,20 @@
       "DL-0041",
       "DL-0043"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0007",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0011",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0020",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -218,6 +256,9 @@
     "source": "Federal Reserve / FinCEN / ACFE reporting",
     "tlp": "WHITE",
     "summary": "Actors create fictitious identities by combining real SSNs (often belonging to children, elderly, deceased, or immigrants) with fabricated PII. They then \"nurture\" these synthetic identities over mont...",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "fintech"
@@ -281,6 +322,20 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0009",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0013",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0029",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 2
   },
   {
@@ -292,6 +347,9 @@
     "source": "FBI IC3 PSA I-091819-PSA / multiple industry reports",
     "tlp": "WHITE",
     "summary": "Actors compromise employee self-service HR portals (Workday, ADP, UKG, etc.) to change direct deposit routing information, diverting paychecks to actor-controlled accounts. Often combined with email r...",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "sectors": [
       "cross-sector"
     ],
@@ -365,6 +423,16 @@
       "DL-0024",
       "DL-0025"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0014",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0015",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -376,6 +444,9 @@
     "source": "Coalition Against Insurance Fraud / industry reporting",
     "tlp": "WHITE",
     "summary": "Actors compromise insurance agent portals to modify policy payment routing, diverting premium payments from policyholders to actor-controlled accounts. Alternatively, actors gain access to agent trust...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "insurance"
     ],
@@ -449,6 +520,16 @@
       "DL-0025",
       "DL-0026"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0008",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0014",
+        "relationship": "enables"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -460,6 +541,9 @@
     "source": "FBI IC3 / American Land Title Association (ALTA) reporting",
     "tlp": "WHITE",
     "summary": "Actors compromise email accounts of real estate agents, title companies, attorneys, or mortgage lenders to monitor pending transactions and send fraudulent wire instructions to homebuyers at closing. ...",
+    "confidence_score": 88,
+    "source_reliability": "A",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "cross-sector"
@@ -545,6 +629,20 @@
       "DL-0035",
       "DL-0036"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0002",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0007",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0011",
+        "relationship": "provides-mules-for"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -556,6 +654,9 @@
     "source": "Wall Street Journal (2019 UK energy firm case) / Regula AI deepfake fraud surveys",
     "tlp": "WHITE",
     "summary": "Actors use AI-generated voice deepfakes to impersonate executives, clients, or authorized signers during phone-based wire transfer authorization. The first publicly documented case (2019) involved a U...",
+    "confidence_score": 68,
+    "source_reliability": "C",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "cross-sector"
@@ -630,6 +731,28 @@
       "DL-0051",
       "DL-0052"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0001",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0002",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0006",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0012",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0025",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -641,6 +764,9 @@
     "source": "FBI IC3 / DOJ SIM swap prosecutions / industry reporting",
     "tlp": "WHITE",
     "summary": "Actors social-engineer mobile carriers to transfer a victim's phone number to an actor-controlled SIM card, then use intercepted SMS-based MFA codes to take over cryptocurrency exchange accounts and d...",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "sectors": [
       "crypto",
       "fintech",
@@ -727,6 +853,20 @@
       "DL-0048",
       "DL-0049"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0001",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0005",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0013",
+        "relationship": "enables"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -738,6 +878,9 @@
     "source": "USPS OIG / FinCEN / banking industry reporting",
     "tlp": "WHITE",
     "summary": "Actors steal checks from USPS mailboxes (using stolen arrow keys or by fishing mail from collection boxes), chemically wash the payee and amount fields, then rewrite checks to themselves or accomplice...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "banking",
       "credit-union"
@@ -799,6 +942,16 @@
       "improve": "Level 2"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0011",
+        "relationship": "provides-mules-for"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -810,6 +963,9 @@
     "source": "DOJ prosecution records / Coalition Against Insurance Fraud / industry experience",
     "tlp": "WHITE",
     "summary": "Actors file fraudulent long-term or short-term disability claims using fabricated, exaggerated, or collusively obtained medical documentation. Schemes range from individual claimants exaggerating symp...",
+    "confidence_score": 60,
+    "source_reliability": "C",
+    "info_credibility": 3,
     "sectors": [
       "insurance"
     ],
@@ -873,6 +1029,12 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0021",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -884,6 +1046,9 @@
     "source": "FBI IC3 / FinCEN Advisory FIN-2020-A008 / INTERPOL",
     "tlp": "WHITE",
     "summary": "Actors operating from organized scam compounds (primarily Southeast Asia) cultivate fake romantic or investment relationships with victims over weeks to months, then exploit the relationship to either...",
+    "confidence_score": 88,
+    "source_reliability": "A",
+    "info_credibility": 1,
     "sectors": [
       "cross-sector"
     ],
@@ -959,6 +1124,28 @@
       "DL-0042",
       "DL-0043"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0001",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0002",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0006",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0009",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0025",
+        "relationship": "escalates-from"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -970,6 +1157,9 @@
     "source": "FBI IC3 / UK PSR APP fraud data / FTC consumer reports",
     "tlp": "WHITE",
     "summary": "Actors contact victims impersonating bank fraud departments, tech support (Microsoft, Apple, Amazon), or government agencies (IRS, SSA), convincing them that their accounts are compromised and they mu...",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "credit-union"
@@ -1046,6 +1236,20 @@
       "DL-0058",
       "DL-0060"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0007",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0014",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0024",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 1
   },
   {
@@ -1057,6 +1261,9 @@
     "source": "Akamai State of the Internet reports / industry reporting",
     "tlp": "WHITE",
     "summary": "Actors use large-scale credential stuffing (automated testing of stolen username/password pairs from unrelated breaches) against loyalty program portals, bank rewards platforms, and gift card balance-...",
+    "confidence_score": 64,
+    "source_reliability": "C",
+    "info_credibility": 3,
     "sectors": [
       "fintech",
       "banking",
@@ -1138,6 +1345,16 @@
       "DL-0066",
       "DL-0067"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0008",
+        "relationship": "enables"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1149,6 +1366,9 @@
     "source": "DOJ prosecution records / ACFE / FinCEN SAR data / FDIC enforcement actions",
     "tlp": "WHITE",
     "summary": "Employees of financial institutions abuse their legitimate system access to commit or enable fraud — opening accounts with stolen identities, modifying customer records to facilitate unauthorized tran...",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "credit-union",
@@ -1221,6 +1441,24 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0001",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0005",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0008",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0012",
+        "relationship": "enables"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1232,6 +1470,9 @@
     "source": "domain_intel DEA investigation / FBI IC3 employment scam advisories",
     "tlp": "WHITE",
     "summary": "Actors impersonate legitimate employers — particularly in healthcare staffing, home care, and remote work sectors — by registering lookalike domains and creating fake job postings. Victims are \"hired\"...",
+    "confidence_score": 64,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "healthcare",
       "staffing",
@@ -1302,6 +1543,16 @@
       "improve": "Level 2"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0004",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0029",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 1
   },
   {
@@ -1313,6 +1564,9 @@
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
     "summary": "First-party fraud occurs when an individual intentionally misrepresents their identity, intent, or financial situation to obtain credit or services with no intention of repayment. This threat path foc...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "banking",
       "credit-union"
@@ -1369,6 +1623,16 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0031",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1380,6 +1644,9 @@
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
     "summary": "\"Pig Butchering\" (Sha Zhu Pan) is an orchestrated, long-term social engineering scheme where perpetrators build trust with targets over weeks or months (often via dating apps or misdirected text messa...",
+    "confidence_score": 88,
+    "source_reliability": "A",
+    "info_credibility": 1,
     "sectors": [
       "banking",
       "crypto",
@@ -1446,6 +1713,16 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0026",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0032",
+        "relationship": "shares-infrastructure"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1457,6 +1734,9 @@
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
     "summary": "Deepfake document fraud targets the Know Your Customer (KYC) and remote account onboarding processes. Criminals utilize advanced generative AI models (GANs, diffusion models) to manufacture highly rea...",
+    "confidence_score": 60,
+    "source_reliability": "C",
+    "info_credibility": 3,
     "sectors": [
       "banking",
       "credit-union",
@@ -1521,6 +1801,16 @@
       "DL-0053",
       "DL-0054"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0002",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0020",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1532,6 +1822,9 @@
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
     "summary": "Business Identity Theft (or Corporate Hijacking) involves threat actors impersonating a legitimate, functioning business — typically a small to medium-sized enterprise (SME) — to open financial accoun...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "banking",
       "investment"
@@ -1597,6 +1890,16 @@
       "improve": "Level 2"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0022",
+        "relationship": "feeds-into"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1608,6 +1911,9 @@
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
     "summary": "Supply Chain Payment Fraud (a variant of Vendor Impersonation / BEC) involves threat actors compromising the email account of a legitimate vendor or supplier. The actors monitor email traffic to ident...",
+    "confidence_score": 68,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "banking",
       "cross-sector"
@@ -1679,6 +1985,16 @@
       "DL-0032",
       "DL-0035"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0002",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0018",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1690,6 +2006,9 @@
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
     "summary": "Healthcare Provider Billing Fraud involves legitimate or seemingly legitimate medical providers intentionally submitting false or inflated claims to health insurance networks or government programs (l...",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
     "sectors": [
       "healthcare",
       "insurance"
@@ -1745,6 +2064,16 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0010",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0028",
+        "relationship": "escalates-from"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1756,6 +2085,9 @@
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
     "summary": "Government Program Fraud involves threat actors leveraging stolen Personally Identifiable Information (PII) to file fraudulent claims for government benefits (e.g., UI, SNAP, FEMA disaster relief) or ...",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
     "sectors": [
       "government",
       "banking"
@@ -1822,6 +2154,20 @@
       "DL-0041",
       "DL-0043"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0011",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0033",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1833,6 +2179,9 @@
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
     "summary": "Mobile Banking Trojans (primarily targeting Android environments) are sophisticated malware variants that deceive users into granting extensive device \"Accessibility\" permissions. Once installed, the ...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "fintech",
@@ -1908,6 +2257,16 @@
       "DL-0010",
       "DL-0011"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0001",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0008",
+        "relationship": "shares-infrastructure"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -1919,6 +2278,9 @@
     "source": "Original Research — multi-source intelligence compilation",
     "tlp": "WHITE",
     "summary": "Threat actors exploit account-to-account (A2A) instant payment rails (Zelle, FedNow, Pix, UPI, UK Faster Payments) to execute irrevocable fund transfers via social engineering, account takeover, or pa...",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "fintech",
@@ -2005,6 +2367,20 @@
       "DL-0060",
       "DL-0061"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0001",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0011",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0012",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2016,6 +2392,9 @@
     "source": "Original Research — multi-source intelligence compilation",
     "tlp": "WHITE",
     "summary": "Threat actors leverage generative AI capabilities — including deepfake voice cloning, AI-generated profile imagery, and large language model-driven chatbots — to operate romance scam campaigns at unpr...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "banking",
       "cross-sector"
@@ -2094,6 +2473,20 @@
       "improve": "Level 4"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0007",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0011",
+        "relationship": "escalates-from"
+      },
+      {
+        "id": "TP-0026",
+        "relationship": "shares-infrastructure"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2105,6 +2498,9 @@
     "source": "Original Research — multi-source intelligence compilation",
     "tlp": "WHITE",
     "summary": "Threat actors deploy generative AI to create and operate fraudulent investment schemes at industrial scale, combining deepfake celebrity endorsement videos, AI-generated trading dashboards showing fab...",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "crypto",
@@ -2186,6 +2582,20 @@
       "improve": "Level 4"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0017",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0025",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0032",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2197,6 +2607,9 @@
     "source": "https://www.ic3.gov/AnnualReport/Reports/2024_IC3ElderFraudReport.pdf",
     "tlp": "WHITE",
     "summary": "Threat actors exploit adults aged 60 and older through multiple converging fraud vectors including tech support scams, romance scams, investment fraud, and government impersonation schemes. FBI IC3 re...",
+    "confidence_score": 88,
+    "source_reliability": "A",
+    "info_credibility": 1,
     "sectors": [
       "banking",
       "cross-sector"
@@ -2272,6 +2685,20 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0011",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0012",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0025",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2283,6 +2710,9 @@
     "source": "https://oig.hhs.gov/reports-and-publications/featured-topics/dme/",
     "tlp": "WHITE",
     "summary": "Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered t...",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 2,
     "sectors": [
       "healthcare",
       "insurance",
@@ -2350,6 +2780,16 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0021",
+        "relationship": "escalates-from"
+      },
+      {
+        "id": "TP-0022",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2361,6 +2801,9 @@
     "source": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20240715a.htm",
     "tlp": "WHITE",
     "summary": "Threat actors are leveraging generative AI to produce high-fidelity forged identity documents, synthetic facial images, and behavioral biometric mimicry to bypass KYC/identity verification controls at...",
+    "confidence_score": 68,
+    "source_reliability": "C",
+    "info_credibility": 2,
     "sectors": [
       "banking",
       "fintech"
@@ -2438,6 +2881,16 @@
       "improve": "Level 4"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "escalates-from"
+      },
+      {
+        "id": "TP-0015",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2449,6 +2902,9 @@
     "source": "https://www.chargebackgurus.com/blog/triangulation-fraud",
     "tlp": "WHITE",
     "summary": "Triangulation fraud is a three-party e-commerce scheme where fraudsters list legitimate products on marketplace platforms (Amazon, eBay, Walmart Marketplace) at competitive prices, accept orders from ...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "retail"
     ],
@@ -2521,6 +2977,16 @@
       "DL-0064",
       "DL-0067"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0016",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0031",
+        "relationship": "shares-infrastructure"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2532,6 +2998,9 @@
     "source": "Original Research — aggregated from NRF, industry reporting, and underground market analysis",
     "tlp": "WHITE",
     "summary": "Organized Refund-as-a-Service (RaaS) operations monetize retailer return policies at industrial scale by filing fraudulent refund claims on behalf of paying customers. Professional \"refunders\" operati...",
+    "confidence_score": 72,
+    "source_reliability": "C",
+    "info_credibility": 2,
     "sectors": [
       "retail"
     ],
@@ -2601,6 +3070,16 @@
       "DL-0065",
       "DL-0066"
     ],
+    "related_tps": [
+      {
+        "id": "TP-0016",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0030",
+        "relationship": "shares-infrastructure"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2612,6 +3091,9 @@
     "source": "Original Research — aggregated from ScamSniffer, Chainalysis, Elliptic, and on-chain analysis",
     "tlp": "WHITE",
     "summary": "Wallet drainer operations exploit blockchain token approval mechanisms to steal cryptocurrency assets at scale. Threat actors deploy Drainer-as-a-Service (DaaS) kits — most notably Inferno Drainer (co...",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 1,
     "sectors": [
       "web3",
       "crypto"
@@ -2689,6 +3171,16 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0017",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0026",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   },
   {
@@ -2700,6 +3192,9 @@
     "source": "Original Research — aggregated from Equifax, California Community Colleges Chancellor's Office, DOE-OIG, and GAO reporting",
     "tlp": "WHITE",
     "summary": "Organized fraud networks exploit the open-enrollment admissions model of community colleges and universities to create thousands of \"ghost student\" identities — synthetic or stolen identities enrolled...",
+    "confidence_score": 68,
+    "source_reliability": "B",
+    "info_credibility": 3,
     "sectors": [
       "education",
       "government"
@@ -2771,6 +3266,16 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0022",
+        "relationship": "related-to"
+      }
+    ],
     "evidence_count": 0
   }
 ]

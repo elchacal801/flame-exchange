@@ -37,6 +37,16 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 3"
+confidence_score: 88
+source_reliability: B
+info_credibility: 1
+related_tps:
+  - id: TP-0007
+    relationship: enhances
+  - id: TP-0011
+    relationship: provides-mules-for
+  - id: TP-0020
+    relationship: related-to
 tags:
   - vendor-impersonation
   - accounts-payable

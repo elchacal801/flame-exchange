@@ -34,6 +34,16 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 3"
+confidence_score: 80
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0009
+    relationship: feeds-into
+  - id: TP-0013
+    relationship: feeds-into
+  - id: TP-0029
+    relationship: related-to
 tags:
   - credit-building
   - bust-out

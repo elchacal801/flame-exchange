@@ -42,6 +42,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 88
+source_reliability: A
+info_credibility: 1
+related_tps:
+  - id: TP-0026
+    relationship: related-to
+  - id: TP-0032
+    relationship: shares-infrastructure
 tags:
   - pig-butchering
   - crypto-scam

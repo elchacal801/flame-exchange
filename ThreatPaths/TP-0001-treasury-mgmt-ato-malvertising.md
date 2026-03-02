@@ -47,6 +47,18 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 2"
+confidence_score: 82
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0007
+    relationship: enhances
+  - id: TP-0008
+    relationship: enables
+  - id: TP-0011
+    relationship: provides-mules-for
+  - id: TP-0014
+    relationship: enables
 tags:
   - treasury-management
   - commercial-banking

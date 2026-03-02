@@ -44,6 +44,17 @@ ucff_domains:                    # Group-IB UCFF domain alignment
 mitre_attack:                    # MITRE ATT&CK technique IDs (supplementary)
   - T1566
 
+# Confidence scoring (Admiralty Code)
+confidence_score: 0              # 0-100 composite (auto-derived from reliability + credibility)
+source_reliability: "F"          # A=Completely reliable ... F=Cannot be judged
+info_credibility: 6              # 1=Confirmed ... 6=Cannot be judged
+
+# Cross-TP relationships
+related_tps:                     # Typed relationships to other Threat Paths
+  - id: TP-XXXX
+    relationship: related-to     # feeds-into | shares-infrastructure | escalates-from |
+                                 # provides-mules-for | enables | enhances | related-to
+
 tags:                            # Additional descriptive tags
   - tag1
 ---

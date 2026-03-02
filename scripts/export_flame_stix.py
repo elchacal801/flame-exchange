@@ -336,10 +336,18 @@ def main():
             all_rules.extend(rules)
 
         # Find cross-references for relationships
-        cross_refs = find_tp_cross_refs(body, tp_id, known_tp_ids)
-        for ref_id in cross_refs:
-            # We'll create these after all APs are built
-            relationships.append((tp_id, ref_id))
+        # Prefer structured related_tps from frontmatter; fall back to regex body scan
+        related_tps_meta = tp.get("related_tps", [])
+        if related_tps_meta:
+            for rel in related_tps_meta:
+                ref_id = rel.get("id", "") if isinstance(rel, dict) else ""
+                rel_type = rel.get("relationship", "related-to") if isinstance(rel, dict) else "related-to"
+                if ref_id and ref_id != tp_id and ref_id in known_tp_ids:
+                    relationships.append((tp_id, ref_id, rel_type))
+        else:
+            cross_refs = find_tp_cross_refs(body, tp_id, known_tp_ids)
+            for ref_id in cross_refs:
+                relationships.append((tp_id, ref_id, "related-to"))
 
         # Add MITRE relationships
         for tech_id in tp.get("mitre_attack", []):
@@ -352,7 +360,7 @@ def main():
 
     # Build relationship objects (deduplicate bidirectional)
     seen_rels = set()
-    for src_id, tgt_id in relationships:
+    for src_id, tgt_id, rel_type in relationships:
         # Normalize to avoid A->B and B->A duplicates
         pair = tuple(sorted([src_id, tgt_id]))
         if pair in seen_rels:
@@ -362,9 +370,9 @@ def main():
         src_ap = attack_patterns.get(src_id)
         tgt_ap = attack_patterns.get(tgt_id)
         if src_ap and tgt_ap:
-            rel = build_relationship(src_ap.id, tgt_ap.id)
+            rel = build_relationship(src_ap.id, tgt_ap.id, rel_type=rel_type)
             stix_relationships.append(rel)
-            print(f"    [~] {src_id} <-> {tgt_id}")
+            print(f"    [~] {src_id} --{rel_type}--> {tgt_id}")
 
     # Assemble bundle
     all_objects = [identity]

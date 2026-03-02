@@ -47,6 +47,14 @@ ucff_domains:
   monitor: "Level 4"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 85
+source_reliability: A
+info_credibility: 2
+related_tps:
+  - id: TP-0021
+    relationship: escalates-from
+  - id: TP-0022
+    relationship: related-to
 tags:
   - durable-medical-equipment
   - medicare-fraud

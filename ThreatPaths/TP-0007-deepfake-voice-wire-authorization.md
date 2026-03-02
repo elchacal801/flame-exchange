@@ -38,6 +38,20 @@ ucff_domains:
   monitor: "Level 2"
   report: "Level 2"
   improve: "Level 3"
+confidence_score: 68
+source_reliability: C
+info_credibility: 2
+related_tps:
+  - id: TP-0001
+    relationship: enhances
+  - id: TP-0002
+    relationship: enhances
+  - id: TP-0006
+    relationship: enhances
+  - id: TP-0012
+    relationship: enhances
+  - id: TP-0025
+    relationship: related-to
 tags:
   - deepfake-voice
   - CEO-fraud

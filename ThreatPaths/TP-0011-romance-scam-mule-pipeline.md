@@ -35,6 +35,20 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 88
+source_reliability: A
+info_credibility: 1
+related_tps:
+  - id: TP-0001
+    relationship: provides-mules-for
+  - id: TP-0002
+    relationship: provides-mules-for
+  - id: TP-0006
+    relationship: provides-mules-for
+  - id: TP-0009
+    relationship: provides-mules-for
+  - id: TP-0025
+    relationship: escalates-from
 tags:
   - pig-butchering
   - social-engineering

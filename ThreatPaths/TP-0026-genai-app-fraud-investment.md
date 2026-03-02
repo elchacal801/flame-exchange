@@ -52,6 +52,16 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 3"
   improve: "Level 4"
+confidence_score: 82
+source_reliability: A
+info_credibility: 2
+related_tps:
+  - id: TP-0017
+    relationship: related-to
+  - id: TP-0025
+    relationship: shares-infrastructure
+  - id: TP-0032
+    relationship: related-to
 tags:
   - genai
   - deepfake

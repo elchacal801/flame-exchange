@@ -42,6 +42,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 3"
+confidence_score: 72
+source_reliability: C
+info_credibility: 2
+related_tps:
+  - id: TP-0016
+    relationship: related-to
+  - id: TP-0030
+    relationship: shares-infrastructure
 tags:
   - refund-fraud
   - FTID

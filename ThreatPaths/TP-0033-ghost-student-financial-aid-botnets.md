@@ -47,6 +47,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 68
+source_reliability: B
+info_credibility: 3
+related_tps:
+  - id: TP-0003
+    relationship: feeds-into
+  - id: TP-0022
+    relationship: related-to
 tags:
   - ghost-student
   - financial-aid

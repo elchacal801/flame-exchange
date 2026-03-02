@@ -33,6 +33,12 @@ ucff_domains:
   monitor: "Level 4"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 60
+source_reliability: C
+info_credibility: 3
+related_tps:
+  - id: TP-0021
+    relationship: related-to
 tags:
   - disability
   - group-benefits

@@ -38,6 +38,16 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 82
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0001
+    relationship: enables
+  - id: TP-0005
+    relationship: enables
+  - id: TP-0013
+    relationship: enables
 tags:
   - SIM-swap
   - cryptocurrency

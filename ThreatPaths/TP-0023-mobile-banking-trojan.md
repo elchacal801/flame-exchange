@@ -44,6 +44,14 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 4"
+confidence_score: 72
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0001
+    relationship: related-to
+  - id: TP-0008
+    relationship: shares-infrastructure
 tags:
   - mbanking
   - android-malware

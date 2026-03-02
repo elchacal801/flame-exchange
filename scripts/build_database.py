@@ -179,7 +179,10 @@ CREATE TABLE IF NOT EXISTS submissions (
     tlp TEXT DEFAULT 'WHITE',
     summary TEXT,
     body TEXT,
-    file_path TEXT NOT NULL
+    file_path TEXT NOT NULL,
+    confidence_score INTEGER,
+    source_reliability TEXT,
+    info_credibility INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS submission_sectors (
@@ -268,6 +271,14 @@ CREATE TABLE IF NOT EXISTS submission_ucff_domains (
     FOREIGN KEY (submission_id) REFERENCES submissions(id)
 );
 
+CREATE TABLE IF NOT EXISTS submission_related_tps (
+    submission_id TEXT NOT NULL,
+    related_tp_id TEXT NOT NULL,
+    relationship_type TEXT NOT NULL,
+    FOREIGN KEY (submission_id) REFERENCES submissions(id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_related_tps ON submission_related_tps(related_tp_id);
 CREATE INDEX IF NOT EXISTS idx_reg_source ON regulatory_alerts(source);
 CREATE INDEX IF NOT EXISTS idx_reg_date ON regulatory_alerts(date);
 CREATE INDEX IF NOT EXISTS idx_reg_tp ON regulatory_alert_tp_mapping(tp_id);
@@ -335,8 +346,9 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
 
     conn.execute(
         """INSERT OR REPLACE INTO submissions
-           (id, title, category, date, author, source, tlp, summary, body, file_path)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+           (id, title, category, date, author, source, tlp, summary, body, file_path,
+            confidence_score, source_reliability, info_credibility)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             sub_id,
             meta.get("title", ""),
@@ -348,6 +360,9 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
             summary,
             body,
             str(filepath),
+            meta.get("confidence_score"),
+            meta.get("source_reliability"),
+            meta.get("info_credibility"),
         )
     )
 
@@ -368,6 +383,16 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
             "INSERT OR REPLACE INTO submission_ucff_domains (submission_id, domains_json) VALUES (?, ?)",
             (sub_id, json.dumps(ucff))
         )
+
+    # Related TPs — typed cross-references
+    related_tps = meta.get("related_tps")
+    if related_tps and isinstance(related_tps, list):
+        for rel in related_tps:
+            if isinstance(rel, dict) and rel.get("id") and rel.get("relationship"):
+                conn.execute(
+                    "INSERT INTO submission_related_tps (submission_id, related_tp_id, relationship_type) VALUES (?, ?, ?)",
+                    (sub_id, str(rel["id"]), str(rel["relationship"]))
+                )
 
 
 # Whitelist of valid (table, column) pairs for multi-value operations.
@@ -674,6 +699,13 @@ def _build_full_entry(conn: sqlite3.Connection, entry: dict) -> dict:
 
     # Cross-reference: detection rules that reference this TP
     entry["detection_rule_ids"] = _fetch_detection_rule_ids(conn, sub_id)
+
+    # Related TPs — typed cross-references
+    related_rows = conn.execute(
+        "SELECT related_tp_id, relationship_type FROM submission_related_tps WHERE submission_id = ? ORDER BY related_tp_id",
+        (sub_id,)
+    ).fetchall()
+    entry["related_tps"] = [{"id": r[0], "relationship": r[1]} for r in related_rows]
 
     return entry
 

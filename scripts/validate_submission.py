@@ -82,6 +82,17 @@ REQUIRED_DL_FIELDS = [
     "falsepositives", "level", "tags",
 ]
 
+# ---------------------------------------------------------------------------
+# Confidence scoring & relationship constants
+# ---------------------------------------------------------------------------
+
+VALID_SOURCE_RELIABILITY = {"A", "B", "C", "D", "E", "F"}
+VALID_INFO_CREDIBILITY = {1, 2, 3, 4, 5, 6}
+VALID_RELATIONSHIP_TYPES = {
+    "feeds-into", "shares-infrastructure", "escalates-from",
+    "provides-mules-for", "enables", "enhances", "related-to",
+}
+
 REQUIRED_BODY_SECTIONS = [
     "Summary",
     "CFPF Phase Mapping",
@@ -336,6 +347,47 @@ def validate_file(filepath: Path) -> ValidationResult:
             t_str = str(t)
             if t_str and not re.match(r"^T\d{4}(\.\d{3})?$", t_str):
                 result.warn(f"MITRE ATT&CK ID '{t_str}' may not match expected format (T####[.###])")
+
+    # --- Confidence scoring (optional, Admiralty Code) ---
+    confidence_score = meta.get("confidence_score")
+    if confidence_score is not None:
+        if not isinstance(confidence_score, (int, float)) or not (0 <= confidence_score <= 100):
+            result.error(f"confidence_score must be an integer 0-100, got '{confidence_score}'")
+
+    source_reliability = meta.get("source_reliability")
+    if source_reliability is not None:
+        if str(source_reliability) not in VALID_SOURCE_RELIABILITY:
+            result.error(f"source_reliability must be A-F, got '{source_reliability}'")
+
+    info_credibility = meta.get("info_credibility")
+    if info_credibility is not None:
+        if info_credibility not in VALID_INFO_CREDIBILITY:
+            result.error(f"info_credibility must be 1-6, got '{info_credibility}'")
+
+    # --- Cross-TP relationships (optional) ---
+    related_tps = meta.get("related_tps")
+    if related_tps is not None:
+        if not isinstance(related_tps, list):
+            result.error("related_tps must be a list")
+        else:
+            repo_root = filepath.resolve().parent.parent
+            for i, rel in enumerate(related_tps):
+                if not isinstance(rel, dict):
+                    result.error(f"related_tps[{i}] must be a mapping with 'id' and 'relationship' keys")
+                    continue
+                rel_id = rel.get("id", "")
+                if not rel_id or not re.match(r"^TP-\d{4}$", str(rel_id)):
+                    result.error(f"related_tps[{i}].id must match TP-XXXX format, got '{rel_id}'")
+                else:
+                    tp_matches = list((repo_root / "ThreatPaths").glob(f"{rel_id}-*.md"))
+                    if not tp_matches:
+                        result.warn(f"related_tps reference '{rel_id}' does not match any file in ThreatPaths/")
+                rel_type = rel.get("relationship", "")
+                if not rel_type or rel_type not in VALID_RELATIONSHIP_TYPES:
+                    result.error(
+                        f"related_tps[{i}].relationship must be one of "
+                        f"{', '.join(sorted(VALID_RELATIONSHIP_TYPES))}, got '{rel_type}'"
+                    )
 
     # --- Body section validation (only for ThreatPath) ---
     if category != "Baseline":

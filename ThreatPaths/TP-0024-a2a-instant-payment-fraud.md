@@ -51,6 +51,16 @@ ucff_domains:
   monitor: "Level 4"
   report: "Level 3"
   improve: "Level 3"
+confidence_score: 82
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0001
+    relationship: related-to
+  - id: TP-0011
+    relationship: provides-mules-for
+  - id: TP-0012
+    relationship: related-to
 tags:
   - real-time-payments
   - instant-payments
