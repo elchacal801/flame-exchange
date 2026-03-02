@@ -1,0 +1,15 @@
+{
+  "tp_id": "TP-0028",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    s.supplier_id,\n    s.enrollment_date,\n    s.physical_address,\n    COUNT(DISTINCT c.beneficiary_id) AS unique_beneficiaries,\n    COUNT(c.claim_id) AS total_claims,\n    SUM(c.billed_amount) AS total_billed,\n    AVG(c.billed_amount) AS avg_claim_amount,\n    DATEDIFF(day, s.enrollment_date, MIN(c.service_date)) AS days_to_first_claim,\n    COUNT(DISTINCT c.hcpcs_code) AS unique_codes\nFROM dme_suppliers s\nJOIN claims c ON s.supplier_id = c.supplier_id\nWHERE s.enrollment_date > DATEADD(month, -12, GETDATE())\nGROUP BY s.supplier_id, s.enrollment_date, s.physical_address\nHAVING COUNT(c.claim_id) > 100\n    AND DATEDIFF(day, s.enrollment_date, MIN(c.service_date)) < 30\n    AND AVG(c.billed_amount) > 2000\nORDER BY total_billed DESC;",
+      "title": "SQL -- New DME Supplier Anomalous Billing Pattern (Phase 4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: DME Supplier Claims for Geographically Distant Beneficiaries\nstatus: experimental\ndescription: Detects DME suppliers submitting claims for beneficiaries located more than 200 miles from the supplier's registered address, indicative of phantom billing.\nlogsource:\n    product: medicare_claims\n    service: dme\ndetection:\n    selection:\n        claim_type: \"DME\"\n        supplier_beneficiary_distance|gt: 200\n    filter_known_telehealth:\n        hcpcs_code|startswith: \"E\"  # Exclude telehealth-eligible codes\n    condition: selection and not filter_known_telehealth\nlevel: high\ntags:\n    - cfpf.phase4.execution\n    - healthcare.phantom_billing",
+      "title": "Sigma -- DME Supplier Geographic-Beneficiary Mismatch (Phase 3-4)"
+    }
+  ]
+}

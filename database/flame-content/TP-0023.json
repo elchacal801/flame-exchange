@@ -66,8 +66,23 @@
     "Credential Access",
     "Perform Fraud"
   ],
-  "ucff_domains": {},
-  "detection_rule_ids": [],
+  "ucff_domains": {
+    "commit": "Level 3",
+    "assess": "Level 4",
+    "plan": "Level 3",
+    "act": "Level 4",
+    "monitor": "Level 3",
+    "report": "Level 2",
+    "improve": "Level 4"
+  },
+  "detection_rule_ids": [
+    "DL-0002",
+    "DL-0004",
+    "DL-0005",
+    "DL-0007",
+    "DL-0010",
+    "DL-0011"
+  ],
   "evidence": [],
   "evidence_count": 0
 }

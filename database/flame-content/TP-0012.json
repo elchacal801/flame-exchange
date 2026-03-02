@@ -68,8 +68,22 @@
     "Monetization",
     "Laundering"
   ],
-  "ucff_domains": {},
-  "detection_rule_ids": [],
+  "ucff_domains": {
+    "commit": "Level 2",
+    "assess": "Level 3",
+    "plan": "Level 2",
+    "act": "Level 3",
+    "monitor": "Level 3",
+    "report": "Level 3",
+    "improve": "Level 3"
+  },
+  "detection_rule_ids": [
+    "DL-0055",
+    "DL-0056",
+    "DL-0057",
+    "DL-0058",
+    "DL-0060"
+  ],
   "evidence": [
     {
       "evidence_id": "EV-TP0012-2026-001",

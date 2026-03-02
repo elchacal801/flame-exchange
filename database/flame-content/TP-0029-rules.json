@@ -1,0 +1,15 @@
+{
+  "tp_id": "TP-0029",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "index=credit_bureau sourcetype=credit_file_events\n| eval file_age_months=round((now() - strptime(file_creation_date, \"%Y-%m-%d\")) / 86400 / 30, 0)\n| where file_age_months <= 24\n| stats\n    count(eval(event_type=\"payment\")) as payment_count,\n    count(eval(event_type=\"late_payment\")) as late_payment_count,\n    count(eval(event_type=\"new_account\")) as new_accounts,\n    count(eval(event_type=\"auth_user_add\")) as auth_user_additions,\n    max(credit_score) as current_score,\n    min(credit_score) as initial_score\n    by ssn, identity_name\n| eval score_velocity=(current_score - initial_score) / file_age_months\n| where late_payment_count=0 AND payment_count > 12 AND score_velocity > 25 AND new_accounts >= 3\n| table ssn, identity_name, file_age_months, payment_count, late_payment_count, new_accounts, auth_user_additions, current_score, score_velocity\n| sort - score_velocity",
+      "title": "Splunk -- Synthetic Identity Credit Farming Pattern Detection (Phase 3)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: KYC Document Submission with AI Forgery Indicators\nstatus: experimental\ndescription: Detects identity document submissions during KYC onboarding that exhibit AI generation artifacts including metadata anomalies, texture inconsistencies, and template matching against known forgery services.\nlogsource:\n    product: identity_verification\n    service: document_check\ndetection:\n    selection:\n        verification_type: \"document_upload\"\n    forgery_indicators:\n        - ai_forgery_score|gte: 0.7\n        - metadata_anomaly: true\n        - template_match|contains:\n            - 'onlyfake'\n            - 'prokyc'\n            - 'known_forgery_template'\n    condition: selection and 1 of forgery_indicators\nlevel: critical\ntags:\n    - cfpf.phase2.initial_access\n    - ai.document_forgery\n    - synthetic_identity",
+      "title": "Sigma -- AI-Generated Document Submission Detection (Phase 2)"
+    }
+  ]
+}

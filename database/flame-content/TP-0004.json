@@ -66,8 +66,21 @@
     "Perform Fraud",
     "Monetization"
   ],
-  "ucff_domains": {},
-  "detection_rule_ids": [],
+  "ucff_domains": {
+    "commit": "Level 2",
+    "assess": "Level 2",
+    "plan": "Level 2",
+    "act": "Level 3",
+    "monitor": "Level 3",
+    "report": "Level 2",
+    "improve": "Level 2"
+  },
+  "detection_rule_ids": [
+    "DL-0019",
+    "DL-0022",
+    "DL-0024",
+    "DL-0025"
+  ],
   "evidence": [],
   "evidence_count": 0
 }

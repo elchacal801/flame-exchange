@@ -81,7 +81,39 @@
       "improve": "Level 2"
     },
     "detection_rule_ids": [
-      "DL-0001"
+      "DL-0001",
+      "DL-0002",
+      "DL-0003",
+      "DL-0004",
+      "DL-0005",
+      "DL-0006",
+      "DL-0007",
+      "DL-0008",
+      "DL-0009",
+      "DL-0010",
+      "DL-0012",
+      "DL-0014",
+      "DL-0015",
+      "DL-0016",
+      "DL-0018",
+      "DL-0019",
+      "DL-0020",
+      "DL-0021",
+      "DL-0022",
+      "DL-0023",
+      "DL-0026",
+      "DL-0027",
+      "DL-0030",
+      "DL-0031",
+      "DL-0034",
+      "DL-0036",
+      "DL-0037",
+      "DL-0042",
+      "DL-0044",
+      "DL-0045",
+      "DL-0046",
+      "DL-0048",
+      "DL-0049"
     ],
     "evidence_count": 0
   },
@@ -154,9 +186,26 @@
       "Monetization",
       "Laundering"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
     "detection_rule_ids": [
-      "DL-0001"
+      "DL-0001",
+      "DL-0028",
+      "DL-0029",
+      "DL-0031",
+      "DL-0033",
+      "DL-0034",
+      "DL-0039",
+      "DL-0040",
+      "DL-0041",
+      "DL-0043"
     ],
     "evidence_count": 0
   },
@@ -301,8 +350,21 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
-    "detection_rule_ids": [],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "detection_rule_ids": [
+      "DL-0019",
+      "DL-0022",
+      "DL-0024",
+      "DL-0025"
+    ],
     "evidence_count": 0
   },
   {
@@ -371,8 +433,22 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
-    "detection_rule_ids": [],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 2"
+    },
+    "detection_rule_ids": [
+      "DL-0020",
+      "DL-0021",
+      "DL-0023",
+      "DL-0025",
+      "DL-0026"
+    ],
     "evidence_count": 0
   },
   {
@@ -455,7 +531,20 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0019",
+      "DL-0021",
+      "DL-0024",
+      "DL-0025",
+      "DL-0027",
+      "DL-0029",
+      "DL-0030",
+      "DL-0031",
+      "DL-0032",
+      "DL-0033",
+      "DL-0035",
+      "DL-0036"
+    ],
     "evidence_count": 0
   },
   {
@@ -536,7 +625,11 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0050",
+      "DL-0051",
+      "DL-0052"
+    ],
     "evidence_count": 0
   },
   {
@@ -609,8 +702,31 @@
       "Monetization",
       "Laundering"
     ],
-    "ucff_domains": {},
-    "detection_rule_ids": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0003",
+      "DL-0006",
+      "DL-0008",
+      "DL-0009",
+      "DL-0011",
+      "DL-0013",
+      "DL-0014",
+      "DL-0017",
+      "DL-0044",
+      "DL-0045",
+      "DL-0046",
+      "DL-0047",
+      "DL-0048",
+      "DL-0049"
+    ],
     "evidence_count": 0
   },
   {
@@ -673,7 +789,15 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 2"
+    },
     "detection_rule_ids": [],
     "evidence_count": 0
   },
@@ -739,7 +863,15 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
     "detection_rule_ids": [],
     "evidence_count": 0
   },
@@ -809,9 +941,23 @@
       "Monetization",
       "Laundering"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
     "detection_rule_ids": [
-      "DL-0001"
+      "DL-0001",
+      "DL-0037",
+      "DL-0038",
+      "DL-0039",
+      "DL-0041",
+      "DL-0042",
+      "DL-0043"
     ],
     "evidence_count": 0
   },
@@ -884,8 +1030,22 @@
       "Monetization",
       "Laundering"
     ],
-    "ucff_domains": {},
-    "detection_rule_ids": [],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0055",
+      "DL-0056",
+      "DL-0057",
+      "DL-0058",
+      "DL-0060"
+    ],
     "evidence_count": 1
   },
   {
@@ -965,7 +1125,19 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0012",
+      "DL-0013",
+      "DL-0015",
+      "DL-0016",
+      "DL-0017",
+      "DL-0018",
+      "DL-0062",
+      "DL-0063",
+      "DL-0064",
+      "DL-0066",
+      "DL-0067"
+    ],
     "evidence_count": 0
   },
   {
@@ -1039,7 +1211,15 @@
       "Monetization",
       "Laundering"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
     "detection_rule_ids": [],
     "evidence_count": 0
   },
@@ -1112,7 +1292,15 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 2",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
     "detection_rule_ids": [],
     "evidence_count": 1
   },
@@ -1171,7 +1359,15 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
     "detection_rule_ids": [],
     "evidence_count": 0
   },
@@ -1319,7 +1515,12 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0050",
+      "DL-0052",
+      "DL-0053",
+      "DL-0054"
+    ],
     "evidence_count": 0
   },
   {
@@ -1386,7 +1587,15 @@
       "Trust Abuse",
       "Perform Fraud"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 2"
+    },
     "detection_rule_ids": [],
     "evidence_count": 0
   },
@@ -1455,8 +1664,21 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
-    "detection_rule_ids": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0028",
+      "DL-0029",
+      "DL-0032",
+      "DL-0035"
+    ],
     "evidence_count": 0
   },
   {
@@ -1513,7 +1735,15 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 4",
+      "improve": "Level 3"
+    },
     "detection_rule_ids": [],
     "evidence_count": 0
   },
@@ -1574,9 +1804,23 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 4",
+      "improve": "Level 3"
+    },
     "detection_rule_ids": [
-      "DL-0001"
+      "DL-0001",
+      "DL-0037",
+      "DL-0038",
+      "DL-0039",
+      "DL-0040",
+      "DL-0041",
+      "DL-0043"
     ],
     "evidence_count": 0
   },
@@ -1647,7 +1891,885 @@
       "Credential Access",
       "Perform Fraud"
     ],
-    "ucff_domains": {},
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 4"
+    },
+    "detection_rule_ids": [
+      "DL-0002",
+      "DL-0004",
+      "DL-0005",
+      "DL-0007",
+      "DL-0010",
+      "DL-0011"
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0024",
+    "title": "Account-to-Account Instant Payment Fraud (Zelle / FedNow / Pix / UPI)",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "Original Research — multi-source intelligence compilation",
+    "tlp": "WHITE",
+    "summary": "Threat actors exploit account-to-account (A2A) instant payment rails (Zelle, FedNow, Pix, UPI, UK Faster Payments) to execute irrevocable fund transfers via social engineering, account takeover, or pa...",
+    "sectors": [
+      "banking",
+      "fintech",
+      "payments"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "wire-fraud",
+      "payment-diversion"
+    ],
+    "tags": [
+      "real-time-payments",
+      "instant-payments",
+      "zelle",
+      "fednow",
+      "pix",
+      "upi",
+      "irrevocable",
+      "money-mule",
+      "social-engineering",
+      "cross-border"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.001",
+      "T1566.002",
+      "T1656",
+      "T1657",
+      "T1589.001",
+      "T1098"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT006.001",
+      "FT007.009",
+      "FT008.002",
+      "FT017",
+      "FT028",
+      "FT031",
+      "FT052.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Credential Access",
+      "Account Access",
+      "Defence Evasion",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0055",
+      "DL-0056",
+      "DL-0057",
+      "DL-0058",
+      "DL-0059",
+      "DL-0060",
+      "DL-0061"
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0025",
+    "title": "GenAI-Enhanced Authorized Push Payment Fraud — Romance Variant",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "Original Research — multi-source intelligence compilation",
+    "tlp": "WHITE",
+    "summary": "Threat actors leverage generative AI capabilities — including deepfake voice cloning, AI-generated profile imagery, and large language model-driven chatbots — to operate romance scam campaigns at unpr...",
+    "sectors": [
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "romance-scam",
+      "deepfake-fraud",
+      "social-engineering"
+    ],
+    "tags": [
+      "genai",
+      "deepfake",
+      "romance-scam",
+      "social-engineering",
+      "authorized-push-payment",
+      "voice-cloning",
+      "scam-compounds",
+      "pig-butchering",
+      "ai-chatbot",
+      "cross-border"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.001",
+      "T1566.003",
+      "T1656",
+      "T1657",
+      "T1589.002",
+      "T1583.001",
+      "T1585.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT006.001",
+      "FT007.009",
+      "FT016",
+      "FT017",
+      "FT028",
+      "FT031",
+      "FT052.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Account Access",
+      "Defence Evasion",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 4"
+    },
+    "detection_rule_ids": [],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0026",
+    "title": "GenAI-Enhanced Authorized Push Payment Fraud — Investment Variant",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "Original Research — multi-source intelligence compilation",
+    "tlp": "WHITE",
+    "summary": "Threat actors deploy generative AI to create and operate fraudulent investment schemes at industrial scale, combining deepfake celebrity endorsement videos, AI-generated trading dashboards showing fab...",
+    "sectors": [
+      "banking",
+      "crypto",
+      "investment"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "investment-scam",
+      "deepfake-fraud",
+      "crypto-laundering"
+    ],
+    "tags": [
+      "genai",
+      "deepfake",
+      "investment-scam",
+      "pig-butchering",
+      "cryptocurrency",
+      "social-engineering",
+      "authorized-push-payment",
+      "ai-generated-content",
+      "fake-trading-platform",
+      "celebrity-impersonation",
+      "cross-border"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1583.006",
+      "T1585.001",
+      "T1656",
+      "T1657",
+      "T1566.002",
+      "T1589.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT006.001",
+      "FT007.009",
+      "FT008.002",
+      "FT016",
+      "FT017",
+      "FT028",
+      "FT031",
+      "FT052.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Account Access",
+      "Defence Evasion",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 4"
+    },
+    "detection_rule_ids": [],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0027",
+    "title": "Elder Financial Exploitation (Multi-Vector)",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "https://www.ic3.gov/AnnualReport/Reports/2024_IC3ElderFraudReport.pdf",
+    "tlp": "WHITE",
+    "summary": "Threat actors exploit adults aged 60 and older through multiple converging fraud vectors including tech support scams, romance scams, investment fraud, and government impersonation schemes. FBI IC3 re...",
+    "sectors": [
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "social-engineering",
+      "authorized-push-payment",
+      "account-takeover",
+      "romance-scam"
+    ],
+    "tags": [
+      "elder-fraud",
+      "vulnerable-populations",
+      "tech-support-scam",
+      "romance-scam",
+      "investment-fraud",
+      "government-impersonation",
+      "power-of-attorney-abuse",
+      "caregiver-fraud",
+      "money-mule",
+      "high-value"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1598",
+      "T1657",
+      "T1566.001",
+      "T1566.004"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT006.001",
+      "FT007.009",
+      "FT016",
+      "FT017",
+      "FT028",
+      "FT031",
+      "FT052.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Credential Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0028",
+    "title": "DME Phantom Billing (Medicare Fraud)",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "https://oig.hhs.gov/reports-and-publications/featured-topics/dme/",
+    "tlp": "WHITE",
+    "summary": "Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered t...",
+    "sectors": [
+      "healthcare",
+      "insurance",
+      "government"
+    ],
+    "fraud_types": [
+      "healthcare-fraud",
+      "phantom-billing",
+      "provider-fraud",
+      "synthetic-medical-fraud"
+    ],
+    "tags": [
+      "durable-medical-equipment",
+      "medicare-fraud",
+      "phantom-billing",
+      "organized-crime",
+      "provider-enrollment",
+      "beneficiary-data-theft",
+      "cms",
+      "operation-gold-rush",
+      "transnational"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1589.001",
+      "T1656",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FT005.001",
+      "FT006.001",
+      "FT016",
+      "FT017"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0029",
+    "title": "AI Synthetic Identity & Document Forgery",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20240715a.htm",
+    "tlp": "WHITE",
+    "summary": "Threat actors are leveraging generative AI to produce high-fidelity forged identity documents, synthetic facial images, and behavioral biometric mimicry to bypass KYC/identity verification controls at...",
+    "sectors": [
+      "banking",
+      "fintech"
+    ],
+    "fraud_types": [
+      "synthetic-identity",
+      "ai-document-fraud",
+      "new-account-fraud",
+      "application-fraud"
+    ],
+    "tags": [
+      "ai-generated",
+      "synthetic-identity",
+      "document-forgery",
+      "deepfake",
+      "kyc-bypass",
+      "onlyfake",
+      "prokyc",
+      "behavioral-biometrics",
+      "new-account-fraud",
+      "bust-out",
+      "credit-farming"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1585.001",
+      "T1588.005",
+      "T1656",
+      "T1657",
+      "T1204"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT005.001",
+      "FT006.001",
+      "FT007.009",
+      "FT008.002",
+      "FT016",
+      "FT017",
+      "FT028"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Credential Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 4"
+    },
+    "detection_rule_ids": [],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0030",
+    "title": "E-Commerce Triangulation Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "https://www.chargebackgurus.com/blog/triangulation-fraud",
+    "tlp": "WHITE",
+    "summary": "Triangulation fraud is a three-party e-commerce scheme where fraudsters list legitimate products on marketplace platforms (Amazon, eBay, Walmart Marketplace) at competitive prices, accept orders from ...",
+    "sectors": [
+      "retail"
+    ],
+    "fraud_types": [
+      "first-party-fraud",
+      "identity-theft",
+      "payment-diversion"
+    ],
+    "tags": [
+      "triangulation-fraud",
+      "marketplace-fraud",
+      "e-commerce",
+      "stolen-payment-cards",
+      "dropshipping-abuse",
+      "organized-retail-crime",
+      "chargeback-fraud",
+      "telegram-rings",
+      "return-fraud"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1589.001",
+      "T1656",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT006.001",
+      "FT007.009",
+      "FT008.002",
+      "FT016",
+      "FT017",
+      "FT028"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0064",
+      "DL-0067"
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0031",
+    "title": "Refund-as-a-Service (FTID / RaaS)",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "Original Research — aggregated from NRF, industry reporting, and underground market analysis",
+    "tlp": "WHITE",
+    "summary": "Organized Refund-as-a-Service (RaaS) operations monetize retailer return policies at industrial scale by filing fraudulent refund claims on behalf of paying customers. Professional \"refunders\" operati...",
+    "sectors": [
+      "retail"
+    ],
+    "fraud_types": [
+      "first-party-fraud",
+      "refunding-as-a-service"
+    ],
+    "tags": [
+      "refund-fraud",
+      "FTID",
+      "DNA",
+      "SNAD",
+      "e-commerce",
+      "return-abuse",
+      "social-engineering",
+      "organized-fraud",
+      "telegram"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1589.002",
+      "T1585.001",
+      "T1656",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA003",
+      "FTA004",
+      "FTA006",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT006.001",
+      "FT016",
+      "FT028",
+      "FT031",
+      "FT052.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0062",
+      "DL-0063",
+      "DL-0065",
+      "DL-0066"
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0032",
+    "title": "Web3 Wallet Drainer / Approval Phishing",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "Original Research — aggregated from ScamSniffer, Chainalysis, Elliptic, and on-chain analysis",
+    "tlp": "WHITE",
+    "summary": "Wallet drainer operations exploit blockchain token approval mechanisms to steal cryptocurrency assets at scale. Threat actors deploy Drainer-as-a-Service (DaaS) kits — most notably Inferno Drainer (co...",
+    "sectors": [
+      "web3",
+      "crypto"
+    ],
+    "fraud_types": [
+      "approval-phishing",
+      "crypto-laundering",
+      "phishing"
+    ],
+    "tags": [
+      "wallet-drainer",
+      "approval-phishing",
+      "DaaS",
+      "permit-signature",
+      "ERC-20",
+      "inferno-drainer",
+      "angel-drainer",
+      "pink-drainer",
+      "token-approval",
+      "smart-contract",
+      "blockchain",
+      "laundering"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.002",
+      "T1583.001",
+      "T1539",
+      "T1657",
+      "T1036"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT006.001",
+      "FT007.009",
+      "FT008.002",
+      "FT016",
+      "FT017",
+      "FT028",
+      "FT031",
+      "FT052.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Credential Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0033",
+    "title": "Ghost Student Financial Aid Botnets",
+    "category": "ThreatPath",
+    "date": "2026-03-02",
+    "author": "FLAME Project",
+    "source": "Original Research — aggregated from Equifax, California Community Colleges Chancellor's Office, DOE-OIG, and GAO reporting",
+    "tlp": "WHITE",
+    "summary": "Organized fraud networks exploit the open-enrollment admissions model of community colleges and universities to create thousands of \"ghost student\" identities — synthetic or stolen identities enrolled...",
+    "sectors": [
+      "education",
+      "government"
+    ],
+    "fraud_types": [
+      "ghost-student-fraud",
+      "synthetic-identity",
+      "benefit-fraud"
+    ],
+    "tags": [
+      "ghost-student",
+      "financial-aid",
+      "FAFSA",
+      "Pell-Grant",
+      "synthetic-identity",
+      "bot-driven",
+      "education-fraud",
+      "open-enrollment",
+      "community-college",
+      "benefit-fraud",
+      "federal-programs"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1585.001",
+      "T1136.001",
+      "T1059",
+      "T1657",
+      "T1583.003"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA003",
+      "FTA004",
+      "FTA006",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT006.001",
+      "FT016",
+      "FT028",
+      "FT031",
+      "FT052.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "Credential Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
     "detection_rule_ids": [],
     "evidence_count": 0
   }

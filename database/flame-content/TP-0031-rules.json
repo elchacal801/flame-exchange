@@ -1,0 +1,20 @@
+{
+  "tp_id": "TP-0031",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    customer_id,\n    COUNT(*) AS refund_count_90d,\n    SUM(refund_amount) AS total_refund_value_90d,\n    COUNT(DISTINCT order_id) AS orders_with_refunds,\n    ROUND(SUM(refund_amount) / NULLIF(SUM(order_total), 0) * 100, 2) AS refund_rate_pct,\n    COUNT(CASE WHEN refund_reason = 'DNA' THEN 1 END) AS dna_claims,\n    COUNT(CASE WHEN refund_reason = 'SNAD' THEN 1 END) AS snad_claims\nFROM refunds r\nJOIN orders o ON r.order_id = o.order_id\nWHERE r.refund_date >= DATEADD(day, -90, GETDATE())\nGROUP BY customer_id\nHAVING COUNT(*) > 3\n   AND SUM(refund_amount) > 500\nORDER BY total_refund_value_90d DESC;",
+      "title": "SQL — Refund Velocity Anomaly Detection (Phase 4) — Detection Logic: DL-0062"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Return Package Weight Discrepancy - Potential Empty Box or FTID\nstatus: experimental\ndescription: Detects return packages where received weight deviates significantly from expected product weight, indicating empty box returns or substitute-filled packages.\nlogsource:\n    product: returns_processing\n    service: warehouse\ndetection:\n    selection:\n        event_type: \"return_received\"\n    filter_weight_mismatch:\n        weight_delta_pct|gte: 30\n    condition: selection and filter_weight_mismatch\nlevel: high\ntags:\n    - fraud.refund\n    - cfpf.phase3.positioning",
+      "title": "Sigma — Return Package Weight Discrepancy (Phase 3) — Detection Logic: DL-0064"
+    },
+    {
+      "type": "spl",
+      "content": "index=customer_service sourcetype=refund_claims\n| stats count AS claim_count, dc(customer_id) AS unique_customers, values(customer_id) AS customers BY device_fingerprint, src_ip\n| where unique_customers > 2 AND claim_count > 5\n| eval suspicious_operator = if(unique_customers > 3 AND claim_count > 10, \"HIGH\", \"MEDIUM\")\n| table device_fingerprint, src_ip, unique_customers, claim_count, customers, suspicious_operator\n| sort - unique_customers",
+      "title": "Splunk — Cross-Account Refund Operator Detection (Phase 2) — Detection Logic: DL-0065"
+    }
+  ]
+}

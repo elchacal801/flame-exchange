@@ -1,0 +1,15 @@
+{
+  "tp_id": "TP-0027",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "index=core_banking sourcetype=wire_transfer\n| lookup customer_demographics account_id OUTPUT date_of_birth\n| eval customer_age=round((now() - strptime(date_of_birth, \"%Y-%m-%d\")) / 86400 / 365.25, 0)\n| where customer_age >= 60\n| eval is_new_recipient=if(recipient_first_seen > relative_time(now(), \"-30d\"), 1, 0)\n| where is_new_recipient=1\n| stats count as wire_count, sum(amount) as total_amount, dc(recipient_id) as unique_recipients by account_id, customer_age\n| where total_amount > 10000 OR wire_count > 3\n| table account_id, customer_age, wire_count, total_amount, unique_recipients\n| sort - total_amount",
+      "title": "Splunk -- Elder Customer Unusual Wire Transfer Pattern (Phase 4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Remote Access Tool Detected During Elder Customer Online Banking Session\nstatus: experimental\ndescription: Detects active remote access tool processes (AnyDesk, TeamViewer, etc.) during online banking sessions for customers aged 60+.\nlogsource:\n    product: online_banking\n    service: session_analytics\ndetection:\n    selection_session:\n        customer_age|gte: 60\n    selection_rat:\n        active_processes|contains:\n            - 'anydesk'\n            - 'teamviewer'\n            - 'logmein'\n            - 'ultraviewer'\n            - 'supremo'\n    condition: selection_session and selection_rat\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - elder.exploitation",
+      "title": "Sigma -- Remote Access Tool Installation on Elder Customer Device (Phase 2)"
+    }
+  ]
+}
