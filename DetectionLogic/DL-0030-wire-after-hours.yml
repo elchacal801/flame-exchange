@@ -1,0 +1,41 @@
+title: After-Hours Wire Transfer Initiation
+id: 5ef0b936-e74f-4bac-9f40-8b8b318a7296
+status: experimental
+description: >
+  Detects wire transfers initiated outside the account's established normal business
+  hours. Attackers often execute unauthorized wires during evenings, weekends, or
+  holidays when fraud detection staff and account holders are less likely to notice.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf
+threat_paths:
+  - TP-0001
+  - TP-0006
+cfpf_phase: P4
+fraud_types:
+  - wire-fraud
+  - account-takeover
+logsource:
+  product: banking
+  service: wire_system
+detection:
+  selection:
+    event_type: 'WIRE_INITIATION'
+    transaction_amount|gte: 5000
+    initiated_outside_business_hours: true
+  selection_channel:
+    channel:
+      - 'online_banking'
+      - 'mobile_app'
+      - 'api'
+  filter_pre_authorized:
+    wire_status: 'pre_authorized_recurring'
+  condition: selection and selection_channel and not filter_pre_authorized
+falsepositives:
+  - International businesses operating across time zones with legitimate after-hours activity
+  - Business owners making urgent payments during personal hours
+level: high
+tags:
+  - cfpf.phase4.execution
+  - attack.t1657
+  - flame.wire_ach

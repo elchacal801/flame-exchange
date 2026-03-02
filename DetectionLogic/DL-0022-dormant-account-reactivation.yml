@@ -1,0 +1,39 @@
+title: Dormant Account Reactivation
+id: c94fce3e-816a-4968-9836-ad36a4889b82
+status: experimental
+description: >
+  Detects accounts with no transactional activity for 90 or more days that suddenly initiate
+  financial transactions. Dormant accounts are frequently targeted by attackers because they
+  are less likely to be monitored and credential compromise may go unnoticed.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf
+threat_paths:
+  - TP-0001
+  - TP-0004
+cfpf_phase: P3
+fraud_types:
+  - account-takeover
+  - wire-fraud
+logsource:
+  product: banking
+  service: core_banking
+detection:
+  selection_reactivation:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'ACH_DEBIT'
+      - 'ACH_CREDIT'
+      - 'INTERNAL_TRANSFER'
+    account_dormancy_days|gte: 90
+  filter_scheduled:
+    transaction_type: 'RECURRING_SCHEDULED'
+  condition: selection_reactivation and not filter_scheduled
+falsepositives:
+  - Seasonal businesses that operate on annual cycles (e.g., tax preparation firms)
+  - Estate or trust accounts activated for legitimate distributions
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - attack.t1098
+  - flame.account_modification

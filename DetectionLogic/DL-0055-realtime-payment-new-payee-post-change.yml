@@ -1,0 +1,43 @@
+title: Real-Time Payment to New Payee After Credential or Contact Change
+id: 41a7c627-83d0-4b80-8b21-28b8c92a0154
+status: experimental
+description: >
+  Detects when a real-time or instant payment (Zelle, FedNow, RTP) is initiated to a
+  previously unseen payee within 24 hours of a credential change (password reset,
+  MFA re-enrollment) or contact information update (email, phone, address). This
+  pattern is strongly associated with account takeover followed by immediate
+  monetization via authorized push payment.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.federalreserve.gov/paymentsystems/fednow_about.htm
+threat_paths:
+  - TP-0024
+  - TP-0012
+cfpf_phase: P4
+fraud_types:
+  - authorized-push-payment
+  - payment-diversion
+logsource:
+  product: banking
+  service: instant_payments
+detection:
+  selection_payment:
+    event_type: 'instant_payment_initiated'
+    payment_rail|contains:
+      - 'ZELLE'
+      - 'FEDNOW'
+      - 'RTP'
+      - 'ACH_SAMEDAY'
+    payee_relationship: 'new'
+  selection_recent_change:
+    credential_change_hours_ago|lt: 24
+  condition: selection_payment and selection_recent_change
+  timeframe: 24h
+falsepositives:
+  - Customer who legitimately updated their phone number and then paid a new contractor
+  - Periodic password rotation coinciding with routine bill payment to a new provider
+level: high
+tags:
+  - cfpf.phase4.execution
+  - attack.t1531
+  - flame.a2a

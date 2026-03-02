@@ -1,0 +1,45 @@
+title: Account Age vs Transaction Volume Mismatch
+id: 37ad82e6-17e7-4be0-b5e9-839b29cd1ed3
+status: experimental
+description: >
+  Detects accounts less than 90 days old that exhibit transaction volumes exceeding
+  the typical profile for mature accounts. Newly opened accounts with abnormally high
+  volume are a primary indicator of purpose-built mule accounts created specifically
+  to funnel illicit funds.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fincen.gov/sites/default/files/shared/FIN-2022-A002.pdf
+threat_paths:
+  - TP-0011
+  - TP-0022
+cfpf_phase: P5
+fraud_types:
+  - money-mule
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection:
+    account_age_days|lt: 90
+  selection_high_volume:
+    event_type:
+      - 'WIRE_CREDIT'
+      - 'ACH_CREDIT'
+      - 'WIRE_INITIATION'
+      - 'ACH_DEBIT'
+      - 'INTERNAL_TRANSFER'
+  timeframe: 30d
+  condition: selection and selection_high_volume | count() by account_id > 20
+  # Additional enrichment: compare against peer group median transaction count
+  enrichment:
+    peer_comparison:
+      metric: transaction_count
+      threshold: percentile_95
+falsepositives:
+  - Legitimate new business accounts with immediate high transaction needs
+  - Student accounts receiving financial aid disbursements at semester start
+level: high
+tags:
+  - cfpf.phase5.monetization
+  - attack.t1583
+  - flame.mule_indicator

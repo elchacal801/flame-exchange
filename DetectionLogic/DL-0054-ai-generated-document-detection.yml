@@ -1,0 +1,52 @@
+title: AI-Generated Document Detection in Verification
+id: 9cc885b0-9577-49e9-b7e2-9f559471c83c
+status: experimental
+description: >
+  Detects indicators of AI-generated or synthetically created identity documents
+  submitted during verification workflows. Flags include metadata anomalies (missing
+  EXIF data, uniform noise patterns), font rendering inconsistencies, micro-printing
+  irregularities, and GAN-generated portrait artifacts such as asymmetric earrings
+  or irregular hair boundaries.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fatf-gafi.org/en/publications/Digitaltransformation/Digital-Identity-in-Brief.html
+threat_paths:
+  - TP-0018
+cfpf_phase: P2
+fraud_types:
+  - ai-document-fraud
+  - impersonation
+logsource:
+  product: banking
+  service: document_verification
+detection:
+  selection:
+    event_type: 'document_verification_scan'
+    document_type|contains:
+      - 'drivers_license'
+      - 'passport'
+      - 'national_id'
+      - 'utility_bill'
+  filter_metadata:
+    exif_data_present: false
+    creation_tool_detected|contains:
+      - 'stable-diffusion'
+      - 'midjourney'
+      - 'dall-e'
+      - 'photoshop-generative'
+  filter_visual:
+    gan_artifact_score|gt: 0.7
+    microprint_validation: 'failed'
+  filter_font:
+    font_consistency_score|lt: 0.5
+  condition: selection and (filter_metadata or filter_visual or filter_font)
+falsepositives:
+  - Heavily compressed or photocopied documents with degraded visual quality
+  - Older documents scanned with consumer-grade scanners losing metadata
+  - Legitimately renewed documents with updated security features not yet in template database
+level: high
+tags:
+  - cfpf.phase2.targeting
+  - attack.t1656
+  - attack.t1588.002
+  - flame.deepfake

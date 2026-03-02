@@ -1,0 +1,45 @@
+title: Device Fingerprint Anomaly
+id: cd48e061-1318-4a62-b2e7-efa4010e5403
+status: experimental
+description: >
+  Detects a known device fingerprint presenting with changed underlying characteristics such as
+  OS version, screen resolution, timezone, or installed fonts. Attackers using antidetect browsers
+  (Multilogin, GoLogin, Dolphin Anty) import stolen device fingerprints but often have mismatches
+  in lower-level hardware attributes that this rule correlates.
+references:
+  - https://attack.mitre.org/techniques/T1036/
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+threat_paths:
+  - TP-0001
+  - TP-0008
+cfpf_phase: P2
+fraud_types:
+  - credential-stuffing
+  - account-takeover
+logsource:
+  product: banking
+  service: web_gateway
+detection:
+  selection:
+    event_type: 'session_start'
+    device_fingerprint|exists: true
+  condition: >
+    selection
+    | where device_fingerprint in known_device_fingerprints
+    and (
+      os_version != baseline.os_version
+      or screen_resolution != baseline.screen_resolution
+      or timezone_offset != baseline.timezone_offset
+      or webgl_renderer != baseline.webgl_renderer
+      or canvas_hash != baseline.canvas_hash
+    )
+
+  # Requires baseline lookup against device profile store for each returning device_fingerprint
+falsepositives:
+  - Users who updated their OS or browser, changing underlying fingerprint attributes
+  - Legitimate device reconfigurations such as connecting external monitors
+level: medium
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1036
+  - attack.t1078

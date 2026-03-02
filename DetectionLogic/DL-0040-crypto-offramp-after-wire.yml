@@ -1,0 +1,51 @@
+title: Crypto Off-Ramp After Wire or ACH Receipt
+id: b2b07a01-733a-47f1-addd-0dc4af07cab5
+status: experimental
+description: >
+  Detects a pattern where an account receives a wire or ACH credit and then promptly
+  initiates a transfer to a known cryptocurrency exchange or digital asset platform.
+  Converting fraud proceeds to cryptocurrency provides near-irreversible laundering,
+  making this a critical monetization indicator.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fincen.gov/sites/default/files/shared/FIN-2019-A003.pdf
+threat_paths:
+  - TP-0022
+  - TP-0002
+cfpf_phase: P5
+fraud_types:
+  - money-mule
+  - crypto-laundering
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection_inbound:
+    event_type:
+      - 'WIRE_CREDIT'
+      - 'ACH_CREDIT'
+    transaction_amount|gte: 1000
+  selection_crypto_outbound:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'ACH_DEBIT'
+    beneficiary_category: 'crypto_exchange'
+    # Known crypto exchange beneficiary names or MCC codes
+    beneficiary_name|contains:
+      - 'Coinbase'
+      - 'Binance'
+      - 'Kraken'
+      - 'FTX'
+      - 'Gemini'
+      - 'Crypto.com'
+      - 'Bitfinex'
+  timeframe: 24h
+  condition: selection_inbound | near selection_crypto_outbound by account_id
+falsepositives:
+  - Legitimate cryptocurrency investors or traders funding exchange accounts from bank proceeds
+  - Businesses with crypto treasury strategies converting fiat after receivables
+level: high
+tags:
+  - cfpf.phase5.monetization
+  - attack.t1583
+  - flame.mule_indicator

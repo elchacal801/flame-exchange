@@ -1,0 +1,42 @@
+title: Real-Time Payment Followed by Immediate Refund or Return Request
+id: 1896d9d2-a3a2-429a-ba32-478dd810bfd2
+status: experimental
+description: >
+  Detects a pattern where a real-time payment (RTP or FedNow) is sent and then an
+  immediate refund, return, or Request for Return of Funds (RROF) is submitted
+  within a short window. This pattern may indicate a double-dip fraud scheme where
+  the sender initiates an irrevocable payment, then exploits the refund process to
+  recover funds while the recipient also retains them.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.theclearinghouse.org/payment-systems/rtp
+threat_paths:
+  - TP-0024
+cfpf_phase: P5
+fraud_types:
+  - authorized-push-payment
+  - payment-diversion
+logsource:
+  product: banking
+  service: instant_payments
+detection:
+  selection_payment:
+    event_type: 'instant_payment_completed'
+    payment_rail|contains:
+      - 'RTP'
+      - 'FEDNOW'
+  selection_refund:
+    event_type|contains:
+      - 'refund_request'
+      - 'return_request'
+      - 'rrof_submitted'
+  condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)
+  timeframe: 2h
+falsepositives:
+  - Legitimate duplicate payment correction where customer realizes the error immediately
+  - Merchant-initiated refund for cancelled service following immediate payment
+level: high
+tags:
+  - cfpf.phase5.monetization
+  - attack.t1565
+  - flame.a2a

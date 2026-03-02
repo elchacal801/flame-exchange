@@ -1,0 +1,48 @@
+title: Session Cookie Exfiltration Pattern
+id: 4fafa273-ef85-4b98-94b1-7489a94a2b81
+status: experimental
+description: >
+  Detects session token and cookie theft patterns in log data indicative of infostealer activity.
+  Stealers like Lumma and Raccoon target browser cookie stores to extract active session tokens,
+  enabling session hijacking without requiring credentials. This rule monitors for suspicious
+  access to cookie databases and exfiltration of session-bearing data.
+references:
+  - https://attack.mitre.org/techniques/T1539/
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+threat_paths:
+  - TP-0001
+  - TP-0008
+cfpf_phase: P2
+fraud_types:
+  - account-takeover
+  - data-theft
+  - malware
+logsource:
+  product: banking
+  service: endpoint_detection
+detection:
+  selection_cookie_db:
+    file_path|contains:
+      - '\Cookies'
+      - '\cookies.sqlite'
+      - '\Network\Cookies'
+    file_access_type: 'read'
+  selection_process:
+    process_name|endswith:
+      - '.exe'
+    process_signed: false
+  filter_browsers:
+    process_name|endswith:
+      - '\chrome.exe'
+      - '\firefox.exe'
+      - '\msedge.exe'
+      - '\brave.exe'
+  condition: (selection_cookie_db and selection_process) and not filter_browsers
+falsepositives:
+  - Third-party browser extensions with legitimate cookie management functionality
+  - Endpoint backup solutions that include browser profile data
+level: high
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1539
+  - attack.t1005
