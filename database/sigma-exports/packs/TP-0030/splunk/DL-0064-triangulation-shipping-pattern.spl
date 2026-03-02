@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="order_placed" billing_shipping_address_match=false shipping_address_type IN ("*freight_forwarder*", "*reshipper*", "*po_box*", "*commercial_mailbox*") OR shipping_address_distinct_accounts>3 OR shipping_address_orders_7d>5

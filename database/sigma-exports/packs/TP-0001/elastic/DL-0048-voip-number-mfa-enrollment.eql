@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+((event_type:(*mfa_enrollment* OR *mfa_phone_update* OR *phone_number_add*)) AND mfa_method:sms) AND ((phone_number_type:(*voip* OR *virtual* OR *toll_free*)) AND (phone_carrier:(*Google\ Voice* OR *TextNow* OR *Twilio* OR *Bandwidth* OR *Vonage* OR *Pinger*)))

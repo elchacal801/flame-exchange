@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+((event_type:(POA_ADD OR POA_MODIFY OR AUTHORIZED_SIGNER_ADD OR AUTHORIZED_SIGNER_MODIFY)) AND (account_type:(commercial OR business OR corporate OR trust))) AND account_balance:>=50000

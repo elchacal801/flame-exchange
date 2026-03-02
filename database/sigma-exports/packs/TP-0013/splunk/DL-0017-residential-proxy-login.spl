@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type IN ("*login_attempt*", "*login_success*") source_ip_threat_intel IN ("*residential_proxy*", "*proxy_network*") source_ip_category="residential" source_asn_type="isp" auth_result="success"

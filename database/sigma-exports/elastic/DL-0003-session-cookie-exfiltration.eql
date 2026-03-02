@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(((file_path:(*\\Cookies* OR *\\cookies.sqlite* OR *\\Network\\Cookies*)) AND file_access_type:read) AND (process_name:*.exe AND process_signed:false)) AND (NOT (process_name:(*\\chrome.exe OR *\\firefox.exe OR *\\msedge.exe OR *\\brave.exe)))

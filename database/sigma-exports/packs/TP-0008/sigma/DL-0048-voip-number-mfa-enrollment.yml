@@ -1,0 +1,49 @@
+title: VoIP Number MFA Enrollment
+id: 8869f4cf-29c9-4297-af0a-0fcb92c3e7f8
+status: experimental
+description: >
+  Detects MFA enrollment using VoIP or virtual phone numbers instead of legitimate mobile carrier
+  numbers. Attackers who have compromised an account often enroll a disposable VoIP number
+  (Google Voice, TextNow, Twilio) as the MFA phone to maintain persistent access and intercept
+  future OTP codes without relying on SIM swap persistence.
+references:
+  - https://attack.mitre.org/techniques/T1556/006/
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+threat_paths:
+  - TP-0008
+  - TP-0001
+cfpf_phase: P2
+fraud_types:
+  - account-takeover
+  - esim-hijacking
+logsource:
+  product: banking
+  service: mfa_logs
+detection:
+  selection:
+    event_type|contains:
+      - 'mfa_enrollment'
+      - 'mfa_phone_update'
+      - 'phone_number_add'
+    mfa_method: 'sms'
+  selection_voip:
+    phone_number_type|contains:
+      - 'voip'
+      - 'virtual'
+      - 'toll_free'
+    phone_carrier|contains:
+      - 'Google Voice'
+      - 'TextNow'
+      - 'Twilio'
+      - 'Bandwidth'
+      - 'Vonage'
+      - 'Pinger'
+  condition: selection and selection_voip
+falsepositives:
+  - Legitimate users who use VoIP as their primary phone service
+  - Business accounts that use virtual phone systems for operations
+level: high
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1556.006
+  - attack.t1098.005

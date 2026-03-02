@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="ALERT_SETTINGS_CHANGE" action IN ("threshold_increase", "notification_disable", "alert_suppress") channel IN ("online_banking", "mobile_app", "api")

@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+((event_type contains "mfa_enrollment" or event_type contains "mfa_phone_update" or event_type contains "phone_number_add") and mfa_method =~ "sms") and ((phone_number_type contains "voip" or phone_number_type contains "virtual" or phone_number_type contains "toll_free") and (phone_carrier contains "Google Voice" or phone_carrier contains "TextNow" or phone_carrier contains "Twilio" or phone_carrier contains "Bandwidth" or phone_carrier contains "Vonage" or phone_carrier contains "Pinger"))

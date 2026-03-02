@@ -1,0 +1,47 @@
+title: Autofill Data Harvesting
+id: a71a2d8b-6843-415c-9c2a-8993b4ee95a4
+status: experimental
+description: >
+  Detects form autofill data extraction patterns consistent with infostealer behavior. Stealers
+  like RedLine and Raccoon target browser autofill databases (Web Data, formhistory.sqlite) to
+  harvest stored PII including names, addresses, phone numbers, and payment card details that
+  facilitate downstream fraud.
+references:
+  - https://attack.mitre.org/techniques/T1555/003/
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+threat_paths:
+  - TP-0023
+  - TP-0001
+cfpf_phase: P2
+fraud_types:
+  - data-theft
+  - malware
+  - account-takeover
+logsource:
+  product: banking
+  service: endpoint_detection
+detection:
+  selection:
+    file_path|endswith:
+      - '\Web Data'
+      - '\Web Data-journal'
+      - '\formhistory.sqlite'
+      - '\Form History'
+    file_access_type: 'read'
+  filter_browsers:
+    process_name|endswith:
+      - '\chrome.exe'
+      - '\firefox.exe'
+      - '\msedge.exe'
+      - '\brave.exe'
+  filter_system:
+    process_integrity_level: 'System'
+  condition: selection and not filter_browsers and not filter_system
+falsepositives:
+  - Browser profile migration utilities reading autofill databases during import
+  - Form-filling accessibility tools for users with disabilities
+level: medium
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1555.003
+  - attack.t1005

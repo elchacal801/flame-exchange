@@ -1,0 +1,40 @@
+title: New Account Sending Multiple Instant Payments
+id: 0027c204-9449-4a75-8329-d18eddc7388b
+status: experimental
+description: >
+  Detects accounts less than 30 days old that initiate multiple instant payments
+  within a short time window. Newly opened accounts used for rapid instant-payment
+  disbursement are a strong indicator of synthetic identity fraud or mule accounts
+  created specifically for the monetization phase of a fraud scheme.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.occ.treas.gov/topics/supervision-and-examination/bank-operations/financial-crime/suspicious-activity-reports/index-suspicious-activity-reports.html
+threat_paths:
+  - TP-0024
+cfpf_phase: P5
+fraud_types:
+  - authorized-push-payment
+  - wire-fraud
+logsource:
+  product: banking
+  service: instant_payments
+detection:
+  selection:
+    event_type: 'instant_payment_initiated'
+    payment_rail|contains:
+      - 'ZELLE'
+      - 'FEDNOW'
+      - 'RTP'
+      - 'ACH_SAMEDAY'
+  filter_new_account:
+    account_age_days|lt: 30
+  condition: selection and filter_new_account | count() by account_id > 5
+  timeframe: 48h
+falsepositives:
+  - Newly opened business account setting up recurring vendor payments
+  - College student opening account and paying multiple roommates for shared expenses
+level: high
+tags:
+  - cfpf.phase5.monetization
+  - attack.t1136
+  - flame.a2a

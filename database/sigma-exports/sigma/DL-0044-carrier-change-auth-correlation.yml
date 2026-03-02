@@ -1,0 +1,50 @@
+title: Carrier Change Authentication Correlation
+id: 26bb606a-5507-42e3-8405-a5e48094aac8
+status: experimental
+description: >
+  Detects a carrier or SIM change event immediately followed by an authentication attempt on a
+  banking platform. SIM swap attacks involve social engineering or insider compromise at a mobile
+  carrier to port the victim's phone number to an attacker-controlled SIM, after which the
+  attacker uses SMS-based MFA to access accounts. The tight temporal correlation between carrier
+  change and login is the key indicator.
+references:
+  - https://attack.mitre.org/techniques/T1111/
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+threat_paths:
+  - TP-0008
+  - TP-0001
+cfpf_phase: P2
+fraud_types:
+  - account-takeover
+  - esim-hijacking
+logsource:
+  product: telecom
+  service: identity_management
+detection:
+  selection_carrier_change:
+    event_type|contains:
+      - 'sim_swap'
+      - 'carrier_change'
+      - 'number_port'
+    status: 'completed'
+  selection_auth:
+    event_type: 'login_attempt'
+    mfa_method: 'sms'
+    mfa_result: 'success'
+  timeframe: 120m
+  condition: >
+    selection_carrier_change
+    | followed_by selection_auth
+    on phone_number
+    within 120m
+
+  # Correlation: SIM/carrier change event for a phone number followed by successful
+  # SMS-based MFA within 2 hours on the same phone number
+falsepositives:
+  - Legitimate users who switch carriers and immediately log in to their banking apps
+  - Planned device upgrades where users authenticate on new hardware right after activation
+level: critical
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1111
+  - attack.t1078

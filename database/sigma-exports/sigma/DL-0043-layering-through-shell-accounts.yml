@@ -1,0 +1,51 @@
+title: Rapid Fund Layering Through Shell Accounts
+id: 2e8cd716-a403-4eae-9d32-f051697dad67
+status: experimental
+description: >
+  Detects rapid fund movement through multiple accounts with minimal retention time,
+  indicative of layering through shell or pass-through accounts. Funds transit through
+  each account within hours with near-zero balance retention, suggesting the accounts
+  exist solely to obscure the money trail.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html
+threat_paths:
+  - TP-0022
+  - TP-0002
+  - TP-0011
+cfpf_phase: P5
+fraud_types:
+  - money-mule
+  - wire-fraud
+  - crypto-laundering
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection_pass_through:
+    event_type:
+      - 'WIRE_CREDIT'
+      - 'ACH_CREDIT'
+      - 'INTERNAL_TRANSFER_IN'
+    transaction_amount|gte: 5000
+  selection_rapid_egress:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'ACH_DEBIT'
+      - 'INTERNAL_TRANSFER_OUT'
+  selection_low_retention:
+    # Balance returns to near-zero after pass-through
+    post_transaction_balance|lte: 500
+  timeframe: 12h
+  condition: >
+    selection_pass_through | near selection_rapid_egress by account_id
+    and selection_low_retention
+    | count() by account_id > 3 within 30d
+falsepositives:
+  - Escrow or settlement accounts that legitimately have rapid pass-through flows
+  - Operating accounts of payment processors or money service businesses
+level: high
+tags:
+  - cfpf.phase5.monetization
+  - attack.t1583
+  - flame.mule_indicator

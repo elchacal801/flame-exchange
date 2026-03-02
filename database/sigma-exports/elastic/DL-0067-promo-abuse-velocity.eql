@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:order_placed AND promo_code_applied:true) AND (device_fingerprint_promo_uses_30d:>5 OR source_ip_promo_uses_30d:>10 OR payment_method_hash_promo_uses_30d:>5 OR (account_age_days:<7 AND (promo_type:(*new_customer* OR *referral_bonus* OR *first_order*))))

@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(event_type =~ "voice_biometric_verify" and enrollment_status =~ "enrolled") and voice_confidence_score < 70 and historical_avg_score >= 85

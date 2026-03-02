@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:document_verification_scan AND (document_type:(*drivers_license* OR *passport* OR *national_id* OR *utility_bill*))) AND ((exif_data_present:false AND (creation_tool_detected:(*stable\-diffusion* OR *midjourney* OR *dall\-e* OR *photoshop\-generative*))) OR (gan_artifact_score:>0.7 AND microprint_validation:failed) OR font_consistency_score:<0.5)

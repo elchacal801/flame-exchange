@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:dispute_filed AND dispute_reason:item_not_received) AND order_total_usd:>=500 AND (carrier_delivery_status:delivered OR account_inr_claims_90d:>=2)

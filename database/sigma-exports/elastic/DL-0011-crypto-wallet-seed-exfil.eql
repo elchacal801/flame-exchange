@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(((file_path:(*\\Ethereum\\keystore* OR *\\Exodus\\exodus.wallet* OR *\\Electrum\\wallets* OR *\\Bitcoin\\wallet.dat* OR *\\Atomic\\Local\ Storage* OR *\\Coinomi\\wallets*)) AND file_access_type:read) OR ((file_path:(*\\nkbihfbeogaeaoehlefnkodbefgpgknn* OR *\\ejbalbakoplchlghecdalmeeeajnimhm*)) AND file_access_type:read) OR ((file_name:(*seed* OR *mnemonic* OR *recovery* OR *backup*)) AND (file_extension:(*.txt* OR *.json* OR *.dat*)))) AND (NOT (process_name:(*Exodus* OR *Electrum* OR *Atomic* OR *Coinomi* OR *MetaMask*)))

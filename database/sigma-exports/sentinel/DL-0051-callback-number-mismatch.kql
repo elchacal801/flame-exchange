@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(event_type =~ "inbound_call" and (caller_claim contains "fraud department" or caller_claim contains "security team" or caller_claim contains "bank representative" or caller_claim contains "account services")) and (ani_matches_directory =~ false or callback_number_verified =~ false)

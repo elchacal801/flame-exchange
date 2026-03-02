@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+((event_type:(WIRE_INITIATION OR ACH_DEBIT OR ACH_CREDIT OR INTERNAL_TRANSFER)) AND account_dormancy_days:>=90) AND (NOT transaction_type:RECURRING_SCHEDULED)

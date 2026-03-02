@@ -1,0 +1,38 @@
+title: First-Time International Wire to New Country
+id: e43cb234-667e-4940-bef1-65d5a41c8926
+status: experimental
+description: >
+  Detects international wire transfers sent to a country that has no prior transaction
+  history for the originating account. First-time international wires, especially to
+  high-risk corridors, are a key indicator of business email compromise and payment
+  diversion schemes.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf
+threat_paths:
+  - TP-0006
+  - TP-0001
+cfpf_phase: P4
+fraud_types:
+  - wire-fraud
+  - payment-diversion
+logsource:
+  product: banking
+  service: wire_system
+detection:
+  selection:
+    event_type: 'WIRE_INITIATION'
+    wire_type: 'international'
+    beneficiary_country_first_time: true
+    transaction_amount|gte: 5000
+  filter_known_correspondent:
+    beneficiary_bank_relationship: 'established'
+  condition: selection and not filter_known_correspondent
+falsepositives:
+  - Companies expanding into new international markets with legitimate vendor payments
+  - Individual customers sending family remittances to a new country for the first time
+level: high
+tags:
+  - cfpf.phase4.execution
+  - attack.t1657
+  - flame.wire_ach

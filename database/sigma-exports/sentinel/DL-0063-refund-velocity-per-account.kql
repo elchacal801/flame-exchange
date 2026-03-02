@@ -1,0 +1,7 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+condition =~ "selection
+| groupby(customer_account_id)
+| where count(event_type='refund_issued') / count(event_type='order_completed') > 0.4
+| where count(event_type='order_completed') >= 10
+"

@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:WIRE_INITIATION AND transaction_amount:>=5000 AND initiated_outside_business_hours:true) AND (channel:(online_banking OR mobile_app OR api)) AND (NOT wire_status:pre_authorized_recurring)

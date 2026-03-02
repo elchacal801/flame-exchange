@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:voice_biometric_verify AND enrollment_status:enrolled) AND voice_confidence_score:<70 AND historical_avg_score:>=85

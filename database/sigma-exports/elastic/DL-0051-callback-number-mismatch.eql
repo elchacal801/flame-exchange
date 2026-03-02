@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:inbound_call AND (caller_claim:(*fraud\ department* OR *security\ team* OR *bank\ representative* OR *account\ services*))) AND (ani_matches_directory:false OR callback_number_verified:false)

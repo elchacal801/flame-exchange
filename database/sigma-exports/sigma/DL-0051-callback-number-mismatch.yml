@@ -1,0 +1,44 @@
+title: Callback Number Mismatch for Claimed Institution
+id: e562b22c-4be6-483e-8fdd-d24bf33ef9b3
+status: experimental
+description: >
+  Detects when an inbound caller claims to represent a specific financial institution
+  or internal department, but the originating ANI or callback number does not match
+  the institution's known directory of outbound numbers. This is a common indicator
+  of vishing and social engineering, especially when combined with voice-clone
+  technology to impersonate bank officials.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fcc.gov/consumers/guides/spoofing-and-caller-id
+threat_paths:
+  - TP-0007
+cfpf_phase: P2
+fraud_types:
+  - impersonation
+  - deepfake-fraud
+logsource:
+  product: banking
+  service: voice_authentication
+detection:
+  selection:
+    event_type: 'inbound_call'
+    caller_claim|contains:
+      - 'fraud department'
+      - 'security team'
+      - 'bank representative'
+      - 'account services'
+  filter_ani_mismatch:
+    ani_matches_directory: false
+  filter_callback_mismatch:
+    callback_number_verified: false
+  condition: selection and (filter_ani_mismatch or filter_callback_mismatch)
+falsepositives:
+  - Legitimate bank employee calling from a personal device during off-hours
+  - Third-party call center using non-registered outbound numbers
+  - Recent phone system migration with directory not yet updated
+level: high
+tags:
+  - cfpf.phase2.targeting
+  - attack.t1656
+  - attack.t1598
+  - flame.deepfake

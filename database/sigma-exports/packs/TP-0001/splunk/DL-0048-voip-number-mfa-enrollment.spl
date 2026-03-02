@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type IN ("*mfa_enrollment*", "*mfa_phone_update*", "*phone_number_add*") mfa_method="sms" phone_number_type IN ("*voip*", "*virtual*", "*toll_free*") phone_carrier IN ("*Google Voice*", "*TextNow*", "*Twilio*", "*Bandwidth*", "*Vonage*", "*Pinger*")

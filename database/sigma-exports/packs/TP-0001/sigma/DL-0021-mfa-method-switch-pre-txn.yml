@@ -1,0 +1,44 @@
+title: MFA Method Switch Before High-Value Transaction
+id: 5fa193cc-8e4e-4a02-a05c-da7004124f42
+status: experimental
+description: >
+  Detects when an account's multi-factor authentication method is changed (e.g., from
+  hardware token to SMS or email OTP) shortly before a high-value wire or ACH transaction
+  is initiated. Attackers downgrade MFA to a method they control prior to executing fraud.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://attack.mitre.org/techniques/T1556/
+threat_paths:
+  - TP-0001
+  - TP-0005
+  - TP-0006
+cfpf_phase: P3
+fraud_types:
+  - account-takeover
+  - wire-fraud
+logsource:
+  product: banking
+  service: identity_management
+detection:
+  selection_mfa_change:
+    event_type: 'MFA_METHOD_CHANGE'
+    new_mfa_method:
+      - 'sms_otp'
+      - 'email_otp'
+      - 'voice_call'
+  selection_high_value_txn:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'ACH_DEBIT'
+    transaction_amount|gte: 5000
+  timeframe: 4h
+  condition: selection_mfa_change | near selection_high_value_txn by account_id
+falsepositives:
+  - Customer who lost their hardware token and is making a legitimate scheduled payment
+  - Planned MFA migration events by IT or security teams
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - attack.t1098
+  - attack.t1556
+  - flame.account_modification

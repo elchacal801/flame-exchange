@@ -1,0 +1,38 @@
+title: Account Type Conversion Anomaly
+id: bc6400fa-4411-4a97-ab10-cfd48b15a347
+status: experimental
+description: >
+  Detects suspicious account type conversions such as savings-to-checking or
+  personal-to-business. These conversions can unlock higher transaction limits,
+  wire capabilities, or ACH origination, which attackers exploit to move larger
+  amounts after taking over a limited account.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+threat_paths:
+  - TP-0001
+  - TP-0005
+cfpf_phase: P3
+fraud_types:
+  - account-takeover
+  - wire-fraud
+logsource:
+  product: banking
+  service: core_banking
+detection:
+  selection:
+    event_type: 'ACCOUNT_TYPE_CONVERSION'
+    conversion_type:
+      - 'savings_to_checking'
+      - 'personal_to_business'
+      - 'basic_to_premium'
+  selection_recent_credential_change:
+    days_since_last_credential_change|lte: 7
+  condition: selection and selection_recent_credential_change
+falsepositives:
+  - Small business owners legitimately converting a personal account to a business account
+  - Customers upgrading account tiers for better interest rates or features
+level: medium
+tags:
+  - cfpf.phase3.positioning
+  - attack.t1098
+  - flame.account_modification

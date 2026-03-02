@@ -1,0 +1,43 @@
+title: Rapid Outbound Wire After Large Inbound
+id: fac3da03-fbae-4854-b7e2-ebab675e4c06
+status: experimental
+description: >
+  Detects a large outbound wire or ACH transfer initiated within hours of receiving
+  a large inbound deposit. This pass-through pattern is characteristic of compromised
+  accounts being used as intermediary conduits in fraud or money laundering schemes.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf
+threat_paths:
+  - TP-0001
+  - TP-0002
+  - TP-0006
+cfpf_phase: P4
+fraud_types:
+  - wire-fraud
+  - money-mule
+  - payment-diversion
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection_inbound:
+    event_type:
+      - 'WIRE_CREDIT'
+      - 'ACH_CREDIT'
+    transaction_amount|gte: 10000
+  selection_outbound:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'ACH_DEBIT'
+    transaction_amount|gte: 8000
+  timeframe: 6h
+  condition: selection_inbound | near selection_outbound by account_id
+falsepositives:
+  - Real estate escrow closings with same-day receipt and disbursement
+  - Business accounts receiving client payments and immediately paying suppliers
+level: high
+tags:
+  - cfpf.phase4.execution
+  - attack.t1657
+  - flame.wire_ach

@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="inbound_call" caller_claim IN ("*fraud department*", "*security team*", "*bank representative*", "*account services*") ani_matches_directory=false OR callback_number_verified=false

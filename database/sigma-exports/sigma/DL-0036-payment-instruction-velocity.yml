@@ -1,0 +1,42 @@
+title: Payment Instruction Velocity Spike
+id: ab337b60-bba6-4fba-bc7d-81374d37f4de
+status: experimental
+description: >
+  Detects when multiple payment instructions (wires, ACH batches, or internal transfers)
+  are submitted in rapid succession from a single account or user session. High-velocity
+  payment submissions suggest automated or scripted fraud execution, often seen after
+  credential compromise.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+threat_paths:
+  - TP-0001
+  - TP-0006
+cfpf_phase: P4
+fraud_types:
+  - wire-fraud
+  - ACH-fraud
+  - payment-diversion
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'ACH_BATCH_SUBMIT'
+      - 'INTERNAL_TRANSFER'
+      - 'PAYMENT_INSTRUCTION'
+  timeframe: 30m
+  condition: selection | count() by session_id > 5
+  # Additional correlation: flag if total amount across instructions exceeds daily norm
+  enrichment:
+    aggregate: sum(transaction_amount) by account_id
+    threshold_multiplier: 3.0
+falsepositives:
+  - Corporate treasury operations submitting batch payments during end-of-day processing
+  - Payroll administrators processing multi-entity payroll batches
+level: high
+tags:
+  - cfpf.phase4.execution
+  - attack.t1657
+  - flame.wire_ach

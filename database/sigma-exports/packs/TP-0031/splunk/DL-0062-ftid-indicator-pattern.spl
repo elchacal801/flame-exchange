@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="refund_request" refund_reason IN ("*item_not_received*", "*return_in_transit*") tracking_delivery_address_match=false OR (tracking_package_weight_oz<4 order_expected_weight_oz>16) OR tracking_id_pattern_match="ftid_known_format"

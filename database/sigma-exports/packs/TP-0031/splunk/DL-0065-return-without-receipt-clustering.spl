@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+condition IN ("selection | count() by customer_account_id > 4", "selection | count() by store_region_code > 15")

@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:WIRE_INITIATION AND wire_type:international AND beneficiary_country_first_time:true AND transaction_amount:>=5000) AND (NOT beneficiary_bank_relationship:established)

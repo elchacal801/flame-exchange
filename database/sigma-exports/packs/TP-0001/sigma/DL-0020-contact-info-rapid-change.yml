@@ -1,0 +1,39 @@
+title: Rapid Contact Information Change
+id: 5a835760-af28-492f-a741-a4478ecb238c
+status: experimental
+description: >
+  Detects when email, phone number, and mailing address are all changed on an account
+  within a short window. A full contact information swap is a hallmark of account takeover
+  where the attacker locks out the legitimate owner before executing fraud.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf
+threat_paths:
+  - TP-0001
+  - TP-0005
+cfpf_phase: P3
+fraud_types:
+  - account-takeover
+logsource:
+  product: banking
+  service: identity_management
+detection:
+  selection_email:
+    event_type: 'CONTACT_CHANGE'
+    field_changed: 'email'
+  selection_phone:
+    event_type: 'CONTACT_CHANGE'
+    field_changed: 'phone'
+  selection_address:
+    event_type: 'CONTACT_CHANGE'
+    field_changed: 'mailing_address'
+  timeframe: 72h
+  condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3
+falsepositives:
+  - Customer relocating and updating all contact details with their bank simultaneously
+  - Account remediation after a legitimate customer service request
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - attack.t1098
+  - flame.account_modification

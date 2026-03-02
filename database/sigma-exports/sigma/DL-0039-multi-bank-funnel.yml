@@ -1,0 +1,44 @@
+title: Multi-Bank Funnel Pattern
+id: 1090ec4d-01b4-489f-bd55-6170d4413643
+status: experimental
+description: >
+  Detects accounts receiving funds from multiple external financial institutions that
+  are then consolidated and sent outbound to a single destination. This funnel pattern
+  is a hallmark of money mule operations where proceeds from multiple fraud victims
+  are aggregated before being laundered.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html
+threat_paths:
+  - TP-0011
+  - TP-0002
+  - TP-0022
+cfpf_phase: P5
+fraud_types:
+  - money-mule
+  - wire-fraud
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection_inbound:
+    event_type:
+      - 'WIRE_CREDIT'
+      - 'ACH_CREDIT'
+    originating_bank_external: true
+  selection_outbound:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'ACH_DEBIT'
+  timeframe: 7d
+  condition: >
+    selection_inbound | count(distinct originating_bank_id) by account_id > 3
+    and selection_outbound | count(distinct beneficiary_id) by account_id <= 2
+falsepositives:
+  - Freelancers or consultants receiving payments from multiple clients via different banks
+  - Small businesses with receivables from diverse customer base
+level: high
+tags:
+  - cfpf.phase5.monetization
+  - attack.t1583
+  - flame.mule_indicator

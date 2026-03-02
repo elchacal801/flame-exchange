@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(device_trust_level:new AND device_first_seen_days:0) AND (event_type:wire_transfer AND transaction_amount:>=5000) AND time_since_auth_minutes:<=30

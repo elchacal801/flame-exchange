@@ -1,0 +1,34 @@
+title: Zelle Recipient Enumeration via Multiple Failed Lookups
+id: 55286a0f-38de-4212-8c43-cd6dafc1683e
+status: experimental
+description: >
+  Detects multiple failed Zelle recipient lookups from a single account or session,
+  which may indicate enumeration activity. Attackers probe email addresses and phone
+  numbers to identify which are registered with Zelle before launching targeted social
+  engineering or authorized push payment attacks against confirmed users.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.zellepay.com/faq/zelle-safety
+threat_paths:
+  - TP-0024
+  - TP-0012
+cfpf_phase: P2
+fraud_types:
+  - authorized-push-payment
+logsource:
+  product: banking
+  service: a2a_processing
+detection:
+  selection:
+    event_type: 'zelle_recipient_lookup'
+    lookup_result: 'not_found'
+  condition: selection | count() by account_id > 10
+  timeframe: 1h
+falsepositives:
+  - User trying to send money to friends who have not yet enrolled in Zelle
+  - Administrative staff searching for payees across a new vendor list
+level: high
+tags:
+  - cfpf.phase2.targeting
+  - attack.t1589
+  - flame.a2a

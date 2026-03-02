@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="voice_stream_analysis" (spectral_flatness_score>0.85 breath_sound_detected=false pitch_variance<2.5) OR codec_reencoding_detected=true

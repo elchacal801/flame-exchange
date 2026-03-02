@@ -1,0 +1,45 @@
+title: Transaction Amount Clustering Near Reporting Threshold
+id: 792fa821-b18b-4745-9977-a533feec41b6
+status: experimental
+description: >
+  Detects transactions that cluster just below regulatory reporting thresholds ($3,000
+  for international transfers, $10,000 for CTR filing). Structuring transactions to
+  evade reporting requirements is itself a federal offense and a strong indicator of
+  money laundering or fraud monetization.
+references:
+  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+  - https://www.fincen.gov/sites/default/files/shared/CTR_Overview.pdf
+threat_paths:
+  - TP-0002
+  - TP-0020
+cfpf_phase: P5
+fraud_types:
+  - wire-fraud
+  - money-mule
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection_under_10k:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'ACH_DEBIT'
+      - 'CASH_DEPOSIT'
+    transaction_amount|gte: 9000
+    transaction_amount|lt: 10000
+  selection_under_3k:
+    event_type:
+      - 'WIRE_INITIATION'
+      - 'INTERNATIONAL_TRANSFER'
+    transaction_amount|gte: 2800
+    transaction_amount|lt: 3000
+  timeframe: 7d
+  condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)
+falsepositives:
+  - Small business owners with legitimately recurring transactions that happen to fall near thresholds
+  - Payroll deposits that naturally cluster at consistent amounts
+level: high
+tags:
+  - cfpf.phase5.monetization
+  - attack.t1657
+  - flame.wire_ach
