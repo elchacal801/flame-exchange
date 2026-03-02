@@ -83,11 +83,14 @@ jobs:
       - name: Export STIX bundle
         run: python scripts/export_flame_stix.py
 
+      - name: Export Sigma detection packs
+        run: python scripts/export_sigma.py
+
       - name: Commit artifacts
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A database/ data/ flame-stix-bundle.json flame-stats.json docs/ 2>/dev/null || true
+          git add -A database/ api/ data/ flame-stix-bundle.json flame-stats.json docs/ 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
