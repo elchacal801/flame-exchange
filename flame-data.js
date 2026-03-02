@@ -13,10 +13,15 @@ const FlameData = (function () {
     let _loading = false;
     let _callbacks = [];
     let _regulatoryAlerts = [];
+    let _searchIndex = null;
+    let _searchDocs = {};
+    let _allDetectionRules = null;
 
     const INDEX_URL = 'database/flame-index.json';
     const STATS_URL = 'database/flame-stats.json';
     const CONTENT_BASE = 'database/flame-content/';
+    const SEARCH_INDEX_URL = 'database/flame-search-index.json';
+    const DETECTION_RULES_URL = 'database/flame_detection_rules.json';
 
     /**
      * Load the index (metadata-only) and stats files.
@@ -129,6 +134,76 @@ const FlameData = (function () {
         return _regulatoryAlerts;
     }
 
+    /**
+     * Load the search index and build a lunr.js index.
+     * Non-fatal: falls back to substring search if unavailable.
+     */
+    async function loadSearchIndex() {
+        if (_searchIndex) return _searchIndex;
+        try {
+            var response = await fetch(SEARCH_INDEX_URL);
+            if (!response.ok) throw new Error('Search index load failed: ' + response.status);
+            var docs = await response.json();
+
+            docs.forEach(function (doc) {
+                _searchDocs[doc.id] = doc;
+            });
+
+            _searchIndex = lunr(function () {
+                this.ref('id');
+                this.field('title', { boost: 10 });
+                this.field('text');
+                this.field('type');
+
+                docs.forEach(function (doc) {
+                    this.add(doc);
+                }, this);
+            });
+
+            return _searchIndex;
+        } catch (err) {
+            console.warn('Search index not available, using fallback:', err.message);
+            _searchIndex = null;
+            return null;
+        }
+    }
+
+    /**
+     * Search using lunr.js index. Returns array of {id, score} or null if index unavailable.
+     */
+    function search(query) {
+        if (!_searchIndex || !query) return null;
+        try {
+            return _searchIndex.search(query);
+        } catch (e) {
+            // lunr parse error on special chars — try wildcard
+            try {
+                return _searchIndex.search(query.replace(/[^a-zA-Z0-9 ]/g, '') + '*');
+            } catch (e2) {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Load all standalone detection rules (one-time), then filter by TP.
+     */
+    async function loadDetectionRules(tpId) {
+        if (!_allDetectionRules) {
+            try {
+                var response = await fetch(DETECTION_RULES_URL);
+                if (!response.ok) throw new Error('DL rules load failed: ' + response.status);
+                _allDetectionRules = await response.json();
+            } catch (err) {
+                console.warn('Detection rules not available:', err.message);
+                _allDetectionRules = [];
+            }
+        }
+        return _allDetectionRules.filter(function (rule) {
+            return rule.threat_path_ids && rule.threat_path_ids.indexOf(tpId) !== -1;
+        });
+    }
+
     return {
         load: load,
         getData: getData,
@@ -137,5 +212,8 @@ const FlameData = (function () {
         getStats: getStats,
         loadRegulatoryAlerts: loadRegulatoryAlerts,
         getRegulatoryAlerts: getRegulatoryAlerts,
+        loadSearchIndex: loadSearchIndex,
+        search: search,
+        loadDetectionRules: loadDetectionRules,
     };
 })();

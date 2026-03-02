@@ -113,7 +113,8 @@
             allSubmissions = data;
             initializeUI();
             handleRoute();
-            // Load regulatory alerts in parallel (non-blocking)
+            // Load search index and regulatory alerts in parallel (non-blocking)
+            FlameData.loadSearchIndex();
             FlameData.loadRegulatoryAlerts().then(function () {
                 renderRegulatoryPulse();
             });
@@ -330,18 +331,32 @@
     // -----------------------------------------------------------------------
 
     function applyFilters() {
+        // If lunr search is available and query is present, get ranked results
+        var lunrMatchIds = null;
+        if (searchQuery) {
+            var lunrResults = FlameData.search(searchQuery);
+            if (lunrResults) {
+                lunrMatchIds = new Set();
+                lunrResults.forEach(function (r) { lunrMatchIds.add(r.ref); });
+            }
+        }
+
         filteredSubmissions = allSubmissions.filter(function (item) {
-            // Search
+            // Search — use lunr if available, otherwise fall back to substring
             if (searchQuery) {
-                const haystack = (
-                    (item.title || '') + ' ' +
-                    (item.summary || '') + ' ' +
-                    (item.id || '') + ' ' +
-                    (item.tags || []).join(' ') + ' ' +
-                    (item.fraud_types || []).join(' ') + ' ' +
-                    (item.sectors || []).join(' ')
-                ).toLowerCase();
-                if (haystack.indexOf(searchQuery) === -1) return false;
+                if (lunrMatchIds) {
+                    if (!lunrMatchIds.has(item.id)) return false;
+                } else {
+                    var haystack = (
+                        (item.title || '') + ' ' +
+                        (item.summary || '') + ' ' +
+                        (item.id || '') + ' ' +
+                        (item.tags || []).join(' ') + ' ' +
+                        (item.fraud_types || []).join(' ') + ' ' +
+                        (item.sectors || []).join(' ')
+                    ).toLowerCase();
+                    if (haystack.indexOf(searchQuery) === -1) return false;
+                }
             }
 
             // CFPF phases
@@ -567,16 +582,115 @@
             html += '</div>';
         }
 
+        // Detection Logic placeholder
+        html += '<div class="dl-section" id="dl-section">';
+        html += '<h2 class="dl-section-title">';
+        html += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>';
+        html += ' Detection Logic';
+        html += '</h2>';
+        html += '<div id="dl-rules-container"><div class="dl-loading">Loading detection rules...</div></div>';
+        html += '</div>';
+
         dom.detailContent.innerHTML = html;
 
         // Post-render hooks
         bindTaxonomyToggle(item);
         addCopyButtons();
         highlightLookLeftRight();
+        loadAndRenderDetectionRules(item.id);
 
         // Scroll to top
         dom.detailView.scrollTop = 0;
         window.scrollTo(0, 0);
+    }
+
+    function loadAndRenderDetectionRules(tpId) {
+        FlameData.loadDetectionRules(tpId).then(function (rules) {
+            var container = document.getElementById('dl-rules-container');
+            if (!container) return;
+
+            if (!rules || rules.length === 0) {
+                container.innerHTML = '<div class="dl-empty">No detection rules mapped to this threat path yet.</div>';
+                return;
+            }
+
+            var html = '';
+            rules.forEach(function (rule) {
+                html += '<div class="dl-rule-card">';
+                html += '<div class="dl-rule-header">';
+                html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || rule.id || '') + '</span>';
+                html += '<span class="dl-rule-level dl-level-' + escapeHtml((rule.level || '').toLowerCase()) + '">' + escapeHtml(rule.level || '') + '</span>';
+                html += '</div>';
+                html += '<h3 class="dl-rule-title">' + escapeHtml(rule.title || '') + '</h3>';
+                html += '<p class="dl-rule-desc">' + escapeHtml(rule.description || '') + '</p>';
+
+                // Detection logic code block
+                if (rule.detection) {
+                    var yamlStr = formatDetectionYaml(rule.detection);
+                    html += '<div class="dl-code-wrapper">';
+                    html += '<pre class="dl-code"><code>' + escapeHtml(yamlStr) + '</code></pre>';
+                    html += '<button class="dl-copy-btn" data-code="' + escapeHtml(yamlStr).replace(/"/g, '&quot;') + '">Copy</button>';
+                    html += '</div>';
+                }
+
+                // Tags
+                if (rule.tags && rule.tags.length > 0) {
+                    html += '<div class="dl-rule-tags">';
+                    rule.tags.forEach(function (t) {
+                        html += '<span class="dl-tag">' + escapeHtml(t) + '</span>';
+                    });
+                    html += '</div>';
+                }
+
+                html += '</div>';
+            });
+
+            container.innerHTML = html;
+
+            // Bind copy buttons
+            container.querySelectorAll('.dl-copy-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var code = btn.getAttribute('data-code').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+                    navigator.clipboard.writeText(code).then(function () {
+                        btn.textContent = 'Copied!';
+                        btn.classList.add('copied');
+                        setTimeout(function () {
+                            btn.textContent = 'Copy';
+                            btn.classList.remove('copied');
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    }
+
+    function formatDetectionYaml(detection) {
+        var lines = [];
+        Object.keys(detection).forEach(function (key) {
+            var val = detection[key];
+            if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+                lines.push(key + ':');
+                Object.keys(val).forEach(function (subKey) {
+                    var subVal = val[subKey];
+                    if (Array.isArray(subVal)) {
+                        lines.push('  ' + subKey + ':');
+                        subVal.forEach(function (item) {
+                            lines.push('    - ' + JSON.stringify(item));
+                        });
+                    } else {
+                        lines.push('  ' + subKey + ': ' + JSON.stringify(subVal));
+                    }
+                });
+            } else if (Array.isArray(val)) {
+                lines.push(key + ':');
+                val.forEach(function (item) {
+                    lines.push('  - ' + JSON.stringify(item));
+                });
+            } else {
+                lines.push(key + ': ' + JSON.stringify(val));
+            }
+        });
+        return lines.join('\n');
     }
 
     // -----------------------------------------------------------------------

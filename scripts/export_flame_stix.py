@@ -59,7 +59,7 @@ FLAME_PAGES_BASE = "https://elchacal801.github.io/flame-fraud"
 CONTENT_DIR = Path("database/flame-content")
 INDEX_FILE = Path("database/flame-index.json")
 OUTPUT_BUNDLE = Path("database/flame_stix_bundle.json")
-OUTPUT_RULES = Path("database/flame_detection_rules.json")
+OUTPUT_RULES = Path("database/flame_stix_detection_rules.json")
 
 # Detection block regex — matches fenced code blocks with language tags
 # Captures: language tag and content

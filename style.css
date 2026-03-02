@@ -1939,3 +1939,173 @@ h4 {
     font-size: 0.85rem;
     color: var(--color-text-muted);
 }
+
+/* ---------------------------------------------------------------
+   Detection Logic Section
+   --------------------------------------------------------------- */
+
+.dl-section {
+    margin-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-xl);
+}
+
+.dl-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--space-lg) 0;
+}
+
+.dl-section-title svg {
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+.dl-loading,
+.dl-empty {
+    padding: var(--space-lg);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.dl-rule-card {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-md);
+    transition: border-color var(--duration) var(--ease);
+}
+
+.dl-rule-card:hover {
+    border-color: var(--color-border-hover);
+}
+
+.dl-rule-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+}
+
+.dl-rule-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    font-weight: 500;
+}
+
+.dl-rule-level {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.dl-level-critical {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+}
+
+.dl-level-high {
+    background: rgba(249, 115, 22, 0.15);
+    color: #fb923c;
+}
+
+.dl-level-medium {
+    background: rgba(234, 179, 8, 0.15);
+    color: #facc15;
+}
+
+.dl-level-low {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+}
+
+.dl-level-informational {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+}
+
+.dl-rule-title {
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.dl-rule-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+    line-height: 1.5;
+    margin: 0 0 var(--space-md) 0;
+}
+
+.dl-code-wrapper {
+    position: relative;
+    margin-bottom: var(--space-md);
+}
+
+.dl-code {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--color-text-dim);
+    margin: 0;
+}
+
+.dl-copy-btn {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    background: var(--color-surface-3);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-dim);
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--duration) var(--ease);
+}
+
+.dl-copy-btn:hover {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+}
+
+.dl-copy-btn.copied {
+    background: var(--color-success);
+    color: white;
+    border-color: var(--color-success);
+}
+
+.dl-rule-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.dl-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-3);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+}

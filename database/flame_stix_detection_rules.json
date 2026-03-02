@@ -1,0 +1,320 @@
+[
+  {
+    "type": "spl",
+    "content": "index=treasury_mgmt (action=\"beneficiary_change\" OR action=\"wire_transfer\")\n| transaction account_id maxspan=24h\n| where eventcount > 1\n| search action=\"beneficiary_change\" AND action=\"wire_transfer\"\n| eval time_delta=round((latest - earliest)/3600, 2)\n| where time_delta < 24\n| table account_id, time_delta, _time, action, amount, beneficiary_name, ip_address, device_id\n| sort - amount",
+    "title": "Splunk — Beneficiary Change → Wire Transfer Correlation (Phase 3→4)",
+    "tp_id": "TP-0001"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Treasury Platform - New Authorized User from Anomalous Source\nstatus: experimental\ndescription: Detects addition of authorized users on treasury management platforms from IP addresses or devices not previously associated with the account.\nlogsource:\n    product: treasury_management\n    service: audit\ndetection:\n    selection:\n        action: \"add_authorized_user\"\n    filter_known:\n        source_ip|cidr:\n            - '10.0.0.0/8'        # Expected corporate ranges\n            - '172.16.0.0/12'\n    condition: selection and not filter_known\nlevel: high\ntags:\n    - attack.persistence\n    - cfpf.phase3.positioning",
+    "title": "Sigma — New Authorized User from Unusual Location (Phase 3)",
+    "tp_id": "TP-0001"
+  },
+  {
+    "type": "spl",
+    "content": "index=ap_system action=\"payment_update\"\n| eval prev_bank=coalesce(previous_routing_number, \"none\")\n| where prev_bank != routing_number AND prev_bank != \"none\"\n| table vendor_name, invoice_id, prev_bank, routing_number, modified_by, _time",
+    "title": "Splunk — Invoice Banking Detail Change Detection",
+    "tp_id": "TP-0002"
+  },
+  {
+    "type": "kql",
+    "content": "OfficeActivity\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\")\n| project TimeGenerated, UserId, Parameters, ClientIP",
+    "title": "Email — Forwarding Rule Monitoring (M365)",
+    "tp_id": "TP-0002"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT account_id, identity_id,\n       MAX(utilization_pct) - LAG(MAX(utilization_pct), 30) \n         OVER (PARTITION BY identity_id ORDER BY report_date) as util_change_30d\nFROM credit_monitoring\nWHERE report_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY account_id, identity_id\nHAVING util_change_30d > 60  -- 60%+ utilization jump in 30 days\nORDER BY util_change_30d DESC;",
+    "title": "SQL — Bust-Out Velocity Detection",
+    "tp_id": "TP-0003"
+  },
+  {
+    "type": "sigma",
+    "content": "title: HR Portal - Bulk Direct Deposit Modifications\nstatus: experimental\ndescription: Multiple employees modifying direct deposit within short window from unusual IPs\nlogsource:\n    product: hr_portal\n    service: audit\ndetection:\n    selection:\n        action: \"modify_direct_deposit\"\n    timeframe: 72h\n    condition: selection | count(distinct employee_id) by source_ip > 3\nlevel: critical\ntags:\n    - cfpf.phase3.positioning",
+    "title": "Sigma — Multiple Direct Deposit Changes from Anomalous Source",
+    "tp_id": "TP-0004"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT agent_id, agency_name, \n       old_routing_number, new_routing_number,\n       change_timestamp, session_ip, device_fingerprint\nFROM agent_payment_changes\nWHERE change_timestamp >= CURRENT_DATE - INTERVAL '30 days'\n  AND old_routing_number != new_routing_number\n  AND session_ip NOT IN (SELECT known_ip FROM agent_known_locations WHERE agent_id = agent_payment_changes.agent_id)\nORDER BY change_timestamp DESC;",
+    "title": "SQL — Agent Portal Payment Routing Anomaly",
+    "tp_id": "TP-0005"
+  },
+  {
+    "type": "kql",
+    "content": "EmailEvents\n| where Subject has_any (\"wire\", \"closing\", \"escrow\", \"wiring instructions\")\n| extend sender_domain = tostring(split(SenderFromAddress, \"@\")[1])\n| where sender_domain !in (known_title_company_domains)\n| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject",
+    "title": "Email — Wire Instruction Anomaly (M365 / Google Workspace)",
+    "tp_id": "TP-0006"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Suspicious Inbox Rule Creation\nstatus: experimental\ndescription: Detects the creation of inbox rules looking for real estate keywords like wire, closing, escrow to suppress legitimate communication.\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection:\n        ActionType: 'New-InboxRule'\n        RuleParameters|contains:\n            - 'wire'\n            - 'closing'\n            - 'escrow'\n    condition: selection",
+    "title": "Email — Suspicious Inbox Rule Creation (M365)",
+    "tp_id": "TP-0006"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT * FROM wire_authorizations \nWHERE auth_method = 'voice_only' \nAND amount > 50000 \nAND NOT EXISTS (\n    SELECT 1 FROM email_approvals WHERE wire_id = wire_authorizations.id\n);",
+    "title": "Process-Based Detection",
+    "tp_id": "TP-0007"
+  },
+  {
+    "type": "sigma",
+    "content": "title: New Device Login After SIM Swap\nstatus: experimental\ndescription: Detects a new device login following a recently detected SIM and MFA change.\nlogsource:\n    category: application\n    product: exchange_platform\ndetection:\n    selection_login:\n        EventName: 'UserLogin'\n        DeviceIsNew: true\n    selection_mfa:\n        EventName: 'MFAMethodChanged'\n    selection_contact:\n        EventName: 'ContactInfoChanged'\n    selection_withdraw:\n        EventName: 'CryptoWithdrawal'\n        AddressIsNew: true\n    timeframe: 24h\n    condition: selection_login and selection_mfa and selection_contact and selection_withdraw",
+    "title": "Exchange-Side — SIM Swap Indicator Correlation",
+    "tp_id": "TP-0008"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT d.account_id, d.device_fingerprint, d.check_amount,\n       COUNT(*) OVER (PARTITION BY d.device_fingerprint) as deposits_from_device,\n       a.account_open_date, DATEDIFF(day, a.account_open_date, d.deposit_date) as account_age_days\nFROM mobile_deposits d\nJOIN accounts a ON d.account_id = a.account_id\nWHERE d.check_amount > 1000\n  AND DATEDIFF(day, a.account_open_date, d.deposit_date) < 30\n  AND deposits_from_device > 3\nORDER BY d.device_fingerprint, d.deposit_date;",
+    "title": "SQL — Suspicious Mobile Deposit Patterns",
+    "tp_id": "TP-0009"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT c.claim_id, c.claimant_id, c.provider_id, c.claim_amount\nFROM claims c\nJOIN policies p ON c.policy_id = p.policy_id\nJOIN providers prov ON c.provider_id = prov.provider_id\nWHERE DATEDIFF('day', p.effective_date, c.filing_date) <= 90\nAND prov.risk_tier = 'High'\nAND c.claim_amount > (\n    SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY claim_amount) FROM claims\n);",
+    "title": "Predictive Model — Claim Risk Scoring",
+    "tp_id": "TP-0010"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT account_id\nFROM transactions\nWHERE transaction_type = 'INBOUND'\nAND timestamp >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY account_id\nHAVING COUNT(DISTINCT sender_id) >= 3\nAND EXISTS (\n    SELECT 1 FROM transactions t_out\n    WHERE t_out.account_id = transactions.account_id\n    AND t_out.transaction_type = 'OUTBOUND'\n    AND t_out.destination_type IN ('INTERNATIONAL_WIRE', 'CRYPTO', 'P2P')\n    AND t_out.timestamp >= transactions.timestamp\n    AND t_out.timestamp <= transactions.timestamp + INTERVAL '48 hours'\n);",
+    "title": "Mule Account Behavioral Pattern",
+    "tp_id": "TP-0011"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT t.transaction_id, t.account_id\nFROM transactions t\nJOIN active_calls c ON t.customer_phone = c.phone_number\nJOIN customer_profiles cp ON t.account_id = cp.account_id\nWHERE t.beneficiary_is_new = TRUE\nAND t.amount > 5000\nAND cp.age > 60\nAND c.call_start <= t.timestamp \nAND c.call_end >= t.timestamp;",
+    "title": "Real-Time Transaction Risk Scoring",
+    "tp_id": "TP-0012"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT account_id, \n       SUM(points_redeemed) as total_redeemed,\n       COUNT(DISTINCT gift_card_id) as cards_generated,\n       MIN(session_ip) as source_ip\nFROM redemption_log\nWHERE redemption_date >= CURRENT_DATE - INTERVAL '7 days'\nGROUP BY account_id\nHAVING total_redeemed > 10000  -- threshold\n   AND cards_generated > 2\n   AND source_ip NOT IN (SELECT known_ip FROM account_known_ips WHERE account_id = redemption_log.account_id)\nORDER BY total_redeemed DESC;",
+    "title": "Post-Auth — Account Drain Pattern",
+    "tp_id": "TP-0013"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Anomalous Internal Account Access Volume\nstatus: experimental\ndescription: Detects when an employee accesses 3x their baseline account volume within 24 hours\nlogsource:\n    product: core_banking\n    service: ueba\ndetection:\n    selection:\n        action: \"account_view\"\n    timeframe: 24h\n    condition: selection | count(distinct account_id) by employee_id > 3 * baseline_volume_24h\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - insider.threat",
+    "title": "UEBA — Employee Access Anomaly Scoring",
+    "tp_id": "TP-0014"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT d.domain_name, d.creation_date, d.registrar\nFROM recently_registered_domains d\nJOIN mx_records m ON d.domain_id = m.domain_id\nJOIN ssl_certificates s ON d.domain_id = s.domain_id\nWHERE d.domain_name SIMILAR TO '%(health|staffing|rightathome)%'\nAND d.creation_date >= CURRENT_DATE - INTERVAL '90 days'\nAND d.hosting_provider IN ('Hostinger', 'GoDaddy', 'OVH')\nAND m.mx_domain != d.domain_name\nAND s.issuer = 'Let''s Encrypt'\nAND DATEDIFF('day', d.creation_date, s.issue_date) <= 3;",
+    "title": "Domain-Based Detection",
+    "tp_id": "TP-0015"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT \n    c.customer_id, \n    c.account_id, \n    c.credit_limit, \n    SUM(t.amount) as total_drawn,\n    (SUM(t.amount) / c.credit_limit) as utilization_ratio\nFROM credit_accounts c\nJOIN transactions t ON c.account_id = t.account_id\nWHERE t.transaction_date >= CURRENT_DATE - INTERVAL '3 days'\nGROUP BY 1, 2, 3\nHAVING SUM(t.amount) / c.credit_limit > 0.85 \n   AND c.account_age_days > 180 -- Established accounts\n   AND c.historical_avg_utilization < 0.30; -- Previously low-balance",
+    "title": "SQL — Rapid Utilization Spike (Bust-Out Indicator)",
+    "tp_id": "TP-0016"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT \n    c.customer_id,\n    c.age,\n    w.wire_amount,\n    w.beneficiary_name,\n    w.wire_date\nFROM customers c\nJOIN wire_outbound w ON c.account_id = w.account_id\nWHERE c.age >= 60\n  AND w.wire_amount > 25000\n  AND w.beneficiary_name SIMILAR TO '%(coinbase|kraken|binance|gemini)%'\n  AND NOT EXISTS (\n      -- Detect if this is their first time wiring to crypto\n      SELECT 1 FROM wire_outbound w_old \n      WHERE w_old.account_id = c.account_id \n        AND w_old.wire_date < CURRENT_DATE - INTERVAL '30 days'\n        AND w_old.beneficiary_name SIMILAR TO '%(coinbase|kraken|binance|gemini)%'\n  );",
+    "title": "SQL — High-Value Outbound to Crypto Exchange (Elder Financial Exploitation Indicator)",
+    "tp_id": "TP-0017"
+  },
+  {
+    "type": "spl",
+    "content": "index=onboarding action=\"document_verification\"\n| stats count dc(applicant_name) as distinct_names sum(eval(status=\"rejected_ai_suspected\")) as deepfake_rejects by device_fingerprint, source_ip\n| where count > 3 AND distinct_names > 2\n| table device_fingerprint, source_ip, count, distinct_names, deepfake_rejects\n| sort - deepfake_rejects",
+    "title": "Splunk — Detecting Shared Device Fingerprints Across Multiple AI Onboarding Attempts",
+    "tp_id": "TP-0018"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT \n    a.application_id, \n    a.business_name, \n    a.applicant_email,\n    d.domain_age_days,\n    s.days_since_last_amendment\nFROM commercial_applications a\nLEFT JOIN domain_intel d ON SPLIT_PART(a.applicant_email, '@', 2) = d.domain_name\nLEFT JOIN sos_data s ON a.tax_id = s.tax_id\nWHERE d.domain_age_days < 180 \n  AND s.days_since_last_amendment < 60\n  AND a.loan_amount_requested > 50000;",
+    "title": "SQL — High-Risk Commercial Application (Recent Filing + Young Domain)",
+    "tp_id": "TP-0019"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Supply Chain Fraud - Suspicious Inbox Rule Creation\nstatus: active\ndescription: Detects creation of inbox rules common in Invoice Fraud/BEC to hide communications from the victim.\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection:\n        operation: 'New-InboxRule'\n    keywords:\n        - '*invoice*'\n        - '*payment*'\n        - '*wire*'\n        - '*bank*'\n        - '*updated detail*'\n    actions:\n        - '*MoveToFolder*'\n        - '*Delete*'\n        - '*MarkAsRead*'\n    condition: selection and keywords and actions\nlevel: high\ntags:\n    - attack.t1562.012\n    - cfpf.phase3.positioning",
+    "title": "Sigma — Malicious Inbox Rule Creation (Positioning)",
+    "tp_id": "TP-0020"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT \n    t.transaction_id,\n    t.originator_company_name,\n    t.amount,\n    t.beneficiary_name,\n    t.beneficiary_routing_number,\n    t.beneficiary_account_number\nFROM b2b_wire_transfers t\nWHERE t.amount > 50000 \n  AND NOT EXISTS (\n      -- Has this company ever paid this specific routing/account combo before?\n      SELECT 1 FROM b2b_wire_transfers t_hist\n      WHERE t_hist.originator_id = t.originator_id\n        AND t_hist.beneficiary_routing_number = t.beneficiary_routing_number\n        AND t_hist.beneficiary_account_number = t.beneficiary_account_number\n        AND t_hist.transaction_date < CURRENT_DATE\n  );",
+    "title": "SQL — B2B Payment to First-Time Beneficiary",
+    "tp_id": "TP-0020"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT \n    p.national_provider_identifier,\n    p.provider_name,\n    c.date_of_service,\n    SUM(c.estimated_procedure_minutes) as total_minutes_billed\nFROM healthcare_claims c\nJOIN providers p ON c.provider_id = p.provider_id\nWHERE c.date_of_service >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY 1, 2, 3\nHAVING SUM(c.estimated_procedure_minutes) > 1080 -- 18 hours of direct patient care\nORDER BY total_minutes_billed DESC;",
+    "title": "SQL — \"Impossible Day\" Logic (Overbilling Indicator)",
+    "tp_id": "TP-0021"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT \n    a.account_id,\n    COUNT(DISTINCT t.originator_name) as distinct_state_agencies,\n    SUM(t.amount) as total_government_deposits,\n    MAX(t.transaction_date) as latest_deposit\nFROM ach_inbound t\nJOIN accounts a ON t.account_id = a.account_id\nWHERE t.sec_code = 'PPD' \n  AND t.originator_name SIMILAR TO '%(UI|UNEMPLOYMENT|TREAS 310|TAX REF)% '\n  AND t.transaction_date >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY 1\nHAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits\n   AND COUNT(DISTINCT t.receiver_name) > 1; -- For different individuals",
+    "title": "SQL — Multiple UI/Tax Deposits to Single Account (Mule Indicator)",
+    "tp_id": "TP-0022"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Mobile Banking - Impossible Navigation Speed (ATS Indicator)\nstatus: experimental\ndescription: Detects when the time between app launch, login, and transaction initiation is faster than humanly possible, indicating an Automated Transfer System.\nlogsource:\n    product: mobile_banking\n    service: telemetry\ndetection:\n    selection:\n        action: 'transaction_initiated'\n    condition: selection | time_since(session_start) < 4s\nlevel: high\ntags:\n    - attack.t1624\n    - cfpf.phase4.execution",
+    "title": "Sigma — Fast Navigation ATS Anomaly (Conceptual)",
+    "tp_id": "TP-0023"
+  },
+  {
+    "type": "spl",
+    "content": "index=rtp_transactions payment_rail IN (\"zelle\", \"fednow\", \"pix\", \"upi\", \"faster_payments\")\n| eval recipient_key=account_id.\"_\".recipient_id\n| join type=left recipient_key\n    [search index=rtp_transactions earliest=-90d\n    | eval recipient_key=account_id.\"_\".recipient_id\n    | stats count as prior_txns by recipient_key]\n| where isnull(prior_txns) OR prior_txns=0\n| where amount > 500\n| eval risk_score=case(\n    amount > 5000, \"critical\",\n    amount > 2000, \"high\",\n    amount > 500, \"medium\",\n    1=1, \"low\")\n| table _time, account_id, recipient_id, amount, payment_rail, device_id, ip_address, risk_score\n| sort - amount",
+    "title": "Splunk — First-Time Recipient High-Value A2A Payment (Phase 4)",
+    "tp_id": "TP-0024"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Rapid Sequential Instant Payments to Multiple New Recipients\nstatus: experimental\ndescription: Detects multiple A2A instant payments to different recipients within a short time window, indicative of mule network fund distribution.\nlogsource:\n    product: payment_system\n    service: rtp_transactions\ndetection:\n    selection:\n        payment_rail:\n            - 'zelle'\n            - 'fednow'\n            - 'pix'\n            - 'upi'\n            - 'faster_payments'\n    timeframe: 30m\n    condition: selection | count(distinct recipient_id) by account_id > 3\nlevel: high\ntags:\n    - fraud.payment_diversion\n    - cfpf.phase4.execution",
+    "title": "Sigma — Rapid Sequential A2A Payments to Multiple Recipients (Phase 4)",
+    "tp_id": "TP-0024"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    p.account_id,\n    p.payee_added_at,\n    t.transaction_time,\n    DATEDIFF(MINUTE, p.payee_added_at, t.transaction_time) AS minutes_to_payment,\n    t.amount,\n    t.recipient_id,\n    t.payment_rail\nFROM payee_management p\nJOIN rtp_transactions t\n    ON p.account_id = t.account_id\n    AND p.payee_id = t.recipient_id\nWHERE DATEDIFF(MINUTE, p.payee_added_at, t.transaction_time) BETWEEN 0 AND 120\n    AND t.amount > 1000\n    AND p.payee_added_at > DATEADD(DAY, -7, GETDATE())\nORDER BY t.amount DESC;",
+    "title": "SQL — Payee Addition to Payment Correlation (Phase 3 to 4)",
+    "tp_id": "TP-0024"
+  },
+  {
+    "type": "spl",
+    "content": "index=transactions payment_type IN (\"wire\", \"zelle\", \"ach\", \"crypto_purchase\")\n| eval recipient_key=account_id.\"_\".recipient_category\n| sort 0 account_id _time\n| streamstats count as payment_seq values(amount) as amount_history by recipient_key\n| where payment_seq >= 3\n| eval avg_amount=avg(amount_history)\n| eval latest_amount=amount\n| eval escalation_ratio=latest_amount/avg_amount\n| where escalation_ratio > 1.5\n| eval days_span=round((_time - min(_time))/86400, 1)\n| where days_span > 7 AND days_span < 180\n| table account_id, recipient_key, payment_seq, latest_amount, avg_amount, escalation_ratio, days_span\n| sort - escalation_ratio",
+    "title": "Splunk — Progressive Payment Escalation to New Recipients (Phase 3-4)",
+    "tp_id": "TP-0025"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Multi-Channel Payments to Related Recipients - Romance Fraud Indicator\nstatus: experimental\ndescription: Detects accounts sending payments through multiple channels (wire, Zelle, crypto) to related recipients within a compressed timeframe, consistent with romance scam payment diversification.\nlogsource:\n    product: payment_system\n    service: transactions\ndetection:\n    selection:\n        payment_type:\n            - 'wire'\n            - 'zelle'\n            - 'ach'\n            - 'crypto_purchase'\n            - 'gift_card'\n    timeframe: 30d\n    condition: selection | count(distinct payment_type) by account_id > 2 AND sum(amount) by account_id > 10000\nlevel: high\ntags:\n    - fraud.romance_scam\n    - fraud.app_fraud\n    - cfpf.phase4.execution",
+    "title": "Sigma — Multi-Channel Payment Diversification (Phase 4)",
+    "tp_id": "TP-0025"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    ci.account_id,\n    ci.interaction_date,\n    ci.interaction_type,\n    ci.transcript_flags,\n    t.total_payments_30d,\n    t.total_amount_30d,\n    t.distinct_recipients_30d\nFROM call_center_interactions ci\nJOIN (\n    SELECT account_id,\n           COUNT(*) as total_payments_30d,\n           SUM(amount) as total_amount_30d,\n           COUNT(DISTINCT recipient_id) as distinct_recipients_30d\n    FROM transactions\n    WHERE transaction_date > DATEADD(DAY, -30, GETDATE())\n    GROUP BY account_id\n) t ON ci.account_id = t.account_id\nWHERE ci.transcript_flags LIKE '%coached_response%'\n   OR ci.transcript_flags LIKE '%defensive_about_recipient%'\n   OR ci.transcript_flags LIKE '%refused_fraud_education%'\nORDER BY t.total_amount_30d DESC;",
+    "title": "SQL — Coached Customer Response Detection (Phase 3)",
+    "tp_id": "TP-0025"
+  },
+  {
+    "type": "spl",
+    "content": "index=transactions (payment_type=\"wire\" OR payment_type=\"crypto_purchase\" OR payment_type=\"zelle\")\n    (recipient_category=\"investment\" OR recipient_category=\"crypto_exchange\" OR recipient_category=\"unknown_platform\")\n| bin _time span=7d\n| stats sum(amount) as weekly_total count as weekly_count by account_id, _time\n| sort 0 account_id _time\n| streamstats window=4 values(weekly_total) as weekly_history by account_id\n| eval prev_avg=mvindex(weekly_history, 0)\n| eval current=weekly_total\n| where current > prev_avg * 2 AND weekly_count >= 2\n| eval total_invested=sum(weekly_total)\n| table account_id, _time, weekly_total, weekly_count, prev_avg, current\n| sort - current",
+    "title": "Splunk — Progressive Investment Deposit Escalation (Phase 3-4)",
+    "tp_id": "TP-0026"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Sequential Fee/Tax Payments to Investment Entity - Pig Butchering Indicator\nstatus: experimental\ndescription: Detects multiple payments described as fees, taxes, or compliance requirements to investment-related entities, consistent with withdrawal denial extraction in pig butchering scams.\nlogsource:\n    product: payment_system\n    service: transactions\ndetection:\n    selection_type:\n        payment_type:\n            - 'wire'\n            - 'zelle'\n            - 'crypto_purchase'\n    selection_description:\n        transaction_description|contains:\n            - 'tax'\n            - 'fee'\n            - 'compliance'\n            - 'insurance deposit'\n            - 'verification'\n            - 'anti-money laundering'\n    selection_category:\n        recipient_category:\n            - 'investment'\n            - 'crypto_exchange'\n            - 'unknown_platform'\n    timeframe: 30d\n    condition: selection_type AND selection_description AND selection_category | count() by account_id > 2\nlevel: critical\ntags:\n    - fraud.investment_scam\n    - fraud.pig_butchering\n    - cfpf.phase4.execution",
+    "title": "Sigma — Fee/Tax Payment Pattern Detection (Phase 4)",
+    "tp_id": "TP-0026"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    t.account_id,\n    t.transaction_date,\n    t.amount,\n    t.payment_type,\n    t.recipient_description,\n    fs.funding_source_type,\n    fs.funding_date,\n    DATEDIFF(DAY, fs.funding_date, t.transaction_date) AS days_from_funding\nFROM transactions t\nJOIN (\n    SELECT account_id,\n           transaction_date as funding_date,\n           CASE\n               WHEN description LIKE '%retirement%' OR description LIKE '%401k%' OR description LIKE '%IRA%' THEN 'retirement_liquidation'\n               WHEN description LIKE '%HELOC%' OR description LIKE '%home equity%' THEN 'home_equity'\n               WHEN description LIKE '%personal loan%' OR description LIKE '%credit line%' THEN 'personal_loan'\n               ELSE 'other_unusual'\n           END as funding_source_type\n    FROM transactions\n    WHERE (description LIKE '%retirement%' OR description LIKE '%401k%' OR description LIKE '%IRA%'\n           OR description LIKE '%HELOC%' OR description LIKE '%home equity%'\n           OR description LIKE '%personal loan%' OR description LIKE '%credit line%')\n      AND transaction_type = 'inbound'\n      AND transaction_date > DATEADD(DAY, -90, GETDATE())\n) fs ON t.account_id = fs.account_id\nWHERE t.recipient_category IN ('investment', 'crypto_exchange', 'unknown_platform')\n  AND t.transaction_date > fs.funding_date\n  AND DATEDIFF(DAY, fs.funding_date, t.transaction_date) <= 30\nORDER BY t.amount DESC;",
+    "title": "SQL — Unusual Funding Source for Investment Activity (Phase 3)",
+    "tp_id": "TP-0026"
+  },
+  {
+    "type": "spl",
+    "content": "index=core_banking sourcetype=wire_transfer\n| lookup customer_demographics account_id OUTPUT date_of_birth\n| eval customer_age=round((now() - strptime(date_of_birth, \"%Y-%m-%d\")) / 86400 / 365.25, 0)\n| where customer_age >= 60\n| eval is_new_recipient=if(recipient_first_seen > relative_time(now(), \"-30d\"), 1, 0)\n| where is_new_recipient=1\n| stats count as wire_count, sum(amount) as total_amount, dc(recipient_id) as unique_recipients by account_id, customer_age\n| where total_amount > 10000 OR wire_count > 3\n| table account_id, customer_age, wire_count, total_amount, unique_recipients\n| sort - total_amount",
+    "title": "Splunk -- Elder Customer Unusual Wire Transfer Pattern (Phase 4)",
+    "tp_id": "TP-0027"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Remote Access Tool Detected During Elder Customer Online Banking Session\nstatus: experimental\ndescription: Detects active remote access tool processes (AnyDesk, TeamViewer, etc.) during online banking sessions for customers aged 60+.\nlogsource:\n    product: online_banking\n    service: session_analytics\ndetection:\n    selection_session:\n        customer_age|gte: 60\n    selection_rat:\n        active_processes|contains:\n            - 'anydesk'\n            - 'teamviewer'\n            - 'logmein'\n            - 'ultraviewer'\n            - 'supremo'\n    condition: selection_session and selection_rat\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - elder.exploitation",
+    "title": "Sigma -- Remote Access Tool Installation on Elder Customer Device (Phase 2)",
+    "tp_id": "TP-0027"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    s.supplier_id,\n    s.enrollment_date,\n    s.physical_address,\n    COUNT(DISTINCT c.beneficiary_id) AS unique_beneficiaries,\n    COUNT(c.claim_id) AS total_claims,\n    SUM(c.billed_amount) AS total_billed,\n    AVG(c.billed_amount) AS avg_claim_amount,\n    DATEDIFF(day, s.enrollment_date, MIN(c.service_date)) AS days_to_first_claim,\n    COUNT(DISTINCT c.hcpcs_code) AS unique_codes\nFROM dme_suppliers s\nJOIN claims c ON s.supplier_id = c.supplier_id\nWHERE s.enrollment_date > DATEADD(month, -12, GETDATE())\nGROUP BY s.supplier_id, s.enrollment_date, s.physical_address\nHAVING COUNT(c.claim_id) > 100\n    AND DATEDIFF(day, s.enrollment_date, MIN(c.service_date)) < 30\n    AND AVG(c.billed_amount) > 2000\nORDER BY total_billed DESC;",
+    "title": "SQL -- New DME Supplier Anomalous Billing Pattern (Phase 4)",
+    "tp_id": "TP-0028"
+  },
+  {
+    "type": "sigma",
+    "content": "title: DME Supplier Claims for Geographically Distant Beneficiaries\nstatus: experimental\ndescription: Detects DME suppliers submitting claims for beneficiaries located more than 200 miles from the supplier's registered address, indicative of phantom billing.\nlogsource:\n    product: medicare_claims\n    service: dme\ndetection:\n    selection:\n        claim_type: \"DME\"\n        supplier_beneficiary_distance|gt: 200\n    filter_known_telehealth:\n        hcpcs_code|startswith: \"E\"  # Exclude telehealth-eligible codes\n    condition: selection and not filter_known_telehealth\nlevel: high\ntags:\n    - cfpf.phase4.execution\n    - healthcare.phantom_billing",
+    "title": "Sigma -- DME Supplier Geographic-Beneficiary Mismatch (Phase 3-4)",
+    "tp_id": "TP-0028"
+  },
+  {
+    "type": "spl",
+    "content": "index=credit_bureau sourcetype=credit_file_events\n| eval file_age_months=round((now() - strptime(file_creation_date, \"%Y-%m-%d\")) / 86400 / 30, 0)\n| where file_age_months <= 24\n| stats\n    count(eval(event_type=\"payment\")) as payment_count,\n    count(eval(event_type=\"late_payment\")) as late_payment_count,\n    count(eval(event_type=\"new_account\")) as new_accounts,\n    count(eval(event_type=\"auth_user_add\")) as auth_user_additions,\n    max(credit_score) as current_score,\n    min(credit_score) as initial_score\n    by ssn, identity_name\n| eval score_velocity=(current_score - initial_score) / file_age_months\n| where late_payment_count=0 AND payment_count > 12 AND score_velocity > 25 AND new_accounts >= 3\n| table ssn, identity_name, file_age_months, payment_count, late_payment_count, new_accounts, auth_user_additions, current_score, score_velocity\n| sort - score_velocity",
+    "title": "Splunk -- Synthetic Identity Credit Farming Pattern Detection (Phase 3)",
+    "tp_id": "TP-0029"
+  },
+  {
+    "type": "sigma",
+    "content": "title: KYC Document Submission with AI Forgery Indicators\nstatus: experimental\ndescription: Detects identity document submissions during KYC onboarding that exhibit AI generation artifacts including metadata anomalies, texture inconsistencies, and template matching against known forgery services.\nlogsource:\n    product: identity_verification\n    service: document_check\ndetection:\n    selection:\n        verification_type: \"document_upload\"\n    forgery_indicators:\n        - ai_forgery_score|gte: 0.7\n        - metadata_anomaly: true\n        - template_match|contains:\n            - 'onlyfake'\n            - 'prokyc'\n            - 'known_forgery_template'\n    condition: selection and 1 of forgery_indicators\nlevel: critical\ntags:\n    - cfpf.phase2.initial_access\n    - ai.document_forgery\n    - synthetic_identity",
+    "title": "Sigma -- AI-Generated Document Submission Detection (Phase 2)",
+    "tp_id": "TP-0029"
+  },
+  {
+    "type": "spl",
+    "content": "index=ecommerce sourcetype=orders\n| eval billing_ship_match=if(billing_zip == shipping_zip, 1, 0)\n| eval is_single_item=if(item_count == 1, 1, 0)\n| stats\n    count as order_count,\n    dc(shipping_address) as unique_ship_addresses,\n    dc(card_last4) as unique_cards,\n    avg(billing_ship_match) as pct_billing_match,\n    avg(is_single_item) as pct_single_item,\n    sum(order_total) as total_revenue\n    by session_fingerprint, ip_subnet\n| where order_count > 10\n    AND unique_ship_addresses > 8\n    AND pct_billing_match < 0.2\n    AND pct_single_item > 0.8\n| table session_fingerprint, ip_subnet, order_count, unique_ship_addresses, unique_cards, pct_billing_match, pct_single_item, total_revenue\n| sort - order_count",
+    "title": "Splunk -- Triangulation Purchase Pattern Detection at Retailer (Phase 4)",
+    "tp_id": "TP-0030"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Marketplace Seller Exhibiting Triangulation Fraud Indicators\nstatus: experimental\ndescription: Detects marketplace seller accounts exhibiting behavioral patterns consistent with triangulation fraud, including below-market pricing, high order fulfillment from third-party retailers, and elevated shipping address diversity.\nlogsource:\n    product: marketplace_platform\n    service: seller_analytics\ndetection:\n    selection:\n        seller_age_days|lte: 180\n    triangulation_indicators:\n        avg_price_vs_market|lte: 0.85\n        pct_orders_dropshipped|gte: 0.90\n        unique_shipping_addresses_ratio|gte: 0.95\n    condition: selection and 2 of triangulation_indicators\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - cfpf.phase3.positioning\n    - ecommerce.triangulation",
+    "title": "Sigma -- Marketplace Seller Triangulation Indicators (Phase 2-3)",
+    "tp_id": "TP-0030"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    customer_id,\n    COUNT(*) AS refund_count_90d,\n    SUM(refund_amount) AS total_refund_value_90d,\n    COUNT(DISTINCT order_id) AS orders_with_refunds,\n    ROUND(SUM(refund_amount) / NULLIF(SUM(order_total), 0) * 100, 2) AS refund_rate_pct,\n    COUNT(CASE WHEN refund_reason = 'DNA' THEN 1 END) AS dna_claims,\n    COUNT(CASE WHEN refund_reason = 'SNAD' THEN 1 END) AS snad_claims\nFROM refunds r\nJOIN orders o ON r.order_id = o.order_id\nWHERE r.refund_date >= DATEADD(day, -90, GETDATE())\nGROUP BY customer_id\nHAVING COUNT(*) > 3\n   AND SUM(refund_amount) > 500\nORDER BY total_refund_value_90d DESC;",
+    "title": "SQL — Refund Velocity Anomaly Detection (Phase 4) — Detection Logic: DL-0062",
+    "tp_id": "TP-0031"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Return Package Weight Discrepancy - Potential Empty Box or FTID\nstatus: experimental\ndescription: Detects return packages where received weight deviates significantly from expected product weight, indicating empty box returns or substitute-filled packages.\nlogsource:\n    product: returns_processing\n    service: warehouse\ndetection:\n    selection:\n        event_type: \"return_received\"\n    filter_weight_mismatch:\n        weight_delta_pct|gte: 30\n    condition: selection and filter_weight_mismatch\nlevel: high\ntags:\n    - fraud.refund\n    - cfpf.phase3.positioning",
+    "title": "Sigma — Return Package Weight Discrepancy (Phase 3) — Detection Logic: DL-0064",
+    "tp_id": "TP-0031"
+  },
+  {
+    "type": "spl",
+    "content": "index=customer_service sourcetype=refund_claims\n| stats count AS claim_count, dc(customer_id) AS unique_customers, values(customer_id) AS customers BY device_fingerprint, src_ip\n| where unique_customers > 2 AND claim_count > 5\n| eval suspicious_operator = if(unique_customers > 3 AND claim_count > 10, \"HIGH\", \"MEDIUM\")\n| table device_fingerprint, src_ip, unique_customers, claim_count, customers, suspicious_operator\n| sort - unique_customers",
+    "title": "Splunk — Cross-Account Refund Operator Detection (Phase 2) — Detection Logic: DL-0065",
+    "tp_id": "TP-0031"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect unlimited token approvals to contracts not in verified/whitelist\nSELECT\n    tx_hash,\n    block_timestamp,\n    from_address AS victim_wallet,\n    to_address AS token_contract,\n    CAST(CONV(SUBSTRING(input_data, 75, 64), 16, 10) AS DECIMAL) AS approval_amount,\n    CONCAT('0x', SUBSTRING(input_data, 35, 40)) AS spender_address\nFROM ethereum.transactions\nWHERE SUBSTRING(input_data, 1, 10) = '0x095ea7b3'  -- approve() function selector\n  AND SUBSTRING(input_data, 75, 64) = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'  -- unlimited approval\n  AND CONCAT('0x', SUBSTRING(input_data, 35, 40)) NOT IN (SELECT address FROM verified_contracts)\n  AND block_timestamp >= DATE_SUB(NOW(), INTERVAL 24 HOUR)\nORDER BY block_timestamp DESC;",
+    "title": "On-Chain Query — Unlimited ERC-20 Approval to Unverified Contract (Phase 2)",
+    "tp_id": "TP-0032"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Permit2 Batch Transfer Following New Permit Signature\nstatus: experimental\ndescription: Detects batch token transfers via Permit2 contract that follow a newly submitted permit signature, indicative of wallet drainer execution.\nlogsource:\n    product: blockchain_monitoring\n    service: ethereum\ndetection:\n    selection_permit2:\n        contract_address: \"0x000000000022d473030f116ddee9f6b43ac78ba3\"  # Canonical Permit2\n        method: \"permitBatchTransferFrom\"\n    filter_value:\n        total_value_usd|gte: 1000\n    condition: selection_permit2 and filter_value\nlevel: critical\ntags:\n    - fraud.wallet_drainer\n    - cfpf.phase4.execution",
+    "title": "Sigma — Permit2 Batch Transfer Anomaly (Phase 4)",
+    "tp_id": "TP-0032"
+  },
+  {
+    "type": "spl",
+    "content": "index=domain_monitoring sourcetype=cert_transparency\n| search domain=\"*airdrop*\" OR domain=\"*claim*\" OR domain=\"*mint*\" OR domain=\"*drop*\"\n| eval age_hours=round((now() - registration_epoch) / 3600, 1)\n| where age_hours < 48\n| lookup verified_web3_domains domain AS domain OUTPUT is_legitimate\n| where isnull(is_legitimate) OR is_legitimate=\"false\"\n| table domain, registration_date, age_hours, registrar, hosting_ip, ssl_issuer\n| sort age_hours",
+    "title": "Splunk — Phishing Domain Detection for Web3 Projects (Phase 1)",
+    "tp_id": "TP-0032"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    s.student_id,\n    s.enrollment_date,\n    s.institution_id,\n    fa.total_disbursed,\n    fa.disbursement_date,\n    COALESCE(lms.total_logins, 0) AS lms_logins,\n    COALESCE(lms.assignments_submitted, 0) AS assignments,\n    COALESCE(att.classes_attended, 0) AS attendance_count\nFROM students s\nJOIN financial_aid fa ON s.student_id = fa.student_id\nLEFT JOIN lms_activity lms ON s.student_id = lms.student_id\n    AND lms.term = fa.term\nLEFT JOIN attendance att ON s.student_id = att.student_id\n    AND att.term = fa.term\nWHERE fa.disbursement_status = 'COMPLETED'\n  AND fa.term = CURRENT_TERM()\n  AND COALESCE(lms.total_logins, 0) = 0\n  AND COALESCE(lms.assignments_submitted, 0) = 0\n  AND COALESCE(att.classes_attended, 0) = 0\nORDER BY fa.total_disbursed DESC;",
+    "title": "SQL — Ghost Student Identification: Zero Academic Activity with Active Financial Aid (Phase 4)",
+    "tp_id": "TP-0033"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Enrollment Portal - Bot-Driven Application Submission\nstatus: experimental\ndescription: Detects enrollment applications submitted with characteristics indicating automated bot submission - datacenter IP sources, sub-human completion times, or device fingerprint clustering.\nlogsource:\n    product: admissions_portal\n    service: application\ndetection:\n    selection:\n        event_type: \"application_submit\"\n    filter_bot_indicators:\n        form_completion_seconds|lte: 60\n    condition: selection and filter_bot_indicators\nlevel: high\ntags:\n    - fraud.ghost_student\n    - cfpf.phase2.initial_access\n---\ntitle: Enrollment Portal - Application Cluster from Shared Infrastructure\nstatus: experimental\ndescription: Detects clusters of enrollment applications sharing device fingerprints, IP subnets, or address patterns indicating coordinated mass application submission.\nlogsource:\n    product: admissions_portal\n    service: application\ndetection:\n    selection:\n        event_type: \"application_submit\"\n    aggregation:\n        count|gte: 5\n        groupby: device_fingerprint\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: high\ntags:\n    - fraud.ghost_student\n    - cfpf.phase2.initial_access",
+    "title": "Sigma — Bot-Driven Enrollment Application Detection (Phase 2)",
+    "tp_id": "TP-0033"
+  },
+  {
+    "type": "spl",
+    "content": "index=financial_aid sourcetype=disbursements\n| stats count AS student_count, sum(amount) AS total_disbursed, values(student_id) AS students BY bank_routing_number, bank_account_number\n| where student_count > 1\n| eval risk_level = case(student_count > 5, \"CRITICAL\", student_count > 2, \"HIGH\", 1=1, \"MEDIUM\")\n| table bank_routing_number, bank_account_number, student_count, total_disbursed, students, risk_level\n| sort - student_count",
+    "title": "Splunk — Disbursement Account Anomaly Detection (Phase 3-4)",
+    "tp_id": "TP-0033"
+  }
+]
