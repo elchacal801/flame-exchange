@@ -3,11 +3,12 @@
 validate_submission.py - FLAME Submission Validator
 
 Validates the structure and frontmatter of FLAME submission
-markdown files. Designed to run in CI (GitHub Actions) on PRs
-that modify ThreatPaths/, Baselines/, or DetectionLogic/.
+markdown files and YAML detection-logic files. Designed to run
+in CI (GitHub Actions) on PRs that modify ThreatPaths/,
+Baselines/, or DetectionLogic/.
 
 Usage:
-    python scripts/validate_submission.py <file.md> [<file2.md> ...]
+    python scripts/validate_submission.py <file.md|file.yml> [...]
 
 Exit codes:
     0 - All files pass validation
@@ -58,6 +59,29 @@ REQUIRED_FRONTMATTER_FIELDS = [
     "tlp", "sector", "fraud_types", "cfpf_phases",
 ]
 
+# Category-aware required fields for markdown submissions
+REQUIRED_TP_FIELDS = [
+    "id", "title", "category", "date", "author", "source",
+    "tlp", "sector", "fraud_types", "cfpf_phases",
+]
+
+REQUIRED_BASELINE_FIELDS = [
+    "id", "title", "category", "date", "author",
+]
+
+# ---------------------------------------------------------------------------
+# Detection Logic (YAML) constants
+# ---------------------------------------------------------------------------
+
+VALID_DL_STATUSES = {"experimental", "test", "stable", "deprecated"}
+VALID_DL_LEVELS = {"informational", "low", "medium", "high", "critical"}
+VALID_DL_PRODUCTS = {"banking", "insurance", "ecommerce", "crypto", "healthcare", "government", "telecom"}
+REQUIRED_DL_FIELDS = [
+    "title", "id", "status", "description", "threat_paths",
+    "cfpf_phase", "fraud_types", "logsource", "detection",
+    "falsepositives", "level", "tags",
+]
+
 REQUIRED_BODY_SECTIONS = [
     "Summary",
     "CFPF Phase Mapping",
@@ -106,16 +130,111 @@ class ValidationResult:
         return "\n".join(lines)
 
 
+def validate_dl_file(filepath: Path) -> ValidationResult:
+    """Validate a Detection Logic YAML file."""
+    result = ValidationResult(str(filepath))
+
+    text = filepath.read_text(encoding="utf-8")
+
+    try:
+        meta = yaml.safe_load(text)
+    except yaml.YAMLError as e:
+        result.error(f"YAML parse error: {e}")
+        return result
+
+    if not isinstance(meta, dict):
+        result.error("YAML file is not a mapping")
+        return result
+
+    # --- Required fields ---
+    for field in REQUIRED_DL_FIELDS:
+        if field not in meta or meta[field] is None:
+            result.error(f"Missing required field: {field}")
+
+    # --- ID: must be UUID v4 ---
+    dl_id = meta.get("id", "")
+    if dl_id:
+        uuid_pattern = r"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+        if not re.match(uuid_pattern, str(dl_id)):
+            result.error(f"ID '{dl_id}' is not a valid UUID v4")
+
+    # --- Status ---
+    status = meta.get("status", "")
+    if status and status not in VALID_DL_STATUSES:
+        result.error(f"Invalid status '{status}'. Must be one of: {', '.join(sorted(VALID_DL_STATUSES))}")
+
+    # --- CFPF phase (single value, not list) ---
+    cfpf_phase = meta.get("cfpf_phase", "")
+    if cfpf_phase and str(cfpf_phase) not in VALID_CFPF_PHASES:
+        result.error(f"Invalid cfpf_phase '{cfpf_phase}'. Must be one of: {', '.join(sorted(VALID_CFPF_PHASES))}")
+
+    # --- Fraud types ---
+    fraud_types = meta.get("fraud_types", [])
+    if isinstance(fraud_types, list):
+        for ft in fraud_types:
+            if ft not in VALID_FRAUD_TYPES:
+                result.error(f"Unrecognized fraud type '{ft}' (not in taxonomy)")
+    elif fraud_types is not None:
+        result.error("fraud_types must be a list")
+
+    # --- Logsource ---
+    logsource = meta.get("logsource")
+    if logsource is not None:
+        if not isinstance(logsource, dict):
+            result.error("logsource must be a mapping")
+        else:
+            product = logsource.get("product", "")
+            if not product:
+                result.error("logsource must have a 'product' key")
+            elif product not in VALID_DL_PRODUCTS:
+                result.error(f"Invalid logsource product '{product}'. Must be one of: {', '.join(sorted(VALID_DL_PRODUCTS))}")
+
+    # --- Threat paths ---
+    threat_paths = meta.get("threat_paths", [])
+    if isinstance(threat_paths, list):
+        for tp in threat_paths:
+            if not re.match(r"^TP-\d{4}$", str(tp)):
+                result.error(f"Invalid threat_paths entry '{tp}'. Must match TP-XXXX format")
+            else:
+                # Warn if the referenced TP file does not exist
+                repo_root = filepath.resolve().parent.parent
+                tp_pattern = f"{tp}-*.md"
+                tp_matches = list((repo_root / "ThreatPaths").glob(tp_pattern))
+                if not tp_matches:
+                    result.warn(f"threat_paths reference '{tp}' does not match any file in ThreatPaths/")
+    elif threat_paths is not None:
+        result.error("threat_paths must be a list")
+
+    # --- Detection ---
+    detection = meta.get("detection")
+    if detection is not None:
+        if not isinstance(detection, dict):
+            result.error("detection must be a mapping")
+        elif "condition" not in detection:
+            result.error("detection must have a 'condition' key")
+
+    # --- Level ---
+    level = meta.get("level", "")
+    if level and level not in VALID_DL_LEVELS:
+        result.error(f"Invalid level '{level}'. Must be one of: {', '.join(sorted(VALID_DL_LEVELS))}")
+
+    return result
+
+
 def validate_file(filepath: Path) -> ValidationResult:
-    """Validate a single submission file."""
+    """Validate a single submission file (.md or .yml)."""
     result = ValidationResult(str(filepath))
 
     if not filepath.exists():
         result.error(f"File not found: {filepath}")
         return result
 
-    if not filepath.suffix == ".md":
-        result.error("File must be a .md markdown file")
+    # Dispatch based on file extension
+    if filepath.suffix == ".yml" or filepath.suffix == ".yaml":
+        return validate_dl_file(filepath)
+
+    if filepath.suffix != ".md":
+        result.error("File must be a .md markdown file or .yml detection logic file")
         return result
 
     text = filepath.read_text(encoding="utf-8")
@@ -136,14 +255,20 @@ def validate_file(filepath: Path) -> ValidationResult:
         result.error("Frontmatter is not a YAML mapping")
         return result
 
+    # --- Determine category-aware required fields ---
+    category = meta.get("category", "")
+    if category == "Baseline":
+        required_fields = REQUIRED_BASELINE_FIELDS
+    else:
+        required_fields = REQUIRED_TP_FIELDS
+
     # --- Required fields ---
-    for field in REQUIRED_FRONTMATTER_FIELDS:
+    for field in required_fields:
         if field not in meta or meta[field] is None:
             result.error(f"Missing required field: {field}")
 
     # --- Field-specific validation ---
     # Category
-    category = meta.get("category", "")
     if category and category not in VALID_CATEGORIES:
         result.error(f"Invalid category '{category}'. Must be one of: {', '.join(sorted(VALID_CATEGORIES))}")
 
@@ -212,12 +337,13 @@ def validate_file(filepath: Path) -> ValidationResult:
             if t_str and not re.match(r"^T\d{4}(\.\d{3})?$", t_str):
                 result.warn(f"MITRE ATT&CK ID '{t_str}' may not match expected format (T####[.###])")
 
-    # --- Body section validation ---
-    body_after_frontmatter = text[match.end():]
-    for section in REQUIRED_BODY_SECTIONS:
-        pattern = rf"^##\s+{re.escape(section)}"
-        if not re.search(pattern, body_after_frontmatter, re.MULTILINE):
-            result.error(f"Missing required section: ## {section}")
+    # --- Body section validation (only for ThreatPath) ---
+    if category != "Baseline":
+        body_after_frontmatter = text[match.end():]
+        for section in REQUIRED_BODY_SECTIONS:
+            pattern = rf"^##\s+{re.escape(section)}"
+            if not re.search(pattern, body_after_frontmatter, re.MULTILINE):
+                result.error(f"Missing required section: ## {section}")
 
     return result
 
@@ -228,7 +354,7 @@ def validate_file(filepath: Path) -> ValidationResult:
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python validate_submission.py <file.md> [<file2.md> ...]", file=sys.stderr)
+        print("Usage: python validate_submission.py <file.md|file.yml> [...]", file=sys.stderr)
         sys.exit(2)
 
     files = [Path(f) for f in sys.argv[1:]]
