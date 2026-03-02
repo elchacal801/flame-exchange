@@ -72,6 +72,7 @@
         dom.aboutBtn = document.getElementById('about-btn');
         dom.aboutModal = document.getElementById('about-modal');
         dom.aboutClose = document.getElementById('about-close');
+        dom.aboutBody = document.getElementById('about-body');
         dom.heatMapBtn = document.getElementById('heat-map-btn');
         dom.heatMapModal = document.getElementById('heat-map-modal');
         dom.heatMapClose = document.getElementById('heat-map-close');
@@ -173,6 +174,7 @@
 
         // About modal
         dom.aboutBtn.addEventListener('click', function () {
+            renderAbout();
             dom.aboutModal.style.display = 'flex';
         });
         dom.aboutClose.addEventListener('click', function () {
@@ -864,6 +866,160 @@
                 }
             }
         });
+    }
+
+    // -----------------------------------------------------------------------
+    // About Modal
+    // -----------------------------------------------------------------------
+
+    function renderAbout() {
+        var stats = FlameData.getStats();
+        var tp = stats.total || 0;
+        var sec = stats.sectors || 0;
+        var ft = stats.fraudTypes || 0;
+        var phases = stats.phaseCoverage || {};
+        var phaseCount = Object.keys(phases).length;
+
+        var html = '';
+
+        // Hero
+        html += '<div class="about-hero">';
+        html += '<span class="about-logo-icon">&#x1F525;</span>';
+        html += '<span class="about-title">FLAME</span>';
+        html += '<span class="about-version">v0.4 FORGE</span>';
+        html += '<p class="about-tagline">Fraud Lifecycle Analysis &amp; Mitigation Exchange</p>';
+        html += '</div>';
+
+        // Live stats
+        html += '<div class="about-stats-row">';
+        html += '<div class="about-stat"><span class="about-stat-value">' + tp + '</span><span class="about-stat-label">Threat Paths</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">' + ft + '</span><span class="about-stat-label">Fraud Types</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">' + sec + '</span><span class="about-stat-label">Sectors</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">' + phaseCount + '</span><span class="about-stat-label">CFPF Phases</span></div>';
+        html += '</div>';
+
+        // Overview
+        html += '<div class="about-section">';
+        html += '<p>FLAME is an open-source, community-driven platform for sharing structured fraud detection intelligence. ';
+        html += 'Each threat path maps fraud schemes across multi-framework lifecycles with detection rules, baselines, and confidence scoring &mdash; ';
+        html += 'built by practitioners, for practitioners.</p>';
+        html += '</div>';
+
+        // Features grid
+        html += '<h3>Platform Capabilities</h3>';
+        html += '<div class="about-features-grid">';
+
+        var features = [
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+                title: 'Static JSON API',
+                desc: 'RESTful API with 8 endpoint categories served via GitHub Pages'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>',
+                title: 'MCP Server',
+                desc: '7 AI-agent tools for querying fraud intelligence via Claude, Cursor, etc.'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+                title: 'Sigma Export',
+                desc: 'Detection packs in Splunk SPL, Elastic Lucene, and Sentinel KQL'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><line x1="8" y1="12" x2="16" y2="5"/><line x1="8" y1="12" x2="16" y2="19"/></svg>',
+                title: 'Relationship Graph',
+                desc: 'D3.js force-directed visualization of cross-TP relationships'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
+                title: 'Coverage Assessment',
+                desc: 'Self-assess your fraud coverage gaps by sector and fraud type'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+                title: 'Full-Text Search',
+                desc: 'Lunr.js-powered search across all threat paths and detection logic'
+            }
+        ];
+
+        features.forEach(function (f) {
+            html += '<div class="about-feature-card">';
+            html += '<div class="about-feature-icon">' + f.icon + '</div>';
+            html += '<div class="about-feature-title">' + f.title + '</div>';
+            html += '<div class="about-feature-desc">' + f.desc + '</div>';
+            html += '</div>';
+        });
+        html += '</div>';
+
+        // Supported frameworks
+        html += '<h3>Supported Frameworks</h3>';
+        html += '<div class="about-frameworks">';
+        var frameworks = [
+            { name: 'CFPF', color: 'var(--color-p2)' },
+            { name: 'MITRE ATT&CK', color: 'var(--color-mitre)' },
+            { name: 'Group-IB Fraud Matrix', color: 'var(--color-groupib)' },
+            { name: 'Stripe FT3', color: 'var(--color-ft3)' },
+            { name: 'UCFF', color: 'var(--color-ucff)' },
+            { name: 'STIX 2.1', color: 'var(--color-sector)' }
+        ];
+        frameworks.forEach(function (fw) {
+            html += '<span class="about-fw-badge" style="border-color: ' + fw.color + '; color: ' + fw.color + ';">' + fw.name + '</span>';
+        });
+        html += '</div>';
+
+        // Roadmap
+        html += '<h3>Roadmap</h3>';
+        html += '<div class="about-roadmap">';
+        var phases = [
+            { name: 'Phase 1: IGNITE', desc: 'Core platform, search, detection logic, heat map', status: 'done' },
+            { name: 'Phase 2: FORGE', desc: 'API, MCP server, Sigma export, graph, confidence scoring', status: 'current' },
+            { name: 'Phase 3: SPREAD', desc: 'Community contributions, intake pipeline, integrations', status: 'planned' },
+            { name: 'Phase 4: BLAZE', desc: 'Analytics dashboard, trend analysis, automated intel', status: 'planned' }
+        ];
+        phases.forEach(function (p) {
+            html += '<div class="about-roadmap-item about-roadmap-' + p.status + '">';
+            html += '<span class="about-roadmap-dot"></span>';
+            html += '<div>';
+            html += '<strong>' + p.name + '</strong>';
+            html += '<span class="about-roadmap-desc"> &mdash; ' + p.desc + '</span>';
+            html += '</div>';
+            html += '</div>';
+        });
+        html += '</div>';
+
+        // Changelog
+        html += '<h3>Recent Milestones</h3>';
+        html += '<div class="about-changelog">';
+        var changelog = [
+            { date: '2026-03', text: 'MCP server with 7 fraud intelligence tools' },
+            { date: '2026-03', text: 'Static JSON API v1 with 8 endpoint categories' },
+            { date: '2026-03', text: 'Sigma export pipeline (SPL, Lucene, KQL)' },
+            { date: '2026-02', text: 'D3.js relationship graph and coverage assessment' },
+            { date: '2026-02', text: 'Admiralty Code confidence scoring on all TPs' },
+            { date: '2026-01', text: 'Full-text search, detection logic tab, regulatory pulse' }
+        ];
+        changelog.forEach(function (c) {
+            html += '<div class="about-changelog-item">';
+            html += '<span class="about-changelog-date">' + c.date + '</span>';
+            html += '<span class="about-changelog-text">' + c.text + '</span>';
+            html += '</div>';
+        });
+        html += '</div>';
+
+        // Links
+        html += '<h3>Resources</h3>';
+        html += '<div class="about-links">';
+        html += '<a href="https://github.com/elchacal801/flame-fraud" target="_blank" rel="noopener" class="about-link-btn">GitHub Repository</a>';
+        html += '<a href="api/v1/threat-paths.json" target="_blank" rel="noopener" class="about-link-btn">API Explorer</a>';
+        html += '<a href="database/sigma-exports/" target="_blank" rel="noopener" class="about-link-btn">Sigma Packs</a>';
+        html += '</div>';
+
+        // License
+        html += '<div class="about-license">';
+        html += 'MIT License &middot; Built by practitioners, for practitioners.';
+        html += '</div>';
+
+        dom.aboutBody.innerHTML = html;
     }
 
     // -----------------------------------------------------------------------

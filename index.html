@@ -274,28 +274,13 @@
     <!-- About Modal                                                      -->
     <!-- ================================================================ -->
     <div class="modal-overlay" id="about-modal" style="display:none;">
-        <div class="modal-content">
+        <div class="modal-content modal-wide">
             <div class="modal-header">
                 <h2>About FLAME</h2>
                 <button class="modal-close" id="about-close">&times;</button>
             </div>
-            <div class="modal-body">
-                <p><strong>FLAME</strong> (Fraud Lifecycle Analysis &amp; Mitigation Exchange) is an open-source,
-                    community-driven platform for sharing structured fraud detection intelligence.</p>
-                <p>Each threat path maps fraud schemes across the <strong>FS-ISAC Cyber Fraud Prevention Framework
-                        (CFPF)</strong> five-phase lifecycle, with cross-references to MITRE ATT&amp;CK, Group-IB Fraud
-                    Matrix 2.0, and Stripe FT3.</p>
-                <h3>How It Works</h3>
-                <ul>
-                    <li><strong>Markdown-first</strong> — Human-readable, Git-versioned source of truth</li>
-                    <li><strong>Framework-agnostic</strong> — Map to any fraud taxonomy</li>
-                    <li><strong>AI-assisted intake</strong> — Submit a URL, get a structured threat path</li>
-                    <li><strong>Community-contributed</strong> — PRs welcome</li>
-                </ul>
-                <h3>License</h3>
-                <p>MIT License. Built by practitioners, for practitioners.</p>
-                <p><a href="https://github.com/elchacal801/flame-fraud" target="_blank" rel="noopener">View on GitHub
-                        →</a></p>
+            <div class="modal-body" id="about-body">
+                <!-- Populated dynamically by renderAbout() -->
             </div>
         </div>
     </div>
