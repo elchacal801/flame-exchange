@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "2559d0a9-2812-5e22-bbbb-52ab5d1f02bf",
+    "info": "FLAME: Pig Butchering (Investment Scam)",
+    "date": "2026-02-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "e115d8bb-6155-53b8-9526-0c1a6f1bdebc",
+        "type": "text",
+        "category": "Other",
+        "value": "investment-scam",
+        "comment": "Fraud type for TP-0017"
+      },
+      {
+        "uuid": "16a9fd88-631d-5dc0-941a-ee34d1f8c7d5",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0017"
+      },
+      {
+        "uuid": "eb3021fe-257f-5ec8-8f13-9c859113bd7e",
+        "type": "text",
+        "category": "Other",
+        "value": "authorized-push-payment",
+        "comment": "Fraud type for TP-0017"
+      },
+      {
+        "uuid": "c4763eba-4e55-532b-8342-3c2c18af5d8e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0017"
+      },
+      {
+        "uuid": "071bb40d-0d92-5b8b-b597-194dc437413a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0017"
+      },
+      {
+        "uuid": "ad2b9797-33fe-5678-99c9-bfc6ec0ca8b3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0017"
+      },
+      {
+        "uuid": "a20123de-f967-5ecd-9e13-403d096138ed",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0017"
+      },
+      {
+        "uuid": "1919adaa-2d3c-54f0-87b2-76500c92befe",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0017"
+      }
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "Event": {
+    "uuid": "71f70e33-8321-5791-8edf-379820ae0b87",
+    "info": "FLAME: Healthcare Provider Billing Fraud",
+    "date": "2026-02-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "94f666cf-a902-5862-8d9a-9b939455b87e",
+        "type": "text",
+        "category": "Other",
+        "value": "healthcare-fraud",
+        "comment": "Fraud type for TP-0021"
+      },
+      {
+        "uuid": "f0c24d26-a44c-5bb5-a906-502a26b00392",
+        "type": "text",
+        "category": "Other",
+        "value": "phantom-billing",
+        "comment": "Fraud type for TP-0021"
+      },
+      {
+        "uuid": "0e01fd65-4bfb-50ff-ac50-712dedc4dc7f",
+        "type": "text",
+        "category": "Other",
+        "value": "upcoding",
+        "comment": "Fraud type for TP-0021"
+      },
+      {
+        "uuid": "08734fdf-ec19-5a66-895b-97473dee093c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0021"
+      },
+      {
+        "uuid": "6eead4dc-7bb5-5f06-8511-f1e8a38eeaea",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0021"
+      },
+      {
+        "uuid": "f0b2970a-ca37-5afa-8e78-5f6f5422e31e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0021"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "ffc92e8d-0d99-5938-bcc7-45e5ef71cb0a",
+    "info": "FLAME: Authorized Push Payment Fraud \u2014 Tech Support / Bank Impersonation",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "435e3152-8e34-5bf0-ae5d-0d70663dad44",
+        "type": "text",
+        "category": "Other",
+        "value": "vishing",
+        "comment": "Fraud type for TP-0012"
+      },
+      {
+        "uuid": "e00993dd-f2c1-5d09-9b9c-4b4640ba4c47",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0012"
+      },
+      {
+        "uuid": "3f2368ef-57b3-5d1d-9244-f8499b59d0ad",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0012"
+      },
+      {
+        "uuid": "d840b48c-eba2-5f78-99eb-9452b50ee87f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0012"
+      },
+      {
+        "uuid": "392bcbd9-d3bf-523f-b34a-5997c2513c27",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0012"
+      },
+      {
+        "uuid": "38290f7b-9d0a-5b16-9565-333f03a5227c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0012"
+      },
+      {
+        "uuid": "7e56e644-9958-5a75-9b3c-7341c2c595bd",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0012"
+      },
+      {
+        "uuid": "d540d0d9-d29f-5216-ad2d-6ccd28c872a1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0012"
+      }
+    ]
+  }
+}

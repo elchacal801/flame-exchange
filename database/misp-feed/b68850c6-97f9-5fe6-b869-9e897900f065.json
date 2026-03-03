@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "b68850c6-97f9-5fe6-b869-9e897900f065",
+    "info": "FLAME: Ghost Student Financial Aid Botnets",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "f386fddb-d531-5a7f-8dac-a1977d9f5a37",
+        "type": "text",
+        "category": "Other",
+        "value": "ghost-student-fraud",
+        "comment": "Fraud type for TP-0033"
+      },
+      {
+        "uuid": "45174235-f979-549c-bdac-35aff571ab92",
+        "type": "text",
+        "category": "Other",
+        "value": "synthetic-identity",
+        "comment": "Fraud type for TP-0033"
+      },
+      {
+        "uuid": "176a7da1-57c2-5c97-b493-e49d33c7b5f9",
+        "type": "text",
+        "category": "Other",
+        "value": "benefit-fraud",
+        "comment": "Fraud type for TP-0033"
+      },
+      {
+        "uuid": "40818415-9df7-58ac-9016-fb4336c4fbd1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0033"
+      },
+      {
+        "uuid": "fd2f474c-0636-53a8-92df-d0571f7f5425",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0033"
+      },
+      {
+        "uuid": "86c277c5-7fcb-50dd-867d-cf39162169ff",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0033"
+      },
+      {
+        "uuid": "d09bbc38-a25d-5712-8ae0-207ef9379269",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0033"
+      },
+      {
+        "uuid": "f240de62-2803-5866-9cd9-0187cc15e5bd",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0033"
+      }
+    ]
+  }
+}

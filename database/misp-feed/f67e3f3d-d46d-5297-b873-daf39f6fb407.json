@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "f67e3f3d-d46d-5297-b873-daf39f6fb407",
+    "info": "FLAME: Synthetic Identity \u2014 Credit Card Bust-Out",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "dc1e3a87-3c88-5d67-b7ba-86ae5b4283fd",
+        "type": "text",
+        "category": "Other",
+        "value": "synthetic-identity",
+        "comment": "Fraud type for TP-0003"
+      },
+      {
+        "uuid": "29c0a917-673d-50c4-aad7-6b4ef7e69a11",
+        "type": "text",
+        "category": "Other",
+        "value": "new-account-fraud",
+        "comment": "Fraud type for TP-0003"
+      },
+      {
+        "uuid": "93f342fe-1340-5ee5-aa3a-101633819c50",
+        "type": "text",
+        "category": "Other",
+        "value": "application-fraud",
+        "comment": "Fraud type for TP-0003"
+      },
+      {
+        "uuid": "29bb70da-8609-5449-a00c-16e817a74097",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0003"
+      },
+      {
+        "uuid": "fb776b6c-2f28-583e-b592-f0b55a72936b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0003"
+      },
+      {
+        "uuid": "b84a114f-1324-57d5-bc22-a588eeb66d40",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0003"
+      },
+      {
+        "uuid": "f123fbde-00ed-59a4-b21c-f817477b4658",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0003"
+      },
+      {
+        "uuid": "05af09de-060e-5260-8f4a-b39c899aa029",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0003"
+      }
+    ]
+  }
+}

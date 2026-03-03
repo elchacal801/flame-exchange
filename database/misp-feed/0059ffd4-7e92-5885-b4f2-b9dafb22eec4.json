@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "0059ffd4-7e92-5885-b4f2-b9dafb22eec4",
+    "info": "FLAME: Disability Insurance Fraud via Fabricated Medical Documentation",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "42b88c58-c43f-568d-8826-361afae1b99a",
+        "type": "text",
+        "category": "Other",
+        "value": "fraudulent-claim",
+        "comment": "Fraud type for TP-0010"
+      },
+      {
+        "uuid": "7b9413cc-1545-5111-a21d-2b96ea5da077",
+        "type": "text",
+        "category": "Other",
+        "value": "disability-fraud",
+        "comment": "Fraud type for TP-0010"
+      },
+      {
+        "uuid": "73d46a00-3e64-5cf7-baf3-0be6e80675fc",
+        "type": "text",
+        "category": "Other",
+        "value": "provider-fraud",
+        "comment": "Fraud type for TP-0010"
+      },
+      {
+        "uuid": "fb3e1b95-8ad9-5ac2-bcca-aa005a40b2d2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0010"
+      },
+      {
+        "uuid": "22732215-5747-5d2f-b513-7673e429e652",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0010"
+      },
+      {
+        "uuid": "55b7c4b2-c6fe-5766-ab0a-53c23bc467b6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0010"
+      },
+      {
+        "uuid": "b6495814-a919-5b4e-9dba-2113175c4d00",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0010"
+      },
+      {
+        "uuid": "228be0b1-c1dd-5b8a-af49-c87f3e3a210c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0010"
+      }
+    ]
+  }
+}

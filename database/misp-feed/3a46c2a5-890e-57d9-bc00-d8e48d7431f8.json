@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "3a46c2a5-890e-57d9-bc00-d8e48d7431f8",
+    "info": "FLAME: Payroll Diversion via HR Portal Compromise",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "f2f76cd9-e46c-5bd4-a510-d4a5184cecb6",
+        "type": "text",
+        "category": "Other",
+        "value": "payroll-diversion",
+        "comment": "Fraud type for TP-0004"
+      },
+      {
+        "uuid": "0a77528b-2d20-5d67-bc28-08734104470f",
+        "type": "text",
+        "category": "Other",
+        "value": "BEC",
+        "comment": "Fraud type for TP-0004"
+      },
+      {
+        "uuid": "a422af9c-1a12-55b6-9917-dd96f8e530b3",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0004"
+      },
+      {
+        "uuid": "5411b000-0506-5917-93e3-f236f4e03000",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0004"
+      },
+      {
+        "uuid": "007fe45c-94a0-51e5-981f-7d372e2e8bb6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0004"
+      },
+      {
+        "uuid": "71f4cbf0-a6ca-550f-b8f3-dbe40c62cc77",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0004"
+      },
+      {
+        "uuid": "d8caea65-70bd-5fce-81a2-622185f4d667",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0004"
+      },
+      {
+        "uuid": "5a18600d-e36c-5f53-97bf-3330a347f3f4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0004"
+      },
+      {
+        "uuid": "7881625e-e8ea-53cd-afe0-b05f6a21f556",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0004"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "a0d49123-8ff7-543d-a4ab-7e1d9c914c9b",
+    "info": "FLAME: Web3 Wallet Drainer / Approval Phishing",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "b7993b1d-02b0-5d75-af23-79ccdaa45713",
+        "type": "text",
+        "category": "Other",
+        "value": "approval-phishing",
+        "comment": "Fraud type for TP-0032"
+      },
+      {
+        "uuid": "30a877b2-d185-5fbd-bcdf-44f64d4b73aa",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0032"
+      },
+      {
+        "uuid": "8c437205-e0f1-5e89-8207-d2e5375d065d",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0032"
+      },
+      {
+        "uuid": "c8964b5c-982b-54c7-950e-97b562b6f60b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0032"
+      },
+      {
+        "uuid": "bbbaa6b7-c0c3-5de5-8c2d-a20319b31b5d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0032"
+      },
+      {
+        "uuid": "81793e00-d2d0-5618-974c-ee0a2c64b1a0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0032"
+      },
+      {
+        "uuid": "455aac50-ae62-5923-a93f-8f15365be5aa",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0032"
+      },
+      {
+        "uuid": "41897cc9-ee48-553d-9e9d-bed16306c2fd",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0032"
+      }
+    ]
+  }
+}

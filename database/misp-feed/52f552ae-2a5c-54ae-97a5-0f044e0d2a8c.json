@@ -1,0 +1,63 @@
+{
+  "Event": {
+    "uuid": "52f552ae-2a5c-54ae-97a5-0f044e0d2a8c",
+    "info": "FLAME: Check Washing and Fraudulent Mobile Deposit",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "471c433d-9a3f-5d9c-9355-511759d239b7",
+        "type": "text",
+        "category": "Other",
+        "value": "check-fraud",
+        "comment": "Fraud type for TP-0009"
+      },
+      {
+        "uuid": "173545bd-b677-5491-a098-cfbb51107ffd",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0009"
+      },
+      {
+        "uuid": "0b755bbb-a9e3-5116-8731-3ac2201d3e4e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0009"
+      },
+      {
+        "uuid": "63bc0f66-a1e4-5770-8208-029f6ef1dbb4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0009"
+      },
+      {
+        "uuid": "625284b8-8b32-5697-bbb5-1bbd34a1d175",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0009"
+      },
+      {
+        "uuid": "e7e498fd-5481-5f66-b6ab-a2daffb7d38e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0009"
+      }
+    ]
+  }
+}

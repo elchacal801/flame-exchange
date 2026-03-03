@@ -1,0 +1,63 @@
+{
+  "Event": {
+    "uuid": "9be848af-2331-57dc-9a19-f30f8d124738",
+    "info": "FLAME: First-Party Fraud (Bust-Out)",
+    "date": "2026-02-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "fbd511e7-1371-5ecd-bf96-ddca93eb7ff1",
+        "type": "text",
+        "category": "Other",
+        "value": "first-party-fraud",
+        "comment": "Fraud type for TP-0016"
+      },
+      {
+        "uuid": "bf6c9cf8-309d-5ff6-8d51-b7f9cf39bc38",
+        "type": "text",
+        "category": "Other",
+        "value": "bust-out",
+        "comment": "Fraud type for TP-0016"
+      },
+      {
+        "uuid": "8178cbe3-e7fc-5b9b-828e-c73700593c18",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0016"
+      },
+      {
+        "uuid": "daf28995-d2eb-5321-a59a-f5d5f3dff9cf",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0016"
+      },
+      {
+        "uuid": "aa9f4fce-f44a-56b2-80f2-7ec1ffc53f71",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0016"
+      },
+      {
+        "uuid": "f74340bf-b7d6-50f3-8bdb-49829d0c18a4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0016"
+      }
+    ]
+  }
+}

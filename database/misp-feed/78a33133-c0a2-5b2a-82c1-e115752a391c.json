@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "78a33133-c0a2-5b2a-82c1-e115752a391c",
+    "info": "FLAME: SIM Swap to Cryptocurrency Exchange ATO",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "da903f38-ed19-5811-b05c-7a717cc8d3af",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0008"
+      },
+      {
+        "uuid": "d46b17e2-10c6-5aa2-acf6-c611780545d3",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0008"
+      },
+      {
+        "uuid": "0bfb00c0-7dfe-5ca9-9b9a-ad2574fb8170",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0008"
+      },
+      {
+        "uuid": "2cb8ea5f-85b3-5e45-8865-f4ec725ca042",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0008"
+      },
+      {
+        "uuid": "b80f8862-d4c8-5050-8fa0-f11df686aa5e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0008"
+      },
+      {
+        "uuid": "2b1f0041-15af-5a5d-bd59-e7cec2736a60",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0008"
+      },
+      {
+        "uuid": "b72be42f-6548-5b17-a0aa-a838a3fed8c9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0008"
+      }
+    ]
+  }
+}

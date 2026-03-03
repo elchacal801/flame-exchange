@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "df55cd37-79b4-5134-b8c8-997b820097ed",
+    "info": "FLAME: GenAI-Enhanced Authorized Push Payment Fraud \u2014 Investment Variant",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "f217724e-8aea-5eaa-b69c-738dbd153521",
+        "type": "text",
+        "category": "Other",
+        "value": "authorized-push-payment",
+        "comment": "Fraud type for TP-0026"
+      },
+      {
+        "uuid": "1dc6a1ef-53a7-5485-a77b-a181ca223afd",
+        "type": "text",
+        "category": "Other",
+        "value": "investment-scam",
+        "comment": "Fraud type for TP-0026"
+      },
+      {
+        "uuid": "bcce7d04-72a3-5d52-89ae-5bb30b7e36ee",
+        "type": "text",
+        "category": "Other",
+        "value": "deepfake-fraud",
+        "comment": "Fraud type for TP-0026"
+      },
+      {
+        "uuid": "5c3fcc64-abf5-54da-a1bc-e6b76d4e25cb",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0026"
+      },
+      {
+        "uuid": "745c059d-13d3-57df-ae71-be7bfaff26a8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0026"
+      },
+      {
+        "uuid": "a3b9abcb-a230-5b9a-adf6-c5309d74a7ce",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0026"
+      },
+      {
+        "uuid": "45efd3c0-71fb-58e5-92b9-c9cf031584e3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0026"
+      },
+      {
+        "uuid": "8f086bda-ab6c-59d3-95cc-bc6ee263374c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0026"
+      },
+      {
+        "uuid": "847d0972-0a49-544a-b563-954d66f0f269",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0026"
+      }
+    ]
+  }
+}

@@ -74,6 +74,16 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FATF-R16",
+      "REG-FBI-IC3",
+      "REG-FFIEC-AUTH",
+      "REG-MAS-SRF",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA"
+    ],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 3",
@@ -210,6 +220,11 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-FATF-R16",
+      "REG-FBI-IC3",
+      "REG-OCC-FRAUD"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -312,6 +327,9 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -408,6 +426,16 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FATF-R16",
+      "REG-FBI-IC3",
+      "REG-FFIEC-AUTH",
+      "REG-MAS-SRF",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA"
+    ],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 2",
@@ -503,6 +531,14 @@
       "Account Access",
       "Perform Fraud",
       "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FFIEC-AUTH",
+      "REG-MAS-SRF",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA"
     ],
     "ucff_domains": {
       "commit": "Level 2",
@@ -605,6 +641,12 @@
       "Perform Fraud",
       "Monetization",
       "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-FATF-R16",
+      "REG-FBI-IC3",
+      "REG-OCC-FRAUD",
+      "REG-UK-PSR-APP"
     ],
     "ucff_domains": {
       "commit": "Level 2",
@@ -717,6 +759,13 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-DORA",
+      "REG-FATF-R16",
+      "REG-FBI-IC3",
+      "REG-OCC-FRAUD",
+      "REG-UK-PSR-APP"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -828,6 +877,15 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-EU-AMLD6",
+      "REG-FFIEC-AUTH",
+      "REG-FINCEN-AML",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -932,6 +990,9 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [
+      "REG-OCC-FRAUD"
+    ],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 2",
@@ -1019,6 +1080,7 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -1105,6 +1167,11 @@
       "Perform Fraud",
       "Monetization",
       "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-AU-SPF",
+      "REG-EU-AMLD6",
+      "REG-FINCEN-AML"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -1220,6 +1287,15 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FFIEC-AUTH",
+      "REG-MAS-SRF",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA",
+      "REG-UK-PSR-APP"
+    ],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 3",
@@ -1322,6 +1398,13 @@
       "Account Access",
       "Defence Evasion",
       "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FFIEC-AUTH",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA"
     ],
     "ucff_domains": {
       "commit": "Level 2",
@@ -1431,6 +1514,14 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FFIEC-AUTH",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA",
+      "REG-SEC-SAR"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -1533,6 +1624,10 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD",
+      "REG-UK-PSR-APP"
+    ],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 2",
@@ -1613,6 +1708,7 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -1703,6 +1799,13 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [
+      "REG-AU-SPF",
+      "REG-FCA-APP",
+      "REG-MAS-SRF",
+      "REG-SEC-SAR",
+      "REG-UK-PSR-APP"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -1785,6 +1888,9 @@
       "Resource Development",
       "Trust Abuse",
       "Account Access"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -1880,6 +1986,16 @@
       "Trust Abuse",
       "Perform Fraud"
     ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FATF-R16",
+      "REG-FBI-IC3",
+      "REG-FFIEC-AUTH",
+      "REG-FINCEN-CDD",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -1970,6 +2086,11 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [
+      "REG-FATF-R16",
+      "REG-FBI-IC3",
+      "REG-OCC-FRAUD"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -2054,6 +2175,7 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -2135,6 +2257,9 @@
       "Resource Development",
       "Perform Fraud",
       "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -2239,6 +2364,13 @@
       "Execution",
       "Credential Access",
       "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FFIEC-AUTH",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -2348,6 +2480,15 @@
       "Perform Fraud",
       "Monetization",
       "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-AU-SPF",
+      "REG-FATF-R16",
+      "REG-FBI-IC3",
+      "REG-FCA-APP",
+      "REG-MAS-SRF",
+      "REG-OCC-FRAUD",
+      "REG-UK-PSR-APP"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -2463,6 +2604,13 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-AU-SPF",
+      "REG-DORA",
+      "REG-FCA-APP",
+      "REG-MAS-SRF",
+      "REG-UK-PSR-APP"
+    ],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 3",
@@ -2572,6 +2720,16 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-AU-SPF",
+      "REG-DORA",
+      "REG-EU-AMLD6",
+      "REG-FCA-APP",
+      "REG-FINCEN-AML",
+      "REG-MAS-SRF",
+      "REG-SEC-SAR",
+      "REG-UK-PSR-APP"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -2675,6 +2833,17 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-AU-SPF",
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-FCA-APP",
+      "REG-FFIEC-AUTH",
+      "REG-MAS-SRF",
+      "REG-OCC-FRAUD",
+      "REG-PSD3-SCA",
+      "REG-UK-PSR-APP"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -2770,6 +2939,7 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -2871,6 +3041,9 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 4",
@@ -2964,6 +3137,9 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD"
+    ],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 3",
@@ -3055,6 +3231,7 @@
       "Perform Fraud",
       "Monetization"
     ],
+    "regulatory_refs": [],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 3",
@@ -3161,6 +3338,12 @@
       "Monetization",
       "Laundering"
     ],
+    "regulatory_refs": [
+      "REG-EU-AMLD6",
+      "REG-FINCEN-AML",
+      "REG-MAS-SRF",
+      "REG-PSD3-SCA"
+    ],
     "ucff_domains": {
       "commit": "Level 2",
       "assess": "Level 3",
@@ -3255,6 +3438,9 @@
       "Perform Fraud",
       "Monetization",
       "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD"
     ],
     "ucff_domains": {
       "commit": "Level 2",

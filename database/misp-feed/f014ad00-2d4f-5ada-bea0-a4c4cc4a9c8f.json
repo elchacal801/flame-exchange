@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "f014ad00-2d4f-5ada-bea0-a4c4cc4a9c8f",
+    "info": "FLAME: Mobile Banking Trojan / Overlay Attack",
+    "date": "2026-02-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "4a7da507-4523-5e43-8d09-0b042fbc3853",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0023"
+      },
+      {
+        "uuid": "86700c6e-da27-52b3-a81a-4d536b7a8e5e",
+        "type": "text",
+        "category": "Other",
+        "value": "malware",
+        "comment": "Fraud type for TP-0023"
+      },
+      {
+        "uuid": "4ea9a917-e274-56d3-89dd-36ba1c96823f",
+        "type": "text",
+        "category": "Other",
+        "value": "unauthorized-transaction",
+        "comment": "Fraud type for TP-0023"
+      },
+      {
+        "uuid": "209b3561-1e62-505c-9684-5ced8990dd85",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0023"
+      },
+      {
+        "uuid": "3a2a1275-d530-5f65-885f-dee6372792c7",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0023"
+      },
+      {
+        "uuid": "adbf4afb-8c22-58d9-8ee4-f6812f8322f1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0023"
+      },
+      {
+        "uuid": "fc528ba3-c1e6-5bb2-a0a2-5a3e19c174bf",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0023"
+      },
+      {
+        "uuid": "7b4241b3-ceab-5062-b32f-e0bb569fa353",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0023"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "658dcfc1-bf16-5f99-b2c0-31e646ecaaa7",
+    "info": "FLAME: Employment Fraud via Brand Impersonation",
+    "date": "2026-02-19",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "27f4c033-f9b5-5fd2-a368-ecccc0ebcfb8",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0015"
+      },
+      {
+        "uuid": "27770bdf-9345-5d8d-b16d-47f39444482b",
+        "type": "text",
+        "category": "Other",
+        "value": "advance-fee-fraud",
+        "comment": "Fraud type for TP-0015"
+      },
+      {
+        "uuid": "87111dc9-b03f-582b-a780-a4a39754f39c",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0015"
+      },
+      {
+        "uuid": "dd55d267-5e56-57f1-bdd3-5cf36bafb9c6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0015"
+      },
+      {
+        "uuid": "b3791415-bba0-512a-850c-78813b48a5c3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0015"
+      },
+      {
+        "uuid": "c6ed08e2-8e59-5ed3-ad3d-d90ddcac7c6b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0015"
+      },
+      {
+        "uuid": "44d70fd7-8b94-5900-9b72-fa1643620ccd",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0015"
+      },
+      {
+        "uuid": "4ac5e1e9-0ded-5993-bf40-5d7df8ed833b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0015"
+      }
+    ]
+  }
+}

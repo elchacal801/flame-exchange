@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "6edadd1b-e6f4-5b72-a2f4-c47c3dd3d3de",
+    "info": "FLAME: DME Phantom Billing (Medicare Fraud)",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "86af24b7-e68b-5b6e-a262-28b94c71542c",
+        "type": "text",
+        "category": "Other",
+        "value": "healthcare-fraud",
+        "comment": "Fraud type for TP-0028"
+      },
+      {
+        "uuid": "50098889-c923-5c03-80c7-0613664bda57",
+        "type": "text",
+        "category": "Other",
+        "value": "phantom-billing",
+        "comment": "Fraud type for TP-0028"
+      },
+      {
+        "uuid": "9bbaffae-5048-5728-9330-f23e6b517d41",
+        "type": "text",
+        "category": "Other",
+        "value": "provider-fraud",
+        "comment": "Fraud type for TP-0028"
+      },
+      {
+        "uuid": "c89d5b60-1479-51f9-bed9-f51786eb0afb",
+        "type": "text",
+        "category": "Other",
+        "value": "synthetic-medical-fraud",
+        "comment": "Fraud type for TP-0028"
+      },
+      {
+        "uuid": "6986e86f-8a99-543b-a1f7-886b0f176902",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0028"
+      },
+      {
+        "uuid": "cbd5efdc-58a9-50ee-a6c9-b606f5d58045",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0028"
+      },
+      {
+        "uuid": "3c146342-ca4f-5c76-85d1-0939ee8fb168",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0028"
+      },
+      {
+        "uuid": "3c574630-35ab-5423-af22-8e3520fccad8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0028"
+      },
+      {
+        "uuid": "7e578637-0f6a-5f55-9d9c-166381aa12c9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0028"
+      }
+    ]
+  }
+}

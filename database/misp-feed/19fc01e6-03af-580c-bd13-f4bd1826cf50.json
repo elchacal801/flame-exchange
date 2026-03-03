@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "19fc01e6-03af-580c-bd13-f4bd1826cf50",
+    "info": "FLAME: Account-to-Account Instant Payment Fraud (Zelle / FedNow / Pix / UPI)",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "601536ff-0865-5e73-93ac-e1fb345d2cc2",
+        "type": "text",
+        "category": "Other",
+        "value": "authorized-push-payment",
+        "comment": "Fraud type for TP-0024"
+      },
+      {
+        "uuid": "ab621a91-1064-52af-89ff-ef34e95c12e6",
+        "type": "text",
+        "category": "Other",
+        "value": "wire-fraud",
+        "comment": "Fraud type for TP-0024"
+      },
+      {
+        "uuid": "93700f62-9d4e-507a-88f5-cb7a6433364e",
+        "type": "text",
+        "category": "Other",
+        "value": "payment-diversion",
+        "comment": "Fraud type for TP-0024"
+      },
+      {
+        "uuid": "662a68bb-cd8e-5b05-874f-8e746f4a7cfa",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0024"
+      },
+      {
+        "uuid": "e7647769-b9c7-5fb1-967d-33a16f3f5501",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0024"
+      },
+      {
+        "uuid": "dc0a4aaf-47fe-54d0-befd-81f8167222e4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0024"
+      },
+      {
+        "uuid": "c244a9b7-e909-5f58-b1b0-ccab56784046",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0024"
+      },
+      {
+        "uuid": "b68eb4f8-20ff-53f1-bc8d-f95a76c822bc",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0024"
+      }
+    ]
+  }
+}

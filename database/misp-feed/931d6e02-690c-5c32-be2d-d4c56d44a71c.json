@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "931d6e02-690c-5c32-be2d-d4c56d44a71c",
+    "info": "FLAME: Deepfake Document Fraud",
+    "date": "2026-02-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "b9944cb6-615c-5f59-8f9f-ae0e2c057b3e",
+        "type": "text",
+        "category": "Other",
+        "value": "documentary-fraud",
+        "comment": "Fraud type for TP-0018"
+      },
+      {
+        "uuid": "ab8bb9e8-f135-51c9-a629-33c5d6ca29b6",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0018"
+      },
+      {
+        "uuid": "28905deb-a9a3-52e0-a146-114a8082997c",
+        "type": "text",
+        "category": "Other",
+        "value": "synthetic-identity",
+        "comment": "Fraud type for TP-0018"
+      },
+      {
+        "uuid": "3b4f14c8-2fab-5fdf-aae6-a3a587c0e6bb",
+        "type": "text",
+        "category": "Other",
+        "value": "new-account-fraud",
+        "comment": "Fraud type for TP-0018"
+      },
+      {
+        "uuid": "11ed07bf-33c5-5ee5-b4d3-1f9397dcfd39",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0018"
+      },
+      {
+        "uuid": "a18081a7-331e-500f-8c94-93f4a4853192",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0018"
+      },
+      {
+        "uuid": "eddd47cd-0470-5627-9b5a-81964e820932",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0018"
+      }
+    ]
+  }
+}

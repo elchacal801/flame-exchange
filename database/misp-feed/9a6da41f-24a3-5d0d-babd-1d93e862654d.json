@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "9a6da41f-24a3-5d0d-babd-1d93e862654d",
+    "info": "FLAME: Real Estate Wire Fraud \u2014 Closing Scam",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "c3fcc4a6-5245-5df5-a2f0-914695b5837b",
+        "type": "text",
+        "category": "Other",
+        "value": "BEC",
+        "comment": "Fraud type for TP-0006"
+      },
+      {
+        "uuid": "8d300b4d-ee62-56f6-a7bf-4f902f9c4331",
+        "type": "text",
+        "category": "Other",
+        "value": "wire-fraud",
+        "comment": "Fraud type for TP-0006"
+      },
+      {
+        "uuid": "3f9661ff-4db9-5bd0-bc3b-462486187600",
+        "type": "text",
+        "category": "Other",
+        "value": "payment-diversion",
+        "comment": "Fraud type for TP-0006"
+      },
+      {
+        "uuid": "57c1685b-5422-5a74-9c4d-9486947e4f99",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0006"
+      },
+      {
+        "uuid": "03d997f8-1034-5a6b-8891-fde39fa941ea",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0006"
+      },
+      {
+        "uuid": "f04bf25f-b74a-50e9-984c-8b7900387c8f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0006"
+      },
+      {
+        "uuid": "fe81dc93-7061-5871-a404-65309ff29ba6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0006"
+      },
+      {
+        "uuid": "d6c937aa-64fc-5239-ab0b-f43278c0faf7",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0006"
+      },
+      {
+        "uuid": "bc62a57b-e20f-5390-9abf-41e3e3ba76af",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0006"
+      }
+    ]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "title": "FLAME TAXII Server",
+  "description": "Static TAXII 2.1 endpoint for FLAME fraud intelligence",
+  "contact": "https://github.com/elchacal801/flame-fraud",
+  "default": "https://elchacal801.github.io/flame-fraud/api/taxii/default/",
+  "api_roots": [
+    "https://elchacal801.github.io/flame-fraud/api/taxii/default/"
+  ]
+}

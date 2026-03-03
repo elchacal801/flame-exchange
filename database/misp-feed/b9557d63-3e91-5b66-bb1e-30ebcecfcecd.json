@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "b9557d63-3e91-5b66-bb1e-30ebcecfcecd",
+    "info": "FLAME: Supply Chain Payment Fraud",
+    "date": "2026-02-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "1b449d4d-dff9-5350-a86d-751158a22c93",
+        "type": "text",
+        "category": "Other",
+        "value": "business-email-compromise",
+        "comment": "Fraud type for TP-0020"
+      },
+      {
+        "uuid": "8cac0299-ad29-54e6-bbaa-ddad6b6ba1fd",
+        "type": "text",
+        "category": "Other",
+        "value": "vendor-impersonation",
+        "comment": "Fraud type for TP-0020"
+      },
+      {
+        "uuid": "0dd5acd8-fa14-5c8f-8da4-b2872a23ca61",
+        "type": "text",
+        "category": "Other",
+        "value": "wire-fraud",
+        "comment": "Fraud type for TP-0020"
+      },
+      {
+        "uuid": "5d6a553f-da51-5d8a-9424-8fbd196815ae",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0020"
+      },
+      {
+        "uuid": "aca31d57-c62d-56d3-b664-36cc14daa46b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0020"
+      },
+      {
+        "uuid": "4069021f-7568-5147-9110-6e6b6c686b0f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0020"
+      },
+      {
+        "uuid": "088379c1-7999-57f0-8771-dab50328eccc",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0020"
+      },
+      {
+        "uuid": "a5d812b8-dc61-5871-9828-dec6204114e8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0020"
+      }
+    ]
+  }
+}

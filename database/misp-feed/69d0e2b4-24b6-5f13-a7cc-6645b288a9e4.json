@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "69d0e2b4-24b6-5f13-a7cc-6645b288a9e4",
+    "info": "FLAME: Business Email Compromise \u2014 Vendor Impersonation Wire Fraud",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "7566bb8a-1f9f-5aee-8df6-ba6abfca2aa0",
+        "type": "text",
+        "category": "Other",
+        "value": "BEC",
+        "comment": "Fraud type for TP-0002"
+      },
+      {
+        "uuid": "858dd999-657a-5319-917e-410752706ed4",
+        "type": "text",
+        "category": "Other",
+        "value": "wire-fraud",
+        "comment": "Fraud type for TP-0002"
+      },
+      {
+        "uuid": "9804560b-6d5b-51a3-a2a5-bfd452768065",
+        "type": "text",
+        "category": "Other",
+        "value": "invoice-fraud",
+        "comment": "Fraud type for TP-0002"
+      },
+      {
+        "uuid": "83796216-69e9-5cc0-a0be-697e25141c29",
+        "type": "text",
+        "category": "Other",
+        "value": "payment-diversion",
+        "comment": "Fraud type for TP-0002"
+      },
+      {
+        "uuid": "bd33bb0a-9a90-5f97-a783-d383cfceb888",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0002"
+      },
+      {
+        "uuid": "e5447ccb-2685-5c38-b0d5-9ced72decc21",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0002"
+      },
+      {
+        "uuid": "e107ceac-9dbc-5f86-a9e5-0543d8fd2c91",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0002"
+      },
+      {
+        "uuid": "d4096cf8-9721-5bc8-bd42-96e88b1b14e4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0002"
+      },
+      {
+        "uuid": "c1068562-5973-5b58-8923-7978f03fee6b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0002"
+      }
+    ]
+  }
+}

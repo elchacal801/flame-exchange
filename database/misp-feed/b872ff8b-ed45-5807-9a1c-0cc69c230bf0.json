@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "b872ff8b-ed45-5807-9a1c-0cc69c230bf0",
+    "info": "FLAME: E-Commerce Triangulation Fraud",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "35e84aa7-50b7-5fac-b3ab-0d44bdb8de5c",
+        "type": "text",
+        "category": "Other",
+        "value": "first-party-fraud",
+        "comment": "Fraud type for TP-0030"
+      },
+      {
+        "uuid": "d84aad8e-6e61-5e08-b544-e288c2ce8c0f",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0030"
+      },
+      {
+        "uuid": "e45aa645-3440-5a88-b3dc-21d049223c08",
+        "type": "text",
+        "category": "Other",
+        "value": "payment-diversion",
+        "comment": "Fraud type for TP-0030"
+      },
+      {
+        "uuid": "e50a23ab-92e4-5cdb-b40f-d98927d08f12",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0030"
+      },
+      {
+        "uuid": "18f7ac0e-349e-5526-a97e-768399aee976",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0030"
+      },
+      {
+        "uuid": "2290a9f1-9552-5b64-8e9e-8dc2120279c1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0030"
+      },
+      {
+        "uuid": "55734101-a0c9-5482-a8f5-843f1368bde9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0030"
+      },
+      {
+        "uuid": "27da4f11-d2ea-5868-a529-53ef4e4e53b0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0030"
+      }
+    ]
+  }
+}

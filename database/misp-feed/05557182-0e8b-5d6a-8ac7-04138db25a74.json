@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "05557182-0e8b-5d6a-8ac7-04138db25a74",
+    "info": "FLAME: Romance Scam to Money Mule Recruitment Pipeline",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "d4b17a35-1ebe-58c4-8834-1ba58fedbbd6",
+        "type": "text",
+        "category": "Other",
+        "value": "romance-scam",
+        "comment": "Fraud type for TP-0011"
+      },
+      {
+        "uuid": "8ae1d692-4120-5d39-8e3e-54631b6cd862",
+        "type": "text",
+        "category": "Other",
+        "value": "money-mule",
+        "comment": "Fraud type for TP-0011"
+      },
+      {
+        "uuid": "ec6f0694-864e-5188-af5f-bd18902a0a4a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0011"
+      },
+      {
+        "uuid": "48c6d365-9087-52ee-99aa-0d313516110e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0011"
+      },
+      {
+        "uuid": "1b804bb9-1448-57a0-9e1b-0d7ed055010f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0011"
+      },
+      {
+        "uuid": "59657a47-8a9d-5f9c-9a7d-d54791412da9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0011"
+      },
+      {
+        "uuid": "4c81dc1c-3759-56de-a97b-51ce736c2845",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0011"
+      }
+    ]
+  }
+}

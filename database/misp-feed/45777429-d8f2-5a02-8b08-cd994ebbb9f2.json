@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "45777429-d8f2-5a02-8b08-cd994ebbb9f2",
+    "info": "FLAME: Insider-Enabled Account Fraud at Financial Institution",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "3454b3df-60b9-57d0-9819-30ca8373c7d0",
+        "type": "text",
+        "category": "Other",
+        "value": "insider-threat",
+        "comment": "Fraud type for TP-0014"
+      },
+      {
+        "uuid": "6cf878ff-5f5b-53e0-84dd-873aced99a5d",
+        "type": "text",
+        "category": "Other",
+        "value": "collusion",
+        "comment": "Fraud type for TP-0014"
+      },
+      {
+        "uuid": "e590a9d2-adb1-5d01-8f27-bca48482ee32",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0014"
+      },
+      {
+        "uuid": "fa097b92-66d0-5837-a171-bdc496e5510e",
+        "type": "text",
+        "category": "Other",
+        "value": "data-theft",
+        "comment": "Fraud type for TP-0014"
+      },
+      {
+        "uuid": "45effeb4-3471-5003-ba59-414acff13a07",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0014"
+      },
+      {
+        "uuid": "8500c32f-af3f-54cb-9534-c91c71e2a9e0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0014"
+      },
+      {
+        "uuid": "03be958c-5568-5b07-aeb7-3f96de0156a1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0014"
+      },
+      {
+        "uuid": "0de44e8b-f56c-54fd-8b5f-160f38633bdf",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0014"
+      },
+      {
+        "uuid": "c4ff4a37-dbfa-51b8-a499-1c5cec555497",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0014"
+      }
+    ]
+  }
+}

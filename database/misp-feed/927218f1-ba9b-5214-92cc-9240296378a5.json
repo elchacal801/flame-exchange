@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "927218f1-ba9b-5214-92cc-9240296378a5",
+    "info": "FLAME: Government Program Fraud (Unemployment/Tax)",
+    "date": "2026-02-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "56cbefe7-6ce3-5498-b5ea-e829782c81ff",
+        "type": "text",
+        "category": "Other",
+        "value": "benefit-fraud",
+        "comment": "Fraud type for TP-0022"
+      },
+      {
+        "uuid": "5074184d-329f-5566-a857-9f06709ed6c2",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0022"
+      },
+      {
+        "uuid": "cc8e002d-5d0b-5f56-b587-d8acd217fbea",
+        "type": "text",
+        "category": "Other",
+        "value": "synthetic-identity",
+        "comment": "Fraud type for TP-0022"
+      },
+      {
+        "uuid": "17a0e3f4-100d-5f47-a327-7457774a6e70",
+        "type": "text",
+        "category": "Other",
+        "value": "tax-fraud",
+        "comment": "Fraud type for TP-0022"
+      },
+      {
+        "uuid": "46ae30cd-82e5-5d7d-8385-c1ea65e53026",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0022"
+      },
+      {
+        "uuid": "bafa76fe-3f01-5c1d-84a0-23fb3cfd955c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0022"
+      },
+      {
+        "uuid": "28e7be98-a644-5ba2-bc1d-b51f32855883",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0022"
+      },
+      {
+        "uuid": "07f65d9a-3bbf-5f2e-a5c2-b3670eef96e4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0022"
+      }
+    ]
+  }
+}

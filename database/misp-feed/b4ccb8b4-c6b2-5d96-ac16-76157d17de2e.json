@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "b4ccb8b4-c6b2-5d96-ac16-76157d17de2e",
+    "info": "FLAME: Elder Financial Exploitation (Multi-Vector)",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "8be7fbc5-937f-590a-bf33-1a8dc6f0000e",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0027"
+      },
+      {
+        "uuid": "82175185-6fce-5ac5-98e5-99d328495307",
+        "type": "text",
+        "category": "Other",
+        "value": "authorized-push-payment",
+        "comment": "Fraud type for TP-0027"
+      },
+      {
+        "uuid": "91e1ce74-f0ec-55a8-b143-cf4f913e0c35",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0027"
+      },
+      {
+        "uuid": "3adb72c7-49be-5380-bc1a-e5d220a60a01",
+        "type": "text",
+        "category": "Other",
+        "value": "romance-scam",
+        "comment": "Fraud type for TP-0027"
+      },
+      {
+        "uuid": "407302cd-7f19-52af-8436-9a0cbd80a7d0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0027"
+      },
+      {
+        "uuid": "2f3ff8e6-0cdb-5fde-a606-026e261282bd",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0027"
+      },
+      {
+        "uuid": "0b7b1f18-f1e5-5d18-97b5-698633863355",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0027"
+      },
+      {
+        "uuid": "ae88627f-a769-53a9-9b77-ecd1a470bda4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0027"
+      },
+      {
+        "uuid": "ea9dddc3-d835-52ac-b033-b9d69d26b12a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0027"
+      }
+    ]
+  }
+}

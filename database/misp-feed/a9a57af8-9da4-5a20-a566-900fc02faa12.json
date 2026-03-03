@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "a9a57af8-9da4-5a20-a566-900fc02faa12",
+    "info": "FLAME: Credential Stuffing to Loyalty Point / Gift Card Account Drain",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "e29a88c6-edf3-5c40-8a77-2a3b887df16d",
+        "type": "text",
+        "category": "Other",
+        "value": "credential-stuffing",
+        "comment": "Fraud type for TP-0013"
+      },
+      {
+        "uuid": "4541a43b-85ce-524d-abdf-fef01004aa63",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0013"
+      },
+      {
+        "uuid": "a134006a-a415-54ad-8f82-c0199bdd0bb4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0013"
+      },
+      {
+        "uuid": "9895994d-569b-5a98-8553-c44e5fb951c7",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0013"
+      },
+      {
+        "uuid": "5bb84281-b2f5-5741-bf0a-63f86625836e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0013"
+      },
+      {
+        "uuid": "857145d2-9909-50cc-bf33-8d2c97ce842d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0013"
+      },
+      {
+        "uuid": "f5d5fdb9-db20-5366-8f6c-479e8faa2086",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0013"
+      }
+    ]
+  }
+}

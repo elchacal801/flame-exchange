@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "6aa4374f-c2b3-5aa0-91d9-2515c615a833",
+    "info": "FLAME: AI Synthetic Identity & Document Forgery",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "49b475a4-27a8-59a9-a88d-4c3ecd6253c3",
+        "type": "text",
+        "category": "Other",
+        "value": "synthetic-identity",
+        "comment": "Fraud type for TP-0029"
+      },
+      {
+        "uuid": "4f10b278-1e0c-55c7-806c-ae05e49374f1",
+        "type": "text",
+        "category": "Other",
+        "value": "ai-document-fraud",
+        "comment": "Fraud type for TP-0029"
+      },
+      {
+        "uuid": "c03959db-9d32-519e-aedf-ba91378726c9",
+        "type": "text",
+        "category": "Other",
+        "value": "new-account-fraud",
+        "comment": "Fraud type for TP-0029"
+      },
+      {
+        "uuid": "b3bdcfd7-2cf4-501d-8020-20a5e6bbaae4",
+        "type": "text",
+        "category": "Other",
+        "value": "application-fraud",
+        "comment": "Fraud type for TP-0029"
+      },
+      {
+        "uuid": "eefc83f8-bf1f-5418-a28b-6a6c97a599ea",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0029"
+      },
+      {
+        "uuid": "7e977b60-2fe2-51ea-b2d5-4fcc2c5edb4c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0029"
+      },
+      {
+        "uuid": "8097b063-58cf-5b0e-85df-39bd65a5e7d6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0029"
+      },
+      {
+        "uuid": "15e74c44-0aca-5306-9a3c-eacf9ca73ed9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0029"
+      },
+      {
+        "uuid": "e6f6c9b7-2d8d-5181-9497-c7a3086232f4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0029"
+      }
+    ]
+  }
+}

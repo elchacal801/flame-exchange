@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "6216b510-8f3c-599b-9af2-e3d80d7c1953",
+    "info": "FLAME: Treasury Management ATO via Malvertising and Vishing",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "07d1e7e4-2885-5c48-8509-359c4cf335a9",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0001"
+      },
+      {
+        "uuid": "30148bf0-2561-501f-9def-38179ae3dc9d",
+        "type": "text",
+        "category": "Other",
+        "value": "vishing",
+        "comment": "Fraud type for TP-0001"
+      },
+      {
+        "uuid": "97c6ed99-67d9-5936-8b33-cff0d017236b",
+        "type": "text",
+        "category": "Other",
+        "value": "wire-fraud",
+        "comment": "Fraud type for TP-0001"
+      },
+      {
+        "uuid": "cc49cd08-d27d-5c4a-a92a-c7aaa0f76cf5",
+        "type": "text",
+        "category": "Other",
+        "value": "malvertising",
+        "comment": "Fraud type for TP-0001"
+      },
+      {
+        "uuid": "77fa3598-f68c-5ec3-abef-f0813bba0f86",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0001"
+      },
+      {
+        "uuid": "32a4b930-5ba5-5331-8b0e-acc317e75d7b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0001"
+      },
+      {
+        "uuid": "d44ae64a-35aa-586b-b4e9-c8a4a808ffeb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0001"
+      },
+      {
+        "uuid": "e69573de-ee80-51ec-bae1-d376d26a80f0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0001"
+      },
+      {
+        "uuid": "4aff53ba-f5e2-50d7-bf83-cb4f555de1ca",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0001"
+      }
+    ]
+  }
+}

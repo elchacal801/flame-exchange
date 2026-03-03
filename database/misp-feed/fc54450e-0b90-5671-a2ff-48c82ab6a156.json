@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "fc54450e-0b90-5671-a2ff-48c82ab6a156",
+    "info": "FLAME: Refund-as-a-Service (FTID / RaaS)",
+    "date": "2026-03-02",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "a284ea2f-fd48-5e0f-8a30-0aea8413808e",
+        "type": "text",
+        "category": "Other",
+        "value": "first-party-fraud",
+        "comment": "Fraud type for TP-0031"
+      },
+      {
+        "uuid": "f8db7ecc-ec5c-5bf5-a469-9c46505971ed",
+        "type": "text",
+        "category": "Other",
+        "value": "refunding-as-a-service",
+        "comment": "Fraud type for TP-0031"
+      },
+      {
+        "uuid": "a14fbfb9-081c-5c00-840a-330a2311bbb0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0031"
+      },
+      {
+        "uuid": "f69c3069-56fe-5520-a182-ed0c34ae3aec",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0031"
+      },
+      {
+        "uuid": "7e4b8dd4-83ad-50a0-be88-2881c3585961",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0031"
+      },
+      {
+        "uuid": "a80b1d81-6da9-5b01-8081-2e11c07acb6a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0031"
+      },
+      {
+        "uuid": "13240fb7-bab1-5f64-a8cc-c0a767d39b42",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0031"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "230a72f4-9aeb-592d-9928-daa937fe9b51",
+    "info": "FLAME: Insurance Premium Diversion via Agent Portal ATO",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "82fdd6fb-b6ee-5e2e-ac1e-b0a54b9466e8",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0005"
+      },
+      {
+        "uuid": "7ecd776c-6e55-5901-ab90-6f96ac348075",
+        "type": "text",
+        "category": "Other",
+        "value": "premium-diversion",
+        "comment": "Fraud type for TP-0005"
+      },
+      {
+        "uuid": "5962dd5c-b0bc-53f4-80f8-32bcd98b1086",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0005"
+      },
+      {
+        "uuid": "a1dc288b-9100-5c46-a662-ace11238ac18",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0005"
+      },
+      {
+        "uuid": "7455d207-8248-53c7-8d7c-3898f87f3f4b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0005"
+      },
+      {
+        "uuid": "0a7a4575-8aa5-5747-b647-5808f046f806",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0005"
+      },
+      {
+        "uuid": "7d1f1eea-41c9-54c5-b56a-8e90c8d5f05a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0005"
+      },
+      {
+        "uuid": "3ac1517b-6bfc-59d8-8e58-123b930584ff",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0005"
+      }
+    ]
+  }
+}

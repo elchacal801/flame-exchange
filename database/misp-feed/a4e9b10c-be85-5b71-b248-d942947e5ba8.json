@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "a4e9b10c-be85-5b71-b248-d942947e5ba8",
+    "info": "FLAME: Deepfake Voice Authorization for Wire Transfer",
+    "date": "2026-02-12",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "36c98f44-86db-5da9-99a4-86d53e4b4905",
+        "type": "text",
+        "category": "Other",
+        "value": "wire-fraud",
+        "comment": "Fraud type for TP-0007"
+      },
+      {
+        "uuid": "269902ba-033e-5bd4-a829-9ebbb2791f11",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0007"
+      },
+      {
+        "uuid": "44ccc245-9f0d-55d7-a052-f1119142be67",
+        "type": "text",
+        "category": "Other",
+        "value": "BEC",
+        "comment": "Fraud type for TP-0007"
+      },
+      {
+        "uuid": "d7babbb5-0cad-53f1-8989-b3ad7579892d",
+        "type": "text",
+        "category": "Other",
+        "value": "deepfake",
+        "comment": "Fraud type for TP-0007"
+      },
+      {
+        "uuid": "4bfc8e53-7a76-5f9c-afdc-229feddea4da",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0007"
+      },
+      {
+        "uuid": "d0cd6b18-2cfb-5ea4-9a4c-6cf7222aba40",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0007"
+      },
+      {
+        "uuid": "061a3a25-2fb2-54da-bb00-388ecd8ab96e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0007"
+      },
+      {
+        "uuid": "dc43cb84-dea8-5a75-9efd-a68c2ace5801",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0007"
+      },
+      {
+        "uuid": "b54609b1-937e-5783-99fe-e1929e9f26e6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0007"
+      }
+    ]
+  }
+}
