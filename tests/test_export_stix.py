@@ -20,6 +20,7 @@ from export_flame_stix import (
     build_fraud_scheme,
     build_financial_transaction,
     build_mule_network,
+    build_fraud_actor_profile,
 )
 
 
@@ -372,4 +373,24 @@ class TestBuildMuleNetwork:
         tp = {"id": "TP-TEST", "title": "No Mules", "fraud_types": ["phishing"]}
         content = {"body": "Basic phishing scheme with no special involvement."}
         result = build_mule_network(tp, content)
+        assert result is None
+
+
+# ---------------------------------------------------------------------------
+# build_fraud_actor_profile tests
+# ---------------------------------------------------------------------------
+
+class TestBuildFraudActorProfile:
+    def test_with_underground_context(self):
+        tp = {"id": "TP-0001", "title": "Test", "fraud_types": ["account-takeover"]}
+        content = {"body": "## Underground Ecosystem Context\n### Service Supply Chain\nInfostealer MaaS kits available"}
+        result = build_fraud_actor_profile(tp, content)
+        assert result is not None
+        assert result["type"] == "x-flame-fraud-actor-profile"
+        assert "account-takeover" in result["fraud_specialization"]
+
+    def test_no_underground_section_returns_none(self):
+        tp = {"id": "TP-TEST", "title": "No Underground", "fraud_types": []}
+        content = {"body": "## Summary\nBasic scheme."}
+        result = build_fraud_actor_profile(tp, content)
         assert result is None

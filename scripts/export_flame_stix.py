@@ -299,6 +299,49 @@ def build_mule_network(tp: dict, content: dict | None = None) -> dict | None:
     }
 
 
+def _has_underground_section(body: str) -> bool:
+    return bool(re.search(r"^## Underground Ecosystem Context", body, re.MULTILINE))
+
+
+SOPHISTICATION_KEYWORDS = {
+    "expert": ["nation-state", "APT", "advanced persistent"],
+    "high": ["organized crime", "sophisticated", "complex infrastructure"],
+    "medium": ["toolkit", "MaaS", "service", "marketplace"],
+    "low": ["script", "tutorial", "copy-paste"],
+}
+
+
+def _infer_sophistication(body: str) -> str:
+    body_lower = body.lower()
+    for level, keywords in SOPHISTICATION_KEYWORDS.items():
+        if any(kw.lower() in body_lower for kw in keywords):
+            return level
+    return "medium"
+
+
+def build_fraud_actor_profile(tp: dict, content: dict | None = None) -> dict | None:
+    """Build x-flame-fraud-actor-profile from Underground Ecosystem Context."""
+    body = content.get("body", "") if content else ""
+    if not _has_underground_section(body):
+        return None
+
+    tp_id = tp["id"]
+    fraud_types = tp.get("fraud_types", [])
+
+    return {
+        "type": "x-flame-fraud-actor-profile",
+        "spec_version": "2.1",
+        "id": deterministic_id("x-flame-fraud-actor-profile", f"flame-{tp_id}-actor"),
+        "created_by_ref": FLAME_IDENTITY_ID,
+        "name": f"{tp.get('title', tp_id)} - Actor Profile",
+        "fraud_specialization": fraud_types,
+        "monetization_methods": [],
+        "sophistication_level": _infer_sophistication(body),
+        "jurisdiction": [],
+        "object_marking_refs": [TLP_CLEAR_ID],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Detection Rule Extraction
 # ---------------------------------------------------------------------------
