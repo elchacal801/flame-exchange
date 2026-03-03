@@ -83,6 +83,11 @@
         dom.graphBtn = document.getElementById('graph-btn');
         dom.graphModal = document.getElementById('graph-modal');
         dom.graphClose = document.getElementById('graph-close');
+        dom.navigatorBtn = document.getElementById('navigator-btn');
+        dom.navigatorModal = document.getElementById('navigator-modal');
+        dom.navigatorClose = document.getElementById('navigator-close');
+        dom.navigatorBody = document.getElementById('navigator-body');
+        dom.navigatorTabs = document.getElementById('navigator-tabs');
     }
 
     // -----------------------------------------------------------------------
@@ -212,6 +217,29 @@
         });
         dom.graphClose.addEventListener('click', function () { dom.graphModal.style.display = 'none'; });
         dom.graphModal.addEventListener('click', function (e) { if (e.target === dom.graphModal) dom.graphModal.style.display = 'none'; });
+
+        // Framework Navigator
+        dom.navigatorBtn.addEventListener('click', function () {
+            dom.navigatorModal.style.display = 'flex';
+            renderNavigator('cfpf');
+        });
+        dom.navigatorClose.addEventListener('click', function () { dom.navigatorModal.style.display = 'none'; });
+        dom.navigatorModal.addEventListener('click', function (e) { if (e.target === dom.navigatorModal) dom.navigatorModal.style.display = 'none'; });
+
+        // Navigator tab switching
+        dom.navigatorTabs.addEventListener('click', function (e) {
+            var tab = e.target.closest('.nav-tab');
+            if (!tab) return;
+            dom.navigatorTabs.querySelectorAll('.nav-tab').forEach(function (t) { t.classList.remove('active'); });
+            tab.classList.add('active');
+            var framework = tab.getAttribute('data-framework');
+            renderNavigator(framework);
+            document.getElementById('nav-export-json').style.display = framework === 'attack' ? 'inline-block' : 'none';
+        });
+
+        // Navigator exports
+        document.getElementById('nav-export-svg').addEventListener('click', exportNavigatorSVG);
+        document.getElementById('nav-export-json').addEventListener('click', exportNavigatorATTCKJSON);
 
         // Hash routing
         window.addEventListener('hashchange', handleRoute);
@@ -1089,6 +1117,150 @@
 
         html += '</div>';
         dom.heatMapBody.innerHTML = html;
+    }
+
+    // -----------------------------------------------------------------------
+    // Framework Navigator
+    // -----------------------------------------------------------------------
+
+    function renderNavigator(framework) {
+        var data = FlameData.getData();
+        if (!data || data.length === 0) {
+            dom.navigatorBody.innerHTML = '<p>No data available.</p>';
+            return;
+        }
+
+        var columns = [];
+        var getMapping = null;
+
+        switch (framework) {
+            case 'cfpf':
+                columns = PHASE_ORDER;
+                getMapping = function (item) { return item.cfpf_phases || []; };
+                break;
+            case 'ft3':
+                var ft3Set = new Set();
+                data.forEach(function (item) {
+                    (item.ft3_tactics || []).forEach(function (t) { ft3Set.add(t); });
+                });
+                columns = Array.from(ft3Set).sort();
+                getMapping = function (item) { return item.ft3_tactics || []; };
+                break;
+            case 'groupib':
+                columns = GROUPIB_STAGES;
+                getMapping = function (item) { return item.groupib_stages || []; };
+                break;
+            case 'attack':
+                var attackSet = new Set();
+                data.forEach(function (item) {
+                    (item.mitre_attack || []).forEach(function (t) { attackSet.add(t); });
+                });
+                columns = Array.from(attackSet).sort();
+                getMapping = function (item) { return item.mitre_attack || []; };
+                break;
+        }
+
+        if (columns.length === 0) {
+            dom.navigatorBody.innerHTML = '<p>No mapping data available for this framework.</p>';
+            return;
+        }
+
+        var html = '<div class="navigator-grid" style="grid-template-columns: 180px repeat(' + columns.length + ', minmax(60px, 1fr));" id="navigator-grid">';
+
+        // Header row
+        html += '<div class="nav-cell nav-corner"></div>';
+        columns.forEach(function (col) {
+            html += '<div class="nav-cell nav-col-header" title="' + escapeHtml(col) + '">' + escapeHtml(col) + '</div>';
+        });
+
+        // Data rows
+        data.forEach(function (item) {
+            var mapping = getMapping(item);
+            html += '<div class="nav-cell nav-row-label" title="' + escapeHtml(item.title) + '">';
+            html += '<a href="#tp=' + escapeHtml(item.id) + '" class="nav-tp-link">' + escapeHtml(item.id) + '</a>';
+            html += '</div>';
+
+            columns.forEach(function (col) {
+                var isMapped = mapping.indexOf(col) !== -1;
+                var dlCount = (item.detection_rule_ids || []).length;
+                var cellClass = 'nav-cell nav-data';
+                if (isMapped) {
+                    if (dlCount >= 3) cellClass += ' nav-cell-high';
+                    else if (dlCount >= 1) cellClass += ' nav-cell-med';
+                    else cellClass += ' nav-cell-low';
+                } else {
+                    cellClass += ' nav-cell-empty';
+                }
+                html += '<div class="' + cellClass + '" title="' + escapeHtml(item.title) + ' \u00d7 ' + escapeHtml(col) + '" data-tp="' + escapeHtml(item.id) + '"></div>';
+            });
+        });
+
+        html += '</div>';
+        dom.navigatorBody.innerHTML = html;
+
+        // Click-to-navigate
+        dom.navigatorBody.querySelectorAll('.nav-data').forEach(function (cell) {
+            cell.addEventListener('click', function () {
+                var tpId = cell.getAttribute('data-tp');
+                if (tpId) {
+                    dom.navigatorModal.style.display = 'none';
+                    window.location.hash = '#tp=' + tpId;
+                }
+            });
+        });
+    }
+
+    function exportNavigatorSVG() {
+        var grid = document.getElementById('navigator-grid');
+        if (!grid) return;
+        var rect = grid.getBoundingClientRect();
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + rect.width + '" height="' + rect.height + '">';
+        svg += '<foreignObject width="100%" height="100%">';
+        svg += '<div xmlns="http://www.w3.org/1999/xhtml">';
+        svg += grid.outerHTML;
+        svg += '</div></foreignObject></svg>';
+
+        var blob = new Blob([svg], { type: 'image/svg+xml' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'flame-navigator.svg';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function exportNavigatorATTCKJSON() {
+        var data = FlameData.getData();
+        if (!data) return;
+        var techniques = [];
+        data.forEach(function (item) {
+            (item.mitre_attack || []).forEach(function (techId) {
+                techniques.push({
+                    techniqueID: techId,
+                    score: (item.detection_rule_ids || []).length,
+                    comment: item.title + ' (' + item.id + ')',
+                    color: '',
+                    enabled: true,
+                });
+            });
+        });
+
+        var layer = {
+            name: 'FLAME Fraud Coverage',
+            versions: { layer: '4.5', navigator: '4.9.1', attack: '14' },
+            domain: 'enterprise-attack',
+            description: 'FLAME fraud threat path coverage mapped to ATT&CK techniques',
+            techniques: techniques,
+            gradient: { colors: ['#ffffff', '#fbbf24', '#22c55e'], minValue: 0, maxValue: 5 },
+        };
+
+        var blob = new Blob([JSON.stringify(layer, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'flame-attack-navigator.json';
+        a.click();
+        URL.revokeObjectURL(url);
     }
 
     // -----------------------------------------------------------------------
