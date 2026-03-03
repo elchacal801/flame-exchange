@@ -1,0 +1,61 @@
+# ======================================================================
+# FLAME Detection Rule: Rapid Fund Layering Through Shell Accounts
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P5
+# Threat Paths: TP-0022, TP-0002, TP-0011
+#
+# Description:
+#   Detects rapid fund movement through multiple accounts with minimal
+#   retention time, indicative of layering through shell or pass-through
+#   accounts. Funds transit through each account within hours with
+#   near-zero balance retention, suggesting the accounts exist solely to
+#   obscure the money trail.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_pass_through:
+#     event_type:
+#     - WIRE_CREDIT
+#     - ACH_CREDIT
+#     - INTERNAL_TRANSFER_IN
+#     transaction_amount|gte: 5000
+#   selection_rapid_egress:
+#     event_type:
+#     - WIRE_INITIATION
+#     - ACH_DEBIT
+#     - INTERNAL_TRANSFER_OUT
+#   selection_low_retention:
+#     post_transaction_balance|lte: 500
+#   timeframe: 12h
+#   condition: 'selection_pass_through | near selection_rapid_egress by account_id and
+#     selection_low_retention | count() by account_id > 3 within 30d
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Escrow or settlement accounts that legitimately have rapid pass-through flows
+#   - Operating accounts of payment processors or money service businesses
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

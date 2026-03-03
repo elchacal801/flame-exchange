@@ -1,0 +1,54 @@
+# ======================================================================
+# FLAME Detection Rule: Rapid Contact Information Change
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P3
+# Threat Paths: TP-0001, TP-0005
+#
+# Description:
+#   Detects when email, phone number, and mailing address are all changed
+#   on an account within a short window. A full contact information swap is
+#   a hallmark of account takeover where the attacker locks out the
+#   legitimate owner before executing fraud.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: identity_management
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_email:
+#     event_type: CONTACT_CHANGE
+#     field_changed: email
+#   selection_phone:
+#     event_type: CONTACT_CHANGE
+#     field_changed: phone
+#   selection_address:
+#     event_type: CONTACT_CHANGE
+#     field_changed: mailing_address
+#   timeframe: 72h
+#   condition: (selection_email and selection_phone and selection_address) | count() by
+#     account_id >= 3
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Customer relocating and updating all contact details with their bank simultaneously
+#   - Account remediation after a legitimate customer service request
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

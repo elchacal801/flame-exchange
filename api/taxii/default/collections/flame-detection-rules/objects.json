@@ -1,5 +1,1615 @@
 {
   "type": "bundle",
   "id": "bundle--656196f3-124d-524d-8d7f-6cb1d7e16819",
-  "objects": []
+  "objects": [
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--ea4396a0-a3a6-52ca-b562-5344eff49e65",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.044085Z",
+      "modified": "2026-03-03T05:15:14.044085Z",
+      "name": "Mule Account Velocity Pattern",
+      "description": "Detects rapid inbound transfers from multiple unique senders followed by immediate outbound movement, typical of money mule activity. This rule is a shared component applicable to TP-0001, TP-0002, TP-0011, and TP-0022.",
+      "labels": [
+        "money-mule"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0001",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0001"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--bb3ecf63-d7a6-5abc-add8-97962257220d",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.047756Z",
+      "modified": "2026-03-03T05:15:14.047756Z",
+      "name": "Infostealer Credential Dump Velocity",
+      "description": "Detects rapid credential dump patterns where many unique credentials are harvested from a single host in a short timeframe. Infostealers such as RedLine, Lumma, and Vidar typically exfiltrate dozens to hundreds of stored credentials within seconds of execution, producing a burst of credential-access events from one endpoint.\n",
+      "labels": [
+        "data-theft",
+        "malware",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0002",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0002"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--6f1243d7-3152-5d18-bba0-2d4c7860839e",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.051077Z",
+      "modified": "2026-03-03T05:15:14.051077Z",
+      "name": "Session Cookie Exfiltration Pattern",
+      "description": "Detects session token and cookie theft patterns in log data indicative of infostealer activity. Stealers like Lumma and Raccoon target browser cookie stores to extract active session tokens, enabling session hijacking without requiring credentials. This rule monitors for suspicious access to cookie databases and exfiltration of session-bearing data.\n",
+      "labels": [
+        "account-takeover",
+        "data-theft",
+        "malware"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0003",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0003"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--e40d7b34-f749-5bb6-ac4a-89563bc75a6f",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.055684Z",
+      "modified": "2026-03-03T05:15:14.055684Z",
+      "name": "Browser Credential Store Access",
+      "description": "Detects unusual access to browser credential stores (Login Data, logins.json, key3.db/key4.db) by non-browser processes. Infostealers such as RedLine and Vidar systematically read these SQLite databases to extract saved usernames and passwords for banking portals and other financial services.\n",
+      "labels": [
+        "credential-stuffing",
+        "data-theft",
+        "malware"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0004",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0004"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--708e515e-1fc4-5082-ad85-beee5dbe57be",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.059058Z",
+      "modified": "2026-03-03T05:15:14.059058Z",
+      "name": "Stealer C2 Beacon Pattern",
+      "description": "Detects command-and-control callback patterns typical of Malware-as-a-Service (MaaS) stealers. RedLine, Lumma, and StealC use distinctive C2 communication patterns including HTTP POST requests with base64-encoded payloads to newly registered domains, often on non-standard ports or with characteristic URI patterns.\n",
+      "labels": [
+        "malware",
+        "data-theft"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0005",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0005"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--5b1ec4a2-e4f3-50df-977d-4bd560dba4aa",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.061911Z",
+      "modified": "2026-03-03T05:15:14.061911Z",
+      "name": "Credential Testing After Dump",
+      "description": "Detects rapid credential validation attempts occurring shortly after a credential dump event. After infostealers exfiltrate harvested credentials, threat actors typically run automated validation to identify which stolen credentials are still active, producing a burst of login attempts across multiple banking portals from the attacker's infrastructure.\n",
+      "labels": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0006",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0006"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--9953c667-ceda-5672-9acf-a62ca72ee893",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.065597Z",
+      "modified": "2026-03-03T05:15:14.065597Z",
+      "name": "Infostealer Exfiltration Archive Creation",
+      "description": "Detects creation of archive files containing credential-related file patterns consistent with infostealer packaging behavior. Stealers like RedLine and Vidar collect credentials, cookies, autofill data, and crypto wallet files into a ZIP or RAR archive before exfiltrating them to the C2 server.\n",
+      "labels": [
+        "data-theft",
+        "malware"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0007",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0007"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--dac4c999-f922-5cee-8a56-42f218e8bf2d",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.06865Z",
+      "modified": "2026-03-03T05:15:14.06865Z",
+      "name": "Multiple Account Access from Single Source",
+      "description": "Detects multiple distinct banking accounts being accessed from a single device or IP address within a short timeframe. This pattern is consistent with an attacker using stolen credentials from an infostealer dump to sequentially access compromised accounts for reconnaissance or initial positioning before fraudulent transactions.\n",
+      "labels": [
+        "account-takeover",
+        "credential-stuffing"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0008",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0008"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--5797afda-9e0b-58dd-9b73-9fefe0912b17",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.072436Z",
+      "modified": "2026-03-03T05:15:14.072436Z",
+      "name": "Stolen Session Token Replay",
+      "description": "Detects session token replay from a different geographic location or device than the original authenticating session. When infostealers exfiltrate active session cookies, attackers import them into antidetect browsers to hijack authenticated sessions without triggering login-based detections. This rule correlates session token usage across differing geolocations and device fingerprints.\n",
+      "labels": [
+        "account-takeover",
+        "data-theft"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0009",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0009"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--5f471fe8-4a31-5da6-8574-4aba79ccc4a7",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.076651Z",
+      "modified": "2026-03-03T05:15:14.076651Z",
+      "name": "Autofill Data Harvesting",
+      "description": "Detects form autofill data extraction patterns consistent with infostealer behavior. Stealers like RedLine and Raccoon target browser autofill databases (Web Data, formhistory.sqlite) to harvest stored PII including names, addresses, phone numbers, and payment card details that facilitate downstream fraud.\n",
+      "labels": [
+        "data-theft",
+        "malware",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0010",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0010"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--a3aaf9c1-49b6-5ef8-aa0e-c6e26ac73735",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.080977Z",
+      "modified": "2026-03-03T05:15:14.080977Z",
+      "name": "Crypto Wallet Seed Phrase Exfiltration",
+      "description": "Detects wallet seed phrase and private key extraction attempts targeting cryptocurrency wallets. Infostealers such as RedLine, Vidar, and StealC include dedicated modules that search for wallet.dat files, seed phrase backups, and keystore directories for MetaMask, Exodus, Electrum, and other popular wallets to enable cryptocurrency theft.\n",
+      "labels": [
+        "data-theft",
+        "malware"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0011",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0011"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--88c5c1dc-381e-5b7e-8748-57b4e6913b3f",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.083961Z",
+      "modified": "2026-03-03T05:15:14.083961Z",
+      "name": "Login Velocity Anomaly",
+      "description": "Detects abnormal login attempt velocity from a single source IP or subnet, indicative of automated credential stuffing tools. Legitimate users produce low single-digit login attempts per minute; credential stuffing tools generate dozens to hundreds, often targeting the authentication API directly rather than the web login form.\n",
+      "labels": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0012",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0012"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--e47e1099-2a0b-573d-b445-afe7c696c267",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.08688Z",
+      "modified": "2026-03-03T05:15:14.08688Z",
+      "name": "Geographic Impossibility Login",
+      "description": "Detects login attempts from geographically impossible locations within a short timeframe. When a user authenticates from one country and a second authentication occurs from a distant country within a window that makes physical travel impossible, it strongly indicates credential compromise and concurrent use by an attacker.\n",
+      "labels": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0013",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0013"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--7cd2ddaa-7efe-5ceb-ba40-8ca3c1d94379",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.090442Z",
+      "modified": "2026-03-03T05:15:14.090442Z",
+      "name": "Device Fingerprint Anomaly",
+      "description": "Detects a known device fingerprint presenting with changed underlying characteristics such as OS version, screen resolution, timezone, or installed fonts. Attackers using antidetect browsers (Multilogin, GoLogin, Dolphin Anty) import stolen device fingerprints but often have mismatches in lower-level hardware attributes that this rule correlates.\n",
+      "labels": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0014",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0014"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--a42cb3d1-fcd0-5a95-8355-c5b8a838c4f8",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.093439Z",
+      "modified": "2026-03-03T05:15:14.093439Z",
+      "name": "Combo List Iteration Pattern",
+      "description": "Detects sequential username patterns typical of combo list iteration during credential stuffing attacks. Attackers feed sorted credential lists into stuffing tools, producing login attempts where usernames appear in alphabetical or near-alphabetical order with minimal timing variation between attempts, a pattern never seen in organic user behavior.\n",
+      "labels": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0015",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0015"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--cea64120-7b1e-539d-bde1-26aa7c26a509",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.097006Z",
+      "modified": "2026-03-03T05:15:14.097006Z",
+      "name": "Distributed Credential Stuffing",
+      "description": "Detects low-and-slow distributed credential stuffing attacks spread across multiple source IPs to evade per-IP rate limiting. Advanced attackers use residential proxy networks and botnets to distribute attempts, making each source IP appear benign while the aggregate attack targets many accounts. This rule aggregates failed login patterns across source IPs sharing common characteristics.\n",
+      "labels": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0016",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0016"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--3a203b37-5673-5a7d-9182-292975336efe",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.100618Z",
+      "modified": "2026-03-03T05:15:14.100618Z",
+      "name": "Residential Proxy Login Attempt",
+      "description": "Detects login attempts originating from known residential proxy networks. Credential stuffing actors increasingly route attacks through residential proxies (Luminati/Bright Data, Oxylabs, SmartProxy) to appear as legitimate home users and bypass IP-reputation blocklists. This rule correlates source IPs against residential proxy threat intelligence feeds.\n",
+      "labels": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0017",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0017"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--2df86fe2-3ba7-58aa-b74f-e50966e96465",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.103419Z",
+      "modified": "2026-03-03T05:15:14.103419Z",
+      "name": "Credential Spray Single Password",
+      "description": "Detects password spraying attacks where a single password (or small set of passwords) is tested across many accounts. Unlike traditional credential stuffing which uses unique username-password pairs, password spraying tries common or recently breached passwords against a large account population to avoid per-account lockout thresholds.\n",
+      "labels": [
+        "credential-stuffing",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0018",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0018"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--5d513d5a-87f6-56d6-ab01-265cc2bfc160",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.106605Z",
+      "modified": "2026-03-03T05:15:14.106605Z",
+      "name": "Beneficiary Change Velocity Anomaly",
+      "description": "Detects multiple beneficiary additions or modifications on a single account within a short time window. Rapid beneficiary changes are a strong pre-cursor to payment diversion fraud, where an attacker positions new destination accounts before initiating unauthorized wires.\n",
+      "labels": [
+        "account-takeover",
+        "payment-diversion",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0019",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0019"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--5951d6c3-6238-5c4a-9ed3-85047e306e6e",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.110717Z",
+      "modified": "2026-03-03T05:15:14.110717Z",
+      "name": "Rapid Contact Information Change",
+      "description": "Detects when email, phone number, and mailing address are all changed on an account within a short window. A full contact information swap is a hallmark of account takeover where the attacker locks out the legitimate owner before executing fraud.\n",
+      "labels": [
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0020",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0020"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--49c4ca05-6793-55ed-a2b1-0f00b360ac19",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.11423Z",
+      "modified": "2026-03-03T05:15:14.11423Z",
+      "name": "MFA Method Switch Before High-Value Transaction",
+      "description": "Detects when an account's multi-factor authentication method is changed (e.g., from hardware token to SMS or email OTP) shortly before a high-value wire or ACH transaction is initiated. Attackers downgrade MFA to a method they control prior to executing fraud.\n",
+      "labels": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0021",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0021"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--4a797514-827b-5489-9bc4-d8c61e448c29",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.117429Z",
+      "modified": "2026-03-03T05:15:14.117429Z",
+      "name": "Dormant Account Reactivation",
+      "description": "Detects accounts with no transactional activity for 90 or more days that suddenly initiate financial transactions. Dormant accounts are frequently targeted by attackers because they are less likely to be monitored and credential compromise may go unnoticed.\n",
+      "labels": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0022",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0022"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--79f00f39-ca3c-5d36-a833-0541df32007e",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.120276Z",
+      "modified": "2026-03-03T05:15:14.120276Z",
+      "name": "Alert Threshold Modification",
+      "description": "Detects when a user modifies their own transaction alert thresholds or disables notifications via online banking or mobile app. Attackers raise alert thresholds or suppress notifications to prevent the legitimate account holder from being alerted to unauthorized transactions.\n",
+      "labels": [
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0023",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0023"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--5e340449-3e62-54be-9eb5-0641d385f848",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.123736Z",
+      "modified": "2026-03-03T05:15:14.123736Z",
+      "name": "Wire Beneficiary Name Mismatch",
+      "description": "Detects when the wire beneficiary name provided by the originator does not match the account holder name at the receiving institution. Name mismatches on wire transfers are a strong indicator of payment diversion fraud where funds are redirected to accounts controlled by the attacker.\n",
+      "labels": [
+        "wire-fraud",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0024",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0024"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--3003873c-ede7-5979-983e-9bde3a11cea4",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.128971Z",
+      "modified": "2026-03-03T05:15:14.128971Z",
+      "name": "Power of Attorney or Authorized Signer Change",
+      "description": "Detects changes to power of attorney designations or authorized signers on commercial and business accounts. Fraudsters may socially engineer or forge POA documents to gain control of business accounts, enabling them to initiate high-value transactions.\n",
+      "labels": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0025",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0025"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--f7347687-421e-51ac-9517-7b3827c2baa7",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.132691Z",
+      "modified": "2026-03-03T05:15:14.132691Z",
+      "name": "Account Type Conversion Anomaly",
+      "description": "Detects suspicious account type conversions such as savings-to-checking or personal-to-business. These conversions can unlock higher transaction limits, wire capabilities, or ACH origination, which attackers exploit to move larger amounts after taking over a limited account.\n",
+      "labels": [
+        "account-takeover",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0026",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0026"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--b4edb653-1b81-5ed0-ab53-f9be9cec31c3",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.135703Z",
+      "modified": "2026-03-03T05:15:14.135703Z",
+      "name": "First-Time International Wire to New Country",
+      "description": "Detects international wire transfers sent to a country that has no prior transaction history for the originating account. First-time international wires, especially to high-risk corridors, are a key indicator of business email compromise and payment diversion schemes.\n",
+      "labels": [
+        "wire-fraud",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0027",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0027"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--1e146b69-3db6-566a-a647-b05b8a27be19",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.139136Z",
+      "modified": "2026-03-03T05:15:14.139136Z",
+      "name": "Transaction Amount Clustering Near Reporting Threshold",
+      "description": "Detects transactions that cluster just below regulatory reporting thresholds ($3,000 for international transfers, $10,000 for CTR filing). Structuring transactions to evade reporting requirements is itself a federal offense and a strong indicator of money laundering or fraud monetization.\n",
+      "labels": [
+        "wire-fraud",
+        "money-mule"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0028",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0028"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--a13bbc73-b35f-559d-8e0d-45aaf5525af9",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.144035Z",
+      "modified": "2026-03-03T05:15:14.144035Z",
+      "name": "Split Transfer Chain Detection",
+      "description": "Detects when a large inbound amount is split into multiple smaller outbound transfers to different beneficiaries in sequence. This layering technique is used to obscure the origin and destination of fraudulently obtained funds.\n",
+      "labels": [
+        "wire-fraud",
+        "payment-diversion",
+        "money-mule"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0029",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0029"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--b68d155a-eb38-5632-baad-f202ea851eb1",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.14915Z",
+      "modified": "2026-03-03T05:15:14.14915Z",
+      "name": "After-Hours Wire Transfer Initiation",
+      "description": "Detects wire transfers initiated outside the account's established normal business hours. Attackers often execute unauthorized wires during evenings, weekends, or holidays when fraud detection staff and account holders are less likely to notice.\n",
+      "labels": [
+        "wire-fraud",
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0030",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0030"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--31b50093-cc0b-59c6-a3e8-cb02abbbd0ec",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.152147Z",
+      "modified": "2026-03-03T05:15:14.152147Z",
+      "name": "Rapid Outbound Wire After Large Inbound",
+      "description": "Detects a large outbound wire or ACH transfer initiated within hours of receiving a large inbound deposit. This pass-through pattern is characteristic of compromised accounts being used as intermediary conduits in fraud or money laundering schemes.\n",
+      "labels": [
+        "wire-fraud",
+        "money-mule",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0031",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0031"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--83317dfa-1a21-54cb-9eed-db79a3a266af",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.155308Z",
+      "modified": "2026-03-03T05:15:14.155308Z",
+      "name": "Beneficiary Country Mismatch with Business Profile",
+      "description": "Detects wire transfers to countries where the account holder has no established business relationship or prior transaction history. Combined with other indicators, this can reveal business email compromise where payment instructions are altered to redirect funds to attacker-controlled accounts in foreign jurisdictions.\n",
+      "labels": [
+        "wire-fraud",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0032",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0032"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--ad191908-e634-5621-a54e-05ca6fa41695",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.15903Z",
+      "modified": "2026-03-03T05:15:14.15903Z",
+      "name": "Round-Dollar Wire Amount Pattern",
+      "description": "Detects unusual patterns of wire transfers in round dollar amounts (e.g., $5,000, $10,000, $25,000). While individual round-amount wires are common, a pattern of multiple round-amount wires is atypical for legitimate business payments and may indicate structured or test transactions by fraudsters.\n",
+      "labels": [
+        "wire-fraud",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0033",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0033"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--faf3fb70-bdff-549a-801c-4a18a08c8d17",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.1628Z",
+      "modified": "2026-03-03T05:15:14.1628Z",
+      "name": "ACH Return Rate Anomaly",
+      "description": "Detects ACH originators with an elevated return or reversal rate exceeding normal thresholds. High ACH return rates (especially R10 unauthorized, R29 corporate not authorized) may indicate the account is being used to initiate unauthorized debits against victim accounts.\n",
+      "labels": [
+        "ACH-fraud",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0034",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0034"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--8727131f-a429-5fc5-a4c0-b12fa9fd7ddf",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.166572Z",
+      "modified": "2026-03-03T05:15:14.166572Z",
+      "name": "Wire to FATF High-Risk Jurisdiction",
+      "description": "Detects wire transfers to jurisdictions on the FATF high-risk or increased monitoring lists. While not inherently fraudulent, wires to these jurisdictions combined with other risk factors (new beneficiary, unusual amount, after-hours) significantly elevate the risk of money laundering or fraud monetization.\n",
+      "labels": [
+        "wire-fraud",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0035",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0035"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--f4a32ac6-2657-59d1-9c20-3507864427b1",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.169722Z",
+      "modified": "2026-03-03T05:15:14.169722Z",
+      "name": "Payment Instruction Velocity Spike",
+      "description": "Detects when multiple payment instructions (wires, ACH batches, or internal transfers) are submitted in rapid succession from a single account or user session. High-velocity payment submissions suggest automated or scripted fraud execution, often seen after credential compromise.\n",
+      "labels": [
+        "wire-fraud",
+        "ACH-fraud",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0036",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0036"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--ea663b32-f2dc-542d-aa6e-c10a42aedd9e",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.172672Z",
+      "modified": "2026-03-03T05:15:14.172672Z",
+      "name": "Mule Rapid ATM Withdrawal After Inbound Transfer",
+      "description": "Detects cash withdrawals at ATMs occurring shortly after an inbound wire or ACH transfer. Money mules frequently convert electronically received fraud proceeds to cash as quickly as possible to prevent recovery, often hitting daily ATM limits across multiple machines.\n",
+      "labels": [
+        "money-mule",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0037",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0037"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--b96925d3-113d-5251-8ddb-6f531e08490c",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.176289Z",
+      "modified": "2026-03-03T05:15:14.176289Z",
+      "name": "Account Age vs Transaction Volume Mismatch",
+      "description": "Detects accounts less than 90 days old that exhibit transaction volumes exceeding the typical profile for mature accounts. Newly opened accounts with abnormally high volume are a primary indicator of purpose-built mule accounts created specifically to funnel illicit funds.\n",
+      "labels": [
+        "money-mule"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0038",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0038"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--f176f815-6739-552a-98da-dcf792a9bb17",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.180195Z",
+      "modified": "2026-03-03T05:15:14.180195Z",
+      "name": "Multi-Bank Funnel Pattern",
+      "description": "Detects accounts receiving funds from multiple external financial institutions that are then consolidated and sent outbound to a single destination. This funnel pattern is a hallmark of money mule operations where proceeds from multiple fraud victims are aggregated before being laundered.\n",
+      "labels": [
+        "money-mule",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0039",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0039"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--90dc183b-a0e3-5823-9b64-3de8f208a265",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.184253Z",
+      "modified": "2026-03-03T05:15:14.184253Z",
+      "name": "Crypto Off-Ramp After Wire or ACH Receipt",
+      "description": "Detects a pattern where an account receives a wire or ACH credit and then promptly initiates a transfer to a known cryptocurrency exchange or digital asset platform. Converting fraud proceeds to cryptocurrency provides near-irreversible laundering, making this a critical monetization indicator.\n",
+      "labels": [
+        "money-mule",
+        "crypto-laundering"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0040",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0040"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--95c0b02d-4bff-546c-bc6b-0a7dbad58d1d",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.187657Z",
+      "modified": "2026-03-03T05:15:14.187657Z",
+      "name": "Peer-to-Peer Transfer Chain (Smurfing Pattern)",
+      "description": "Detects chains of peer-to-peer transfers across multiple accounts where funds move through a sequence of intermediary accounts (A to B to C to D). This smurfing pattern is used to layer fraud proceeds through multiple hops, making tracing difficult.\n",
+      "labels": [
+        "money-mule",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0041",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0041"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--634b5337-c327-5e10-b599-4f56c113267a",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.190973Z",
+      "modified": "2026-03-03T05:15:14.190973Z",
+      "name": "Mule Recruitment Test Deposit Pattern",
+      "description": "Detects accounts receiving multiple small \"test\" deposits from many distinct external sources. Mule recruiters validate new mule accounts by sending micro-deposits from various fraud proceeds before routing larger amounts. The pattern of many small inbound transfers from unrelated senders is highly anomalous for personal accounts.\n",
+      "labels": [
+        "money-mule"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0042",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0042"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--dfb2fe7e-95cf-531f-a73b-a411985424fe",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.195873Z",
+      "modified": "2026-03-03T05:15:14.195873Z",
+      "name": "Rapid Fund Layering Through Shell Accounts",
+      "description": "Detects rapid fund movement through multiple accounts with minimal retention time, indicative of layering through shell or pass-through accounts. Funds transit through each account within hours with near-zero balance retention, suggesting the accounts exist solely to obscure the money trail.\n",
+      "labels": [
+        "money-mule",
+        "wire-fraud",
+        "crypto-laundering"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0043",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0043"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--e288a3d1-3a90-579d-8abb-fa85c1608cfb",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.19991Z",
+      "modified": "2026-03-03T05:15:14.19991Z",
+      "name": "Carrier Change Authentication Correlation",
+      "description": "Detects a carrier or SIM change event immediately followed by an authentication attempt on a banking platform. SIM swap attacks involve social engineering or insider compromise at a mobile carrier to port the victim's phone number to an attacker-controlled SIM, after which the attacker uses SMS-based MFA to access accounts. The tight temporal correlation between carrier change and login is the key indicator.\n",
+      "labels": [
+        "account-takeover",
+        "esim-hijacking"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0044",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0044"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--0d1dabba-b850-5abb-9bde-38f6bb8bb103",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.203867Z",
+      "modified": "2026-03-03T05:15:14.203867Z",
+      "name": "New Device High-Value Transaction",
+      "description": "Detects a high-value financial transaction initiated from a new or previously unknown device shortly after initial authentication. Attackers who have compromised credentials and bypassed MFA via SIM swap typically move quickly to execute high-value transfers from a device with no prior history on the account, exploiting the narrow window before the victim notices.\n",
+      "labels": [
+        "account-takeover",
+        "esim-hijacking"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0045",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0045"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--83833093-8f75-571f-b7d4-8b3508d355f0",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.207421Z",
+      "modified": "2026-03-03T05:15:14.207421Z",
+      "name": "MFA Push Bombing",
+      "description": "Detects rapid repeated MFA push notifications sent to the same user, a technique known as MFA fatigue or push bombing. Attackers who have obtained valid credentials bombard the victim with push authentication requests, hoping the user will approve one out of frustration or confusion, thereby granting the attacker access.\n",
+      "labels": [
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0046",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0046"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--4b5e48ab-d504-57f5-a298-da2fe4afb790",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.211255Z",
+      "modified": "2026-03-03T05:15:14.211255Z",
+      "name": "SIM Swap Indicator Chain",
+      "description": "Detects the full SIM swap attack chain: phone number change followed by password reset followed by high-value account action in rapid sequence. This multi-stage correlation captures the complete attack lifecycle where the attacker first takes over the phone number, then uses it to reset the account password via SMS OTP, and finally executes a high-value transfer or account modification.\n",
+      "labels": [
+        "account-takeover",
+        "esim-hijacking"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0047",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0047"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--9e477e60-c01c-5b6f-8473-fb7f45ead0c3",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.220002Z",
+      "modified": "2026-03-03T05:15:14.220002Z",
+      "name": "VoIP Number MFA Enrollment",
+      "description": "Detects MFA enrollment using VoIP or virtual phone numbers instead of legitimate mobile carrier numbers. Attackers who have compromised an account often enroll a disposable VoIP number (Google Voice, TextNow, Twilio) as the MFA phone to maintain persistent access and intercept future OTP codes without relying on SIM swap persistence.\n",
+      "labels": [
+        "account-takeover",
+        "esim-hijacking"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0048",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0048"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--5ab1918b-e10d-5305-9d3f-136e7c400319",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.222791Z",
+      "modified": "2026-03-03T05:15:14.222791Z",
+      "name": "MFA Method Downgrade",
+      "description": "Detects when an account's MFA method is changed from a strong phishing-resistant factor (FIDO2/WebAuthn, hardware token, authenticator app) to a weaker method (SMS OTP, voice call). Attackers who compromise account credentials may downgrade the MFA method to one they can intercept via SIM swap or SS7 exploitation, enabling persistent account takeover.\n",
+      "labels": [
+        "account-takeover"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0049",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0049"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--88e1b638-12f4-5fdf-928b-a211bec1e79b",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.225483Z",
+      "modified": "2026-03-03T05:15:14.225483Z",
+      "name": "Voice Biometric Confidence Score Anomaly for Known Caller",
+      "description": "Detects when a voice biometric verification score for a previously enrolled caller falls below an acceptable confidence threshold, which may indicate a deepfake or voice-clone attempt impersonating a legitimate customer. Legitimate callers typically produce scores above 85; scores between 40-70 with a previously stable voiceprint warrant investigation.\n",
+      "labels": [
+        "deepfake-fraud",
+        "impersonation"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0050",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0050"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--3923b350-fee9-55f7-a30d-1c877428785a",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.229748Z",
+      "modified": "2026-03-03T05:15:14.229748Z",
+      "name": "Callback Number Mismatch for Claimed Institution",
+      "description": "Detects when an inbound caller claims to represent a specific financial institution or internal department, but the originating ANI or callback number does not match the institution's known directory of outbound numbers. This is a common indicator of vishing and social engineering, especially when combined with voice-clone technology to impersonate bank officials.\n",
+      "labels": [
+        "impersonation",
+        "deepfake-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0051",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0051"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--3b61c4c8-195a-5bed-89cf-e167b100f2c5",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.233109Z",
+      "modified": "2026-03-03T05:15:14.233109Z",
+      "name": "Audio Compression Artifacts Indicative of AI-Generated Speech",
+      "description": "Detects audio streams exhibiting compression artifacts, spectral anomalies, or frequency-band irregularities characteristic of AI-generated or text-to-speech synthesis engines. These include unnaturally uniform pitch contours, missing micro-pauses, absence of breath sounds, and codec artifacts from re-encoding through real-time deepfake pipelines.\n",
+      "labels": [
+        "deepfake-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0052",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0052"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--2cf27beb-d78e-52d3-a6e7-14f359f1588f",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.236837Z",
+      "modified": "2026-03-03T05:15:14.236837Z",
+      "name": "Deepfake Anomalies in Video KYC Session",
+      "description": "Detects anomalies during video KYC (Know Your Customer) sessions that may indicate the use of deepfake technology. Indicators include irregular frame rates suggesting real-time face-swapping, inconsistent lighting between face and background, lip-sync desynchronization, unnatural eye-blink patterns, and face-boundary artifacts.\n",
+      "labels": [
+        "deepfake-fraud",
+        "impersonation"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0053",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0053"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--7268b8f5-03e3-59cb-ac9c-4ce9fe7501fa",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.240499Z",
+      "modified": "2026-03-03T05:15:14.240499Z",
+      "name": "AI-Generated Document Detection in Verification",
+      "description": "Detects indicators of AI-generated or synthetically created identity documents submitted during verification workflows. Flags include metadata anomalies (missing EXIF data, uniform noise patterns), font rendering inconsistencies, micro-printing irregularities, and GAN-generated portrait artifacts such as asymmetric earrings or irregular hair boundaries.\n",
+      "labels": [
+        "ai-document-fraud",
+        "impersonation"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0054",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0054"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--13685ed9-cff8-5e0d-a46e-62207dfb8c41",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.243254Z",
+      "modified": "2026-03-03T05:15:14.243254Z",
+      "name": "Real-Time Payment to New Payee After Credential or Contact Change",
+      "description": "Detects when a real-time or instant payment (Zelle, FedNow, RTP) is initiated to a previously unseen payee within 24 hours of a credential change (password reset, MFA re-enrollment) or contact information update (email, phone, address). This pattern is strongly associated with account takeover followed by immediate monetization via authorized push payment.\n",
+      "labels": [
+        "authorized-push-payment",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0055",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0055"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--dbb366cd-2675-5655-95ff-fdc0f06e4b1c",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.246129Z",
+      "modified": "2026-03-03T05:15:14.246129Z",
+      "name": "Instant Payment Velocity Spike Above 30-Day Baseline",
+      "description": "Detects a sudden spike in instant payment frequency that significantly exceeds the account's established 30-day baseline. A spike is defined as the current day's instant payment count exceeding 3 standard deviations above the rolling 30-day mean, indicating potential account compromise or mule activity where the account is being drained rapidly.\n",
+      "labels": [
+        "authorized-push-payment",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0056",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0056"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--9f540ba4-37c2-5a18-9949-0816d8403ba6",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.250633Z",
+      "modified": "2026-03-03T05:15:14.250633Z",
+      "name": "Cross-Platform Deposit and Withdrawal Chain",
+      "description": "Detects a pattern where funds are received via one payment rail (e.g., ACH, wire) and then immediately sent out via a different payment rail (e.g., Zelle, FedNow) within a short window. This cross-rail chaining is a common layering technique used to obscure the origin of funds and complicate tracing, often associated with money mule operations and authorized push payment fraud monetization.\n",
+      "labels": [
+        "authorized-push-payment",
+        "wire-fraud",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0057",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0057"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--1c9d293c-27e5-5188-b4b5-cef572fc7d73",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.253822Z",
+      "modified": "2026-03-03T05:15:14.253822Z",
+      "name": "Repeated A2A Payments at Maximum Per-Transaction Limit",
+      "description": "Detects multiple account-to-account payments where each transaction is at or near the maximum per-transaction limit (e.g., $2,500 for Zelle, $500,000 for FedNow). Fraudsters often structure payments at the exact limit to maximize extraction speed while avoiding aggregate-amount alerts, a behavior rarely seen in legitimate consumer transactions.\n",
+      "labels": [
+        "authorized-push-payment",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0058",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0058"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--15ad1113-bf47-5fb8-a6c6-3d8e9cc74d26",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.256786Z",
+      "modified": "2026-03-03T05:15:14.256786Z",
+      "name": "New Account Sending Multiple Instant Payments",
+      "description": "Detects accounts less than 30 days old that initiate multiple instant payments within a short time window. Newly opened accounts used for rapid instant-payment disbursement are a strong indicator of synthetic identity fraud or mule accounts created specifically for the monetization phase of a fraud scheme.\n",
+      "labels": [
+        "authorized-push-payment",
+        "wire-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0059",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0059"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--341e26d3-aa18-507d-bbf0-2761f0654e48",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.259322Z",
+      "modified": "2026-03-03T05:15:14.259322Z",
+      "name": "Zelle Recipient Enumeration via Multiple Failed Lookups",
+      "description": "Detects multiple failed Zelle recipient lookups from a single account or session, which may indicate enumeration activity. Attackers probe email addresses and phone numbers to identify which are registered with Zelle before launching targeted social engineering or authorized push payment attacks against confirmed users.\n",
+      "labels": [
+        "authorized-push-payment"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0060",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0060"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--3b3c9a98-4ed4-56af-aea3-929d1d7f2dd0",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.262675Z",
+      "modified": "2026-03-03T05:15:14.262675Z",
+      "name": "Real-Time Payment Followed by Immediate Refund or Return Request",
+      "description": "Detects a pattern where a real-time payment (RTP or FedNow) is sent and then an immediate refund, return, or Request for Return of Funds (RROF) is submitted within a short window. This pattern may indicate a double-dip fraud scheme where the sender initiates an irrevocable payment, then exploits the refund process to recover funds while the recipient also retains them.\n",
+      "labels": [
+        "authorized-push-payment",
+        "payment-diversion"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0061",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0061"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--40d3f89b-418e-50dd-9970-21b472b0bd48",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.267136Z",
+      "modified": "2026-03-03T05:15:14.267136Z",
+      "name": "Fake Tracking ID (FTID) Refund Fraud Indicators",
+      "description": "Detects indicators of fake tracking ID (FTID) refund fraud, where a customer claims a package was not received or returned by providing a manipulated or fabricated tracking number. Indicators include tracking numbers that show delivery to the carrier facility but not to the customer address, tracking IDs associated with lightweight packages inconsistent with the order, or reuse of known FTID patterns across multiple refund claims.\n",
+      "labels": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0062",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0062"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--38f05a52-d8d6-5d5c-af31-35c663eea0c6",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.270375Z",
+      "modified": "2026-03-03T05:15:14.270375Z",
+      "name": "Abnormally High Refund Rate Per Customer Account",
+      "description": "Detects customer accounts with an abnormally high refund-to-order ratio over a rolling window. Accounts exceeding a refund rate of 40% across 10 or more orders within 90 days are flagged as potential refund abusers or participants in refunding-as-a-service (RaaS) schemes, where professional refunders exploit return policies systematically.\n",
+      "labels": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0063",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0063"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--45e196af-f364-5e79-9637-e33301812b36",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.273685Z",
+      "modified": "2026-03-03T05:15:14.273685Z",
+      "name": "Triangulation Fraud Shipping Pattern Detection",
+      "description": "Detects orders where the shipping address differs from the billing address and matches known drop-ship or reshipping patterns associated with triangulation fraud. In triangulation fraud, a fraudster lists goods on a marketplace, collects payment from a victim buyer, then purchases the item from a legitimate retailer using stolen payment credentials, shipping directly to the victim. Indicators include shipping to known drop addresses, freight forwarders, or addresses seen across multiple unrelated accounts.\n",
+      "labels": [
+        "identity-theft",
+        "first-party-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0064",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0064"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--9556befe-759e-5f30-90af-96b1a50b7fcf",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.276575Z",
+      "modified": "2026-03-03T05:15:14.276575Z",
+      "name": "Return Without Receipt Clustering by Customer or Region",
+      "description": "Detects clusters of product returns submitted without receipts or order references from the same customer identity or geographic region. Organized return fraud rings often exploit no-receipt return policies by using stolen merchandise or purchasing items specifically for return, concentrating activity across nearby store locations or using multiple accounts linked to the same region.\n",
+      "labels": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0065",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0065"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--ce42742c-01e8-5b23-a3c9-012a35e7a199",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.279079Z",
+      "modified": "2026-03-03T05:15:14.279079Z",
+      "name": "High-Value Item Not Received Claims Exceeding Threshold",
+      "description": "Detects \"item not received\" (INR) claims filed on high-value orders that exceed a configurable dollar threshold. High-value INR claims are a primary vector for refund fraud, particularly when the delivery confirmation shows successful delivery. Repeated INR claims on expensive items from the same account or device fingerprint are strong indicators of first-party fraud or professional refunding services.\n",
+      "labels": [
+        "first-party-fraud",
+        "refunding-as-a-service"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0066",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0066"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--ca3882ef-8363-5463-b93f-64c198e714b8",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-03T05:15:14.283624Z",
+      "modified": "2026-03-03T05:15:14.283624Z",
+      "name": "Excessive Promotional Code or Coupon Abuse from Related Accounts",
+      "description": "Detects excessive use of promotional codes, referral bonuses, or coupon offers from accounts that share common attributes such as device fingerprint, IP address, payment method, or shipping address. This pattern indicates promo abuse rings that create multiple accounts to exploit new-customer or referral promotions repeatedly, often using synthetic or stolen identities.\n",
+      "labels": [
+        "first-party-fraud",
+        "identity-theft"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0067",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0067"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    }
+  ]
 }

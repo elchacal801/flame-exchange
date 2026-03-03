@@ -67,11 +67,11 @@ FLAME produces standard-format outputs for integration with threat intelligence 
 
 **MISP Galaxy & Feed** -- A subscribable MISP galaxy with 33 cluster entries cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`.
 
-**TAXII 2.1 Endpoints** -- Static TAXII 2.1-compatible files at `api/taxii/` enabling automated sync from any TIP (MISP, OpenCTI, ThreatConnect).
+**TAXII 2.1 Endpoints** -- Static TAXII 2.1-compatible files at `api/taxii/` with 3 collections (threat paths, detection rules as course-of-action SDOs, baselines) enabling automated sync from any TIP (MISP, OpenCTI, ThreatConnect).
 
 **Regulatory Compliance Mapping** -- 15 regulations across 6 jurisdictions (EU, UK, US, Singapore, Australia, International) mapped to relevant threat paths via `regulatory_refs` frontmatter.
 
-**Sigma Detection Packs** -- 67 detection rules exported to Splunk SPL, Elastic Lucene, and Microsoft Sentinel KQL via pySigma.
+**Sigma Detection Packs** -- 67 detection rules exported to Splunk SPL, Elastic Lucene, and Microsoft Sentinel KQL via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance.
 
 ## Threat Path Collection
 

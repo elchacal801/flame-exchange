@@ -1,0 +1,54 @@
+# ======================================================================
+# FLAME Detection Rule: Repeated A2A Payments at Maximum Per-Transaction Limit
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0024, TP-0012
+#
+# Description:
+#   Detects multiple account-to-account payments where each transaction is
+#   at or near the maximum per-transaction limit (e.g., $2,500 for Zelle,
+#   $500,000 for FedNow). Fraudsters often structure payments at the exact
+#   limit to maximize extraction speed while avoiding aggregate-amount
+#   alerts, a behavior rarely seen in legitimate consumer transactions.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: a2a_processing
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     event_type: a2a_payment_initiated
+#     payment_rail|contains:
+#     - ZELLE
+#     - FEDNOW
+#     - RTP
+#     - ACH_SAMEDAY
+#   filter_at_limit:
+#     amount_pct_of_rail_limit|gte: 95
+#   condition: selection and filter_at_limit | count() by account_id > 3
+#   timeframe: 24h
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Customer making a large one-time purchase split across multiple payments at platform limits
+#   - Business account regularly transacting at high values for legitimate operations
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

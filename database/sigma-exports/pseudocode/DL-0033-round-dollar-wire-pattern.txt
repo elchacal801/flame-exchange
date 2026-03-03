@@ -1,0 +1,49 @@
+# ======================================================================
+# FLAME Detection Rule: Round-Dollar Wire Amount Pattern
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: medium
+# CFPF Phase: P4
+# Threat Paths: TP-0002, TP-0006
+#
+# Description:
+#   Detects unusual patterns of wire transfers in round dollar amounts
+#   (e.g., $5,000, $10,000, $25,000). While individual round-amount wires
+#   are common, a pattern of multiple round-amount wires is atypical for
+#   legitimate business payments and may indicate structured or test
+#   transactions by fraudsters.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: wire_system
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     event_type: WIRE_INITIATION
+#     transaction_amount|gte: 1000
+#     transaction_amount_is_round: true
+#   timeframe: 30d
+#   condition: selection | count() by account_id > 4
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Loan disbursements or payments that are inherently round amounts
+#   - Recurring fixed-amount business payments (rent, retainers)
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

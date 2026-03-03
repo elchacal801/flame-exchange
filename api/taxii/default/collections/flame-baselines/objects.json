@@ -1,5 +1,207 @@
 {
   "type": "bundle",
   "id": "bundle--656196f3-124d-524d-8d7f-6cb1d7e16819",
-  "objects": []
+  "objects": [
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal operating parameters for account-to-account (A2A) instant payment rails including Zelle, FedNow, and RTP (Real-Time Payments). It supports detection logic for TP-0024 (A2A Instant Payment Fraud), which targets abuse of irrevocable instant payment systems through social engineering, account takeover, and mule-driven cash-out schemes.\n\nBehavioral baselines for A2A payments are critical because the irrevocable nature of these transactions means fraud losses cannot be re",
+      "id": "x-flame-baseline--9b2b7ebf-9d76-56ad-8804-338dc8b72e1f",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "a2a-payments",
+        "instant-payments",
+        "zelle",
+        "fednow",
+        "rtp"
+      ],
+      "name": "A2A Payment Velocity Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline establishes normal communication and financial interaction patterns within online dating and relationship contexts, supporting detection logic for TP-0025 (GenAI APP Fraud - Romance) and TP-0011 (Romance Scam Mule Pipeline). Romance scams exploit emotional trust to manipulate victims into sending money, and GenAI-powered scam operations have dramatically accelerated the grooming phase.\n\nUnderstanding the normal cadence of legitimate online relationships is essential for identifying",
+      "id": "x-flame-baseline--a3ba2aa7-3e3c-5fee-9c1e-40351583e96e",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "romance-scam",
+        "social-engineering",
+        "communication-patterns"
+      ],
+      "name": "Romance Scam Communication Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal deposit behavior for retail brokerage and cryptocurrency exchange accounts, supporting detection logic for TP-0026 (GenAI APP Fraud - Investment) and TP-0017 (Pig Butchering). Investment scams, particularly pig butchering operations, manipulate victims into making progressively larger deposits to fraudulent platforms or controlled exchange accounts.\n\nEstablishing deposit velocity and escalation norms for legitimate investment activity enables detection engines to ide",
+      "id": "x-flame-baseline--283a938d-ef8d-52e1-bda4-7ae40639731c",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "investment-fraud",
+        "deposit-velocity",
+        "crypto-exchanges"
+      ],
+      "name": "Investment Account Deposit Velocity Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal transaction behavior for account holders aged 65 and older, supporting detection logic for TP-0027 (Elder Financial Exploitation). Elder financial abuse encompasses a range of schemes including caregiver theft, power-of-attorney abuse, tech support scams, and government impersonation fraud. Older adults are disproportionately targeted due to accumulated wealth, cognitive vulnerability, and social isolation.\n\nBehavioral baselines for senior accounts are essential beca",
+      "id": "x-flame-baseline--d8116717-c6ee-53db-a7eb-0e206bdf29df",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "elder-fraud",
+        "senior-accounts",
+        "financial-exploitation"
+      ],
+      "name": "Elder Account Transaction Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal claim submission patterns for Durable Medical Equipment (DME) providers billing Medicare and commercial payers, supporting detection logic for TP-0028 (DME Phantom Billing). DME fraud schemes exploit the complexity of medical billing to submit claims for equipment never delivered, bill for higher-cost items than provided (upcoding), or claim services for deceased or ineligible beneficiaries.\n\nEstablishing per-provider claim frequency, dollar distribution, and benefic",
+      "id": "x-flame-baseline--3ca5beeb-133c-5094-8614-50ed5643067c",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "healthcare-fraud",
+        "dme-billing",
+        "medicare",
+        "claims-frequency"
+      ],
+      "name": "DME Claim Frequency per Provider Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal patterns for identity document submission during customer onboarding and KYC verification workflows, supporting detection logic for TP-0029 (AI Synthetic Identity & Document Forgery) and TP-0018 (Deepfake Document Fraud). Advances in generative AI have made it possible to produce convincing synthetic identity documents at scale, necessitating behavioral baselines that look beyond document-level analysis to submission-level patterns.\n\nUnderstanding the normal cadence,",
+      "id": "x-flame-baseline--125003a2-b5dd-5273-ab36-889a516f9287",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "kyc-verification",
+        "document-fraud",
+        "identity-verification",
+        "onboarding"
+      ],
+      "name": "KYC Document Submission Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal ordering and return behavior for e-commerce consumer accounts, supporting detection logic for TP-0030 (E-Commerce Triangulation) and TP-0031 (Refund-as-a-Service). Triangulation fraud uses stolen payment credentials to fulfill orders placed on third-party marketplaces, while refund-as-a-service operations exploit merchant return policies through social engineering, empty-box claims, and \"did not arrive\" (DNA) disputes.\n\nBehavioral baselines for order and return veloc",
+      "id": "x-flame-baseline--1274e25b-520a-5aed-8a7a-f0e2ddf8ca42",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "ecommerce-fraud",
+        "return-fraud",
+        "order-velocity",
+        "refund-patterns"
+      ],
+      "name": "E-Commerce Order and Return Velocity Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal earning, accumulation, and redemption patterns for loyalty programs and rewards accounts, supporting detection logic for TP-0013 (Credential Stuffing to Loyalty/Gift Card Drain). Attackers use credential stuffing and account takeover techniques to access loyalty accounts, then rapidly drain accumulated points through gift card conversions, merchandise redemptions, or transfer to attacker-controlled accounts.\n\nBehavioral baselines for loyalty activity are critical bec",
+      "id": "x-flame-baseline--3ab55403-87dc-5b1c-9dd4-22926c464148",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "loyalty-fraud",
+        "gift-cards",
+        "rewards-programs",
+        "credential-stuffing"
+      ],
+      "name": "Loyalty Redemption Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal token approval and smart contract interaction patterns for Web3 wallets, supporting detection logic for TP-0032 (Web3 Wallet Drainer / Approval Phishing). Wallet drainer attacks trick users into signing malicious token approval transactions that grant the attacker's contract unlimited access to the victim's token balances, enabling subsequent theft without further user interaction.\n\nBehavioral baselines for wallet approval activity are essential because legitimate De",
+      "id": "x-flame-baseline--c1415843-9d80-59d6-a477-4e7a110e6947",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "web3-fraud",
+        "wallet-drainer",
+        "token-approvals",
+        "defi"
+      ],
+      "name": "Web3 Wallet Approval Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal patterns for federal financial aid applications (FAFSA), institutional enrollment, and disbursement activity, supporting detection logic for TP-0033 (Ghost Student Financial Aid Botnets). Ghost student schemes use synthetic or stolen identities to enroll fictitious students at eligible institutions, file FAFSA applications to receive Pell Grants and student loan disbursements, then withdraw funds without attending classes.\n\nBehavioral baselines for financial aid appl",
+      "id": "x-flame-baseline--99cbece4-cc0c-524b-9595-274f36467da2",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "education-fraud",
+        "financial-aid",
+        "fafsa",
+        "ghost-students"
+      ],
+      "name": "Financial Aid Application Velocity Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal patterns for new beneficiary additions and first-time wire transfers, supporting detection logic for TP-0001 (Treasury Management ATO), TP-0002 (BEC), and TP-0006 (Real Estate Wire Fraud). Wire fraud schemes across all three threat patterns share a common critical step: directing funds to a beneficiary account not previously known to the sender. Whether through account takeover, business email compromise, or real estate closing diversion, the introduction of a novel ",
+      "id": "x-flame-baseline--65d813d9-ddcc-5c7c-bb77-805ebc682ed6",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "wire-fraud",
+        "beneficiary-analysis",
+        "payment-diversion",
+        "bec"
+      ],
+      "name": "Wire Transfer Beneficiary Novelty Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline document defines the \"normal\" operating parameters for commercial wire transfers within the SME (Small to Medium Enterprise) banking sector, used to contextualize detection rules for TP-0002 (BEC), TP-0019 (Business Identity Theft), and TP-0020 (Supply Chain Payment Fraud).",
+      "id": "x-flame-baseline--bfc0004f-9951-52ad-962a-6d91c1f5e59a",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "b2b-payments",
+        "wire-transfer",
+        "commercial-banking"
+      ],
+      "name": "Commercial Wire Velocity Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    }
+  ]
 }

@@ -162,6 +162,99 @@ def _extract_dl_id(stem: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Pseudocode fallback
+# ---------------------------------------------------------------------------
+
+def _generate_pseudocode_fallback(yaml_text: str, meta: dict) -> str:
+    """Generate a pseudocode fallback for rules that pySigma cannot convert.
+
+    This applies to rules using aggregation/correlation syntax (pipe |, near,
+    temporal, compare) that require SIEM-native implementation.
+    """
+    title = meta.get("title", "Unknown")
+    description = meta.get("description", "")
+    level = meta.get("level", "unknown")
+    phase = meta.get("cfpf_phase", "?")
+    threat_paths = meta.get("threat_paths", []) or []
+
+    # Extract the detection block from YAML
+    detection = meta.get("detection", {})
+    logsource = meta.get("logsource", {})
+
+    lines = [
+        "# " + "=" * 70,
+        f"# FLAME Detection Rule: {title}",
+        "# " + "=" * 70,
+        "#",
+        "# This rule uses aggregation/correlation logic that requires",
+        "# SIEM-native implementation. It cannot be auto-converted to",
+        "# SPL/Lucene/KQL by pySigma backends.",
+        "#",
+        f"# Level: {level}",
+        f"# CFPF Phase: {phase}",
+        f"# Threat Paths: {', '.join(threat_paths) if threat_paths else 'N/A'}",
+        "#",
+        f"# Description:",
+    ]
+
+    # Wrap description at ~70 chars
+    if description:
+        words = description.split()
+        line = "#   "
+        for word in words:
+            if len(line) + len(word) + 1 > 75:
+                lines.append(line)
+                line = "#   " + word
+            else:
+                line += " " + word if line != "#   " else word
+        if line.strip("#").strip():
+            lines.append(line)
+
+    lines.append("#")
+    lines.append("# " + "-" * 70)
+    lines.append("# Log Source")
+    lines.append("# " + "-" * 70)
+
+    if logsource:
+        for key, val in logsource.items():
+            lines.append(f"#   {key}: {val}")
+
+    lines.append("#")
+    lines.append("# " + "-" * 70)
+    lines.append("# Detection Logic (Sigma YAML)")
+    lines.append("# " + "-" * 70)
+
+    if detection:
+        detection_yaml = yaml.dump(detection, default_flow_style=False, sort_keys=False)
+        for det_line in detection_yaml.strip().split("\n"):
+            lines.append(f"#   {det_line}")
+
+    lines.append("#")
+
+    # Add false positives
+    fps = meta.get("falsepositives", [])
+    if fps:
+        lines.append("# " + "-" * 70)
+        lines.append("# Known False Positives")
+        lines.append("# " + "-" * 70)
+        for fp in fps:
+            lines.append(f"#   - {fp}")
+        lines.append("#")
+
+    lines.append("# " + "=" * 70)
+    lines.append("# Implementation Notes:")
+    lines.append("#   - Review the condition syntax and implement using your SIEM's")
+    lines.append("#     native aggregation/correlation capabilities")
+    lines.append("#   - Splunk: Use 'stats' or 'transaction' commands")
+    lines.append("#   - Elastic: Use EQL sequences or aggregation queries")
+    lines.append("#   - Sentinel: Use KQL summarize/make-series operators")
+    lines.append("# " + "=" * 70)
+    lines.append("")
+
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -185,7 +278,7 @@ def main() -> None:
         sys.exit(1)
 
     # Create output directories
-    for sub in ("splunk", "elastic", "sentinel", "sigma"):
+    for sub in ("splunk", "elastic", "sentinel", "sigma", "pseudocode"):
         (export_dir / sub).mkdir(parents=True, exist_ok=True)
 
     # Build the FLAME processing pipeline
@@ -215,6 +308,7 @@ def main() -> None:
     succeeded = 0
     failed = 0
     partial = 0  # at least one backend succeeded
+    pseudocode_count = 0
 
     for dl_path in dl_files:
         stem = dl_path.stem  # e.g. DL-0001-mule-account-velocity
@@ -287,7 +381,13 @@ def main() -> None:
         elif rule_ok > 0:
             partial += 1
         else:
-            failed += 1
+            # All backends failed — generate pseudocode fallback
+            pseudo_text = _generate_pseudocode_fallback(yaml_text, meta)
+            pseudo_path = export_dir / "pseudocode" / f"{stem}.txt"
+            pseudo_path.write_text(pseudo_text, encoding="utf-8")
+            exported_stems[stem]["pseudocode"] = pseudo_path
+            pseudocode_count += 1
+            log.info("  %s -> pseudocode fallback (aggregation/correlation rule)", dl_id)
 
         # Record TP associations
         rule_info = {
@@ -308,7 +408,7 @@ def main() -> None:
 
     for tp_id, rules_info in sorted(tp_rules.items()):
         pack_dir = packs_dir / tp_id
-        for sub in ("splunk", "elastic", "sentinel", "sigma"):
+        for sub in ("splunk", "elastic", "sentinel", "sigma", "pseudocode"):
             (pack_dir / sub).mkdir(parents=True, exist_ok=True)
 
         # Copy exported files into the pack
@@ -341,7 +441,8 @@ def main() -> None:
     log.info("  Total rules:      %d", total)
     log.info("  Fully converted:  %d  (all 3 backends)", succeeded)
     log.info("  Partial:          %d  (at least 1 backend)", partial)
-    log.info("  Failed:           %d  (no output)", failed)
+    log.info("  Pseudocode only:  %d  (aggregation/correlation)", pseudocode_count)
+    log.info("  Failed:           %d  (parse errors)", failed)
     log.info("  TP packs:         %d", len(tp_rules))
     log.info("  Output directory:  %s", export_dir)
     log.info("=" * 60)

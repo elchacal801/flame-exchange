@@ -1,0 +1,57 @@
+# ======================================================================
+# FLAME Detection Rule: Multi-Bank Funnel Pattern
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P5
+# Threat Paths: TP-0011, TP-0002, TP-0022
+#
+# Description:
+#   Detects accounts receiving funds from multiple external financial
+#   institutions that are then consolidated and sent outbound to a single
+#   destination. This funnel pattern is a hallmark of money mule operations
+#   where proceeds from multiple fraud victims are aggregated before being
+#   laundered.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_inbound:
+#     event_type:
+#     - WIRE_CREDIT
+#     - ACH_CREDIT
+#     originating_bank_external: true
+#   selection_outbound:
+#     event_type:
+#     - WIRE_INITIATION
+#     - ACH_DEBIT
+#   timeframe: 7d
+#   condition: 'selection_inbound | count(distinct originating_bank_id) by account_id
+#     > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Freelancers or consultants receiving payments from multiple clients via different banks
+#   - Small businesses with receivables from diverse customer base
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

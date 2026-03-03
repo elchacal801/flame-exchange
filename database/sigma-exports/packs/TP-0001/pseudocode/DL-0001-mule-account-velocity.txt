@@ -1,0 +1,46 @@
+# ======================================================================
+# FLAME Detection Rule: Mule Account Velocity Pattern
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P5
+# Threat Paths: TP-0001, TP-0002, TP-0011, TP-0022
+#
+# Description:
+#   Detects rapid inbound transfers from multiple unique senders followed
+#   by immediate outbound movement, typical of money mule activity. This
+#   rule is a shared component applicable to TP-0001, TP-0002, TP-0011, and
+#   TP-0022.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_inbound:
+#     transaction_type: ACH_IN
+#   timeframe: 30d
+#   condition: selection_inbound | count(distinct originator_name) by account_id > 3
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate payroll processing accounts receiving from multiple employers
+#   - Business accounts with normal multi-party receivables
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

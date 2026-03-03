@@ -16,6 +16,7 @@ import json
 import re
 import uuid
 import sys
+import yaml
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -492,6 +493,60 @@ def build_relationship(source_id: str, target_id: str,
     )
 
 
+def build_course_of_action(dl_id: str, title: str, description: str,
+                            fraud_types: list) -> stix2.CourseOfAction:
+    """Build a STIX course-of-action from a FLAME detection logic rule."""
+    return stix2.CourseOfAction(
+        id=deterministic_id("course-of-action", f"flame-{dl_id}"),
+        created_by_ref=FLAME_IDENTITY_ID,
+        name=title,
+        description=description,
+        labels=fraud_types if fraud_types else ["detection"],
+        external_references=[{
+            "source_name": "FLAME Project",
+            "description": f"Detection Logic {dl_id}",
+            "url": f"{FLAME_PAGES_BASE}/?dl={dl_id}",
+        }],
+        object_marking_refs=[TLP_CLEAR.id],
+        allow_custom=True,
+    )
+
+
+def parse_baseline_frontmatter(text: str) -> dict:
+    """Extract YAML frontmatter from a baseline markdown file."""
+    # Frontmatter is inside a ```yaml block
+    match = re.search(r"```yaml\s*\n---\s*\n(.*?)---\s*\n```", text, re.DOTALL)
+    if not match:
+        return {}
+    try:
+        return yaml.safe_load(match.group(1)) or {}
+    except yaml.YAMLError:
+        return {}
+
+
+def extract_baseline_description(text: str) -> str:
+    """Extract the Description section from a baseline markdown file."""
+    match = re.search(r"## Description\s*\n\n(.+?)(?:\n## |\Z)", text, re.DOTALL)
+    if match:
+        return match.group(1).strip()[:500]
+    return ""
+
+
+def build_baseline_sdo(bl_id: str, title: str, description: str,
+                        tags: list) -> dict:
+    """Build an x-flame-baseline custom STIX SDO."""
+    return {
+        "type": "x-flame-baseline",
+        "spec_version": "2.1",
+        "id": deterministic_id("x-flame-baseline", f"flame-{bl_id}"),
+        "created_by_ref": FLAME_IDENTITY_ID,
+        "name": title,
+        "description": description,
+        "labels": tags if tags else ["baseline"],
+        "object_marking_refs": [TLP_CLEAR_ID],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -626,6 +681,71 @@ def main():
             rel = build_relationship(ap.id, fs["id"], "enables")
             stix_relationships.append(rel)
 
+    # ----- Detection Logic -> course-of-action SDOs -----
+    DL_DIR = Path("DetectionLogic")
+    course_of_actions = {}
+    coa_relationships = []
+
+    if DL_DIR.is_dir():
+        dl_files = sorted(DL_DIR.glob("*.yml"))
+        print(f"\n[*] Processing {len(dl_files)} detection logic rules for CoA SDOs...")
+
+        for dl_path in dl_files:
+            try:
+                dl_text = dl_path.read_text(encoding="utf-8")
+                meta = yaml.safe_load(dl_text)
+                if not isinstance(meta, dict):
+                    continue
+
+                dl_stem = dl_path.stem
+                # Extract DL-XXXX id from filename
+                dl_id_match = re.match(r"(DL-\d+)", dl_stem)
+                dl_id = dl_id_match.group(1) if dl_id_match else dl_stem
+
+                title = meta.get("title", dl_id)
+                description = meta.get("description", "")
+                fraud_types = meta.get("fraud_types", [])
+                threat_paths = meta.get("threat_paths", []) or []
+
+                coa = build_course_of_action(dl_id, title, description, fraud_types)
+                course_of_actions[dl_id] = coa
+                print(f"    [+] {dl_id}: {title}")
+
+                # Create mitigates relationships: CoA -> attack-pattern
+                for tp_id in threat_paths:
+                    ap = attack_patterns.get(tp_id)
+                    if ap:
+                        rel = build_relationship(coa.id, ap.id, "mitigates")
+                        coa_relationships.append(rel)
+
+            except Exception as exc:
+                print(f"    [!] Error processing {dl_path.name}: {exc}")
+
+    # ----- Baselines -> x-flame-baseline SDOs -----
+    BL_DIR = Path("Baselines")
+    baseline_sdos = {}
+
+    if BL_DIR.is_dir():
+        bl_files = sorted(BL_DIR.glob("*.md"))
+        print(f"\n[*] Processing {len(bl_files)} baseline profiles for STIX SDOs...")
+
+        for bl_path in bl_files:
+            try:
+                bl_text = bl_path.read_text(encoding="utf-8")
+                meta = parse_baseline_frontmatter(bl_text)
+
+                bl_id = meta.get("id", bl_path.stem)
+                title = meta.get("title", bl_path.stem)
+                tags = meta.get("tags", [])
+                description = extract_baseline_description(bl_text)
+
+                sdo = build_baseline_sdo(bl_id, title, description, tags)
+                baseline_sdos[bl_id] = sdo
+                print(f"    [+] {bl_id}: {title}")
+
+            except Exception as exc:
+                print(f"    [!] Error processing {bl_path.name}: {exc}")
+
     # Assemble bundle
     all_objects = [identity]
     all_objects.extend(attack_patterns.values())
@@ -634,7 +754,10 @@ def main():
     all_objects.extend(fin_transactions.values())
     all_objects.extend(mule_networks.values())
     all_objects.extend(actor_profiles.values())
+    all_objects.extend(course_of_actions.values())
+    all_objects.extend(baseline_sdos.values())
     all_objects.extend(stix_relationships)
+    all_objects.extend(coa_relationships)
 
     print(f"\n[*] Bundle summary:")
     print(f"    - Identity: 1")
@@ -644,6 +767,9 @@ def main():
     print(f"    - Financial transaction SDOs: {len(fin_transactions)}")
     print(f"    - Mule network SDOs: {len(mule_networks)}")
     print(f"    - Actor profile SDOs: {len(actor_profiles)}")
+    print(f"    - Course of action SDOs: {len(course_of_actions)}")
+    print(f"    - CoA relationships: {len(coa_relationships)}")
+    print(f"    - Baseline SDOs: {len(baseline_sdos)}")
     print(f"    - Relationships: {len(stix_relationships)}")
     print(f"    - Detection rules: {len(all_rules)}")
 

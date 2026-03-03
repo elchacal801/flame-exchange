@@ -1040,10 +1040,11 @@
         html += '<h3>Recent Milestones</h3>';
         html += '<div class="about-changelog">';
         var changelog = [
+            { date: '2026-03', text: 'TAXII collections populated with course-of-action and baseline SDOs' },
+            { date: '2026-03', text: 'Sigma pseudocode fallback for aggregation/correlation rules' },
             { date: '2026-03', text: 'STIX 2.1 fraud extension with 4 custom SDOs and TAXII 2.1 endpoints' },
             { date: '2026-03', text: 'MISP galaxy, cluster, and subscribable event feed' },
-            { date: '2026-03', text: 'Regulatory compliance mapping (15 regulations across 6 jurisdictions)' },
-            { date: '2026-03', text: 'Framework Navigator with 4-framework coverage matrix' },
+            { date: '2026-03', text: 'Regulatory mapping (15 regulations, 6 jurisdictions), Framework Navigator' },
             { date: '2026-03', text: 'MCP server, static JSON API, Sigma export pipeline' },
             { date: '2026-02', text: 'D3.js relationship graph, coverage assessment, confidence scoring' }
         ];

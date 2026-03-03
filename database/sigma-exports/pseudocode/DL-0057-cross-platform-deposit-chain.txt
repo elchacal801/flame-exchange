@@ -1,0 +1,63 @@
+# ======================================================================
+# FLAME Detection Rule: Cross-Platform Deposit and Withdrawal Chain
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P5
+# Threat Paths: TP-0024, TP-0012
+#
+# Description:
+#   Detects a pattern where funds are received via one payment rail (e.g.,
+#   ACH, wire) and then immediately sent out via a different payment rail
+#   (e.g., Zelle, FedNow) within a short window. This cross-rail chaining
+#   is a common layering technique used to obscure the origin of funds and
+#   complicate tracing, often associated with money mule operations and
+#   authorized push payment fraud monetization.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_inbound:
+#     event_type: payment_received
+#     inbound_rail|contains:
+#     - ACH_IN
+#     - WIRE_IN
+#     - RTP_IN
+#     - FEDNOW_IN
+#   selection_outbound:
+#     event_type: instant_payment_initiated
+#     outbound_rail|contains:
+#     - ZELLE
+#     - FEDNOW
+#     - RTP
+#     - ACH_SAMEDAY
+#   filter_amount:
+#     outbound_amount_pct_of_inbound|gte: 80
+#   condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true,
+#     maxspan=4h, by=account_id)
+#   timeframe: 4h
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Freelancer receiving ACH payroll and immediately paying rent via Zelle
+#   - Business account receiving wire payment and disbursing to vendors via instant payment
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================
