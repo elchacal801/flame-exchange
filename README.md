@@ -73,6 +73,52 @@ FLAME produces standard-format outputs for integration with threat intelligence 
 
 **Sigma Detection Packs** -- 67 detection rules exported to Splunk SPL, Elastic Lucene, and Microsoft Sentinel KQL via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance.
 
+## MCP Server
+
+FLAME includes a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server that exposes fraud intelligence through 7 tools, enabling AI assistants like Claude to query threat paths, detection rules, and framework mappings conversationally.
+
+**Available tools:**
+
+| Tool | Description |
+|------|-------------|
+| `search_threat_paths` | Search by keyword, sector, fraud type, or CFPF phase |
+| `get_threat_path` | Get full details of a specific threat path |
+| `get_detection_rules` | Get detection rules filtered by TP, fraud type, or severity |
+| `map_framework` | Get framework-specific mappings (cfpf, mitre, groupib, ft3, ucff) |
+| `assess_coverage` | Assess fraud detection coverage by sector and fraud type |
+| `get_baseline` | Get fraud baseline measurements for benchmarking |
+| `look_left_right` | Analyze upstream/downstream threat relationships (CFPF Look Left/Right) |
+
+**Example queries an AI assistant can answer via the MCP server:**
+
+- "What fraud schemes target the insurance sector?"
+- "Show me detection rules for wire fraud"
+- "What MITRE ATT&CK techniques map to TP-0007?"
+- "Assess my coverage for banking account-takeover and wire-fraud"
+- "What threat paths feed into TP-0011?"
+
+### Running the MCP server
+
+```bash
+python -m mcp_server.server
+```
+
+### Claude Desktop integration
+
+Add the following to your Claude Desktop `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "flame-fraud": {
+      "command": "python",
+      "args": ["-m", "mcp_server.server"],
+      "cwd": "/path/to/flame-fraud"
+    }
+  }
+}
+```
+
 ## Threat Path Collection
 
 FLAME ships with **33 threat paths** and **67 detection rules** covering major fraud categories across 15 sectors:
@@ -139,6 +185,12 @@ python scripts/export_sigma.py         # Sigma detection packs
 
 ```bash
 python scripts/validate_submission.py ThreatPaths/TP-0001-treasury-mgmt-ato-malvertising.md
+```
+
+### Run the MCP server
+
+```bash
+python -m mcp_server.server
 ```
 
 ### Subscribe via MISP
