@@ -17,6 +17,7 @@ from export_flame_stix import (
     extract_detection_rules,
     map_cfpf_phases,
     deterministic_id,
+    build_relationship,
     build_fraud_scheme,
     build_financial_transaction,
     build_mule_network,
@@ -394,3 +395,27 @@ class TestBuildFraudActorProfile:
         content = {"body": "## Summary\nBasic scheme."}
         result = build_fraud_actor_profile(tp, content)
         assert result is None
+
+
+# ---------------------------------------------------------------------------
+# New relationship types tests
+# ---------------------------------------------------------------------------
+
+class TestNewRelationshipTypes:
+    def test_monetizes_relationship(self):
+        src = deterministic_id("x-flame-fraud-scheme", "test-scheme")
+        tgt = deterministic_id("x-flame-financial-transaction", "test-txn")
+        rel = build_relationship(src, tgt, "monetizes")
+        assert rel.relationship_type == "monetizes"
+
+    def test_launders_through_relationship(self):
+        src = deterministic_id("x-flame-financial-transaction", "test-txn")
+        tgt = deterministic_id("x-flame-mule-network", "test-mule")
+        rel = build_relationship(src, tgt, "launders-through")
+        assert rel.relationship_type == "launders-through"
+
+    def test_recruits_relationship(self):
+        src = deterministic_id("x-flame-fraud-actor-profile", "test-actor")
+        tgt = deterministic_id("x-flame-mule-network", "test-mule")
+        rel = build_relationship(src, tgt, "recruits")
+        assert rel.relationship_type == "recruits"

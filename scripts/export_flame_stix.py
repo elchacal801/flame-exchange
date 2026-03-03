@@ -518,6 +518,10 @@ def main():
     all_rules = []        # Aggregated detection rules
     relationships = []
     stix_relationships = []
+    fraud_schemes = {}    # tp_id -> dict
+    fin_transactions = {} # tp_id -> dict
+    mule_networks = {}    # tp_id -> dict
+    actor_profiles = {}   # tp_id -> dict
 
     for tp in index:
         tp_id = tp["id"]
@@ -562,6 +566,22 @@ def main():
             stix_relationships.append(rel)
             print(f"    [~] {tp_id} uses {tech_id}")
 
+        # Extended SDOs
+        fs = build_fraud_scheme(tp)
+        fraud_schemes[tp_id] = fs
+
+        ft = build_financial_transaction(tp, content)
+        if ft:
+            fin_transactions[tp_id] = ft
+
+        mn = build_mule_network(tp, content)
+        if mn:
+            mule_networks[tp_id] = mn
+
+        ap_profile = build_fraud_actor_profile(tp, content)
+        if ap_profile:
+            actor_profiles[tp_id] = ap_profile
+
     # Build relationship objects (deduplicate bidirectional)
     seen_rels = set()
     for src_id, tgt_id, rel_type in relationships:
@@ -578,16 +598,52 @@ def main():
             stix_relationships.append(rel)
             print(f"    [~] {src_id} --{rel_type}--> {tgt_id}")
 
+    # Extended relationships
+    for tp_id, fs in fraud_schemes.items():
+        # monetizes: fraud-scheme -> financial-transaction
+        if tp_id in fin_transactions:
+            ft = fin_transactions[tp_id]
+            rel = build_relationship(fs["id"], ft["id"], "monetizes")
+            stix_relationships.append(rel)
+
+        # launders-through: financial-transaction -> mule-network
+        if tp_id in fin_transactions and tp_id in mule_networks:
+            ft = fin_transactions[tp_id]
+            mn = mule_networks[tp_id]
+            rel = build_relationship(ft["id"], mn["id"], "launders-through")
+            stix_relationships.append(rel)
+
+        # recruits: actor-profile -> mule-network
+        if tp_id in actor_profiles and tp_id in mule_networks:
+            actor = actor_profiles[tp_id]
+            mn = mule_networks[tp_id]
+            rel = build_relationship(actor["id"], mn["id"], "recruits")
+            stix_relationships.append(rel)
+
+        # enables: attack-pattern -> fraud-scheme
+        ap = attack_patterns.get(tp_id)
+        if ap:
+            rel = build_relationship(ap.id, fs["id"], "enables")
+            stix_relationships.append(rel)
+
     # Assemble bundle
     all_objects = [identity]
     all_objects.extend(attack_patterns.values())
     all_objects.extend(mitre_patterns.values())
+    all_objects.extend(fraud_schemes.values())
+    all_objects.extend(fin_transactions.values())
+    all_objects.extend(mule_networks.values())
+    all_objects.extend(actor_profiles.values())
     all_objects.extend(stix_relationships)
 
     print(f"\n[*] Bundle summary:")
     print(f"    - Identity: 1")
     print(f"    - Threat Path attack patterns: {len(attack_patterns)}")
     print(f"    - MITRE ATT&CK patterns (stubs): {len(mitre_patterns)}")
+    print(f"    - Fraud scheme SDOs: {len(fraud_schemes)}")
+    print(f"    - Financial transaction SDOs: {len(fin_transactions)}")
+    print(f"    - Mule network SDOs: {len(mule_networks)}")
+    print(f"    - Actor profile SDOs: {len(actor_profiles)}")
     print(f"    - Relationships: {len(stix_relationships)}")
     print(f"    - Detection rules: {len(all_rules)}")
 
