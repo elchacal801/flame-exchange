@@ -197,6 +197,60 @@ def build_fraud_scheme(tp: dict) -> dict:
     return obj
 
 
+# Transaction type inference from body text keywords
+TRANSACTION_KEYWORDS = {
+    "wire": "wire", "SWIFT": "wire", "FedWire": "wire",
+    "ACH": "ACH", "direct deposit": "ACH",
+    "crypto": "crypto", "bitcoin": "crypto", "blockchain": "crypto",
+    "check": "check", "cheque": "check",
+    "A2A": "A2A", "instant payment": "A2A", "RTP": "A2A", "Zelle": "A2A",
+    "card": "card", "credit card": "card", "debit card": "card",
+}
+
+RAIL_KEYWORDS = {
+    "SWIFT": "SWIFT", "FedWire": "FedWire", "ACH": "ACH",
+    "blockchain": "blockchain", "card network": "card-network",
+    "RTP": "RTP", "Zelle": "RTP",
+}
+
+
+def _infer_transaction_type(body: str) -> str:
+    body_lower = body.lower()
+    for keyword, ttype in TRANSACTION_KEYWORDS.items():
+        if keyword.lower() in body_lower:
+            return ttype
+    return "other"
+
+
+def _infer_rail(body: str) -> str:
+    for keyword, rail in RAIL_KEYWORDS.items():
+        if keyword in body:
+            return rail
+    return "other"
+
+
+def build_financial_transaction(tp: dict, content: dict | None = None) -> dict | None:
+    """Build x-flame-financial-transaction from P4/P5 content. Returns None if no P4/P5."""
+    phases = tp.get("cfpf_phases", [])
+    if "P4" not in phases and "P5" not in phases:
+        return None
+
+    body = content.get("body", "") if content else ""
+    tp_id = tp["id"]
+
+    return {
+        "type": "x-flame-financial-transaction",
+        "spec_version": "2.1",
+        "id": deterministic_id("x-flame-financial-transaction", f"flame-{tp_id}-fin-txn"),
+        "created_by_ref": FLAME_IDENTITY_ID,
+        "name": f"{tp.get('title', tp_id)} - Financial Transaction Pattern",
+        "transaction_type": _infer_transaction_type(body),
+        "rail": _infer_rail(body),
+        "velocity_pattern": "",
+        "object_marking_refs": [TLP_CLEAR_ID],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Detection Rule Extraction
 # ---------------------------------------------------------------------------

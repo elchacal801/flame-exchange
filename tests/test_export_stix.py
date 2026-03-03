@@ -18,6 +18,7 @@ from export_flame_stix import (
     map_cfpf_phases,
     deterministic_id,
     build_fraud_scheme,
+    build_financial_transaction,
 )
 
 
@@ -330,3 +331,24 @@ class TestBuildFraudScheme:
         result = build_fraud_scheme(tp)
         assert result["type"] == "x-flame-fraud-scheme"
         assert result["scheme_type"] == "other"
+
+
+# ---------------------------------------------------------------------------
+# build_financial_transaction tests
+# ---------------------------------------------------------------------------
+
+class TestBuildFinancialTransaction:
+    def test_wire_transaction(self):
+        tp = {"id": "TP-0001", "title": "Test", "fraud_types": ["wire-fraud"],
+              "cfpf_phases": ["P4", "P5"]}
+        content = {"body": "## CFPF Phase Mapping\n### Phase 4: Execution\nWire transfer via SWIFT\n### Phase 5: Monetization\nFunds moved to mule accounts"}
+        result = build_financial_transaction(tp, content)
+        assert result is not None
+        assert result["type"] == "x-flame-financial-transaction"
+
+    def test_no_p4_p5_returns_none(self):
+        tp = {"id": "TP-TEST", "title": "Test", "fraud_types": [],
+              "cfpf_phases": ["P1", "P2"]}
+        content = {"body": "## Summary\nNo execution phase"}
+        result = build_financial_transaction(tp, content)
+        assert result is None
