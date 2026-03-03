@@ -251,6 +251,54 @@ def build_financial_transaction(tp: dict, content: dict | None = None) -> dict |
     }
 
 
+MULE_KEYWORDS = ["mule", "money mule", "mule account", "mule network", "mule-recruitment",
+                 "mule pipeline", "mule ring"]
+
+RECRUITMENT_KEYWORDS = {
+    "romance": "romance", "love": "romance",
+    "employment": "employment", "job": "employment", "work-from-home": "employment",
+    "social media": "social-media", "telegram": "social-media",
+    "crypto": "crypto-job",
+}
+
+
+def _has_mule_reference(tp: dict, body: str) -> bool:
+    fraud_types = tp.get("fraud_types", [])
+    if "mule-recruitment" in fraud_types:
+        return True
+    body_lower = body.lower()
+    return any(kw in body_lower for kw in MULE_KEYWORDS)
+
+
+def _infer_recruitment_method(body: str) -> str:
+    body_lower = body.lower()
+    for keyword, method in RECRUITMENT_KEYWORDS.items():
+        if keyword in body_lower:
+            return method
+    return "other"
+
+
+def build_mule_network(tp: dict, content: dict | None = None) -> dict | None:
+    """Build x-flame-mule-network. Only for TPs with mule references."""
+    body = content.get("body", "") if content else ""
+    if not _has_mule_reference(tp, body):
+        return None
+
+    tp_id = tp["id"]
+    return {
+        "type": "x-flame-mule-network",
+        "spec_version": "2.1",
+        "id": deterministic_id("x-flame-mule-network", f"flame-{tp_id}-mule-net"),
+        "created_by_ref": FLAME_IDENTITY_ID,
+        "name": f"{tp.get('title', tp_id)} - Mule Network",
+        "recruitment_method": _infer_recruitment_method(body),
+        "network_type": "hybrid",
+        "geographic_spread": [],
+        "estimated_throughput": "",
+        "object_marking_refs": [TLP_CLEAR_ID],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Detection Rule Extraction
 # ---------------------------------------------------------------------------

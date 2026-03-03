@@ -19,6 +19,7 @@ from export_flame_stix import (
     deterministic_id,
     build_fraud_scheme,
     build_financial_transaction,
+    build_mule_network,
 )
 
 
@@ -351,4 +352,24 @@ class TestBuildFinancialTransaction:
               "cfpf_phases": ["P1", "P2"]}
         content = {"body": "## Summary\nNo execution phase"}
         result = build_financial_transaction(tp, content)
+        assert result is None
+
+
+# ---------------------------------------------------------------------------
+# build_mule_network tests
+# ---------------------------------------------------------------------------
+
+class TestBuildMuleNetwork:
+    def test_mule_tp(self):
+        tp = {"id": "TP-0011", "title": "Romance Scam Mule Pipeline",
+              "fraud_types": ["romance-scam", "mule-recruitment"]}
+        content = {"body": "Money mule recruitment via social media. Mule accounts used for laundering."}
+        result = build_mule_network(tp, content)
+        assert result is not None
+        assert result["type"] == "x-flame-mule-network"
+
+    def test_no_mule_reference_returns_none(self):
+        tp = {"id": "TP-TEST", "title": "No Mules", "fraud_types": ["phishing"]}
+        content = {"body": "Basic phishing scheme with no special involvement."}
+        result = build_mule_network(tp, content)
         assert result is None
