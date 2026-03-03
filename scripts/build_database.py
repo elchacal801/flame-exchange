@@ -233,6 +233,13 @@ CREATE TABLE IF NOT EXISTS submission_groupib_stages (
     FOREIGN KEY (submission_id) REFERENCES submissions(id)
 );
 
+CREATE TABLE IF NOT EXISTS submission_regulatory_refs (
+    submission_id TEXT NOT NULL,
+    reg_id TEXT NOT NULL,
+    FOREIGN KEY (submission_id) REFERENCES submissions(id)
+);
+CREATE INDEX IF NOT EXISTS idx_regulatory_refs ON submission_regulatory_refs(reg_id);
+
 CREATE TABLE IF NOT EXISTS techniques (
     id TEXT PRIMARY KEY,
     phase TEXT NOT NULL,
@@ -375,6 +382,7 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
     _insert_multi(conn, "submission_ft3_tactics", sub_id, "tactic_id", meta.get("ft3_tactics", []))
     _insert_multi(conn, "submission_mitre_f3", sub_id, "technique_id", meta.get("mitre_f3", []))
     _insert_multi(conn, "submission_groupib_stages", sub_id, "stage", meta.get("groupib_stages", []))
+    _insert_multi(conn, "submission_regulatory_refs", sub_id, "reg_id", meta.get("regulatory_refs", []))
 
     # UCFF domains — stored as JSON object (not multi-value array)
     ucff = meta.get("ucff_domains")
@@ -406,6 +414,7 @@ _VALID_MULTI_TABLES = {
     ("submission_ft3_tactics", "tactic_id"),
     ("submission_mitre_f3", "technique_id"),
     ("submission_groupib_stages", "stage"),
+    ("submission_regulatory_refs", "reg_id"),
 }
 
 
@@ -635,6 +644,7 @@ def export_json(conn: sqlite3.Connection, output_path: Path):
         entry["ft3_tactics"] = _fetch_list(conn, "submission_ft3_tactics", "tactic_id", sub_id)
         entry["mitre_f3"] = _fetch_list(conn, "submission_mitre_f3", "technique_id", sub_id)
         entry["groupib_stages"] = _fetch_list(conn, "submission_groupib_stages", "stage", sub_id)
+        entry["regulatory_refs"] = _fetch_list(conn, "submission_regulatory_refs", "reg_id", sub_id)
 
         # UCFF domains (object, not array)
         ucff_row = conn.execute(
@@ -689,6 +699,7 @@ def _build_full_entry(conn: sqlite3.Connection, entry: dict) -> dict:
     entry["ft3_tactics"] = _fetch_list(conn, "submission_ft3_tactics", "tactic_id", sub_id)
     entry["mitre_f3"] = _fetch_list(conn, "submission_mitre_f3", "technique_id", sub_id)
     entry["groupib_stages"] = _fetch_list(conn, "submission_groupib_stages", "stage", sub_id)
+    entry["regulatory_refs"] = _fetch_list(conn, "submission_regulatory_refs", "reg_id", sub_id)
 
     # UCFF domains (object, not array)
     ucff_row = conn.execute(

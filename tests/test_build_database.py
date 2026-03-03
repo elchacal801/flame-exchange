@@ -335,3 +335,17 @@ class TestRegulatoryAlerts:
         missing_path = tmp_path / "nonexistent.csv"
         count = build_regulatory_alerts(test_db, missing_path)
         assert count == 0
+
+
+# ---------------------------------------------------------------------------
+# Regulatory refs tests
+# ---------------------------------------------------------------------------
+
+class TestRegulatoryRefs:
+    def test_regulatory_refs_stored(self, test_db):
+        """regulatory_refs should be inserted into submission_regulatory_refs table."""
+        _insert_multi(test_db, "submission_regulatory_refs", "TP-REG-TEST", "reg_id",
+                      ["REG-PSD3-SCA", "REG-FFIEC-AUTH"])
+        result = _fetch_list(test_db, "submission_regulatory_refs", "reg_id", "TP-REG-TEST")
+        assert "REG-PSD3-SCA" in result
+        assert "REG-FFIEC-AUTH" in result
