@@ -603,6 +603,27 @@
             });
             html += '</div></div>';
         }
+        // Regulatory refs
+        var regRefs = item.regulatory_refs || [];
+        if (regRefs.length > 0) {
+            html += '<div class="tag-group"><h4>Regulatory Coverage</h4><div class="tag-list">';
+            regRefs.forEach(function (ref) {
+                var jurisdiction = '';
+                if (ref.indexOf('EU-') !== -1 || ref.indexOf('PSD') !== -1 || ref.indexOf('DORA') !== -1 || ref.indexOf('AMLD') !== -1) jurisdiction = 'EU';
+                else if (ref.indexOf('UK-') !== -1 || ref.indexOf('FCA') !== -1) jurisdiction = 'UK';
+                else if (ref.indexOf('MAS') !== -1) jurisdiction = 'SG';
+                else if (ref.indexOf('AU-') !== -1) jurisdiction = 'AU';
+                else if (ref.indexOf('FINCEN') !== -1 || ref.indexOf('FFIEC') !== -1 || ref.indexOf('CFPB') !== -1 || ref.indexOf('SEC') !== -1 || ref.indexOf('OCC') !== -1 || ref.indexOf('FBI') !== -1) jurisdiction = 'US';
+                else if (ref.indexOf('FATF') !== -1) jurisdiction = 'INTL';
+
+                var jurisdictionClass = jurisdiction ? ' reg-' + jurisdiction.toLowerCase() : '';
+                html += '<span class="detail-tag regulatory-tag' + jurisdictionClass + '" title="' + escapeHtml(ref) + '">';
+                if (jurisdiction) html += '<span class="reg-jurisdiction">' + jurisdiction + '</span> ';
+                html += escapeHtml(ref.replace('REG-', ''));
+                html += '</span>';
+            });
+            html += '</div></div>';
+        }
         if (tags.length > 0) {
             html += '<div class="tag-group"><h4>Tags</h4><div class="tag-list">';
             tags.forEach(function (t) { html += '<span class="detail-tag general-tag">' + escapeHtml(t) + '</span>'; });
