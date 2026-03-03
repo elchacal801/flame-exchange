@@ -138,6 +138,65 @@ def build_external_refs(tp: Dict[str, Any]) -> List[Dict[str, str]]:
     return refs
 
 
+# Mapping from fraud_types keywords to scheme_type enum
+SCHEME_TYPE_MAP = {
+    "account-takeover": "ato",
+    "BEC": "bec",
+    "business-email-compromise": "bec",
+    "synthetic-identity": "synthetic-identity",
+    "authorized-push-payment": "app-fraud",
+    "check-fraud": "check-fraud",
+    "wire-fraud": "wire-fraud",
+    "insurance-fraud": "insurance-fraud",
+    "investment-fraud": "investment-fraud",
+    "investment-scam": "investment-fraud",
+    "romance-scam": "romance-scam",
+    "first-party": "first-party",
+    "first-party-fraud": "first-party",
+    "insider": "insider",
+    "insider-threat": "insider",
+    "mule-recruitment": "mule-recruitment",
+    "money-mule": "mule-recruitment",
+    "credential-stuffing": "credential-stuffing",
+    "deepfake": "deepfake",
+    "deepfake-fraud": "deepfake",
+    "identity-theft": "identity-theft",
+}
+
+
+def _infer_scheme_type(fraud_types: list) -> str:
+    """Infer the primary scheme_type from a TP's fraud_types list."""
+    for ft in fraud_types:
+        if ft in SCHEME_TYPE_MAP:
+            return SCHEME_TYPE_MAP[ft]
+    return "other"
+
+
+def build_fraud_scheme(tp: dict) -> dict:
+    """Build an x-flame-fraud-scheme custom STIX object from TP data."""
+    tp_id = tp["id"]
+    phases = tp.get("cfpf_phases", [])
+    fraud_types = tp.get("fraud_types", [])
+
+    obj = {
+        "type": "x-flame-fraud-scheme",
+        "spec_version": "2.1",
+        "id": deterministic_id("x-flame-fraud-scheme", f"flame-{tp_id}-scheme"),
+        "created_by_ref": FLAME_IDENTITY_ID,
+        "name": tp.get("title", tp_id),
+        "description": tp.get("summary", ""),
+        "scheme_type": _infer_scheme_type(fraud_types),
+        "cfpf_phases": phases,
+        "affected_sectors": tp.get("sector", []),
+        "kill_chain_phases": map_cfpf_phases(phases),
+        "confidence_score": tp.get("confidence_score", 0) or 0,
+        "labels": fraud_types,
+        "external_references": build_external_refs(tp),
+        "object_marking_refs": [TLP_CLEAR_ID],
+    }
+    return obj
+
+
 # ---------------------------------------------------------------------------
 # Detection Rule Extraction
 # ---------------------------------------------------------------------------

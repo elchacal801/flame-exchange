@@ -17,6 +17,7 @@ from export_flame_stix import (
     extract_detection_rules,
     map_cfpf_phases,
     deterministic_id,
+    build_fraud_scheme,
 )
 
 
@@ -292,3 +293,40 @@ class TestDeterministicId:
         # UUID format: 8-4-4-4-12 hex chars
         uuid_part = result.split("--")[1]
         assert len(uuid_part) == 36
+
+
+# ---------------------------------------------------------------------------
+# build_fraud_scheme tests
+# ---------------------------------------------------------------------------
+
+class TestBuildFraudScheme:
+    def test_basic_scheme(self):
+        tp = {
+            "id": "TP-0001",
+            "title": "Treasury Management ATO",
+            "summary": "Test summary",
+            "fraud_types": ["account-takeover", "wire-fraud"],
+            "cfpf_phases": ["P1", "P2", "P3", "P4", "P5"],
+            "sector": ["banking"],
+            "confidence_score": 82,
+            "mitre_attack": ["T1566.002"],
+        }
+        result = build_fraud_scheme(tp)
+        assert result["type"] == "x-flame-fraud-scheme"
+        assert result["scheme_type"] == "ato"
+        assert "P1" in result["cfpf_phases"]
+        assert result["confidence_score"] == 82
+
+    def test_deterministic_id(self):
+        tp = {"id": "TP-0001", "title": "Test", "fraud_types": ["bec"],
+              "cfpf_phases": ["P1"], "sector": [], "confidence_score": 50}
+        r1 = build_fraud_scheme(tp)
+        r2 = build_fraud_scheme(tp)
+        assert r1["id"] == r2["id"]
+
+    def test_missing_optional_fields(self):
+        tp = {"id": "TP-0099", "title": "Minimal", "fraud_types": [],
+              "cfpf_phases": [], "sector": []}
+        result = build_fraud_scheme(tp)
+        assert result["type"] == "x-flame-fraud-scheme"
+        assert result["scheme_type"] == "other"
