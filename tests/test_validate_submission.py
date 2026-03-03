@@ -119,6 +119,16 @@ Control content.
 - Ref 1
 """
 
+VALID_CONTENT_WITH_REG_REFS = VALID_CONTENT.replace(
+    "tags:\n  - test",
+    "regulatory_refs:\n  - REG-PSD3-SCA\n  - REG-FFIEC-AUTH\ntags:\n  - test"
+)
+
+VALID_CONTENT_WITH_BAD_REG_REFS = VALID_CONTENT.replace(
+    "tags:\n  - test",
+    "regulatory_refs:\n  - INVALID-REG\ntags:\n  - test"
+)
+
 
 # ---------------------------------------------------------------------------
 # Tests
@@ -239,3 +249,19 @@ class TestTaxonomyConstants:
         assert "identity-theft" in VALID_FRAUD_TYPES
         assert "employment-fraud" in VALID_FRAUD_TYPES
         assert "brand-impersonation" in VALID_FRAUD_TYPES
+
+
+class TestRegulatoryRefs:
+    def test_valid_regulatory_refs(self, tmp_path):
+        """Valid regulatory_refs should pass."""
+        fp = tmp_path / "TP-9990-test-reg.md"
+        fp.write_text(VALID_CONTENT_WITH_REG_REFS, encoding="utf-8")
+        result = validate_file(fp)
+        assert result.passed, f"Errors: {result.errors}"
+
+    def test_invalid_regulatory_ref_id(self, tmp_path):
+        """Invalid regulatory ref ID should produce error."""
+        fp = tmp_path / "TP-9991-test-bad-reg.md"
+        fp.write_text(VALID_CONTENT_WITH_BAD_REG_REFS, encoding="utf-8")
+        result = validate_file(fp)
+        assert any("regulatory_refs" in e.lower() or "INVALID-REG" in e for e in result.errors)

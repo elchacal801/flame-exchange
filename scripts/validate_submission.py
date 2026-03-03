@@ -54,6 +54,17 @@ except Exception as _e:
     VALID_SECTORS = set()
     VALID_FRAUD_TYPES = set()
 
+# Load regulatory requirements config for validation
+REGULATORY_CONFIG_FILE = Path(__file__).resolve().parent.parent / "config" / "regulatory_requirements.yaml"
+VALID_REGULATORY_IDS = set()
+try:
+    with open(REGULATORY_CONFIG_FILE, "r", encoding="utf-8") as _f:
+        _reg_config = yaml.safe_load(_f)
+        if _reg_config and "regulations" in _reg_config:
+            VALID_REGULATORY_IDS = {r["id"] for r in _reg_config["regulations"] if "id" in r}
+except Exception as _e:
+    print(f"WARNING: Failed to load regulatory config from {REGULATORY_CONFIG_FILE}: {_e}", file=sys.stderr)
+
 REQUIRED_FRONTMATTER_FIELDS = [
     "id", "title", "category", "date", "author", "source",
     "tlp", "sector", "fraud_types", "cfpf_phases",
@@ -388,6 +399,16 @@ def validate_file(filepath: Path) -> ValidationResult:
                         f"related_tps[{i}].relationship must be one of "
                         f"{', '.join(sorted(VALID_RELATIONSHIP_TYPES))}, got '{rel_type}'"
                     )
+
+    # --- Regulatory references (optional) ---
+    regulatory_refs = meta.get("regulatory_refs")
+    if regulatory_refs is not None:
+        if not isinstance(regulatory_refs, list):
+            result.error("regulatory_refs must be a list")
+        else:
+            for ref in regulatory_refs:
+                if ref not in VALID_REGULATORY_IDS:
+                    result.error(f"Unrecognized regulatory_refs entry '{ref}' (not in config/regulatory_requirements.yaml)")
 
     # --- Body section validation (only for ThreatPath) ---
     if category != "Baseline":
