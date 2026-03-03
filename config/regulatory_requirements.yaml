@@ -1,0 +1,143 @@
+regulations:
+  - id: REG-PSD3-SCA
+    name: "PSD3 Strong Customer Authentication"
+    jurisdiction: EU
+    category: authentication
+    description: "Requires multi-factor authentication for electronic payments"
+    relevant_fraud_types:
+      - account-takeover
+      - unauthorized-transaction
+      - phishing
+
+  - id: REG-UK-PSR-APP
+    name: "UK PSR APP Reimbursement"
+    jurisdiction: UK
+    category: reimbursement
+    description: "Mandatory reimbursement for APP fraud victims"
+    relevant_fraud_types:
+      - authorized-push-payment
+      - impersonation
+      - social-engineering
+
+  - id: REG-FINCEN-AML
+    name: "FinCEN AML/BSA"
+    jurisdiction: US
+    category: anti-money-laundering
+    description: "Bank Secrecy Act anti-money laundering requirements"
+    relevant_fraud_types:
+      - money-laundering
+      - mule-recruitment
+      - wire-fraud
+
+  - id: REG-FATF-R16
+    name: "FATF Recommendation 16 (Travel Rule)"
+    jurisdiction: International
+    category: wire-transfer
+    description: "Originator and beneficiary information for wire transfers"
+    relevant_fraud_types:
+      - wire-fraud
+      - money-laundering
+
+  - id: REG-MAS-SRF
+    name: "MAS Shared Responsibility Framework"
+    jurisdiction: Singapore
+    category: shared-responsibility
+    description: "Framework for sharing losses from authorized push payment scams"
+    relevant_fraud_types:
+      - authorized-push-payment
+      - phishing
+
+  - id: REG-AU-SPF
+    name: "Australia Scam Prevention Framework"
+    jurisdiction: Australia
+    category: scam-prevention
+    description: "Obligations for banks, telcos, and platforms to prevent scams"
+    relevant_fraud_types:
+      - authorized-push-payment
+      - romance-scam
+      - investment-fraud
+
+  - id: REG-FFIEC-AUTH
+    name: "FFIEC Authentication Guidance"
+    jurisdiction: US
+    category: authentication
+    description: "Federal guidance on authentication and access risk management"
+    relevant_fraud_types:
+      - account-takeover
+      - credential-stuffing
+
+  - id: REG-CFPB-REGE
+    name: "CFPB Regulation E"
+    jurisdiction: US
+    category: consumer-protection
+    description: "Electronic fund transfer consumer protection, unauthorized transaction liability"
+    relevant_fraud_types:
+      - unauthorized-transaction
+      - account-takeover
+      - ACH-fraud
+
+  - id: REG-DORA
+    name: "EU DORA"
+    jurisdiction: EU
+    category: operational-resilience
+    description: "Digital Operational Resilience Act for financial entities"
+    relevant_fraud_types:
+      - account-takeover
+      - deepfake
+
+  - id: REG-FCA-APP
+    name: "FCA Confirmation of Payee"
+    jurisdiction: UK
+    category: payment-verification
+    description: "Name-checking for faster payment recipients"
+    relevant_fraud_types:
+      - authorized-push-payment
+      - wire-fraud
+
+  - id: REG-FINCEN-CDD
+    name: "FinCEN CDD Rule"
+    jurisdiction: US
+    category: customer-due-diligence
+    description: "Customer Due Diligence requirements for financial institutions"
+    relevant_fraud_types:
+      - synthetic-identity
+      - identity-theft
+      - application-fraud
+
+  - id: REG-SEC-SAR
+    name: "SEC Suspicious Activity Reporting"
+    jurisdiction: US
+    category: reporting
+    description: "Broker-dealer SAR filing requirements"
+    relevant_fraud_types:
+      - investment-fraud
+      - insider
+      - money-laundering
+
+  - id: REG-OCC-FRAUD
+    name: "OCC Fraud Risk Management"
+    jurisdiction: US
+    category: risk-management
+    description: "OCC guidance on fraud risk management for national banks"
+    relevant_fraud_types:
+      - account-takeover
+      - check-fraud
+      - wire-fraud
+
+  - id: REG-EU-AMLD6
+    name: "EU 6th Anti-Money Laundering Directive"
+    jurisdiction: EU
+    category: anti-money-laundering
+    description: "Enhanced AML requirements including corporate criminal liability"
+    relevant_fraud_types:
+      - money-laundering
+      - mule-recruitment
+
+  - id: REG-FBI-IC3
+    name: "FBI IC3 Recovery Asset Team"
+    jurisdiction: US
+    category: recovery
+    description: "Financial Fraud Kill Chain for wire transfer recovery"
+    relevant_fraud_types:
+      - wire-fraud
+      - BEC
