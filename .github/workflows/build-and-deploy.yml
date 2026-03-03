@@ -9,6 +9,7 @@ on:
       - 'tests/**'
       - 'Baselines/**'
       - 'DetectionLogic/**'
+      - 'config/**'
   pull_request:
     branches: [main]
   workflow_run:
@@ -85,6 +86,12 @@ jobs:
 
       - name: Export Sigma detection packs
         run: python scripts/export_sigma.py
+
+      - name: Export MISP galaxy and feed
+        run: python scripts/export_misp.py
+
+      - name: Export static TAXII endpoints
+        run: python scripts/export_taxii.py
 
       - name: Commit artifacts
         run: |
