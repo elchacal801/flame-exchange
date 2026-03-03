@@ -151,7 +151,7 @@ Flag provider nodes where:
 
 ## Analyst Notes
 
-This threat path is uniquely relevant to Unum's business as a leading disability insurance carrier. The CFPF framework maps cleanly here even though it was designed for financial institution fraud — the five phases still apply, just with different execution mechanics. The key insight is that Phase 1-2 (recon and access) may occur months or years before Phase 4 (ongoing benefit payments), making the "look left" analysis particularly valuable.
+This threat path is particularly relevant to disability insurance carriers. The CFPF framework maps cleanly here even though it was designed for financial institution fraud — the five phases still apply, just with different execution mechanics. The key insight is that Phase 1-2 (recon and access) may occur months or years before Phase 4 (ongoing benefit payments), making the "look left" analysis particularly valuable.
 
 **AI/GenAI emerging risk**: Generative AI tools can now produce convincing medical documentation, clinical notes, and diagnostic narratives. This lowers the barrier for claimants to fabricate supporting documentation without provider collusion. Detection of AI-generated medical documentation is an emerging challenge.
 
@@ -162,7 +162,7 @@ This threat path is uniquely relevant to Unum's business as a leading disability
 - DOJ: Various disability fraud prosecution press releases
 - Coalition Against Insurance Fraud: annual reports
 - NICB: Insurance Fraud Reporting
-- Unum Group / industry: Claims fraud detection best practices
+- Industry sources: Disability claims fraud detection best practices
 
 ## Revision History
 

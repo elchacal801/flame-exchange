@@ -935,7 +935,7 @@
         html += '<div class="about-hero">';
         html += '<span class="about-logo-icon">&#x1F525;</span>';
         html += '<span class="about-title">FLAME</span>';
-        html += '<span class="about-version">v0.5 SIGNAL</span>';
+        html += '<span class="about-version">v1.0 BEACON</span>';
         html += '<p class="about-tagline">Fraud Lifecycle Analysis &amp; Mitigation Exchange</p>';
         html += '</div>';
 
@@ -1022,8 +1022,8 @@
         var phases = [
             { name: 'Phase 1: IGNITE', desc: 'Core platform, search, detection logic, heat map', status: 'done' },
             { name: 'Phase 2: FORGE', desc: 'API, MCP server, Sigma export, graph, confidence scoring', status: 'done' },
-            { name: 'Phase 3: SIGNAL', desc: 'STIX extension, MISP galaxy, TAXII feeds, regulatory mapping, framework navigator', status: 'current' },
-            { name: 'Phase 4: SPREAD', desc: 'Community contributions, intake pipeline, integrations', status: 'planned' }
+            { name: 'Phase 3: SIGNAL', desc: 'STIX extension, MISP galaxy, TAXII feeds, regulatory mapping, framework navigator', status: 'done' },
+            { name: 'Phase 4: BEACON', desc: 'Community contributions, intake pipeline, RSS/webhook feeds, production hardening', status: 'current' }
         ];
         phases.forEach(function (p) {
             html += '<div class="about-roadmap-item about-roadmap-' + p.status + '">';
