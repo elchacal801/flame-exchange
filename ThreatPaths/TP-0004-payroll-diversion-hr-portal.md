@@ -43,6 +43,15 @@ related_tps:
     relationship: enables
   - id: TP-0015
     relationship: related-to
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-FATF-R16
+  - REG-FBI-IC3
+  - REG-FFIEC-AUTH
+  - REG-MAS-SRF
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
 tags:
   - HR-portal
   - direct-deposit

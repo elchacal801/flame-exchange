@@ -49,6 +49,10 @@ related_tps:
     relationship: provides-mules-for
   - id: TP-0025
     relationship: escalates-from
+regulatory_refs:
+  - REG-AU-SPF
+  - REG-EU-AMLD6
+  - REG-FINCEN-AML
 tags:
   - pig-butchering
   - social-engineering

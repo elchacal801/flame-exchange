@@ -55,6 +55,8 @@ related_tps:
     relationship: feeds-into
   - id: TP-0022
     relationship: related-to
+regulatory_refs:
+  - REG-FINCEN-CDD
 tags:
   - ghost-student
   - financial-aid

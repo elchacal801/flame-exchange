@@ -59,6 +59,15 @@ related_tps:
     relationship: provides-mules-for
   - id: TP-0014
     relationship: enables
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-FATF-R16
+  - REG-FBI-IC3
+  - REG-FFIEC-AUTH
+  - REG-MAS-SRF
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
 tags:
   - treasury-management
   - commercial-banking

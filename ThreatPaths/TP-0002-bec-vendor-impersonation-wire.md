@@ -47,6 +47,10 @@ related_tps:
     relationship: provides-mules-for
   - id: TP-0020
     relationship: related-to
+regulatory_refs:
+  - REG-FATF-R16
+  - REG-FBI-IC3
+  - REG-OCC-FRAUD
 tags:
   - vendor-impersonation
   - accounts-payable

@@ -55,6 +55,8 @@ related_tps:                     # Typed relationships to other Threat Paths
     relationship: related-to     # feeds-into | shares-infrastructure | escalates-from |
                                  # provides-mules-for | enables | enhances | related-to
 
+regulatory_refs: []               # IDs from config/regulatory_requirements.yaml
+
 tags:                            # Additional descriptive tags
   - tag1
 ---

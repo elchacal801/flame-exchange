@@ -42,6 +42,13 @@ related_tps:
     relationship: enables
   - id: TP-0014
     relationship: enables
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-FFIEC-AUTH
+  - REG-MAS-SRF
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
 tags:
   - insurance-agent
   - agent-portal

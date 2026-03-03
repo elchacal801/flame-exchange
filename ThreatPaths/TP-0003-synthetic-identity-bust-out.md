@@ -44,6 +44,8 @@ related_tps:
     relationship: feeds-into
   - id: TP-0029
     relationship: related-to
+regulatory_refs:
+  - REG-FINCEN-CDD
 tags:
   - credit-building
   - bust-out

@@ -49,6 +49,13 @@ related_tps:
     relationship: enables
   - id: TP-0012
     relationship: enables
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-FFIEC-AUTH
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
+  - REG-SEC-SAR
 tags:
   - insider
   - employee-fraud

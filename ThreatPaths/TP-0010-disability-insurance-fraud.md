@@ -39,6 +39,7 @@ info_credibility: 3
 related_tps:
   - id: TP-0021
     relationship: related-to
+regulatory_refs: []
 tags:
   - disability
   - group-benefits

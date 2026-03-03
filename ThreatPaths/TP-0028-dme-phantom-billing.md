@@ -55,6 +55,7 @@ related_tps:
     relationship: escalates-from
   - id: TP-0022
     relationship: related-to
+regulatory_refs: []
 tags:
   - durable-medical-equipment
   - medicare-fraud

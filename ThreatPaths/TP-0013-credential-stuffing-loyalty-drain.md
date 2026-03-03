@@ -42,6 +42,12 @@ related_tps:
     relationship: feeds-into
   - id: TP-0008
     relationship: enables
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-FFIEC-AUTH
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
 tags:
   - loyalty-fraud
   - rewards-points

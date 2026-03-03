@@ -43,6 +43,7 @@ related_tps:
     relationship: related-to
   - id: TP-0031
     relationship: related-to
+regulatory_refs: []
 tags:
   - first-party
   - credit-card

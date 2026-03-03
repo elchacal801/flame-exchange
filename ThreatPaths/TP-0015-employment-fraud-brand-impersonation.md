@@ -44,6 +44,9 @@ related_tps:
     relationship: related-to
   - id: TP-0029
     relationship: related-to
+regulatory_refs:
+  - REG-FINCEN-CDD
+  - REG-UK-PSR-APP
 tags:
   - employment-fraud
   - brand-impersonation

@@ -62,6 +62,15 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0032
     relationship: related-to
+regulatory_refs:
+  - REG-AU-SPF
+  - REG-DORA
+  - REG-EU-AMLD6
+  - REG-FCA-APP
+  - REG-FINCEN-AML
+  - REG-MAS-SRF
+  - REG-SEC-SAR
+  - REG-UK-PSR-APP
 tags:
   - genai
   - deepfake

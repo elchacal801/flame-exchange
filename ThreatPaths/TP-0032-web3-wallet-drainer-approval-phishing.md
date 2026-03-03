@@ -56,6 +56,11 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0026
     relationship: related-to
+regulatory_refs:
+  - REG-EU-AMLD6
+  - REG-FINCEN-AML
+  - REG-MAS-SRF
+  - REG-PSD3-SCA
 tags:
   - wallet-drainer
   - approval-phishing

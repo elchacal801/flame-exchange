@@ -50,6 +50,10 @@ related_tps:
     relationship: related-to
   - id: TP-0018
     relationship: related-to
+regulatory_refs:
+  - REG-FATF-R16
+  - REG-FBI-IC3
+  - REG-OCC-FRAUD
 tags:
   - supply-chain
   - b2b-payments

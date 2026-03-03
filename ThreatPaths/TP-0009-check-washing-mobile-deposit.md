@@ -40,6 +40,8 @@ related_tps:
     relationship: feeds-into
   - id: TP-0011
     relationship: provides-mules-for
+regulatory_refs:
+  - REG-OCC-FRAUD
 tags:
   - check-washing
   - mail-theft

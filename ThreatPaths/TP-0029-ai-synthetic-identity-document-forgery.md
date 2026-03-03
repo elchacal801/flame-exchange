@@ -57,6 +57,8 @@ related_tps:
     relationship: escalates-from
   - id: TP-0015
     relationship: related-to
+regulatory_refs:
+  - REG-FINCEN-CDD
 tags:
   - ai-generated
   - synthetic-identity

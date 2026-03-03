@@ -61,6 +61,14 @@ related_tps:
     relationship: provides-mules-for
   - id: TP-0012
     relationship: related-to
+regulatory_refs:
+  - REG-AU-SPF
+  - REG-FATF-R16
+  - REG-FBI-IC3
+  - REG-FCA-APP
+  - REG-MAS-SRF
+  - REG-OCC-FRAUD
+  - REG-UK-PSR-APP
 tags:
   - real-time-payments
   - instant-payments

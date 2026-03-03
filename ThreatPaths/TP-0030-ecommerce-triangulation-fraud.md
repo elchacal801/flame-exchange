@@ -53,6 +53,8 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0016
     relationship: related-to
+regulatory_refs:
+  - REG-FINCEN-CDD
 tags:
   - triangulation-fraud
   - marketplace-fraud

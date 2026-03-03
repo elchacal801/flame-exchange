@@ -43,6 +43,7 @@ related_tps:
     relationship: related-to
   - id: TP-0028
     relationship: escalates-from
+regulatory_refs: []
 tags:
   - medicare-fraud
   - medical-billing

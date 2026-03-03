@@ -47,6 +47,11 @@ related_tps:
     relationship: enhances
   - id: TP-0011
     relationship: provides-mules-for
+regulatory_refs:
+  - REG-FATF-R16
+  - REG-FBI-IC3
+  - REG-OCC-FRAUD
+  - REG-UK-PSR-APP
 tags:
   - real-estate
   - title-company

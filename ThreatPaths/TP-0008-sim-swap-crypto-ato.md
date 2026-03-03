@@ -48,6 +48,14 @@ related_tps:
     relationship: enables
   - id: TP-0013
     relationship: enables
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-EU-AMLD6
+  - REG-FFIEC-AUTH
+  - REG-FINCEN-AML
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
 tags:
   - SIM-swap
   - cryptocurrency

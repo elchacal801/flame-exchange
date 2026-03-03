@@ -49,6 +49,15 @@ related_tps:
     relationship: related-to
   - id: TP-0022
     relationship: feeds-into
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-FATF-R16
+  - REG-FBI-IC3
+  - REG-FFIEC-AUTH
+  - REG-FINCEN-CDD
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
 tags:
   - corporate-hijacking
   - commercial-banking

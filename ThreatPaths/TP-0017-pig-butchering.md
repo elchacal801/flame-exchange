@@ -50,6 +50,12 @@ related_tps:
     relationship: related-to
   - id: TP-0032
     relationship: shares-infrastructure
+regulatory_refs:
+  - REG-AU-SPF
+  - REG-FCA-APP
+  - REG-MAS-SRF
+  - REG-SEC-SAR
+  - REG-UK-PSR-APP
 tags:
   - pig-butchering
   - crypto-scam

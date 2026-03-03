@@ -46,6 +46,14 @@ related_tps:
     relationship: enables
   - id: TP-0024
     relationship: related-to
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-FFIEC-AUTH
+  - REG-MAS-SRF
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
+  - REG-UK-PSR-APP
 tags:
   - authorized-push-payment
   - APP-fraud

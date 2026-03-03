@@ -47,6 +47,8 @@ related_tps:
     relationship: provides-mules-for
   - id: TP-0033
     relationship: related-to
+regulatory_refs:
+  - REG-FINCEN-CDD
 tags:
   - benefits-scam
   - irs-fraud

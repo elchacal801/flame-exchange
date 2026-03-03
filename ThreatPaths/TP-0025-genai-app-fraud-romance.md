@@ -61,6 +61,12 @@ related_tps:
     relationship: escalates-from
   - id: TP-0026
     relationship: shares-infrastructure
+regulatory_refs:
+  - REG-AU-SPF
+  - REG-DORA
+  - REG-FCA-APP
+  - REG-MAS-SRF
+  - REG-UK-PSR-APP
 tags:
   - genai
   - deepfake

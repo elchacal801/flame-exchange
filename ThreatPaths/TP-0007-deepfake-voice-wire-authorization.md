@@ -52,6 +52,12 @@ related_tps:
     relationship: enhances
   - id: TP-0025
     relationship: related-to
+regulatory_refs:
+  - REG-DORA
+  - REG-FATF-R16
+  - REG-FBI-IC3
+  - REG-OCC-FRAUD
+  - REG-UK-PSR-APP
 tags:
   - deepfake-voice
   - CEO-fraud

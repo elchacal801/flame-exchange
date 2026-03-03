@@ -52,6 +52,12 @@ related_tps:
     relationship: related-to
   - id: TP-0008
     relationship: shares-infrastructure
+regulatory_refs:
+  - REG-CFPB-REGE
+  - REG-DORA
+  - REG-FFIEC-AUTH
+  - REG-OCC-FRAUD
+  - REG-PSD3-SCA
 tags:
   - mbanking
   - android-malware

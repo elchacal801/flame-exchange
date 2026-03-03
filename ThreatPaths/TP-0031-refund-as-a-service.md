@@ -50,6 +50,7 @@ related_tps:
     relationship: related-to
   - id: TP-0030
     relationship: shares-infrastructure
+regulatory_refs: []
 tags:
   - refund-fraud
   - FTID

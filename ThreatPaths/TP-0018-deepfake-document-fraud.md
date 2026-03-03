@@ -46,6 +46,8 @@ related_tps:
     relationship: related-to
   - id: TP-0020
     relationship: related-to
+regulatory_refs:
+  - REG-FINCEN-CDD
 tags:
   - deepfake
   - kyc-bypass
