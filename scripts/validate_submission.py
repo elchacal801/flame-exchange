@@ -3,12 +3,12 @@
 validate_submission.py - FLAME Submission Validator
 
 Validates the structure and frontmatter of FLAME submission
-markdown files and YAML detection-logic files. Designed to run
+markdown files, YAML detection-logic files, and JSON emulation playbook files. Designed to run
 in CI (GitHub Actions) on PRs that modify ThreatPaths/,
 Baselines/, or DetectionLogic/.
 
 Usage:
-    python scripts/validate_submission.py <file.md|file.yml> [...]
+    python scripts/validate_submission.py <file.md|file.yml|file.json> [...]
 
 Exit codes:
     0 - All files pass validation
@@ -33,12 +33,13 @@ except ImportError:
 
 VALID_CFPF_PHASES = {"P1", "P2", "P3", "P4", "P5"}
 
-VALID_CATEGORIES = {"ThreatPath", "Baseline", "DetectionLogic"}
+VALID_CATEGORIES = {"ThreatPath", "Baseline", "DetectionLogic", "EmulationPlaybook"}
 
 VALID_ID_PREFIXES = {
     "ThreatPath": "TP-",
     "Baseline": "BL-",
     "DetectionLogic": "DL-",
+    "EmulationPlaybook": "EP-",
 }
 
 VALID_TLP = {"WHITE", "GREEN", "AMBER", "RED"}
@@ -243,6 +244,140 @@ def validate_dl_file(filepath: Path) -> ValidationResult:
     return result
 
 
+# ---------------------------------------------------------------------------
+# Emulation Playbook (JSON) constants
+# ---------------------------------------------------------------------------
+
+REQUIRED_EP_FIELDS = [
+    "id", "title", "description", "author", "date",
+    "target_threat_paths", "cfpf_phases", "fraud_types",
+    "sectors", "prerequisites", "steps", "expected_outcomes",
+]
+
+REQUIRED_EP_STEP_FIELDS = [
+    "step_number", "cfpf_phase", "title", "action", "expected_result",
+]
+
+
+def validate_ep_file(filepath: Path) -> ValidationResult:
+    """Validate an Emulation Playbook JSON file."""
+    result = ValidationResult(str(filepath))
+    repo_root = Path(__file__).resolve().parent.parent
+
+    text = filepath.read_text(encoding="utf-8")
+
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError as e:
+        result.error(f"JSON parse error: {e}")
+        return result
+
+    if not isinstance(data, dict):
+        result.error("JSON file is not an object")
+        return result
+
+    # --- Required top-level fields ---
+    for field in REQUIRED_EP_FIELDS:
+        if field not in data or data[field] is None:
+            result.error(f"Missing required field: {field}")
+
+    # --- ID: must start with EP- ---
+    ep_id = data.get("id", "")
+    if ep_id and not str(ep_id).startswith("EP-"):
+        result.error(f"ID '{ep_id}' must start with 'EP-'")
+
+    # --- target_threat_paths: list of TP-XXXX that exist ---
+    target_tps = data.get("target_threat_paths", [])
+    if isinstance(target_tps, list):
+        tp_dir = repo_root / "ThreatPaths"
+        for tp_id in target_tps:
+            if not re.match(r"^TP-\d{4}$", str(tp_id)):
+                result.error(f"Invalid target_threat_paths entry '{tp_id}'. Must match TP-XXXX format")
+            else:
+                tp_matches = list(tp_dir.glob(f"{tp_id}-*.md"))
+                if not tp_matches:
+                    result.warn(f"target_threat_paths reference '{tp_id}' does not match any file in ThreatPaths/")
+    elif target_tps is not None:
+        result.error("target_threat_paths must be a list")
+
+    # --- cfpf_phases ---
+    phases = data.get("cfpf_phases", [])
+    if isinstance(phases, list):
+        for p in phases:
+            if str(p) not in VALID_CFPF_PHASES:
+                result.error(f"Invalid CFPF phase '{p}'. Must be one of: {', '.join(sorted(VALID_CFPF_PHASES))}")
+    elif phases is not None:
+        result.error("cfpf_phases must be a list")
+
+    # --- fraud_types ---
+    fraud_types = data.get("fraud_types", [])
+    if isinstance(fraud_types, list):
+        for ft in fraud_types:
+            if ft not in VALID_FRAUD_TYPES:
+                result.error(f"Unrecognized fraud type '{ft}' (not in taxonomy)")
+    elif fraud_types is not None:
+        result.error("fraud_types must be a list")
+
+    # --- sectors ---
+    sectors = data.get("sectors", [])
+    if isinstance(sectors, list):
+        for s in sectors:
+            if s not in VALID_SECTORS:
+                result.error(f"Unrecognized sector '{s}' (not in taxonomy)")
+    elif sectors is not None:
+        result.error("sectors must be a list")
+
+    # --- steps: non-empty list ---
+    steps = data.get("steps", [])
+    if not isinstance(steps, list):
+        result.error("steps must be a list")
+        steps = []
+    elif len(steps) == 0:
+        result.error("steps must not be empty")
+
+    # --- Validate each step ---
+    dl_dir = repo_root / "DetectionLogic"
+    for i, step in enumerate(steps):
+        if not isinstance(step, dict):
+            result.error(f"steps[{i}] must be an object")
+            continue
+
+        # Required step fields
+        for field in REQUIRED_EP_STEP_FIELDS:
+            if field not in step or step[field] is None:
+                result.error(f"steps[{i}] missing required field: {field}")
+
+        # Sequential step numbers (1-based)
+        step_num = step.get("step_number")
+        if step_num is not None and step_num != i + 1:
+            result.error(
+                f"steps[{i}] has step_number {step_num}, expected {i + 1} (must be sequential)"
+            )
+
+        # Step cfpf_phase
+        step_phase = step.get("cfpf_phase", "")
+        if step_phase and str(step_phase) not in VALID_CFPF_PHASES:
+            result.error(
+                f"steps[{i}] invalid cfpf_phase '{step_phase}'. "
+                f"Must be one of: {', '.join(sorted(VALID_CFPF_PHASES))}"
+            )
+
+        # detection_rule_ref (optional)
+        dl_ref = step.get("detection_rule_ref")
+        if dl_ref is not None:
+            if not re.match(r"^DL-\d{4}$", str(dl_ref)):
+                result.error(f"steps[{i}] detection_rule_ref '{dl_ref}' must match DL-XXXX format")
+            else:
+                dl_matches = list(dl_dir.glob(f"{dl_ref}-*.yml"))
+                if not dl_matches:
+                    result.warn(
+                        f"steps[{i}] detection_rule_ref '{dl_ref}' does not match any file in DetectionLogic/"
+                    )
+
+    return result
+
+
+
 def validate_file(filepath: Path) -> ValidationResult:
     """Validate a single submission file (.md or .yml)."""
     result = ValidationResult(str(filepath))
@@ -255,8 +390,11 @@ def validate_file(filepath: Path) -> ValidationResult:
     if filepath.suffix == ".yml" or filepath.suffix == ".yaml":
         return validate_dl_file(filepath)
 
+    if filepath.suffix == ".json":
+        return validate_ep_file(filepath)
+
     if filepath.suffix != ".md":
-        result.error("File must be a .md markdown file or .yml detection logic file")
+        result.error("File must be a .md markdown file, .yml detection logic file, or .json emulation playbook file")
         return result
 
     text = filepath.read_text(encoding="utf-8")
@@ -427,7 +565,7 @@ def validate_file(filepath: Path) -> ValidationResult:
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python validate_submission.py <file.md|file.yml> [...]", file=sys.stderr)
+        print("Usage: python validate_submission.py <file.md|file.yml|file.json> [...]", file=sys.stderr)
         sys.exit(2)
 
     files = [Path(f) for f in sys.argv[1:]]

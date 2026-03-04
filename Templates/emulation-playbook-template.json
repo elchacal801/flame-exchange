@@ -1,0 +1,41 @@
+{
+    "id": "EP-XXXX",
+    "title": "Example Emulation Playbook Title",
+    "description": "Brief description of what this playbook tests and the fraud scenario it simulates.",
+    "author": "Contributor Name",
+    "date": "2026-03-04",
+    "target_threat_paths": ["TP-0001"],
+    "cfpf_phases": ["P1", "P2", "P3", "P4", "P5"],
+    "fraud_types": ["account-takeover"],
+    "sectors": ["banking"],
+    "prerequisites": {
+        "environment": "Description of required test environment",
+        "tools": ["Tool or system needed"],
+        "access_required": "Level of access needed to execute the playbook"
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Reconnaissance Step",
+            "action": "Human-readable instruction for the tester describing what to do in this step.",
+            "automation": null,
+            "expected_result": "What the detection stack should flag or alert on.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Initial Access Step",
+            "action": "Description of the initial access technique to simulate.",
+            "automation": null,
+            "expected_result": "Expected detection or alert.",
+            "detection_rule_ref": "DL-0012"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0012"],
+        "alerts_generated": "Description of expected alerts from the detection stack.",
+        "coverage_validated": "Summary of CFPF phase coverage validated by this playbook."
+    }
+}
