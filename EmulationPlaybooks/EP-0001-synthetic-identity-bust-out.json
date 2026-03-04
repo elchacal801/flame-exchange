@@ -1,0 +1,77 @@
+{
+    "id": "EP-0001",
+    "title": "Synthetic Identity Bust-Out",
+    "description": "Simulates the end-to-end lifecycle of a synthetic identity bust-out scheme targeting banking and credit-union sectors. The adversary fabricates identity components, opens credit accounts, nurtures credit history, then simultaneously maxes out all credit lines before abandoning the identities. This playbook validates detection coverage across all five CFPF phases for synthetic identity and bust-out fraud patterns.",
+    "author": "FLAME Project",
+    "date": "2026-03-04",
+    "target_threat_paths": ["TP-0003", "TP-0016"],
+    "cfpf_phases": ["P1", "P2", "P3", "P4", "P5"],
+    "fraud_types": ["synthetic-identity", "bust-out", "application-fraud"],
+    "sectors": ["banking", "credit-union"],
+    "prerequisites": {
+        "environment": "Fraud detection test environment with credit application intake, transaction monitoring, and identity verification systems. Requires synthetic identity simulation tools and multi-institution account management capabilities.",
+        "tools": ["Identity verification platform (test mode)", "Credit application portal", "Transaction monitoring system", "Multi-institution account simulator"],
+        "access_required": "Test-environment access to credit application systems, account management portals, and transaction monitoring dashboards across at least two simulated financial institutions."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Fabricate Synthetic Identity Components",
+            "action": "Generate a synthetic identity by combining a fabricated or stolen SSN with fictitious name, date of birth, and address details. Create supporting documentation including a synthetic credit profile inquiry to establish a credit file. Ensure the identity components do not match any single real individual but appear plausible to automated verification systems.",
+            "automation": null,
+            "expected_result": "Identity verification systems should flag the SSN-to-name mismatch or the absence of a credit history for the presented identity. Alert on newly created credit file with no prior history.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Submit Credit Application with Synthetic ID",
+            "action": "Submit a credit card or loan application at a target financial institution using the fabricated synthetic identity. Provide the synthetic SSN, fictitious personal details, and a newly established mailing address. If the initial application is denied, attempt authorized-user piggybacking on an existing account to build the credit file before reapplying.",
+            "automation": null,
+            "expected_result": "Application fraud detection should flag thin-file applications, identity elements that fail cross-reference checks, and authorized-user additions from unrelated account holders.",
+            "detection_rule_ref": "DL-0034"
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P3",
+            "title": "Build Credit History with Small Transactions",
+            "action": "Once the account is approved, conduct a series of small, regular purchases followed by on-time payments over a simulated period of 3-6 months. Maintain low utilization ratios to build a positive payment history and increase the credit limit through organic behavior patterns that mimic legitimate account usage.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should baseline the account activity pattern. Age-volume mismatch detection may flag if the synthetic identity's stated age does not correlate with the account activity volume or credit limit requests.",
+            "detection_rule_ref": "DL-0038"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P3",
+            "title": "Open Accounts at Multiple Institutions",
+            "action": "Using the now-established credit history, apply for additional credit products at two or more separate financial institutions within a short timeframe. Leverage the improved credit score from the nurtured account to obtain higher credit limits. Ensure applications are spread across banks and credit unions to avoid single-institution velocity alerts.",
+            "automation": null,
+            "expected_result": "Multi-institution application velocity should trigger cross-bureau alerts. Mule account velocity detection should identify the pattern of rapid account opening across institutions tied to a single identity with a thin credit history.",
+            "detection_rule_ref": "DL-0001"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P4",
+            "title": "Max Out Credit Lines Simultaneously",
+            "action": "Within a compressed timeframe of 24-72 hours, execute high-value transactions across all open credit accounts to reach or exceed the credit limits. Use a combination of cash advances, balance transfers to external accounts, and high-value purchases. Ensure the spending pattern deviates dramatically from the established baseline of small, regular transactions.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should flag the sudden spike in utilization, amount clustering near credit limits, and the dramatic departure from established spending baselines. Multiple simultaneous high-value transactions across institutions should generate coordinated alerts.",
+            "detection_rule_ref": "DL-0028"
+        },
+        {
+            "step_number": 6,
+            "cfpf_phase": "P5",
+            "title": "Default and Abandon Identities",
+            "action": "Cease all payment activity on every account and allow all credit lines to enter default status. Abandon the synthetic identity entirely, including the associated mailing address and phone number. Simulate the extraction of funds obtained through cash advances and balance transfers via mule accounts or prepaid card loading.",
+            "automation": null,
+            "expected_result": "Collections and loss-recovery systems should correlate the simultaneous default across institutions. ACH return rate anomaly detection should flag returned payments. Post-default analysis should identify the synthetic identity pattern and link the abandoned accounts.",
+            "detection_rule_ref": "DL-0034"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0001", "DL-0028", "DL-0034", "DL-0038"],
+        "alerts_generated": "Identity verification alerts on thin-file application with SSN mismatch; transaction monitoring alerts on amount clustering near credit limits and age-volume mismatch; multi-institution velocity alerts on coordinated account opening; ACH return rate anomaly alerts during the default phase; mule account velocity alerts on rapid fund extraction.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for synthetic identity bust-out schemes. Validates identity verification at onboarding (P2), behavioral baselining during positioning (P3), transaction anomaly detection during execution (P4), and loss correlation during monetization (P5)."
+    }
+}

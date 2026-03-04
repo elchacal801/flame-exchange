@@ -1,0 +1,112 @@
+{
+    "id": "EP-0003",
+    "title": "SIM Swap to Crypto Exchange ATO",
+    "description": "Simulates a SIM swap attack chain targeting cryptocurrency exchange accounts in the crypto and banking sectors. The adversary harvests target credentials, social engineers the mobile carrier to execute a SIM swap, intercepts MFA codes to gain account access, then initiates large crypto withdrawals and tumbles proceeds through multiple wallets. This playbook validates detection coverage for account takeover and crypto laundering patterns across all CFPF phases.",
+    "author": "FLAME Project",
+    "date": "2026-03-04",
+    "target_threat_paths": [
+        "TP-0008",
+        "TP-0013"
+    ],
+    "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+    ],
+    "fraud_types": [
+        "account-takeover",
+        "crypto-laundering"
+    ],
+    "sectors": [
+        "crypto",
+        "banking"
+    ],
+    "prerequisites": {
+        "environment": "Test environment with mobile carrier SIM management simulation, cryptocurrency exchange platform (testnet), MFA verification systems, and blockchain transaction monitoring. Requires ability to simulate carrier-level SIM swap operations and crypto wallet interactions.",
+        "tools": [
+            "Mobile carrier SIM management simulator",
+            "Cryptocurrency exchange testnet account",
+            "MFA token interception simulator",
+            "Blockchain analytics platform",
+            "Credential verification test harness"
+        ],
+        "access_required": "Test-environment access to carrier SIM provisioning systems, crypto exchange account management, MFA verification workflows, and blockchain transaction monitoring dashboards."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Harvest Target Credentials and Personal Information",
+            "action": "Collect the target's email address, phone number, date of birth, and last four digits of SSN through a combination of data broker lookups, social media profiling, and credential dump searches. Identify which cryptocurrency exchanges the target uses by checking for account registration confirmations in leaked email databases or by probing exchange password reset flows.",
+            "automation": null,
+            "expected_result": "No direct detection expected at this stage on the fraud platform side. However, credential dump monitoring services should flag if the target's credentials appear in known breach databases. Exchange-side detection should log password reset probing attempts.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P1",
+            "title": "Identify Target's Mobile Carrier",
+            "action": "Determine the target's mobile carrier through phone number lookup services, carrier identification APIs, or social engineering the target directly. Gather additional carrier-specific account verification details such as account PIN, billing address, and recent payment amounts that will be needed to authenticate with the carrier's customer service.",
+            "automation": null,
+            "expected_result": "Carrier-side systems should log unusual account inquiry patterns. Phone number lookup activity against the target should be recorded for later correlation with the SIM swap event.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P2",
+            "title": "Social Engineer Carrier for SIM Swap",
+            "action": "Contact the target's mobile carrier through customer service channels (phone, chat, or in-store) and impersonate the account holder. Provide the gathered personal information to pass identity verification, then request a SIM swap to a new SIM card controlled by the adversary. If initial attempts fail, try alternative carrier support channels or attempt a port-out to a different carrier.",
+            "automation": null,
+            "expected_result": "Carrier change and authentication correlation detection should flag the SIM swap event. The SIM swap indicator chain should detect the rapid sequence of carrier authentication followed by SIM reassignment. Time-of-day anomalies should be noted if the swap occurs outside normal hours.",
+            "detection_rule_ref": "DL-0044"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P2",
+            "title": "Intercept MFA Codes",
+            "action": "With the SIM swap completed, trigger password reset and MFA verification flows on the target's cryptocurrency exchange account. Intercept SMS-based one-time passcodes delivered to the now-controlled phone number. Use the intercepted codes to reset the account password and disable or replace existing MFA methods with adversary-controlled authenticators.",
+            "automation": null,
+            "expected_result": "SIM swap indicator chain detection should correlate the recent SIM change with immediate MFA code requests. The exchange platform should flag password reset initiated from a new device immediately following a phone number change event. MFA method changes should trigger high-priority alerts.",
+            "detection_rule_ref": "DL-0047"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P3",
+            "title": "Access Crypto Exchange Account",
+            "action": "Log into the cryptocurrency exchange account using the newly set credentials from a device and IP address different from the account's historical access patterns. Review account balances, pending orders, and withdrawal limits. If withdrawal limits are insufficient, attempt to increase them using the compromised account's verification status. Add a new external wallet address as a withdrawal destination.",
+            "automation": null,
+            "expected_result": "New device detection should flag the first login from an unrecognized device. Geographic impossibility detection should trigger if the login location is inconsistent with the account's history. Adding a new withdrawal wallet address should generate a high-value configuration change alert.",
+            "detection_rule_ref": "DL-0045"
+        },
+        {
+            "step_number": 6,
+            "cfpf_phase": "P4",
+            "title": "Initiate Large Withdrawal",
+            "action": "Execute a high-value cryptocurrency withdrawal from the compromised exchange account to the adversary-controlled external wallet address. If the account balance exceeds single-withdrawal limits, execute multiple sequential withdrawals at the maximum allowed amount. Convert any non-liquid token positions to major cryptocurrencies (BTC, ETH) before withdrawing to facilitate subsequent laundering.",
+            "automation": null,
+            "expected_result": "High-value transaction alerts should fire on the withdrawal amount. New-device high-value transaction detection should flag the combination of first-time device access with large withdrawal. Crypto off-ramp detection should identify the pattern of converting positions and immediately withdrawing to an external wallet.",
+            "detection_rule_ref": "DL-0040"
+        },
+        {
+            "step_number": 7,
+            "cfpf_phase": "P5",
+            "title": "Tumble Crypto Through Multiple Wallets",
+            "action": "Route the withdrawn cryptocurrency through a series of intermediary wallets using mixing services, chain-hopping (cross-chain bridges), and decentralized exchanges to obscure the transaction trail. Split the total amount into varied denominations and send through at least 3-5 hops before consolidating into a final collection wallet. Convert a portion of the proceeds to privacy-focused cryptocurrencies (Monero, Zcash) to further complicate tracing.",
+            "automation": null,
+            "expected_result": "Blockchain analytics should flag interactions with known mixing services and cross-chain bridge contracts. Transaction pattern analysis should detect the characteristic splitting and recombination patterns of tumbling activity. On-chain alerts should identify transfers to wallets associated with privacy coin swap services.",
+            "detection_rule_ref": null
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": [
+            "DL-0040",
+            "DL-0044",
+            "DL-0045",
+            "DL-0047"
+        ],
+        "alerts_generated": "Carrier change and SIM swap correlation alerts during initial access; MFA interception and password reset alerts following SIM swap; new device and geographic impossibility alerts on exchange account login; high-value withdrawal alerts from compromised account on unrecognized device; crypto off-ramp and tumbling pattern alerts during monetization phase.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for SIM swap to crypto exchange account takeover. Validates carrier change detection at initial access (P2), MFA bypass and new device detection during positioning (P3), high-value transaction monitoring during execution (P4), and crypto laundering pattern detection during monetization (P5)."
+    }
+}

@@ -1,0 +1,104 @@
+{
+    "id": "EP-0004",
+    "title": "APP Fraud - Tech Support / Bank Impersonation",
+    "description": "Simulates an authorized push payment (APP) fraud scenario involving tech support and bank impersonation tactics in the banking and payments sectors. The adversary obtains victim contact details, initiates a vishing call impersonating bank fraud department staff, creates urgency around a fictitious security threat, and guides the victim to authorize real-time payments to a so-called safe account controlled by the adversary. This playbook validates detection coverage for impersonation-driven APP fraud across all CFPF phases.",
+    "author": "FLAME Project",
+    "date": "2026-03-04",
+    "target_threat_paths": [
+        "TP-0012",
+        "TP-0024"
+    ],
+    "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+    ],
+    "fraud_types": [
+        "authorized-push-payment",
+        "impersonation",
+        "vishing"
+    ],
+    "sectors": [
+        "banking",
+        "payments"
+    ],
+    "prerequisites": {
+        "environment": "Test environment with inbound call center systems, voice biometric analysis, real-time payment authorization workflows, and mule account monitoring. Requires ability to simulate inbound vishing calls and real-time payment flows.",
+        "tools": [
+            "Call center telephony platform (test mode)",
+            "Voice biometric analysis system",
+            "Real-time payment authorization system",
+            "Mule account monitoring dashboard",
+            "Caller ID spoofing simulator"
+        ],
+        "access_required": "Test-environment access to call center systems, payment authorization workflows, voice analytics platforms, and transaction monitoring dashboards. Ability to simulate spoofed caller ID and real-time payment processing."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Obtain Target Contact Info and Bank Details",
+            "action": "Gather the victim's phone number, full name, bank account details, and recent transaction history through data broker services, social media profiling, phishing, or compromised data sources. Identify the victim's primary banking institution and the type of accounts held. Prepare a convincing pretext narrative referencing recent legitimate transactions to establish credibility during the impersonation call.",
+            "automation": null,
+            "expected_result": "No direct detection expected at this reconnaissance stage. However, any anomalous data access patterns against customer information systems should be logged. If credential exposure is detected in breach monitoring, proactive customer alerts should be triggered.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Initiate Impersonation Call Claiming Fraud Alert",
+            "action": "Place a phone call to the victim using caller ID spoofing to display the bank's legitimate customer service number. Introduce yourself as a member of the bank's fraud prevention team and inform the victim that suspicious activity has been detected on their account. Reference specific recent transaction details gathered during reconnaissance to build credibility. Use professional banking terminology and follow standard bank greeting scripts.",
+            "automation": null,
+            "expected_result": "Voice biometric score anomaly detection should flag if the caller's voice does not match known bank employee profiles. Callback number mismatch detection should identify that the spoofed number does not match the actual originating number when the call metadata is analyzed.",
+            "detection_rule_ref": "DL-0051"
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P3",
+            "title": "Establish Urgency and Gain Trust",
+            "action": "Escalate the sense of urgency by claiming that the victim's account is being actively compromised and funds are at imminent risk. Offer to verify the victim's identity by asking them to confirm information the adversary already possesses, creating a false sense of bidirectional authentication. Instruct the victim that they must act immediately to protect their funds and that normal support channels are too slow for this emergency.",
+            "automation": null,
+            "expected_result": "Voice biometric anomaly detection should continue to flag the caller. Call pattern analysis should detect the unusually long call duration and the progression from alert notification to payment instruction within a single session, which deviates from legitimate bank fraud department protocols.",
+            "detection_rule_ref": "DL-0050"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P3",
+            "title": "Guide Victim to Safe Account",
+            "action": "Direct the victim to transfer their funds to a secure holding account that is purportedly managed by the bank's fraud department. Provide the adversary-controlled mule account details, framing it as a temporary safe account. Walk the victim through the payment initiation process step by step, maintaining the call throughout to prevent the victim from contacting the real bank or seeking independent verification.",
+            "automation": null,
+            "expected_result": "Real-time payment new payee detection should flag the addition of a previously unknown beneficiary during an active call session. The payment system should identify that the destination account is newly opened or has characteristics consistent with mule account patterns.",
+            "detection_rule_ref": "DL-0055"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P4",
+            "title": "Victim Authorizes Real-Time Payment",
+            "action": "Guide the victim through completing the real-time payment authorization, including any MFA challenges or confirmation screens. If the bank's fraud intervention system presents a warning or confirmation prompt, coach the victim to dismiss it by claiming it is part of the security process. Ensure the victim authorizes the maximum possible transfer amount in a single transaction, or if limits apply, execute multiple sequential transfers.",
+            "automation": null,
+            "expected_result": "Instant payment velocity spike detection should flag the high-value payment to a new payee. Real-time payment monitoring should trigger intervention warnings based on the combination of new payee, high value, and call-in-progress indicators. Sequential transfer patterns should trigger additional velocity alerts.",
+            "detection_rule_ref": "DL-0056"
+        },
+        {
+            "step_number": 6,
+            "cfpf_phase": "P5",
+            "title": "Rapidly Move Funds Through Mule Chain",
+            "action": "Upon receipt of the victim's payment into the initial mule account, immediately initiate a rapid series of fund movements through a chain of 3-5 mule accounts. Execute ATM withdrawals, purchase prepaid cards, and convert a portion to cryptocurrency at each stage of the chain. Complete all fund extraction within 2-4 hours before the victim realizes the deception and reports it to the bank.",
+            "automation": null,
+            "expected_result": "Mule account monitoring should detect the rapid inbound-to-outbound transfer pattern. ATM withdrawal velocity alerts should fire at each mule account. The full mule chain should be identified through cross-account correlation of rapid sequential transfers with matching amounts minus layering fees.",
+            "detection_rule_ref": "DL-0055"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": [
+            "DL-0050",
+            "DL-0051",
+            "DL-0055",
+            "DL-0056"
+        ],
+        "alerts_generated": "Voice biometric anomaly alerts on impersonation call; callback number mismatch alerts on spoofed caller ID; real-time payment new payee alerts when victim adds mule account; instant payment velocity spike alerts on high-value transfers; mule chain detection alerts during rapid fund layering across accounts.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for APP fraud via bank impersonation. Validates voice biometric and caller verification at initial access (P2), real-time payment controls and new payee detection during positioning and execution (P3-P4), and mule chain monitoring during monetization (P5)."
+    }
+}

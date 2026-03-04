@@ -1,0 +1,104 @@
+{
+    "id": "EP-0002",
+    "title": "BEC Wire Fraud",
+    "description": "Simulates a business email compromise (BEC) attack targeting wire transfer processes in banking and real-estate sectors. The adversary compromises a vendor email account, monitors communications for pending high-value transactions, then intercepts and redirects wire instructions through lookalike domains and fraudulent beneficiary accounts. This playbook validates detection coverage for BEC, wire fraud, and invoice fraud across all CFPF phases.",
+    "author": "FLAME Project",
+    "date": "2026-03-04",
+    "target_threat_paths": [
+        "TP-0002",
+        "TP-0006"
+    ],
+    "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+    ],
+    "fraud_types": [
+        "BEC",
+        "wire-fraud",
+        "invoice-fraud"
+    ],
+    "sectors": [
+        "banking",
+        "real-estate"
+    ],
+    "prerequisites": {
+        "environment": "Test environment with email gateway monitoring, wire transfer authorization systems, domain reputation checking, and beneficiary verification workflows. Requires the ability to simulate email compromise and domain registration.",
+        "tools": [
+            "Email security gateway (test mode)",
+            "Wire transfer authorization system",
+            "Domain reputation monitoring service",
+            "Beneficiary verification platform",
+            "Network traffic analyzer"
+        ],
+        "access_required": "Test-environment access to email systems, wire transfer approval workflows, and transaction monitoring dashboards. Ability to register test domains for lookalike simulation."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Identify Target Organization and Vendor Relationships",
+            "action": "Conduct open-source reconnaissance to identify the target organization's key financial contacts, vendor relationships, and pending transactions. Gather information from public filings, social media, press releases, and business registries to map the organization's payment workflows and identify high-value vendor relationships likely to involve wire transfers.",
+            "automation": null,
+            "expected_result": "No direct detection expected at this stage. However, any anomalous reconnaissance activity against corporate directories or unusual access to public-facing vendor portals should be logged for correlation with later stages.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Compromise Email via Phishing",
+            "action": "Send a targeted spear-phishing email to a vendor's accounts receivable or finance team member. The phishing email should mimic a legitimate business communication and direct the target to a credential-harvesting page. Upon successful credential capture, access the compromised email account and establish persistent access through an inbox forwarding rule or OAuth application consent.",
+            "automation": null,
+            "expected_result": "Email security gateway should flag the phishing email. Post-compromise, detection should identify new inbox forwarding rules, OAuth application grants, or suspicious login patterns from unfamiliar locations or devices on the vendor email account.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P3",
+            "title": "Monitor Email for Pending Transactions",
+            "action": "Using the compromised vendor email account, monitor incoming and outgoing communications to identify pending high-value transactions, invoice payment schedules, and wire transfer timelines. Search for keywords such as wire instructions, closing date, payment due, and invoice attached. Identify the specific transaction to intercept and note the expected payment amount and timing.",
+            "automation": null,
+            "expected_result": "Email monitoring rules should detect unusual search patterns or bulk email access from the compromised account. Anomalous mail client behavior such as accessing historical emails in bulk or creating keyword-based filters should trigger alerts.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P3",
+            "title": "Register Lookalike Domain",
+            "action": "Register a domain that closely resembles the target vendor's legitimate domain using common typosquatting techniques such as character substitution, addition, or homograph attacks. Configure email services on the lookalike domain to send and receive messages that appear to originate from the legitimate vendor. Prepare fraudulent wire instruction documents that mirror the vendor's standard invoice format.",
+            "automation": null,
+            "expected_result": "Domain reputation and monitoring services should flag newly registered domains that closely resemble known vendor domains. Beneficiary name mismatch detection should identify discrepancies between the expected vendor entity and the new wire instruction details.",
+            "detection_rule_ref": "DL-0024"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P4",
+            "title": "Send Fraudulent Wire Instructions",
+            "action": "At the optimal moment before the legitimate payment is due, send an email from the lookalike domain to the target organization's accounts payable team. The email should contain updated wire instructions directing payment to a mule account controlled by the adversary. Include urgency language referencing the pending transaction deadline and request confirmation of receipt. Simultaneously, use the compromised vendor email to delete or delay the legitimate vendor's actual wire instructions.",
+            "automation": null,
+            "expected_result": "Beneficiary change velocity detection should flag the sudden change in wire instructions for an established vendor relationship. Wire after-hours detection should trigger if the fraudulent instructions are sent outside normal business hours. Beneficiary name mismatch detection should identify that the new receiving account does not match the expected vendor entity.",
+            "detection_rule_ref": "DL-0019"
+        },
+        {
+            "step_number": 6,
+            "cfpf_phase": "P5",
+            "title": "Transfer Funds Through Layering Accounts",
+            "action": "Upon successful receipt of the wire transfer into the initial mule account, immediately initiate a series of rapid fund movements to layer the stolen proceeds. Transfer funds through multiple intermediary accounts across different financial institutions, converting a portion to cryptocurrency and withdrawing the remainder through ATMs and prepaid card loads. Execute all layering movements within a 24-48 hour window before the fraud is discovered.",
+            "automation": null,
+            "expected_result": "Rapid outbound transfers after inbound wire should trigger layering alerts. Wire transfer monitoring should flag the velocity of sequential transfers from the mule account. After-hours wire activity and transfers to high-risk jurisdictions should generate additional alerts.",
+            "detection_rule_ref": "DL-0031"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": [
+            "DL-0019",
+            "DL-0024",
+            "DL-0030",
+            "DL-0031"
+        ],
+        "alerts_generated": "Email security alerts on phishing attempt and compromised account behavior; domain reputation alerts on newly registered lookalike domain; beneficiary change velocity alerts when wire instructions are modified for established vendor; beneficiary name mismatch alerts on fraudulent receiving account; after-hours wire transfer alerts; rapid outbound transfer alerts indicating fund layering activity.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for BEC wire fraud schemes. Validates email compromise detection at initial access (P2), domain and beneficiary monitoring during positioning (P3), wire instruction fraud detection during execution (P4), and fund layering detection during monetization (P5)."
+    }
+}
