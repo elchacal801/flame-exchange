@@ -316,5 +316,23 @@
     "content": "index=financial_aid sourcetype=disbursements\n| stats count AS student_count, sum(amount) AS total_disbursed, values(student_id) AS students BY bank_routing_number, bank_account_number\n| where student_count > 1\n| eval risk_level = case(student_count > 5, \"CRITICAL\", student_count > 2, \"HIGH\", 1=1, \"MEDIUM\")\n| table bank_routing_number, bank_account_number, student_count, total_disbursed, students, risk_level\n| sort - student_count",
     "title": "Splunk — Disbursement Account Anomaly Detection (Phase 3-4)",
     "tp_id": "TP-0033"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    a.applicant_id,\n    a.full_name,\n    a.address_country,\n    a.education_country,\n    a.education_institution,\n    a.linkedin_created_date,\n    a.github_created_date,\n    bg.ssn_first_issued_date,\n    bg.credit_file_depth\nFROM applicants a\nLEFT JOIN background_checks bg ON a.applicant_id = bg.applicant_id\nWHERE a.address_country = 'US'\n  AND a.education_country NOT IN ('US', 'CA', 'GB', 'AU', 'NZ', 'IE')\n  AND (\n    bg.credit_file_depth < 3\n    OR bg.ssn_first_issued_date > CURRENT_DATE - INTERVAL '5 years'\n    OR a.linkedin_created_date > CURRENT_DATE - INTERVAL '12 months'\n  )\nORDER BY a.application_date DESC;",
+    "title": "SQL — DPRK IT Worker Resume Red Flag Detection (Phase 1-2)",
+    "tp_id": "TP-0034"
+  },
+  {
+    "type": "spl",
+    "content": "index=vpn_auth sourcetype=corporate_vpn\n| eval hour_local = strftime(_time, \"%H\")\n| stats count AS login_count,\n        values(src_ip) AS source_ips,\n        dc(src_ip) AS unique_ips,\n        earliest(_time) AS first_login,\n        latest(_time) AS last_login\n    BY user, date_wday\n| where unique_ips > 3 OR (hour_local < 5 AND hour_local > 1)\n| lookup ip_reputation src_ip OUTPUT ip_type, vpn_provider\n| where ip_type IN (\"residential_proxy\", \"vpn\", \"datacenter\")\n    OR vpn_provider = \"Astrill\"\n| table user, source_ips, unique_ips, ip_type, vpn_provider, login_count\n| sort - unique_ips",
+    "title": "Splunk — VPN/Proxy Anomaly Detection for Remote Workers (Phase 3)",
+    "tp_id": "TP-0034"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Bulk Code Repository Clone Within First Week\nstatus: experimental\ndescription: Detects a new employee cloning multiple code repositories within their first 7 days, a pattern associated with DPRK IT worker data exfiltration.\nlogsource:\n    product: git_platform\n    service: audit_log\ndetection:\n    selection:\n        action: \"repo.clone\"\n        actor_tenure_days|lte: 7\n    aggregation:\n        count|gte: 5\n        groupby: actor\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: high\ntags:\n    - fraud.dprk_it_worker\n    - cfpf.phase4.execution\n    - attack.t1005",
+    "title": "Sigma — Bulk Code Repository Clone Detection (Phase 4)",
+    "tp_id": "TP-0034"
   }
 ]

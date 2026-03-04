@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type IN ("*extortion_communication*", "*data_leak_detected*", "*proprietary_code_public*") actor_employment_status="terminated" actor_termination_days<=90

@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-04T02:58:06.215564+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "785dad0d-0f29-536e-b7d2-816b8db1844f",
+    "dl_id": "DL-0073",
+    "title": "Salary Direct Deposit Rapid Cryptocurrency Conversion",
+    "status": "experimental",
+    "description": "Detects patterns where salary direct deposit payments are rapidly converted to cryptocurrency (USDT, USDC, BTC) within 48 hours of deposit, particularly when the receiving account was recently opened or when multiple employee accounts show the same conversion pattern through the same exchange or payment processor. DPRK IT workers convert salary to cryptocurrency for transfer to regime-controlled wallets, often using daily conversion limits to avoid AML alerts.\n",
+    "cfpf_phase": "P5",
+    "level": "medium",
+    "detection": {
+      "selection_deposit": {
+        "transaction_type": "ACH_IN",
+        "transaction_category": "payroll"
+      },
+      "selection_conversion": {
+        "outbound_type|contains": [
+          "crypto_exchange",
+          "p2p_crypto",
+          "wire_to_exchange"
+        ],
+        "time_since_deposit_hours|lte": 48
+      },
+      "condition": "selection_deposit | near selection_conversion"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0034"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "dprk-it-worker-fraud"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase5.monetization",
+      "flame.crypto",
+      "flame.dprk"
+    ],
+    "falsepositives": [
+      "Employees who routinely invest a portion of salary in cryptocurrency through automated transfers",
+      "Cryptocurrency industry employees whose compensation is partially crypto-denominated"
+    ]
+  }
+}

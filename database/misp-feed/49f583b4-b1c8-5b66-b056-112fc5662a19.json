@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "49f583b4-b1c8-5b66-b056-112fc5662a19",
+    "info": "FLAME: DPRK State-Sponsored IT Worker Fraud & Data Extortion",
+    "date": "2026-03-03",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "20877cfb-b59b-53b7-a116-0d244bfcf022",
+        "type": "text",
+        "category": "Other",
+        "value": "dprk-it-worker-fraud",
+        "comment": "Fraud type for TP-0034"
+      },
+      {
+        "uuid": "3b037a57-44ad-5ee9-8631-16a243cbf603",
+        "type": "text",
+        "category": "Other",
+        "value": "employment-fraud",
+        "comment": "Fraud type for TP-0034"
+      },
+      {
+        "uuid": "5dd4a227-5ccd-5051-8bbc-430310b7db26",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0034"
+      },
+      {
+        "uuid": "caaaf2d0-7983-57f3-af89-31ef7b67f8de",
+        "type": "text",
+        "category": "Other",
+        "value": "data-theft",
+        "comment": "Fraud type for TP-0034"
+      },
+      {
+        "uuid": "5bfe03d7-7e29-53c7-8f60-5ab929b7c12c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0034"
+      },
+      {
+        "uuid": "66b27f31-c2bf-50a4-a9e8-ac03109c28d2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0034"
+      },
+      {
+        "uuid": "cd4bb2ae-632f-509e-877c-bf938b312c6f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0034"
+      },
+      {
+        "uuid": "21b7fe65-9a0e-5c9a-9333-69349604f74a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0034"
+      },
+      {
+        "uuid": "0da8bd2f-0cbd-5a2d-9ecb-2f8be420069e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0034"
+      }
+    ]
+  }
+}

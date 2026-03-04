@@ -1,0 +1,43 @@
+title: Post-Termination Data Extortion Indicator
+id: cf998763-3f4d-5a04-a17f-740875af91ad
+status: experimental
+description: >
+  Detects indicators of post-termination data extortion, where a recently
+  terminated or resigned employee communicates ransom demands referencing
+  specific internal proprietary code, documents, or trade secrets. DPRK IT
+  workers have escalated to this tactic since mid-2024, threatening to publish
+  exfiltrated source code on public repositories or sell proprietary data unless
+  payment is made. Indicators include communication from personal channels
+  containing references to internal systems, and the appearance of company code
+  on public GitHub repositories created by former employee-linked accounts.
+references:
+  - https://www.ic3.gov/PSA/2025/PSA250123
+  - https://cloud.google.com/blog/topics/threat-intelligence/dprk-it-workers-expanding-scope-scale/
+threat_paths:
+  - TP-0034
+cfpf_phase: P5
+fraud_types:
+  - dprk-it-worker-fraud
+  - data-theft
+logsource:
+  product: security_operations
+  service: incident_management
+detection:
+  selection:
+    event_type|contains:
+      - 'extortion_communication'
+      - 'data_leak_detected'
+      - 'proprietary_code_public'
+    actor_employment_status: 'terminated'
+    actor_termination_days|lte: 90
+  condition: selection
+falsepositives:
+  - Whistleblower disclosures through proper legal channels
+  - Former employee academic publications referencing general (non-proprietary) work
+level: critical
+tags:
+  - cfpf.phase5.monetization
+  - attack.t1657
+  - flame.dprk
+  - flame.insider_threat
+  - flame.data_extortion

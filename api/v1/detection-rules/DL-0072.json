@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-04T02:58:06.212008+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "046b411d-2570-54ed-a6e4-4860f17817f9",
+    "dl_id": "DL-0072",
+    "title": "Credential Store Access Anomaly During Onboarding",
+    "status": "experimental",
+    "description": "Detects new employees accessing browser credential stores, password managers, API key management systems, or SSO session token stores at rates significantly above peer baselines during the first 14 days of employment. DPRK IT workers harvest credentials, session cookies, and API keys early in their tenure for exfiltration to DPRK cyber units and as leverage for post-termination extortion.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type|contains": [
+          "credential_store_access",
+          "password_manager_export",
+          "session_token_read",
+          "api_key_create"
+        ],
+        "user_tenure_days|lte": 14
+      },
+      "filter_volume": {
+        "credential_access_count_24h|gte": 10
+      },
+      "condition": "selection and filter_volume"
+    },
+    "logsource": {
+      "product": "endpoint",
+      "service": "edr"
+    },
+    "threat_path_ids": [
+      "TP-0034"
+    ],
+    "fraud_types": [
+      "data-theft",
+      "dprk-it-worker-fraud"
+    ],
+    "tags": [
+      "attack.t1589.001",
+      "cfpf.phase3.positioning",
+      "flame.dprk",
+      "flame.insider_threat"
+    ],
+    "falsepositives": [
+      "Developers configuring CI/CD pipelines that require multiple API keys during initial setup",
+      "Security engineers performing credential audits as part of onboarding tasks"
+    ]
+  }
+}

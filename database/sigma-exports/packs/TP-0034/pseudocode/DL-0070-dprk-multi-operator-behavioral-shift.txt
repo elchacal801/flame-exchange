@@ -1,0 +1,49 @@
+# ======================================================================
+# FLAME Detection Rule: Multi-Operator Behavioral Shift — Timezone and Communication Anomaly
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P3
+# Threat Paths: TP-0034
+#
+# Description:
+#   Detects behavioral patterns suggesting multiple operators are sharing a
+#   single employee identity. Indicators include login activity spanning
+#   incompatible timezones within a single day, significant shifts in
+#   communication style or vocabulary between time windows, and device
+#   fingerprint changes that correlate with timezone transitions. DPRK IT
+#   workers often operate in shifts from different locations using the same
+#   stolen identity.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: identity_platform
+#   service: authentication
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     event_type: user_login
+#   timeframe: 24h
+#   condition: selection | count(distinct src_timezone) by user_id > 2
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Employees who travel frequently across timezone boundaries
+#   - Employees using multiple devices across home and office locations
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

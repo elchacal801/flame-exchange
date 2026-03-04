@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-04T02:58:06.208402+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "7ea01858-c819-5131-a895-ff9465384ef7",
+    "dl_id": "DL-0071",
+    "title": "Bulk Code Repository Clone by New Employee",
+    "status": "experimental",
+    "description": "Detects a new employee (within first 14 days of onboarding) cloning or downloading multiple code repositories, especially repositories outside their assigned team or project scope. DPRK IT workers frequently begin exfiltrating source code within hours of gaining access, cloning entire organizational repositories to personal GitHub accounts or external cloud storage.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "action|contains": [
+          "repo.clone",
+          "repo.download",
+          "repo.fork"
+        ],
+        "actor_account_age_days|lte": 14
+      },
+      "filter_volume": {
+        "repos_cloned_24h|gte": 5
+      },
+      "filter_out_of_scope": {
+        "repo_team_match": false
+      },
+      "condition": "selection and (filter_volume or filter_out_of_scope)"
+    },
+    "logsource": {
+      "product": "git_platform",
+      "service": "audit_log"
+    },
+    "threat_path_ids": [
+      "TP-0034"
+    ],
+    "fraud_types": [
+      "data-theft",
+      "dprk-it-worker-fraud"
+    ],
+    "tags": [
+      "attack.t1005",
+      "attack.t1020",
+      "cfpf.phase4.execution",
+      "flame.dprk",
+      "flame.insider_threat"
+    ],
+    "falsepositives": [
+      "New employees in platform engineering or DevOps roles who legitimately need broad repository access",
+      "Engineers onboarding onto large monorepo projects that require full clone"
+    ]
+  }
+}

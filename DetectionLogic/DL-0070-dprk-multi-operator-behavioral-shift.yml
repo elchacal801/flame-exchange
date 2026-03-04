@@ -1,0 +1,40 @@
+title: Multi-Operator Behavioral Shift — Timezone and Communication Anomaly
+id: 13582ee1-68ba-5907-8c44-e450b6837ff7
+status: experimental
+description: >
+  Detects behavioral patterns suggesting multiple operators are sharing a single
+  employee identity. Indicators include login activity spanning incompatible
+  timezones within a single day, significant shifts in communication style or
+  vocabulary between time windows, and device fingerprint changes that correlate
+  with timezone transitions. DPRK IT workers often operate in shifts from
+  different locations using the same stolen identity.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/dprk-it-workers-expanding-scope-scale/
+  - https://www.ic3.gov/PSA/2025/PSA250123
+threat_paths:
+  - TP-0034
+cfpf_phase: P3
+fraud_types:
+  - dprk-it-worker-fraud
+  - identity-theft
+logsource:
+  product: identity_platform
+  service: authentication
+detection:
+  selection:
+    event_type: 'user_login'
+  timeframe: 24h
+  condition: selection | count(distinct src_timezone) by user_id > 2
+
+  # Correlation: Also flag when device fingerprints change within the same day
+  # for the same user, suggesting different physical endpoints.
+falsepositives:
+  - Employees who travel frequently across timezone boundaries
+  - Employees using multiple devices across home and office locations
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - attack.t1078
+  - flame.dprk
+  - flame.insider_threat
+  - flame.shared

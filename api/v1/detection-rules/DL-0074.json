@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-04T02:58:06.218828+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "cf998763-3f4d-5a04-a17f-740875af91ad",
+    "dl_id": "DL-0074",
+    "title": "Post-Termination Data Extortion Indicator",
+    "status": "experimental",
+    "description": "Detects indicators of post-termination data extortion, where a recently terminated or resigned employee communicates ransom demands referencing specific internal proprietary code, documents, or trade secrets. DPRK IT workers have escalated to this tactic since mid-2024, threatening to publish exfiltrated source code on public repositories or sell proprietary data unless payment is made. Indicators include communication from personal channels containing references to internal systems, and the appearance of company code on public GitHub repositories created by former employee-linked accounts.\n",
+    "cfpf_phase": "P5",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "event_type|contains": [
+          "extortion_communication",
+          "data_leak_detected",
+          "proprietary_code_public"
+        ],
+        "actor_employment_status": "terminated",
+        "actor_termination_days|lte": 90
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "security_operations",
+      "service": "incident_management"
+    },
+    "threat_path_ids": [
+      "TP-0034"
+    ],
+    "fraud_types": [
+      "data-theft",
+      "dprk-it-worker-fraud"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase5.monetization",
+      "flame.data_extortion",
+      "flame.dprk",
+      "flame.insider_threat"
+    ],
+    "falsepositives": [
+      "Whistleblower disclosures through proper legal channels",
+      "Former employee academic publications referencing general (non-proprietary) work"
+    ]
+  }
+}

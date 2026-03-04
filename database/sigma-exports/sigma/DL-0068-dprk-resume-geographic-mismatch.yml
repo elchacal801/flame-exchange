@@ -1,0 +1,49 @@
+title: DPRK IT Worker Resume Geographic Mismatch
+id: 0b5d4857-f3cb-54d9-a02a-ded1531410b5
+status: experimental
+description: >
+  Detects job applicants whose resume combines a U.S. residential address with
+  education credentials from non-North American institutions (Singapore, Japan,
+  Hong Kong, China, South Korea). This pattern is a key DPRK IT worker indicator
+  documented by FBI IC3 and DOJ enforcement actions. Legitimate applicants with
+  this profile exist, but the combination with thin credit files or recently
+  created LinkedIn profiles significantly elevates risk.
+references:
+  - https://www.ic3.gov/PSA/2025/PSA250723-4
+  - https://www.fbi.gov/investigate/cyber/alerts/2025/north-korean-it-worker-threats-to-u-s-businesses
+threat_paths:
+  - TP-0034
+cfpf_phase: P2
+fraud_types:
+  - dprk-it-worker-fraud
+  - employment-fraud
+  - identity-theft
+logsource:
+  product: hr_platform
+  service: applicant_tracking
+detection:
+  selection:
+    event_type: 'application_submitted'
+    address_country: 'US'
+  filter_education:
+    education_country|contains:
+      - 'SG'
+      - 'JP'
+      - 'HK'
+      - 'CN'
+      - 'KR'
+      - 'IN'
+      - 'MY'
+  filter_thin_profile:
+    linkedin_age_days|lt: 365
+  condition: selection and filter_education and filter_thin_profile
+falsepositives:
+  - Legitimate international students who studied abroad and relocated to the U.S.
+  - H-1B visa holders with non-North American education backgrounds
+  - Recent immigrants with legitimately thin credit histories
+level: medium
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1589.001
+  - flame.dprk
+  - flame.employment

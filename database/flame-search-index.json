@@ -198,6 +198,12 @@
     "text": "Organized fraud networks exploit the open-enrollment admissions model of community colleges and universities to create thousands of \"ghost student\" identities — synthetic or stolen identities enrolled solely to siphon federal financial aid (primarily Pell Grants via FAFSA). Bot-driven application systems submit fraudulent enrollment applications at industrial scale, with California community colleges alone flagging 31-34% of applications as potentially fraudulent. Equifax reported preventing $180M in ghost student fraud in a single year, and nationwide detection systems have prevented over $1B in fraudulent disbursements. The monetization path follows Pell Grant disbursement to student accounts, with funds immediately withdrawn or transferred before the institution can detect non-attendance, creating a systematic drain on federal education funding that simultaneously inflates enrollment figures and degrades institutional resources.\n\n---"
   },
   {
+    "id": "TP-0034",
+    "type": "threat_path",
+    "title": "DPRK State-Sponsored IT Worker Fraud & Data Extortion",
+    "text": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use stolen or synthetic American identities to fraudulently obtain remote employment at Western technology companies. The program generates revenue for the North Korean regime in violation of international sanctions, while simultaneously creating insider threat vectors for credential theft, source code exfiltration, and post-termination data extortion. The DOJ has documented 136+ compromised U.S. companies with $2.2M+ in direct salary revenue from a single case, while CrowdStrike has observed 304 incidents. The threat has escalated since mid-2024 from pure salary extraction to active data exfiltration and ransom demands, representing a convergence of state-sponsored espionage, employment fraud, and cyber extortion. The operation relies on organized facilitator networks spanning the U.S. and Ukraine that provide stolen identities, proxy laptop hosting at U.S. addresses, and financial laundering infrastructure.\n\n---"
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -600,6 +606,48 @@
     "text": "Detects excessive use of promotional codes, referral bonuses, or coupon offers from accounts that share common attributes such as device fingerprint, IP address, payment method, or shipping address. This pattern indicates promo abuse rings that create multiple accounts to exploit new-customer or referral promotions repeatedly, often using synthetic or stolen identities.\n"
   },
   {
+    "id": "DL-0068",
+    "type": "detection_rule",
+    "title": "DPRK IT Worker Resume Geographic Mismatch",
+    "text": "Detects job applicants whose resume combines a U.S. residential address with education credentials from non-North American institutions (Singapore, Japan, Hong Kong, China, South Korea). This pattern is a key DPRK IT worker indicator documented by FBI IC3 and DOJ enforcement actions. Legitimate applicants with this profile exist, but the combination with thin credit files or recently created LinkedIn profiles significantly elevates risk.\n"
+  },
+  {
+    "id": "DL-0069",
+    "type": "detection_rule",
+    "title": "VPN/Proxy Login Anomaly — Astrill or Residential Proxy",
+    "text": "Detects corporate VPN authentication events originating from known Astrill VPN infrastructure, residential proxy services, or connection patterns indicating VPN-over-VPN layering. DPRK IT workers route connections through Astrill VPN to U.S.-based proxy laptops before connecting to corporate infrastructure, creating a characteristic multi-hop pattern with elevated latency and IP reputation indicators.\n"
+  },
+  {
+    "id": "DL-0070",
+    "type": "detection_rule",
+    "title": "Multi-Operator Behavioral Shift — Timezone and Communication Anomaly",
+    "text": "Detects behavioral patterns suggesting multiple operators are sharing a single employee identity. Indicators include login activity spanning incompatible timezones within a single day, significant shifts in communication style or vocabulary between time windows, and device fingerprint changes that correlate with timezone transitions. DPRK IT workers often operate in shifts from different locations using the same stolen identity.\n"
+  },
+  {
+    "id": "DL-0071",
+    "type": "detection_rule",
+    "title": "Bulk Code Repository Clone by New Employee",
+    "text": "Detects a new employee (within first 14 days of onboarding) cloning or downloading multiple code repositories, especially repositories outside their assigned team or project scope. DPRK IT workers frequently begin exfiltrating source code within hours of gaining access, cloning entire organizational repositories to personal GitHub accounts or external cloud storage.\n"
+  },
+  {
+    "id": "DL-0072",
+    "type": "detection_rule",
+    "title": "Credential Store Access Anomaly During Onboarding",
+    "text": "Detects new employees accessing browser credential stores, password managers, API key management systems, or SSO session token stores at rates significantly above peer baselines during the first 14 days of employment. DPRK IT workers harvest credentials, session cookies, and API keys early in their tenure for exfiltration to DPRK cyber units and as leverage for post-termination extortion.\n"
+  },
+  {
+    "id": "DL-0073",
+    "type": "detection_rule",
+    "title": "Salary Direct Deposit Rapid Cryptocurrency Conversion",
+    "text": "Detects patterns where salary direct deposit payments are rapidly converted to cryptocurrency (USDT, USDC, BTC) within 48 hours of deposit, particularly when the receiving account was recently opened or when multiple employee accounts show the same conversion pattern through the same exchange or payment processor. DPRK IT workers convert salary to cryptocurrency for transfer to regime-controlled wallets, often using daily conversion limits to avoid AML alerts.\n"
+  },
+  {
+    "id": "DL-0074",
+    "type": "detection_rule",
+    "title": "Post-Termination Data Extortion Indicator",
+    "text": "Detects indicators of post-termination data extortion, where a recently terminated or resigned employee communicates ransom demands referencing specific internal proprietary code, documents, or trade secrets. DPRK IT workers have escalated to this tactic since mid-2024, threatening to publish exfiltrated source code on public repositories or sell proprietary data unless payment is made. Indicators include communication from personal channels containing references to internal systems, and the appearance of company code on public GitHub repositories created by former employee-linked accounts.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",
@@ -669,6 +717,12 @@
     "id": "BL-0012",
     "type": "baseline",
     "title": "Wire Transfer Beneficiary Novelty Baseline",
+    "text": ""
+  },
+  {
+    "id": "BL-0013",
+    "type": "baseline",
+    "title": "DPRK IT Worker Employment Indicators Baseline",
     "text": ""
   }
 ]

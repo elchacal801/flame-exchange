@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+event_type =~ "vpn_auth_success" and (src_ip_vpn_provider =~ "Astrill" or src_ip_type =~ "residential_proxy" or (connection_hops >= 3 and (src_ip_type contains "vpn" or src_ip_type contains "proxy")))

@@ -972,7 +972,7 @@
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
                 title: 'MISP Galaxy & Feed',
-                desc: 'Subscribable MISP galaxy with 33 cluster entries and per-TP event feed'
+                desc: 'Subscribable MISP galaxy with 34 cluster entries and per-TP event feed'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><line x1="8" y1="12" x2="16" y2="5"/><line x1="8" y1="12" x2="16" y2="19"/></svg>',
@@ -1040,6 +1040,7 @@
         html += '<h3>Recent Milestones</h3>';
         html += '<div class="about-changelog">';
         var changelog = [
+            { date: '2026-03', text: 'TP-0034 DPRK IT Worker Fraud: 7 detection rules, baseline profile, full CFPF mapping' },
             { date: '2026-03', text: 'TAXII collections populated with course-of-action and baseline SDOs' },
             { date: '2026-03', text: 'Sigma pseudocode fallback for aggregation/correlation rules' },
             { date: '2026-03', text: 'STIX 2.1 fraud extension with 4 custom SDOs and TAXII 2.1 endpoints' },

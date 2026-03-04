@@ -20,6 +20,11 @@
     --color-accent: #C0272D;
     --color-accent-glow: rgba(192, 39, 45, 0.08);
     --color-accent-dim: #8B1A1F;
+
+    /* Scrollbar */
+    --scrollbar-track: rgba(255, 255, 255, 0.03);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.10);
+    --scrollbar-thumb-hover: rgba(255, 255, 255, 0.18);
     --color-p1: #f97316;
     --color-p2: #ef4444;
     --color-p3: #a855f7;
@@ -65,6 +70,46 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+/* ---------------------------------------------------------------
+   Dark Scrollbars
+   --------------------------------------------------------------- */
+
+/* Standard (Firefox, Chrome 121+) */
+html,
+.modal-content,
+.modal-body,
+.filter-panel,
+.detail-body,
+.about-content,
+pre,
+code {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.10) rgba(255, 255, 255, 0.03);
+}
+
+/* WebKit fallback (Chrome < 121, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.10);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(255, 255, 255, 0.03);
 }
 
 html {

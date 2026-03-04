@@ -1548,6 +1548,89 @@
           "type": "uses"
         }
       ]
+    },
+    {
+      "value": "DPRK State-Sponsored IT Worker Fraud & Data Extortion",
+      "description": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers \u2014 often operating from China, Russia, and Southeast Asia \u2014 use sto...",
+      "uuid": "dce6efbe-27f4-5a41-ad03-28073e9df3c4",
+      "meta": {
+        "fraud_types": [
+          "dprk-it-worker-fraud",
+          "employment-fraud",
+          "identity-theft",
+          "data-theft"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 85,
+        "refs": [
+          "https://elchacal801.github.io/flame-fraud/?tp=TP-0034"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4b4350c1-4b4d-5a5a-a26a-6ee713521c9a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "b71f035a-ae68-5d8f-a6ef-a27a0a22fe36",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "7a350fa0-fad1-5b76-b46c-19ef677c9f3f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "d4cf01f7-2aba-5852-a5a1-87a24de54427",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-03T05:15:08.434467+00:00",
-    "total": 33
+    "generated_at": "2026-03-04T02:58:05.664192+00:00",
+    "total": 34
   },
   "data": [
     {
@@ -3469,6 +3469,135 @@
         }
       ],
       "evidence_count": 0
+    },
+    {
+      "id": "TP-0034",
+      "title": "DPRK State-Sponsored IT Worker Fraud & Data Extortion",
+      "category": "ThreatPath",
+      "date": "2026-03-03",
+      "author": "FLAME Project",
+      "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne",
+      "tlp": "WHITE",
+      "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use stolen or synthetic American identities to fraudulently obtain remote employment at Western technology companies. The program generates revenue for the North Korean regime in violation of international sanctions, while simultaneously creating insider threat vectors for credential theft, source code exfiltration, and post-termination data extortion. The DOJ has documented 136+ compromised U.S. companies with $2.2M+ in direct salary revenue from a single case, while CrowdStrike has observed 304 incidents. The threat has escalated since mid-2024 from pure salary extraction to active data exfiltration and ransom demands, representing a convergence of state-sponsored espionage, employment fraud, and cyber extortion. The operation relies on organized facilitator networks spanning the U.S. and Ukraine that provide stolen identities, proxy laptop hosting at U.S. addresses, and financial laundering infrastructure.\n\n---",
+      "confidence_score": 85,
+      "source_reliability": "A",
+      "info_credibility": 1,
+      "sectors": [
+        "technology",
+        "banking",
+        "crypto",
+        "healthcare",
+        "government",
+        "employment"
+      ],
+      "fraud_types": [
+        "dprk-it-worker-fraud",
+        "employment-fraud",
+        "identity-theft",
+        "data-theft"
+      ],
+      "tags": [
+        "dprk",
+        "north-korea",
+        "state-sponsored",
+        "it-worker",
+        "employment-fraud",
+        "sanctions-evasion",
+        "data-extortion",
+        "remote-work",
+        "identity-theft",
+        "code-exfiltration",
+        "salary-diversion",
+        "facilitator-network"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1589.001",
+        "T1566.001",
+        "T1078",
+        "T1005",
+        "T1020",
+        "T1587.001",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT005.001",
+        "FT007.009",
+        "FT018",
+        "FT020",
+        "FT021",
+        "FT031",
+        "FT052.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Credential Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "regulatory_refs": [
+        "REG-OFAC-SDN",
+        "REG-FINCEN-CDD",
+        "REG-FBI-IC3"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 4",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0068",
+        "DL-0069",
+        "DL-0070",
+        "DL-0071",
+        "DL-0072",
+        "DL-0073",
+        "DL-0074"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0015",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0019",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "feeds-into"
+        }
+      ],
+      "evidence_count": 2
     }
   ]
 }

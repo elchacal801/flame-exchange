@@ -1,12 +1,12 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-03T05:15:08.986213+00:00",
+    "generated_at": "2026-03-04T02:58:06.234140+00:00",
     "total": 1
   },
   "data": {
-    "total": 33,
-    "fraudTypes": 50,
+    "total": 34,
+    "fraudTypes": 52,
     "fraudTypeList": [
       "BEC",
       "account-takeover",
@@ -27,6 +27,8 @@
       "deepfake-fraud",
       "disability-fraud",
       "documentary-fraud",
+      "dprk-it-worker-fraud",
+      "employment-fraud",
       "first-party-fraud",
       "fraudulent-claim",
       "ghost-student-fraud",
@@ -59,7 +61,7 @@
       "vishing",
       "wire-fraud"
     ],
-    "sectors": 15,
+    "sectors": 16,
     "sectorList": [
       "banking",
       "credit-union",
@@ -75,14 +77,15 @@
       "payments",
       "retail",
       "staffing",
+      "technology",
       "web3"
     ],
     "phaseCoverage": {
-      "P1": 32,
-      "P2": 30,
-      "P3": 33,
-      "P4": 32,
-      "P5": 32
+      "P1": 33,
+      "P2": 31,
+      "P3": 34,
+      "P4": 33,
+      "P5": 33
     },
     "topTags": [
       {
@@ -142,6 +145,10 @@
         "count": 2
       },
       {
+        "tag": "employment-fraud",
+        "count": 2
+      },
+      {
         "tag": "genai",
         "count": 2
       },
@@ -159,10 +166,6 @@
       },
       {
         "tag": "phantom-billing",
-        "count": 2
-      },
-      {
-        "tag": "tech-support-scam",
         "count": 2
       }
     ],
@@ -323,13 +326,13 @@
       {
         "fraud_type": "data-theft",
         "phases": {
-          "P1": 1,
-          "P2": 1,
-          "P3": 1,
-          "P4": 1,
-          "P5": 1
+          "P1": 2,
+          "P2": 2,
+          "P3": 2,
+          "P4": 2,
+          "P5": 2
         },
-        "total_tps": 1
+        "total_tps": 2
       },
       {
         "fraud_type": "deepfake",
@@ -370,6 +373,28 @@
           "P1": 1,
           "P2": 1,
           "P3": 1
+        },
+        "total_tps": 1
+      },
+      {
+        "fraud_type": "dprk-it-worker-fraud",
+        "phases": {
+          "P1": 1,
+          "P2": 1,
+          "P3": 1,
+          "P4": 1,
+          "P5": 1
+        },
+        "total_tps": 1
+      },
+      {
+        "fraud_type": "employment-fraud",
+        "phases": {
+          "P1": 1,
+          "P2": 1,
+          "P3": 1,
+          "P4": 1,
+          "P5": 1
         },
         "total_tps": 1
       },
@@ -420,13 +445,13 @@
       {
         "fraud_type": "identity-theft",
         "phases": {
-          "P1": 5,
-          "P2": 4,
-          "P3": 5,
-          "P4": 4,
-          "P5": 4
+          "P1": 6,
+          "P2": 5,
+          "P3": 6,
+          "P4": 5,
+          "P5": 5
         },
-        "total_tps": 5
+        "total_tps": 6
       },
       {
         "fraud_type": "impersonation",
@@ -725,8 +750,8 @@
         "ofac": 18704,
         "sec": 100
       },
-      "lastUpdated": "2026-03-03"
+      "lastUpdated": "2026-03-04"
     },
-    "generatedAt": "2026-03-03T05:15:08.378721+00:00"
+    "generatedAt": "2026-03-04T02:58:05.609884+00:00"
   }
 }

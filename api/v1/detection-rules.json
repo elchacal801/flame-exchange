@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-03T05:15:08.713059+00:00",
-    "total": 67
+    "generated_at": "2026-03-04T02:58:05.943744+00:00",
+    "total": 74
   },
   "data": [
     {
@@ -3187,6 +3187,326 @@
       "falsepositives": [
         "Family members on shared household network legitimately using individual promotions",
         "Corporate office where multiple employees order from same IP using valid individual accounts"
+      ]
+    },
+    {
+      "id": "0b5d4857-f3cb-54d9-a02a-ded1531410b5",
+      "dl_id": "DL-0068",
+      "title": "DPRK IT Worker Resume Geographic Mismatch",
+      "status": "experimental",
+      "description": "Detects job applicants whose resume combines a U.S. residential address with education credentials from non-North American institutions (Singapore, Japan, Hong Kong, China, South Korea). This pattern is a key DPRK IT worker indicator documented by FBI IC3 and DOJ enforcement actions. Legitimate applicants with this profile exist, but the combination with thin credit files or recently created LinkedIn profiles significantly elevates risk.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "event_type": "application_submitted",
+          "address_country": "US"
+        },
+        "filter_education": {
+          "education_country|contains": [
+            "SG",
+            "JP",
+            "HK",
+            "CN",
+            "KR",
+            "IN",
+            "MY"
+          ]
+        },
+        "filter_thin_profile": {
+          "linkedin_age_days|lt": 365
+        },
+        "condition": "selection and filter_education and filter_thin_profile"
+      },
+      "logsource": {
+        "product": "hr_platform",
+        "service": "applicant_tracking"
+      },
+      "threat_path_ids": [
+        "TP-0034"
+      ],
+      "fraud_types": [
+        "dprk-it-worker-fraud",
+        "employment-fraud",
+        "identity-theft"
+      ],
+      "tags": [
+        "attack.t1589.001",
+        "cfpf.phase2.initial_access",
+        "flame.dprk",
+        "flame.employment"
+      ],
+      "falsepositives": [
+        "Legitimate international students who studied abroad and relocated to the U.S.",
+        "H-1B visa holders with non-North American education backgrounds",
+        "Recent immigrants with legitimately thin credit histories"
+      ]
+    },
+    {
+      "id": "731af6dd-0216-5561-b400-46e8f05fa03d",
+      "dl_id": "DL-0069",
+      "title": "VPN/Proxy Login Anomaly — Astrill or Residential Proxy",
+      "status": "experimental",
+      "description": "Detects corporate VPN authentication events originating from known Astrill VPN infrastructure, residential proxy services, or connection patterns indicating VPN-over-VPN layering. DPRK IT workers route connections through Astrill VPN to U.S.-based proxy laptops before connecting to corporate infrastructure, creating a characteristic multi-hop pattern with elevated latency and IP reputation indicators.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "vpn_auth_success"
+        },
+        "filter_astrill": {
+          "src_ip_vpn_provider": "Astrill"
+        },
+        "filter_residential_proxy": {
+          "src_ip_type": "residential_proxy"
+        },
+        "filter_vpn_layering": {
+          "connection_hops|gte": 3,
+          "src_ip_type|contains": [
+            "vpn",
+            "proxy"
+          ]
+        },
+        "condition": "selection and (filter_astrill or filter_residential_proxy or filter_vpn_layering)"
+      },
+      "logsource": {
+        "product": "vpn",
+        "service": "authentication"
+      },
+      "threat_path_ids": [
+        "TP-0034"
+      ],
+      "fraud_types": [
+        "dprk-it-worker-fraud"
+      ],
+      "tags": [
+        "attack.t1078",
+        "cfpf.phase3.positioning",
+        "flame.dprk",
+        "flame.insider_threat"
+      ],
+      "falsepositives": [
+        "Employees in countries where VPN use is required for internet access",
+        "Employees using personal VPN services for privacy while on public networks"
+      ]
+    },
+    {
+      "id": "13582ee1-68ba-5907-8c44-e450b6837ff7",
+      "dl_id": "DL-0070",
+      "title": "Multi-Operator Behavioral Shift — Timezone and Communication Anomaly",
+      "status": "experimental",
+      "description": "Detects behavioral patterns suggesting multiple operators are sharing a single employee identity. Indicators include login activity spanning incompatible timezones within a single day, significant shifts in communication style or vocabulary between time windows, and device fingerprint changes that correlate with timezone transitions. DPRK IT workers often operate in shifts from different locations using the same stolen identity.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "user_login"
+        },
+        "timeframe": "24h",
+        "condition": "selection | count(distinct src_timezone) by user_id > 2"
+      },
+      "logsource": {
+        "product": "identity_platform",
+        "service": "authentication"
+      },
+      "threat_path_ids": [
+        "TP-0034"
+      ],
+      "fraud_types": [
+        "dprk-it-worker-fraud",
+        "identity-theft"
+      ],
+      "tags": [
+        "attack.t1078",
+        "cfpf.phase3.positioning",
+        "flame.dprk",
+        "flame.insider_threat",
+        "flame.shared"
+      ],
+      "falsepositives": [
+        "Employees who travel frequently across timezone boundaries",
+        "Employees using multiple devices across home and office locations"
+      ]
+    },
+    {
+      "id": "7ea01858-c819-5131-a895-ff9465384ef7",
+      "dl_id": "DL-0071",
+      "title": "Bulk Code Repository Clone by New Employee",
+      "status": "experimental",
+      "description": "Detects a new employee (within first 14 days of onboarding) cloning or downloading multiple code repositories, especially repositories outside their assigned team or project scope. DPRK IT workers frequently begin exfiltrating source code within hours of gaining access, cloning entire organizational repositories to personal GitHub accounts or external cloud storage.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "action|contains": [
+            "repo.clone",
+            "repo.download",
+            "repo.fork"
+          ],
+          "actor_account_age_days|lte": 14
+        },
+        "filter_volume": {
+          "repos_cloned_24h|gte": 5
+        },
+        "filter_out_of_scope": {
+          "repo_team_match": false
+        },
+        "condition": "selection and (filter_volume or filter_out_of_scope)"
+      },
+      "logsource": {
+        "product": "git_platform",
+        "service": "audit_log"
+      },
+      "threat_path_ids": [
+        "TP-0034"
+      ],
+      "fraud_types": [
+        "data-theft",
+        "dprk-it-worker-fraud"
+      ],
+      "tags": [
+        "attack.t1005",
+        "attack.t1020",
+        "cfpf.phase4.execution",
+        "flame.dprk",
+        "flame.insider_threat"
+      ],
+      "falsepositives": [
+        "New employees in platform engineering or DevOps roles who legitimately need broad repository access",
+        "Engineers onboarding onto large monorepo projects that require full clone"
+      ]
+    },
+    {
+      "id": "046b411d-2570-54ed-a6e4-4860f17817f9",
+      "dl_id": "DL-0072",
+      "title": "Credential Store Access Anomaly During Onboarding",
+      "status": "experimental",
+      "description": "Detects new employees accessing browser credential stores, password managers, API key management systems, or SSO session token stores at rates significantly above peer baselines during the first 14 days of employment. DPRK IT workers harvest credentials, session cookies, and API keys early in their tenure for exfiltration to DPRK cyber units and as leverage for post-termination extortion.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type|contains": [
+            "credential_store_access",
+            "password_manager_export",
+            "session_token_read",
+            "api_key_create"
+          ],
+          "user_tenure_days|lte": 14
+        },
+        "filter_volume": {
+          "credential_access_count_24h|gte": 10
+        },
+        "condition": "selection and filter_volume"
+      },
+      "logsource": {
+        "product": "endpoint",
+        "service": "edr"
+      },
+      "threat_path_ids": [
+        "TP-0034"
+      ],
+      "fraud_types": [
+        "data-theft",
+        "dprk-it-worker-fraud"
+      ],
+      "tags": [
+        "attack.t1589.001",
+        "cfpf.phase3.positioning",
+        "flame.dprk",
+        "flame.insider_threat"
+      ],
+      "falsepositives": [
+        "Developers configuring CI/CD pipelines that require multiple API keys during initial setup",
+        "Security engineers performing credential audits as part of onboarding tasks"
+      ]
+    },
+    {
+      "id": "785dad0d-0f29-536e-b7d2-816b8db1844f",
+      "dl_id": "DL-0073",
+      "title": "Salary Direct Deposit Rapid Cryptocurrency Conversion",
+      "status": "experimental",
+      "description": "Detects patterns where salary direct deposit payments are rapidly converted to cryptocurrency (USDT, USDC, BTC) within 48 hours of deposit, particularly when the receiving account was recently opened or when multiple employee accounts show the same conversion pattern through the same exchange or payment processor. DPRK IT workers convert salary to cryptocurrency for transfer to regime-controlled wallets, often using daily conversion limits to avoid AML alerts.\n",
+      "cfpf_phase": "P5",
+      "level": "medium",
+      "detection": {
+        "selection_deposit": {
+          "transaction_type": "ACH_IN",
+          "transaction_category": "payroll"
+        },
+        "selection_conversion": {
+          "outbound_type|contains": [
+            "crypto_exchange",
+            "p2p_crypto",
+            "wire_to_exchange"
+          ],
+          "time_since_deposit_hours|lte": 48
+        },
+        "condition": "selection_deposit | near selection_conversion"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "threat_path_ids": [
+        "TP-0034"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "dprk-it-worker-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase5.monetization",
+        "flame.crypto",
+        "flame.dprk"
+      ],
+      "falsepositives": [
+        "Employees who routinely invest a portion of salary in cryptocurrency through automated transfers",
+        "Cryptocurrency industry employees whose compensation is partially crypto-denominated"
+      ]
+    },
+    {
+      "id": "cf998763-3f4d-5a04-a17f-740875af91ad",
+      "dl_id": "DL-0074",
+      "title": "Post-Termination Data Extortion Indicator",
+      "status": "experimental",
+      "description": "Detects indicators of post-termination data extortion, where a recently terminated or resigned employee communicates ransom demands referencing specific internal proprietary code, documents, or trade secrets. DPRK IT workers have escalated to this tactic since mid-2024, threatening to publish exfiltrated source code on public repositories or sell proprietary data unless payment is made. Indicators include communication from personal channels containing references to internal systems, and the appearance of company code on public GitHub repositories created by former employee-linked accounts.\n",
+      "cfpf_phase": "P5",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "event_type|contains": [
+            "extortion_communication",
+            "data_leak_detected",
+            "proprietary_code_public"
+          ],
+          "actor_employment_status": "terminated",
+          "actor_termination_days|lte": 90
+        },
+        "condition": "selection"
+      },
+      "logsource": {
+        "product": "security_operations",
+        "service": "incident_management"
+      },
+      "threat_path_ids": [
+        "TP-0034"
+      ],
+      "fraud_types": [
+        "data-theft",
+        "dprk-it-worker-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase5.monetization",
+        "flame.data_extortion",
+        "flame.dprk",
+        "flame.insider_threat"
+      ],
+      "falsepositives": [
+        "Whistleblower disclosures through proper legal channels",
+        "Former employee academic publications referencing general (non-proprietary) work"
       ]
     }
   ]

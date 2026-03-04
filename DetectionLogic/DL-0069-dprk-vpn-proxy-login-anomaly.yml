@@ -1,0 +1,43 @@
+title: VPN/Proxy Login Anomaly — Astrill or Residential Proxy
+id: 731af6dd-0216-5561-b400-46e8f05fa03d
+status: experimental
+description: >
+  Detects corporate VPN authentication events originating from known Astrill VPN
+  infrastructure, residential proxy services, or connection patterns indicating
+  VPN-over-VPN layering. DPRK IT workers route connections through Astrill VPN
+  to U.S.-based proxy laptops before connecting to corporate infrastructure,
+  creating a characteristic multi-hop pattern with elevated latency and
+  IP reputation indicators.
+references:
+  - https://cloud.google.com/blog/topics/threat-intelligence/mitigating-dprk-it-worker-threat
+  - https://www.microsoft.com/en-us/security/blog/2025/06/30/jasper-sleet-north-korean-remote-it-workers-evolving-tactics-to-infiltrate-organizations/
+threat_paths:
+  - TP-0034
+cfpf_phase: P3
+fraud_types:
+  - dprk-it-worker-fraud
+logsource:
+  product: vpn
+  service: authentication
+detection:
+  selection:
+    event_type: 'vpn_auth_success'
+  filter_astrill:
+    src_ip_vpn_provider: 'Astrill'
+  filter_residential_proxy:
+    src_ip_type: 'residential_proxy'
+  filter_vpn_layering:
+    connection_hops|gte: 3
+    src_ip_type|contains:
+      - 'vpn'
+      - 'proxy'
+  condition: selection and (filter_astrill or filter_residential_proxy or filter_vpn_layering)
+falsepositives:
+  - Employees in countries where VPN use is required for internet access
+  - Employees using personal VPN services for privacy while on public networks
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - attack.t1078
+  - flame.dprk
+  - flame.insider_threat

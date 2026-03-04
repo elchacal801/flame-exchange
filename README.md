@@ -19,7 +19,7 @@ FLAME is an open-source, community-driven platform for sharing structured fraud 
 | FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all submissions mapped |
 | MITRE ATT&CK | Supplementary mapping where applicable |
 | Group-IB Fraud Matrix 2.0 | Cross-reference mapping (stage names) |
-| Stripe FT3 | Mapped (33/33 TPs) -- auto-mapped via ft3_mapper.py |
+| Stripe FT3 | Mapped (34/34 TPs) -- auto-mapped via ft3_mapper.py |
 | Group-IB UCFF | Defense-side maturity alignment |
 | MITRE F3 | Placeholder (will map when shipped) |
 
@@ -36,9 +36,9 @@ FLAME is modeled on [HEARTH](https://github.com/THOR-Collective/HEARTH), the thr
 - **CI/CD**: GitHub Actions validate PR submissions, auto-rebuild the database, and regenerate all export artifacts on merge.
 
 ```
-ThreatPaths/          Fraud scheme lifecycle mappings (33 TPs)
+ThreatPaths/          Fraud scheme lifecycle mappings (34 TPs)
 Baselines/            Environmental profiling (BL-XXXX)
-DetectionLogic/       Rules, queries, analytics (67 DL rules)
+DetectionLogic/       Rules, queries, analytics (74 DL rules)
 Templates/            Submission templates
 config/               Regulatory requirements and source configs
 scripts/              Build, validation, and export scripts
@@ -53,7 +53,7 @@ database/             Generated artifacts (auto-built)
 └─ regulatory-alerts.json   Automated regulatory alert feed
 data/misp/            MISP galaxy and cluster definitions
 api/
-├─ v1/                Static JSON API (106 endpoints)
+├─ v1/                Static JSON API (114 endpoints)
 └─ taxii/             TAXII 2.1 discovery, collections, objects
 docs/                 Project documentation, designs, and plans
 .github/              Workflows and issue templates
@@ -65,13 +65,13 @@ FLAME produces standard-format outputs for integration with threat intelligence 
 
 **STIX 2.1 Fraud Extension** -- 4 custom SDOs (`x-flame-fraud-scheme`, `x-flame-financial-transaction`, `x-flame-mule-network`, `x-flame-fraud-actor-profile`) with 5 fraud-specific relationship types. See [STIX-FRAUD-EXTENSION.md](docs/STIX-FRAUD-EXTENSION.md).
 
-**MISP Galaxy & Feed** -- A subscribable MISP galaxy with 33 cluster entries cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`.
+**MISP Galaxy & Feed** -- A subscribable MISP galaxy with 34 cluster entries cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`.
 
 **TAXII 2.1 Endpoints** -- Static TAXII 2.1-compatible files at `api/taxii/` with 3 collections (threat paths, detection rules as course-of-action SDOs, baselines) enabling automated sync from any TIP (MISP, OpenCTI, ThreatConnect).
 
 **Regulatory Compliance Mapping** -- 15 regulations across 6 jurisdictions (EU, UK, US, Singapore, Australia, International) mapped to relevant threat paths via `regulatory_refs` frontmatter.
 
-**Sigma Detection Packs** -- 67 detection rules exported to Splunk SPL, Elastic Lucene, and Microsoft Sentinel KQL via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance.
+**Sigma Detection Packs** -- 74 detection rules exported to Splunk SPL, Elastic Lucene, and Microsoft Sentinel KQL via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance.
 
 ## MCP Server
 
@@ -121,7 +121,7 @@ Add the following to your Claude Desktop `claude_desktop_config.json`:
 
 ## Threat Path Collection
 
-FLAME ships with **33 threat paths** and **67 detection rules** covering major fraud categories across 15 sectors:
+FLAME ships with **34 threat paths** and **74 detection rules** covering major fraud categories across 16 sectors:
 
 | ID | Scheme | Key Fraud Types |
 |----|--------|-----------------|
@@ -158,6 +158,7 @@ FLAME ships with **33 threat paths** and **67 detection rules** covering major f
 | TP-0031 | Refund-as-a-Service (FTID / RaaS) | Refunding-as-a-service |
 | TP-0032 | Web3 Wallet Drainer / Approval Phishing | Approval phishing, crypto laundering |
 | TP-0033 | Ghost Student Financial Aid Botnets | Ghost student fraud, application fraud |
+| TP-0034 | DPRK State-Sponsored IT Worker Fraud & Data Extortion | DPRK IT worker fraud, employment fraud, data theft |
 
 ## Quick Start
 

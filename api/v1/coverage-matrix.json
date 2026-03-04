@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-03T05:15:08.985419+00:00",
-    "total": 50
+    "generated_at": "2026-03-04T02:58:06.233465+00:00",
+    "total": 52
   },
   "data": [
     {
@@ -161,13 +161,13 @@
     {
       "fraud_type": "data-theft",
       "phases": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 1,
-        "P4": 1,
-        "P5": 1
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
       },
-      "total_tps": 1
+      "total_tps": 2
     },
     {
       "fraud_type": "deepfake",
@@ -208,6 +208,28 @@
         "P1": 1,
         "P2": 1,
         "P3": 1
+      },
+      "total_tps": 1
+    },
+    {
+      "fraud_type": "dprk-it-worker-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
+      "fraud_type": "employment-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
       },
       "total_tps": 1
     },
@@ -258,13 +280,13 @@
     {
       "fraud_type": "identity-theft",
       "phases": {
-        "P1": 5,
-        "P2": 4,
-        "P3": 5,
-        "P4": 4,
-        "P5": 4
+        "P1": 6,
+        "P2": 5,
+        "P3": 6,
+        "P4": 5,
+        "P5": 5
       },
-      "total_tps": 5
+      "total_tps": 6
     },
     {
       "fraud_type": "impersonation",
