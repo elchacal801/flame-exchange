@@ -25,6 +25,7 @@ import re
 import sqlite3
 import sys
 from datetime import datetime, timezone
+from email.utils import format_datetime as _format_rfc822
 from pathlib import Path
 
 try:
@@ -1202,6 +1203,151 @@ def _build_detection_rule_entry(conn, row, columns):
     return entry
 
 
+
+
+def _xml_escape(text: str) -> str:
+    """Escape special characters for safe XML embedding."""
+    if not text:
+        return ""
+    text = text.replace("&", "&amp;")
+    text = text.replace("<", "&lt;")
+    text = text.replace(">", "&gt;")
+    text = text.replace('"', "&quot;")
+    text = text.replace("'", "&apos;")
+    return text
+
+
+def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
+    """Generate an RSS 2.0 feed at database/feed.xml.
+
+    Returns the number of items written.
+    """
+    BASE_URL = "https://elchacal801.github.io/flame-fraud"
+    feed_path = root / "database" / "feed.xml"
+    feed_path.parent.mkdir(parents=True, exist_ok=True)
+
+    items_xml: list[str] = []
+
+    # --- Threat Path items ---
+    cur = conn.execute(
+        "SELECT id, title, summary, date FROM submissions "
+        "WHERE lower(category) = 'threatpath' ORDER BY id"
+    )
+    columns = [desc[0] for desc in cur.description]
+    for row in cur.fetchall():
+        entry = dict(zip(columns, row))
+        tp_id = entry["id"]
+        title = entry.get("title", "")
+        summary = entry.get("summary", "") or ""
+        desc_text = _xml_escape(summary[:200])
+        link = f"{BASE_URL}/#detail/{tp_id}"
+
+        # RFC 822 pubDate
+        pub_date = ""
+        raw_date = entry.get("date", "")
+        if raw_date:
+            try:
+                dt = datetime.strptime(raw_date, "%Y-%m-%d").replace(
+                    tzinfo=timezone.utc
+                )
+                pub_date = _format_rfc822(dt)
+            except (ValueError, TypeError):
+                pass
+
+        # Category tags: fraud_types
+        ft_rows = conn.execute(
+            "SELECT fraud_type FROM submission_fraud_types "
+            "WHERE submission_id = ? ORDER BY fraud_type",
+            (tp_id,),
+        ).fetchall()
+        # Category tags: cfpf_phases
+        phase_rows = conn.execute(
+            "SELECT phase FROM submission_cfpf_phases "
+            "WHERE submission_id = ? ORDER BY phase",
+            (tp_id,),
+        ).fetchall()
+
+        cats = []
+        for (ft,) in ft_rows:
+            cats.append(f"        <category>{_xml_escape(ft)}</category>")
+        for (ph,) in phase_rows:
+            cats.append(f"        <category>CFPF-{_xml_escape(ph)}</category>")
+
+        parts = []
+        parts.append("    <item>")
+        parts.append(f"      <title>{_xml_escape(f'[{tp_id}] {title}')}</title>")
+        parts.append(f"      <link>{_xml_escape(link)}</link>")
+        parts.append(f'      <guid isPermaLink="true">{_xml_escape(link)}</guid>')
+        parts.append(f"      <description>{desc_text}</description>")
+        if pub_date:
+            parts.append(f"      <pubDate>{pub_date}</pubDate>")
+        parts.extend(cats)
+        parts.append("    </item>")
+        items_xml.append("\n".join(parts))
+
+    # --- Detection Logic items ---
+    dl_cur = conn.execute(
+        "SELECT id, dl_id, title, description, level "
+        "FROM detection_rules ORDER BY dl_id"
+    )
+    dl_columns = [desc[0] for desc in dl_cur.description]
+    for row in dl_cur.fetchall():
+        entry = dict(zip(dl_columns, row))
+        rule_id = entry["id"]
+        dl_id = entry["dl_id"]
+        title = entry.get("title", "")
+        desc_raw = entry.get("description", "") or ""
+        desc_text = _xml_escape(desc_raw[:200])
+        level = entry.get("level", "")
+
+        # Fraud types for DL rule
+        ft_rows = conn.execute(
+            "SELECT fraud_type FROM detection_rule_fraud_types "
+            "WHERE rule_id = ? ORDER BY fraud_type",
+            (rule_id,),
+        ).fetchall()
+
+        cats = []
+        for (ft,) in ft_rows:
+            cats.append(f"        <category>{_xml_escape(ft)}</category>")
+        if level:
+            cats.append(f"        <category>severity-{_xml_escape(level)}</category>")
+
+        parts = []
+        parts.append("    <item>")
+        parts.append(f"      <title>{_xml_escape(f'[{dl_id}] {title}')}</title>")
+        parts.append(f"      <link>{_xml_escape(BASE_URL)}</link>")
+        parts.append(f'      <guid isPermaLink="false">flame-dl-{_xml_escape(dl_id)}</guid>')
+        parts.append(f"      <description>{desc_text}</description>")
+        parts.extend(cats)
+        parts.append("    </item>")
+        items_xml.append("\n".join(parts))
+
+    # --- Assemble feed ---
+    header_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+        "  <channel>",
+        "    <title>FLAME Intelligence Feed</title>",
+        f"    <link>{BASE_URL}</link>",
+        "    <description>FLAME \u2014 Fraud Lifecycle Analysis &amp; Mitigation Exchange. "
+        "Community-driven fraud detection intelligence.</description>",
+        f'    <atom:link href="{BASE_URL}/database/feed.xml" '
+        f'rel="self" type="application/rss+xml" />',
+    ]
+    footer_lines = [
+        "  </channel>",
+        "</rss>",
+    ]
+
+    all_parts = header_lines + items_xml + footer_lines
+    feed_xml = "\n".join(all_parts) + "\n"
+
+    feed_path.write_text(feed_xml, encoding="utf-8")
+    log.info("Generated RSS feed with %d items at %s", len(items_xml), feed_path)
+    return len(items_xml)
+
+
 def export_api_v1(conn: sqlite3.Connection, root: Path,
                   evidence_map: dict, stats: dict) -> int:
     """Generate static JSON API files under api/v1/.
@@ -1506,6 +1652,10 @@ def main():
     api_dir = root / "api" / "v1"
     api_count = export_api_v1(conn, root, evidence_map, stats)
     log.info("Exported API v1 to %s (%d files)", api_dir, api_count)
+
+    # Generate RSS feed
+    rss_count = generate_rss_feed(conn, root)
+    log.info("Generated RSS feed with %d items", rss_count)
 
     conn.close()
 
