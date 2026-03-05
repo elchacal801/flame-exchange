@@ -461,8 +461,12 @@ const FlameViz = (function () {
             .attr('dx', function (d) { return d.isCenter ? 0 : 14; })
             .attr('dy', function (d) { return d.isCenter ? -22 : 4; })
             .attr('text-anchor', function (d) { return d.isCenter ? 'middle' : 'start'; })
-            .attr('font-weight', function (d) { return d.isCenter ? '700' : '400'; })
-            .attr('font-size', function (d) { return d.isCenter ? '12px' : '10px'; })
+            .attr('font-weight', function (d) { return d.isCenter ? '700' : '500'; })
+            .attr('font-size', function (d) { return d.isCenter ? '12px' : '11px'; })
+            .attr('fill', function (d) { return d.isCenter ? '#f1f5f9' : '#e2e8f0'; })
+            .attr('stroke', 'rgba(0,0,0,0.7)')
+            .attr('stroke-width', 2.5)
+            .attr('paint-order', 'stroke')
             .attr('opacity', function (d) { return d.hop > 1 ? 0.5 : 1; })
             .text(function (d) { return d.isCenter ? d.title : d.id; });
 
