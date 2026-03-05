@@ -994,7 +994,7 @@
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
                 title: 'MISP Galaxy & Feed',
-                desc: 'Subscribable MISP galaxy with 39 cluster entries and per-TP event feed'
+                desc: 'Subscribable MISP galaxy with 40 cluster entries and per-TP event feed'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><line x1="8" y1="12" x2="16" y2="5"/><line x1="8" y1="12" x2="16" y2="19"/></svg>',
@@ -1046,7 +1046,8 @@
             { name: 'Phase 2: FORGE', desc: 'API, MCP server, Sigma export, graph, confidence scoring', status: 'done' },
             { name: 'Phase 3: SIGNAL', desc: 'STIX extension, MISP galaxy, TAXII feeds, regulatory mapping, framework navigator', status: 'done' },
             { name: 'Phase 4: BEACON', desc: 'Community contributions, intake pipeline, RSS/webhook feeds, production hardening', status: 'done' },
-            { name: 'Phase 5: SIGNAL-RF', desc: 'Recorded Future 2025 integration — 5 new TPs (e-skimmer, purchase scam, digital wallet, card testing, agentic commerce), 12 detection rules, 5 baselines', status: 'current' }
+            { name: 'Phase 5: SIGNAL-RF', desc: 'Recorded Future 2025 integration — 5 new TPs (e-skimmer, purchase scam, digital wallet, card testing, agentic commerce), 12 detection rules, 5 baselines', status: 'done' },
+            { name: 'Phase 6: SIGNAL-LNRS', desc: 'LexisNexis 2026 integration — BNPL multi-provider fraud TP, 5 detection rules, 1 baseline, 5 existing TP enhancements with quantitative intelligence', status: 'current' }
         ];
         phases.forEach(function (p) {
             html += '<div class="about-roadmap-item about-roadmap-' + p.status + '">';
@@ -1063,6 +1064,7 @@
         html += '<h3>Recent Milestones</h3>';
         html += '<div class="about-changelog">';
         var changelog = [
+            { date: '2026-03', text: 'Phase 6 SIGNAL-LNRS: LexisNexis 2026 integration — TP-0040 BNPL fraud, 5 detection rules, 5 TP enhancements with quantitative intelligence' },
             { date: '2026-03', text: 'Phase 5 SIGNAL-RF: Recorded Future 2025 integration — TP-0035 through TP-0039, 12 new detection rules, 5 baselines, 4 new fraud types' },
             { date: '2026-03', text: 'Phase 4 BEACON: RSS feed, 5 emulation playbooks, contributor leaderboard, peer review workflow' },
             { date: '2026-03', text: 'Contributor submission interface with contribute.html and 5 Issue Form templates' },

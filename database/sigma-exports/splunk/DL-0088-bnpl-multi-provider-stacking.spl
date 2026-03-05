@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+application_type="bnpl" application_status="approved" count>=3 groupby="identity_hash" timeframe="72h" dc_provider_id>=3

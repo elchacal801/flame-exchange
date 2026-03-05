@@ -5,7 +5,7 @@
 id: TP-0016
 title: "First-Party Fraud (Bust-Out)"
 category: ThreatPath
-date: 2026-02-20
+date: 2026-03-04
 author: "FLAME Project"
 source: "Internal Knowledge Base"
 tlp: WHITE
@@ -43,11 +43,15 @@ related_tps:
     relationship: related-to
   - id: TP-0031
     relationship: related-to
+  - id: TP-0040
+    relationship: variant-of
 regulatory_refs: []
 tags:
   - first-party
   - credit-card
   - consumer-banking
+  - viral-fraud
+  - lnrs-2026
 ---
 ```
 
@@ -173,6 +177,14 @@ HAVING SUM(t.amount) / c.credit_limit > 0.85
 
 First-party fraud (bust-out) is one of the most difficult fraud types to detect because the actor is also the legitimate account holder — there is no stolen identity or compromised credential to trigger traditional fraud alerts. Industry estimates suggest first-party fraud accounts for 10-20% of total credit losses at major issuers, though the true figure is disputed because much of it is written off as credit loss rather than fraud. The distinguishing behavioral signature is the "credit nurturing" phase: the actor makes minimum payments and gradually requests limit increases over 6-18 months, building a pattern of responsible usage before executing the bust-out. Machine learning models trained on account lifecycle features (payment velocity changes, utilization trajectory, cash advance ratios) significantly outperform rules-based approaches for this threat type. The intersection with synthetic identity fraud (TP-0003) is important: synthetic identities are increasingly used to execute bust-out schemes because there is no real victim to report the fraud, extending the detection window.
 
+### First-Party Fraud Scale — LexisNexis Global State of Fraud 2026
+
+First-party fraud now represents 36% of all detected fraud events globally (up from 15% prior year), with losses of $3.9B in 2025 projected to reach $4.8B by 2028. Regional rates vary sharply: EMEA leads at 51% (up from 18%), North America at 30% (up from 8%), LATAM at 11%, and APAC at 6%. By industry, ecommerce (42%, up from 9%) and financial services (37%, up from 19%) are most affected.
+
+A novel "viral fraud" phenomenon has emerged where consumer cohorts coordinate via social media to simultaneously exploit the same vulnerabilities. These cohorts exhibit distinctive characteristics: 2x more inquiries, 3x more likely to have a previously tagged fraud, 7.4x more likely to have a felony record, and average 12 years younger than baseline. Generational breakdown: Older Millennials 18%, Younger Millennials 16%, Gen Z 13%, Gen X 7%.
+
+Consortium intelligence (cross-institutional data sharing) lifts fraud capture rates 43% over isolated approaches — a critical defense given that first-party fraud actors ARE the legitimate account holders.
+
 ---
 
 ## References
@@ -182,6 +194,7 @@ First-party fraud (bust-out) is one of the most difficult fraud types to detect 
 - Aite-Novarica Group: "First-Party Fraud: The Growing Challenge" (2023) — industry loss estimates and detection model benchmarks.
 - ABA Banking Journal: "The Bust-Out Problem" — credit lifecycle exploitation patterns.
 - ACFE: Report to the Nations — occupational and consumer fraud classification methodologies.
+- **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: First-party fraud scale data, viral fraud cohort analysis, consortium intelligence effectiveness metrics.
 
 ---
 

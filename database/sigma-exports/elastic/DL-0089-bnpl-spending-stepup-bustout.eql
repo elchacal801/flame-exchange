@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+account_type:bnpl AND first_order_value:<=50 AND max_order_pct_of_limit:>=85 AND days_first_to_max_order:<=14

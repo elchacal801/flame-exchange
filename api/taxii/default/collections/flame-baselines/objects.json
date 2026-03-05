@@ -305,6 +305,25 @@
     },
     {
       "spec_version": "2.1",
+      "description": "This baseline defines normal versus anomalous patterns for BNPL account lifecycle and transaction behavior, supporting detection logic for TP-0040 (BNPL Multi-Provider Fraud). It establishes behavioral norms for onboarding signals (email age, digital footprint), transaction patterns (time-to-first-order, spending ramp-up, payment completion), multi-provider usage frequency, dispute rates, shipping address behavior, and device reuse ratios. These baselines are derived from the LexisNexis Risk Sol",
+      "id": "x-flame-baseline--21a3b667-fb99-5af5-b38f-1e75fb75447c",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "bnpl-fraud",
+        "synthetic-stacking",
+        "friendly-fraud",
+        "multi-provider",
+        "onboarding",
+        "transaction-patterns"
+      ],
+      "name": "BNPL Account & Transaction Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
       "description": "This baseline document defines the \"normal\" operating parameters for commercial wire transfers within the SME (Small to Medium Enterprise) banking sector, used to contextualize detection rules for TP-0002 (BEC), TP-0019 (Business Identity Theft), and TP-0020 (Supply Chain Payment Fraud).",
       "id": "x-flame-baseline--bfc0004f-9951-52ad-962a-6d91c1f5e59a",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",

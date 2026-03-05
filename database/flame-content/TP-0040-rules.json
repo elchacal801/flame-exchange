@@ -1,0 +1,20 @@
+{
+  "tp_id": "TP-0040",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    a.identity_hash,\n    COUNT(DISTINCT a.provider_id) AS provider_count,\n    COUNT(*) AS total_applications,\n    MIN(a.application_date) AS first_application,\n    MAX(a.application_date) AS last_application,\n    DATEDIFF(hour, MIN(a.application_date), MAX(a.application_date)) AS hours_span,\n    SUM(a.approved_limit) AS aggregate_exposure,\n    AVG(a.digital_footprint_score) AS avg_digital_score\nFROM bnpl_applications a\nWHERE a.application_date >= CURRENT_DATE - INTERVAL '7 days'\n  AND a.status = 'approved'\nGROUP BY a.identity_hash\nHAVING COUNT(DISTINCT a.provider_id) >= 3\n   AND DATEDIFF(hour, MIN(a.application_date), MAX(a.application_date)) <= 72\nORDER BY provider_count DESC, aggregate_exposure DESC;",
+      "title": "SQL — Multi-Provider BNPL Application Stacking Detection (Phase 3)"
+    },
+    {
+      "type": "spl",
+      "content": "index=bnpl_transactions sourcetype=bnpl_orders\n| stats earliest(order_value) AS first_order_value,\n        latest(order_value) AS latest_order_value,\n        max(order_value) AS max_order_value,\n        count AS total_orders,\n        sum(order_value) AS total_spent,\n        values(provider_id) AS providers\n    BY account_id\n| eval limit_pct = max_order_value / credit_limit * 100\n| where first_order_value < 50 AND latest_order_value > 500 AND limit_pct > 85 AND total_orders >= 3\n| lookup account_info account_id OUTPUT account_age_days, digital_footprint_score\n| where account_age_days < 30\n| table account_id, first_order_value, latest_order_value, max_order_value, limit_pct, total_orders, account_age_days, digital_footprint_score, providers\n| sort - limit_pct",
+      "title": "Splunk — BNPL Spending Step-Up Detection (Phase 4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: BNPL Cross-Account Device Clustering Detection\nstatus: experimental\ndescription: >\n  Detects multiple BNPL accounts created from or accessed by the same device\n  fingerprint within a rolling window, indicating potential synthetic identity\n  ring activity or account farming operations.\nlogsource:\n    product: ecommerce\n    service: bnpl_onboarding\ndetection:\n    selection:\n        event_type: 'account_creation'\n        account_type: 'bnpl'\n    aggregation:\n        count|gte: 4\n        groupby: device_fingerprint_hash\n        timeframe: 30d\n    condition: selection and aggregation\nlevel: high\ntags:\n    - cfpf.phase3.positioning\n    - attack.t1586\n    - flame.ecommerce\n    - flame.bnpl_fraud\n    - flame.synthetic_stacking",
+      "title": "Sigma — Device Clustering Detection (Phase 3)"
+    }
+  ]
+}

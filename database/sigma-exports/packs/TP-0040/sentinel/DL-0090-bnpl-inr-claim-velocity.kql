@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(dispute_type =~ "item_not_received" and account_type =~ "bnpl") and (count >= 3 and groupby =~ "account_id" and timeframe =~ "90d") and avg_disputed_order_value >= 300

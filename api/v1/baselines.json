@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T03:34:55.893570+00:00",
-    "total": 18
+    "generated_at": "2026-03-05T04:19:12.552567+00:00",
+    "total": 19
   },
   "data": [
     {
@@ -545,6 +545,38 @@
         "transaction-velocity",
         "agent-purchasing",
         "ecommerce"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": []
+    },
+    {
+      "id": "BL-0020",
+      "title": "BNPL Account & Transaction Patterns Baseline",
+      "category": "Baseline",
+      "date": "2026-03-04",
+      "author": "FLAME Project",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "bnpl-fraud",
+        "synthetic-stacking",
+        "friendly-fraud",
+        "multi-provider",
+        "onboarding",
+        "transaction-patterns"
       ],
       "cfpf_phases": [],
       "mitre_attack": [],

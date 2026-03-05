@@ -234,6 +234,12 @@
     "text": "Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transactions across the payment ecosystem. Pilot programs such as Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay represent early implementations of this paradigm, creating a novel transaction chain: Consumer provides Intent to AI Agent, which performs Autonomous Merchant Selection, interacts with Merchant Transaction Systems, submits transactions to Payment Infrastructure for Authorization and Settlement by the Card Issuer. Each handoff in this chain introduces attack surfaces that do not exist in traditional human-initiated commerce.\n\nThe core vulnerability is that user and agent intent becomes a novel attack surface -- vulnerable to the same categories of attacks that circumvent identity authentication, but applied to the delegation of purchasing authority rather than credential theft. Threat actors can compromise or manipulate AI agent context, prompts, or MCP server connections to redirect purchasing intent, inflate prices, route transactions to attacker-controlled merchants, or execute unauthorized purchases at machine speed. In April 2025, threat actor \"d0ctrine\" published proof-of-concept documentation outlining agentic fraud workflows including agent-automated fraud, mimicry of human interaction patterns, and evasion of behavioral and device-based controls. In November 2025, Anthropic disclosed the first known cyber-espionage campaign orchestrated primarily by an autonomous AI system, coinciding with an attempted fraudulent purchase for the same AI service -- demonstrating convergence between AI-enabled fraud and AI-enabled cyber threats.\n\nThe structural parallel to early open banking is significant: as banks lost visibility into customer activity through third-party payment initiators, they experienced degraded controls for identity verification, online interaction monitoring, and bot detection. Agentic commerce replicates this pattern at greater scale -- opaque agent behavior hides intent, device context, and interaction patterns from downstream payment processors and issuers. Without improved control visibility and shared investigation workflows, the ecosystem faces expanded fraud investigation scope (distinguishing third-party fraud, first-party misuse, and agentic abuse) and liability ambiguity that increases operational costs even when liability is contractually clear.\n\n---"
   },
   {
+    "id": "TP-0040",
+    "type": "threat_path",
+    "title": "BNPL Multi-Provider Fraud — Synthetic Stacking, ATO & Friendly Fraud",
+    "text": "Buy Now, Pay Later (BNPL) services represent one of the fastest-growing fraud surfaces in consumer finance. The global BNPL market reached $452 billion in transaction value in 2025, with fraud rates of 3-4% — significantly higher than traditional credit products (0.1-0.3%). Synthetic identity exposure in BNPL channels reached $3.2 billion in H1 2024 alone, and 79% of merchants offering BNPL reported being affected by friendly fraud.\n\nThree distinct attack variants exploit BNPL ecosystems: (1) synthetic identity stacking, where fraudsters create synthetic identities and simultaneously open accounts across multiple BNPL providers that lack cross-bureau loan reporting; (2) account takeover combined with phantom delivery schemes, where compromised accounts are used for purchases with false item-not-received claims; and (3) organized friendly fraud (\"buy now, pay never\"), where legitimate account holders systematically default on BNPL obligations across providers.\n\nThe multi-provider stacking vulnerability is the defining structural weakness: unlike traditional credit products reported to bureaus, most BNPL loans are invisible to other BNPL providers, enabling a single synthetic identity to simultaneously carry obligations across Klarna, Afterpay, Affirm, Clearpay, and Zip without triggering velocity alerts. The regulatory landscape is fragmented — the CFPB's interpretive rule treating BNPL as credit cards was rescinded in March 2025, the FCA plans full regulation by 2026, and ASIC introduced licensing requirements effective June 2025.\n\nUnderground ecosystems have developed BNPL-specific fraud tooling. The \"Klarna Method\" — a systematic fraud tutorial — went viral on TikTok and Telegram in 2024-2025. The STYX marketplace emerged as a centralized dark web platform offering BNPL fraud guides, pre-warmed synthetic accounts, and reshipping service integration. Telegram channels dedicated to BNPL fraud saw a 53% activity surge in 2024. Fraud-as-a-Service (FaaS) operators generate approximately $520 million annually from $3.2 billion in dark web revenue linked to BNPL-adjacent fraud.\n\n---"
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -750,6 +756,36 @@
     "text": "Detects AI agent-initiated transactions at velocities exceeding human purchasing patterns, including multiple purchases per minute and simultaneous multi-merchant purchases within a single agent session. This rule targets Phase 4 (Execution) of agentic commerce fraud, where compromised or manipulated agents execute unauthorized transactions at machine speed. Normal agent purchasing velocity is 1-5 purchases per user session with 2-15 minutes of comparison shopping per purchase. Velocities exceeding 10x human baseline (more than 5 transactions per minute or purchases across more than 3 merchants within a 60-second window) suggest automated fraud exploitation rather than legitimate agent-assisted shopping.\n"
   },
   {
+    "id": "DL-0087",
+    "type": "detection_rule",
+    "title": "BNPL Account Opening Risk Signal Cluster",
+    "text": "Detects BNPL account applications exhibiting multiple risk signals indicative of synthetic identity fraud. Specifically targets accounts opened with email domains less than 30 days old, minimal digital footprint (score below 0.2), and patterns consistent with emulator-based mass account creation. BNPL providers using soft-check-only approval processes are particularly vulnerable to synthetic identities that pass initial verification but exhibit these digital footprint anomalies. This rule supports detection at Phase 2 of TP-0040 by identifying high-risk onboarding patterns before the synthetic identity progresses to credit grooming and multi-provider stacking.\n"
+  },
+  {
+    "id": "DL-0088",
+    "type": "detection_rule",
+    "title": "BNPL Multi-Provider Application Velocity",
+    "text": "Detects identities applying to three or more distinct BNPL providers within a 72-hour window, a pattern characteristic of multi-provider stacking operations. Legitimate consumers rarely apply to more than two BNPL providers within a week. Synthetic identity rings exploit the absence of cross-bureau BNPL loan reporting to accumulate $3,000-$15,000 in aggregate exposure across providers while each provider sees only their individual exposure. This rule requires consortium-level data sharing to be effective, as individual providers cannot detect cross-provider application velocity in isolation. At Phase 3 of TP-0040, multi-provider stacking represents the critical positioning step before coordinated bust-out execution.\n"
+  },
+  {
+    "id": "DL-0089",
+    "type": "detection_rule",
+    "title": "BNPL Spending Step-Up to Limit Bust-Out Pattern",
+    "text": "Detects the characteristic spending escalation pattern of BNPL bust-out fraud, where accounts begin with small purchases (under $50) during a credit grooming phase, then rapidly escalate to purchases consuming 85% or more of the available credit limit within 14 days. This pattern distinguishes synthetic bust-out operations from legitimate consumer behavior, where spending typically ramps gradually over weeks to months. Recorded in organized rings deploying 50-1,000+ synthetic identities, the grooming-to-bustout transition represents the highest-confidence detection window for TP-0040 Phase 4 execution, as the sharp behavioral shift from conservative to aggressive spending is difficult for fraudsters to avoid without sacrificing the speed required for coordinated multi-provider bust-out.\n"
+  },
+  {
+    "id": "DL-0090",
+    "type": "detection_rule",
+    "title": "BNPL Item-Not-Received Claim Velocity",
+    "text": "Detects accounts filing three or more item-not-received (INR) claims within a 90-day rolling window where the average disputed order value exceeds $300. Legitimate INR dispute rates are under 1% of orders, with most disputes involving genuine delivery failures. Organized phantom delivery fraud and friendly fraud operations systematically file INR claims after receiving goods, targeting high-value orders to maximize returns. This rule supports TP-0040 Phase 4 detection by identifying accounts exhibiting claim patterns consistent with organized INR abuse rather than genuine delivery issues. The $300 average threshold filters out low-value legitimate disputes while capturing the high-value targeting characteristic of organized fraud.\n"
+  },
+  {
+    "id": "DL-0091",
+    "type": "detection_rule",
+    "title": "BNPL Cross-Account Device Clustering",
+    "text": "Detects four or more distinct BNPL accounts created from or accessed by the same device fingerprint within a 30-day window, indicating potential synthetic identity ring activity or account farming operations. Normal BNPL usage involves 1-2 accounts per device over 12 months. Emulator-based mass account opening tools with device fingerprint spoofing can create dozens of accounts per day from a single physical device, but sophisticated device fingerprinting systems can detect emulator signatures and fingerprint collision patterns. This rule supports TP-0040 Phase 3 detection by identifying device-level clustering that precedes multi-provider stacking and coordinated bust-out.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",
@@ -855,6 +891,12 @@
     "id": "BL-0019",
     "type": "baseline",
     "title": "AI Agent Commerce Activity Baseline",
+    "text": ""
+  },
+  {
+    "id": "BL-0020",
+    "type": "baseline",
+    "title": "BNPL Account & Transaction Patterns Baseline",
     "text": ""
   }
 ]

@@ -5,7 +5,7 @@
 id: TP-0003
 title: "Synthetic Identity — Credit Card Bust-Out"
 category: ThreatPath
-date: 2026-02-12
+date: 2026-03-04
 author: "FLAME Project"
 source: "Federal Reserve / FinCEN / ACFE reporting"
 tlp: WHITE
@@ -44,6 +44,8 @@ related_tps:
     relationship: feeds-into
   - id: TP-0029
     relationship: related-to
+  - id: TP-0040
+    relationship: variant-of
 regulatory_refs:
   - REG-FINCEN-CDD
 tags:
@@ -227,6 +229,12 @@ ORDER BY util_change_30d DESC;
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) recorded over 108,000 identity theft complaints, underscoring the scale of PII compromise that feeds synthetic identity creation. While IC3 does not break out synthetic identity fraud as a standalone category, the identity theft complaint volume represents the upstream fuel for synthetic identity bust-out schemes. Total IC3-reported losses reached $16.6B in 2024, with identity theft enabling multiple downstream fraud categories.
 
+### Synthetic Identity Intelligence Update — LNRS 2026
+
+Synthetic fraud is projected to generate $23 billion in losses by 2030. An estimated 85% of identity fraud cases now involve generative AI tools, dramatically lowering the barrier to creating convincing synthetic identities. Digital wallets — expected to account for 61% of ecommerce transactions by 2027 — represent an expanding synthetic identity vector, while 5 billion digital IDs have already been issued globally.
+
+Thin-file exploitation is a growing concern: digitally fluent young people and new-to-country immigrants lack traditional credit histories, and fraudsters deploy synthetic identities that mirror these "acceptable" thin-file profiles while simultaneously targeting these vulnerable populations as money mule recruits. FinCEN's policy allowing banks to collect TIN from third parties (rather than directly from customers) may open a new attack vector.
+
 ## References
 
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
@@ -234,6 +242,7 @@ ORDER BY util_change_30d DESC;
 - OCC Bulletin on Synthetic Identity Fraud Risk
 - Socure: Synthetic Identity Fraud Report
 - ACFE: "The Growing Threat of Synthetic Identity Fraud"
+- **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Synthetic identity loss projections, GenAI involvement statistics, thin-file exploitation patterns, digital wallet vector analysis.
 
 ## Revision History
 

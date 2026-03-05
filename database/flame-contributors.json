@@ -4,9 +4,9 @@
       "name": "FLAME Project",
       "threat_paths": 33,
       "detection_rules": 41,
-      "baselines": 18,
+      "baselines": 19,
       "emulation_playbooks": 5,
-      "total": 97
+      "total": 98
     },
     {
       "name": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
@@ -23,7 +23,15 @@
       "baselines": 0,
       "emulation_playbooks": 0,
       "total": 17
+    },
+    {
+      "name": "FLAME Project (sourced from LexisNexis Risk Solutions, Experian, ACI Worldwide, MRC, CFPB, FCA, ASIC research)",
+      "threat_paths": 1,
+      "detection_rules": 5,
+      "baselines": 0,
+      "emulation_playbooks": 0,
+      "total": 6
     }
   ],
-  "generated_at": "2026-03-05T03:34:55.938192+00:00"
+  "generated_at": "2026-03-05T04:19:12.589109+00:00"
 }

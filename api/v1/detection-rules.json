@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T03:34:55.427346+00:00",
-    "total": 86
+    "generated_at": "2026-03-05T04:19:12.155773+00:00",
+    "total": 91
   },
   "data": [
     {
@@ -4195,6 +4195,240 @@
         "Agent bulk-purchasing identical items across merchants for price comparison fulfillment",
         "Corporate procurement agents executing pre-approved batch purchase orders",
         "Agent re-executing failed transactions in rapid succession due to payment gateway timeouts"
+      ]
+    },
+    {
+      "id": "7c3e9a12-d4f8-4b61-ae52-1f6d83b7c904",
+      "dl_id": "DL-0087",
+      "title": "BNPL Account Opening Risk Signal Cluster",
+      "status": "experimental",
+      "description": "Detects BNPL account applications exhibiting multiple risk signals indicative of synthetic identity fraud. Specifically targets accounts opened with email domains less than 30 days old, minimal digital footprint (score below 0.2), and patterns consistent with emulator-based mass account creation. BNPL providers using soft-check-only approval processes are particularly vulnerable to synthetic identities that pass initial verification but exhibit these digital footprint anomalies. This rule supports detection at Phase 2 of TP-0040 by identifying high-risk onboarding patterns before the synthetic identity progresses to credit grooming and multi-provider stacking.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_type": "bnpl",
+          "application_status": "approved"
+        },
+        "filter_email_age": {
+          "email_domain_age_days|lte": 30
+        },
+        "filter_digital_footprint": {
+          "digital_footprint_score|lte": 0.2
+        },
+        "condition": "selection and filter_email_age and filter_digital_footprint"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "bnpl_onboarding"
+      },
+      "threat_path_ids": [
+        "TP-0040"
+      ],
+      "fraud_types": [
+        "bnpl-fraud",
+        "identity-theft"
+      ],
+      "tags": [
+        "attack.t1586",
+        "cfpf.phase2.initial_access",
+        "flame.bnpl_fraud",
+        "flame.ecommerce",
+        "flame.synthetic_identity"
+      ],
+      "falsepositives": [
+        "Young consumers opening their first financial accounts with limited digital history",
+        "New email service adopters who recently migrated to a new email provider",
+        "Immigrants or expats establishing new digital identities in a new country"
+      ]
+    },
+    {
+      "id": "9e5f1b84-a7c2-4d39-b618-3a9d05e2f7b6",
+      "dl_id": "DL-0088",
+      "title": "BNPL Multi-Provider Application Velocity",
+      "status": "experimental",
+      "description": "Detects identities applying to three or more distinct BNPL providers within a 72-hour window, a pattern characteristic of multi-provider stacking operations. Legitimate consumers rarely apply to more than two BNPL providers within a week. Synthetic identity rings exploit the absence of cross-bureau BNPL loan reporting to accumulate $3,000-$15,000 in aggregate exposure across providers while each provider sees only their individual exposure. This rule requires consortium-level data sharing to be effective, as individual providers cannot detect cross-provider application velocity in isolation. At Phase 3 of TP-0040, multi-provider stacking represents the critical positioning step before coordinated bust-out execution.\n",
+      "cfpf_phase": "P3",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "application_type": "bnpl",
+          "application_status": "approved"
+        },
+        "aggregation": {
+          "count|gte": 3,
+          "groupby": "identity_hash",
+          "timeframe": "72h"
+        },
+        "filter_provider_diversity": {
+          "dc_provider_id|gte": 3
+        },
+        "condition": "selection and aggregation and filter_provider_diversity"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "credit_application"
+      },
+      "threat_path_ids": [
+        "TP-0040"
+      ],
+      "fraud_types": [
+        "bnpl-fraud",
+        "first-party-fraud",
+        "identity-theft"
+      ],
+      "tags": [
+        "attack.t1586",
+        "cfpf.phase3.positioning",
+        "flame.bnpl_fraud",
+        "flame.consortium_required",
+        "flame.ecommerce",
+        "flame.synthetic_stacking"
+      ],
+      "falsepositives": [
+        "Consumers comparison shopping across BNPL providers for a single large purchase",
+        "Corporate purchasing agents setting up multiple BNPL relationships for business procurement"
+      ]
+    },
+    {
+      "id": "4b8d6f23-e1a9-4c75-9d34-8f2e57a0cb19",
+      "dl_id": "DL-0089",
+      "title": "BNPL Spending Step-Up to Limit Bust-Out Pattern",
+      "status": "experimental",
+      "description": "Detects the characteristic spending escalation pattern of BNPL bust-out fraud, where accounts begin with small purchases (under $50) during a credit grooming phase, then rapidly escalate to purchases consuming 85% or more of the available credit limit within 14 days. This pattern distinguishes synthetic bust-out operations from legitimate consumer behavior, where spending typically ramps gradually over weeks to months. Recorded in organized rings deploying 50-1,000+ synthetic identities, the grooming-to-bustout transition represents the highest-confidence detection window for TP-0040 Phase 4 execution, as the sharp behavioral shift from conservative to aggressive spending is difficult for fraudsters to avoid without sacrificing the speed required for coordinated multi-provider bust-out.\n",
+      "cfpf_phase": "P4",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "account_type": "bnpl"
+        },
+        "filter_first_order": {
+          "first_order_value|lte": 50
+        },
+        "filter_limit_usage": {
+          "max_order_pct_of_limit|gte": 85
+        },
+        "filter_timespan": {
+          "days_first_to_max_order|lte": 14
+        },
+        "condition": "selection and filter_first_order and filter_limit_usage and filter_timespan"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "bnpl_transactions"
+      },
+      "threat_path_ids": [
+        "TP-0040"
+      ],
+      "fraud_types": [
+        "bnpl-fraud",
+        "bust-out",
+        "first-party-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.bnpl_fraud",
+        "flame.bust_out",
+        "flame.credit_grooming",
+        "flame.ecommerce"
+      ],
+      "falsepositives": [
+        "Legitimate consumers building confidence with a new BNPL provider before making a planned large purchase",
+        "Seasonal shopping patterns where consumers save large purchases for sales events"
+      ]
+    },
+    {
+      "id": "d2a47e96-f3b1-4a8c-be05-6c1f92d8e4a3",
+      "dl_id": "DL-0090",
+      "title": "BNPL Item-Not-Received Claim Velocity",
+      "status": "experimental",
+      "description": "Detects accounts filing three or more item-not-received (INR) claims within a 90-day rolling window where the average disputed order value exceeds $300. Legitimate INR dispute rates are under 1% of orders, with most disputes involving genuine delivery failures. Organized phantom delivery fraud and friendly fraud operations systematically file INR claims after receiving goods, targeting high-value orders to maximize returns. This rule supports TP-0040 Phase 4 detection by identifying accounts exhibiting claim patterns consistent with organized INR abuse rather than genuine delivery issues. The $300 average threshold filters out low-value legitimate disputes while capturing the high-value targeting characteristic of organized fraud.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "dispute_type": "item_not_received",
+          "account_type": "bnpl"
+        },
+        "aggregation": {
+          "count|gte": 3,
+          "groupby": "account_id",
+          "timeframe": "90d"
+        },
+        "filter_high_value": {
+          "avg_disputed_order_value|gte": 300
+        },
+        "condition": "selection and aggregation and filter_high_value"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "bnpl_disputes"
+      },
+      "threat_path_ids": [
+        "TP-0040"
+      ],
+      "fraud_types": [
+        "bnpl-fraud",
+        "first-party-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.bnpl_fraud",
+        "flame.ecommerce",
+        "flame.friendly_fraud",
+        "flame.phantom_delivery"
+      ],
+      "falsepositives": [
+        "Legitimate delivery failures in areas with known courier reliability issues",
+        "Bulk purchasers with higher absolute dispute counts due to high order volumes",
+        "Seasonal delivery disruptions during peak shipping periods"
+      ]
+    },
+    {
+      "id": "6f1a8c35-b9d7-4e42-a860-5e3d14c7f2b8",
+      "dl_id": "DL-0091",
+      "title": "BNPL Cross-Account Device Clustering",
+      "status": "experimental",
+      "description": "Detects four or more distinct BNPL accounts created from or accessed by the same device fingerprint within a 30-day window, indicating potential synthetic identity ring activity or account farming operations. Normal BNPL usage involves 1-2 accounts per device over 12 months. Emulator-based mass account opening tools with device fingerprint spoofing can create dozens of accounts per day from a single physical device, but sophisticated device fingerprinting systems can detect emulator signatures and fingerprint collision patterns. This rule supports TP-0040 Phase 3 detection by identifying device-level clustering that precedes multi-provider stacking and coordinated bust-out.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "account_creation",
+          "account_type": "bnpl"
+        },
+        "aggregation": {
+          "count|gte": 4,
+          "groupby": "device_fingerprint_hash",
+          "timeframe": "30d"
+        },
+        "condition": "selection and aggregation"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "bnpl_onboarding"
+      },
+      "threat_path_ids": [
+        "TP-0040"
+      ],
+      "fraud_types": [
+        "bnpl-fraud",
+        "identity-theft"
+      ],
+      "tags": [
+        "attack.t1586",
+        "cfpf.phase3.positioning",
+        "flame.account_farming",
+        "flame.bnpl_fraud",
+        "flame.device_clustering",
+        "flame.ecommerce"
+      ],
+      "falsepositives": [
+        "Shared household devices used by multiple family members for individual BNPL accounts",
+        "Retail kiosk or shared terminal devices in store environments",
+        "Workplace devices used by employees for personal BNPL accounts"
       ]
     }
   ]

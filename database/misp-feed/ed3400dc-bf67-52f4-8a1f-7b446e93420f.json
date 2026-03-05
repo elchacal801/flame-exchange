@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "ed3400dc-bf67-52f4-8a1f-7b446e93420f",
+    "info": "FLAME: BNPL Multi-Provider Fraud \u2014 Synthetic Stacking, ATO & Friendly Fraud",
+    "date": "2026-03-04",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "e3d0e56e-9d65-53a8-839d-e6a1f9d82be5",
+        "type": "text",
+        "category": "Other",
+        "value": "bnpl-fraud",
+        "comment": "Fraud type for TP-0040"
+      },
+      {
+        "uuid": "6df7d39a-dea4-51a2-803d-d89f55f49a5b",
+        "type": "text",
+        "category": "Other",
+        "value": "first-party-fraud",
+        "comment": "Fraud type for TP-0040"
+      },
+      {
+        "uuid": "36f263fb-e88c-5251-9371-9666ac0e3e80",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0040"
+      },
+      {
+        "uuid": "681882d8-d7b8-5c07-9e95-5cc5bb7570d6",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0040"
+      },
+      {
+        "uuid": "dffda81e-9054-5610-a48a-0afafdff559f",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0040"
+      },
+      {
+        "uuid": "55223756-0f9b-52ea-9383-580b4f0eaf92",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0040"
+      },
+      {
+        "uuid": "95bd7a69-741e-59be-9c6e-b7b08433f3de",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0040"
+      },
+      {
+        "uuid": "29d76d24-4e52-57dd-998b-3d223f9b09b3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0040"
+      },
+      {
+        "uuid": "53bd1680-009f-5d79-9601-cf44b1a13f2a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0040"
+      },
+      {
+        "uuid": "8d812110-51b9-5904-b06d-937256a59e9a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0040"
+      }
+    ]
+  }
+}

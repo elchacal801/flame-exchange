@@ -187,7 +187,7 @@
     "id": "TP-0003",
     "title": "Synthetic Identity — Credit Card Bust-Out",
     "category": "ThreatPath",
-    "date": "2026-02-12",
+    "date": "2026-03-04",
     "author": "FLAME Project",
     "source": "Federal Reserve / FinCEN / ACFE reporting",
     "tlp": "WHITE",
@@ -878,7 +878,7 @@
     "id": "TP-0011",
     "title": "Romance Scam to Money Mule Recruitment Pipeline",
     "category": "ThreatPath",
-    "date": "2026-02-12",
+    "date": "2026-03-04",
     "author": "FLAME Project",
     "source": "FBI IC3 / FinCEN Advisory FIN-2020-A008 / INTERPOL",
     "tlp": "WHITE",
@@ -1324,7 +1324,7 @@
     "id": "TP-0016",
     "title": "First-Party Fraud (Bust-Out)",
     "category": "ThreatPath",
-    "date": "2026-02-20",
+    "date": "2026-03-04",
     "author": "FLAME Project",
     "source": "Internal Knowledge Base",
     "tlp": "WHITE",
@@ -1344,7 +1344,9 @@
     "tags": [
       "first-party",
       "credit-card",
-      "consumer-banking"
+      "consumer-banking",
+      "viral-fraud",
+      "lnrs-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -1958,7 +1960,7 @@
     "id": "TP-0024",
     "title": "Account-to-Account Instant Payment Fraud (Zelle / FedNow / Pix / UPI)",
     "category": "ThreatPath",
-    "date": "2026-03-02",
+    "date": "2026-03-04",
     "author": "FLAME Project",
     "source": "Original Research — multi-source intelligence compilation",
     "tlp": "WHITE",
@@ -2440,7 +2442,7 @@
     "id": "TP-0029",
     "title": "AI Synthetic Identity & Document Forgery",
     "category": "ThreatPath",
-    "date": "2026-03-02",
+    "date": "2026-03-04",
     "author": "FLAME Project",
     "source": "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20240715a.htm",
     "tlp": "WHITE",
@@ -3415,6 +3417,92 @@
       "monitor": "Level 3",
       "report": "Level 2",
       "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0040",
+    "title": "BNPL Multi-Provider Fraud — Synthetic Stacking, ATO & Friendly Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-04",
+    "author": "FLAME Project (sourced from LexisNexis Risk Solutions, Experian, ACI Worldwide, MRC, CFPB, FCA, ASIC research)",
+    "source": "https://www.lexisnexis.com/risk/global-fraud-identity-report",
+    "tlp": "WHITE",
+    "summary": "Buy Now, Pay Later (BNPL) services represent one of the fastest-growing fraud surfaces in consumer finance. The global BNPL market reached $452 billion in transaction value in 2025, with fraud rates of 3-4% — significantly higher than traditional credit products (0.1-0.3%). Synthetic identity exposure in BNPL channels reached $3.2 billion in H1 2024 alone, and 79% of merchants offering BNPL reported being affected by friendly fraud.\n\nThree distinct attack variants exploit BNPL ecosystems: (1) synthetic identity stacking, where fraudsters create synthetic identities and simultaneously open accounts across multiple BNPL providers that lack cross-bureau loan reporting; (2) account takeover combined with phantom delivery schemes, where compromised accounts are used for purchases with false item-not-received claims; and (3) organized friendly fraud (\"buy now, pay never\"), where legitimate account holders systematically default on BNPL obligations across providers.\n\nThe multi-provider stacking vulnerability is the defining structural weakness: unlike traditional credit products reported to bureaus, most BNPL loans are invisible to other BNPL providers, enabling a single synthetic identity to simultaneously carry obligations across Klarna, Afterpay, Affirm, Clearpay, and Zip without triggering velocity alerts. The regulatory landscape is fragmented — the CFPB's interpretive rule treating BNPL as credit cards was rescinded in March 2025, the FCA plans full regulation by 2026, and ASIC introduced licensing requirements effective June 2025.\n\nUnderground ecosystems have developed BNPL-specific fraud tooling. The \"Klarna Method\" — a systematic fraud tutorial — went viral on TikTok and Telegram in 2024-2025. The STYX marketplace emerged as a centralized dark web platform offering BNPL fraud guides, pre-warmed synthetic accounts, and reshipping service integration. Telegram channels dedicated to BNPL fraud saw a 53% activity surge in 2024. Fraud-as-a-Service (FaaS) operators generate approximately $520 million annually from $3.2 billion in dark web revenue linked to BNPL-adjacent fraud.\n\n---",
+    "file_path": "C:\\Users\\anon\\Documents\\anon\\repos\\flame-fraud\\.claude\\worktrees\\exciting-greider\\ThreatPaths\\TP-0040-bnpl-multi-provider-fraud.md",
+    "confidence_score": 78,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "sectors": [
+      "retail",
+      "payments",
+      "fintech",
+      "banking"
+    ],
+    "fraud_types": [
+      "bnpl-fraud",
+      "first-party-fraud",
+      "identity-theft",
+      "account-takeover",
+      "social-engineering"
+    ],
+    "tags": [
+      "bnpl",
+      "klarna-method",
+      "synthetic-stacking",
+      "friendly-fraud",
+      "buy-now-pay-never",
+      "multi-provider",
+      "styx-marketplace",
+      "afterpay",
+      "affirm",
+      "phantom-delivery"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1586",
+      "T1589.001",
+      "T1657",
+      "T1583.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA007",
+      "FTA009",
+      "FT003",
+      "FT007",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Execution",
+      "Credential Access",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-FCA-APP",
+      "REG-AU-SPF"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 2",
+      "improve": "Level 3"
     }
   }
 ]

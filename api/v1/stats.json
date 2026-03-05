@@ -1,12 +1,12 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T03:34:55.896014+00:00",
+    "generated_at": "2026-03-05T04:19:12.554994+00:00",
     "total": 1
   },
   "data": {
-    "total": 39,
-    "fraudTypes": 59,
+    "total": 40,
+    "fraudTypes": 60,
     "fraudTypeList": [
       "BEC",
       "account-takeover",
@@ -17,6 +17,7 @@
       "authorized-push-payment",
       "autonomous-ai-fraud",
       "benefit-fraud",
+      "bnpl-fraud",
       "brand-impersonation",
       "business-email-compromise",
       "bust-out",
@@ -88,11 +89,11 @@
       "web3"
     ],
     "phaseCoverage": {
-      "P1": 38,
-      "P2": 36,
-      "P3": 39,
-      "P4": 38,
-      "P5": 38
+      "P1": 39,
+      "P2": 37,
+      "P3": 40,
+      "P4": 39,
+      "P5": 39
     },
     "topTags": [
       {
@@ -191,13 +192,13 @@
       {
         "fraud_type": "account-takeover",
         "phases": {
-          "P1": 12,
-          "P2": 12,
-          "P3": 12,
-          "P4": 12,
-          "P5": 12
+          "P1": 13,
+          "P2": 13,
+          "P3": 13,
+          "P4": 13,
+          "P5": 13
         },
-        "total_tps": 12
+        "total_tps": 13
       },
       {
         "fraud_type": "advance-fee-fraud",
@@ -275,6 +276,17 @@
           "P2": 1
         },
         "total_tps": 2
+      },
+      {
+        "fraud_type": "bnpl-fraud",
+        "phases": {
+          "P1": 1,
+          "P2": 1,
+          "P3": 1,
+          "P4": 1,
+          "P5": 1
+        },
+        "total_tps": 1
       },
       {
         "fraud_type": "brand-impersonation",
@@ -463,13 +475,13 @@
       {
         "fraud_type": "first-party-fraud",
         "phases": {
-          "P1": 4,
-          "P3": 4,
-          "P4": 4,
-          "P5": 4,
-          "P2": 3
+          "P1": 5,
+          "P3": 5,
+          "P4": 5,
+          "P5": 5,
+          "P2": 4
         },
-        "total_tps": 4
+        "total_tps": 5
       },
       {
         "fraud_type": "fraudulent-claim",
@@ -507,13 +519,13 @@
       {
         "fraud_type": "identity-theft",
         "phases": {
-          "P1": 8,
-          "P2": 7,
-          "P3": 8,
-          "P4": 7,
-          "P5": 7
+          "P1": 9,
+          "P2": 8,
+          "P3": 9,
+          "P4": 8,
+          "P5": 8
         },
-        "total_tps": 8
+        "total_tps": 9
       },
       {
         "fraud_type": "impersonation",
@@ -727,13 +739,13 @@
       {
         "fraud_type": "social-engineering",
         "phases": {
-          "P1": 6,
-          "P2": 6,
-          "P3": 6,
-          "P4": 6,
-          "P5": 6
+          "P1": 7,
+          "P2": 7,
+          "P3": 7,
+          "P4": 7,
+          "P5": 7
         },
-        "total_tps": 6
+        "total_tps": 7
       },
       {
         "fraud_type": "synthetic-identity",
@@ -836,6 +848,6 @@
       },
       "lastUpdated": "2026-03-05"
     },
-    "generatedAt": "2026-03-05T03:34:54.929693+00:00"
+    "generatedAt": "2026-03-05T04:19:11.778531+00:00"
   }
 }

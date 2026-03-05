@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="account_creation" account_type="bnpl" count>=4 groupby="device_fingerprint_hash" timeframe="30d"

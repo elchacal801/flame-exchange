@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+dispute_type="item_not_received" account_type="bnpl" count>=3 groupby="account_id" timeframe="90d" avg_disputed_order_value>=300
