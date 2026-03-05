@@ -141,3 +141,13 @@ regulations:
     relevant_fraud_types:
       - wire-fraud
       - BEC
+
+  - id: REG-OFAC-SDN
+    name: "OFAC Specially Designated Nationals List"
+    jurisdiction: US
+    category: sanctions
+    description: "Treasury OFAC sanctions list prohibiting transactions with designated persons and entities"
+    relevant_fraud_types:
+      - sanctions-evasion
+      - money-laundering
+      - wire-fraud
