@@ -7,7 +7,7 @@ on:
       - 'ThreatPaths/**'
       - 'Baselines/**'
       - 'DetectionLogic/**'
-      - 'cfpf_techniques.json'
+      - 'data/cfpf_techniques.json'
       - 'data/regulatory_alerts.csv'
 
 permissions:

@@ -623,12 +623,12 @@ def main():
         "--output",
         type=Path,
         default=None,
-        help="Output JSON path (default: <root>/ft3_mapping_suggestions.json)",
+        help="Output JSON path (default: <root>/data/ft3_mapping_suggestions.json)",
     )
     args = parser.parse_args()
 
     root = args.root.resolve()
-    output_path = args.output or (root / "ft3_mapping_suggestions.json")
+    output_path = args.output or (root / "data" / "ft3_mapping_suggestions.json")
 
     log.info("FT3 Auto-Mapper for FLAME Threat Paths")
     log.info("Root: %s", root)

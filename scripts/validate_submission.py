@@ -44,7 +44,7 @@ VALID_ID_PREFIXES = {
 
 VALID_TLP = {"WHITE", "GREEN", "AMBER", "RED"}
 
-TAXONOMY_FILE = Path(__file__).resolve().parent.parent / "flame_taxonomy.json"
+TAXONOMY_FILE = Path(__file__).resolve().parent.parent / "data" / "flame_taxonomy.json"
 try:
     with open(TAXONOMY_FILE, "r", encoding="utf-8") as _f:
         _tax = json.load(_f)
