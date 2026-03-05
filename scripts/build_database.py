@@ -1463,7 +1463,7 @@ def export_api_v1(conn: sqlite3.Connection, root: Path,
     # -------------------------------------------------------------------
     # 6. taxonomy.json — sectors + fraud types from flame_taxonomy.json
     # -------------------------------------------------------------------
-    taxonomy_path = root / "flame_taxonomy.json"
+    taxonomy_path = root / "data" / "flame_taxonomy.json"
     if taxonomy_path.exists():
         taxonomy_data = json.loads(taxonomy_path.read_text(encoding="utf-8"))
     else:
@@ -1618,7 +1618,7 @@ def main():
     log.info("Database initialized: %s", db_path)
 
     # Load techniques catalog
-    techniques_path = root / "cfpf_techniques.json"
+    techniques_path = root / "data" / "cfpf_techniques.json"
     tech_count = load_techniques(conn, techniques_path)
     log.info("Loaded %d CFPF techniques", tech_count)
 

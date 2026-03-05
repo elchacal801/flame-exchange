@@ -42,7 +42,7 @@ from bs4 import BeautifulSoup
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 THREAT_PATHS_DIR = REPO_ROOT / "ThreatPaths"
-CFPF_TECHNIQUES_FILE = REPO_ROOT / "cfpf_techniques.json"
+CFPF_TECHNIQUES_FILE = REPO_ROOT / "data" / "cfpf_techniques.json"
 TEMPLATE_FILE = REPO_ROOT / "Templates" / "threat-path-template.md"
 
 # LLM configuration
