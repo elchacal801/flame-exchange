@@ -1,0 +1,20 @@
+{
+  "tp_id": "TP-0035",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.platform_type,\n    COUNT(DISTINCT c.card_id) AS compromised_cards,\n    COUNT(DISTINCT f.fraud_case_id) AS fraud_reports,\n    MIN(f.fraud_report_date) AS first_fraud_report,\n    MAX(f.fraud_report_date) AS latest_fraud_report,\n    AVG(DATEDIFF(day, t.transaction_date, f.fraud_report_date)) AS avg_days_to_fraud\nFROM fraud_reports f\nJOIN transactions t ON f.original_transaction_id = t.transaction_id\nJOIN merchants m ON t.merchant_id = m.merchant_id\nJOIN cards c ON t.card_id = c.card_id\nWHERE f.fraud_report_date >= CURRENT_DATE - INTERVAL '30 days'\n  AND f.fraud_type IN ('cnp_fraud', 'counterfeit', 'card_not_present')\nGROUP BY m.merchant_id, m.merchant_name, m.platform_type\nHAVING COUNT(DISTINCT c.card_id) >= 10\n   AND COUNT(DISTINCT f.fraud_case_id) >= 5\nORDER BY compromised_cards DESC;",
+      "title": "SQL — Common Point of Purchase Detection (Phase 5)"
+    },
+    {
+      "type": "spl",
+      "content": "index=web_security sourcetype=csp_violations\n    blocked_uri!=\"inline\" blocked_uri!=\"eval\"\n| eval page_type = if(match(document_uri, \"(checkout|payment|cart|billing)\"), \"payment_page\", \"other\")\n| where page_type = \"payment_page\"\n| stats count AS violation_count,\n        dc(blocked_uri) AS unique_blocked_domains,\n        values(blocked_uri) AS blocked_domains,\n        dc(document_uri) AS affected_pages\n    BY effective_directive\n| where violation_count > 10\n| lookup domain_age_lookup domain AS blocked_domains OUTPUT domain_age_days\n| where domain_age_days < 90 OR isnull(domain_age_days)\n| table effective_directive, blocked_domains, violation_count, affected_pages, domain_age_days\n| sort - violation_count",
+      "title": "Splunk — CSP Violation and Unauthorized Script Detection (Phase 3)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: WebSocket Connection from Payment Page to Non-Payment Domain\nstatus: experimental\ndescription: >\n  Detects WebSocket connections initiated from e-commerce payment or checkout\n  pages to domains not associated with the merchant's legitimate payment\n  processor. E-skimmer variants using blockchain C2 infrastructure establish\n  WebSocket connections for payload delivery and data exfiltration.\nlogsource:\n    product: web_proxy\n    service: network_traffic\ndetection:\n    selection:\n        request_url|contains:\n            - 'checkout'\n            - 'payment'\n            - 'billing'\n            - 'cart/complete'\n        connection_type: 'websocket'\n    filter_legitimate:\n        destination_domain|contains:\n            - 'stripe.com'\n            - 'paypal.com'\n            - 'braintreegateway.com'\n            - 'adyen.com'\n            - 'authorize.net'\n    condition: selection and not filter_legitimate\nlevel: high\ntags:\n    - cfpf.phase4.execution\n    - attack.t1041\n    - flame.ecommerce\n    - flame.eskimmer",
+      "title": "Sigma — WebSocket Connection from Payment Page (Phase 4)"
+    }
+  ]
+}

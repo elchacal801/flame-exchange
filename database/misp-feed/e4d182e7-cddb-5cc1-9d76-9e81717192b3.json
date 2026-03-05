@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "e4d182e7-cddb-5cc1-9d76-9e81717192b3",
+    "info": "FLAME: Agentic Commerce Fraud",
+    "date": "2026-03-04",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "0e29ffb4-3f8d-5b79-ba62-b1a046b20c80",
+        "type": "text",
+        "category": "Other",
+        "value": "autonomous-ai-fraud",
+        "comment": "Fraud type for TP-0039"
+      },
+      {
+        "uuid": "d5be3ec8-b87b-5a7d-a0ce-c84e3be5986d",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0039"
+      },
+      {
+        "uuid": "b3e6afa2-3821-5a4c-ac5a-9c8d326d0ee4",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0039"
+      },
+      {
+        "uuid": "32493e28-76e9-5f7c-acc1-c9bb92d1e54c",
+        "type": "text",
+        "category": "Other",
+        "value": "unauthorized-transaction",
+        "comment": "Fraud type for TP-0039"
+      },
+      {
+        "uuid": "dd4937c7-a701-5814-bcf5-2a07bce19818",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0039"
+      },
+      {
+        "uuid": "f2f3c196-3393-5012-bb6f-c2a12edbf618",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0039"
+      },
+      {
+        "uuid": "846a8027-bfc8-5ff1-b76c-e9d3b67acaf8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0039"
+      },
+      {
+        "uuid": "0d0633d9-286f-5cd4-be77-cfbe9722044a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0039"
+      },
+      {
+        "uuid": "2ccfe930-e772-52ac-9c40-652e0d918f1a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0039"
+      }
+    ]
+  }
+}

@@ -1,0 +1,428 @@
+# TP-0036: Purchase Scam Merchant Networks
+
+```yaml
+---
+id: TP-0036
+title: "Purchase Scam Merchant Networks"
+category: ThreatPath
+date: 2026-03-04
+author: "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)"
+source: "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+tlp: WHITE
+sector:
+  - retail
+  - payments
+  - banking
+fraud_types:
+  - purchase-scam
+  - brand-impersonation
+  - first-party-fraud
+  - social-engineering
+cfpf_phases:
+  - P1
+  - P2
+  - P3
+  - P4
+  - P5
+mitre_attack:
+  - T1583.001  # Acquire Infrastructure: Domains
+  - T1656       # Impersonation
+  - T1598       # Phishing for Information
+  - T1657       # Financial Theft
+ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA007", "FTA009", "FTA010", "FT016", "FT017", "FT028", "FT007.009"]
+mitre_f3: []
+groupib_stages:
+  - "Reconnaissance"
+  - "Resource Development"
+  - "Trust Abuse"
+  - "End-user Interaction"
+  - "Perform Fraud"
+  - "Monetization"
+  - "Laundering"
+ucff_domains:
+  commit: "Level 2"
+  assess: "Level 3"
+  plan: "Level 3"
+  act: "Level 3"
+  monitor: "Level 3"
+  report: "Level 2"
+  improve: "Level 2"
+confidence_score: 75
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0030
+    relationship: shares-infrastructure
+  - id: TP-0015
+    relationship: related-to
+  - id: TP-0012
+    relationship: related-to
+regulatory_refs:
+  - REG-FINCEN-CDD
+  - REG-UK-PSR-APP
+  - REG-AU-SPF
+  - REG-FCA-APP
+tags:
+  - purchase-scam
+  - scam-merchant
+  - subscription-trap
+  - ad-driven-fraud
+  - victim-authorized-fraud
+  - brand-abuse
+  - social-media-ads
+  - merchant-fraud
+  - acquirer-risk
+---
+```
+
+---
+
+## Summary
+
+Purchase scam merchant networks represent a rapidly scaling fraud threat that exploits the fundamental design of the payment ecosystem: because the victim authorizes the transaction themselves, traditional card-not-present fraud controls are largely ineffective. Recorded Future identified over 3,600 scam merchant accounts in 2025 — a 2.5x increase from 2024 — operating across more than 40 countries and processing through over 230 acquirers. The Global Anti-Scam Alliance in partnership with Feedzai estimated that scam losses globally exceeded $1 trillion in 2024, with purchase scams constituting a significant and growing share. Unlike unauthorized fraud where the card is stolen, purchase scams rely on social engineering to convince victims to willingly submit payment to fraudulent merchants, making them a category of Authorized Push Payment (APP) fraud that falls outside the protective scope of most chargeback frameworks.
+
+The attack chain begins with brand impersonation and social media advertising. Scam operators create storefronts that closely mimic legitimate brands, offering products at steep discounts to attract victims. Social media advertising platforms serve as the primary targeting mechanism — their algorithms optimize ad delivery to users most likely to engage, effectively weaponizing legitimate ad targeting capabilities for fraud. Once a victim completes a purchase, the scam merchant either never delivers the product, delivers a counterfeit or grossly inferior substitute, or — in a particularly aggressive tactic that emerged in H2 2025 — immediately enrolls the victim in recurring subscription charges. A secondary variant observed in late 2025 involves the victim receiving a follow-up contact from a purported "transaction recovery service" that imposes additional charges. Over 50 scam merchants identified in 2025 were also linked to card data sold on dark web markets, indicating that some operations combine purchase scam revenue with payment data compromise.
+
+The scalability of these operations is enabled by common patterns in merchant acquisition workflows. Analysis of the 3,600+ identified scam merchants reveals clustering by acquirer, country, and merchant category code (MCC) — suggesting that operators have developed repeatable playbooks for onboarding merchant accounts through specific acquirer channels. Domain rotation, merchant account cycling, and rapid payout extraction before chargeback windows close are standard operational practices. The November 2025 discovery of a Telegram tutorial for building phishing pages using autonomous AI agents, combined with evidence of AI-powered marketing platforms being used for phishing message generation and victim targeting by at least one scam operation, signals the beginning of AI-augmented scam operations that will further accelerate scale.
+
+---
+
+## Threat Path Hypothesis
+
+> **Hypothesis**: Organized scam merchant networks are leveraging social media advertising platforms, brand impersonation, and scalable merchant account acquisition workflows to operate thousands of fraudulent storefronts that trick victims into authorizing payments for goods that are never delivered, are counterfeit, or serve as pretexts for subscription traps and secondary charges — generating over $1 trillion in global scam losses annually while circumventing traditional card fraud controls because the transactions are victim-authorized.
+
+**Confidence**: High (75/100) — Recorded Future's 2025 report provides direct enumeration of 3,600+ scam merchant accounts across 40+ countries and 230+ acquirers, corroborated by Global Anti-Scam Alliance/Feedzai aggregate loss estimates and Mastercard's May 2025 scam-focused research. The AI augmentation vector is supported by the November 2025 Telegram tutorial discovery but is assessed as early-stage with limited confirmed deployment at scale.
+
+**Estimated Impact**: Per scam merchant account: $10,000 - $500,000 in fraudulent revenue before detection and shutdown (median account lifespan 30-90 days). Aggregate ecosystem impact: estimated $1 trillion+ in global scam losses in 2024 (GASA/Feedzai), with purchase scams representing a significant share. Acquirer liability exposure includes scheme fines for excessive chargeback ratios, MATCH/TMF listing risk, and regulatory penalties under emerging APP fraud liability frameworks (UK PSR, Australian Scams Prevention Framework).
+
+---
+
+## CFPF Phase Mapping
+
+### Phase 1: Recon
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P1-001: Brand and product targeting | Operators identify popular consumer brands and high-demand product categories for impersonation. Trending products (electronics launches, seasonal items, luxury goods) are prioritized for their ability to generate high click-through rates on social media advertisements. Competitor pricing and legitimate retailer inventory shortages are monitored to identify products where steep discount offers will be most compelling. | N/A (external brand intelligence gathering is not directly observable) |
+| CFPF-P1-002: Merchant account acquisition | Operators establish merchant processing accounts using shell company identities, registered agents, and nominee directors. Multiple accounts are acquired across different acquirers to distribute risk and maintain operational continuity when individual accounts are terminated. Analysis reveals clustering by acquirer and country, suggesting repeatable onboarding playbooks for specific acquirer channels. | New merchant applications with shell company indicators: recent incorporation, registered agent addresses, minimal web presence, nominee director patterns; multiple merchant applications from related entities to the same or different acquirers |
+| CFPF-P1-003: Scam storefront infrastructure | Operators register domains that closely mimic legitimate brand URLs (typosquatting, homoglyph substitution, brand-keyword combinations). Storefronts are built using templated e-commerce platforms with stolen product images, fabricated reviews, and professional-appearing design. Infrastructure is designed for rapid rotation — when one storefront is reported, the next is already operational. | Domain registrations containing brand names or close variants; bulk domain registration from the same registrant; domains hosted on infrastructure shared with known scam operations; website content matching known scam storefront templates |
+
+**Data Sources**: Brand protection and trademark monitoring services, domain registration (WHOIS) monitoring, merchant application screening data, acquirer onboarding analytics, threat intelligence feeds (known scam infrastructure).
+
+---
+
+### Phase 2: Initial Access
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P2-001: Social media advertising campaigns | Operators launch advertising campaigns on major social media platforms (Facebook/Meta, Instagram, TikTok, YouTube) targeting consumers likely to purchase the impersonated brand's products. Ads feature stolen product imagery, brand logos, and offers at 50-80% discounts from retail pricing. Platform algorithms optimize delivery to users with high purchase intent, amplifying the scam's reach. | Social media ads for brand products at unrealistic discounts; ad landing pages on domains not associated with the legitimate brand; advertising accounts with limited history or recently created; ads reported by consumers that match known scam patterns |
+| CFPF-P2-002: SEO-optimized scam sites | Operators create search-engine-optimized scam storefronts that appear in organic search results for popular product queries. SEO techniques include keyword stuffing, link building from compromised sites, and creation of fake review pages that link to the scam storefront. | Search results for brand products returning URLs from recently registered domains; product listing pages with SEO keyword patterns inconsistent with legitimate retailers; backlink profiles from compromised or low-quality domains |
+| CFPF-P2-003: Brand impersonation landing pages | Victims who click on scam ads or search results arrive at professional-appearing storefronts that replicate legitimate brand aesthetics, including logos, product photography, customer reviews, and trust badges. Some scam sites include fabricated customer service chat widgets and fake order tracking systems to build trust. | Landing page design closely matching legitimate brand sites; domain name containing brand keywords but not owned by the brand; trust badges and security seals that link to non-functional or generic verification pages; product images that reverse-image-search to the legitimate brand's catalog |
+
+**Data Sources**: Social media advertising transparency tools, brand monitoring services, search engine result monitoring, consumer complaint databases, domain registration monitoring.
+
+---
+
+### Phase 3: Positioning
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P3-001: Subscription trap enrollment | After processing the initial purchase, the scam merchant silently enrolls the victim in a recurring billing arrangement through obscured terms buried in the checkout flow. Initial charges are low (trial pricing), but subsequent recurring charges are significantly higher. Terms of service, if they exist, are designed to be maximally difficult to understand or locate. | Merchant processing patterns showing initial low-value transactions followed by higher-value recurring charges; merchant terms of service with obscured recurring billing clauses; customer complaints about unexpected charges from the merchant |
+| CFPF-P3-002: Credibility manufacturing | Operators generate fake positive reviews on the scam storefront, social media pages, and third-party review platforms. Some operations purchase verified reviews from review farms or use AI-generated review content. Social media followers and engagement metrics are artificially inflated to create an appearance of legitimacy. | Review patterns showing bulk posting dates, generic language, or reviewer profiles with limited history; social media engagement metrics that spike unnaturally; positive reviews that contradict the overall pattern of customer complaints |
+| CFPF-P3-003: Payment processing optimization | Operators configure payment processing to maximize revenue extraction before detection. This includes using MCCs that do not match the actual business activity, processing through acquirers in jurisdictions with weaker fraud monitoring, and structuring transactions to remain below velocity thresholds that trigger automated review. | Merchant category code mismatches (e.g., clothing retailer using a digital goods MCC); merchant processing country mismatched with the apparent storefront geography; transaction patterns designed to stay just below automated review thresholds |
+| CFPF-P3-004: AI-augmented operation scaling | Emerging in late 2025: operators use AI-powered marketing platforms and autonomous AI agents to generate phishing messages, create personalized victim targeting, and automate storefront content generation. A November 2025 Telegram tutorial documented the use of AI agents for building phishing pages at scale. | Storefront content with AI-generated text patterns; advertising copy showing AI generation markers; rapid storefront deployment velocity suggesting automated content creation; phishing communications with AI-generated personalization |
+
+**Data Sources**: Acquirer merchant monitoring data, payment network fraud signals, review platform analytics, social media advertising transparency reports, AI content detection tools, consumer protection agency complaint data.
+
+---
+
+### Phase 4: Execution
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P4-001: Victim-authorized payment | The victim completes a purchase on the scam storefront, voluntarily entering payment card details and authorizing the transaction. Because the victim initiates and authorizes the payment, the transaction passes standard fraud controls (AVS, 3DS, device fingerprinting) — the payment appears legitimate from the issuer's perspective. | Transaction authorized by cardholder with valid authentication; no traditional fraud indicators present on the individual transaction; merchant appears as a legitimate e-commerce entity to the payment processor |
+| CFPF-P4-002: Non-delivery or counterfeit delivery | After payment, the scam merchant either never ships the product, ships a counterfeit or grossly inferior substitute, or ships an unrelated low-value item to generate a tracking number that "proves" delivery. Tracking number fraud makes chargeback claims more difficult for the victim. | Consumer complaints of non-delivery or counterfeit goods; shipping tracking numbers that show delivery of lightweight packages inconsistent with the ordered product; dispute claims where the merchant provides tracking as evidence of fulfillment |
+| CFPF-P4-003: Recurring subscription charges | Subscription trap victims begin receiving recurring charges at amounts significantly higher than the initial transaction. The merchant's customer service channels are non-functional or deliberately obstructive, making cancellation difficult. Some merchants require written cancellation letters sent to non-existent addresses. | Recurring billing entries initiated by merchant without clear consumer opt-in; escalating charge amounts from initial trial to full subscription; customer service contacts resulting in loops or non-resolution; cancellation procedures that are deliberately onerous |
+| CFPF-P4-004: Secondary "recovery service" charges | An H2 2025 tactic: victims who dispute or complain about the original transaction receive contact from a purported "transaction recovery service" or "consumer protection agency" that offers to help recover funds — for a fee. This secondary scam extracts additional payments from already-victimized consumers. | Contacts from entities claiming to be recovery services following reports of scam merchant fraud; charges from entities with names suggesting consumer protection that are not legitimate organizations; pattern of secondary charges following initial scam merchant transactions |
+
+**Data Sources**: Issuer dispute/chargeback data, consumer complaint databases (BBB, FTC, local consumer protection), acquirer merchant monitoring, payment network fraud signals, shipping carrier data analytics.
+
+---
+
+### Phase 5: Monetization
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P5-001: Rapid merchant account payout extraction | Scam operators configure payment settlement to minimize the time between transaction processing and fund disbursement. Payouts are extracted before the chargeback window opens (typically 30-120 days), and merchant accounts are abandoned once chargebacks begin to accumulate. | Merchant accounts requesting accelerated settlement terms; fund disbursement to bank accounts with limited history; merchant accounts that become inactive immediately after the first wave of chargebacks; settlement accounts in jurisdictions with limited clawback mechanisms |
+| CFPF-P5-002: Merchant account cycling | When individual merchant accounts are terminated for excessive chargebacks or fraud, operators activate pre-prepared replacement accounts. The same scam storefront infrastructure is reconnected to the new merchant account, and operations resume within hours. Analysis of the 3,600+ identified accounts suggests some operator networks maintain 10-50+ merchant accounts in rotation. | Sequential merchant account activations from related entities; new merchant accounts processing for the same or similar storefronts; merchant account portfolios with correlated activation and termination patterns; shared infrastructure (IP, domain, template) across multiple merchant accounts |
+| CFPF-P5-003: Card data monetization | Over 50 scam merchants identified in 2025 were also linked to card data sold on dark web markets, indicating that some operations extract dual revenue — the authorized purchase payment plus the sale of the victim's card data. This dual monetization significantly increases the per-victim revenue. | Card data appearing on dark web markets with metadata linking to a specific scam merchant; fraud reports from the same cardholder involving both the scam merchant transaction and subsequent unauthorized charges; skimmer-like behaviors on scam merchant checkout pages |
+| CFPF-P5-004: Layering through shell business network | Revenue extracted from scam merchant accounts is layered through networks of shell businesses, nested merchant accounts, and cryptocurrency conversion. Common patterns include fund transfers between related merchant accounts, conversion through payment facilitators, and ultimate extraction via cryptocurrency or international wire transfers. | Fund flows between merchant settlement accounts and shell company bank accounts; cryptocurrency conversion of merchant settlement funds; international wire transfers from merchant-linked accounts to jurisdictions associated with scam operations |
+
+**Data Sources**: Acquirer settlement and payout analytics, merchant account lifecycle monitoring, dark web marketplace monitoring, AML transaction monitoring, corporate registry and beneficial ownership databases, cryptocurrency transaction analysis.
+
+---
+
+## Cross-Framework Mapping
+
+**FT3 (Stripe Fraud Taxonomy):**
+
+- FTA001 (Account Compromise) — abuse of legitimate merchant account onboarding processes
+- FTA002 (Credential Theft) — dual monetization through card data capture on scam checkout pages
+- FTA003 (Data Exfiltration) — extraction of customer card data for dark web sale
+- FTA005 (Social Engineering) — social media advertising and brand impersonation to manipulate victims into authorizing payments
+- FTA007 (Account Takeover) — downstream unauthorized use of card data captured during scam transactions
+- FTA009 (Platform Abuse) — exploitation of social media advertising and merchant acquiring platforms
+- FTA010 (Infrastructure Abuse) — use of e-commerce platforms and payment processors for fraudulent operations
+- FT016 (Purchase Scam) — direct non-delivery and counterfeit scam operations
+- FT017 (Subscription Trap) — hidden recurring billing enrollment
+- FT028 (Merchant Fraud) — fraudulent merchant operations including MCC misclassification
+- FT007.009 (CNP Fraud) — downstream fraud using card data captured from scam merchant checkouts
+
+**MITRE ATT&CK:**
+
+- T1583.001 (Acquire Infrastructure: Domains) — bulk domain registration for scam storefronts and brand impersonation
+- T1656 (Impersonation) — brand impersonation through copycat storefronts and advertising
+- T1598 (Phishing for Information) — social media ads and scam sites designed to elicit payment information from victims
+- T1657 (Financial Theft) — extraction of victim payments through scam purchases, subscription traps, and recovery scams
+
+**Group-IB Fraud Matrix:**
+
+- Reconnaissance — identification of brands and products for impersonation; acquirer channel analysis for merchant onboarding
+- Resource Development — shell company creation, domain registration, storefront template development, social media advertising account setup
+- Trust Abuse — brand impersonation and social media platform trust exploitation; advertising algorithm weaponization
+- End-user Interaction — victim engagement through social media ads, search results, and scam storefronts
+- Perform Fraud — victim-authorized payment collection, non-delivery, subscription trap enrollment, secondary recovery scam charges
+- Monetization — merchant account payouts, card data dark web sales, subscription revenue extraction
+- Laundering — fund layering through shell business networks, cryptocurrency conversion, international transfers
+
+---
+
+## Look Left / Look Right Analysis
+
+**Discovery Phase**: Typically discovered at **Phase 4 (Execution)** or **Phase 5 (Monetization)** — when consumer complaints reach critical mass at the acquirer or payment network level, when chargeback ratios exceed scheme thresholds, or when brand protection teams identify impersonation at scale. Proactive detection at **Phase 1-2** is possible through merchant onboarding analytics and brand monitoring but requires dedicated investment.
+
+**Look Left** (what was missed before discovery):
+
+- **P4 -> P3**: Were there subscription billing patterns (low initial charge followed by high recurring charges) that should have triggered merchant monitoring alerts? Were MCC mismatches identified during merchant onboarding or early transaction processing? Were fake review patterns detected on the merchant's storefront?
+- **P3 -> P2**: Were social media ads for the impersonated brand detected by brand protection monitoring? Were the scam storefront domains identified through trademark monitoring or domain registration alerts? Did SEO monitoring detect impersonation content in search results?
+- **P2 -> P1**: Were the shell company registrations flagged during merchant account onboarding? Did beneficial ownership analysis reveal nominee directors or registered agent patterns? Were the merchant applications cross-referenced with known scam operator patterns (shared addresses, related entities, acquirer clustering)?
+- **Cross-team gap**: Brand protection monitors for impersonation. Acquirer risk teams screen merchant applications. Payment operations monitors transaction patterns. Consumer protection teams handle complaints. The scam merchant signal spans brand abuse, merchant risk, transaction anomalies, and consumer harm — a unified view connecting these domains is essential but rarely exists.
+
+**Look Right** (predicted next steps if uninterrupted):
+
+- Active scam merchant accounts will extract maximum revenue within 30-90 days before chargeback volume triggers acquirer intervention
+- Replacement merchant accounts are pre-positioned and will be activated within hours of termination, continuing operations seamlessly
+- Victims enrolled in subscription traps will experience escalating recurring charges over 3-6 months before successfully canceling
+- Card data captured through dual-monetization scam merchants will appear on dark web markets within 1-2 weeks
+- AI-augmented scam operations will accelerate storefront creation velocity, enabling operators to maintain 5-10x more concurrent scam sites than manual operations allow
+- Regulatory responses (UK PSR APP fraud rules, Australian Scams Prevention Framework) will shift liability to acquirers and payment intermediaries, increasing financial incentives for proactive detection
+
+---
+
+## Underground Ecosystem Context
+
+### Scam Merchant Operation Models
+
+| Model | Description | Scale | Revenue Per Merchant |
+|-------|-------------|-------|---------------------|
+| Non-delivery scam | Products advertised but never shipped; merchant abandoned after chargebacks | High volume, short lifespan (30-60 days) | $10,000 - $100,000 |
+| Counterfeit delivery | Cheap counterfeit goods shipped to generate tracking numbers; reduces chargeback success | Moderate volume, medium lifespan (60-120 days) | $50,000 - $300,000 |
+| Subscription trap | Low trial charge followed by high recurring billing; victim difficulty canceling extends revenue | Lower initial volume, long revenue tail (3-12 months) | $100,000 - $500,000+ |
+| Dual monetization | Purchase scam + card data capture and dark web sale | Any of above + data revenue | Additional $5-$50 per captured card |
+| Recovery scam | Secondary charges from fake "transaction recovery service" | Targets existing victims | $50 - $500 per victim |
+
+### Operational Infrastructure
+
+- **Domain registration**: Bulk registration through privacy-protected registrars; typical rotation cycle of 2-4 weeks per domain
+- **Hosting**: Shared hosting platforms and CDNs that provide rapid deployment; bulletproof hosting for persistent operations
+- **Payment processing**: Merchant accounts through acquirers in 40+ countries; preference for acquirers with automated onboarding and limited manual review
+- **Social media advertising**: Platform ad accounts created with synthetic or stolen identities; advertising spend of $1,000-$10,000 per campaign
+- **AI tooling**: Emerging use of AI for storefront content generation, ad copy creation, personalized phishing messages, and victim targeting optimization
+
+### Regulatory Landscape
+
+| Jurisdiction | Regulation | Key Provision |
+|-------------|-----------|---------------|
+| United Kingdom | PSR APP Fraud Reimbursement (Oct 2024) | Mandatory reimbursement of APP fraud victims by sending PSP; acquirer-side obligations under development |
+| Australia | Scams Prevention Framework (2025) | Cross-sector obligations on banks, telcos, and platforms to prevent, detect, and respond to scams |
+| European Union | PSD3/PSR (proposed) | Enhanced fraud liability framework including provisions for authorized fraud |
+| United States | No federal APP fraud mandate | Reg E covers unauthorized transactions only; authorized fraud falls to consumer loss |
+
+---
+
+## Controls & Mitigations
+
+| Phase | Control | Type | Owner |
+|-------|---------|------|-------|
+| P1 | Enhanced merchant onboarding screening — shell company detection, beneficial ownership verification, cross-referencing with known scam patterns (shared addresses, nominee directors, acquirer/MCC clustering) | Preventive | Acquirer Risk / Compliance |
+| P1 | Brand monitoring and domain surveillance — automated monitoring for domain registrations containing brand names or close variants; integration with registrar takedown processes | Detective | Brand Protection / Legal |
+| P2 | Social media advertising monitoring — automated scanning of social media ad libraries for brand impersonation; rapid reporting and takedown of infringing ads | Detective | Brand Protection / Marketing |
+| P2 | Consumer warning systems — real-time URL checking against known scam storefront databases integrated into browser extensions and payment apps | Preventive | Industry Collaboration / Technology |
+| P3 | Merchant transaction pattern monitoring — detect subscription trap patterns (low initial charge followed by high recurring), MCC mismatches, and velocity anomalies in the first 30 days of merchant activity | Detective | Acquirer Risk / Payment Operations |
+| P3 | Review and storefront authenticity analysis — automated detection of templated scam storefronts, fake review patterns, and brand impersonation markers | Detective | Brand Protection / E-commerce Platform |
+| P4 | Real-time merchant risk scoring — dynamic risk assessment combining merchant age, transaction velocity, chargeback trajectory, and consumer complaint signals to identify and restrict high-risk merchants before chargeback thresholds are reached | Detective | Acquirer Risk / Fraud Operations |
+| P4 | Consumer dispute intelligence — correlate consumer complaints across channels (acquirer disputes, BBB, FTC, social media) to identify emerging scam merchant patterns before they reach scheme chargeback thresholds | Detective | Fraud Operations / Consumer Protection |
+| P5 | Settlement hold and delayed payout — implement risk-based settlement delays for new merchants; hold payouts when chargeback trajectories indicate potential fraud; restrict accelerated settlement for merchants under 6 months of age | Preventive | Acquirer Risk / Treasury |
+| P5 | Merchant account network analysis — graph analysis of merchant accounts to identify related entities, shared infrastructure, and cycling patterns; terminate entire networks when individual accounts are confirmed fraudulent | Detective | Acquirer Risk / Fraud Analytics |
+| P5 | Cross-acquirer intelligence sharing — participate in industry data sharing programs (Mastercard Alert to Control, Visa Merchant Screening Service) to propagate scam merchant identifiers across the ecosystem | Detective | Acquirer Risk / Industry Collaboration |
+
+---
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Recognition of purchase scam merchant risk as a distinct threat category separate from unauthorized fraud; acknowledgment of acquirer-side liability under emerging APP fraud regulations; basic budget allocation for merchant monitoring |
+| ASSESS | Level 3 (Established) | Assessment of merchant portfolio for scam indicators (shell companies, MCC mismatches, velocity anomalies); evaluation of social media advertising exposure for brand impersonation; analysis of chargeback data for scam merchant patterns; regulatory exposure assessment under UK PSR, Australian SPF, and emerging frameworks |
+| PLAN | Level 3 (Established) | Merchant onboarding screening procedures incorporating scam indicators; brand monitoring and ad takedown workflows; consumer complaint correlation processes; settlement hold policies for high-risk new merchants; cross-acquirer intelligence sharing participation |
+| ACT | Level 3 (Established) | Automated merchant application screening for shell company indicators; transaction pattern monitoring for subscription traps and velocity anomalies; real-time merchant risk scoring; brand monitoring integration with enforcement actions; consumer complaint aggregation and analysis |
+| MONITOR | Level 3 (Established) | KRIs for new merchant chargeback trajectories, merchant account cycling velocity, subscription trap billing patterns, brand impersonation detection rates, social media ad takedown response times, consumer complaint volumes by merchant; dashboards correlating merchant risk signals with complaint data |
+| REPORT | Level 2 (Developing) | Suspicious activity reporting for scam merchant patterns; scheme-mandated reporting for excessive chargeback merchants; regulatory reporting under APP fraud frameworks; consumer notification processes for identified scam victims |
+| IMPROVE | Level 2 (Developing) | Post-incident analysis of scam merchant detection latency (time from first transaction to merchant termination); merchant onboarding control effectiveness metrics; false positive rate optimization for merchant risk screening; integration of scheme intelligence (MATCH/TMF) into onboarding processes |
+
+### Maturity Levels Reference
+- **Level 1 (Initial):** Ad hoc, reactive fraud management
+- **Level 2 (Developing):** Basic fraud function exists with some defined processes
+- **Level 3 (Established):** Formalized fraud program with proactive capabilities
+- **Level 4 (Advanced):** Data-driven, continuously improving fraud program
+- **Level 5 (Leading):** Industry-leading, predictive fraud management
+
+---
+
+## Detection Approaches
+
+### Queries / Rules
+
+**SQL — Scam Merchant Velocity and Chargeback Detection (Phase 4-5)**
+
+```sql
+SELECT
+    m.merchant_id,
+    m.merchant_name,
+    m.mcc_code,
+    m.onboarding_date,
+    DATEDIFF(day, m.onboarding_date, CURRENT_DATE) AS account_age_days,
+    COUNT(t.transaction_id) AS total_transactions,
+    SUM(t.amount) AS total_volume,
+    COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) AS chargeback_count,
+    ROUND(COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) * 100.0 /
+        NULLIF(COUNT(t.transaction_id), 0), 2) AS chargeback_rate_pct,
+    COUNT(DISTINCT t.card_id) AS unique_cards,
+    AVG(t.amount) AS avg_transaction_amount
+FROM merchants m
+JOIN transactions t ON m.merchant_id = t.merchant_id
+WHERE m.onboarding_date >= CURRENT_DATE - INTERVAL '90 days'
+GROUP BY m.merchant_id, m.merchant_name, m.mcc_code, m.onboarding_date
+HAVING (
+    COUNT(t.transaction_id) > 200
+    AND DATEDIFF(day, m.onboarding_date, CURRENT_DATE) <= 30
+) OR (
+    ROUND(COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) * 100.0 /
+        NULLIF(COUNT(t.transaction_id), 0), 2) > 1.5
+)
+ORDER BY chargeback_rate_pct DESC;
+```
+
+**Splunk — Subscription Trap Detection (Phase 4)**
+
+```spl
+index=payment_transactions sourcetype=merchant_billing
+| eval is_recurring = if(billing_type="recurring", 1, 0)
+| stats count AS txn_count,
+        sum(amount) AS total_amount,
+        min(amount) AS min_amount,
+        max(amount) AS max_amount,
+        first(_time) AS first_txn,
+        latest(_time) AS last_txn,
+        dc(cardholder_id) AS unique_cardholders,
+        sum(is_recurring) AS recurring_count
+    BY merchant_id, merchant_name
+| eval recurring_pct = round(recurring_count / txn_count * 100, 1)
+| eval amount_ratio = round(max_amount / min_amount, 1)
+| where recurring_pct > 30
+    AND amount_ratio > 5
+    AND min_amount < 10
+    AND max_amount > 50
+| lookup merchant_onboarding merchant_id OUTPUT onboarding_date
+| eval merchant_age_days = round((now() - strptime(onboarding_date, "%Y-%m-%d")) / 86400, 0)
+| where merchant_age_days < 180
+| table merchant_id, merchant_name, txn_count, recurring_pct,
+        min_amount, max_amount, amount_ratio, unique_cardholders,
+        merchant_age_days
+| sort - amount_ratio
+```
+
+**Sigma — Brand Impersonation Merchant Detection (Phase 2-3)**
+
+```yaml
+title: Brand Impersonation Scam Merchant Detection
+status: experimental
+description: >
+  Detects merchant accounts where the merchant name or URL closely matches a
+  known brand name but the merchant is not an authorized retailer of that brand.
+  Purchase scam operators create storefronts that mimic legitimate brands to
+  deceive consumers into authorizing payments.
+logsource:
+    product: payment_gateway
+    service: merchant_onboarding
+detection:
+    selection:
+        merchant_name|contains:
+            - 'nike'
+            - 'adidas'
+            - 'apple'
+            - 'samsung'
+        merchant_verification_status: 'unverified'
+    filter_authorized:
+        merchant_id|exists: authorized_retailers_list
+    condition: selection and not filter_authorized
+level: medium
+tags:
+    - cfpf.phase2.initial_access
+    - attack.t1656
+    - flame.retail
+    - flame.purchase_scam
+```
+
+### Behavioral Analytics
+
+- **New merchant velocity profiling**: Establish baseline ramp-up curves for legitimate merchants by MCC. Flag merchants that exceed the 95th percentile of transaction velocity in their first 30 days, particularly when combined with other risk indicators (no prior processing history, shell company registration, recently registered domain).
+- **Subscription billing anomaly detection**: Identify merchant accounts where initial transaction amounts are clustered below $10 but subsequent recurring charges exceed $50. A ratio of maximum to minimum charge amount exceeding 5:1 combined with recurring billing rates above 30% of transactions is a strong subscription trap indicator.
+- **Merchant account cycling detection**: Use graph analytics to identify networks of merchant accounts that share infrastructure indicators (IP addresses, domain registrations, business addresses, beneficial owners, bank accounts). Sequential activation patterns where new accounts become active within days of related account termination indicate cycling.
+- **Consumer complaint velocity correlation**: Aggregate consumer complaints from multiple channels (acquirer disputes, BBB, FTC, social media mentions, brand protection reports) and correlate with merchant transaction data. A spike in complaints relative to transaction volume exceeding 2% within the first 60 days of merchant activity warrants immediate review.
+
+### Cross-Team Correlation
+
+- **Acquirer Risk -> Brand Protection**: Merchant accounts flagged for brand name similarity should be cross-referenced with brand protection teams' legitimate retailer databases and active impersonation investigations.
+- **Brand Protection -> Acquirer Risk**: Identified brand impersonation domains should be cross-referenced with acquirer merchant portfolios to identify and terminate associated merchant accounts before chargeback damage accumulates.
+- **Fraud Analytics -> Consumer Protection**: Transaction pattern anomalies (subscription traps, velocity spikes) should be correlated with incoming consumer complaint data to accelerate scam merchant identification and termination.
+- **Payment Networks -> Acquirers**: Scheme-level fraud signals (Visa/Mastercard merchant risk indicators, MATCH/TMF listings) should be integrated into real-time merchant risk scoring and settlement hold decisions.
+- **Social Media Platforms -> Brand Protection -> Acquirer Risk**: Ad-level brand impersonation reports from social media platforms should propagate to brand protection teams and ultimately to acquirers for merchant account investigation.
+
+---
+
+## References
+
+- **Recorded Future — Annual Payment Fraud Intelligence Report 2025**: Primary source providing scam merchant enumeration (3,600+ accounts, 40+ countries, 230+ acquirers), subscription trap tactics, dual monetization evidence (50+ merchants linked to dark web card data), AI-augmented scam operations evidence, and the H2 2025 "recovery service" secondary scam tactic.
+
+- **Global Anti-Scam Alliance / Feedzai — Global State of Scams Report 2024**: Aggregate scam loss estimate exceeding $1 trillion globally; breakdown by scam type and geography.
+
+- **Mastercard — Purchase Scams: A Growing Threat to the Payments Ecosystem (May 2025)**: Whitepaper analyzing purchase scam mechanics, acquirer-side detection opportunities, and industry response recommendations.
+
+- **UK Payment Systems Regulator — APP Fraud Reimbursement Requirements (October 2024)**: Regulatory framework mandating PSP reimbursement of APP fraud victims; implications for acquirer liability in purchase scam scenarios.
+
+- **Australian Government — Scams Prevention Framework (2025)**: Cross-sector regulatory framework imposing obligations on banks, telecommunications providers, and digital platforms to prevent, detect, and respond to scams.
+
+- **Telegram Tutorial — Building Phishing Pages with AI Agents (November 2025)**: Documented evidence of autonomous AI agent use for phishing page construction, cited in Recorded Future report as an emerging threat vector for scam operation scaling.
+
+- **Related FLAME Threat Paths**: [TP-0030: Triangulation Fraud](TP-0030-triangulation-fraud.md) (shared infrastructure with scam merchant operations); [TP-0015: Employment Fraud via Brand Impersonation](TP-0015-employment-fraud-brand-impersonation.md) (related brand impersonation techniques); [TP-0012: Merchant Fraud](TP-0012-merchant-fraud.md) (broader merchant fraud ecosystem).
+
+---
+
+## Revision History
+
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-03-04 | FLAME Project | Initial submission — sourced from Recorded Future Annual Payment Fraud Report 2025 |

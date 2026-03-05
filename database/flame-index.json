@@ -808,7 +808,7 @@
     "id": "TP-0008",
     "title": "SIM Swap to Cryptocurrency Exchange ATO",
     "category": "ThreatPath",
-    "date": "2026-02-12",
+    "date": "2026-03-04",
     "author": "FLAME Project",
     "source": "FBI IC3 / DOJ SIM swap prosecutions / industry reporting",
     "tlp": "WHITE",
@@ -830,7 +830,10 @@
       "cryptocurrency",
       "MFA-bypass",
       "carrier-social-engineering",
-      "high-value-individual"
+      "high-value-individual",
+      "otp-interception",
+      "otp-bot",
+      "evilginx"
     ],
     "cfpf_phases": [
       "P1",
@@ -923,6 +926,10 @@
       {
         "id": "TP-0013",
         "relationship": "enables"
+      },
+      {
+        "id": "TP-0037",
+        "relationship": "enables"
       }
     ],
     "evidence_count": 0
@@ -931,7 +938,7 @@
     "id": "TP-0009",
     "title": "Check Washing and Fraudulent Mobile Deposit",
     "category": "ThreatPath",
-    "date": "2026-02-12",
+    "date": "2026-03-04",
     "author": "FLAME Project",
     "source": "USPS OIG / FinCEN / banking industry reporting",
     "tlp": "WHITE",
@@ -951,7 +958,9 @@
       "mail-theft",
       "mobile-deposit",
       "duplicate-deposit",
-      "USPS"
+      "USPS",
+      "deurbanization",
+      "midwest-shift"
     ],
     "cfpf_phases": [
       "P1",
@@ -3070,7 +3079,7 @@
     "id": "TP-0030",
     "title": "E-Commerce Triangulation Fraud",
     "category": "ThreatPath",
-    "date": "2026-03-02",
+    "date": "2026-03-04",
     "author": "FLAME Project",
     "source": "https://www.chargebackgurus.com/blog/triangulation-fraud",
     "tlp": "WHITE",
@@ -3161,6 +3170,18 @@
       {
         "id": "TP-0031",
         "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0035",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0036",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0038",
+        "relationship": "feeds-into"
       }
     ],
     "evidence_count": 0
@@ -3592,5 +3613,537 @@
       }
     ],
     "evidence_count": 2
+  },
+  {
+    "id": "TP-0035",
+    "title": "Magecart E-Skimmer Data Compromise",
+    "category": "ThreatPath",
+    "date": "2026-03-04",
+    "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+    "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+    "tlp": "WHITE",
+    "summary": "Magecart-style e-skimmer attacks remain one of the most persistent and scalable threats to online payment ecosystems. In 2025, Recorded Future identified over 10,500 unique e-skimmer infections active...",
+    "confidence_score": 78,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "sectors": [
+      "retail",
+      "payments",
+      "fintech"
+    ],
+    "fraud_types": [
+      "e-skimmer",
+      "data-theft",
+      "malware",
+      "identity-theft"
+    ],
+    "tags": [
+      "magecart",
+      "e-skimmer",
+      "web-skimming",
+      "sniffer-by-fleras",
+      "acceptcar",
+      "smart-contract-c2",
+      "google-tag-manager-abuse",
+      "card-data-compromise",
+      "maas",
+      "pci-dss"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1059.007",
+      "T1189",
+      "T1583.001",
+      "T1027",
+      "T1041",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT007.009",
+      "FT008.002",
+      "FT016",
+      "FT031"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Execution",
+      "Credential Access",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD",
+      "REG-PSD3-SCA",
+      "REG-DORA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0075",
+      "DL-0076",
+      "DL-0077"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0013",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0030",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0038",
+        "relationship": "shares-infrastructure"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0036",
+    "title": "Purchase Scam Merchant Networks",
+    "category": "ThreatPath",
+    "date": "2026-03-04",
+    "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+    "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+    "tlp": "WHITE",
+    "summary": "Purchase scam merchant networks represent a rapidly scaling fraud threat that exploits the fundamental design of the payment ecosystem: because the victim authorizes the transaction themselves, tradit...",
+    "confidence_score": 75,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "sectors": [
+      "retail",
+      "payments",
+      "banking"
+    ],
+    "fraud_types": [
+      "purchase-scam",
+      "brand-impersonation",
+      "first-party-fraud",
+      "social-engineering"
+    ],
+    "tags": [
+      "purchase-scam",
+      "scam-merchant",
+      "subscription-trap",
+      "ad-driven-fraud",
+      "victim-authorized-fraud",
+      "brand-abuse",
+      "social-media-ads",
+      "merchant-fraud",
+      "acquirer-risk"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1656",
+      "T1598",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT016",
+      "FT017",
+      "FT028",
+      "FT007.009"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD",
+      "REG-UK-PSR-APP",
+      "REG-AU-SPF",
+      "REG-FCA-APP"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "detection_rule_ids": [
+      "DL-0078",
+      "DL-0079"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0015",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0030",
+        "relationship": "shares-infrastructure"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0037",
+    "title": "Digital Wallet Fraud & NFC Relay Attacks",
+    "category": "ThreatPath",
+    "date": "2026-03-04",
+    "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+    "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+    "tlp": "WHITE",
+    "summary": "Digital wallet fraud and NFC relay attacks represent a rapidly evolving convergence of social engineering, credential interception, and contactless payment abuse. In this threat path, attackers phish ...",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "sectors": [
+      "banking",
+      "fintech",
+      "payments",
+      "retail"
+    ],
+    "fraud_types": [
+      "digital-wallet-fraud",
+      "nfc-relay",
+      "account-takeover",
+      "social-engineering"
+    ],
+    "tags": [
+      "digital-wallet",
+      "nfc-relay",
+      "ghost-tapping",
+      "supercardx",
+      "otp-interception",
+      "wallet-provisioning",
+      "contactless-fraud",
+      "apple-pay",
+      "google-pay",
+      "evilginx"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1111",
+      "T1656",
+      "T1078",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT011.002",
+      "FT013",
+      "FT016",
+      "FT031",
+      "FT043"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "Credential Access",
+      "Account Access",
+      "Defence Evasion",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-PSD3-SCA",
+      "REG-DORA",
+      "REG-FFIEC-AUTH",
+      "REG-OCC-FRAUD"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0080",
+      "DL-0081",
+      "DL-0082"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0008",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0012",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0023",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0038",
+    "title": "Card Testing Infrastructure Abuse",
+    "category": "ThreatPath",
+    "date": "2026-03-04",
+    "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+    "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+    "tlp": "WHITE",
+    "summary": "Card testing infrastructure abuse is a foundational enabler for payment card fraud at scale. In this threat path, threat actors use automated tools to validate stolen or enumerated card numbers agains...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "sectors": [
+      "payments",
+      "retail",
+      "fintech"
+    ],
+    "fraud_types": [
+      "card-testing",
+      "identity-theft",
+      "data-theft"
+    ],
+    "tags": [
+      "card-testing",
+      "BIN-attack",
+      "tester-merchant",
+      "telegram-carding",
+      "enumeration-attack",
+      "payment-gateway-abuse",
+      "card-validation"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1110.001",
+      "T1583.001",
+      "T1059",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT007.009",
+      "FT017"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Execution",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-CDD",
+      "REG-OCC-FRAUD"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "detection_rule_ids": [
+      "DL-0083",
+      "DL-0084"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0013",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0030",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0035",
+        "relationship": "shares-infrastructure"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0039",
+    "title": "Agentic Commerce Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-04",
+    "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+    "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+    "tlp": "WHITE",
+    "summary": "Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transac...",
+    "confidence_score": 55,
+    "source_reliability": "C",
+    "info_credibility": 3,
+    "sectors": [
+      "technology",
+      "retail",
+      "fintech",
+      "payments",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "autonomous-ai-fraud",
+      "social-engineering",
+      "account-takeover",
+      "unauthorized-transaction"
+    ],
+    "tags": [
+      "agentic-ai",
+      "ai-agent",
+      "intent-spoofing",
+      "automated-fraud-workflow",
+      "liability-ambiguity",
+      "commerce-automation",
+      "open-banking-parallel",
+      "amazon-buy-for-me",
+      "visa-intelligent-commerce",
+      "mastercard-agent-pay"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1059",
+      "T1078",
+      "T1656",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FT003",
+      "FT016",
+      "FT028",
+      "FT031"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-DORA",
+      "REG-PSD3-SCA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "detection_rule_ids": [
+      "DL-0085",
+      "DL-0086"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0013",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0025",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0029",
+        "relationship": "enhances"
+      }
+    ],
+    "evidence_count": 0
   }
 ]

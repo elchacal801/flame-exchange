@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-05T03:34:55.814361+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "e2d19a5c-4f87-4b3e-9c61-7a0e8d3f25b9",
+    "dl_id": "DL-0077",
+    "title": "Unauthorized Checkout Page DOM Modification",
+    "status": "experimental",
+    "description": "Detects modifications to checkout page DOM elements — including payment form fields, submit buttons, and iframe injections — that occur outside authorized deployment windows or without corresponding change management records. E-skimmer operators manipulate checkout page DOM to inject fake payment form overlays, intercept form submission events, or create invisible iframes that mirror payment forms to capture card data. Legitimate checkout page modifications should only occur during scheduled deployment windows and should be tracked in version control and change management systems. Any DOM mutation on payment form elements that does not correlate with an authorized release is a high-confidence indicator of e-skimmer injection. This rule supports PCI DSS 4.0 Requirement 6.4.3 for script and content integrity monitoring on payment pages.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type|contains": [
+          "dom_mutation",
+          "element_injected",
+          "form_modified",
+          "iframe_created"
+        ],
+        "page_uri|contains": [
+          "/checkout",
+          "/payment",
+          "/billing"
+        ],
+        "target_element|contains": [
+          "payment-form",
+          "card-number",
+          "cc-number",
+          "card-expiry",
+          "card-cvc",
+          "billing-address",
+          "submit-payment"
+        ]
+      },
+      "filter_authorized_deployment": {
+        "deployment_id|exists": true,
+        "deployment_window": true
+      },
+      "filter_framework_mutations": {
+        "mutation_source|contains": [
+          "react",
+          "angular",
+          "vue",
+          "next",
+          "nuxt"
+        ]
+      },
+      "condition": "selection and not filter_authorized_deployment and not filter_framework_mutations"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "client_side_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0035"
+    ],
+    "fraud_types": [
+      "e-skimmer",
+      "malware"
+    ],
+    "tags": [
+      "attack.t1059.007",
+      "attack.t1189",
+      "cfpf.phase3.positioning",
+      "flame.dom_integrity",
+      "flame.ecommerce",
+      "flame.eskimmer"
+    ],
+    "falsepositives": [
+      "Legitimate hotfix deployments that bypass standard change management windows",
+      "Browser extensions that modify page DOM for accessibility purposes",
+      "Payment processor SDK updates that modify form elements dynamically"
+    ]
+  }
+}

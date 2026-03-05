@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-05T03:34:55.837901+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "e9c47f13-82a6-4d5e-b394-7f2a8e15d6b9",
+    "dl_id": "DL-0082",
+    "title": "Ghost-Tap Multi-Terminal Contactless Velocity Anomaly",
+    "status": "experimental",
+    "description": "Detects multiple contactless transactions from the same wallet token or card credential across multiple distinct POS terminals within a short timeframe. Normal cardholder behavior produces a maximum of 2-3 contactless transactions per hour across different terminals during shopping activity. NFC relay (ghost-tapping) operations using tools such as SuperCardX, NFCGate, Hyper NFC, or Valkirie NFC enable simultaneous contactless transactions at multiple POS terminals by relaying stolen card data to multiple money mule devices. This rule detects the Phase 4 execution pattern of TP-0037 where the same wallet token appears at 3 or more distinct POS terminals within 30 minutes, a pattern that is physically impossible for a single cardholder and pathognomonic for NFC relay fraud.\n",
+    "cfpf_phase": "P4",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "transaction_type": "contactless",
+        "entry_mode|contains": [
+          "wallet_nfc",
+          "contactless_emv",
+          "tap_to_pay"
+        ]
+      },
+      "aggregation": {
+        "count|gte": 3,
+        "groupby": "wallet_token_id",
+        "timeframe": "30m"
+      },
+      "filter_multi_terminal": {
+        "dc_terminal_id|gte": 3
+      },
+      "filter_multi_location": {
+        "dc_terminal_city|gte": 2
+      },
+      "condition": "selection and aggregation and (filter_multi_terminal or filter_multi_location)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0037"
+    ],
+    "fraud_types": [
+      "digital-wallet-fraud",
+      "nfc-relay",
+      "unauthorized-transaction"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.banking",
+      "flame.ghost_tapping",
+      "flame.nfc_relay",
+      "flame.supercardx"
+    ],
+    "falsepositives": [
+      "Family members sharing a card account who shop at different stores simultaneously (rare with tokenized wallets as each device has a unique token)",
+      "POS terminal ID reassignment or misconfiguration causing apparent multi-terminal usage"
+    ]
+  }
+}

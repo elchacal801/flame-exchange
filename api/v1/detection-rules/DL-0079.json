@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-05T03:34:55.825263+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "d4f6a093-2e78-4b1c-95d3-5c8b0a1e47f6",
+    "dl_id": "DL-0079",
+    "title": "Subscription Trap Billing Pattern Detection",
+    "status": "experimental",
+    "description": "Detects recurring billing patterns characteristic of subscription trap scam merchants, where initial low-value trial charges are followed by significantly higher recurring charges to merchants with elevated dispute rates. Purchase scam operators enroll victims in subscription billing through obscured terms buried in checkout flows — initial charges are typically under $10 (trial pricing) while subsequent recurring charges escalate to $50-$200+ per cycle. Recorded Future identified this pattern across scam merchant networks in 2025, with some operations adding a secondary \"transaction recovery service\" charge in H2 2025. Detection focuses on merchants where the ratio of maximum to minimum charge amount exceeds 5:1, recurring billing constitutes more than 30% of transactions, initial charges are below $10, and the merchant has an elevated dispute rate relative to its age and category. Normal subscription merchants show a recurring billing enrollment rate of 5-15% of total transactions, and legitimate trial-to-paid conversions typically maintain a ratio under 3:1.\n",
+    "cfpf_phase": "P4",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "billing_type": "recurring",
+        "merchant_account_age_days|lte": 180
+      },
+      "filter_amount_disparity": {
+        "initial_charge_amount|lte": 10.0,
+        "subsequent_charge_amount|gte": 50.0
+      },
+      "filter_recurring_ratio": {
+        "recurring_transaction_pct|gte": 30
+      },
+      "filter_dispute_rate": {
+        "merchant_dispute_rate_pct|gte": 2.0
+      },
+      "condition": "selection and filter_amount_disparity and filter_recurring_ratio and filter_dispute_rate"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0036"
+    ],
+    "fraud_types": [
+      "first-party-fraud",
+      "purchase-scam"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.banking",
+      "flame.purchase_scam",
+      "flame.subscription_trap"
+    ],
+    "falsepositives": [
+      "Legitimate subscription businesses with low introductory pricing and standard price escalation (e.g., streaming services, SaaS trial-to-paid conversion)",
+      "Freemium services with significant price differences between free trial and premium tiers",
+      "Utility or insurance merchants with variable billing amounts that fluctuate based on usage"
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "1d6d7a6f-5613-5a86-bc1b-00704074e1b7",
+    "info": "FLAME: Magecart E-Skimmer Data Compromise",
+    "date": "2026-03-04",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "1091f8bb-d2bf-557d-8172-613544033f9c",
+        "type": "text",
+        "category": "Other",
+        "value": "e-skimmer",
+        "comment": "Fraud type for TP-0035"
+      },
+      {
+        "uuid": "bee97c8c-2777-505e-9c9b-ceda4b5d68ff",
+        "type": "text",
+        "category": "Other",
+        "value": "data-theft",
+        "comment": "Fraud type for TP-0035"
+      },
+      {
+        "uuid": "e2dde7cf-9b95-5ac6-9830-cca548c80da1",
+        "type": "text",
+        "category": "Other",
+        "value": "malware",
+        "comment": "Fraud type for TP-0035"
+      },
+      {
+        "uuid": "f37c9896-f147-545d-b85e-8cfd0a63304e",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0035"
+      },
+      {
+        "uuid": "94a64733-a6c3-5221-ba32-56cc1652d1aa",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0035"
+      },
+      {
+        "uuid": "61910519-ef74-5463-9ef7-c74a702aadf2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0035"
+      },
+      {
+        "uuid": "ab487e1c-5dd3-5425-b766-7a55468a4573",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0035"
+      },
+      {
+        "uuid": "c9d0654a-79b7-59b2-b2d8-1401c577aa0e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0035"
+      },
+      {
+        "uuid": "810ae69d-ca75-5685-98fc-34dc80806bd8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0035"
+      }
+    ]
+  }
+}

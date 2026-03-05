@@ -5,7 +5,7 @@
 id: TP-0030
 title: "E-Commerce Triangulation Fraud"
 category: ThreatPath
-date: 2026-03-02
+date: 2026-03-04
 author: "FLAME Project"
 source: "https://www.chargebackgurus.com/blog/triangulation-fraud"
 tlp: WHITE
@@ -53,6 +53,12 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0016
     relationship: related-to
+  - id: TP-0036
+    relationship: shares-infrastructure
+  - id: TP-0035
+    relationship: feeds-into
+  - id: TP-0038
+    relationship: feeds-into
 regulatory_refs:
   - REG-FINCEN-CDD
 tags:
@@ -370,6 +376,8 @@ Triangulation fraud is deceptively simple in concept but operationally sophistic
 
 **Telegram-based industrialization**: Modern triangulation rings have moved beyond individual operators to factory-model operations coordinated through Telegram. A single ring may manage hundreds of storefronts across multiple marketplaces, with dedicated roles for storefront management, card data procurement, order fulfillment, and payout extraction. This division of labor enables scaling that was not possible when individual fraudsters operated independently.
 
+**Convergence with Purchase Scam Ecosystem (2025)**: The Recorded Future Annual Payment Fraud Intelligence Report 2025 documented growing convergence between e-commerce triangulation fraud and the broader purchase scam ecosystem. Triangulation rings increasingly also operate purchase scam storefronts (TP-0036), sharing merchant account acquisition infrastructure and leveraging the same scalable workflows to register fraudulent merchant accounts across 40+ countries and 230+ acquirers. Stolen card data from Magecart e-skimmer infections (TP-0035) and card testing operations (TP-0038) feeds the triangulation supply chain — the 142 million+ stolen card records posted on dark web marketplaces in 2025, with 82% accompanied by victim contact information, provides the raw material for triangulation purchases. The distinction between triangulation (unauthorized use of stolen cards to fulfill legitimate marketplace orders) and purchase scams (victim-authorized payments to fraudulent merchants) is blurring as criminal groups adopt both models simultaneously, using the same infrastructure to maximize fraud outputs. This convergence suggests that detection strategies should cross-reference triangulation indicators with purchase scam merchant patterns and e-skimmer compromise data for more holistic threat identification.
+
 **Cross-references**: TP-0013 (Credential Stuffing/Loyalty Drain) covers the stolen payment card acquisition pipeline that feeds triangulation operations. TP-0016 (First-Party Fraud) documents return fraud patterns that are sometimes combined with triangulation as an amplification technique. This threat path focuses specifically on the triangulation model where the separation between marketplace and retailer creates the exploitation opportunity.
 
 **The return fraud compounding**: The $103B annual return fraud figure intersects with triangulation when actors combine both techniques -- fulfilling orders through triangulation and then also filing false return claims. This "double dip" means the marketplace absorbs a refund while the cardholder absorbs the charge, and the actor collects both the marketplace payout and the refund. Retailers and marketplaces tracking these schemes independently may miss the compounding effect.
@@ -381,3 +389,4 @@ Triangulation fraud is deceptively simple in concept but operationally sophistic
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-02 | FLAME Project | Initial submission |
+| 2026-03-04 | FLAME Project | Enhanced with Recorded Future 2025 intelligence — purchase scam ecosystem convergence, cross-TP references to TP-0035, TP-0036, TP-0038 |

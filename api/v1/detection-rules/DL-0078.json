@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-05T03:34:55.820191+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "b8c35d72-6ea1-4f09-8d4b-1a7c9e0f63d5",
+    "dl_id": "DL-0078",
+    "title": "Scam Merchant High-Velocity Transaction Pattern",
+    "status": "experimental",
+    "description": "Detects merchant accounts exhibiting high initial transaction velocity, elevated chargeback ratios, and short account age — a pattern consistent with purchase scam merchant operations. Recorded Future identified 3,600+ scam merchant accounts in 2025, a 2.5x increase from 2024, operating across 40+ countries and 230+ acquirers. Scam merchants typically process high transaction volumes within their first 30-90 days to extract maximum revenue before chargeback volume triggers acquirer intervention and account termination. Normal new merchant ramp-up is fewer than 50 transactions per day in the first 30 days, ramping to 200+ by day 90. Scam merchants frequently exceed 200 transactions per day within the first two weeks, combined with chargeback rates exceeding 1.5% within 60 days of account opening. This rule also flags merchants with account ages under 90 days that have already accumulated chargeback ratios above scheme monitoring thresholds.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_velocity": {
+        "merchant_account_age_days|lte": 90,
+        "daily_transaction_count|gte": 200
+      },
+      "selection_chargeback": {
+        "merchant_account_age_days|lte": 90,
+        "chargeback_ratio_pct|gte": 1.5
+      },
+      "selection_combined": {
+        "merchant_account_age_days|lte": 30,
+        "daily_transaction_count|gte": 100,
+        "unique_cards_per_day|gte": 80,
+        "chargeback_ratio_pct|gte": 0.8
+      },
+      "condition": "selection_velocity or selection_chargeback or selection_combined"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "merchant_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0036"
+    ],
+    "fraud_types": [
+      "brand-impersonation",
+      "purchase-scam"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.ecommerce",
+      "flame.merchant_fraud",
+      "flame.purchase_scam"
+    ],
+    "falsepositives": [
+      "Legitimate new merchants running launch promotions or flash sales with high initial transaction volumes",
+      "Seasonal merchants (holiday, event-driven) with compressed selling periods",
+      "Marketplace merchants migrating transaction history from another acquirer"
+    ]
+  }
+}

@@ -120,7 +120,7 @@
       <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0008</link>
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0008</guid>
       <description>Actors social-engineer mobile carriers to transfer a victim&apos;s phone number to an actor-controlled SIM card, then use intercepted SMS-based MFA codes to take over cryptocurrency exchange accounts and d</description>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>account-takeover</category>
         <category>crypto-laundering</category>
         <category>CFPF-P1</category>
@@ -134,7 +134,7 @@
       <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0009</link>
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0009</guid>
       <description>Actors steal checks from USPS mailboxes (using stolen arrow keys or by fishing mail from collection boxes), chemically wash the payee and amount fields, then rewrite checks to themselves or accomplice</description>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>check-fraud</category>
         <category>CFPF-P1</category>
         <category>CFPF-P2</category>
@@ -447,7 +447,7 @@
       <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0030</link>
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0030</guid>
       <description>Triangulation fraud is a three-party e-commerce scheme where fraudsters list legitimate products on marketplace platforms (Amazon, eBay, Walmart Marketplace) at competitive prices, accept orders from </description>
-      <pubDate>Mon, 02 Mar 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>first-party-fraud</category>
         <category>identity-theft</category>
         <category>payment-diversion</category>
@@ -511,6 +511,85 @@
         <category>dprk-it-worker-fraud</category>
         <category>employment-fraud</category>
         <category>identity-theft</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0035] Magecart E-Skimmer Data Compromise</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0035</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0035</guid>
+      <description>Magecart-style e-skimmer attacks remain one of the most persistent and scalable threats to online payment ecosystems. In 2025, Recorded Future identified over 10,500 unique e-skimmer infections active</description>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
+        <category>data-theft</category>
+        <category>e-skimmer</category>
+        <category>identity-theft</category>
+        <category>malware</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0036] Purchase Scam Merchant Networks</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0036</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0036</guid>
+      <description>Purchase scam merchant networks represent a rapidly scaling fraud threat that exploits the fundamental design of the payment ecosystem: because the victim authorizes the transaction themselves, tradit</description>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
+        <category>brand-impersonation</category>
+        <category>first-party-fraud</category>
+        <category>purchase-scam</category>
+        <category>social-engineering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0037] Digital Wallet Fraud &amp; NFC Relay Attacks</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0037</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0037</guid>
+      <description>Digital wallet fraud and NFC relay attacks represent a rapidly evolving convergence of social engineering, credential interception, and contactless payment abuse. In this threat path, attackers phish </description>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
+        <category>account-takeover</category>
+        <category>digital-wallet-fraud</category>
+        <category>nfc-relay</category>
+        <category>social-engineering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0038] Card Testing Infrastructure Abuse</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0038</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0038</guid>
+      <description>Card testing infrastructure abuse is a foundational enabler for payment card fraud at scale. In this threat path, threat actors use automated tools to validate stolen or enumerated card numbers agains</description>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
+        <category>card-testing</category>
+        <category>data-theft</category>
+        <category>identity-theft</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0039] Agentic Commerce Fraud</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0039</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0039</guid>
+      <description>Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transac</description>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
+        <category>account-takeover</category>
+        <category>autonomous-ai-fraud</category>
+        <category>social-engineering</category>
+        <category>unauthorized-transaction</category>
         <category>CFPF-P1</category>
         <category>CFPF-P2</category>
         <category>CFPF-P3</category>
@@ -1183,6 +1262,116 @@
         <category>data-theft</category>
         <category>dprk-it-worker-fraud</category>
         <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0075] E-Skimmer Script Injection on Payment Pages</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0075</guid>
+      <description>Detects unauthorized JavaScript injection on e-commerce payment pages by identifying Content Security Policy violations, unexpected external script loads from newly registered domains, and unauthorize</description>
+        <category>e-skimmer</category>
+        <category>malware</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0076] Blockchain C2 and WebSocket Exfiltration from Payment Pages</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0076</guid>
+      <description>Detects payment page scripts making calls to blockchain RPC endpoints or establishing WebSocket connections to unknown servers, indicating potential e-skimmer data exfiltration via blockchain-based co</description>
+        <category>data-theft</category>
+        <category>e-skimmer</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0077] Unauthorized Checkout Page DOM Modification</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0077</guid>
+      <description>Detects modifications to checkout page DOM elements — including payment form fields, submit buttons, and iframe injections — that occur outside authorized deployment windows or without corresponding c</description>
+        <category>e-skimmer</category>
+        <category>malware</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0078] Scam Merchant High-Velocity Transaction Pattern</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0078</guid>
+      <description>Detects merchant accounts exhibiting high initial transaction velocity, elevated chargeback ratios, and short account age — a pattern consistent with purchase scam merchant operations. Recorded Future</description>
+        <category>brand-impersonation</category>
+        <category>purchase-scam</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0079] Subscription Trap Billing Pattern Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0079</guid>
+      <description>Detects recurring billing patterns characteristic of subscription trap scam merchants, where initial low-value trial charges are followed by significantly higher recurring charges to merchants with el</description>
+        <category>first-party-fraud</category>
+        <category>purchase-scam</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0080] Wallet Provisioning Following OTP Interception Indicator</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0080</guid>
+      <description>Detects digital wallet provisioning events where the OTP or verification code was delivered within minutes of a social engineering indicator, such as an inbound call from a suspicious source, a phishi</description>
+        <category>account-takeover</category>
+        <category>digital-wallet-fraud</category>
+        <category>social-engineering</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0081] NFC Relay Geographic Impossibility on Contactless Transaction</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0081</guid>
+      <description>Detects contactless (tap-to-pay) transactions where the POS terminal location is geographically impossible given the cardholder&apos;s last known location. When a contactless transaction occurs at a POS te</description>
+        <category>digital-wallet-fraud</category>
+        <category>nfc-relay</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0082] Ghost-Tap Multi-Terminal Contactless Velocity Anomaly</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0082</guid>
+      <description>Detects multiple contactless transactions from the same wallet token or card credential across multiple distinct POS terminals within a short timeframe. Normal cardholder behavior produces a maximum o</description>
+        <category>digital-wallet-fraud</category>
+        <category>nfc-relay</category>
+        <category>unauthorized-transaction</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0083] Card Testing Micro-Authorization Velocity Spike</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0083</guid>
+      <description>Detects high velocity of sub-dollar ($0.01-$0.99) authorization attempts from the same merchant or source against multiple distinct card numbers, a pattern characteristic of automated card testing ope</description>
+        <category>card-testing</category>
+        <category>data-theft</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0084] BIN Enumeration Sequential Card Number Attack</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0084</guid>
+      <description>Detects sequential or near-sequential card number authorization attempts sharing the same Bank Identification Number (BIN) prefix with incremental variation in the remaining digits. BIN enumeration at</description>
+        <category>card-testing</category>
+        <category>identity-theft</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0085] Agent Intent Manipulation — Purchase Divergence from User Intent</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0085</guid>
+      <description>Detects transactions initiated by AI agents where the product or service purchased diverges significantly from the user&apos;s stated intent or historical purchasing patterns, or where the receiving mercha</description>
+        <category>autonomous-ai-fraud</category>
+        <category>unauthorized-transaction</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0086] Agent Transaction Velocity Anomaly</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0086</guid>
+      <description>Detects AI agent-initiated transactions at velocities exceeding human purchasing patterns, including multiple purchases per minute and simultaneous multi-merchant purchases within a single agent sessi</description>
+        <category>autonomous-ai-fraud</category>
+        <category>unauthorized-transaction</category>
+        <category>severity-medium</category>
     </item>
   </channel>
 </rss>

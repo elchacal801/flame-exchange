@@ -1,0 +1,20 @@
+{
+  "tp_id": "TP-0039",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    t.transaction_id,\n    t.agent_session_id,\n    t.user_id,\n    t.merchant_id,\n    t.merchant_name,\n    t.product_category,\n    t.transaction_amount,\n    t.agent_stated_intent,\n    u.historical_top_categories,\n    u.avg_transaction_amount,\n    m.merchant_creation_date,\n    m.merchant_risk_score\nFROM agent_transactions t\nJOIN user_profiles u ON t.user_id = u.user_id\nJOIN merchant_profiles m ON t.merchant_id = m.merchant_id\nWHERE t.initiated_by = 'ai_agent'\n  AND (\n    t.product_category NOT IN (SELECT category FROM user_purchase_history WHERE user_id = t.user_id)\n    OR t.transaction_amount > u.avg_transaction_amount * 3\n    OR m.merchant_creation_date > CURRENT_DATE - INTERVAL '30 days'\n    OR m.merchant_risk_score > 0.7\n  )\nORDER BY t.transaction_timestamp DESC;",
+      "title": "SQL -- Agent Intent Divergence Detection (Phase 3-4)"
+    },
+    {
+      "type": "spl",
+      "content": "index=payments sourcetype=agent_transactions\n| eval txn_minute=strftime(_time, \"%Y-%m-%d %H:%M\")\n| stats\n    count AS txn_count,\n    dc(merchant_id) AS unique_merchants,\n    sum(transaction_amount) AS total_amount,\n    values(merchant_name) AS merchants\n    BY agent_session_id, user_id, txn_minute\n| where txn_count > 3 OR unique_merchants > 2\n| eval velocity_flag=if(txn_count > 5, \"critical\", if(txn_count > 3, \"high\", \"medium\"))\n| lookup user_baselines user_id OUTPUT avg_txns_per_session, avg_session_duration\n| where txn_count > avg_txns_per_session * 5\n| table agent_session_id, user_id, txn_minute, txn_count, unique_merchants, total_amount, merchants, velocity_flag\n| sort - txn_count",
+      "title": "Splunk -- Agent Transaction Velocity Anomaly Detection (Phase 4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: AI Agent Connection to Unverified MCP Server\nstatus: experimental\ndescription: Detects an AI commerce agent establishing a connection to an MCP server not present in the approved server allowlist, which may indicate infrastructure compromise or redirection attack.\nlogsource:\n    product: ecommerce\n    service: agent_platform\ndetection:\n    selection:\n        event_type: \"agent_mcp_connection\"\n        mcp_server_verified: false\n    filter:\n        mcp_server_id|exists: true\n    condition: selection and not filter\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1059\n    - flame.ecommerce\n    - flame.agentic_commerce",
+      "title": "Sigma -- Agent MCP Server Anomaly Detection (Phase 2)"
+    }
+  ]
+}

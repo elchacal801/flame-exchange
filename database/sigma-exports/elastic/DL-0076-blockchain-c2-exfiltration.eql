@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+((src_page_uri:(*\/checkout* OR *\/payment* OR *\/billing* OR *\/cart\/complete*)) AND (dst_domain:(*infura.io* OR *alchemy.com* OR *etherscan.io* OR *bscscan.com* OR *cloudflare\-eth.com* OR *ankr.com*)) AND request_method:POST AND (request_body:(*eth_call* OR *eth_getStorageAt* OR *eth_getLogs*))) OR (((src_page_uri:(*\/checkout* OR *\/payment* OR *\/billing*)) AND connection_type:websocket) AND (NOT (dst_domain:(*stripe.com* OR *paypal.com* OR *braintreegateway.com* OR *adyen.com* OR *authorize.net* OR *cybersource.com* OR *worldpay.com* OR *square.com* OR *shopify.com*))))

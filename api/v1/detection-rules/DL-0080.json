@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-05T03:34:55.829434+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "7a3e91d2-4f8c-4b17-a6e5-2d9f83c7b104",
+    "dl_id": "DL-0080",
+    "title": "Wallet Provisioning Following OTP Interception Indicator",
+    "status": "experimental",
+    "description": "Detects digital wallet provisioning events where the OTP or verification code was delivered within minutes of a social engineering indicator, such as an inbound call from a suspicious source, a phishing link click, or a smishing response. Legitimate wallet provisioning is typically self-initiated, with OTP-to-provisioning intervals of 30-120 seconds. When provisioning occurs within 15 seconds of OTP delivery, or when OTP delivery is preceded by a phishing or social engineering indicator within a 30-minute window, this strongly suggests automated interception-to-provision attack chains associated with digital wallet fraud (TP-0037). The card provisioning attempt is the critical disruption point where refined controls can prevent downstream contactless fraud.\n",
+    "cfpf_phase": "P3",
+    "level": "critical",
+    "detection": {
+      "selection_provisioning": {
+        "event_type": "wallet_card_provisioned",
+        "device_first_seen": true
+      },
+      "correlation_otp": {
+        "otp_delivery_elapsed_seconds|lte": 600,
+        "otp_to_provisioning_seconds|lte": 15
+      },
+      "correlation_phishing": {
+        "preceding_event_type|contains": [
+          "phishing_click",
+          "smishing_response",
+          "suspicious_inbound_call",
+          "social_engineering_indicator"
+        ],
+        "preceding_event_window": 1800
+      },
+      "condition": "selection_provisioning and (correlation_otp or correlation_phishing)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "wallet_provisioning"
+    },
+    "threat_path_ids": [
+      "TP-0037"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "digital-wallet-fraud",
+      "social-engineering"
+    ],
+    "tags": [
+      "attack.t1111",
+      "cfpf.phase3.positioning",
+      "flame.banking",
+      "flame.digital_wallet",
+      "flame.otp_interception"
+    ],
+    "falsepositives": [
+      "Legitimate cardholders who provision wallets very quickly after receiving OTP",
+      "Tech-savvy users with automated provisioning workflows on trusted devices",
+      "Corporate card administrators provisioning multiple devices in rapid succession"
+    ]
+  }
+}

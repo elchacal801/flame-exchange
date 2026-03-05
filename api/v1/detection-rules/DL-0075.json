@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-05T03:34:55.787442+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "a3c7e1f4-9b2d-4a18-b6f0-8d5e2c4a71f3",
+    "dl_id": "DL-0075",
+    "title": "E-Skimmer Script Injection on Payment Pages",
+    "status": "experimental",
+    "description": "Detects unauthorized JavaScript injection on e-commerce payment pages by identifying Content Security Policy violations, unexpected external script loads from newly registered domains, and unauthorized Google Tag Manager container modifications. Magecart-style e-skimmer operators inject malicious scripts through CMS exploitation, compromised third-party libraries, or GTM container abuse. The \"Sniffer by Fleras\" MaaS platform accounts for 26% of all infections, and GTM container abuse has become a primary delivery vector due to GTM's trusted status in most CSP configurations. PCI DSS 4.0 Requirement 6.4.3 mandates automated script integrity monitoring on payment pages, making this detection a compliance requirement as well as a security control.\n",
+    "cfpf_phase": "P3",
+    "level": "critical",
+    "detection": {
+      "selection_csp": {
+        "event_type": "csp_violation",
+        "page_uri|contains": [
+          "/checkout",
+          "/payment",
+          "/billing",
+          "/cart/complete"
+        ],
+        "blocked_uri|re": "https?://[^/]+\\.[a-z]{2,}"
+      },
+      "selection_script_load": {
+        "event_type": "script_load",
+        "page_uri|contains": [
+          "/checkout",
+          "/payment",
+          "/billing"
+        ],
+        "script_domain_age_days|lte": 90
+      },
+      "filter_authorized_scripts": {
+        "script_domain|contains": [
+          "google-analytics.com",
+          "googletagmanager.com",
+          "googleapis.com",
+          "gstatic.com"
+        ]
+      },
+      "selection_gtm_modification": {
+        "event_type": "gtm_container_update",
+        "change_type|contains": [
+          "tag_created",
+          "tag_modified",
+          "custom_html_added"
+        ]
+      },
+      "condition": "selection_csp or (selection_script_load and not filter_authorized_scripts) or selection_gtm_modification"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "web_security"
+    },
+    "threat_path_ids": [
+      "TP-0035"
+    ],
+    "fraud_types": [
+      "e-skimmer",
+      "malware"
+    ],
+    "tags": [
+      "attack.t1027",
+      "attack.t1059.007",
+      "cfpf.phase3.positioning",
+      "flame.ecommerce",
+      "flame.eskimmer",
+      "flame.magecart"
+    ],
+    "falsepositives": [
+      "Legitimate third-party marketing or analytics script deployments not yet added to the CSP whitelist",
+      "Authorized GTM container updates that were not pre-registered in the change management system",
+      "A/B testing platforms injecting scripts on checkout pages as part of authorized experiments"
+    ]
+  }
+}

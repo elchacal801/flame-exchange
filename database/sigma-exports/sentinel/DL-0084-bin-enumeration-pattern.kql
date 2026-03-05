@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(transaction_amount < 5 and (event_type contains "authorization" or event_type contains "auth_request")) and (count >= 10 and (groupby in~ ("merchant_id", "bin_prefix_8")) and timeframe =~ "30m") and (sequential_card_numbers >= 5 and card_number_increment_pattern =~ true) and decline_rate >= 0.8

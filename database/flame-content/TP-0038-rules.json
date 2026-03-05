@@ -1,0 +1,20 @@
+{
+  "tp_id": "TP-0038",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.account_open_date,\n    COUNT(*) AS auth_count,\n    COUNT(DISTINCT a.card_number_hash) AS unique_cards,\n    SUM(CASE WHEN a.response_code != '00' THEN 1 ELSE 0 END)::FLOAT / COUNT(*) AS decline_rate,\n    SUM(CASE WHEN a.amount < 1.00 THEN 1 ELSE 0 END)::FLOAT / COUNT(*) AS sub_dollar_rate,\n    AVG(a.amount) AS avg_amount,\n    COUNT(DISTINCT a.source_ip) AS unique_ips\nFROM authorizations a\nJOIN merchants m ON a.merchant_id = m.merchant_id\nWHERE a.auth_timestamp > CURRENT_TIMESTAMP - INTERVAL '1 hour'\n    AND a.amount < 1.00\nGROUP BY m.merchant_id, m.merchant_name, m.account_open_date\nHAVING COUNT(*) > 50\n    AND (SUM(CASE WHEN a.response_code != '00' THEN 1 ELSE 0 END)::FLOAT / COUNT(*)) > 0.70\nORDER BY auth_count DESC;",
+      "title": "SQL -- Card Testing Micro-Authorization Detection (Phase 4)"
+    },
+    {
+      "type": "spl",
+      "content": "index=authorization sourcetype=card_auth amount<1.00\n| eval bin_prefix = substr(card_number_hash, 1, 8)\n| eval card_suffix = substr(card_number_hash, 9, 99)\n| stats count AS auth_count,\n        dc(card_number_hash) AS unique_cards,\n        values(card_suffix) AS suffixes,\n        sum(eval(if(response_code!=\"00\", 1, 0))) AS declines,\n        dc(source_ip) AS unique_ips\n    BY bin_prefix, merchant_id\n| eval decline_rate = round(declines / auth_count * 100, 1)\n| where auth_count > 20 AND unique_cards > 15 AND decline_rate > 80\n| eval sequential_indicator = if(unique_cards > 10 AND auth_count / unique_cards < 1.5, \"HIGH\", \"MODERATE\")\n| table merchant_id, bin_prefix, auth_count, unique_cards, decline_rate, sequential_indicator, unique_ips\n| sort - auth_count",
+      "title": "Splunk -- BIN Enumeration Pattern Detection (Phase 4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: New Merchant Card Testing Activity\nstatus: experimental\ndescription: Detects card testing patterns on merchant accounts opened within the last 90 days, characterized by high-velocity sub-dollar authorizations and elevated decline rates.\nlogsource:\n    product: ecommerce\n    service: payment_gateway\ndetection:\n    selection:\n        transaction_amount|lt: 1.00\n        merchant_account_age_days|lte: 90\n    aggregation:\n        count|gte: 50\n        groupby: merchant_id\n        timeframe: 1h\n    filter_decline:\n        decline_rate|gte: 0.5\n    condition: selection and aggregation and filter_decline\nlevel: high\ntags:\n    - fraud.card_testing\n    - cfpf.phase4.execution\n    - attack.t1110.001",
+      "title": "Sigma -- Tester Merchant Early-Life Anomaly (Phase 2-4)"
+    }
+  ]
+}

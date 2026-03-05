@@ -5,7 +5,7 @@
 id: TP-0009
 title: "Check Washing and Fraudulent Mobile Deposit"
 category: ThreatPath
-date: 2026-02-12
+date: 2026-03-04
 author: "FLAME Project"
 source: "USPS OIG / FinCEN / banking industry reporting"
 tlp: WHITE
@@ -48,6 +48,8 @@ tags:
   - mobile-deposit
   - duplicate-deposit
   - USPS
+  - deurbanization
+  - midwest-shift
 ---
 ```
 
@@ -140,6 +142,8 @@ ORDER BY d.device_fingerprint, d.deposit_date;
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $483M in credit card and check fraud losses. While IC3 figures likely undercount check fraud (many victims report to their bank rather than IC3), the data confirms check and payment instrument fraud remains a significant loss category. The continued surge in USPS mail theft and check washing activity is corroborated by the 200%+ increase in check fraud SARs reported by FinCEN from 2021-2023.
 
+**Deurbanization & Midwest Shift (2024-2025)**: The Recorded Future Annual Payment Fraud Intelligence Report 2025 documented a significant geographic shift in U.S. check fraud. Total stolen check images on Telegram decreased by 42% (to 1.3M) — primarily due to Telegram's late-2024 policy enforcement against channels violating terms. However, the volume of unique stolen checks increased by 3% to 233,000, indicating that the actual supply of newly stolen checks remains unaffected. Crucially, the geographic origin of stolen checks shifted away from major urban postal corridors toward the U.S. Midwest and suburban/rural USPS routes, suggesting that criminal groups are adjusting mail theft strategies in response to increased urban enforcement. This deurbanization trend may require financial institutions — particularly community banks and credit unions in Midwest markets — to recalibrate their check fraud monitoring thresholds and geographic risk models. The FBI and USPIS released a joint alert regarding mail theft-related check fraud in January 2025, following a similar FinCEN/USPIS alert from February 2023.
+
 ## References
 
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
@@ -154,3 +158,4 @@ ORDER BY d.device_fingerprint, d.deposit_date;
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
+| 2026-03-04 | FLAME Project | Enhanced with Recorded Future 2025 intelligence — deurbanization trend, Midwest geographic shift |

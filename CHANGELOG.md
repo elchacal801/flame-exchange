@@ -6,6 +6,30 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.7.0] — 2026-03-04
+
+### Added
+
+- **Phase 5 SIGNAL: Recorded Future Payment Fraud Report 2025 Integration** — 5 new threat paths sourced from the Recorded Future Annual Payment Fraud Intelligence Report 2025, covering major 2025 fraud themes absent from FLAME
+- **TP-0035: Magecart E-Skimmer Data Compromise** — MaaS kits (Sniffer by Fleras, AcceptCar), blockchain smart contract C2, 10,500+ infections compromising 23.4M transactions
+- **TP-0036: Purchase Scam Merchant Networks** — 3,600+ scam merchant accounts, victim-authorized fraud, subscription traps, AI-powered ad targeting across 40+ countries
+- **TP-0037: Digital Wallet Fraud & NFC Relay Attacks** — OTP interception to wallet provisioning to "ghost tapping" contactless fraud, SuperCardX MaaS, 7 dark web tool offerings documented
+- **TP-0038: Card Testing Infrastructure Abuse** — 1,350+ tester merchants (94% new), 27M card records via Telegram, BIN enumeration attacks
+- **TP-0039: Agentic Commerce Fraud** — AI agent intent spoofing, Amazon Buy for Me / Visa Intelligent Commerce / Mastercard Agent Pay attack surface, open banking structural parallel
+- **12 new detection rules** (DL-0075 through DL-0086) — e-skimmer script injection, blockchain C2 exfiltration, checkout page modification, scam merchant velocity, subscription trap, wallet provisioning anomaly, NFC relay geographic anomaly, ghost-tap velocity, card testing micro-authorization, BIN enumeration, agent intent manipulation, agent velocity anomaly
+- **5 new baselines** (BL-0015 through BL-0019) — e-commerce payment page integrity, merchant account transaction patterns, digital wallet contactless activity, card authorization velocity, AI agent commerce activity
+- **4 new fraud types** in taxonomy: `card-testing`, `digital-wallet-fraud`, `e-skimmer`, `purchase-scam`
+
+### Changed
+
+- **TP-0008** (SIM Swap) — Enhanced with OTP interception techniques beyond SIM swap (EvilginX, PhantomOS, xl-hook RAT, SS7 exploitation); added TP-0037 cross-reference
+- **TP-0009** (Check Fraud) — Enhanced with deurbanization and Midwest geographic shift intelligence from Recorded Future 2025
+- **TP-0030** (E-Commerce Triangulation) — Enhanced with purchase scam ecosystem convergence analysis; added TP-0035, TP-0036, TP-0038 cross-references
+- `flame_taxonomy.json` — Added 4 new fraud types (total: 70)
+- `ThreatPaths/INDEX.md` — Updated all coverage tables for 39 TPs, 56 fraud types, 18 sectors
+
+---
+
 ## [0.6.0] — 2026-03-04
 
 ### Added

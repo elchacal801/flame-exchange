@@ -1,0 +1,49 @@
+title: Agent Intent Manipulation — Purchase Divergence from User Intent
+id: a3e7b1c4-9f2d-4e8a-b6d3-1c5f7a2e9d04
+status: experimental
+description: >
+  Detects transactions initiated by AI agents where the product or service
+  purchased diverges significantly from the user's stated intent or historical
+  purchasing patterns, or where the receiving merchant is flagged as high-risk.
+  This rule targets Phase 3 (Positioning) of agentic commerce fraud, where
+  threat actors manipulate agent purchasing intent to redirect transactions
+  to attacker-controlled merchants or execute purchases that do not reflect
+  the consumer's actual desires. Key indicators include purchases in product
+  categories the user has never engaged with, transactions at merchants
+  created within the last 30 days, transaction amounts exceeding 3x the
+  user's historical average, and merchants with elevated risk scores.
+references:
+  - https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
+threat_paths:
+  - TP-0039
+cfpf_phase: P3
+fraud_types:
+  - autonomous-ai-fraud
+  - unauthorized-transaction
+logsource:
+  product: ecommerce
+  service: agent_transactions
+detection:
+  selection:
+    initiated_by: 'ai_agent'
+  condition_category_mismatch:
+    category_in_user_history: false
+  condition_amount_anomaly:
+    amount_exceeds_3x_user_avg: true
+  condition_new_merchant:
+    merchant_age_days|lte: 30
+  condition_high_risk_merchant:
+    merchant_risk_score|gte: 0.7
+  condition: selection and (1 of condition_*)
+falsepositives:
+  - Users exploring new product categories via agent for the first time
+  - Legitimate purchases from newly launched merchants or startups
+  - Gift purchases in categories outside user's typical patterns
+  - Agent executing user-directed purchases at premium pricing (luxury goods)
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - attack.t1656
+  - attack.t1657
+  - flame.ecommerce
+  - flame.agentic_commerce

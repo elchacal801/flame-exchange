@@ -3502,5 +3502,693 @@
       "Whistleblower disclosures through proper legal channels",
       "Former employee academic publications referencing general (non-proprietary) work"
     ]
+  },
+  {
+    "id": "a3c7e1f4-9b2d-4a18-b6f0-8d5e2c4a71f3",
+    "dl_id": "DL-0075",
+    "title": "E-Skimmer Script Injection on Payment Pages",
+    "status": "experimental",
+    "description": "Detects unauthorized JavaScript injection on e-commerce payment pages by identifying Content Security Policy violations, unexpected external script loads from newly registered domains, and unauthorized Google Tag Manager container modifications. Magecart-style e-skimmer operators inject malicious scripts through CMS exploitation, compromised third-party libraries, or GTM container abuse. The \"Sniffer by Fleras\" MaaS platform accounts for 26% of all infections, and GTM container abuse has become a primary delivery vector due to GTM's trusted status in most CSP configurations. PCI DSS 4.0 Requirement 6.4.3 mandates automated script integrity monitoring on payment pages, making this detection a compliance requirement as well as a security control.\n",
+    "cfpf_phase": "P3",
+    "level": "critical",
+    "detection": {
+      "selection_csp": {
+        "event_type": "csp_violation",
+        "page_uri|contains": [
+          "/checkout",
+          "/payment",
+          "/billing",
+          "/cart/complete"
+        ],
+        "blocked_uri|re": "https?://[^/]+\\.[a-z]{2,}"
+      },
+      "selection_script_load": {
+        "event_type": "script_load",
+        "page_uri|contains": [
+          "/checkout",
+          "/payment",
+          "/billing"
+        ],
+        "script_domain_age_days|lte": 90
+      },
+      "filter_authorized_scripts": {
+        "script_domain|contains": [
+          "google-analytics.com",
+          "googletagmanager.com",
+          "googleapis.com",
+          "gstatic.com"
+        ]
+      },
+      "selection_gtm_modification": {
+        "event_type": "gtm_container_update",
+        "change_type|contains": [
+          "tag_created",
+          "tag_modified",
+          "custom_html_added"
+        ]
+      },
+      "condition": "selection_csp or (selection_script_load and not filter_authorized_scripts) or selection_gtm_modification"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "web_security"
+    },
+    "threat_path_ids": [
+      "TP-0035"
+    ],
+    "fraud_types": [
+      "e-skimmer",
+      "malware"
+    ],
+    "tags": [
+      "attack.t1027",
+      "attack.t1059.007",
+      "cfpf.phase3.positioning",
+      "flame.ecommerce",
+      "flame.eskimmer",
+      "flame.magecart"
+    ],
+    "falsepositives": [
+      "Legitimate third-party marketing or analytics script deployments not yet added to the CSP whitelist",
+      "Authorized GTM container updates that were not pre-registered in the change management system",
+      "A/B testing platforms injecting scripts on checkout pages as part of authorized experiments"
+    ]
+  },
+  {
+    "id": "7f4b28e6-1d93-4c5a-ae72-3e9d0f6b54a2",
+    "dl_id": "DL-0076",
+    "title": "Blockchain C2 and WebSocket Exfiltration from Payment Pages",
+    "status": "experimental",
+    "description": "Detects payment page scripts making calls to blockchain RPC endpoints or establishing WebSocket connections to unknown servers, indicating potential e-skimmer data exfiltration via blockchain-based command-and-control infrastructure. Advanced Magecart variants observed in 2025 use a loader script on the compromised site that queries a blockchain smart contract (Ethereum, BNB Chain) to retrieve the address of a second-stage payload server, then establishes a WebSocket connection for both payload delivery and data exfiltration. This technique provides censorship-resistant C2 that cannot be disrupted through conventional domain seizure or hosting provider takedown. Detection focuses on identifying JSON-RPC calls to blockchain node endpoints (Infura, Alchemy, direct nodes) and WebSocket connections to non-payment-related servers originating from payment page context.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_blockchain_rpc": {
+        "src_page_uri|contains": [
+          "/checkout",
+          "/payment",
+          "/billing",
+          "/cart/complete"
+        ],
+        "dst_domain|contains": [
+          "infura.io",
+          "alchemy.com",
+          "etherscan.io",
+          "bscscan.com",
+          "cloudflare-eth.com",
+          "ankr.com"
+        ],
+        "request_method": "POST",
+        "request_body|contains": [
+          "eth_call",
+          "eth_getStorageAt",
+          "eth_getLogs"
+        ]
+      },
+      "selection_websocket_unknown": {
+        "src_page_uri|contains": [
+          "/checkout",
+          "/payment",
+          "/billing"
+        ],
+        "connection_type": "websocket"
+      },
+      "filter_known_payment_processors": {
+        "dst_domain|contains": [
+          "stripe.com",
+          "paypal.com",
+          "braintreegateway.com",
+          "adyen.com",
+          "authorize.net",
+          "cybersource.com",
+          "worldpay.com",
+          "square.com",
+          "shopify.com"
+        ]
+      },
+      "condition": "selection_blockchain_rpc or (selection_websocket_unknown and not filter_known_payment_processors)"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "network_traffic"
+    },
+    "threat_path_ids": [
+      "TP-0035"
+    ],
+    "fraud_types": [
+      "data-theft",
+      "e-skimmer"
+    ],
+    "tags": [
+      "attack.t1041",
+      "attack.t1059.007",
+      "cfpf.phase4.execution",
+      "flame.blockchain_c2",
+      "flame.ecommerce",
+      "flame.eskimmer"
+    ],
+    "falsepositives": [
+      "Web3-native e-commerce platforms that legitimately interact with blockchain for payment processing (e.g., cryptocurrency payment acceptance)",
+      "Customer support chat widgets using WebSocket connections on checkout pages",
+      "Real-time inventory or pricing update feeds using WebSocket on payment pages"
+    ]
+  },
+  {
+    "id": "e2d19a5c-4f87-4b3e-9c61-7a0e8d3f25b9",
+    "dl_id": "DL-0077",
+    "title": "Unauthorized Checkout Page DOM Modification",
+    "status": "experimental",
+    "description": "Detects modifications to checkout page DOM elements — including payment form fields, submit buttons, and iframe injections — that occur outside authorized deployment windows or without corresponding change management records. E-skimmer operators manipulate checkout page DOM to inject fake payment form overlays, intercept form submission events, or create invisible iframes that mirror payment forms to capture card data. Legitimate checkout page modifications should only occur during scheduled deployment windows and should be tracked in version control and change management systems. Any DOM mutation on payment form elements that does not correlate with an authorized release is a high-confidence indicator of e-skimmer injection. This rule supports PCI DSS 4.0 Requirement 6.4.3 for script and content integrity monitoring on payment pages.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type|contains": [
+          "dom_mutation",
+          "element_injected",
+          "form_modified",
+          "iframe_created"
+        ],
+        "page_uri|contains": [
+          "/checkout",
+          "/payment",
+          "/billing"
+        ],
+        "target_element|contains": [
+          "payment-form",
+          "card-number",
+          "cc-number",
+          "card-expiry",
+          "card-cvc",
+          "billing-address",
+          "submit-payment"
+        ]
+      },
+      "filter_authorized_deployment": {
+        "deployment_id|exists": true,
+        "deployment_window": true
+      },
+      "filter_framework_mutations": {
+        "mutation_source|contains": [
+          "react",
+          "angular",
+          "vue",
+          "next",
+          "nuxt"
+        ]
+      },
+      "condition": "selection and not filter_authorized_deployment and not filter_framework_mutations"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "client_side_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0035"
+    ],
+    "fraud_types": [
+      "e-skimmer",
+      "malware"
+    ],
+    "tags": [
+      "attack.t1059.007",
+      "attack.t1189",
+      "cfpf.phase3.positioning",
+      "flame.dom_integrity",
+      "flame.ecommerce",
+      "flame.eskimmer"
+    ],
+    "falsepositives": [
+      "Legitimate hotfix deployments that bypass standard change management windows",
+      "Browser extensions that modify page DOM for accessibility purposes",
+      "Payment processor SDK updates that modify form elements dynamically"
+    ]
+  },
+  {
+    "id": "b8c35d72-6ea1-4f09-8d4b-1a7c9e0f63d5",
+    "dl_id": "DL-0078",
+    "title": "Scam Merchant High-Velocity Transaction Pattern",
+    "status": "experimental",
+    "description": "Detects merchant accounts exhibiting high initial transaction velocity, elevated chargeback ratios, and short account age — a pattern consistent with purchase scam merchant operations. Recorded Future identified 3,600+ scam merchant accounts in 2025, a 2.5x increase from 2024, operating across 40+ countries and 230+ acquirers. Scam merchants typically process high transaction volumes within their first 30-90 days to extract maximum revenue before chargeback volume triggers acquirer intervention and account termination. Normal new merchant ramp-up is fewer than 50 transactions per day in the first 30 days, ramping to 200+ by day 90. Scam merchants frequently exceed 200 transactions per day within the first two weeks, combined with chargeback rates exceeding 1.5% within 60 days of account opening. This rule also flags merchants with account ages under 90 days that have already accumulated chargeback ratios above scheme monitoring thresholds.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_velocity": {
+        "merchant_account_age_days|lte": 90,
+        "daily_transaction_count|gte": 200
+      },
+      "selection_chargeback": {
+        "merchant_account_age_days|lte": 90,
+        "chargeback_ratio_pct|gte": 1.5
+      },
+      "selection_combined": {
+        "merchant_account_age_days|lte": 30,
+        "daily_transaction_count|gte": 100,
+        "unique_cards_per_day|gte": 80,
+        "chargeback_ratio_pct|gte": 0.8
+      },
+      "condition": "selection_velocity or selection_chargeback or selection_combined"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "merchant_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0036"
+    ],
+    "fraud_types": [
+      "brand-impersonation",
+      "purchase-scam"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.ecommerce",
+      "flame.merchant_fraud",
+      "flame.purchase_scam"
+    ],
+    "falsepositives": [
+      "Legitimate new merchants running launch promotions or flash sales with high initial transaction volumes",
+      "Seasonal merchants (holiday, event-driven) with compressed selling periods",
+      "Marketplace merchants migrating transaction history from another acquirer"
+    ]
+  },
+  {
+    "id": "d4f6a093-2e78-4b1c-95d3-5c8b0a1e47f6",
+    "dl_id": "DL-0079",
+    "title": "Subscription Trap Billing Pattern Detection",
+    "status": "experimental",
+    "description": "Detects recurring billing patterns characteristic of subscription trap scam merchants, where initial low-value trial charges are followed by significantly higher recurring charges to merchants with elevated dispute rates. Purchase scam operators enroll victims in subscription billing through obscured terms buried in checkout flows — initial charges are typically under $10 (trial pricing) while subsequent recurring charges escalate to $50-$200+ per cycle. Recorded Future identified this pattern across scam merchant networks in 2025, with some operations adding a secondary \"transaction recovery service\" charge in H2 2025. Detection focuses on merchants where the ratio of maximum to minimum charge amount exceeds 5:1, recurring billing constitutes more than 30% of transactions, initial charges are below $10, and the merchant has an elevated dispute rate relative to its age and category. Normal subscription merchants show a recurring billing enrollment rate of 5-15% of total transactions, and legitimate trial-to-paid conversions typically maintain a ratio under 3:1.\n",
+    "cfpf_phase": "P4",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "billing_type": "recurring",
+        "merchant_account_age_days|lte": 180
+      },
+      "filter_amount_disparity": {
+        "initial_charge_amount|lte": 10.0,
+        "subsequent_charge_amount|gte": 50.0
+      },
+      "filter_recurring_ratio": {
+        "recurring_transaction_pct|gte": 30
+      },
+      "filter_dispute_rate": {
+        "merchant_dispute_rate_pct|gte": 2.0
+      },
+      "condition": "selection and filter_amount_disparity and filter_recurring_ratio and filter_dispute_rate"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0036"
+    ],
+    "fraud_types": [
+      "first-party-fraud",
+      "purchase-scam"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.banking",
+      "flame.purchase_scam",
+      "flame.subscription_trap"
+    ],
+    "falsepositives": [
+      "Legitimate subscription businesses with low introductory pricing and standard price escalation (e.g., streaming services, SaaS trial-to-paid conversion)",
+      "Freemium services with significant price differences between free trial and premium tiers",
+      "Utility or insurance merchants with variable billing amounts that fluctuate based on usage"
+    ]
+  },
+  {
+    "id": "7a3e91d2-4f8c-4b17-a6e5-2d9f83c7b104",
+    "dl_id": "DL-0080",
+    "title": "Wallet Provisioning Following OTP Interception Indicator",
+    "status": "experimental",
+    "description": "Detects digital wallet provisioning events where the OTP or verification code was delivered within minutes of a social engineering indicator, such as an inbound call from a suspicious source, a phishing link click, or a smishing response. Legitimate wallet provisioning is typically self-initiated, with OTP-to-provisioning intervals of 30-120 seconds. When provisioning occurs within 15 seconds of OTP delivery, or when OTP delivery is preceded by a phishing or social engineering indicator within a 30-minute window, this strongly suggests automated interception-to-provision attack chains associated with digital wallet fraud (TP-0037). The card provisioning attempt is the critical disruption point where refined controls can prevent downstream contactless fraud.\n",
+    "cfpf_phase": "P3",
+    "level": "critical",
+    "detection": {
+      "selection_provisioning": {
+        "event_type": "wallet_card_provisioned",
+        "device_first_seen": true
+      },
+      "correlation_otp": {
+        "otp_delivery_elapsed_seconds|lte": 600,
+        "otp_to_provisioning_seconds|lte": 15
+      },
+      "correlation_phishing": {
+        "preceding_event_type|contains": [
+          "phishing_click",
+          "smishing_response",
+          "suspicious_inbound_call",
+          "social_engineering_indicator"
+        ],
+        "preceding_event_window": 1800
+      },
+      "condition": "selection_provisioning and (correlation_otp or correlation_phishing)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "wallet_provisioning"
+    },
+    "threat_path_ids": [
+      "TP-0037"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "digital-wallet-fraud",
+      "social-engineering"
+    ],
+    "tags": [
+      "attack.t1111",
+      "cfpf.phase3.positioning",
+      "flame.banking",
+      "flame.digital_wallet",
+      "flame.otp_interception"
+    ],
+    "falsepositives": [
+      "Legitimate cardholders who provision wallets very quickly after receiving OTP",
+      "Tech-savvy users with automated provisioning workflows on trusted devices",
+      "Corporate card administrators provisioning multiple devices in rapid succession"
+    ]
+  },
+  {
+    "id": "b5d28e47-6a1f-4c93-8b72-9e4a1d6f3c58",
+    "dl_id": "DL-0081",
+    "title": "NFC Relay Geographic Impossibility on Contactless Transaction",
+    "status": "experimental",
+    "description": "Detects contactless (tap-to-pay) transactions where the POS terminal location is geographically impossible given the cardholder's last known location. When a contactless transaction occurs at a POS terminal more than 100 kilometers from the cardholder's most recent authenticated activity (mobile banking login, ATM withdrawal, or prior in-person transaction) within a timeframe that makes physical travel impossible, it indicates NFC relay (ghost-tapping) or unauthorized wallet token use. This rule specifically targets the Phase 4 execution stage of digital wallet fraud and NFC relay attacks (TP-0037), where money mules conduct contactless purchases using relayed card data at POS terminals geographically distant from the legitimate cardholder.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "transaction_type": "contactless",
+        "entry_mode|contains": [
+          "wallet_nfc",
+          "contactless_emv",
+          "tap_to_pay"
+        ]
+      },
+      "correlation_geographic": {
+        "cardholder_last_known_lat|exists": true,
+        "cardholder_last_known_lon|exists": true,
+        "cardholder_last_activity_minutes|lte": 120
+      },
+      "filter_distance": {
+        "geo_distance_km|gte": 100
+      },
+      "filter_travel_impossible": {
+        "required_speed_kmh|gte": 500
+      },
+      "condition": "selection and correlation_geographic and filter_distance and filter_travel_impossible"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0037"
+    ],
+    "fraud_types": [
+      "digital-wallet-fraud",
+      "nfc-relay"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.banking",
+      "flame.ghost_tapping",
+      "flame.nfc_relay"
+    ],
+    "falsepositives": [
+      "Cardholders who travel by air and conduct transactions shortly after landing",
+      "Corporate cards used by multiple authorized individuals in different locations",
+      "Mobile banking geolocation errors due to VPN or proxy usage"
+    ]
+  },
+  {
+    "id": "e9c47f13-82a6-4d5e-b394-7f2a8e15d6b9",
+    "dl_id": "DL-0082",
+    "title": "Ghost-Tap Multi-Terminal Contactless Velocity Anomaly",
+    "status": "experimental",
+    "description": "Detects multiple contactless transactions from the same wallet token or card credential across multiple distinct POS terminals within a short timeframe. Normal cardholder behavior produces a maximum of 2-3 contactless transactions per hour across different terminals during shopping activity. NFC relay (ghost-tapping) operations using tools such as SuperCardX, NFCGate, Hyper NFC, or Valkirie NFC enable simultaneous contactless transactions at multiple POS terminals by relaying stolen card data to multiple money mule devices. This rule detects the Phase 4 execution pattern of TP-0037 where the same wallet token appears at 3 or more distinct POS terminals within 30 minutes, a pattern that is physically impossible for a single cardholder and pathognomonic for NFC relay fraud.\n",
+    "cfpf_phase": "P4",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "transaction_type": "contactless",
+        "entry_mode|contains": [
+          "wallet_nfc",
+          "contactless_emv",
+          "tap_to_pay"
+        ]
+      },
+      "aggregation": {
+        "count|gte": 3,
+        "groupby": "wallet_token_id",
+        "timeframe": "30m"
+      },
+      "filter_multi_terminal": {
+        "dc_terminal_id|gte": 3
+      },
+      "filter_multi_location": {
+        "dc_terminal_city|gte": 2
+      },
+      "condition": "selection and aggregation and (filter_multi_terminal or filter_multi_location)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0037"
+    ],
+    "fraud_types": [
+      "digital-wallet-fraud",
+      "nfc-relay",
+      "unauthorized-transaction"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.banking",
+      "flame.ghost_tapping",
+      "flame.nfc_relay",
+      "flame.supercardx"
+    ],
+    "falsepositives": [
+      "Family members sharing a card account who shop at different stores simultaneously (rare with tokenized wallets as each device has a unique token)",
+      "POS terminal ID reassignment or misconfiguration causing apparent multi-terminal usage"
+    ]
+  },
+  {
+    "id": "3f8d2a71-c5b4-4e69-9a18-6d4e7b2f9c35",
+    "dl_id": "DL-0083",
+    "title": "Card Testing Micro-Authorization Velocity Spike",
+    "status": "experimental",
+    "description": "Detects high velocity of sub-dollar ($0.01-$0.99) authorization attempts from the same merchant or source against multiple distinct card numbers, a pattern characteristic of automated card testing operations. Recorded Future's 2025 report identified over 1,350 tester merchant accounts, with 94% being newly registered merchants. Normal merchant sub-dollar authorization rates are under 0.5% of total authorizations. Card testing operations generate authorization streams where sub-dollar transactions dominate, decline rates exceed 70%, and unique card numbers per source per hour reach 50-500+. This rule targets Phase 4 of TP-0038, detecting the execution of automated card validation at scale through micro-authorization patterns that deviate from legitimate merchant transaction profiles.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "transaction_amount|lt": 1.0,
+        "event_type|contains": [
+          "authorization",
+          "auth_request"
+        ]
+      },
+      "aggregation": {
+        "count|gte": 50,
+        "groupby": "merchant_id",
+        "timeframe": "1h"
+      },
+      "filter_card_diversity": {
+        "dc_card_number_hash|gte": 30
+      },
+      "filter_decline_rate": {
+        "decline_rate|gte": 0.5
+      },
+      "condition": "selection and aggregation and filter_card_diversity and filter_decline_rate"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "payment_gateway"
+    },
+    "threat_path_ids": [
+      "TP-0038"
+    ],
+    "fraud_types": [
+      "card-testing",
+      "data-theft"
+    ],
+    "tags": [
+      "attack.t1110.001",
+      "cfpf.phase4.execution",
+      "flame.card_testing",
+      "flame.ecommerce",
+      "flame.tester_merchant"
+    ],
+    "falsepositives": [
+      "Subscription services performing periodic micro-authorizations for card-on-file validation",
+      "Payment processors conducting legitimate batch card verification for account updates",
+      "Charitable organizations processing high volumes of small donations during fundraising events"
+    ]
+  },
+  {
+    "id": "1c6e4b89-d7f3-4a28-bf51-8e3c2a9d5f17",
+    "dl_id": "DL-0084",
+    "title": "BIN Enumeration Sequential Card Number Attack",
+    "status": "experimental",
+    "description": "Detects sequential or near-sequential card number authorization attempts sharing the same Bank Identification Number (BIN) prefix with incremental variation in the remaining digits. BIN enumeration attacks generate valid card numbers by iterating through possible combinations within a BIN range, validating each against live payment infrastructure through sub-dollar authorization requests. Sequential card numbers from the same BIN prefix have a zero false positive rate for legitimate merchants — this pattern is exclusively associated with fraudulent enumeration. Recorded Future's 2025 report documents BIN attacks as a primary method for generating valid card credentials for downstream fraud, with enumerated cards feeding into card testing (TP-0038), digital wallet provisioning (TP-0037), and card-not-present fraud operations. This rule targets Phase 4 of TP-0038.\n",
+    "cfpf_phase": "P4",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "transaction_amount|lt": 5.0,
+        "event_type|contains": [
+          "authorization",
+          "auth_request"
+        ]
+      },
+      "aggregation_bin": {
+        "count|gte": 10,
+        "groupby": [
+          "merchant_id",
+          "bin_prefix_8"
+        ],
+        "timeframe": "30m"
+      },
+      "filter_sequential": {
+        "sequential_card_numbers|gte": 5,
+        "card_number_increment_pattern": true
+      },
+      "filter_decline": {
+        "decline_rate|gte": 0.8
+      },
+      "condition": "selection and aggregation_bin and filter_sequential and filter_decline"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "payment_gateway"
+    },
+    "threat_path_ids": [
+      "TP-0038"
+    ],
+    "fraud_types": [
+      "card-testing",
+      "identity-theft"
+    ],
+    "tags": [
+      "attack.t1110.001",
+      "cfpf.phase4.execution",
+      "flame.bin_attack",
+      "flame.card_enumeration",
+      "flame.ecommerce"
+    ],
+    "falsepositives": [
+      "Corporate card programs where cards are issued with sequential numbers to the same organization (extremely rare in authorization streams)"
+    ]
+  },
+  {
+    "id": "a3e7b1c4-9f2d-4e8a-b6d3-1c5f7a2e9d04",
+    "dl_id": "DL-0085",
+    "title": "Agent Intent Manipulation — Purchase Divergence from User Intent",
+    "status": "experimental",
+    "description": "Detects transactions initiated by AI agents where the product or service purchased diverges significantly from the user's stated intent or historical purchasing patterns, or where the receiving merchant is flagged as high-risk. This rule targets Phase 3 (Positioning) of agentic commerce fraud, where threat actors manipulate agent purchasing intent to redirect transactions to attacker-controlled merchants or execute purchases that do not reflect the consumer's actual desires. Key indicators include purchases in product categories the user has never engaged with, transactions at merchants created within the last 30 days, transaction amounts exceeding 3x the user's historical average, and merchants with elevated risk scores.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "initiated_by": "ai_agent"
+      },
+      "condition_category_mismatch": {
+        "category_in_user_history": false
+      },
+      "condition_amount_anomaly": {
+        "amount_exceeds_3x_user_avg": true
+      },
+      "condition_new_merchant": {
+        "merchant_age_days|lte": 30
+      },
+      "condition_high_risk_merchant": {
+        "merchant_risk_score|gte": 0.7
+      },
+      "condition": "selection and (1 of condition_*)"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "agent_transactions"
+    },
+    "threat_path_ids": [
+      "TP-0039"
+    ],
+    "fraud_types": [
+      "autonomous-ai-fraud",
+      "unauthorized-transaction"
+    ],
+    "tags": [
+      "attack.t1656",
+      "attack.t1657",
+      "cfpf.phase3.positioning",
+      "flame.agentic_commerce",
+      "flame.ecommerce"
+    ],
+    "falsepositives": [
+      "Users exploring new product categories via agent for the first time",
+      "Legitimate purchases from newly launched merchants or startups",
+      "Gift purchases in categories outside user's typical patterns",
+      "Agent executing user-directed purchases at premium pricing (luxury goods)"
+    ]
+  },
+  {
+    "id": "d8f4c2a1-7b3e-4d6c-91a5-3e8f0b7c4d12",
+    "dl_id": "DL-0086",
+    "title": "Agent Transaction Velocity Anomaly",
+    "status": "experimental",
+    "description": "Detects AI agent-initiated transactions at velocities exceeding human purchasing patterns, including multiple purchases per minute and simultaneous multi-merchant purchases within a single agent session. This rule targets Phase 4 (Execution) of agentic commerce fraud, where compromised or manipulated agents execute unauthorized transactions at machine speed. Normal agent purchasing velocity is 1-5 purchases per user session with 2-15 minutes of comparison shopping per purchase. Velocities exceeding 10x human baseline (more than 5 transactions per minute or purchases across more than 3 merchants within a 60-second window) suggest automated fraud exploitation rather than legitimate agent-assisted shopping.\n",
+    "cfpf_phase": "P4",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "initiated_by": "ai_agent"
+      },
+      "aggregation_velocity": {
+        "count|gte": 5,
+        "groupby": "agent_session_id",
+        "timeframe": "1m"
+      },
+      "aggregation_multi_merchant": {
+        "dc(merchant_id)|gte": 3,
+        "groupby": "agent_session_id",
+        "timeframe": "1m"
+      },
+      "condition": "selection and (aggregation_velocity or aggregation_multi_merchant)"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "agent_transactions"
+    },
+    "threat_path_ids": [
+      "TP-0039"
+    ],
+    "fraud_types": [
+      "autonomous-ai-fraud",
+      "unauthorized-transaction"
+    ],
+    "tags": [
+      "attack.t1059",
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.agentic_commerce",
+      "flame.ecommerce"
+    ],
+    "falsepositives": [
+      "Agent bulk-purchasing identical items across merchants for price comparison fulfillment",
+      "Corporate procurement agents executing pre-approved batch purchase orders",
+      "Agent re-executing failed transactions in rapid succession due to payment gateway timeouts"
+    ]
   }
 ]

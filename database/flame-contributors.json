@@ -4,9 +4,9 @@
       "name": "FLAME Project",
       "threat_paths": 33,
       "detection_rules": 41,
-      "baselines": 13,
+      "baselines": 18,
       "emulation_playbooks": 5,
-      "total": 92
+      "total": 97
     },
     {
       "name": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
@@ -15,7 +15,15 @@
       "baselines": 0,
       "emulation_playbooks": 0,
       "total": 34
+    },
+    {
+      "name": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+      "threat_paths": 5,
+      "detection_rules": 12,
+      "baselines": 0,
+      "emulation_playbooks": 0,
+      "total": 17
     }
   ],
-  "generated_at": "2026-03-05T02:02:18.993247+00:00"
+  "generated_at": "2026-03-05T03:34:55.938192+00:00"
 }
