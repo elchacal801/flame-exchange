@@ -207,6 +207,104 @@
     },
     {
       "spec_version": "2.1",
+      "description": "This baseline defines normal versus anomalous patterns for e-commerce payment page integrity, supporting detection logic for TP-0035 (Magecart E-Skimmer Data Compromise). It establishes behavioral norms for checkout page script loading, Content Security Policy violation rates, Google Tag Manager container modification frequency, DOM mutation rates on payment form elements, and external domain calls during the checkout flow. These baselines are derived from Recorded Future's 2025 Annual Payment F",
+      "id": "x-flame-baseline--fc3ec3f1-617f-54d1-a79d-d24766557132",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "e-skimmer",
+        "magecart",
+        "payment-page",
+        "script-integrity",
+        "csp",
+        "gtm",
+        "dom-monitoring",
+        "pci-dss"
+      ],
+      "name": "E-Commerce Payment Page Integrity Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal versus anomalous transaction patterns for merchant accounts, supporting detection logic for TP-0036 (Purchase Scam Merchant Networks) and TP-0038 (Card Testing Operations). It establishes behavioral norms for new merchant transaction ramp-up velocity, chargeback ratios by merchant age, recurring billing enrollment rates, and dispute rates by merchant category. These baselines are derived from Recorded Future's 2025 Annual Payment Fraud Intelligence Report (3,600+ sca",
+      "id": "x-flame-baseline--907238bc-4c17-56f6-b8d6-f33ca56ece8c",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "purchase-scam",
+        "merchant-fraud",
+        "subscription-trap",
+        "chargeback",
+        "merchant-onboarding",
+        "card-testing",
+        "acquirer-risk"
+      ],
+      "name": "Merchant Account Transaction Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal versus anomalous patterns for digital wallet provisioning and contactless transaction behavior relevant to detecting digital wallet fraud and NFC relay attacks. It supports detection logic for TP-0037 (Digital Wallet Fraud & NFC Relay Attacks) by establishing behavioral norms for wallet provisioning frequency, OTP-to-provisioning time intervals, contactless transaction geographic spread, and multi-terminal transaction velocity. These baselines are derived from the Re",
+      "id": "x-flame-baseline--71c68224-4a6a-535c-9471-a6a786cd47a8",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "digital-wallet",
+        "contactless",
+        "nfc-relay",
+        "wallet-provisioning",
+        "otp-interception",
+        "ghost-tapping"
+      ],
+      "name": "Digital Wallet & Contactless Transaction Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal versus anomalous patterns for card authorization behavior at the merchant level, relevant to detecting card testing infrastructure abuse. It supports detection logic for TP-0038 (Card Testing Infrastructure Abuse) by establishing behavioral norms for sub-dollar authorization rates, BIN-level sequential authorization patterns, decline-to-approval ratios, and unique card diversity per source. These baselines are derived from the Recorded Future 2025 Annual Payment Frau",
+      "id": "x-flame-baseline--fd93ab14-d121-5e83-b106-dbce310afa58",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "card-testing",
+        "BIN-attack",
+        "authorization-velocity",
+        "decline-rate",
+        "tester-merchant",
+        "payment-gateway"
+      ],
+      "name": "Card Authorization & Testing Velocity Patterns Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal versus anomalous behavioral patterns for AI agent-initiated commerce transactions, supporting detection logic for TP-0039 (Agentic Commerce Fraud). As agentic commerce platforms such as Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay move from pilot to production, fraud teams require calibrated baselines to distinguish legitimate agent purchasing behavior from compromised or manipulated agent sessions. These baselines are derived from early pil",
+      "id": "x-flame-baseline--2e9c192b-e9b7-5408-be42-4a3292d694bd",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "agentic-ai",
+        "ai-agent",
+        "commerce-automation",
+        "transaction-velocity",
+        "agent-purchasing",
+        "ecommerce"
+      ],
+      "name": "AI Agent Commerce Activity Baseline",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
       "description": "This baseline document defines the \"normal\" operating parameters for commercial wire transfers within the SME (Small to Medium Enterprise) banking sector, used to contextualize detection rules for TP-0002 (BEC), TP-0019 (Business Identity Theft), and TP-0020 (Supply Chain Payment Fraud).",
       "id": "x-flame-baseline--bfc0004f-9951-52ad-962a-6d91c1f5e59a",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",

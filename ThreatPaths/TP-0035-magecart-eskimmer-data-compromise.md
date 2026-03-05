@@ -1,0 +1,429 @@
+# TP-0035: Magecart E-Skimmer Data Compromise
+
+```yaml
+---
+id: TP-0035
+title: "Magecart E-Skimmer Data Compromise"
+category: ThreatPath
+date: 2026-03-04
+author: "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)"
+source: "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+tlp: WHITE
+sector:
+  - retail
+  - payments
+  - fintech
+fraud_types:
+  - e-skimmer
+  - data-theft
+  - malware
+  - identity-theft
+cfpf_phases:
+  - P1
+  - P2
+  - P3
+  - P4
+  - P5
+mitre_attack:
+  - T1059.007  # Command and Scripting Interpreter: JavaScript
+  - T1189       # Drive-by Compromise
+  - T1583.001  # Acquire Infrastructure: Domains
+  - T1027       # Obfuscated Files or Information
+  - T1041       # Exfiltration Over C2 Channel
+  - T1657       # Financial Theft
+ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA007", "FTA009", "FTA010", "FT003", "FT007.009", "FT008.002", "FT016", "FT031"]
+mitre_f3: []
+groupib_stages:
+  - "Reconnaissance"
+  - "Resource Development"
+  - "Initial Access"
+  - "Execution"
+  - "Credential Access"
+  - "Perform Fraud"
+  - "Monetization"
+  - "Laundering"
+ucff_domains:
+  commit: "Level 3"
+  assess: "Level 3"
+  plan: "Level 3"
+  act: "Level 4"
+  monitor: "Level 4"
+  report: "Level 2"
+  improve: "Level 3"
+confidence_score: 78
+source_reliability: B
+info_credibility: 2
+related_tps:
+  - id: TP-0013
+    relationship: feeds-into
+  - id: TP-0030
+    relationship: enables
+  - id: TP-0038
+    relationship: shares-infrastructure
+regulatory_refs:
+  - REG-FINCEN-CDD
+  - REG-PSD3-SCA
+  - REG-DORA
+tags:
+  - magecart
+  - e-skimmer
+  - web-skimming
+  - sniffer-by-fleras
+  - acceptcar
+  - smart-contract-c2
+  - google-tag-manager-abuse
+  - card-data-compromise
+  - maas
+  - pci-dss
+---
+```
+
+---
+
+## Summary
+
+Magecart-style e-skimmer attacks remain one of the most persistent and scalable threats to online payment ecosystems. In 2025, Recorded Future identified over 10,500 unique e-skimmer infections active across e-commerce platforms globally, a figure that held stable relative to 2024 despite the implementation of PCI DSS 4.0 future-dated requirements in early 2025. Over 7,300 new infections were detected during the year, with an estimated 23.4 million card-not-present transactions likely compromised. The attack chain involves injecting malicious JavaScript into merchant checkout pages — either through direct compromise of the merchant's CMS, exploitation of third-party script supply chains, or abuse of legitimate tag management platforms such as Google Tag Manager — to intercept payment card data in real time.
+
+The e-skimmer ecosystem has matured into a professionalized Malware-as-a-Service (MaaS) economy. The "Sniffer by Fleras" (also known as "Surki") operation accounted for 26% of all detected infections in 2025, offering operators a web portal for generating customized skimmer scripts and a server-side platform for managing stolen card data. A newer entrant, "AcceptCar," emerged in the second half of 2025 with a revenue-sharing MaaS model: operators receive either 50% of proceeds from card data sales or 70% of the raw data intake. Both platforms feature robust obfuscation techniques, including mimicry of legitimate analytics objects to evade detection. A particularly advanced technique observed in 2025 involves the use of blockchain smart contracts as command-and-control (C2) infrastructure — a loader script on the compromised site retrieves second-stage payloads from a smart contract, establishes a WebSocket connection for the skimmer payload, and exfiltrates captured payment data over the same WebSocket channel. This approach provides censorship-resistant C2 that cannot be taken down through conventional domain seizure.
+
+The continued abuse of Google Tag Manager containers as a delivery mechanism for loader, relay, and skimmer scripts represents a significant detection challenge, as GTM is a legitimate and widely deployed marketing technology platform. One significant case in 2025 involved a reservation platform compromise that affected over 160 business customers downstream. The CVE-2024-34102 "CosmicSting" vulnerability in Adobe Commerce (Magento) drove a massive spike in infections during 2024, and residual exploitation continued into 2025 on unpatched installations. Despite PCI DSS 4.0 strengthening requirements around payment page script monitoring, the stable infection volume in 2025 suggests that compliance alone is insufficient — active detection, integrity monitoring, and supply chain security controls are required.
+
+---
+
+## Threat Path Hypothesis
+
+> **Hypothesis**: Organized e-skimmer operators are leveraging Malware-as-a-Service platforms, supply chain compromises, and novel command-and-control techniques (including blockchain smart contracts) to inject payment card skimming scripts into e-commerce checkout pages at scale, intercepting an estimated 23.4 million transactions annually and feeding stolen card data into dark web carding markets, card-not-present fraud, and downstream triangulation operations.
+
+**Confidence**: High (78/100) — Recorded Future's 2025 Annual Payment Fraud Intelligence Report provides quantitative infection telemetry (10,500+ active infections, 7,300+ new infections) corroborated by independent PCI forensic investigation data and dark web marketplace monitoring. The MaaS operators (Sniffer by Fleras, AcceptCar) have been directly observed through their web portals and advertising on underground forums. Blockchain C2 techniques have been confirmed through technical analysis of compromised sites.
+
+**Estimated Impact**: Per compromised merchant: $50,000 - $500,000+ in fraud losses, PCI DSS non-compliance fines, forensic investigation costs, and brand damage. Aggregate ecosystem impact: estimated 23.4 million compromised transactions annually, with card data valued at $10 - $150 per record on dark web markets depending on data completeness and card type. Total annual ecosystem loss estimated at $2B - $5B when including direct fraud, investigation costs, reissuance expenses, and downstream CNP fraud.
+
+---
+
+## CFPF Phase Mapping
+
+### Phase 1: Recon
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P1-001: E-commerce platform identification | Operators scan for vulnerable e-commerce platforms, primarily targeting Magento (Adobe Commerce), WooCommerce, Shopify custom themes, and PrestaShop installations. Automated scanners enumerate CMS versions, installed plugins, and known vulnerability status. | Increased scanning activity targeting CMS identification endpoints (e.g., `/magento_version`, `/wp-json/`, Shopify theme fingerprints); reconnaissance traffic from known scanning infrastructure |
+| CFPF-P1-002: Vulnerability and access enumeration | Operators identify unpatched CMS vulnerabilities (notably CVE-2024-34102 "CosmicSting" for Magento), weak admin panel credentials, and vulnerable third-party plugins. Supply chain targets are identified by analyzing which merchants use common JavaScript libraries, payment plugins, or tag management containers. | Exploitation attempts against known CMS CVEs; brute-force attempts on admin panels; enumeration of third-party script sources on payment pages |
+| CFPF-P1-003: High-value merchant targeting | Operators prioritize merchants with high transaction volumes, premium product lines (electronics, luxury goods), and geographies with higher card-present interchange rates. Reservation platforms and B2B merchants are also targeted for their downstream customer reach. | N/A (target selection is external to the victim merchant) |
+
+**Data Sources**: Web application firewall (WAF) logs, CMS admin panel authentication logs, vulnerability scanning platform data, third-party script inventory tools, threat intelligence feeds (known Magecart scanning infrastructure).
+
+---
+
+### Phase 2: Initial Access
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P2-001: CMS vulnerability exploitation | Operators exploit known CMS vulnerabilities to gain administrative access or direct file write capabilities. CVE-2024-34102 (CosmicSting) in Adobe Commerce was the dominant initial access vector in late 2024 through 2025, enabling XML external entity (XXE) attacks that allow arbitrary file read and write. | Web application firewall alerts for CMS exploitation attempts; unexpected CMS configuration changes; new admin accounts created without HR/IT correlation |
+| CFPF-P2-002: Admin panel compromise | Operators use stolen credentials (sourced from infostealer logs, credential stuffing attacks, or dark web purchases) to authenticate to merchant admin panels. Once authenticated, they inject skimmer code through CMS template editors, custom JavaScript fields, or plugin configuration. | Successful admin panel logins from unusual geolocations or IP ranges; admin session activity outside business hours; CMS template modifications by admin accounts not associated with authorized developers |
+| CFPF-P2-003: Third-party supply chain compromise | Operators compromise upstream JavaScript library providers, payment plugins, or Google Tag Manager containers to inject skimmer code that propagates to all downstream merchants using the compromised resource. This amplifies reach from a single compromise to hundreds or thousands of merchant sites. | Changes to third-party script content hashes; new or modified GTM container tags not matching authorized change records; unexpected script loading from recently registered domains through GTM |
+| CFPF-P2-004: Google Tag Manager container abuse | Operators inject malicious scripts by adding or modifying tags within GTM containers, either through compromised GTM account credentials or by exploiting misconfigured container permissions. The skimmer code is loaded as a seemingly legitimate marketing or analytics tag. | New GTM tags created outside authorized deployment schedules; GTM tags loading scripts from non-whitelisted domains; GTM container version changes without corresponding change management tickets |
+
+**Data Sources**: WAF logs, CMS audit trails, GTM container version history, Content Security Policy (CSP) violation reports, third-party script monitoring tools (e.g., Feroot, Jscrambler, Source Defense), admin panel authentication logs.
+
+---
+
+### Phase 3: Positioning
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P3-001: MaaS skimmer kit deployment | Operators deploy e-skimmer JavaScript kits generated by MaaS platforms such as "Sniffer by Fleras" (26% of infections) or "AcceptCar." These kits are pre-configured for data capture, obfuscation, and exfiltration. The MaaS model lowers the technical barrier to entry, enabling less sophisticated actors to conduct e-skimmer operations. | JavaScript injections matching known MaaS kit signatures; obfuscation patterns consistent with Fleras/AcceptCar code generators; skimmer code referencing known MaaS C2 domains |
+| CFPF-P3-002: Script obfuscation and analytics mimicry | Skimmer scripts are obfuscated using variable name randomization, string encoding, and control flow flattening. Advanced variants mimic legitimate analytics objects (e.g., Google Analytics data layer variables, Facebook Pixel event structures) to avoid detection by security scanners and manual code review. | JavaScript files with high entropy variable names on payment pages; scripts that reference analytics-style object names but make network calls to non-analytics domains; CSP violations from scripts attempting to load external resources |
+| CFPF-P3-003: Blockchain smart contract C2 establishment | A loader script injected on the compromised site queries a blockchain smart contract (typically on Ethereum or BNB Chain) to retrieve the address of the second-stage payload server. The loader then establishes a WebSocket connection to the resolved server to download the full skimmer payload. This technique makes C2 infrastructure resistant to takedown, as smart contract data is immutable and decentralized. | Payment page scripts making JSON-RPC calls to blockchain node endpoints (e.g., Infura, Alchemy, direct Ethereum nodes); WebSocket connections from checkout pages to non-payment-related servers; DNS lookups or HTTP requests to blockchain explorer APIs from payment page context |
+| CFPF-P3-004: Checkout page DOM manipulation | Skimmer scripts inject or overlay fake payment form elements on top of legitimate checkout pages, or intercept form submission events to capture data before it reaches the legitimate payment processor. Some variants create invisible iframes that mirror the payment form. | DOM mutations on payment form elements outside of authorized deployment windows; new form elements or iframes injected into checkout pages; event listeners attached to payment form submit buttons that were not present in the original page source |
+
+**Data Sources**: Client-side JavaScript monitoring (Real User Monitoring), CSP violation logs, Subresource Integrity (SRI) validation, DOM integrity monitoring tools, network traffic analysis (WebSocket connections from payment pages), blockchain transaction monitoring.
+
+---
+
+### Phase 4: Execution
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P4-001: Payment data interception | The deployed skimmer captures payment card data as the customer enters it on the checkout page — including card number, expiration date, CVV, cardholder name, and billing address. Data is captured either by intercepting form input events in real time or by hooking the form submission handler to extract data before it is encrypted and sent to the payment processor. | Customer reports of card fraud following purchases on the merchant site; PCI forensic investigation findings of unauthorized scripts on payment pages; unusual JavaScript error rates on checkout pages |
+| CFPF-P4-002: Data exfiltration via WebSocket C2 | Captured payment data is exfiltrated to attacker-controlled servers via the WebSocket channel established during the positioning phase. For blockchain C2 variants, the same WebSocket connection used for payload delivery serves as the exfiltration channel, minimizing the number of suspicious network connections. Data is typically base64-encoded or encrypted before transmission. | Outbound WebSocket connections from payment pages to non-payment-related servers; data transfers from checkout page context to IP addresses not associated with the merchant's payment processor; base64-encoded payloads in WebSocket frames originating from payment pages |
+| CFPF-P4-003: Data exfiltration via image/beacon requests | Simpler skimmer variants exfiltrate stolen data by encoding it in URL parameters of image requests, tracking pixels, or navigator.sendBeacon() calls to attacker-controlled domains. The data is disguised as analytics event parameters. | HTTP GET/POST requests from payment pages to unrecognized domains with suspiciously long URL parameters or POST bodies; image requests with query strings containing encoded card data patterns; beacon requests to non-whitelisted analytics domains |
+| CFPF-P4-004: Persistent access maintenance | Operators maintain persistent access to compromised merchants through backdoor admin accounts, web shells, or recurring supply chain injection. Skimmer code is periodically updated to rotate exfiltration domains, refresh obfuscation, and evade newly deployed detection signatures. | Recurring CSP violations from rotating domains; periodic changes to injected script content without corresponding legitimate deployment activity; web shell detection on merchant infrastructure |
+
+**Data Sources**: Payment processor fraud analytics, PCI forensic investigation reports, network traffic analysis (DNS, HTTP, WebSocket), CSP violation logs, customer fraud complaint correlation, dark web monitoring (appearance of merchant-specific card dumps).
+
+---
+
+### Phase 5: Monetization
+
+| Technique | Description | Indicators |
+|-----------|-------------|------------|
+| CFPF-P5-001: Dark web card data sales | Stolen card data is sold on dark web carding marketplaces (e.g., Joker's Stash successors, BidenCash, various Telegram channels). Cards are priced based on data completeness (track data vs. CNP data), card type (premium/business cards command higher prices), and issuing bank geography. MaaS operators like AcceptCar take a 50% revenue share on card data sales. | Appearance of card dumps on dark web markets with merchant-specific metadata; clustering of fraud reports from customers of a single merchant; BIN-level fraud spikes correlated with merchant transaction volume |
+| CFPF-P5-002: Card-not-present fraud | Stolen card data is used directly for card-not-present (CNP) purchases at other merchants, particularly for high-resale-value goods (electronics, gift cards, luxury items). Automated carding bots test and use cards at scale. | Issuer-side fraud alerts on cards recently used at a specific compromised merchant; chargeback clustering by merchant of original transaction; fraud pattern analysis showing temporal correlation between legitimate purchase at compromised merchant and subsequent fraudulent CNP transactions |
+| CFPF-P5-003: Triangulation fraud enablement | Compromised card data feeds into triangulation fraud operations (TP-0030) where scam merchants use stolen cards to fulfill orders placed by unsuspecting customers on legitimate-appearing storefronts. This launders the fraudulent transactions through seemingly legitimate commerce. | Card fraud reports where the fraudulent transaction is a legitimate product delivery to a third party; complex chargeback chains involving multiple merchants |
+| CFPF-P5-004: Card testing operations | Stolen card data is tested for validity through small-value authorization attempts against merchants with weak fraud controls before being used for high-value fraud or sold on dark web markets (TP-0038). | Spikes in low-value authorization attempts on cards recently used at compromised merchants; authorization-only transactions (no capture) from automated sources |
+
+**Data Sources**: Dark web marketplace monitoring, issuer fraud analytics, chargeback data analytics, payment network fraud intelligence (Visa/Mastercard), law enforcement liaison, threat intelligence feeds.
+
+---
+
+## Cross-Framework Mapping
+
+**FT3 (Stripe Fraud Taxonomy):**
+
+- FTA001 (Account Compromise) — compromise of merchant admin panels and CMS platforms
+- FTA002 (Credential Theft) — interception of payment card credentials at checkout
+- FTA003 (Data Exfiltration) — exfiltration of payment card data via WebSocket, image beacons, and blockchain C2
+- FTA005 (Social Engineering) — third-party supply chain trust exploitation
+- FTA007 (Account Takeover) — downstream use of stolen card data for unauthorized transactions
+- FTA009 (Malware Deployment) — e-skimmer JavaScript injection on payment pages
+- FTA010 (Infrastructure Abuse) — abuse of Google Tag Manager and blockchain smart contracts for C2
+- FT003 (Card Testing) — validation of stolen card data through small-value authorization attempts
+- FT007.009 (CNP Fraud via Stolen Cards) — direct use of skimmed card data for card-not-present purchases
+- FT008.002 (Supply Chain Compromise) — compromise of third-party scripts and plugins
+- FT016 (Data Theft) — bulk payment card data theft
+- FT031 (Extortion) — some operators threaten merchants with public disclosure of compromise
+
+**MITRE ATT&CK:**
+
+- T1059.007 (Command and Scripting Interpreter: JavaScript) — malicious JavaScript execution on payment pages
+- T1189 (Drive-by Compromise) — customer payment data intercepted through compromised merchant pages
+- T1583.001 (Acquire Infrastructure: Domains) — registration of exfiltration and C2 domains
+- T1027 (Obfuscated Files or Information) — heavy script obfuscation and analytics mimicry
+- T1041 (Exfiltration Over C2 Channel) — data exfiltration via WebSocket C2 and blockchain-resolved infrastructure
+- T1657 (Financial Theft) — monetization of stolen payment card data
+
+**Group-IB Fraud Matrix:**
+
+- Reconnaissance — identification of vulnerable e-commerce platforms and high-value merchant targets
+- Resource Development — MaaS platform subscription (Fleras, AcceptCar), exfiltration domain registration, blockchain C2 setup
+- Initial Access — CMS exploitation, admin panel compromise, supply chain injection, GTM container abuse
+- Execution — e-skimmer script deployment, payment data interception, DOM manipulation
+- Credential Access — real-time capture of payment card credentials during checkout
+- Perform Fraud — CNP fraud, triangulation fraud, and card testing using stolen card data
+- Monetization — dark web card data sales, direct CNP purchases, MaaS revenue sharing
+- Laundering — proceeds laundered through cryptocurrency, resale of fraudulently purchased goods, and triangulation networks
+
+---
+
+## Look Left / Look Right Analysis
+
+**Discovery Phase**: Typically discovered at **Phase 4 (Execution)** or **Phase 5 (Monetization)** — when a payment processor or card network identifies a common point of purchase (CPP) among a cluster of fraud reports, when PCI forensic investigators discover unauthorized scripts during a compliance assessment, or when dark web monitoring detects a new batch of card data associated with the merchant. Proactive detection at **Phase 3** is possible through client-side script monitoring and CSP enforcement but remains uncommon.
+
+**Look Left** (what was missed before discovery):
+
+- **P4 -> P3**: Were there CSP violations or Subresource Integrity failures that indicated unauthorized script injection? Were DOM mutations on payment form elements being monitored? Did client-side monitoring tools detect WebSocket connections from checkout pages to non-payment servers?
+- **P3 -> P2**: Was there a CMS vulnerability exploitation attempt that succeeded? Did admin panel logs show logins from unusual locations? Were GTM container modifications tracked against an authorized change management process? Was the compromised third-party script monitored for content integrity?
+- **P2 -> P1**: Were CMS patches applied promptly after CVE disclosure (especially CVE-2024-34102)? Were admin panel credentials protected by MFA? Was the attack surface of third-party scripts inventoried and monitored?
+- **Cross-team gap**: E-commerce teams manage the storefront. IT/DevOps manages infrastructure. Security monitors for threats. Marketing manages GTM containers. Payment operations manages processor integrations. E-skimmer compromise spans all these domains — a holistic view connecting CMS security posture, script integrity, GTM governance, and payment fraud signals is required but rarely centralized.
+
+**Look Right** (predicted next steps if uninterrupted):
+
+- Active skimmer infections will persist for an average of 22 days (Recorded Future median) before detection, with some persisting for months on smaller merchants
+- Compromised card data will appear on dark web markets within 24-72 hours of capture
+- Stolen cards will be used for CNP fraud within 1-7 days, with the highest-value cards (premium, business) used first
+- Card data will feed into triangulation fraud operations (TP-0030) and card testing campaigns (TP-0038)
+- Operators will re-infect the merchant after remediation if root cause (CMS vulnerability, compromised credentials, supply chain weakness) is not fully addressed
+- MaaS operators will update skimmer kits to evade newly deployed detection signatures
+
+---
+
+## Underground Ecosystem Context
+
+### MaaS Platform Profiles
+
+| Platform | Market Share (2025) | Model | Key Capabilities |
+|----------|-------------------|-------|------------------|
+| Sniffer by Fleras (Surki) | 26% of infections | Subscription + data management | Web portal for custom script generation; server-side stolen data management; multi-merchant campaign dashboard; obfuscation engine |
+| AcceptCar | Emerging (H2 2025) | Revenue share: 50% of sales / 70% of raw data | Robust obfuscation; automated deployment tools; integrated card data validation; customer support for operators |
+| Custom/independent | ~40% of infections | Self-operated | Bespoke skimmer development by technically sophisticated groups; often the most advanced evasion techniques |
+| Legacy kits (Inter, MageCart Group variants) | ~15% of infections | Open-source / leaked | Older skimmer code bases with known signatures; still effective against merchants without monitoring |
+
+### C2 Infrastructure Evolution
+
+- **Traditional**: Exfiltration to attacker-registered domains via HTTP POST or image beacon — easily disrupted by domain takedown
+- **GTM Relay**: Skimmer code hosted within Google Tag Manager containers; data relayed through GTM infrastructure — detection requires GTM container auditing
+- **Blockchain C2**: Smart contract stores C2 server address; loader retrieves address from immutable blockchain; WebSocket connection for payload and exfiltration — cannot be disrupted by domain takedown or hosting provider action
+- **Multi-layer**: Combination of GTM loader → blockchain resolution → WebSocket C2 provides maximum resilience
+
+### Dark Web Marketplace Pricing
+
+| Data Type | Price Range (2025) | Premium Factors |
+|-----------|-------------------|-----------------|
+| CNP data (number, expiry, CVV) | $10 - $40 | U.S./EU issuing bank, premium card type |
+| Full info (CNP + billing address + name + phone) | $30 - $80 | Business cards, high credit limits |
+| Track 1+2 data (rare from e-skimmers) | $50 - $150 | Enables card cloning for CP fraud |
+| Bulk lots (1,000+ cards) | $5 - $15 per card | Volume discount; freshness guarantee |
+
+### Supply Chain Attack Vectors
+
+- **Compromised JavaScript CDN libraries**: Operators compromise popular open-source JavaScript libraries hosted on CDNs; all merchants loading the library receive the skimmer
+- **Payment plugin compromise**: Malicious updates to payment gateway plugins for Magento, WooCommerce, or PrestaShop
+- **GTM container injection**: Unauthorized tag creation in GTM containers through stolen credentials or misconfigured permissions
+- **Reservation/booking platform compromise**: Single platform compromise propagates skimmer to 100+ downstream merchant checkout flows (observed: 160+ businesses affected in one 2025 case)
+
+---
+
+## Controls & Mitigations
+
+| Phase | Control | Type | Owner |
+|-------|---------|------|-------|
+| P1 | CMS patch management — apply security patches within 72 hours of critical CVE disclosure; prioritize Adobe Commerce, WooCommerce, and Shopify custom theme vulnerabilities | Preventive | IT / DevOps |
+| P1 | Third-party script inventory and risk assessment — maintain a complete inventory of all JavaScript loaded on payment pages; evaluate vendor security posture | Preventive | Security / E-commerce |
+| P2 | Admin panel hardening — enforce MFA on all CMS admin accounts; restrict admin access to corporate IP ranges; implement account lockout after failed attempts | Preventive | IT / Security |
+| P2 | GTM container governance — restrict GTM container edit permissions; implement approval workflows for tag changes; audit container modifications against change management records | Preventive | Marketing / Security |
+| P3 | Content Security Policy enforcement — deploy strict CSP headers on payment pages that whitelist only authorized script sources; monitor and alert on CSP violations | Detective | Security / DevOps |
+| P3 | Subresource Integrity (SRI) — implement SRI hashes for all third-party scripts on payment pages; alert on hash mismatches indicating script modification | Detective | DevOps / Security |
+| P3 | Client-side script monitoring — deploy real-time JavaScript monitoring on payment pages to detect unauthorized DOM mutations, new script loads, and anomalous network connections | Detective | Security / E-commerce |
+| P4 | Payment page network monitoring — monitor and alert on outbound connections from payment pages to non-whitelisted domains; specifically detect WebSocket connections and blockchain RPC calls | Detective | Security / Network |
+| P4 | PCI DSS 4.0 Requirement 6.4.3 compliance — implement automated script integrity monitoring as required by PCI DSS 4.0 for payment pages | Preventive | Compliance / Security |
+| P5 | Dark web monitoring — monitor carding marketplaces for card dumps associated with the organization's merchant identifier or BIN ranges | Detective | Threat Intelligence / Fraud |
+| P5 | Issuer fraud analytics correlation — work with card networks and issuers to identify common-point-of-purchase clustering that may indicate an active skimmer infection | Detective | Fraud / Payment Operations |
+| P5 | Incident response playbook for e-skimmer discovery — forensic preservation of injected code, customer notification, PCI forensic investigation engagement, card network notification | Responsive | Security / Legal / Compliance |
+
+---
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive recognition of e-skimmer risk as a board-level issue given PCI DSS liability, brand damage, and regulatory exposure; dedicated budget for client-side monitoring and payment page security tooling |
+| ASSESS | Level 3 (Established) | Comprehensive assessment of e-commerce attack surface including CMS version inventory, third-party script catalog, GTM container audit, and payment page network baseline; vulnerability scanning program covering all e-commerce infrastructure |
+| PLAN | Level 3 (Established) | E-skimmer incident response playbooks; PCI DSS 4.0 Requirement 6.4.3 implementation plan; CSP deployment roadmap; third-party script governance policy; GTM container management procedures |
+| ACT | Level 4 (Advanced) | Automated client-side script monitoring on all payment pages; real-time CSP violation alerting; SRI enforcement for third-party scripts; DOM integrity monitoring; network anomaly detection for WebSocket and blockchain C2 patterns |
+| MONITOR | Level 4 (Advanced) | KRIs for CSP violation rates, third-party script modification frequency, payment page DOM mutation counts, WebSocket connection anomalies, dark web card dump appearance lag; continuous monitoring dashboards correlating client-side signals with fraud analytics |
+| REPORT | Level 2 (Developing) | PCI DSS compliance reporting; card network notification procedures for confirmed compromises; customer breach notification processes; regulatory disclosure for applicable jurisdictions |
+| IMPROVE | Level 3 (Established) | Post-incident analysis of detection gap duration (time from infection to discovery); MaaS signature updates based on threat intelligence; CSP policy refinement based on false positive analysis; third-party vendor security review improvements |
+
+### Maturity Levels Reference
+- **Level 1 (Initial):** Ad hoc, reactive fraud management
+- **Level 2 (Developing):** Basic fraud function exists with some defined processes
+- **Level 3 (Established):** Formalized fraud program with proactive capabilities
+- **Level 4 (Advanced):** Data-driven, continuously improving fraud program
+- **Level 5 (Leading):** Industry-leading, predictive fraud management
+
+---
+
+## Detection Approaches
+
+### Queries / Rules
+
+**SQL — Common Point of Purchase Detection (Phase 5)**
+
+```sql
+SELECT
+    m.merchant_id,
+    m.merchant_name,
+    m.platform_type,
+    COUNT(DISTINCT c.card_id) AS compromised_cards,
+    COUNT(DISTINCT f.fraud_case_id) AS fraud_reports,
+    MIN(f.fraud_report_date) AS first_fraud_report,
+    MAX(f.fraud_report_date) AS latest_fraud_report,
+    AVG(DATEDIFF(day, t.transaction_date, f.fraud_report_date)) AS avg_days_to_fraud
+FROM fraud_reports f
+JOIN transactions t ON f.original_transaction_id = t.transaction_id
+JOIN merchants m ON t.merchant_id = m.merchant_id
+JOIN cards c ON t.card_id = c.card_id
+WHERE f.fraud_report_date >= CURRENT_DATE - INTERVAL '30 days'
+  AND f.fraud_type IN ('cnp_fraud', 'counterfeit', 'card_not_present')
+GROUP BY m.merchant_id, m.merchant_name, m.platform_type
+HAVING COUNT(DISTINCT c.card_id) >= 10
+   AND COUNT(DISTINCT f.fraud_case_id) >= 5
+ORDER BY compromised_cards DESC;
+```
+
+**Splunk — CSP Violation and Unauthorized Script Detection (Phase 3)**
+
+```spl
+index=web_security sourcetype=csp_violations
+    blocked_uri!="inline" blocked_uri!="eval"
+| eval page_type = if(match(document_uri, "(checkout|payment|cart|billing)"), "payment_page", "other")
+| where page_type = "payment_page"
+| stats count AS violation_count,
+        dc(blocked_uri) AS unique_blocked_domains,
+        values(blocked_uri) AS blocked_domains,
+        dc(document_uri) AS affected_pages
+    BY effective_directive
+| where violation_count > 10
+| lookup domain_age_lookup domain AS blocked_domains OUTPUT domain_age_days
+| where domain_age_days < 90 OR isnull(domain_age_days)
+| table effective_directive, blocked_domains, violation_count, affected_pages, domain_age_days
+| sort - violation_count
+```
+
+**Sigma — WebSocket Connection from Payment Page (Phase 4)**
+
+```yaml
+title: WebSocket Connection from Payment Page to Non-Payment Domain
+status: experimental
+description: >
+  Detects WebSocket connections initiated from e-commerce payment or checkout
+  pages to domains not associated with the merchant's legitimate payment
+  processor. E-skimmer variants using blockchain C2 infrastructure establish
+  WebSocket connections for payload delivery and data exfiltration.
+logsource:
+    product: web_proxy
+    service: network_traffic
+detection:
+    selection:
+        request_url|contains:
+            - 'checkout'
+            - 'payment'
+            - 'billing'
+            - 'cart/complete'
+        connection_type: 'websocket'
+    filter_legitimate:
+        destination_domain|contains:
+            - 'stripe.com'
+            - 'paypal.com'
+            - 'braintreegateway.com'
+            - 'adyen.com'
+            - 'authorize.net'
+    condition: selection and not filter_legitimate
+level: high
+tags:
+    - cfpf.phase4.execution
+    - attack.t1041
+    - flame.ecommerce
+    - flame.eskimmer
+```
+
+### Behavioral Analytics
+
+- **Payment page script entropy analysis**: Establish a baseline of scripts loaded on payment pages (median 8-15 external scripts). Detect anomalies when new scripts appear with high-entropy variable names or obfuscation patterns inconsistent with legitimate analytics and marketing libraries.
+- **CSP violation rate monitoring**: Baseline CSP violation rates at fewer than 0.1% of page loads. Sustained increases in violation rates on payment pages indicate potential script injection. Alert when violation rates exceed 3x baseline for more than 1 hour.
+- **DOM mutation monitoring**: Payment form elements should experience zero non-framework DOM mutations during the checkout flow. Any injection of new form elements, iframes, or event listeners on payment input fields is a high-confidence skimmer indicator.
+- **Exfiltration domain age correlation**: Skimmer exfiltration domains are typically registered within 30 days of deployment. Cross-reference domains contacted from payment pages with domain WHOIS data; newly registered domains loading scripts or receiving data from checkout pages are high-priority for investigation.
+
+### Cross-Team Correlation
+
+- **E-commerce -> Security**: GTM container modifications and CMS template changes should trigger security review when they affect payment pages. Marketing teams managing GTM should have approval workflows that include security sign-off.
+- **Security -> Payment Operations**: CSP violations, unauthorized script detections, and DOM anomalies on payment pages should trigger immediate investigation and potential payment page isolation pending forensic review.
+- **Fraud Analytics -> Threat Intelligence**: Spikes in customer fraud reports clustering on a single merchant should be correlated with dark web monitoring for card dump batches and with client-side monitoring data for script injection indicators.
+- **Compliance -> Security**: PCI DSS 4.0 Requirement 6.4.3 compliance monitoring should feed directly into the security team's script integrity monitoring program, ensuring that compliance controls also serve as active detection mechanisms.
+- **DevOps -> Security**: CMS patching status, third-party script version management, and infrastructure change logs should be accessible to the security team for correlation with potential compromise indicators.
+
+---
+
+## References
+
+- **Recorded Future — Annual Payment Fraud Intelligence Report 2025**: Primary source providing quantitative e-skimmer infection telemetry (10,500+ active infections, 7,300+ new infections, 23.4M compromised transactions), MaaS platform profiles (Sniffer by Fleras, AcceptCar), blockchain C2 technical analysis, and GTM abuse case studies.
+
+- **PCI Security Standards Council — PCI DSS v4.0 Requirement 6.4.3**: Requirement for automated mechanisms to detect and alert on unauthorized modifications to payment page scripts, including integrity monitoring and change detection.
+
+- **RiskIQ / Microsoft — Magecart Threat Landscape Reports**: Historical analysis of Magecart group operations, supply chain attack vectors, and e-skimmer evolution from 2018 through 2025.
+
+- **Feroot / Jscrambler / Source Defense — Client-Side Security Research**: Technical analysis of e-skimmer obfuscation techniques, analytics mimicry patterns, and blockchain C2 infrastructure.
+
+- **MITRE ATT&CK — Enterprise Matrix**: Framework mapping for adversary techniques used in e-skimmer campaigns, including T1059.007, T1189, T1027, T1041.
+
+- **Related FLAME Threat Paths**: [TP-0013: Card-Not-Present Fraud](TP-0013-card-not-present-fraud.md) (downstream fraud using skimmed data); [TP-0030: Triangulation Fraud](TP-0030-triangulation-fraud.md) (stolen cards used to fulfill scam merchant orders); [TP-0038: Card Testing Operations](TP-0038-card-testing-operations.md) (stolen card validation before monetization).
+
+---
+
+## Revision History
+
+| Date | Author | Change |
+|------|--------|--------|
+| 2026-03-04 | FLAME Project | Initial submission — sourced from Recorded Future Annual Payment Fraud Report 2025 |

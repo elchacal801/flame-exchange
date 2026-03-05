@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+transaction_amount<1 event_type IN ("*authorization*", "*auth_request*") count>=50 groupby="merchant_id" timeframe="1h" dc_card_number_hash>=30 decline_rate>=0.5

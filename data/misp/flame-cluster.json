@@ -1631,6 +1631,294 @@
           "type": "uses"
         }
       ]
+    },
+    {
+      "value": "Magecart E-Skimmer Data Compromise",
+      "description": "Magecart-style e-skimmer attacks remain one of the most persistent and scalable threats to online payment ecosystems. In 2025, Recorded Future identified over 10,500 unique e-skimmer infections active...",
+      "uuid": "e0b4046e-37f4-53bc-86e7-678c8d2b7cef",
+      "meta": {
+        "fraud_types": [
+          "e-skimmer",
+          "data-theft",
+          "malware",
+          "identity-theft"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://elchacal801.github.io/flame-fraud/?tp=TP-0035"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "039d68fd-4697-567f-a69f-72b2ed4b9a05",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "9a853054-949b-5b68-beab-95de12a4ba45",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "46d65ffb-97fa-50b5-b772-21e910fa3d4f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "861c31f7-15db-5f2e-999b-8ad5f90ffb71",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Purchase Scam Merchant Networks",
+      "description": "Purchase scam merchant networks represent a rapidly scaling fraud threat that exploits the fundamental design of the payment ecosystem: because the victim authorizes the transaction themselves, tradit...",
+      "uuid": "349d1a47-93c5-5598-852b-52670e91dd72",
+      "meta": {
+        "fraud_types": [
+          "purchase-scam",
+          "brand-impersonation",
+          "first-party-fraud",
+          "social-engineering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 75,
+        "refs": [
+          "https://elchacal801.github.io/flame-fraud/?tp=TP-0036"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4bd24a18-4c14-5a96-b855-ab47f9c37e54",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Digital Wallet Fraud & NFC Relay Attacks",
+      "description": "Digital wallet fraud and NFC relay attacks represent a rapidly evolving convergence of social engineering, credential interception, and contactless payment abuse. In this threat path, attackers phish ...",
+      "uuid": "cde3b74d-cbbc-59fe-810f-a8cc6c60e8eb",
+      "meta": {
+        "fraud_types": [
+          "digital-wallet-fraud",
+          "nfc-relay",
+          "account-takeover",
+          "social-engineering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://elchacal801.github.io/flame-fraud/?tp=TP-0037"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "343f48fe-2a27-5023-ab88-e9876992e31f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Card Testing Infrastructure Abuse",
+      "description": "Card testing infrastructure abuse is a foundational enabler for payment card fraud at scale. In this threat path, threat actors use automated tools to validate stolen or enumerated card numbers agains...",
+      "uuid": "d926324c-1816-5bfb-93e2-79a456e2b1fc",
+      "meta": {
+        "fraud_types": [
+          "card-testing",
+          "identity-theft",
+          "data-theft"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 72,
+        "refs": [
+          "https://elchacal801.github.io/flame-fraud/?tp=TP-0038"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "726e9555-a5f0-5a14-8c45-5f5fbec366ab",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e99db8de-c863-53be-a9f8-09fd52d9c660",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Agentic Commerce Fraud",
+      "description": "Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transac...",
+      "uuid": "aff2070f-30d0-5602-b230-99216f414557",
+      "meta": {
+        "fraud_types": [
+          "autonomous-ai-fraud",
+          "social-engineering",
+          "account-takeover",
+          "unauthorized-transaction"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 55,
+        "refs": [
+          "https://elchacal801.github.io/flame-fraud/?tp=TP-0039"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "e99db8de-c863-53be-a9f8-09fd52d9c660",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
     }
   ]
 }

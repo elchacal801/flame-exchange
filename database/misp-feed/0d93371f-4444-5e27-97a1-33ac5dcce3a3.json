@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "0d93371f-4444-5e27-97a1-33ac5dcce3a3",
+    "info": "FLAME: Card Testing Infrastructure Abuse",
+    "date": "2026-03-04",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "2bb3456a-d7d3-53c8-a6c1-f661fd068a33",
+        "type": "text",
+        "category": "Other",
+        "value": "card-testing",
+        "comment": "Fraud type for TP-0038"
+      },
+      {
+        "uuid": "da02c3cd-53c8-5bc8-8b8e-0b6067813749",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0038"
+      },
+      {
+        "uuid": "f25f8a84-7d8c-5790-bf97-ffb8f38996ef",
+        "type": "text",
+        "category": "Other",
+        "value": "data-theft",
+        "comment": "Fraud type for TP-0038"
+      },
+      {
+        "uuid": "6f1f566e-cdc9-53a8-9200-526d3bcc92c0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0038"
+      },
+      {
+        "uuid": "e9b145b7-ce05-541c-b88d-8585c97118b5",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0038"
+      },
+      {
+        "uuid": "ace74081-bb1d-51fa-a435-950a41ffe7e2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0038"
+      },
+      {
+        "uuid": "191cdd79-acb8-5ad5-a651-6ed30c0d1ee0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0038"
+      },
+      {
+        "uuid": "3a665c8c-60ec-58c2-99e0-e20120bd03ff",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0038"
+      }
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-05T03:34:55.868498+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "d8f4c2a1-7b3e-4d6c-91a5-3e8f0b7c4d12",
+    "dl_id": "DL-0086",
+    "title": "Agent Transaction Velocity Anomaly",
+    "status": "experimental",
+    "description": "Detects AI agent-initiated transactions at velocities exceeding human purchasing patterns, including multiple purchases per minute and simultaneous multi-merchant purchases within a single agent session. This rule targets Phase 4 (Execution) of agentic commerce fraud, where compromised or manipulated agents execute unauthorized transactions at machine speed. Normal agent purchasing velocity is 1-5 purchases per user session with 2-15 minutes of comparison shopping per purchase. Velocities exceeding 10x human baseline (more than 5 transactions per minute or purchases across more than 3 merchants within a 60-second window) suggest automated fraud exploitation rather than legitimate agent-assisted shopping.\n",
+    "cfpf_phase": "P4",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "initiated_by": "ai_agent"
+      },
+      "aggregation_velocity": {
+        "count|gte": 5,
+        "groupby": "agent_session_id",
+        "timeframe": "1m"
+      },
+      "aggregation_multi_merchant": {
+        "dc(merchant_id)|gte": 3,
+        "groupby": "agent_session_id",
+        "timeframe": "1m"
+      },
+      "condition": "selection and (aggregation_velocity or aggregation_multi_merchant)"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "agent_transactions"
+    },
+    "threat_path_ids": [
+      "TP-0039"
+    ],
+    "fraud_types": [
+      "autonomous-ai-fraud",
+      "unauthorized-transaction"
+    ],
+    "tags": [
+      "attack.t1059",
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.agentic_commerce",
+      "flame.ecommerce"
+    ],
+    "falsepositives": [
+      "Agent bulk-purchasing identical items across merchants for price comparison fulfillment",
+      "Corporate procurement agents executing pre-approved batch purchase orders",
+      "Agent re-executing failed transactions in rapid succession due to payment gateway timeouts"
+    ]
+  }
+}

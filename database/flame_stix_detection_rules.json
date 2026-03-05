@@ -334,5 +334,95 @@
     "content": "title: Bulk Code Repository Clone Within First Week\nstatus: experimental\ndescription: Detects a new employee cloning multiple code repositories within their first 7 days, a pattern associated with DPRK IT worker data exfiltration.\nlogsource:\n    product: git_platform\n    service: audit_log\ndetection:\n    selection:\n        action: \"repo.clone\"\n        actor_tenure_days|lte: 7\n    aggregation:\n        count|gte: 5\n        groupby: actor\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: high\ntags:\n    - fraud.dprk_it_worker\n    - cfpf.phase4.execution\n    - attack.t1005",
     "title": "Sigma — Bulk Code Repository Clone Detection (Phase 4)",
     "tp_id": "TP-0034"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.platform_type,\n    COUNT(DISTINCT c.card_id) AS compromised_cards,\n    COUNT(DISTINCT f.fraud_case_id) AS fraud_reports,\n    MIN(f.fraud_report_date) AS first_fraud_report,\n    MAX(f.fraud_report_date) AS latest_fraud_report,\n    AVG(DATEDIFF(day, t.transaction_date, f.fraud_report_date)) AS avg_days_to_fraud\nFROM fraud_reports f\nJOIN transactions t ON f.original_transaction_id = t.transaction_id\nJOIN merchants m ON t.merchant_id = m.merchant_id\nJOIN cards c ON t.card_id = c.card_id\nWHERE f.fraud_report_date >= CURRENT_DATE - INTERVAL '30 days'\n  AND f.fraud_type IN ('cnp_fraud', 'counterfeit', 'card_not_present')\nGROUP BY m.merchant_id, m.merchant_name, m.platform_type\nHAVING COUNT(DISTINCT c.card_id) >= 10\n   AND COUNT(DISTINCT f.fraud_case_id) >= 5\nORDER BY compromised_cards DESC;",
+    "title": "SQL — Common Point of Purchase Detection (Phase 5)",
+    "tp_id": "TP-0035"
+  },
+  {
+    "type": "spl",
+    "content": "index=web_security sourcetype=csp_violations\n    blocked_uri!=\"inline\" blocked_uri!=\"eval\"\n| eval page_type = if(match(document_uri, \"(checkout|payment|cart|billing)\"), \"payment_page\", \"other\")\n| where page_type = \"payment_page\"\n| stats count AS violation_count,\n        dc(blocked_uri) AS unique_blocked_domains,\n        values(blocked_uri) AS blocked_domains,\n        dc(document_uri) AS affected_pages\n    BY effective_directive\n| where violation_count > 10\n| lookup domain_age_lookup domain AS blocked_domains OUTPUT domain_age_days\n| where domain_age_days < 90 OR isnull(domain_age_days)\n| table effective_directive, blocked_domains, violation_count, affected_pages, domain_age_days\n| sort - violation_count",
+    "title": "Splunk — CSP Violation and Unauthorized Script Detection (Phase 3)",
+    "tp_id": "TP-0035"
+  },
+  {
+    "type": "sigma",
+    "content": "title: WebSocket Connection from Payment Page to Non-Payment Domain\nstatus: experimental\ndescription: >\n  Detects WebSocket connections initiated from e-commerce payment or checkout\n  pages to domains not associated with the merchant's legitimate payment\n  processor. E-skimmer variants using blockchain C2 infrastructure establish\n  WebSocket connections for payload delivery and data exfiltration.\nlogsource:\n    product: web_proxy\n    service: network_traffic\ndetection:\n    selection:\n        request_url|contains:\n            - 'checkout'\n            - 'payment'\n            - 'billing'\n            - 'cart/complete'\n        connection_type: 'websocket'\n    filter_legitimate:\n        destination_domain|contains:\n            - 'stripe.com'\n            - 'paypal.com'\n            - 'braintreegateway.com'\n            - 'adyen.com'\n            - 'authorize.net'\n    condition: selection and not filter_legitimate\nlevel: high\ntags:\n    - cfpf.phase4.execution\n    - attack.t1041\n    - flame.ecommerce\n    - flame.eskimmer",
+    "title": "Sigma — WebSocket Connection from Payment Page (Phase 4)",
+    "tp_id": "TP-0035"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.mcc_code,\n    m.onboarding_date,\n    DATEDIFF(day, m.onboarding_date, CURRENT_DATE) AS account_age_days,\n    COUNT(t.transaction_id) AS total_transactions,\n    SUM(t.amount) AS total_volume,\n    COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) AS chargeback_count,\n    ROUND(COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) * 100.0 /\n        NULLIF(COUNT(t.transaction_id), 0), 2) AS chargeback_rate_pct,\n    COUNT(DISTINCT t.card_id) AS unique_cards,\n    AVG(t.amount) AS avg_transaction_amount\nFROM merchants m\nJOIN transactions t ON m.merchant_id = t.merchant_id\nWHERE m.onboarding_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY m.merchant_id, m.merchant_name, m.mcc_code, m.onboarding_date\nHAVING (\n    COUNT(t.transaction_id) > 200\n    AND DATEDIFF(day, m.onboarding_date, CURRENT_DATE) <= 30\n) OR (\n    ROUND(COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) * 100.0 /\n        NULLIF(COUNT(t.transaction_id), 0), 2) > 1.5\n)\nORDER BY chargeback_rate_pct DESC;",
+    "title": "SQL — Scam Merchant Velocity and Chargeback Detection (Phase 4-5)",
+    "tp_id": "TP-0036"
+  },
+  {
+    "type": "spl",
+    "content": "index=payment_transactions sourcetype=merchant_billing\n| eval is_recurring = if(billing_type=\"recurring\", 1, 0)\n| stats count AS txn_count,\n        sum(amount) AS total_amount,\n        min(amount) AS min_amount,\n        max(amount) AS max_amount,\n        first(_time) AS first_txn,\n        latest(_time) AS last_txn,\n        dc(cardholder_id) AS unique_cardholders,\n        sum(is_recurring) AS recurring_count\n    BY merchant_id, merchant_name\n| eval recurring_pct = round(recurring_count / txn_count * 100, 1)\n| eval amount_ratio = round(max_amount / min_amount, 1)\n| where recurring_pct > 30\n    AND amount_ratio > 5\n    AND min_amount < 10\n    AND max_amount > 50\n| lookup merchant_onboarding merchant_id OUTPUT onboarding_date\n| eval merchant_age_days = round((now() - strptime(onboarding_date, \"%Y-%m-%d\")) / 86400, 0)\n| where merchant_age_days < 180\n| table merchant_id, merchant_name, txn_count, recurring_pct,\n        min_amount, max_amount, amount_ratio, unique_cardholders,\n        merchant_age_days\n| sort - amount_ratio",
+    "title": "Splunk — Subscription Trap Detection (Phase 4)",
+    "tp_id": "TP-0036"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Brand Impersonation Scam Merchant Detection\nstatus: experimental\ndescription: >\n  Detects merchant accounts where the merchant name or URL closely matches a\n  known brand name but the merchant is not an authorized retailer of that brand.\n  Purchase scam operators create storefronts that mimic legitimate brands to\n  deceive consumers into authorizing payments.\nlogsource:\n    product: payment_gateway\n    service: merchant_onboarding\ndetection:\n    selection:\n        merchant_name|contains:\n            - 'nike'\n            - 'adidas'\n            - 'apple'\n            - 'samsung'\n        merchant_verification_status: 'unverified'\n    filter_authorized:\n        merchant_id|exists: authorized_retailers_list\n    condition: selection and not filter_authorized\nlevel: medium\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1656\n    - flame.retail\n    - flame.purchase_scam",
+    "title": "Sigma — Brand Impersonation Merchant Detection (Phase 2-3)",
+    "tp_id": "TP-0036"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    wp.provisioning_id,\n    wp.card_id,\n    wp.device_id,\n    wp.provisioning_timestamp,\n    wp.device_first_seen_date,\n    otp.otp_request_timestamp,\n    otp.otp_delivery_channel,\n    otp.otp_requestor_ip,\n    EXTRACT(EPOCH FROM (wp.provisioning_timestamp - otp.otp_request_timestamp)) AS otp_to_provision_seconds,\n    ph.phishing_indicator_timestamp,\n    ph.indicator_type\nFROM wallet_provisioning wp\nJOIN otp_events otp ON wp.card_id = otp.card_id\n    AND otp.otp_request_timestamp BETWEEN wp.provisioning_timestamp - INTERVAL '10 minutes'\n        AND wp.provisioning_timestamp\nLEFT JOIN phishing_indicators ph ON wp.card_id = ph.card_id\n    AND ph.phishing_indicator_timestamp BETWEEN wp.provisioning_timestamp - INTERVAL '30 minutes'\n        AND wp.provisioning_timestamp\nWHERE wp.provisioning_timestamp > CURRENT_TIMESTAMP - INTERVAL '24 hours'\n    AND wp.device_first_seen_date > CURRENT_DATE - INTERVAL '1 day'\n    AND (\n        EXTRACT(EPOCH FROM (wp.provisioning_timestamp - otp.otp_request_timestamp)) < 15\n        OR ph.phishing_indicator_timestamp IS NOT NULL\n    )\nORDER BY wp.provisioning_timestamp DESC;",
+    "title": "SQL -- Wallet Provisioning Correlated with OTP Anomaly (Phase 3)",
+    "tp_id": "TP-0037"
+  },
+  {
+    "type": "spl",
+    "content": "index=transaction_auth sourcetype=pos_contactless\n| eval txn_time = _time\n| stats earliest(txn_time) AS first_txn, latest(txn_time) AS last_txn,\n        values(terminal_city) AS cities,\n        values(terminal_lat) AS lats,\n        values(terminal_lon) AS lons,\n        dc(terminal_id) AS unique_terminals,\n        count AS txn_count\n    BY wallet_token_id, date_mday\n| where unique_terminals > 2 AND txn_count > 3\n| eval time_span_minutes = (last_txn - first_txn) / 60\n| where time_span_minutes < 60 AND unique_terminals > 2\n| lookup geo_distance_calc lat1=first_lat, lon1=first_lon, lat2=last_lat, lon2=last_lon OUTPUT distance_km\n| where distance_km > 50 AND time_span_minutes < 60\n| table wallet_token_id, cities, unique_terminals, txn_count, time_span_minutes, distance_km\n| sort - distance_km",
+    "title": "Splunk -- Contactless Transaction Geographic Anomaly (Phase 4)",
+    "tp_id": "TP-0037"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Ghost-Tap NFC Relay Multi-Terminal Velocity\nstatus: experimental\ndescription: Detects multiple contactless transactions from the same wallet token across multiple POS terminals in a timeframe inconsistent with physical movement, indicative of NFC relay ghost-tapping.\nlogsource:\n    product: banking\n    service: transaction_monitoring\ndetection:\n    selection:\n        transaction_type: \"contactless\"\n        entry_mode: \"wallet_nfc\"\n    aggregation:\n        count|gte: 3\n        groupby: wallet_token_id\n        timeframe: 30m\n    filter_multi_terminal:\n        dc_terminal_id|gte: 3\n    condition: selection and aggregation and filter_multi_terminal\nlevel: critical\ntags:\n    - fraud.nfc_relay\n    - cfpf.phase4.execution\n    - attack.t1657",
+    "title": "Sigma -- NFC Relay Ghost-Tap Velocity Detection (Phase 4)",
+    "tp_id": "TP-0037"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.account_open_date,\n    COUNT(*) AS auth_count,\n    COUNT(DISTINCT a.card_number_hash) AS unique_cards,\n    SUM(CASE WHEN a.response_code != '00' THEN 1 ELSE 0 END)::FLOAT / COUNT(*) AS decline_rate,\n    SUM(CASE WHEN a.amount < 1.00 THEN 1 ELSE 0 END)::FLOAT / COUNT(*) AS sub_dollar_rate,\n    AVG(a.amount) AS avg_amount,\n    COUNT(DISTINCT a.source_ip) AS unique_ips\nFROM authorizations a\nJOIN merchants m ON a.merchant_id = m.merchant_id\nWHERE a.auth_timestamp > CURRENT_TIMESTAMP - INTERVAL '1 hour'\n    AND a.amount < 1.00\nGROUP BY m.merchant_id, m.merchant_name, m.account_open_date\nHAVING COUNT(*) > 50\n    AND (SUM(CASE WHEN a.response_code != '00' THEN 1 ELSE 0 END)::FLOAT / COUNT(*)) > 0.70\nORDER BY auth_count DESC;",
+    "title": "SQL -- Card Testing Micro-Authorization Detection (Phase 4)",
+    "tp_id": "TP-0038"
+  },
+  {
+    "type": "spl",
+    "content": "index=authorization sourcetype=card_auth amount<1.00\n| eval bin_prefix = substr(card_number_hash, 1, 8)\n| eval card_suffix = substr(card_number_hash, 9, 99)\n| stats count AS auth_count,\n        dc(card_number_hash) AS unique_cards,\n        values(card_suffix) AS suffixes,\n        sum(eval(if(response_code!=\"00\", 1, 0))) AS declines,\n        dc(source_ip) AS unique_ips\n    BY bin_prefix, merchant_id\n| eval decline_rate = round(declines / auth_count * 100, 1)\n| where auth_count > 20 AND unique_cards > 15 AND decline_rate > 80\n| eval sequential_indicator = if(unique_cards > 10 AND auth_count / unique_cards < 1.5, \"HIGH\", \"MODERATE\")\n| table merchant_id, bin_prefix, auth_count, unique_cards, decline_rate, sequential_indicator, unique_ips\n| sort - auth_count",
+    "title": "Splunk -- BIN Enumeration Pattern Detection (Phase 4)",
+    "tp_id": "TP-0038"
+  },
+  {
+    "type": "sigma",
+    "content": "title: New Merchant Card Testing Activity\nstatus: experimental\ndescription: Detects card testing patterns on merchant accounts opened within the last 90 days, characterized by high-velocity sub-dollar authorizations and elevated decline rates.\nlogsource:\n    product: ecommerce\n    service: payment_gateway\ndetection:\n    selection:\n        transaction_amount|lt: 1.00\n        merchant_account_age_days|lte: 90\n    aggregation:\n        count|gte: 50\n        groupby: merchant_id\n        timeframe: 1h\n    filter_decline:\n        decline_rate|gte: 0.5\n    condition: selection and aggregation and filter_decline\nlevel: high\ntags:\n    - fraud.card_testing\n    - cfpf.phase4.execution\n    - attack.t1110.001",
+    "title": "Sigma -- Tester Merchant Early-Life Anomaly (Phase 2-4)",
+    "tp_id": "TP-0038"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    t.transaction_id,\n    t.agent_session_id,\n    t.user_id,\n    t.merchant_id,\n    t.merchant_name,\n    t.product_category,\n    t.transaction_amount,\n    t.agent_stated_intent,\n    u.historical_top_categories,\n    u.avg_transaction_amount,\n    m.merchant_creation_date,\n    m.merchant_risk_score\nFROM agent_transactions t\nJOIN user_profiles u ON t.user_id = u.user_id\nJOIN merchant_profiles m ON t.merchant_id = m.merchant_id\nWHERE t.initiated_by = 'ai_agent'\n  AND (\n    t.product_category NOT IN (SELECT category FROM user_purchase_history WHERE user_id = t.user_id)\n    OR t.transaction_amount > u.avg_transaction_amount * 3\n    OR m.merchant_creation_date > CURRENT_DATE - INTERVAL '30 days'\n    OR m.merchant_risk_score > 0.7\n  )\nORDER BY t.transaction_timestamp DESC;",
+    "title": "SQL -- Agent Intent Divergence Detection (Phase 3-4)",
+    "tp_id": "TP-0039"
+  },
+  {
+    "type": "spl",
+    "content": "index=payments sourcetype=agent_transactions\n| eval txn_minute=strftime(_time, \"%Y-%m-%d %H:%M\")\n| stats\n    count AS txn_count,\n    dc(merchant_id) AS unique_merchants,\n    sum(transaction_amount) AS total_amount,\n    values(merchant_name) AS merchants\n    BY agent_session_id, user_id, txn_minute\n| where txn_count > 3 OR unique_merchants > 2\n| eval velocity_flag=if(txn_count > 5, \"critical\", if(txn_count > 3, \"high\", \"medium\"))\n| lookup user_baselines user_id OUTPUT avg_txns_per_session, avg_session_duration\n| where txn_count > avg_txns_per_session * 5\n| table agent_session_id, user_id, txn_minute, txn_count, unique_merchants, total_amount, merchants, velocity_flag\n| sort - txn_count",
+    "title": "Splunk -- Agent Transaction Velocity Anomaly Detection (Phase 4)",
+    "tp_id": "TP-0039"
+  },
+  {
+    "type": "sigma",
+    "content": "title: AI Agent Connection to Unverified MCP Server\nstatus: experimental\ndescription: Detects an AI commerce agent establishing a connection to an MCP server not present in the approved server allowlist, which may indicate infrastructure compromise or redirection attack.\nlogsource:\n    product: ecommerce\n    service: agent_platform\ndetection:\n    selection:\n        event_type: \"agent_mcp_connection\"\n        mcp_server_verified: false\n    filter:\n        mcp_server_id|exists: true\n    condition: selection and not filter\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1059\n    - flame.ecommerce\n    - flame.agentic_commerce",
+    "title": "Sigma -- Agent MCP Server Anomaly Detection (Phase 2)",
+    "tp_id": "TP-0039"
   }
 ]

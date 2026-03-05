@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+transaction_type="contactless" entry_mode IN ("*wallet_nfc*", "*contactless_emv*", "*tap_to_pay*") count>=3 groupby="wallet_token_id" timeframe="30m" dc_terminal_id>=3 OR dc_terminal_city>=2

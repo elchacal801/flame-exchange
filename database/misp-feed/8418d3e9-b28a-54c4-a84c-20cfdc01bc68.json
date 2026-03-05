@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "8418d3e9-b28a-54c4-a84c-20cfdc01bc68",
+    "info": "FLAME: Purchase Scam Merchant Networks",
+    "date": "2026-03-04",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "9138c650-45f1-5240-9079-f41a60a3d55b",
+        "type": "text",
+        "category": "Other",
+        "value": "purchase-scam",
+        "comment": "Fraud type for TP-0036"
+      },
+      {
+        "uuid": "208ec3b3-a305-52d3-acc8-8919449ef9bc",
+        "type": "text",
+        "category": "Other",
+        "value": "brand-impersonation",
+        "comment": "Fraud type for TP-0036"
+      },
+      {
+        "uuid": "34be94c5-5e0b-59e2-bafe-77b4a18a78ed",
+        "type": "text",
+        "category": "Other",
+        "value": "first-party-fraud",
+        "comment": "Fraud type for TP-0036"
+      },
+      {
+        "uuid": "e5e949e8-3661-5b0d-92dd-efcdbafc2d05",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0036"
+      },
+      {
+        "uuid": "e1c16256-7932-5782-9653-96af6e9a7ac8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0036"
+      },
+      {
+        "uuid": "c575ff8d-aac4-5ce2-84ff-40b2b361d237",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0036"
+      },
+      {
+        "uuid": "5284dc29-8c90-5d97-9d96-efa25aa6fb30",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0036"
+      },
+      {
+        "uuid": "095f8557-7b3f-5a19-af6c-7f30a84982de",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0036"
+      },
+      {
+        "uuid": "ab5b2e5d-90ea-5a6b-ad9f-6304812a10c4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0036"
+      }
+    ]
+  }
+}

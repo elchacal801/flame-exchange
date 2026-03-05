@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "c1018a56-ab9c-5ac8-8156-ed17c658be2b",
+    "info": "FLAME: Digital Wallet Fraud & NFC Relay Attacks",
+    "date": "2026-03-04",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "58b5711b-4820-5fdb-b33d-ba7cafa571b6",
+        "type": "text",
+        "category": "Other",
+        "value": "digital-wallet-fraud",
+        "comment": "Fraud type for TP-0037"
+      },
+      {
+        "uuid": "f8d15458-b855-537b-8a48-34712dc9881f",
+        "type": "text",
+        "category": "Other",
+        "value": "nfc-relay",
+        "comment": "Fraud type for TP-0037"
+      },
+      {
+        "uuid": "5dc2384a-3d2a-501c-9ef4-5daa2371ba6f",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0037"
+      },
+      {
+        "uuid": "13f03d19-eac9-5b6b-aabd-e65c85327213",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0037"
+      },
+      {
+        "uuid": "58cd1f2f-fc32-5948-8b4a-453fd2e63b83",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0037"
+      },
+      {
+        "uuid": "65983a73-c49d-5577-a141-523204c60400",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0037"
+      },
+      {
+        "uuid": "1c127595-6650-5422-b6fa-28b791590f11",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0037"
+      },
+      {
+        "uuid": "63731dfa-0024-54a9-8c65-b3e0b9beac3e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0037"
+      },
+      {
+        "uuid": "1c35bfba-cf16-5ddb-9b94-4d0ca59384d9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0037"
+      }
+    ]
+  }
+}

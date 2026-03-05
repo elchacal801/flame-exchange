@@ -1,0 +1,6 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+
+| rex field=blocked_uri "(?<blocked_uriMatch>https?://[^/]+\\.[a-z]{2,})"
+| eval blocked_uriCondition=if(isnotnull(blocked_uriMatch), "true", "false")
+| search (event_type="csp_violation" page_uri IN ("*/checkout*", "*/payment*", "*/billing*", "*/cart/complete*") blocked_uriCondition="true") OR (event_type="script_load" page_uri IN ("*/checkout*", "*/payment*", "*/billing*") script_domain_age_days<=90 NOT (script_domain IN ("*google-analytics.com*", "*googletagmanager.com*", "*googleapis.com*", "*gstatic.com*"))) OR (event_type="gtm_container_update" change_type IN ("*tag_created*", "*tag_modified*", "*custom_html_added*"))

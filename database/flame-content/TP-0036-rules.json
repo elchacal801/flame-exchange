@@ -1,0 +1,20 @@
+{
+  "tp_id": "TP-0036",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.mcc_code,\n    m.onboarding_date,\n    DATEDIFF(day, m.onboarding_date, CURRENT_DATE) AS account_age_days,\n    COUNT(t.transaction_id) AS total_transactions,\n    SUM(t.amount) AS total_volume,\n    COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) AS chargeback_count,\n    ROUND(COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) * 100.0 /\n        NULLIF(COUNT(t.transaction_id), 0), 2) AS chargeback_rate_pct,\n    COUNT(DISTINCT t.card_id) AS unique_cards,\n    AVG(t.amount) AS avg_transaction_amount\nFROM merchants m\nJOIN transactions t ON m.merchant_id = t.merchant_id\nWHERE m.onboarding_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY m.merchant_id, m.merchant_name, m.mcc_code, m.onboarding_date\nHAVING (\n    COUNT(t.transaction_id) > 200\n    AND DATEDIFF(day, m.onboarding_date, CURRENT_DATE) <= 30\n) OR (\n    ROUND(COUNT(CASE WHEN t.is_chargeback = 1 THEN 1 END) * 100.0 /\n        NULLIF(COUNT(t.transaction_id), 0), 2) > 1.5\n)\nORDER BY chargeback_rate_pct DESC;",
+      "title": "SQL — Scam Merchant Velocity and Chargeback Detection (Phase 4-5)"
+    },
+    {
+      "type": "spl",
+      "content": "index=payment_transactions sourcetype=merchant_billing\n| eval is_recurring = if(billing_type=\"recurring\", 1, 0)\n| stats count AS txn_count,\n        sum(amount) AS total_amount,\n        min(amount) AS min_amount,\n        max(amount) AS max_amount,\n        first(_time) AS first_txn,\n        latest(_time) AS last_txn,\n        dc(cardholder_id) AS unique_cardholders,\n        sum(is_recurring) AS recurring_count\n    BY merchant_id, merchant_name\n| eval recurring_pct = round(recurring_count / txn_count * 100, 1)\n| eval amount_ratio = round(max_amount / min_amount, 1)\n| where recurring_pct > 30\n    AND amount_ratio > 5\n    AND min_amount < 10\n    AND max_amount > 50\n| lookup merchant_onboarding merchant_id OUTPUT onboarding_date\n| eval merchant_age_days = round((now() - strptime(onboarding_date, \"%Y-%m-%d\")) / 86400, 0)\n| where merchant_age_days < 180\n| table merchant_id, merchant_name, txn_count, recurring_pct,\n        min_amount, max_amount, amount_ratio, unique_cardholders,\n        merchant_age_days\n| sort - amount_ratio",
+      "title": "Splunk — Subscription Trap Detection (Phase 4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Brand Impersonation Scam Merchant Detection\nstatus: experimental\ndescription: >\n  Detects merchant accounts where the merchant name or URL closely matches a\n  known brand name but the merchant is not an authorized retailer of that brand.\n  Purchase scam operators create storefronts that mimic legitimate brands to\n  deceive consumers into authorizing payments.\nlogsource:\n    product: payment_gateway\n    service: merchant_onboarding\ndetection:\n    selection:\n        merchant_name|contains:\n            - 'nike'\n            - 'adidas'\n            - 'apple'\n            - 'samsung'\n        merchant_verification_status: 'unverified'\n    filter_authorized:\n        merchant_id|exists: authorized_retailers_list\n    condition: selection and not filter_authorized\nlevel: medium\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1656\n    - flame.retail\n    - flame.purchase_scam",
+      "title": "Sigma — Brand Impersonation Merchant Detection (Phase 2-3)"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+((event_type:(*dom_mutation* OR *element_injected* OR *form_modified* OR *iframe_created*)) AND (page_uri:(*\/checkout* OR *\/payment* OR *\/billing*)) AND (target_element:(*payment\-form* OR *card\-number* OR *cc\-number* OR *card\-expiry* OR *card\-cvc* OR *billing\-address* OR *submit\-payment*))) AND (NOT (_exists_:deployment_id AND deployment_window:true)) AND (NOT (mutation_source:(*react* OR *angular* OR *vue* OR *next* OR *nuxt*)))

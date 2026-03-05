@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T02:02:17.862632+00:00",
-    "total": 34
+    "generated_at": "2026-03-05T03:34:55.013723+00:00",
+    "total": 39
   },
   "data": [
     {
@@ -814,7 +814,7 @@
       "id": "TP-0008",
       "title": "SIM Swap to Cryptocurrency Exchange ATO",
       "category": "ThreatPath",
-      "date": "2026-02-12",
+      "date": "2026-03-04",
       "author": "FLAME Project",
       "source": "FBI IC3 / DOJ SIM swap prosecutions / industry reporting",
       "tlp": "WHITE",
@@ -836,7 +836,10 @@
         "cryptocurrency",
         "MFA-bypass",
         "carrier-social-engineering",
-        "high-value-individual"
+        "high-value-individual",
+        "otp-interception",
+        "otp-bot",
+        "evilginx"
       ],
       "cfpf_phases": [
         "P1",
@@ -929,6 +932,10 @@
         {
           "id": "TP-0013",
           "relationship": "enables"
+        },
+        {
+          "id": "TP-0037",
+          "relationship": "enables"
         }
       ],
       "evidence_count": 0
@@ -937,7 +944,7 @@
       "id": "TP-0009",
       "title": "Check Washing and Fraudulent Mobile Deposit",
       "category": "ThreatPath",
-      "date": "2026-02-12",
+      "date": "2026-03-04",
       "author": "FLAME Project",
       "source": "USPS OIG / FinCEN / banking industry reporting",
       "tlp": "WHITE",
@@ -957,7 +964,9 @@
         "mail-theft",
         "mobile-deposit",
         "duplicate-deposit",
-        "USPS"
+        "USPS",
+        "deurbanization",
+        "midwest-shift"
       ],
       "cfpf_phases": [
         "P1",
@@ -3076,7 +3085,7 @@
       "id": "TP-0030",
       "title": "E-Commerce Triangulation Fraud",
       "category": "ThreatPath",
-      "date": "2026-03-02",
+      "date": "2026-03-04",
       "author": "FLAME Project",
       "source": "https://www.chargebackgurus.com/blog/triangulation-fraud",
       "tlp": "WHITE",
@@ -3167,6 +3176,18 @@
         {
           "id": "TP-0031",
           "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0035",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0036",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0038",
+          "relationship": "feeds-into"
         }
       ],
       "evidence_count": 0
@@ -3598,6 +3619,538 @@
         }
       ],
       "evidence_count": 2
+    },
+    {
+      "id": "TP-0035",
+      "title": "Magecart E-Skimmer Data Compromise",
+      "category": "ThreatPath",
+      "date": "2026-03-04",
+      "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+      "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+      "tlp": "WHITE",
+      "summary": "Magecart-style e-skimmer attacks remain one of the most persistent and scalable threats to online payment ecosystems. In 2025, Recorded Future identified over 10,500 unique e-skimmer infections active across e-commerce platforms globally, a figure that held stable relative to 2024 despite the implementation of PCI DSS 4.0 future-dated requirements in early 2025. Over 7,300 new infections were detected during the year, with an estimated 23.4 million card-not-present transactions likely compromised. The attack chain involves injecting malicious JavaScript into merchant checkout pages — either through direct compromise of the merchant's CMS, exploitation of third-party script supply chains, or abuse of legitimate tag management platforms such as Google Tag Manager — to intercept payment card data in real time.\n\nThe e-skimmer ecosystem has matured into a professionalized Malware-as-a-Service (MaaS) economy. The \"Sniffer by Fleras\" (also known as \"Surki\") operation accounted for 26% of all detected infections in 2025, offering operators a web portal for generating customized skimmer scripts and a server-side platform for managing stolen card data. A newer entrant, \"AcceptCar,\" emerged in the second half of 2025 with a revenue-sharing MaaS model: operators receive either 50% of proceeds from card data sales or 70% of the raw data intake. Both platforms feature robust obfuscation techniques, including mimicry of legitimate analytics objects to evade detection. A particularly advanced technique observed in 2025 involves the use of blockchain smart contracts as command-and-control (C2) infrastructure — a loader script on the compromised site retrieves second-stage payloads from a smart contract, establishes a WebSocket connection for the skimmer payload, and exfiltrates captured payment data over the same WebSocket channel. This approach provides censorship-resistant C2 that cannot be taken down through conventional domain seizure.\n\nThe continued abuse of Google Tag Manager containers as a delivery mechanism for loader, relay, and skimmer scripts represents a significant detection challenge, as GTM is a legitimate and widely deployed marketing technology platform. One significant case in 2025 involved a reservation platform compromise that affected over 160 business customers downstream. The CVE-2024-34102 \"CosmicSting\" vulnerability in Adobe Commerce (Magento) drove a massive spike in infections during 2024, and residual exploitation continued into 2025 on unpatched installations. Despite PCI DSS 4.0 strengthening requirements around payment page script monitoring, the stable infection volume in 2025 suggests that compliance alone is insufficient — active detection, integrity monitoring, and supply chain security controls are required.\n\n---",
+      "confidence_score": 78,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "retail",
+        "payments",
+        "fintech"
+      ],
+      "fraud_types": [
+        "e-skimmer",
+        "data-theft",
+        "malware",
+        "identity-theft"
+      ],
+      "tags": [
+        "magecart",
+        "e-skimmer",
+        "web-skimming",
+        "sniffer-by-fleras",
+        "acceptcar",
+        "smart-contract-c2",
+        "google-tag-manager-abuse",
+        "card-data-compromise",
+        "maas",
+        "pci-dss"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1059.007",
+        "T1189",
+        "T1583.001",
+        "T1027",
+        "T1041",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT007.009",
+        "FT008.002",
+        "FT016",
+        "FT031"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Execution",
+        "Credential Access",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-CDD",
+        "REG-PSD3-SCA",
+        "REG-DORA"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0075",
+        "DL-0076",
+        "DL-0077"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0013",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0030",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0038",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0036",
+      "title": "Purchase Scam Merchant Networks",
+      "category": "ThreatPath",
+      "date": "2026-03-04",
+      "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+      "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+      "tlp": "WHITE",
+      "summary": "Purchase scam merchant networks represent a rapidly scaling fraud threat that exploits the fundamental design of the payment ecosystem: because the victim authorizes the transaction themselves, traditional card-not-present fraud controls are largely ineffective. Recorded Future identified over 3,600 scam merchant accounts in 2025 — a 2.5x increase from 2024 — operating across more than 40 countries and processing through over 230 acquirers. The Global Anti-Scam Alliance in partnership with Feedzai estimated that scam losses globally exceeded $1 trillion in 2024, with purchase scams constituting a significant and growing share. Unlike unauthorized fraud where the card is stolen, purchase scams rely on social engineering to convince victims to willingly submit payment to fraudulent merchants, making them a category of Authorized Push Payment (APP) fraud that falls outside the protective scope of most chargeback frameworks.\n\nThe attack chain begins with brand impersonation and social media advertising. Scam operators create storefronts that closely mimic legitimate brands, offering products at steep discounts to attract victims. Social media advertising platforms serve as the primary targeting mechanism — their algorithms optimize ad delivery to users most likely to engage, effectively weaponizing legitimate ad targeting capabilities for fraud. Once a victim completes a purchase, the scam merchant either never delivers the product, delivers a counterfeit or grossly inferior substitute, or — in a particularly aggressive tactic that emerged in H2 2025 — immediately enrolls the victim in recurring subscription charges. A secondary variant observed in late 2025 involves the victim receiving a follow-up contact from a purported \"transaction recovery service\" that imposes additional charges. Over 50 scam merchants identified in 2025 were also linked to card data sold on dark web markets, indicating that some operations combine purchase scam revenue with payment data compromise.\n\nThe scalability of these operations is enabled by common patterns in merchant acquisition workflows. Analysis of the 3,600+ identified scam merchants reveals clustering by acquirer, country, and merchant category code (MCC) — suggesting that operators have developed repeatable playbooks for onboarding merchant accounts through specific acquirer channels. Domain rotation, merchant account cycling, and rapid payout extraction before chargeback windows close are standard operational practices. The November 2025 discovery of a Telegram tutorial for building phishing pages using autonomous AI agents, combined with evidence of AI-powered marketing platforms being used for phishing message generation and victim targeting by at least one scam operation, signals the beginning of AI-augmented scam operations that will further accelerate scale.\n\n---",
+      "confidence_score": 75,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "retail",
+        "payments",
+        "banking"
+      ],
+      "fraud_types": [
+        "purchase-scam",
+        "brand-impersonation",
+        "first-party-fraud",
+        "social-engineering"
+      ],
+      "tags": [
+        "purchase-scam",
+        "scam-merchant",
+        "subscription-trap",
+        "ad-driven-fraud",
+        "victim-authorized-fraud",
+        "brand-abuse",
+        "social-media-ads",
+        "merchant-fraud",
+        "acquirer-risk"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1656",
+        "T1598",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT016",
+        "FT017",
+        "FT028",
+        "FT007.009"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-CDD",
+        "REG-UK-PSR-APP",
+        "REG-AU-SPF",
+        "REG-FCA-APP"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0078",
+        "DL-0079"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0012",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0015",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0030",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0037",
+      "title": "Digital Wallet Fraud & NFC Relay Attacks",
+      "category": "ThreatPath",
+      "date": "2026-03-04",
+      "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+      "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+      "tlp": "WHITE",
+      "summary": "Digital wallet fraud and NFC relay attacks represent a rapidly evolving convergence of social engineering, credential interception, and contactless payment abuse. In this threat path, attackers phish victims for card credentials and one-time passwords (OTPs), provision stolen card data onto attacker-controlled digital wallets (Apple Pay, Google Pay, Samsung Pay), and then conduct in-person contactless transactions that benefit from the elevated trust afforded to tokenized wallet payments. OTP interception has cemented its popularity as the primary method for circumventing secondary authentication, with TransUnion's 2025 data confirming that OTPs remain the most common form of secondary authentication globally. The Recorded Future 2025 Annual Payment Fraud Intelligence Report documents a sharp increase in references to the EvilginX phishing framework throughout 2024 for stealing data including OTPs, alongside the emergence of purpose-built NFC relay malware-as-a-service (MaaS) tools such as SuperCardX (identified by Cleafy Labs in April 2025).\n\nThe NFC relay variant, sometimes called \"ghost tapping,\" extends digital wallet fraud by enabling threat actors to relay stolen card data to money mules' devices remotely, allowing unauthorized contactless transactions at physical point-of-sale terminals without the cardholder or their physical card being present. Underground forum activity on XSS Forum and Club2CRD throughout 2025 demonstrates a maturing ecosystem: \"churk\" advertised the xl-hook Android Banking Bot RAT with OTP interception module (April 2025), \"Zero Compile\" offered PhantomOS MaaS with OTP interception (May 2025), \"ghostgunner\" sold a custom NFCGate server-side component for capturing and relaying NFC signals from EMV payment cards (June 2025), \"Valkirie NFC\" offered NFC-based cash-out services for stolen card data (June 2025), and \"HyperPlayer\" on Club2CRD promoted the Hyper NFC tool for contactless card emulation and NFC relay (October 2025). A June 2025 UK winter fuel payment phishing campaign demonstrated the full attack chain from OTP theft through to digital wallet provisioning fraud. The critical disruption point is the card provisioning attempt itself, where refined controls can detect suspicious provisioning requests before fraud is executed.\n\n---",
+      "confidence_score": 80,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "banking",
+        "fintech",
+        "payments",
+        "retail"
+      ],
+      "fraud_types": [
+        "digital-wallet-fraud",
+        "nfc-relay",
+        "account-takeover",
+        "social-engineering"
+      ],
+      "tags": [
+        "digital-wallet",
+        "nfc-relay",
+        "ghost-tapping",
+        "supercardx",
+        "otp-interception",
+        "wallet-provisioning",
+        "contactless-fraud",
+        "apple-pay",
+        "google-pay",
+        "evilginx"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1111",
+        "T1656",
+        "T1078",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT011.002",
+        "FT013",
+        "FT016",
+        "FT031",
+        "FT043"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Credential Access",
+        "Account Access",
+        "Defence Evasion",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-CFPB-REGE",
+        "REG-PSD3-SCA",
+        "REG-DORA",
+        "REG-FFIEC-AUTH",
+        "REG-OCC-FRAUD"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0080",
+        "DL-0081",
+        "DL-0082"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0008",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0012",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0023",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0038",
+      "title": "Card Testing Infrastructure Abuse",
+      "category": "ThreatPath",
+      "date": "2026-03-04",
+      "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+      "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+      "tlp": "WHITE",
+      "summary": "Card testing infrastructure abuse is a foundational enabler for payment card fraud at scale. In this threat path, threat actors use automated tools to validate stolen or enumerated card numbers against live merchant payment infrastructure, separating \"live\" cards (those that return successful authorization responses) from dead or canceled cards. Recorded Future's 2025 Annual Payment Fraud Intelligence Report identified over 1,350 tester merchant accounts engaged in card testing activity, with 94% of tester merchants not previously observed (an increase of 4 percentage points from 2024), demonstrating that threat actors consistently prefer newly registered merchants to evade detection controls that rely on historical reputation. The report further documented 27 million card data records exposed on Telegram during card validation attempts, representing 38% of all cards observed on the Telegram platform.\n\nThe infrastructure supporting card testing has become increasingly sophisticated and commercialized. Threat actors abuse legitimate merchants' payment infrastructure for card validation, with abused merchants ranging from a school e-commerce platform to a U.S. state court payment system. Seven new tester services joined the trend in 2025, reflecting growing commercialization of the card testing function. BIN attacks, where threat actors generate valid card numbers using specific Bank Identification Numbers (BINs) through enumeration, feed directly into the testing pipeline to produce fully validated card credentials suitable for downstream fraud. The card testing ecosystem serves as the upstream supply chain for virtually all card-not-present fraud, triangulation fraud (TP-0030), digital wallet provisioning fraud (TP-0037), and credential-stuffing-based account takeover (TP-0013). Blanket fraud controls are often ineffective for large merchants with high transaction volumes, and Recorded Future assesses that tester merchant intelligence will likely remain effective for detection and remediation into 2026. The key detection opportunity lies in identifying the distinctive transaction patterns of testing activity: high-velocity sub-dollar authorizations, elevated decline rates, and sequential card number patterns from the same BIN prefix.\n\n---",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "sectors": [
+        "payments",
+        "retail",
+        "fintech"
+      ],
+      "fraud_types": [
+        "card-testing",
+        "identity-theft",
+        "data-theft"
+      ],
+      "tags": [
+        "card-testing",
+        "BIN-attack",
+        "tester-merchant",
+        "telegram-carding",
+        "enumeration-attack",
+        "payment-gateway-abuse",
+        "card-validation"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1110.001",
+        "T1583.001",
+        "T1059",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT007.009",
+        "FT017"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Execution",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-CDD",
+        "REG-OCC-FRAUD"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0083",
+        "DL-0084"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0013",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0030",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0035",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0039",
+      "title": "Agentic Commerce Fraud",
+      "category": "ThreatPath",
+      "date": "2026-03-04",
+      "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
+      "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
+      "tlp": "WHITE",
+      "summary": "Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transactions across the payment ecosystem. Pilot programs such as Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay represent early implementations of this paradigm, creating a novel transaction chain: Consumer provides Intent to AI Agent, which performs Autonomous Merchant Selection, interacts with Merchant Transaction Systems, submits transactions to Payment Infrastructure for Authorization and Settlement by the Card Issuer. Each handoff in this chain introduces attack surfaces that do not exist in traditional human-initiated commerce.\n\nThe core vulnerability is that user and agent intent becomes a novel attack surface -- vulnerable to the same categories of attacks that circumvent identity authentication, but applied to the delegation of purchasing authority rather than credential theft. Threat actors can compromise or manipulate AI agent context, prompts, or MCP server connections to redirect purchasing intent, inflate prices, route transactions to attacker-controlled merchants, or execute unauthorized purchases at machine speed. In April 2025, threat actor \"d0ctrine\" published proof-of-concept documentation outlining agentic fraud workflows including agent-automated fraud, mimicry of human interaction patterns, and evasion of behavioral and device-based controls. In November 2025, Anthropic disclosed the first known cyber-espionage campaign orchestrated primarily by an autonomous AI system, coinciding with an attempted fraudulent purchase for the same AI service -- demonstrating convergence between AI-enabled fraud and AI-enabled cyber threats.\n\nThe structural parallel to early open banking is significant: as banks lost visibility into customer activity through third-party payment initiators, they experienced degraded controls for identity verification, online interaction monitoring, and bot detection. Agentic commerce replicates this pattern at greater scale -- opaque agent behavior hides intent, device context, and interaction patterns from downstream payment processors and issuers. Without improved control visibility and shared investigation workflows, the ecosystem faces expanded fraud investigation scope (distinguishing third-party fraud, first-party misuse, and agentic abuse) and liability ambiguity that increases operational costs even when liability is contractually clear.\n\n---",
+      "confidence_score": 55,
+      "source_reliability": "C",
+      "info_credibility": 3,
+      "sectors": [
+        "technology",
+        "retail",
+        "fintech",
+        "payments",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "autonomous-ai-fraud",
+        "social-engineering",
+        "account-takeover",
+        "unauthorized-transaction"
+      ],
+      "tags": [
+        "agentic-ai",
+        "ai-agent",
+        "intent-spoofing",
+        "automated-fraud-workflow",
+        "liability-ambiguity",
+        "commerce-automation",
+        "open-banking-parallel",
+        "amazon-buy-for-me",
+        "visa-intelligent-commerce",
+        "mastercard-agent-pay"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1059",
+        "T1078",
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT016",
+        "FT028",
+        "FT031"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-CFPB-REGE",
+        "REG-DORA",
+        "REG-PSD3-SCA"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0085",
+        "DL-0086"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0013",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0025",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "enhances"
+        }
+      ],
+      "evidence_count": 0
     }
   ]
 }
