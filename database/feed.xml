@@ -1480,5 +1480,81 @@
         <category>identity-theft</category>
         <category>severity-high</category>
     </item>
+    <item>
+      <title>[DL-0092] RDGA Registration Timing Pattern Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0092</guid>
+      <description>Detects clusters of domain registrations exhibiting algorithmically regular timing intervals in zone file diffs, a hallmark of Registered Domain Generation Algorithm (RDGA) infrastructure provisioning</description>
+        <category>rdga-infrastructure</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0093] RDGA Nameserver Clustering Anomaly</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0093</guid>
+      <description>Detects disproportionate concentration of newly registered domains pointing to the same nameserver infrastructure within a 24-hour window. RDGA operators typically provision hundreds or thousands of d</description>
+        <category>rdga-infrastructure</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0094] RDGA Registrar Concentration Anomaly</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0094</guid>
+      <description>Detects anomalous concentration of new domain registrations at a single registrar that share lexical similarity patterns and nameserver infrastructure, indicating RDGA-driven bulk registration campaig</description>
+        <category>rdga-infrastructure</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0095] TDS Redirect Chain Depth Anomaly</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0095</guid>
+      <description>Detects HTTP redirect chains (302, 301, or JavaScript-based redirects) exceeding a depth threshold where intermediate nodes are newly registered domains or have low reputation scores, indicating Traff</description>
+        <category>tds-exploitation</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0096] TDS Cloaking Behavior Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0096</guid>
+      <description>Detects domains serving divergent content based on visitor attributes such as geolocation, device fingerprint, or user agent, a technique known as cloaking. TDS operators serve benign or empty content</description>
+        <category>tds-exploitation</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0097] TDS Shared Infrastructure Correlation</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0097</guid>
+      <description>Detects domains from different apparent campaigns sharing hosting infrastructure, nameservers, or registration patterns — indicating a common TDS operator serving multiple affiliates. This rule perfor</description>
+        <category>tds-exploitation</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0098] AI-Generated Domain Lexical Pattern Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0098</guid>
+      <description>Detects domain registrations exhibiting lexical patterns consistent with AI-generated names: natural-language-like domain names that are grammatically plausible but not established brands, unusual TLD</description>
+        <category>ai-accelerated-fraud-infrastructure</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0099] Bulk Let&apos;s Encrypt Certificate Issuance Clustering</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0099</guid>
+      <description>Detects clusters of Let&apos;s Encrypt certificate issuances for domains sharing nameserver or registrar characteristics within a short time window. RDGA and AI-generated campaigns frequently provision cer</description>
+        <category>ai-accelerated-fraud-infrastructure</category>
+        <category>rdga-infrastructure</category>
+        <category>tds-exploitation</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0100] Zone File Daily Diff Anomaly Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0100</guid>
+      <description>Detects anomalous patterns in daily zone file diffs: unusual volume of new registrations in a single TLD, concentration of registrations at specific registrars, or patterns suggesting algorithmic gene</description>
+        <category>ai-accelerated-fraud-infrastructure</category>
+        <category>rdga-infrastructure</category>
+        <category>tds-exploitation</category>
+        <category>severity-high</category>
+    </item>
   </channel>
 </rss>

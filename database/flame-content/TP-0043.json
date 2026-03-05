@@ -77,7 +77,11 @@
     "report": "Level 2",
     "improve": "Level 3"
   },
-  "detection_rule_ids": [],
+  "detection_rule_ids": [
+    "DL-0098",
+    "DL-0099",
+    "DL-0100"
+  ],
   "related_tps": [
     {
       "id": "TP-0029",

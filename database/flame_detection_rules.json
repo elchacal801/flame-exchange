@@ -4424,5 +4424,440 @@
       "Retail kiosk or shared terminal devices in store environments",
       "Workplace devices used by employees for personal BNPL accounts"
     ]
+  },
+  {
+    "id": "3a7e2f91-c4b8-4d65-9e12-8b6a3f0d71c4",
+    "dl_id": "DL-0092",
+    "title": "RDGA Registration Timing Pattern Detection",
+    "status": "experimental",
+    "description": "Detects clusters of domain registrations exhibiting algorithmically regular timing intervals in zone file diffs, a hallmark of Registered Domain Generation Algorithm (RDGA) infrastructure provisioning. Legitimate bulk registrations by brand protection services or hosting providers typically show irregular, human-driven timing patterns. RDGA tooling operates programmatically, producing registration bursts with low standard deviation in inter-registration intervals. This rule alerts when a cluster of newly registered domains exceeds a size threshold and the inter-registration timing standard deviation falls below a regularity threshold, indicating automated generation. Supports TP-0041 Phase 2 detection of RDGA-based initial access infrastructure staging.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "domain_registration",
+        "registration_source": "zone_file_diff"
+      },
+      "aggregation": {
+        "count|gte": 15,
+        "groupby": "registrant_cluster_id",
+        "timeframe": "1h"
+      },
+      "timing_regularity": {
+        "inter_registration_stddev|lte": 2.0
+      },
+      "condition": "selection and aggregation and timing_regularity"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0041"
+    ],
+    "fraud_types": [
+      "rdga-infrastructure"
+    ],
+    "tags": [
+      "attack.t1583.001",
+      "cfpf.phase2.initial_access",
+      "flame.bulk_registration",
+      "flame.rdga"
+    ],
+    "falsepositives": [
+      "Brand protection services registering defensive domains in automated batches",
+      "Large hosting providers onboarding customer domains via API",
+      "Domain portfolio companies performing scheduled bulk acquisitions"
+    ]
+  },
+  {
+    "id": "8d4c1e67-a2f3-4b98-bf05-6c9e7a3d52e1",
+    "dl_id": "DL-0093",
+    "title": "RDGA Nameserver Clustering Anomaly",
+    "status": "experimental",
+    "description": "Detects disproportionate concentration of newly registered domains pointing to the same nameserver infrastructure within a 24-hour window. RDGA operators typically provision hundreds or thousands of domains but anchor them to a small set of nameservers they control, creating a fan-in pattern that is statistically anomalous compared to legitimate registrar or hosting provider distributions. Legitimate nameservers serving large numbers of new domains tend to be well-known hosting or registrar nameservers with established reputation. This rule identifies nameserver endpoints receiving an abnormal influx of newly registered domain delegations, filtering out known hosting infrastructure. Supports TP-0041 Phase 2 detection of RDGA nameserver infrastructure consolidation.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "domain_registration",
+        "registration_source": "zone_file_diff"
+      },
+      "aggregation": {
+        "count|gte": 50,
+        "groupby": "nameserver_fqdn",
+        "timeframe": "24h"
+      },
+      "exclusion": {
+        "nameserver_fqdn|endswith": [
+          ".registrar-servers.com",
+          ".domaincontrol.com",
+          ".cloudflare.com",
+          ".awsdns-",
+          ".googledomains.com"
+        ]
+      },
+      "condition": "selection and aggregation and not exclusion"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0041"
+    ],
+    "fraud_types": [
+      "rdga-infrastructure"
+    ],
+    "tags": [
+      "attack.t1583.003",
+      "cfpf.phase2.initial_access",
+      "flame.nameserver_clustering",
+      "flame.rdga"
+    ],
+    "falsepositives": [
+      "New hosting providers onboarding large customer bases rapidly",
+      "DNS migration events where many domains switch nameservers simultaneously",
+      "Reseller registrars consolidating domains under shared nameserver infrastructure"
+    ]
+  },
+  {
+    "id": "f2b09d84-17e6-4a3c-9c41-d5a8e6f43b72",
+    "dl_id": "DL-0094",
+    "title": "RDGA Registrar Concentration Anomaly",
+    "status": "experimental",
+    "description": "Detects anomalous concentration of new domain registrations at a single registrar that share lexical similarity patterns and nameserver infrastructure, indicating RDGA-driven bulk registration campaigns. Threat actors frequently exploit registrars with weak abuse controls, automated APIs, or low-cost bulk pricing to register large volumes of algorithmically generated domains. This rule correlates three signals: high registration volume at a single registrar, lexical similarity among the registered domain names (e.g., consonant-vowel patterns, character n-gram overlap, or string edit distance clustering), and shared nameserver delegation. The combination of these factors distinguishes RDGA activity from legitimate bulk registration by portfolio investors or brand protection services. Supports TP-0041 Phase 2 detection of registrar abuse for RDGA infrastructure provisioning.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "event_type": "domain_registration",
+        "registration_source": "zone_file_diff"
+      },
+      "aggregation": {
+        "count|gte": 30,
+        "groupby": "registrar_iana_id",
+        "timeframe": "24h"
+      },
+      "lexical_similarity": {
+        "domain_cluster_similarity_score|gte": 0.7
+      },
+      "nameserver_overlap": {
+        "shared_nameserver_ratio|gte": 0.6
+      },
+      "condition": "selection and aggregation and lexical_similarity and nameserver_overlap"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0041"
+    ],
+    "fraud_types": [
+      "rdga-infrastructure"
+    ],
+    "tags": [
+      "attack.t1583.001",
+      "cfpf.phase2.initial_access",
+      "flame.rdga",
+      "flame.registrar_concentration"
+    ],
+    "falsepositives": [
+      "Domain portfolio investors acquiring thematically similar domain names in bulk",
+      "Brand protection services registering typosquatting variants defensively",
+      "New gTLD land-rush registrations with common keyword patterns"
+    ]
+  },
+  {
+    "id": "a1c63e58-d9f4-4b27-8a35-7e2f0b94c6d9",
+    "dl_id": "DL-0095",
+    "title": "TDS Redirect Chain Depth Anomaly",
+    "status": "experimental",
+    "description": "Detects HTTP redirect chains (302, 301, or JavaScript-based redirects) exceeding a depth threshold where intermediate nodes are newly registered domains or have low reputation scores, indicating Traffic Distribution System (TDS) abuse. Legitimate web redirects rarely exceed 3 hops and typically traverse well-known CDN, analytics, or marketing infrastructure. TDS chains commonly use 4-7 or more hops through disposable intermediary domains to obfuscate the final destination, evade URL blocklists, and enable real-time traffic steering. Each hop in a TDS chain may perform user-agent filtering, geolocation checks, or bot detection before forwarding. This rule correlates redirect depth with domain age and reputation of intermediate nodes to distinguish malicious TDS chains from legitimate multi-hop redirects. Supports TP-0042 Phase 3 detection of TDS positioning and traffic funneling infrastructure.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "http_redirect_chain",
+        "redirect_type|contains": [
+          "301",
+          "302",
+          "javascript_redirect"
+        ]
+      },
+      "chain_depth": {
+        "redirect_hop_count|gte": 4
+      },
+      "intermediate_reputation": {
+        "intermediate_domain_max_age_days|lte": 30,
+        "intermediate_domain_min_reputation|lte": 20
+      },
+      "condition": "selection and chain_depth and intermediate_reputation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "web_proxy"
+    },
+    "threat_path_ids": [
+      "TP-0042"
+    ],
+    "fraud_types": [
+      "tds-exploitation"
+    ],
+    "tags": [
+      "attack.t1090.002",
+      "cfpf.phase3.positioning",
+      "flame.redirect_chain",
+      "flame.tds"
+    ],
+    "falsepositives": [
+      "Advertising technology redirect chains through multiple ad exchanges",
+      "Affiliate marketing link chains with multiple tracking intermediaries",
+      "URL shortener services chained together by users"
+    ]
+  },
+  {
+    "id": "7e5b2a49-f8c1-4d36-ae93-1d4f60c82b57",
+    "dl_id": "DL-0096",
+    "title": "TDS Cloaking Behavior Detection",
+    "status": "experimental",
+    "description": "Detects domains serving divergent content based on visitor attributes such as geolocation, device fingerprint, or user agent, a technique known as cloaking. TDS operators serve benign or empty content to security scanner user agents (e.g., Googlebot, bingbot, crawlers), datacenter IP ranges, and known security vendor IP addresses, while delivering redirects or malicious content to residential IP addresses and consumer device fingerprints. This rule identifies cloaking by correlating response divergence across multiple request profiles to the same URL: when a domain returns substantially different HTTP response codes, content lengths, or redirect targets for scanner versus residential visitor profiles within a detection window, it indicates intentional cloaking. Supports TP-0042 Phase 3 detection of TDS cloaking used to evade automated threat scanning and URL reputation systems.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "http_response_divergence",
+        "target_domain_age_days|lte": 90
+      },
+      "scanner_response": {
+        "visitor_profile": "scanner",
+        "response_category|contains": [
+          "200_benign",
+          "200_empty",
+          "403_blocked"
+        ]
+      },
+      "residential_response": {
+        "visitor_profile": "residential",
+        "response_category|contains": [
+          "302_redirect",
+          "301_redirect",
+          "javascript_redirect",
+          "malicious_content"
+        ]
+      },
+      "content_divergence": {
+        "response_similarity_score|lte": 0.2
+      },
+      "condition": "selection and scanner_response and residential_response and content_divergence"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "web_proxy"
+    },
+    "threat_path_ids": [
+      "TP-0042"
+    ],
+    "fraud_types": [
+      "tds-exploitation"
+    ],
+    "tags": [
+      "attack.t1036",
+      "cfpf.phase3.positioning",
+      "flame.cloaking",
+      "flame.tds"
+    ],
+    "falsepositives": [
+      "Geo-restricted content delivery serving different pages by region legitimately",
+      "A/B testing platforms serving variant content to different visitor segments",
+      "Bot management solutions intentionally serving CAPTCHAs to automated traffic"
+    ]
+  },
+  {
+    "id": "3a7c91d4-e5f2-4b18-9c6a-8d2f0e4b7a63",
+    "dl_id": "DL-0097",
+    "title": "TDS Shared Infrastructure Correlation",
+    "status": "experimental",
+    "description": "Detects domains from different apparent campaigns sharing hosting infrastructure, nameservers, or registration patterns — indicating a common TDS operator serving multiple affiliates. This rule performs graph-based correlation by identifying domains resolving to the same IP CIDR block with different registrant information but similar registration timing. TDS operators frequently reuse backend infrastructure across campaigns while rotating customer-facing domains, creating detectable infrastructure overlap patterns. Shared nameserver configurations, co-located IP assignments within the same /24 CIDR, and registration timestamps clustered within hours are strong indicators of centralized TDS management across ostensibly independent fraud campaigns.\n",
+    "cfpf_phase": "P3",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "event_type": "passive_dns_resolution",
+        "ip_cidr_overlap|gte": 2,
+        "registrant_divergence": true,
+        "registration_time_delta|lte": "72h"
+      },
+      "aggregation": {
+        "count|gte": 5,
+        "groupby": "ip_cidr_24",
+        "timeframe": "7d"
+      },
+      "condition": "selection and aggregation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "dns_resolution"
+    },
+    "threat_path_ids": [
+      "TP-0042"
+    ],
+    "fraud_types": [
+      "tds-exploitation"
+    ],
+    "tags": [
+      "attack.t1583.001",
+      "cfpf.phase3.positioning",
+      "flame.graph_correlation",
+      "flame.shared_infrastructure",
+      "flame.tds"
+    ],
+    "falsepositives": [
+      "Shared hosting providers where unrelated customers legitimately occupy the same CIDR block",
+      "CDN or cloud provider IP ranges that host many unrelated domains",
+      "Domain parking services that cluster domains on shared infrastructure"
+    ]
+  },
+  {
+    "id": "8b4e2f6c-d1a3-47e9-b5c8-9f3a7d0e6c12",
+    "dl_id": "DL-0098",
+    "title": "AI-Generated Domain Lexical Pattern Detection",
+    "status": "experimental",
+    "description": "Detects domain registrations exhibiting lexical patterns consistent with AI-generated names: natural-language-like domain names that are grammatically plausible but not established brands, unusual TLD selection patterns, and registration in bulk with similar lexical characteristics. Large language models can produce domain names that bypass traditional DGA detection because they use real words and plausible constructions rather than random character strings. This rule identifies clusters of newly registered domains sharing lexical similarity scores above threshold, exhibiting natural-language n-gram distributions, and registered through the same registrar within a compressed time window. AI-generated domain portfolios tend to follow detectable stylistic patterns such as consistent word-count, hyphenation style, and semantic category clustering that distinguish them from organic registrations.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "event_type": "new_domain_registration",
+        "lexical_nlp_score|gte": 0.75,
+        "dga_entropy_score|lte": 3.5,
+        "domain_word_count|gte": 2
+      },
+      "aggregation": {
+        "count|gte": 10,
+        "groupby": "registrar_id",
+        "timeframe": "24h"
+      },
+      "condition": "selection and aggregation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0043"
+    ],
+    "fraud_types": [
+      "ai-accelerated-fraud-infrastructure"
+    ],
+    "tags": [
+      "attack.t1583.001",
+      "cfpf.phase2.initial_access",
+      "flame.ai_generated",
+      "flame.domain_lexical_analysis"
+    ],
+    "falsepositives": [
+      "Legitimate brand portfolio registrations by marketing agencies",
+      "Domain investment companies registering descriptive keyword domains",
+      "New product launch campaigns registering multiple related domains"
+    ]
+  },
+  {
+    "id": "d5f0a3e7-c298-4b6d-a1e4-7c9b3f8d2e50",
+    "dl_id": "DL-0099",
+    "title": "Bulk Let's Encrypt Certificate Issuance Clustering",
+    "status": "experimental",
+    "description": "Detects clusters of Let's Encrypt certificate issuances for domains sharing nameserver or registrar characteristics within a short time window. RDGA and AI-generated campaigns frequently provision certificates in bulk immediately after registration to enable HTTPS on fraudulent landing pages and phishing sites. Legitimate bulk certificate issuance typically occurs through established organizations with consistent registration history. This rule identifies anomalous spikes in certificate issuance where multiple domains share infrastructure indicators such as common nameservers, registrar, or IP allocation, and certificates are issued within hours of domain registration. The combination of rapid registration-to-certificate timing and shared infrastructure strongly indicates coordinated fraudulent domain provisioning for campaign deployment.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "certificate_issuance",
+        "issuer_org": "Let's Encrypt",
+        "registration_to_cert_delta|lte": "24h"
+      },
+      "aggregation": {
+        "count|gte": 15,
+        "groupby": "nameserver_cluster",
+        "timeframe": "6h"
+      },
+      "condition": "selection and aggregation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "ct_log"
+    },
+    "threat_path_ids": [
+      "TP-0041",
+      "TP-0042",
+      "TP-0043"
+    ],
+    "fraud_types": [
+      "ai-accelerated-fraud-infrastructure",
+      "rdga-infrastructure",
+      "tds-exploitation"
+    ],
+    "tags": [
+      "attack.t1583.001",
+      "cfpf.phase2.initial_access",
+      "flame.ai_generated",
+      "flame.certificate_abuse",
+      "flame.rdga",
+      "flame.tds"
+    ],
+    "falsepositives": [
+      "Large-scale legitimate deployments using automated certificate provisioning (e.g., SaaS platforms onboarding customer domains)",
+      "Hosting providers that auto-provision Let's Encrypt certificates for new customer sites",
+      "CDN providers issuing certificates for newly onboarded domains"
+    ]
+  },
+  {
+    "id": "a2c8e4f1-b637-4d95-8e0a-1f5d9c3b7a24",
+    "dl_id": "DL-0100",
+    "title": "Zone File Daily Diff Anomaly Detection",
+    "status": "experimental",
+    "description": "Detects anomalous patterns in daily zone file diffs: unusual volume of new registrations in a single TLD, concentration of registrations at specific registrars, or patterns suggesting algorithmic generation including lexical similarity, sequential naming, and entropy clustering. Zone file diffs provide a ground-truth view of new domain registrations across gTLDs and many ccTLDs. Fraudulent campaigns using RDGA, TDS, or AI-generated domain strategies produce detectable statistical anomalies in daily diff data — particularly registrar concentration spikes, abnormal per-TLD registration volumes, and clusters of domains with similar character distribution or word structure. This rule establishes rolling baselines for registrar-TLD combinations and alerts when daily new registration counts exceed three standard deviations from the 30-day rolling mean, or when entropy analysis reveals clustering indicative of algorithmic or template-based domain generation.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "zone_file_new_entry",
+        "registration_volume_zscore|gte": 3.0
+      },
+      "aggregation": {
+        "count|gte": 50,
+        "groupby": "registrar_id, tld",
+        "timeframe": "24h"
+      },
+      "condition": "selection and aggregation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0041",
+      "TP-0042",
+      "TP-0043"
+    ],
+    "fraud_types": [
+      "ai-accelerated-fraud-infrastructure",
+      "rdga-infrastructure",
+      "tds-exploitation"
+    ],
+    "tags": [
+      "attack.t1583.001",
+      "cfpf.phase2.initial_access",
+      "flame.ai_generated",
+      "flame.rdga",
+      "flame.tds",
+      "flame.zone_file_anomaly"
+    ],
+    "falsepositives": [
+      "Promotional pricing events by registrars that cause legitimate registration spikes",
+      "New TLD launches or sunrise periods with high legitimate registration volume",
+      "Large enterprise domain portfolio acquisitions through a single registrar"
+    ]
   }
 ]

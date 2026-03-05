@@ -804,6 +804,60 @@
     "text": "Detects four or more distinct BNPL accounts created from or accessed by the same device fingerprint within a 30-day window, indicating potential synthetic identity ring activity or account farming operations. Normal BNPL usage involves 1-2 accounts per device over 12 months. Emulator-based mass account opening tools with device fingerprint spoofing can create dozens of accounts per day from a single physical device, but sophisticated device fingerprinting systems can detect emulator signatures and fingerprint collision patterns. This rule supports TP-0040 Phase 3 detection by identifying device-level clustering that precedes multi-provider stacking and coordinated bust-out.\n"
   },
   {
+    "id": "DL-0092",
+    "type": "detection_rule",
+    "title": "RDGA Registration Timing Pattern Detection",
+    "text": "Detects clusters of domain registrations exhibiting algorithmically regular timing intervals in zone file diffs, a hallmark of Registered Domain Generation Algorithm (RDGA) infrastructure provisioning. Legitimate bulk registrations by brand protection services or hosting providers typically show irregular, human-driven timing patterns. RDGA tooling operates programmatically, producing registration bursts with low standard deviation in inter-registration intervals. This rule alerts when a cluster of newly registered domains exceeds a size threshold and the inter-registration timing standard deviation falls below a regularity threshold, indicating automated generation. Supports TP-0041 Phase 2 detection of RDGA-based initial access infrastructure staging.\n"
+  },
+  {
+    "id": "DL-0093",
+    "type": "detection_rule",
+    "title": "RDGA Nameserver Clustering Anomaly",
+    "text": "Detects disproportionate concentration of newly registered domains pointing to the same nameserver infrastructure within a 24-hour window. RDGA operators typically provision hundreds or thousands of domains but anchor them to a small set of nameservers they control, creating a fan-in pattern that is statistically anomalous compared to legitimate registrar or hosting provider distributions. Legitimate nameservers serving large numbers of new domains tend to be well-known hosting or registrar nameservers with established reputation. This rule identifies nameserver endpoints receiving an abnormal influx of newly registered domain delegations, filtering out known hosting infrastructure. Supports TP-0041 Phase 2 detection of RDGA nameserver infrastructure consolidation.\n"
+  },
+  {
+    "id": "DL-0094",
+    "type": "detection_rule",
+    "title": "RDGA Registrar Concentration Anomaly",
+    "text": "Detects anomalous concentration of new domain registrations at a single registrar that share lexical similarity patterns and nameserver infrastructure, indicating RDGA-driven bulk registration campaigns. Threat actors frequently exploit registrars with weak abuse controls, automated APIs, or low-cost bulk pricing to register large volumes of algorithmically generated domains. This rule correlates three signals: high registration volume at a single registrar, lexical similarity among the registered domain names (e.g., consonant-vowel patterns, character n-gram overlap, or string edit distance clustering), and shared nameserver delegation. The combination of these factors distinguishes RDGA activity from legitimate bulk registration by portfolio investors or brand protection services. Supports TP-0041 Phase 2 detection of registrar abuse for RDGA infrastructure provisioning.\n"
+  },
+  {
+    "id": "DL-0095",
+    "type": "detection_rule",
+    "title": "TDS Redirect Chain Depth Anomaly",
+    "text": "Detects HTTP redirect chains (302, 301, or JavaScript-based redirects) exceeding a depth threshold where intermediate nodes are newly registered domains or have low reputation scores, indicating Traffic Distribution System (TDS) abuse. Legitimate web redirects rarely exceed 3 hops and typically traverse well-known CDN, analytics, or marketing infrastructure. TDS chains commonly use 4-7 or more hops through disposable intermediary domains to obfuscate the final destination, evade URL blocklists, and enable real-time traffic steering. Each hop in a TDS chain may perform user-agent filtering, geolocation checks, or bot detection before forwarding. This rule correlates redirect depth with domain age and reputation of intermediate nodes to distinguish malicious TDS chains from legitimate multi-hop redirects. Supports TP-0042 Phase 3 detection of TDS positioning and traffic funneling infrastructure.\n"
+  },
+  {
+    "id": "DL-0096",
+    "type": "detection_rule",
+    "title": "TDS Cloaking Behavior Detection",
+    "text": "Detects domains serving divergent content based on visitor attributes such as geolocation, device fingerprint, or user agent, a technique known as cloaking. TDS operators serve benign or empty content to security scanner user agents (e.g., Googlebot, bingbot, crawlers), datacenter IP ranges, and known security vendor IP addresses, while delivering redirects or malicious content to residential IP addresses and consumer device fingerprints. This rule identifies cloaking by correlating response divergence across multiple request profiles to the same URL: when a domain returns substantially different HTTP response codes, content lengths, or redirect targets for scanner versus residential visitor profiles within a detection window, it indicates intentional cloaking. Supports TP-0042 Phase 3 detection of TDS cloaking used to evade automated threat scanning and URL reputation systems.\n"
+  },
+  {
+    "id": "DL-0097",
+    "type": "detection_rule",
+    "title": "TDS Shared Infrastructure Correlation",
+    "text": "Detects domains from different apparent campaigns sharing hosting infrastructure, nameservers, or registration patterns — indicating a common TDS operator serving multiple affiliates. This rule performs graph-based correlation by identifying domains resolving to the same IP CIDR block with different registrant information but similar registration timing. TDS operators frequently reuse backend infrastructure across campaigns while rotating customer-facing domains, creating detectable infrastructure overlap patterns. Shared nameserver configurations, co-located IP assignments within the same /24 CIDR, and registration timestamps clustered within hours are strong indicators of centralized TDS management across ostensibly independent fraud campaigns.\n"
+  },
+  {
+    "id": "DL-0098",
+    "type": "detection_rule",
+    "title": "AI-Generated Domain Lexical Pattern Detection",
+    "text": "Detects domain registrations exhibiting lexical patterns consistent with AI-generated names: natural-language-like domain names that are grammatically plausible but not established brands, unusual TLD selection patterns, and registration in bulk with similar lexical characteristics. Large language models can produce domain names that bypass traditional DGA detection because they use real words and plausible constructions rather than random character strings. This rule identifies clusters of newly registered domains sharing lexical similarity scores above threshold, exhibiting natural-language n-gram distributions, and registered through the same registrar within a compressed time window. AI-generated domain portfolios tend to follow detectable stylistic patterns such as consistent word-count, hyphenation style, and semantic category clustering that distinguish them from organic registrations.\n"
+  },
+  {
+    "id": "DL-0099",
+    "type": "detection_rule",
+    "title": "Bulk Let's Encrypt Certificate Issuance Clustering",
+    "text": "Detects clusters of Let's Encrypt certificate issuances for domains sharing nameserver or registrar characteristics within a short time window. RDGA and AI-generated campaigns frequently provision certificates in bulk immediately after registration to enable HTTPS on fraudulent landing pages and phishing sites. Legitimate bulk certificate issuance typically occurs through established organizations with consistent registration history. This rule identifies anomalous spikes in certificate issuance where multiple domains share infrastructure indicators such as common nameservers, registrar, or IP allocation, and certificates are issued within hours of domain registration. The combination of rapid registration-to-certificate timing and shared infrastructure strongly indicates coordinated fraudulent domain provisioning for campaign deployment.\n"
+  },
+  {
+    "id": "DL-0100",
+    "type": "detection_rule",
+    "title": "Zone File Daily Diff Anomaly Detection",
+    "text": "Detects anomalous patterns in daily zone file diffs: unusual volume of new registrations in a single TLD, concentration of registrations at specific registrars, or patterns suggesting algorithmic generation including lexical similarity, sequential naming, and entropy clustering. Zone file diffs provide a ground-truth view of new domain registrations across gTLDs and many ccTLDs. Fraudulent campaigns using RDGA, TDS, or AI-generated domain strategies produce detectable statistical anomalies in daily diff data — particularly registrar concentration spikes, abnormal per-TLD registration volumes, and clusters of domains with similar character distribution or word structure. This rule establishes rolling baselines for registrar-TLD combinations and alerts when daily new registration counts exceed three standard deviations from the 30-day rolling mean, or when entropy analysis reveals clustering indicative of algorithmic or template-based domain generation.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",
@@ -915,6 +969,24 @@
     "id": "BL-0020",
     "type": "baseline",
     "title": "BNPL Account & Transaction Patterns Baseline",
+    "text": ""
+  },
+  {
+    "id": "BL-0021",
+    "type": "baseline",
+    "title": "RDGA Cluster Size and Registration Norms",
+    "text": ""
+  },
+  {
+    "id": "BL-0022",
+    "type": "baseline",
+    "title": "TDS Chain Hop Count Norms",
+    "text": ""
+  },
+  {
+    "id": "BL-0023",
+    "type": "baseline",
+    "title": "AI vs Human Domain Registration Rate Norms",
     "text": ""
   }
 ]
