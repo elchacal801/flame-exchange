@@ -924,7 +924,7 @@ const FlameViz = (function () {
         // --- Fullscreen ---
         var fullscreenBtn = document.getElementById('graph-fullscreen-btn');
         if (fullscreenBtn) {
-            fullscreenBtn.addEventListener('click', function () {
+            fullscreenBtn.onclick = function () {
                 var modal = document.getElementById('graph-modal-content');
                 if (modal) {
                     modal.classList.toggle('graph-fullscreen');
@@ -938,16 +938,16 @@ const FlameViz = (function () {
                         simulation.alpha(0.1).restart();
                     }, 100);
                 }
-            });
+            };
         }
 
         // --- SVG Export ---
         var exportBtn = document.getElementById('graph-export-svg');
         if (exportBtn) {
-            exportBtn.addEventListener('click', function () {
+            exportBtn.onclick = function () {
                 var svgEl = container.querySelector('svg');
                 if (svgEl) exportSVG(svgEl, 'flame-relationship-graph.svg');
-            });
+            };
         }
 
         // --- Legend ---
