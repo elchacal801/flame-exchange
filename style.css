@@ -2892,3 +2892,422 @@ h4 {
     font-size: 0.85rem;
     color: var(--color-text-dim);
 }
+
+/* ---------------------------------------------------------------
+   CFPF Attack Flow Diagram
+   --------------------------------------------------------------- */
+
+.attack-flow-section {
+    margin-bottom: var(--space-lg);
+}
+
+.attack-flow-container {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+}
+
+.attack-flow {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    align-items: flex-start;
+    padding-bottom: var(--space-sm);
+}
+
+.af-phase {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.af-phase.inactive {
+    opacity: 0.25;
+}
+
+.af-phase-header {
+    border-top: 3px solid var(--color-border);
+    padding: var(--space-xs) var(--space-sm);
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-dim);
+    white-space: nowrap;
+}
+
+.af-phase-header .af-phase-num {
+    display: block;
+    font-size: 0.65rem;
+    opacity: 0.7;
+    margin-bottom: 2px;
+}
+
+.af-techniques {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 var(--space-xs);
+}
+
+.af-technique {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 6px 8px;
+    font-size: 0.72rem;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: border-color var(--duration), background var(--duration);
+    line-height: 1.3;
+}
+
+.af-technique:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface-3);
+}
+
+.af-technique .af-tech-id {
+    font-size: 0.65rem;
+    color: var(--color-text-dim);
+    display: block;
+    margin-bottom: 1px;
+}
+
+.af-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    min-width: 20px;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+.af-connector svg {
+    width: 20px;
+    height: 24px;
+}
+
+.af-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 0 var(--space-xs);
+    margin-top: 4px;
+}
+
+.af-rule-badge {
+    font-size: 0.65rem;
+    font-family: var(--font-mono);
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(220, 38, 38, 0.12);
+    color: #ef4444;
+    white-space: nowrap;
+}
+
+.af-rule-badge::before {
+    content: '\1F6E1 ';
+    font-size: 0.6rem;
+}
+
+.af-empty-note {
+    font-size: 0.7rem;
+    color: var(--color-text-dim);
+    font-style: italic;
+    padding: 4px 8px;
+}
+
+@media (max-width: 600px) {
+    .attack-flow {
+        flex-direction: column;
+    }
+    .af-phase {
+        min-width: unset;
+    }
+    .af-connector {
+        transform: rotate(90deg);
+        min-width: unset;
+        padding: 4px 0;
+    }
+}
+
+/* ---------------------------------------------------------------
+   Ego Neighborhood Graph
+   --------------------------------------------------------------- */
+
+.ego-graph-section {
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-lg);
+    overflow: hidden;
+}
+
+.ego-graph-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.ego-graph-title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.ego-hop-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+    cursor: pointer;
+}
+
+.ego-hop-toggle input[type="checkbox"] {
+    accent-color: var(--color-accent);
+}
+
+.ego-graph-container {
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ego-graph-container svg {
+    width: 100%;
+    height: 100%;
+}
+
+.ego-tooltip {
+    position: absolute;
+    background: var(--color-surface-1);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    pointer-events: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    color: var(--color-text);
+    max-width: 220px;
+}
+
+.ego-tooltip strong {
+    display: block;
+    margin-bottom: 2px;
+}
+
+.ego-tooltip .ego-tip-rel {
+    font-size: 0.7rem;
+    color: var(--color-text-dim);
+    margin-top: 2px;
+}
+
+.ego-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: var(--space-xs) var(--space-md) var(--space-sm);
+    font-size: 0.72rem;
+    color: var(--color-text-dim);
+    border-top: 1px solid var(--color-border);
+}
+
+.ego-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ego-legend-swatch {
+    width: 14px;
+    height: 3px;
+    border-radius: 2px;
+}
+
+.ego-link-label {
+    font-size: 8px;
+    fill: var(--color-text-dim);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.ego-link-label.visible {
+    opacity: 1;
+}
+
+@media (max-width: 600px) {
+    .ego-graph-container {
+        height: 280px;
+    }
+}
+
+/* ---------------------------------------------------------------
+   Enhanced Global Graph — Toolbar & Controls
+   --------------------------------------------------------------- */
+
+.graph-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-left: auto;
+}
+
+.graph-search-input {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    color: var(--color-text);
+    font-size: 0.82rem;
+    width: 180px;
+    outline: none;
+    transition: border-color var(--duration);
+}
+
+.graph-search-input:focus {
+    border-color: var(--color-accent);
+}
+
+.graph-toolbar-btn {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-dim);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background var(--duration), color var(--duration);
+}
+
+.graph-toolbar-btn:hover {
+    background: var(--color-accent);
+    color: white;
+}
+
+.graph-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.78rem;
+}
+
+.graph-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.graph-filter-label {
+    color: var(--color-text-dim);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.rel-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: opacity var(--duration), border-color var(--duration);
+    color: var(--color-text);
+    background: transparent;
+}
+
+.rel-toggle.active {
+    border-color: currentColor;
+}
+
+.rel-toggle:not(.active) {
+    opacity: 0.35;
+}
+
+.rel-toggle-swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.graph-filter-select {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+    font-size: 0.78rem;
+    padding: 2px 6px;
+    outline: none;
+}
+
+.graph-fullscreen {
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+}
+
+.graph-fullscreen .modal-body {
+    flex: 1;
+}
+
+.graph-fullscreen #graph-container {
+    min-height: unset;
+    flex: 1;
+}
+
+.graph-node-pinned {
+    stroke-dasharray: 3 2;
+    stroke-width: 2;
+}
+
+@keyframes graph-pulse {
+    0%, 100% { r: 12; opacity: 0.8; }
+    50% { r: 18; opacity: 0.3; }
+}
+
+.graph-pulse-ring {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    animation: graph-pulse 1.2s ease-in-out infinite;
+}
+
+@media (max-width: 600px) {
+    .graph-toolbar {
+        flex-wrap: wrap;
+    }
+    .graph-search-input {
+        width: 120px;
+    }
+    .graph-controls {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+    .graph-filter-label {
+        display: none;
+    }
+}
