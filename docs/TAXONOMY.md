@@ -25,6 +25,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `ACH-fraud` | Fraudulent ACH transfer schemes |
 | `account-takeover` | Unauthorized control of legitimate accounts |
 | `advance-fee-fraud` | Schemes requiring upfront payment for promised returns |
+| `ai-accelerated-fraud-infrastructure` | AI-assisted generation of fraud infrastructure at scale, including domain registration, content generation, and campaign orchestration |
 | `ai-document-fraud` | AI-generated fraudulent documents for KYC bypass or claims |
 | `application-fraud` | Fraudulent account/credit applications |
 | `approval-phishing` | Smart contract approval manipulation (token approvals, permit signatures) |
@@ -72,6 +73,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `phishing` | Email/SMS/voice phishing campaigns |
 | `premium-diversion` | Insurance premium payment redirection |
 | `provider-fraud` | Healthcare or service provider collusion |
+| `rdga-infrastructure` | Registered Domain Generation Algorithm campaigns where all generated domains are registered and the algorithm is secret |
 | `refunding-as-a-service` | Industrialized refund fraud operations (FTID, RaaS) |
 | `romance-scam` | Relationship-based social engineering fraud |
 | `scam-compound-operations` | Organized scam compound operations with human trafficking nexus |
@@ -79,6 +81,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `social-engineering` | Manipulation of individuals to divulge information or take action |
 | `synthetic-identity` | Fabricated identities using real + fake PII |
 | `synthetic-medical-fraud` | AI-generated medical records for healthcare billing fraud |
+| `tds-exploitation` | Traffic Distribution System exploitation as an infrastructure-layer threat, including multi-hop redirect chains with cloaking capabilities |
 | `tax-fraud` | Fraudulent tax filings or refund claims |
 | `unauthorized-transaction` | Transactions executed without account holder authorization |
 | `upcoding` | Billing for more expensive services than provided |
@@ -110,6 +113,19 @@ Standardized sector labels for targeting context:
 | `trade` | International trade and trade finance |
 | `travel` | Travel and hospitality industry |
 | `web3` | Web3, DeFi, and decentralized infrastructure |
+
+## Infrastructure Generation Method
+
+Optional field classifying how fraud infrastructure (domains, hosting, certificates) was generated:
+
+| Value | Description |
+|-------|-------------|
+| `manual` | Domains registered individually or in small batches by human operators |
+| `dga-embedded` | Domain Generation Algorithm embedded in malware; algorithm is discoverable through reverse engineering |
+| `rdga-registered` | Registered Domain Generation Algorithm; all domains are registered, algorithm is secret, detection requires cluster analysis |
+| `ai-assisted` | AI tools used to generate domain names, content, or infrastructure configurations at scale |
+
+Existing threat paths are not required to retroactively populate this field.
 
 ## Cross-Framework Mappings
 
@@ -171,6 +187,7 @@ ft3_tactics: []
 mitre_f3: []
 groupib_stages: []
 ucff_domains: {}
+infrastructure_generation_method: manual  # optional: manual | dga-embedded | rdga-registered | ai-assisted
 tags:
   - descriptive-tag
 ---

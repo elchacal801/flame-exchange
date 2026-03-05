@@ -50,10 +50,12 @@ try:
         _tax = json.load(_f)
         VALID_SECTORS = set(_tax.get("sectors", []))
         VALID_FRAUD_TYPES = set(_tax.get("fraud_types", []))
+        VALID_INFRA_GEN_METHODS = set(_tax.get("infrastructure_generation_method", []))
 except Exception as _e:
     print(f"WARNING: Failed to load taxonomy from {TAXONOMY_FILE}: {_e}", file=sys.stderr)
     VALID_SECTORS = set()
     VALID_FRAUD_TYPES = set()
+    VALID_INFRA_GEN_METHODS = set()
 
 # Load regulatory requirements config for validation
 REGULATORY_CONFIG_FILE = Path(__file__).resolve().parent.parent / "config" / "regulatory_requirements.yaml"
@@ -488,6 +490,15 @@ def validate_file(filepath: Path) -> ValidationResult:
             for key in ucff:
                 if key not in valid_ucff_keys:
                     result.warn(f"Unrecognized UCFF domain '{key}'. Expected: {', '.join(sorted(valid_ucff_keys))}")
+
+    # Infrastructure generation method (optional, must match allowed values)
+    infra_gen = meta.get("infrastructure_generation_method")
+    if infra_gen is not None:
+        if infra_gen not in VALID_INFRA_GEN_METHODS:
+            result.error(
+                f"Invalid infrastructure_generation_method '{infra_gen}'. "
+                f"Must be one of: {', '.join(sorted(VALID_INFRA_GEN_METHODS))}"
+            )
 
     # MITRE ATT&CK format validation
     mitre = meta.get("mitre_attack", [])

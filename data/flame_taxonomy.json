@@ -1,4 +1,10 @@
 {
+    "infrastructure_generation_method": [
+        "manual",
+        "dga-embedded",
+        "rdga-registered",
+        "ai-assisted"
+    ],
     "sectors": [
         "banking",
         "credit-union",
@@ -25,6 +31,7 @@
         "BEC",
         "account-takeover",
         "advance-fee-fraud",
+        "ai-accelerated-fraud-infrastructure",
         "ai-document-fraud",
         "application-fraud",
         "approval-phishing",
@@ -76,6 +83,7 @@
         "premium-diversion",
         "provider-fraud",
         "purchase-scam",
+        "rdga-infrastructure",
         "refunding-as-a-service",
         "romance-scam",
         "scam-compound-operations",
@@ -83,6 +91,7 @@
         "social-engineering",
         "synthetic-identity",
         "synthetic-medical-fraud",
+        "tds-exploitation",
         "tax-fraud",
         "unauthorized-transaction",
         "upcoding",
