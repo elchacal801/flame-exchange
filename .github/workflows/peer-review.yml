@@ -1,0 +1,136 @@
+name: Peer Review Workflow
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  validate-submission:
+    if: github.event.label.name == 'submission'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Welcome and triage
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const labels = issue.labels.map(l => l.name);
+
+            // Determine submission type
+            let submissionType = 'Unknown';
+            if (labels.includes('intel-submission')) submissionType = 'Intel Submission (AI-generated)';
+            else if (labels.includes('manual-submission')) submissionType = 'Manual Submission';
+            else if (labels.includes('baseline')) submissionType = 'Baseline Profile';
+            else if (labels.includes('emulation-playbook')) submissionType = 'Emulation Playbook';
+            else submissionType = 'General Submission';
+
+            // Post welcome comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: `## 🔥 FLAME Submission Received\n\n` +
+                    `Thank you for your contribution, @${issue.user.login}!\n\n` +
+                    `**Submission type:** ${submissionType}\n` +
+                    `**Status:** Under review\n\n` +
+                    `A maintainer will review your submission. ` +
+                    `You'll be notified when it's approved or if changes are needed.\n\n` +
+                    `---\n` +
+                    `*Automated by FLAME Peer Review Workflow*`
+            });
+
+            // Add under-review label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: ['under-review']
+            });
+
+            // Assign maintainer
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              assignees: ['elchacal801']
+            });
+
+  process-approval:
+    if: github.event.label.name == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Process approved submission
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+
+            // Post approval comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: `## ✅ Submission Approved\n\n` +
+                    `This submission has been approved by a maintainer.\n\n` +
+                    `**Next steps:**\n` +
+                    `1. A maintainer will create the properly formatted file\n` +
+                    `2. A pull request will be opened\n` +
+                    `3. The build pipeline will regenerate all artifacts\n` +
+                    `4. Once merged, the content will be live on FLAME\n\n` +
+                    `Thank you for contributing to FLAME, @${issue.user.login}! 🔥\n\n` +
+                    `---\n` +
+                    `*Automated by FLAME Peer Review Workflow*`
+            });
+
+            // Add published label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: ['published']
+            });
+
+  handle-revision:
+    if: github.event.label.name == 'needs-revision'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request changes
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: `## 📝 Changes Requested\n\n` +
+                    `A maintainer has requested changes to this submission.\n\n` +
+                    `Please review the feedback above, make the necessary updates, ` +
+                    `and comment when ready for re-review.\n\n` +
+                    `---\n` +
+                    `*Automated by FLAME Peer Review Workflow*`
+            });
+
+            // Remove under-review if present
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                name: 'under-review'
+              });
+            } catch (e) {
+              // Label might not exist, that's ok
+            }
