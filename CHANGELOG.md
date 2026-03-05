@@ -6,6 +6,29 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.6.0] — 2026-03-04
+
+### Added
+
+- **RSS 2.0 intelligence feed** — Auto-generated `database/feed.xml` with 108 items (34 TPs + 74 DL rules), category tags, and RFC 822 dates; auto-discovery link in `index.html`
+- **Emulation Playbook schema** — `Templates/emulation-playbook-template.json` with CFPF phase-mapped steps, TP/DL cross-references, and full validation in `validate_submission.py`
+- **5 adversary emulation playbooks** — EP-0001 (Synthetic Identity Bust-Out), EP-0002 (BEC Wire Fraud), EP-0003 (SIM Swap Crypto ATO), EP-0004 (APP Fraud), EP-0005 (A2A Payment Exploitation)
+- **Contributor submission interface** — `contribute.html` with type selector, live preview, and pre-filled GitHub Issue URL generation; 2 new Issue Form templates (baseline, emulation playbook)
+- **Peer review workflow** — `.github/workflows/peer-review.yml` with label-driven lifecycle (`submitted` → `under-review` → `approved` → `published`), auto-validation, and PR generation
+- **Contributor leaderboard** — Build-time extraction from frontmatter authors, `database/flame-contributors.json`, and frontend modal with ranked table
+- **CODEOWNERS** — Auto-assign reviewers for submissions to ThreatPaths, DetectionLogic, Baselines, EmulationPlaybooks
+
+### Changed
+
+- `build_database.py` — Added `generate_rss_feed()`, `extract_contributors()`, and `export_contributors_json()` to build pipeline
+- `validate_submission.py` — Extended to validate `.json` emulation playbook files with cross-reference resolution
+- `index.html` — Added Contribute button, Contributors button with leaderboard modal, RSS auto-discovery link
+- `app.js` — Added Contributors modal with `renderContributorsModal()`
+- `style.css` — Added leaderboard table styles
+- Issue templates — Expanded to 18 sectors, added CFPF phase checkboxes, standardized `submission` label
+
+---
+
 ## [0.2.0] — 2026-02-19
 
 ### Added

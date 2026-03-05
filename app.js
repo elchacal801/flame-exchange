@@ -1062,11 +1062,11 @@
         html += '<h3>Recent Milestones</h3>';
         html += '<div class="about-changelog">';
         var changelog = [
+            { date: '2026-03', text: 'Phase 4 BEACON: RSS feed, 5 emulation playbooks, contributor leaderboard, peer review workflow' },
+            { date: '2026-03', text: 'Contributor submission interface with contribute.html and 5 Issue Form templates' },
+            { date: '2026-03', text: 'Emulation Playbook schema (EP-XXXX) with CFPF-mapped steps and DL cross-references' },
             { date: '2026-03', text: 'TP-0034 DPRK IT Worker Fraud: 7 detection rules, baseline profile, full CFPF mapping' },
-            { date: '2026-03', text: 'TAXII collections populated with course-of-action and baseline SDOs' },
-            { date: '2026-03', text: 'Sigma pseudocode fallback for aggregation/correlation rules' },
-            { date: '2026-03', text: 'STIX 2.1 fraud extension with 4 custom SDOs and TAXII 2.1 endpoints' },
-            { date: '2026-03', text: 'MISP galaxy, cluster, and subscribable event feed' },
+            { date: '2026-03', text: 'STIX 2.1 fraud extension with 4 custom SDOs, TAXII 2.1, MISP galaxy' },
             { date: '2026-03', text: 'Regulatory mapping (15 regulations, 6 jurisdictions), Framework Navigator' },
             { date: '2026-03', text: 'MCP server, static JSON API, Sigma export pipeline' },
             { date: '2026-02', text: 'D3.js relationship graph, coverage assessment, confidence scoring' }
@@ -1087,6 +1087,7 @@
         html += '<a href="api/taxii/discovery.json" target="_blank" rel="noopener" class="about-link-btn">TAXII Feed</a>';
         html += '<a href="data/misp/flame-galaxy.json" target="_blank" rel="noopener" class="about-link-btn">MISP Galaxy</a>';
         html += '<a href="database/flame_stix_bundle.json" target="_blank" rel="noopener" class="about-link-btn">STIX Bundle</a>';
+        html += '<a href="database/feed.xml" target="_blank" rel="noopener" class="about-link-btn">RSS Feed</a>';
         html += '</div>';
 
         // License
