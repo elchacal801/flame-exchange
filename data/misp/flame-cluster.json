@@ -1919,6 +1919,62 @@
           "type": "uses"
         }
       ]
+    },
+    {
+      "value": "BNPL Multi-Provider Fraud \u2014 Synthetic Stacking, ATO & Friendly Fraud",
+      "description": "Buy Now, Pay Later (BNPL) services represent one of the fastest-growing fraud surfaces in consumer finance. The global BNPL market reached $452 billion in transaction value in 2025, with fraud rates o...",
+      "uuid": "6f3ed1a4-12e0-52b6-847d-2b309665a8e0",
+      "meta": {
+        "fraud_types": [
+          "bnpl-fraud",
+          "first-party-fraud",
+          "identity-theft",
+          "account-takeover",
+          "social-engineering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://elchacal801.github.io/flame-fraud/?tp=TP-0040"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "d50201c9-385a-5206-81c6-7748a7de144f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
     }
   ]
 }

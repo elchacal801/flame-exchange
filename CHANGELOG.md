@@ -6,6 +6,33 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.8.0] — 2026-03-04
+
+### Added
+
+- **Phase 6 SIGNAL-LNRS: LexisNexis Risk Solutions Global State of Fraud 2026 Integration + BNPL Fraud**
+- **TP-0040: BNPL Multi-Provider Fraud** — Synthetic stacking, ATO & friendly fraud across Klarna, Afterpay, Affirm, Clearpay, Zip; STYX marketplace; Klarna Method/Glitch; $3.2B synthetic exposure
+- **DL-0087 through DL-0091**: 5 BNPL fraud detection rules (onboarding risk signals, multi-provider stacking, spending step-up bust-out, INR claim velocity, device clustering)
+- **BL-0020**: BNPL Account & Transaction Patterns baseline
+- `bnpl-fraud` fraud type added to taxonomy
+
+### Changed
+
+- **TP-0016** (First-Party Fraud) — Enhanced with LNRS 2026 scale data: 36% of all fraud ($3.9B losses), viral fraud cohorts, consortium intelligence uplift (43%)
+- **TP-0024** (A2A Instant Payment) — Enhanced with mule laundering speed data: 30-min cycle, UK Banking Consortium results (£508M, 377K mule payments)
+- **TP-0011** (Romance Scam Mule Pipeline) — Enhanced with mule network operational scale: 15 avg mules, 3.4 banks, £10B UK annual volume, Gen Z recruitment stats
+- **TP-0003** (Synthetic Identity Bust-Out) — Enhanced with synthetic identity projections: $23B by 2030, 85% GenAI involvement, thin-file exploitation
+- **TP-0029** (AI Synthetic Identity & Document Forgery) — Enhanced with AI arms race data: 20% deepfake detection rate, 57% AI-generated forgeries, $20M Brazilian deepfake scam
+- `flame_taxonomy.json` — Added 1 new fraud type (total: 71)
+- `ThreatPaths/INDEX.md` — Updated all coverage tables for 40 TPs, 60 fraud types
+
+### Source Intelligence
+
+- LexisNexis Risk Solutions: Global State of Fraud and Identity Report 2026
+- Supplementary BNPL fraud research (Experian, ACI Worldwide, MRC, CFPB, FCA, ASIC, Resecurity, SEON, Fingerprint.com, DataVisor)
+
+---
+
 ## [0.7.0] — 2026-03-04
 
 ### Added

@@ -5,7 +5,7 @@
 id: TP-0011
 title: "Romance Scam to Money Mule Recruitment Pipeline"
 category: ThreatPath
-date: 2026-02-12
+date: 2026-03-04
 author: "FLAME Project"
 source: "FBI IC3 / FinCEN Advisory FIN-2020-A008 / INTERPOL"
 tlp: WHITE
@@ -254,6 +254,14 @@ This threat path is the connective tissue of fraud. Mule networks recruited thro
 
 **Cross-FLAME connections**: TP-0001 (treasury ATO) → funds wire to mule from this pipeline. TP-0002 (BEC) → mule account receives diverted invoice payment. TP-0006 (real estate wire) → mule account receives closing funds. TP-0009 (check fraud) → mule account opened by recruited mule.
 
+### Mule Network Operational Scale — LNRS 2026
+
+The average mule network consists of 15 mules moving money among 3.4 banks. The largest documented network involved 543 mules and moved more than £130 million. In the UK alone, mules launder an estimated £10 billion annually.
+
+Global enforcement actions are escalating: Europol supported operations against two networks that profited over $10M from cryptocurrency scams; the U.S. DOJ took action against 3,000+ money mules in its 2024 initiative; Hong Kong police dismantled a HK$118M crypto laundering ring with 500+ mule accounts.
+
+Mule recruitment increasingly targets youth: 35% of Gen Z say they would consider moving money for a stranger for a fee, 14% "very likely." Among 18-24 year olds, 30% say they or someone they know has been approached, and 27% would be open to it. Three mule typologies are now recognized: complicit (willing participants), recruited (persuaded, paid, or forced), and exploited (unwitting participants whose accounts are misused).
+
 ## References
 
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
@@ -261,6 +269,7 @@ This threat path is the connective tissue of fraud. Mule networks recruited thro
 - INTERPOL: Operation First Light (scam compound raids)
 - UNODC: "Online Scam Operations in Southeast Asia"
 - Group-IB Fraud Intelligence: "Evolving Mule Tactics" report (6-stage mule evolution analysis, META region Q4 2023 – Q1 2025, detection methodology)
+- **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Mule network operational scale data, Gen Z recruitment statistics, enforcement action summaries.
 
 ## Revision History
 

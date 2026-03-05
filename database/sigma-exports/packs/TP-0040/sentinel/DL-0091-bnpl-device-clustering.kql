@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(event_type =~ "account_creation" and account_type =~ "bnpl") and (count >= 4 and groupby =~ "device_fingerprint_hash" and timeframe =~ "30d")

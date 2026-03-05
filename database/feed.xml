@@ -42,7 +42,7 @@
       <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0003</link>
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0003</guid>
       <description>Actors create fictitious identities by combining real SSNs (often belonging to children, elderly, deceased, or immigrants) with fabricated PII. They then &quot;nurture&quot; these synthetic identities over mont</description>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>application-fraud</category>
         <category>new-account-fraud</category>
         <category>synthetic-identity</category>
@@ -162,7 +162,7 @@
       <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0011</link>
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0011</guid>
       <description>Actors operating from organized scam compounds (primarily Southeast Asia) cultivate fake romantic or investment relationships with victims over weeks to months, then exploit the relationship to either</description>
-      <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>money-mule</category>
         <category>romance-scam</category>
         <category>CFPF-P1</category>
@@ -236,7 +236,7 @@
       <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0016</link>
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0016</guid>
       <description>First-party fraud occurs when an individual intentionally misrepresents their identity, intent, or financial situation to obtain credit or services with no intention of repayment. This threat path foc</description>
-      <pubDate>Fri, 20 Feb 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>bust-out</category>
         <category>first-party-fraud</category>
         <category>CFPF-P1</category>
@@ -352,7 +352,7 @@
       <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0024</link>
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0024</guid>
       <description>Threat actors exploit account-to-account (A2A) instant payment rails (Zelle, FedNow, Pix, UPI, UK Faster Payments) to execute irrevocable fund transfers via social engineering, account takeover, or pa</description>
-      <pubDate>Mon, 02 Mar 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>authorized-push-payment</category>
         <category>payment-diversion</category>
         <category>wire-fraud</category>
@@ -431,7 +431,7 @@
       <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0029</link>
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0029</guid>
       <description>Threat actors are leveraging generative AI to produce high-fidelity forged identity documents, synthetic facial images, and behavioral biometric mimicry to bypass KYC/identity verification controls at</description>
-      <pubDate>Mon, 02 Mar 2026 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>ai-document-fraud</category>
         <category>application-fraud</category>
         <category>new-account-fraud</category>
@@ -590,6 +590,23 @@
         <category>autonomous-ai-fraud</category>
         <category>social-engineering</category>
         <category>unauthorized-transaction</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0040] BNPL Multi-Provider Fraud — Synthetic Stacking, ATO &amp; Friendly Fraud</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0040</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0040</guid>
+      <description>Buy Now, Pay Later (BNPL) services represent one of the fastest-growing fraud surfaces in consumer finance. The global BNPL market reached $452 billion in transaction value in 2025, with fraud rates o</description>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
+        <category>account-takeover</category>
+        <category>bnpl-fraud</category>
+        <category>first-party-fraud</category>
+        <category>identity-theft</category>
+        <category>social-engineering</category>
         <category>CFPF-P1</category>
         <category>CFPF-P2</category>
         <category>CFPF-P3</category>
@@ -1372,6 +1389,53 @@
         <category>autonomous-ai-fraud</category>
         <category>unauthorized-transaction</category>
         <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0087] BNPL Account Opening Risk Signal Cluster</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0087</guid>
+      <description>Detects BNPL account applications exhibiting multiple risk signals indicative of synthetic identity fraud. Specifically targets accounts opened with email domains less than 30 days old, minimal digita</description>
+        <category>bnpl-fraud</category>
+        <category>identity-theft</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0088] BNPL Multi-Provider Application Velocity</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0088</guid>
+      <description>Detects identities applying to three or more distinct BNPL providers within a 72-hour window, a pattern characteristic of multi-provider stacking operations. Legitimate consumers rarely apply to more </description>
+        <category>bnpl-fraud</category>
+        <category>first-party-fraud</category>
+        <category>identity-theft</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0089] BNPL Spending Step-Up to Limit Bust-Out Pattern</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0089</guid>
+      <description>Detects the characteristic spending escalation pattern of BNPL bust-out fraud, where accounts begin with small purchases (under $50) during a credit grooming phase, then rapidly escalate to purchases </description>
+        <category>bnpl-fraud</category>
+        <category>bust-out</category>
+        <category>first-party-fraud</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0090] BNPL Item-Not-Received Claim Velocity</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0090</guid>
+      <description>Detects accounts filing three or more item-not-received (INR) claims within a 90-day rolling window where the average disputed order value exceeds $300. Legitimate INR dispute rates are under 1% of or</description>
+        <category>bnpl-fraud</category>
+        <category>first-party-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0091] BNPL Cross-Account Device Clustering</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0091</guid>
+      <description>Detects four or more distinct BNPL accounts created from or accessed by the same device fingerprint within a 30-day window, indicating potential synthetic identity ring activity or account farming ope</description>
+        <category>bnpl-fraud</category>
+        <category>identity-theft</category>
+        <category>severity-high</category>
     </item>
   </channel>
 </rss>

@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(dispute_type:item_not_received AND account_type:bnpl) AND (count:>=3 AND groupby:account_id AND timeframe:90d) AND avg_disputed_order_value:>=300

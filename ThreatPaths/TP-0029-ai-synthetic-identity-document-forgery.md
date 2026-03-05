@@ -5,7 +5,7 @@
 id: TP-0029
 title: "AI Synthetic Identity & Document Forgery"
 category: ThreatPath
-date: 2026-03-02
+date: 2026-03-04
 author: "FLAME Project"
 source: "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20240715a.htm"
 tlp: WHITE
@@ -365,6 +365,8 @@ tags:
 
 - **Herodotus Malware Analysis**: Security research documenting behavioral biometric spoofing malware that mimics human interaction patterns (mouse movements, typing cadence, scroll behavior) to defeat behavioral analytics.
 
+- **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: AI-generated forgery statistics, deepfake detection rates, dark web user growth, enterprise AI risk disclosure trends.
+
 ---
 
 ## Analyst Notes
@@ -380,6 +382,14 @@ This threat path represents the most rapidly evolving area of financial fraud. S
 **Cross-references**: TP-0003 (Synthetic Identity Bust-Out) covers the traditional synthetic identity lifecycle without AI-enhanced document forgery. TP-0018 (AI-Enabled Fraud) provides broader context on AI applications in financial crime. This threat path focuses specifically on the convergence of AI document forgery with synthetic identity techniques, representing the next evolution of both categories.
 
 **Regulatory attention**: FinCEN, the FRB, and OCC are actively developing guidance on AI-specific fraud controls. Institutions without demonstrable AI forgery detection capabilities will face increasing regulatory scrutiny as the threat becomes a supervisory priority.
+
+### AI Fraud Arms Race Escalation — LNRS 2026
+
+The arms race between "good AI" and "bad AI" is accelerating. An estimated 85% of identity fraud cases involve generative AI tools, while a study revealed that people correctly spot deepfakes only 20% of the time. In 2021, virtually no forged documents were AI-generated; by 2024, AI-generated forgeries were involved in 57% of attacks.
+
+A fraudster recently scammed $20 million from Brazilian financial institutions using multiple deepfake accounts. On the dark web, 4.6 million users accessed it daily in 2025 (up from 3M in 2024), with KYC-as-a-service packages available for $500-$800.
+
+Enterprise awareness is rising: 72% of S&P 500 companies disclosed material AI risk in 2025, up from just 12% in 2023. Meanwhile, 88% of senior executives plan to increase AI budgets specifically for agentic AI, signaling both defensive investment and recognition of the AI agent attack surface.
 
 ---
 

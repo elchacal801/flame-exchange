@@ -7,8 +7,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--ea4396a0-a3a6-52ca-b562-5344eff49e65",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.101073Z",
-      "modified": "2026-03-05T03:29:10.101073Z",
+      "created": "2026-03-05T04:19:18.324302Z",
+      "modified": "2026-03-05T04:19:18.324302Z",
       "name": "Mule Account Velocity Pattern",
       "description": "Detects rapid inbound transfers from multiple unique senders followed by immediate outbound movement, typical of money mule activity. This rule is a shared component applicable to TP-0001, TP-0002, TP-0011, and TP-0022.",
       "labels": [
@@ -30,8 +30,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--bb3ecf63-d7a6-5abc-add8-97962257220d",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.105549Z",
-      "modified": "2026-03-05T03:29:10.105549Z",
+      "created": "2026-03-05T04:19:18.336815Z",
+      "modified": "2026-03-05T04:19:18.336815Z",
       "name": "Infostealer Credential Dump Velocity",
       "description": "Detects rapid credential dump patterns where many unique credentials are harvested from a single host in a short timeframe. Infostealers such as RedLine, Lumma, and Vidar typically exfiltrate dozens to hundreds of stored credentials within seconds of execution, producing a burst of credential-access events from one endpoint.\n",
       "labels": [
@@ -55,8 +55,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--6f1243d7-3152-5d18-bba0-2d4c7860839e",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.108976Z",
-      "modified": "2026-03-05T03:29:10.108976Z",
+      "created": "2026-03-05T04:19:18.342512Z",
+      "modified": "2026-03-05T04:19:18.342512Z",
       "name": "Session Cookie Exfiltration Pattern",
       "description": "Detects session token and cookie theft patterns in log data indicative of infostealer activity. Stealers like Lumma and Raccoon target browser cookie stores to extract active session tokens, enabling session hijacking without requiring credentials. This rule monitors for suspicious access to cookie databases and exfiltration of session-bearing data.\n",
       "labels": [
@@ -80,8 +80,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--e40d7b34-f749-5bb6-ac4a-89563bc75a6f",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.112349Z",
-      "modified": "2026-03-05T03:29:10.112349Z",
+      "created": "2026-03-05T04:19:18.349115Z",
+      "modified": "2026-03-05T04:19:18.349115Z",
       "name": "Browser Credential Store Access",
       "description": "Detects unusual access to browser credential stores (Login Data, logins.json, key3.db/key4.db) by non-browser processes. Infostealers such as RedLine and Vidar systematically read these SQLite databases to extract saved usernames and passwords for banking portals and other financial services.\n",
       "labels": [
@@ -105,8 +105,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--708e515e-1fc4-5082-ad85-beee5dbe57be",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.115443Z",
-      "modified": "2026-03-05T03:29:10.115443Z",
+      "created": "2026-03-05T04:19:18.355226Z",
+      "modified": "2026-03-05T04:19:18.355226Z",
       "name": "Stealer C2 Beacon Pattern",
       "description": "Detects command-and-control callback patterns typical of Malware-as-a-Service (MaaS) stealers. RedLine, Lumma, and StealC use distinctive C2 communication patterns including HTTP POST requests with base64-encoded payloads to newly registered domains, often on non-standard ports or with characteristic URI patterns.\n",
       "labels": [
@@ -129,8 +129,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--5b1ec4a2-e4f3-50df-977d-4bd560dba4aa",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.117872Z",
-      "modified": "2026-03-05T03:29:10.117872Z",
+      "created": "2026-03-05T04:19:18.368772Z",
+      "modified": "2026-03-05T04:19:18.368772Z",
       "name": "Credential Testing After Dump",
       "description": "Detects rapid credential validation attempts occurring shortly after a credential dump event. After infostealers exfiltrate harvested credentials, threat actors typically run automated validation to identify which stolen credentials are still active, producing a burst of login attempts across multiple banking portals from the attacker's infrastructure.\n",
       "labels": [
@@ -153,8 +153,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--9953c667-ceda-5672-9acf-a62ca72ee893",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.12149Z",
-      "modified": "2026-03-05T03:29:10.12149Z",
+      "created": "2026-03-05T04:19:18.381035Z",
+      "modified": "2026-03-05T04:19:18.381035Z",
       "name": "Infostealer Exfiltration Archive Creation",
       "description": "Detects creation of archive files containing credential-related file patterns consistent with infostealer packaging behavior. Stealers like RedLine and Vidar collect credentials, cookies, autofill data, and crypto wallet files into a ZIP or RAR archive before exfiltrating them to the C2 server.\n",
       "labels": [
@@ -177,8 +177,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--dac4c999-f922-5cee-8a56-42f218e8bf2d",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.124051Z",
-      "modified": "2026-03-05T03:29:10.124051Z",
+      "created": "2026-03-05T04:19:18.388514Z",
+      "modified": "2026-03-05T04:19:18.388514Z",
       "name": "Multiple Account Access from Single Source",
       "description": "Detects multiple distinct banking accounts being accessed from a single device or IP address within a short timeframe. This pattern is consistent with an attacker using stolen credentials from an infostealer dump to sequentially access compromised accounts for reconnaissance or initial positioning before fraudulent transactions.\n",
       "labels": [
@@ -201,8 +201,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--5797afda-9e0b-58dd-9b73-9fefe0912b17",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.126989Z",
-      "modified": "2026-03-05T03:29:10.126989Z",
+      "created": "2026-03-05T04:19:18.394109Z",
+      "modified": "2026-03-05T04:19:18.394109Z",
       "name": "Stolen Session Token Replay",
       "description": "Detects session token replay from a different geographic location or device than the original authenticating session. When infostealers exfiltrate active session cookies, attackers import them into antidetect browsers to hijack authenticated sessions without triggering login-based detections. This rule correlates session token usage across differing geolocations and device fingerprints.\n",
       "labels": [
@@ -225,8 +225,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--5f471fe8-4a31-5da6-8574-4aba79ccc4a7",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.130758Z",
-      "modified": "2026-03-05T03:29:10.130758Z",
+      "created": "2026-03-05T04:19:18.398483Z",
+      "modified": "2026-03-05T04:19:18.398483Z",
       "name": "Autofill Data Harvesting",
       "description": "Detects form autofill data extraction patterns consistent with infostealer behavior. Stealers like RedLine and Raccoon target browser autofill databases (Web Data, formhistory.sqlite) to harvest stored PII including names, addresses, phone numbers, and payment card details that facilitate downstream fraud.\n",
       "labels": [
@@ -250,8 +250,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--a3aaf9c1-49b6-5ef8-aa0e-c6e26ac73735",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.134114Z",
-      "modified": "2026-03-05T03:29:10.134114Z",
+      "created": "2026-03-05T04:19:18.408026Z",
+      "modified": "2026-03-05T04:19:18.408026Z",
       "name": "Crypto Wallet Seed Phrase Exfiltration",
       "description": "Detects wallet seed phrase and private key extraction attempts targeting cryptocurrency wallets. Infostealers such as RedLine, Vidar, and StealC include dedicated modules that search for wallet.dat files, seed phrase backups, and keystore directories for MetaMask, Exodus, Electrum, and other popular wallets to enable cryptocurrency theft.\n",
       "labels": [
@@ -274,8 +274,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--88c5c1dc-381e-5b7e-8748-57b4e6913b3f",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.139848Z",
-      "modified": "2026-03-05T03:29:10.139848Z",
+      "created": "2026-03-05T04:19:18.418637Z",
+      "modified": "2026-03-05T04:19:18.418637Z",
       "name": "Login Velocity Anomaly",
       "description": "Detects abnormal login attempt velocity from a single source IP or subnet, indicative of automated credential stuffing tools. Legitimate users produce low single-digit login attempts per minute; credential stuffing tools generate dozens to hundreds, often targeting the authentication API directly rather than the web login form.\n",
       "labels": [
@@ -298,8 +298,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--e47e1099-2a0b-573d-b445-afe7c696c267",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.150415Z",
-      "modified": "2026-03-05T03:29:10.150415Z",
+      "created": "2026-03-05T04:19:18.428832Z",
+      "modified": "2026-03-05T04:19:18.428832Z",
       "name": "Geographic Impossibility Login",
       "description": "Detects login attempts from geographically impossible locations within a short timeframe. When a user authenticates from one country and a second authentication occurs from a distant country within a window that makes physical travel impossible, it strongly indicates credential compromise and concurrent use by an attacker.\n",
       "labels": [
@@ -322,8 +322,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--7cd2ddaa-7efe-5ceb-ba40-8ca3c1d94379",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.156276Z",
-      "modified": "2026-03-05T03:29:10.156276Z",
+      "created": "2026-03-05T04:19:18.436874Z",
+      "modified": "2026-03-05T04:19:18.436874Z",
       "name": "Device Fingerprint Anomaly",
       "description": "Detects a known device fingerprint presenting with changed underlying characteristics such as OS version, screen resolution, timezone, or installed fonts. Attackers using antidetect browsers (Multilogin, GoLogin, Dolphin Anty) import stolen device fingerprints but often have mismatches in lower-level hardware attributes that this rule correlates.\n",
       "labels": [
@@ -346,8 +346,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--a42cb3d1-fcd0-5a95-8355-c5b8a838c4f8",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.161128Z",
-      "modified": "2026-03-05T03:29:10.161128Z",
+      "created": "2026-03-05T04:19:18.441136Z",
+      "modified": "2026-03-05T04:19:18.441136Z",
       "name": "Combo List Iteration Pattern",
       "description": "Detects sequential username patterns typical of combo list iteration during credential stuffing attacks. Attackers feed sorted credential lists into stuffing tools, producing login attempts where usernames appear in alphabetical or near-alphabetical order with minimal timing variation between attempts, a pattern never seen in organic user behavior.\n",
       "labels": [
@@ -370,8 +370,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--cea64120-7b1e-539d-bde1-26aa7c26a509",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.165375Z",
-      "modified": "2026-03-05T03:29:10.165375Z",
+      "created": "2026-03-05T04:19:18.445103Z",
+      "modified": "2026-03-05T04:19:18.445103Z",
       "name": "Distributed Credential Stuffing",
       "description": "Detects low-and-slow distributed credential stuffing attacks spread across multiple source IPs to evade per-IP rate limiting. Advanced attackers use residential proxy networks and botnets to distribute attempts, making each source IP appear benign while the aggregate attack targets many accounts. This rule aggregates failed login patterns across source IPs sharing common characteristics.\n",
       "labels": [
@@ -394,8 +394,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--3a203b37-5673-5a7d-9182-292975336efe",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.169178Z",
-      "modified": "2026-03-05T03:29:10.169178Z",
+      "created": "2026-03-05T04:19:18.448942Z",
+      "modified": "2026-03-05T04:19:18.448942Z",
       "name": "Residential Proxy Login Attempt",
       "description": "Detects login attempts originating from known residential proxy networks. Credential stuffing actors increasingly route attacks through residential proxies (Luminati/Bright Data, Oxylabs, SmartProxy) to appear as legitimate home users and bypass IP-reputation blocklists. This rule correlates source IPs against residential proxy threat intelligence feeds.\n",
       "labels": [
@@ -418,8 +418,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--2df86fe2-3ba7-58aa-b74f-e50966e96465",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.172331Z",
-      "modified": "2026-03-05T03:29:10.172331Z",
+      "created": "2026-03-05T04:19:18.452047Z",
+      "modified": "2026-03-05T04:19:18.452047Z",
       "name": "Credential Spray Single Password",
       "description": "Detects password spraying attacks where a single password (or small set of passwords) is tested across many accounts. Unlike traditional credential stuffing which uses unique username-password pairs, password spraying tries common or recently breached passwords against a large account population to avoid per-account lockout thresholds.\n",
       "labels": [
@@ -442,8 +442,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--5d513d5a-87f6-56d6-ab01-265cc2bfc160",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.175336Z",
-      "modified": "2026-03-05T03:29:10.175336Z",
+      "created": "2026-03-05T04:19:18.455061Z",
+      "modified": "2026-03-05T04:19:18.455061Z",
       "name": "Beneficiary Change Velocity Anomaly",
       "description": "Detects multiple beneficiary additions or modifications on a single account within a short time window. Rapid beneficiary changes are a strong pre-cursor to payment diversion fraud, where an attacker positions new destination accounts before initiating unauthorized wires.\n",
       "labels": [
@@ -467,8 +467,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--5951d6c3-6238-5c4a-9ed3-85047e306e6e",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.178373Z",
-      "modified": "2026-03-05T03:29:10.178373Z",
+      "created": "2026-03-05T04:19:18.458229Z",
+      "modified": "2026-03-05T04:19:18.458229Z",
       "name": "Rapid Contact Information Change",
       "description": "Detects when email, phone number, and mailing address are all changed on an account within a short window. A full contact information swap is a hallmark of account takeover where the attacker locks out the legitimate owner before executing fraud.\n",
       "labels": [
@@ -490,8 +490,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--49c4ca05-6793-55ed-a2b1-0f00b360ac19",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.181178Z",
-      "modified": "2026-03-05T03:29:10.181178Z",
+      "created": "2026-03-05T04:19:18.461245Z",
+      "modified": "2026-03-05T04:19:18.461245Z",
       "name": "MFA Method Switch Before High-Value Transaction",
       "description": "Detects when an account's multi-factor authentication method is changed (e.g., from hardware token to SMS or email OTP) shortly before a high-value wire or ACH transaction is initiated. Attackers downgrade MFA to a method they control prior to executing fraud.\n",
       "labels": [
@@ -514,8 +514,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--4a797514-827b-5489-9bc4-d8c61e448c29",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.183789Z",
-      "modified": "2026-03-05T03:29:10.183789Z",
+      "created": "2026-03-05T04:19:18.464828Z",
+      "modified": "2026-03-05T04:19:18.464828Z",
       "name": "Dormant Account Reactivation",
       "description": "Detects accounts with no transactional activity for 90 or more days that suddenly initiate financial transactions. Dormant accounts are frequently targeted by attackers because they are less likely to be monitored and credential compromise may go unnoticed.\n",
       "labels": [
@@ -538,8 +538,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--79f00f39-ca3c-5d36-a833-0541df32007e",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.188428Z",
-      "modified": "2026-03-05T03:29:10.188428Z",
+      "created": "2026-03-05T04:19:18.467606Z",
+      "modified": "2026-03-05T04:19:18.467606Z",
       "name": "Alert Threshold Modification",
       "description": "Detects when a user modifies their own transaction alert thresholds or disables notifications via online banking or mobile app. Attackers raise alert thresholds or suppress notifications to prevent the legitimate account holder from being alerted to unauthorized transactions.\n",
       "labels": [
@@ -561,8 +561,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--5e340449-3e62-54be-9eb5-0641d385f848",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.191829Z",
-      "modified": "2026-03-05T03:29:10.191829Z",
+      "created": "2026-03-05T04:19:18.470409Z",
+      "modified": "2026-03-05T04:19:18.470409Z",
       "name": "Wire Beneficiary Name Mismatch",
       "description": "Detects when the wire beneficiary name provided by the originator does not match the account holder name at the receiving institution. Name mismatches on wire transfers are a strong indicator of payment diversion fraud where funds are redirected to accounts controlled by the attacker.\n",
       "labels": [
@@ -585,8 +585,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--3003873c-ede7-5979-983e-9bde3a11cea4",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.194523Z",
-      "modified": "2026-03-05T03:29:10.194523Z",
+      "created": "2026-03-05T04:19:18.473492Z",
+      "modified": "2026-03-05T04:19:18.473492Z",
       "name": "Power of Attorney or Authorized Signer Change",
       "description": "Detects changes to power of attorney designations or authorized signers on commercial and business accounts. Fraudsters may socially engineer or forge POA documents to gain control of business accounts, enabling them to initiate high-value transactions.\n",
       "labels": [
@@ -609,8 +609,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--f7347687-421e-51ac-9517-7b3827c2baa7",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.197159Z",
-      "modified": "2026-03-05T03:29:10.197159Z",
+      "created": "2026-03-05T04:19:18.47676Z",
+      "modified": "2026-03-05T04:19:18.47676Z",
       "name": "Account Type Conversion Anomaly",
       "description": "Detects suspicious account type conversions such as savings-to-checking or personal-to-business. These conversions can unlock higher transaction limits, wire capabilities, or ACH origination, which attackers exploit to move larger amounts after taking over a limited account.\n",
       "labels": [
@@ -633,8 +633,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--b4edb653-1b81-5ed0-ab53-f9be9cec31c3",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.199774Z",
-      "modified": "2026-03-05T03:29:10.199774Z",
+      "created": "2026-03-05T04:19:18.48015Z",
+      "modified": "2026-03-05T04:19:18.48015Z",
       "name": "First-Time International Wire to New Country",
       "description": "Detects international wire transfers sent to a country that has no prior transaction history for the originating account. First-time international wires, especially to high-risk corridors, are a key indicator of business email compromise and payment diversion schemes.\n",
       "labels": [
@@ -657,8 +657,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--1e146b69-3db6-566a-a647-b05b8a27be19",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.202969Z",
-      "modified": "2026-03-05T03:29:10.202969Z",
+      "created": "2026-03-05T04:19:18.483445Z",
+      "modified": "2026-03-05T04:19:18.483445Z",
       "name": "Transaction Amount Clustering Near Reporting Threshold",
       "description": "Detects transactions that cluster just below regulatory reporting thresholds ($3,000 for international transfers, $10,000 for CTR filing). Structuring transactions to evade reporting requirements is itself a federal offense and a strong indicator of money laundering or fraud monetization.\n",
       "labels": [
@@ -681,8 +681,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--a13bbc73-b35f-559d-8e0d-45aaf5525af9",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.206111Z",
-      "modified": "2026-03-05T03:29:10.206111Z",
+      "created": "2026-03-05T04:19:18.486407Z",
+      "modified": "2026-03-05T04:19:18.486407Z",
       "name": "Split Transfer Chain Detection",
       "description": "Detects when a large inbound amount is split into multiple smaller outbound transfers to different beneficiaries in sequence. This layering technique is used to obscure the origin and destination of fraudulently obtained funds.\n",
       "labels": [
@@ -706,8 +706,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--b68d155a-eb38-5632-baad-f202ea851eb1",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.208881Z",
-      "modified": "2026-03-05T03:29:10.208881Z",
+      "created": "2026-03-05T04:19:18.489517Z",
+      "modified": "2026-03-05T04:19:18.489517Z",
       "name": "After-Hours Wire Transfer Initiation",
       "description": "Detects wire transfers initiated outside the account's established normal business hours. Attackers often execute unauthorized wires during evenings, weekends, or holidays when fraud detection staff and account holders are less likely to notice.\n",
       "labels": [
@@ -730,8 +730,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--31b50093-cc0b-59c6-a3e8-cb02abbbd0ec",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.211496Z",
-      "modified": "2026-03-05T03:29:10.211496Z",
+      "created": "2026-03-05T04:19:18.492497Z",
+      "modified": "2026-03-05T04:19:18.492497Z",
       "name": "Rapid Outbound Wire After Large Inbound",
       "description": "Detects a large outbound wire or ACH transfer initiated within hours of receiving a large inbound deposit. This pass-through pattern is characteristic of compromised accounts being used as intermediary conduits in fraud or money laundering schemes.\n",
       "labels": [
@@ -755,8 +755,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--83317dfa-1a21-54cb-9eed-db79a3a266af",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.214211Z",
-      "modified": "2026-03-05T03:29:10.214211Z",
+      "created": "2026-03-05T04:19:18.496242Z",
+      "modified": "2026-03-05T04:19:18.496242Z",
       "name": "Beneficiary Country Mismatch with Business Profile",
       "description": "Detects wire transfers to countries where the account holder has no established business relationship or prior transaction history. Combined with other indicators, this can reveal business email compromise where payment instructions are altered to redirect funds to attacker-controlled accounts in foreign jurisdictions.\n",
       "labels": [
@@ -779,8 +779,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--ad191908-e634-5621-a54e-05ca6fa41695",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.216648Z",
-      "modified": "2026-03-05T03:29:10.216648Z",
+      "created": "2026-03-05T04:19:18.499063Z",
+      "modified": "2026-03-05T04:19:18.499063Z",
       "name": "Round-Dollar Wire Amount Pattern",
       "description": "Detects unusual patterns of wire transfers in round dollar amounts (e.g., $5,000, $10,000, $25,000). While individual round-amount wires are common, a pattern of multiple round-amount wires is atypical for legitimate business payments and may indicate structured or test transactions by fraudsters.\n",
       "labels": [
@@ -803,8 +803,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--faf3fb70-bdff-549a-801c-4a18a08c8d17",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.219823Z",
-      "modified": "2026-03-05T03:29:10.219823Z",
+      "created": "2026-03-05T04:19:18.501481Z",
+      "modified": "2026-03-05T04:19:18.501481Z",
       "name": "ACH Return Rate Anomaly",
       "description": "Detects ACH originators with an elevated return or reversal rate exceeding normal thresholds. High ACH return rates (especially R10 unauthorized, R29 corporate not authorized) may indicate the account is being used to initiate unauthorized debits against victim accounts.\n",
       "labels": [
@@ -827,8 +827,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--8727131f-a429-5fc5-a4c0-b12fa9fd7ddf",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.223189Z",
-      "modified": "2026-03-05T03:29:10.223189Z",
+      "created": "2026-03-05T04:19:18.504169Z",
+      "modified": "2026-03-05T04:19:18.504169Z",
       "name": "Wire to FATF High-Risk Jurisdiction",
       "description": "Detects wire transfers to jurisdictions on the FATF high-risk or increased monitoring lists. While not inherently fraudulent, wires to these jurisdictions combined with other risk factors (new beneficiary, unusual amount, after-hours) significantly elevate the risk of money laundering or fraud monetization.\n",
       "labels": [
@@ -851,8 +851,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--f4a32ac6-2657-59d1-9c20-3507864427b1",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.225913Z",
-      "modified": "2026-03-05T03:29:10.225913Z",
+      "created": "2026-03-05T04:19:18.506767Z",
+      "modified": "2026-03-05T04:19:18.506767Z",
       "name": "Payment Instruction Velocity Spike",
       "description": "Detects when multiple payment instructions (wires, ACH batches, or internal transfers) are submitted in rapid succession from a single account or user session. High-velocity payment submissions suggest automated or scripted fraud execution, often seen after credential compromise.\n",
       "labels": [
@@ -876,8 +876,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--ea663b32-f2dc-542d-aa6e-c10a42aedd9e",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.228611Z",
-      "modified": "2026-03-05T03:29:10.228611Z",
+      "created": "2026-03-05T04:19:18.509238Z",
+      "modified": "2026-03-05T04:19:18.509238Z",
       "name": "Mule Rapid ATM Withdrawal After Inbound Transfer",
       "description": "Detects cash withdrawals at ATMs occurring shortly after an inbound wire or ACH transfer. Money mules frequently convert electronically received fraud proceeds to cash as quickly as possible to prevent recovery, often hitting daily ATM limits across multiple machines.\n",
       "labels": [
@@ -900,8 +900,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--b96925d3-113d-5251-8ddb-6f531e08490c",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.231592Z",
-      "modified": "2026-03-05T03:29:10.231592Z",
+      "created": "2026-03-05T04:19:18.513291Z",
+      "modified": "2026-03-05T04:19:18.513291Z",
       "name": "Account Age vs Transaction Volume Mismatch",
       "description": "Detects accounts less than 90 days old that exhibit transaction volumes exceeding the typical profile for mature accounts. Newly opened accounts with abnormally high volume are a primary indicator of purpose-built mule accounts created specifically to funnel illicit funds.\n",
       "labels": [
@@ -923,8 +923,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--f176f815-6739-552a-98da-dcf792a9bb17",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.234492Z",
-      "modified": "2026-03-05T03:29:10.234492Z",
+      "created": "2026-03-05T04:19:18.516402Z",
+      "modified": "2026-03-05T04:19:18.516402Z",
       "name": "Multi-Bank Funnel Pattern",
       "description": "Detects accounts receiving funds from multiple external financial institutions that are then consolidated and sent outbound to a single destination. This funnel pattern is a hallmark of money mule operations where proceeds from multiple fraud victims are aggregated before being laundered.\n",
       "labels": [
@@ -947,8 +947,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--90dc183b-a0e3-5823-9b64-3de8f208a265",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.238308Z",
-      "modified": "2026-03-05T03:29:10.238308Z",
+      "created": "2026-03-05T04:19:18.519374Z",
+      "modified": "2026-03-05T04:19:18.519374Z",
       "name": "Crypto Off-Ramp After Wire or ACH Receipt",
       "description": "Detects a pattern where an account receives a wire or ACH credit and then promptly initiates a transfer to a known cryptocurrency exchange or digital asset platform. Converting fraud proceeds to cryptocurrency provides near-irreversible laundering, making this a critical monetization indicator.\n",
       "labels": [
@@ -971,8 +971,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--95c0b02d-4bff-546c-bc6b-0a7dbad58d1d",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.241086Z",
-      "modified": "2026-03-05T03:29:10.241086Z",
+      "created": "2026-03-05T04:19:18.521965Z",
+      "modified": "2026-03-05T04:19:18.521965Z",
       "name": "Peer-to-Peer Transfer Chain (Smurfing Pattern)",
       "description": "Detects chains of peer-to-peer transfers across multiple accounts where funds move through a sequence of intermediary accounts (A to B to C to D). This smurfing pattern is used to layer fraud proceeds through multiple hops, making tracing difficult.\n",
       "labels": [
@@ -995,8 +995,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--634b5337-c327-5e10-b599-4f56c113267a",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.243783Z",
-      "modified": "2026-03-05T03:29:10.243783Z",
+      "created": "2026-03-05T04:19:18.524439Z",
+      "modified": "2026-03-05T04:19:18.524439Z",
       "name": "Mule Recruitment Test Deposit Pattern",
       "description": "Detects accounts receiving multiple small \"test\" deposits from many distinct external sources. Mule recruiters validate new mule accounts by sending micro-deposits from various fraud proceeds before routing larger amounts. The pattern of many small inbound transfers from unrelated senders is highly anomalous for personal accounts.\n",
       "labels": [
@@ -1018,8 +1018,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--dfb2fe7e-95cf-531f-a73b-a411985424fe",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.24719Z",
-      "modified": "2026-03-05T03:29:10.24719Z",
+      "created": "2026-03-05T04:19:18.527247Z",
+      "modified": "2026-03-05T04:19:18.527247Z",
       "name": "Rapid Fund Layering Through Shell Accounts",
       "description": "Detects rapid fund movement through multiple accounts with minimal retention time, indicative of layering through shell or pass-through accounts. Funds transit through each account within hours with near-zero balance retention, suggesting the accounts exist solely to obscure the money trail.\n",
       "labels": [
@@ -1043,8 +1043,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--e288a3d1-3a90-579d-8abb-fa85c1608cfb",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.250385Z",
-      "modified": "2026-03-05T03:29:10.250385Z",
+      "created": "2026-03-05T04:19:18.532161Z",
+      "modified": "2026-03-05T04:19:18.532161Z",
       "name": "Carrier Change Authentication Correlation",
       "description": "Detects a carrier or SIM change event immediately followed by an authentication attempt on a banking platform. SIM swap attacks involve social engineering or insider compromise at a mobile carrier to port the victim's phone number to an attacker-controlled SIM, after which the attacker uses SMS-based MFA to access accounts. The tight temporal correlation between carrier change and login is the key indicator.\n",
       "labels": [
@@ -1067,8 +1067,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--0d1dabba-b850-5abb-9bde-38f6bb8bb103",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.253156Z",
-      "modified": "2026-03-05T03:29:10.253156Z",
+      "created": "2026-03-05T04:19:18.535503Z",
+      "modified": "2026-03-05T04:19:18.535503Z",
       "name": "New Device High-Value Transaction",
       "description": "Detects a high-value financial transaction initiated from a new or previously unknown device shortly after initial authentication. Attackers who have compromised credentials and bypassed MFA via SIM swap typically move quickly to execute high-value transfers from a device with no prior history on the account, exploiting the narrow window before the victim notices.\n",
       "labels": [
@@ -1091,8 +1091,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--83833093-8f75-571f-b7d4-8b3508d355f0",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.256021Z",
-      "modified": "2026-03-05T03:29:10.256021Z",
+      "created": "2026-03-05T04:19:18.538427Z",
+      "modified": "2026-03-05T04:19:18.538427Z",
       "name": "MFA Push Bombing",
       "description": "Detects rapid repeated MFA push notifications sent to the same user, a technique known as MFA fatigue or push bombing. Attackers who have obtained valid credentials bombard the victim with push authentication requests, hoping the user will approve one out of frustration or confusion, thereby granting the attacker access.\n",
       "labels": [
@@ -1114,8 +1114,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--4b5e48ab-d504-57f5-a298-da2fe4afb790",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.263261Z",
-      "modified": "2026-03-05T03:29:10.263261Z",
+      "created": "2026-03-05T04:19:18.541561Z",
+      "modified": "2026-03-05T04:19:18.541561Z",
       "name": "SIM Swap Indicator Chain",
       "description": "Detects the full SIM swap attack chain: phone number change followed by password reset followed by high-value account action in rapid sequence. This multi-stage correlation captures the complete attack lifecycle where the attacker first takes over the phone number, then uses it to reset the account password via SMS OTP, and finally executes a high-value transfer or account modification.\n",
       "labels": [
@@ -1138,8 +1138,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--9e477e60-c01c-5b6f-8473-fb7f45ead0c3",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.274308Z",
-      "modified": "2026-03-05T03:29:10.274308Z",
+      "created": "2026-03-05T04:19:18.544491Z",
+      "modified": "2026-03-05T04:19:18.544491Z",
       "name": "VoIP Number MFA Enrollment",
       "description": "Detects MFA enrollment using VoIP or virtual phone numbers instead of legitimate mobile carrier numbers. Attackers who have compromised an account often enroll a disposable VoIP number (Google Voice, TextNow, Twilio) as the MFA phone to maintain persistent access and intercept future OTP codes without relying on SIM swap persistence.\n",
       "labels": [
@@ -1162,8 +1162,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--5ab1918b-e10d-5305-9d3f-136e7c400319",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.281142Z",
-      "modified": "2026-03-05T03:29:10.281142Z",
+      "created": "2026-03-05T04:19:18.54901Z",
+      "modified": "2026-03-05T04:19:18.54901Z",
       "name": "MFA Method Downgrade",
       "description": "Detects when an account's MFA method is changed from a strong phishing-resistant factor (FIDO2/WebAuthn, hardware token, authenticator app) to a weaker method (SMS OTP, voice call). Attackers who compromise account credentials may downgrade the MFA method to one they can intercept via SIM swap or SS7 exploitation, enabling persistent account takeover.\n",
       "labels": [
@@ -1185,8 +1185,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--88e1b638-12f4-5fdf-928b-a211bec1e79b",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.286136Z",
-      "modified": "2026-03-05T03:29:10.286136Z",
+      "created": "2026-03-05T04:19:18.551534Z",
+      "modified": "2026-03-05T04:19:18.551534Z",
       "name": "Voice Biometric Confidence Score Anomaly for Known Caller",
       "description": "Detects when a voice biometric verification score for a previously enrolled caller falls below an acceptable confidence threshold, which may indicate a deepfake or voice-clone attempt impersonating a legitimate customer. Legitimate callers typically produce scores above 85; scores between 40-70 with a previously stable voiceprint warrant investigation.\n",
       "labels": [
@@ -1209,8 +1209,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--3923b350-fee9-55f7-a30d-1c877428785a",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.29069Z",
-      "modified": "2026-03-05T03:29:10.29069Z",
+      "created": "2026-03-05T04:19:18.554023Z",
+      "modified": "2026-03-05T04:19:18.554023Z",
       "name": "Callback Number Mismatch for Claimed Institution",
       "description": "Detects when an inbound caller claims to represent a specific financial institution or internal department, but the originating ANI or callback number does not match the institution's known directory of outbound numbers. This is a common indicator of vishing and social engineering, especially when combined with voice-clone technology to impersonate bank officials.\n",
       "labels": [
@@ -1233,8 +1233,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--3b61c4c8-195a-5bed-89cf-e167b100f2c5",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.293764Z",
-      "modified": "2026-03-05T03:29:10.293764Z",
+      "created": "2026-03-05T04:19:18.556272Z",
+      "modified": "2026-03-05T04:19:18.556272Z",
       "name": "Audio Compression Artifacts Indicative of AI-Generated Speech",
       "description": "Detects audio streams exhibiting compression artifacts, spectral anomalies, or frequency-band irregularities characteristic of AI-generated or text-to-speech synthesis engines. These include unnaturally uniform pitch contours, missing micro-pauses, absence of breath sounds, and codec artifacts from re-encoding through real-time deepfake pipelines.\n",
       "labels": [
@@ -1256,8 +1256,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--2cf27beb-d78e-52d3-a6e7-14f359f1588f",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.2966Z",
-      "modified": "2026-03-05T03:29:10.2966Z",
+      "created": "2026-03-05T04:19:18.558886Z",
+      "modified": "2026-03-05T04:19:18.558886Z",
       "name": "Deepfake Anomalies in Video KYC Session",
       "description": "Detects anomalies during video KYC (Know Your Customer) sessions that may indicate the use of deepfake technology. Indicators include irregular frame rates suggesting real-time face-swapping, inconsistent lighting between face and background, lip-sync desynchronization, unnatural eye-blink patterns, and face-boundary artifacts.\n",
       "labels": [
@@ -1280,8 +1280,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--7268b8f5-03e3-59cb-ac9c-4ce9fe7501fa",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.303646Z",
-      "modified": "2026-03-05T03:29:10.303646Z",
+      "created": "2026-03-05T04:19:18.562131Z",
+      "modified": "2026-03-05T04:19:18.562131Z",
       "name": "AI-Generated Document Detection in Verification",
       "description": "Detects indicators of AI-generated or synthetically created identity documents submitted during verification workflows. Flags include metadata anomalies (missing EXIF data, uniform noise patterns), font rendering inconsistencies, micro-printing irregularities, and GAN-generated portrait artifacts such as asymmetric earrings or irregular hair boundaries.\n",
       "labels": [
@@ -1304,8 +1304,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--13685ed9-cff8-5e0d-a46e-62207dfb8c41",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.315649Z",
-      "modified": "2026-03-05T03:29:10.315649Z",
+      "created": "2026-03-05T04:19:18.56537Z",
+      "modified": "2026-03-05T04:19:18.56537Z",
       "name": "Real-Time Payment to New Payee After Credential or Contact Change",
       "description": "Detects when a real-time or instant payment (Zelle, FedNow, RTP) is initiated to a previously unseen payee within 24 hours of a credential change (password reset, MFA re-enrollment) or contact information update (email, phone, address). This pattern is strongly associated with account takeover followed by immediate monetization via authorized push payment.\n",
       "labels": [
@@ -1328,8 +1328,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--dbb366cd-2675-5655-95ff-fdc0f06e4b1c",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.321588Z",
-      "modified": "2026-03-05T03:29:10.321588Z",
+      "created": "2026-03-05T04:19:18.567749Z",
+      "modified": "2026-03-05T04:19:18.567749Z",
       "name": "Instant Payment Velocity Spike Above 30-Day Baseline",
       "description": "Detects a sudden spike in instant payment frequency that significantly exceeds the account's established 30-day baseline. A spike is defined as the current day's instant payment count exceeding 3 standard deviations above the rolling 30-day mean, indicating potential account compromise or mule activity where the account is being drained rapidly.\n",
       "labels": [
@@ -1352,8 +1352,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--9f540ba4-37c2-5a18-9949-0816d8403ba6",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.327071Z",
-      "modified": "2026-03-05T03:29:10.327071Z",
+      "created": "2026-03-05T04:19:18.575215Z",
+      "modified": "2026-03-05T04:19:18.575215Z",
       "name": "Cross-Platform Deposit and Withdrawal Chain",
       "description": "Detects a pattern where funds are received via one payment rail (e.g., ACH, wire) and then immediately sent out via a different payment rail (e.g., Zelle, FedNow) within a short window. This cross-rail chaining is a common layering technique used to obscure the origin of funds and complicate tracing, often associated with money mule operations and authorized push payment fraud monetization.\n",
       "labels": [
@@ -1377,8 +1377,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--1c9d293c-27e5-5188-b4b5-cef572fc7d73",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.331184Z",
-      "modified": "2026-03-05T03:29:10.331184Z",
+      "created": "2026-03-05T04:19:18.58654Z",
+      "modified": "2026-03-05T04:19:18.58654Z",
       "name": "Repeated A2A Payments at Maximum Per-Transaction Limit",
       "description": "Detects multiple account-to-account payments where each transaction is at or near the maximum per-transaction limit (e.g., $2,500 for Zelle, $500,000 for FedNow). Fraudsters often structure payments at the exact limit to maximize extraction speed while avoiding aggregate-amount alerts, a behavior rarely seen in legitimate consumer transactions.\n",
       "labels": [
@@ -1401,8 +1401,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--15ad1113-bf47-5fb8-a6c6-3d8e9cc74d26",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.33484Z",
-      "modified": "2026-03-05T03:29:10.33484Z",
+      "created": "2026-03-05T04:19:18.592462Z",
+      "modified": "2026-03-05T04:19:18.592462Z",
       "name": "New Account Sending Multiple Instant Payments",
       "description": "Detects accounts less than 30 days old that initiate multiple instant payments within a short time window. Newly opened accounts used for rapid instant-payment disbursement are a strong indicator of synthetic identity fraud or mule accounts created specifically for the monetization phase of a fraud scheme.\n",
       "labels": [
@@ -1425,8 +1425,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--341e26d3-aa18-507d-bbf0-2761f0654e48",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.337539Z",
-      "modified": "2026-03-05T03:29:10.337539Z",
+      "created": "2026-03-05T04:19:18.596706Z",
+      "modified": "2026-03-05T04:19:18.596706Z",
       "name": "Zelle Recipient Enumeration via Multiple Failed Lookups",
       "description": "Detects multiple failed Zelle recipient lookups from a single account or session, which may indicate enumeration activity. Attackers probe email addresses and phone numbers to identify which are registered with Zelle before launching targeted social engineering or authorized push payment attacks against confirmed users.\n",
       "labels": [
@@ -1448,8 +1448,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--3b3c9a98-4ed4-56af-aea3-929d1d7f2dd0",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.340884Z",
-      "modified": "2026-03-05T03:29:10.340884Z",
+      "created": "2026-03-05T04:19:18.601176Z",
+      "modified": "2026-03-05T04:19:18.601176Z",
       "name": "Real-Time Payment Followed by Immediate Refund or Return Request",
       "description": "Detects a pattern where a real-time payment (RTP or FedNow) is sent and then an immediate refund, return, or Request for Return of Funds (RROF) is submitted within a short window. This pattern may indicate a double-dip fraud scheme where the sender initiates an irrevocable payment, then exploits the refund process to recover funds while the recipient also retains them.\n",
       "labels": [
@@ -1472,8 +1472,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--40d3f89b-418e-50dd-9970-21b472b0bd48",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.34377Z",
-      "modified": "2026-03-05T03:29:10.34377Z",
+      "created": "2026-03-05T04:19:18.604962Z",
+      "modified": "2026-03-05T04:19:18.604962Z",
       "name": "Fake Tracking ID (FTID) Refund Fraud Indicators",
       "description": "Detects indicators of fake tracking ID (FTID) refund fraud, where a customer claims a package was not received or returned by providing a manipulated or fabricated tracking number. Indicators include tracking numbers that show delivery to the carrier facility but not to the customer address, tracking IDs associated with lightweight packages inconsistent with the order, or reuse of known FTID patterns across multiple refund claims.\n",
       "labels": [
@@ -1496,8 +1496,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--38f05a52-d8d6-5d5c-af31-35c663eea0c6",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.346406Z",
-      "modified": "2026-03-05T03:29:10.346406Z",
+      "created": "2026-03-05T04:19:18.608183Z",
+      "modified": "2026-03-05T04:19:18.608183Z",
       "name": "Abnormally High Refund Rate Per Customer Account",
       "description": "Detects customer accounts with an abnormally high refund-to-order ratio over a rolling window. Accounts exceeding a refund rate of 40% across 10 or more orders within 90 days are flagged as potential refund abusers or participants in refunding-as-a-service (RaaS) schemes, where professional refunders exploit return policies systematically.\n",
       "labels": [
@@ -1520,8 +1520,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--45e196af-f364-5e79-9637-e33301812b36",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.349302Z",
-      "modified": "2026-03-05T03:29:10.349302Z",
+      "created": "2026-03-05T04:19:18.611809Z",
+      "modified": "2026-03-05T04:19:18.611809Z",
       "name": "Triangulation Fraud Shipping Pattern Detection",
       "description": "Detects orders where the shipping address differs from the billing address and matches known drop-ship or reshipping patterns associated with triangulation fraud. In triangulation fraud, a fraudster lists goods on a marketplace, collects payment from a victim buyer, then purchases the item from a legitimate retailer using stolen payment credentials, shipping directly to the victim. Indicators include shipping to known drop addresses, freight forwarders, or addresses seen across multiple unrelated accounts.\n",
       "labels": [
@@ -1544,8 +1544,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--9556befe-759e-5f30-90af-96b1a50b7fcf",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.356391Z",
-      "modified": "2026-03-05T03:29:10.356391Z",
+      "created": "2026-03-05T04:19:18.614941Z",
+      "modified": "2026-03-05T04:19:18.614941Z",
       "name": "Return Without Receipt Clustering by Customer or Region",
       "description": "Detects clusters of product returns submitted without receipts or order references from the same customer identity or geographic region. Organized return fraud rings often exploit no-receipt return policies by using stolen merchandise or purchasing items specifically for return, concentrating activity across nearby store locations or using multiple accounts linked to the same region.\n",
       "labels": [
@@ -1568,8 +1568,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--ce42742c-01e8-5b23-a3c9-012a35e7a199",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.366534Z",
-      "modified": "2026-03-05T03:29:10.366534Z",
+      "created": "2026-03-05T04:19:18.617466Z",
+      "modified": "2026-03-05T04:19:18.617466Z",
       "name": "High-Value Item Not Received Claims Exceeding Threshold",
       "description": "Detects \"item not received\" (INR) claims filed on high-value orders that exceed a configurable dollar threshold. High-value INR claims are a primary vector for refund fraud, particularly when the delivery confirmation shows successful delivery. Repeated INR claims on expensive items from the same account or device fingerprint are strong indicators of first-party fraud or professional refunding services.\n",
       "labels": [
@@ -1592,8 +1592,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--ca3882ef-8363-5463-b93f-64c198e714b8",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.373169Z",
-      "modified": "2026-03-05T03:29:10.373169Z",
+      "created": "2026-03-05T04:19:18.620408Z",
+      "modified": "2026-03-05T04:19:18.620408Z",
       "name": "Excessive Promotional Code or Coupon Abuse from Related Accounts",
       "description": "Detects excessive use of promotional codes, referral bonuses, or coupon offers from accounts that share common attributes such as device fingerprint, IP address, payment method, or shipping address. This pattern indicates promo abuse rings that create multiple accounts to exploit new-customer or referral promotions repeatedly, often using synthetic or stolen identities.\n",
       "labels": [
@@ -1616,8 +1616,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--568d4e8b-0083-5af3-b261-8bfb23526468",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.378211Z",
-      "modified": "2026-03-05T03:29:10.378211Z",
+      "created": "2026-03-05T04:19:18.623121Z",
+      "modified": "2026-03-05T04:19:18.623121Z",
       "name": "DPRK IT Worker Resume Geographic Mismatch",
       "description": "Detects job applicants whose resume combines a U.S. residential address with education credentials from non-North American institutions (Singapore, Japan, Hong Kong, China, South Korea). This pattern is a key DPRK IT worker indicator documented by FBI IC3 and DOJ enforcement actions. Legitimate applicants with this profile exist, but the combination with thin credit files or recently created LinkedIn profiles significantly elevates risk.\n",
       "labels": [
@@ -1641,8 +1641,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--c5c760d6-d13c-5b70-806b-6ad160424ba0",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.382337Z",
-      "modified": "2026-03-05T03:29:10.382337Z",
+      "created": "2026-03-05T04:19:18.625621Z",
+      "modified": "2026-03-05T04:19:18.625621Z",
       "name": "VPN/Proxy Login Anomaly \u2014 Astrill or Residential Proxy",
       "description": "Detects corporate VPN authentication events originating from known Astrill VPN infrastructure, residential proxy services, or connection patterns indicating VPN-over-VPN layering. DPRK IT workers route connections through Astrill VPN to U.S.-based proxy laptops before connecting to corporate infrastructure, creating a characteristic multi-hop pattern with elevated latency and IP reputation indicators.\n",
       "labels": [
@@ -1664,8 +1664,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--7d1b46cb-dab2-54a0-abe9-8dd3938647a2",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.385541Z",
-      "modified": "2026-03-05T03:29:10.385541Z",
+      "created": "2026-03-05T04:19:18.628174Z",
+      "modified": "2026-03-05T04:19:18.628174Z",
       "name": "Multi-Operator Behavioral Shift \u2014 Timezone and Communication Anomaly",
       "description": "Detects behavioral patterns suggesting multiple operators are sharing a single employee identity. Indicators include login activity spanning incompatible timezones within a single day, significant shifts in communication style or vocabulary between time windows, and device fingerprint changes that correlate with timezone transitions. DPRK IT workers often operate in shifts from different locations using the same stolen identity.\n",
       "labels": [
@@ -1688,8 +1688,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--e008f69e-18e6-5d32-850c-06b607a63124",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.388737Z",
-      "modified": "2026-03-05T03:29:10.388737Z",
+      "created": "2026-03-05T04:19:18.631891Z",
+      "modified": "2026-03-05T04:19:18.631891Z",
       "name": "Bulk Code Repository Clone by New Employee",
       "description": "Detects a new employee (within first 14 days of onboarding) cloning or downloading multiple code repositories, especially repositories outside their assigned team or project scope. DPRK IT workers frequently begin exfiltrating source code within hours of gaining access, cloning entire organizational repositories to personal GitHub accounts or external cloud storage.\n",
       "labels": [
@@ -1712,8 +1712,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--9183591c-2669-56f0-b19c-eb9a27932aae",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.391595Z",
-      "modified": "2026-03-05T03:29:10.391595Z",
+      "created": "2026-03-05T04:19:18.634337Z",
+      "modified": "2026-03-05T04:19:18.634337Z",
       "name": "Credential Store Access Anomaly During Onboarding",
       "description": "Detects new employees accessing browser credential stores, password managers, API key management systems, or SSO session token stores at rates significantly above peer baselines during the first 14 days of employment. DPRK IT workers harvest credentials, session cookies, and API keys early in their tenure for exfiltration to DPRK cyber units and as leverage for post-termination extortion.\n",
       "labels": [
@@ -1736,8 +1736,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--71b9e980-ca5f-5573-8c71-c20609921849",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.394437Z",
-      "modified": "2026-03-05T03:29:10.394437Z",
+      "created": "2026-03-05T04:19:18.637238Z",
+      "modified": "2026-03-05T04:19:18.637238Z",
       "name": "Salary Direct Deposit Rapid Cryptocurrency Conversion",
       "description": "Detects patterns where salary direct deposit payments are rapidly converted to cryptocurrency (USDT, USDC, BTC) within 48 hours of deposit, particularly when the receiving account was recently opened or when multiple employee accounts show the same conversion pattern through the same exchange or payment processor. DPRK IT workers convert salary to cryptocurrency for transfer to regime-controlled wallets, often using daily conversion limits to avoid AML alerts.\n",
       "labels": [
@@ -1760,8 +1760,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--ccae5d27-b074-5be6-adaf-766834ee3052",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.396903Z",
-      "modified": "2026-03-05T03:29:10.396903Z",
+      "created": "2026-03-05T04:19:18.639814Z",
+      "modified": "2026-03-05T04:19:18.639814Z",
       "name": "Post-Termination Data Extortion Indicator",
       "description": "Detects indicators of post-termination data extortion, where a recently terminated or resigned employee communicates ransom demands referencing specific internal proprietary code, documents, or trade secrets. DPRK IT workers have escalated to this tactic since mid-2024, threatening to publish exfiltrated source code on public repositories or sell proprietary data unless payment is made. Indicators include communication from personal channels containing references to internal systems, and the appearance of company code on public GitHub repositories created by former employee-linked accounts.\n",
       "labels": [
@@ -1784,8 +1784,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--bc2fe9be-f368-5735-bbdf-5a0c106ffdb1",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.400162Z",
-      "modified": "2026-03-05T03:29:10.400162Z",
+      "created": "2026-03-05T04:19:18.643485Z",
+      "modified": "2026-03-05T04:19:18.643485Z",
       "name": "E-Skimmer Script Injection on Payment Pages",
       "description": "Detects unauthorized JavaScript injection on e-commerce payment pages by identifying Content Security Policy violations, unexpected external script loads from newly registered domains, and unauthorized Google Tag Manager container modifications. Magecart-style e-skimmer operators inject malicious scripts through CMS exploitation, compromised third-party libraries, or GTM container abuse. The \"Sniffer by Fleras\" MaaS platform accounts for 26% of all infections, and GTM container abuse has become a primary delivery vector due to GTM's trusted status in most CSP configurations. PCI DSS 4.0 Requirement 6.4.3 mandates automated script integrity monitoring on payment pages, making this detection a compliance requirement as well as a security control.\n",
       "labels": [
@@ -1808,8 +1808,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--6c239d7b-c3dd-56ff-b350-5054e3038ac6",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.410637Z",
-      "modified": "2026-03-05T03:29:10.410637Z",
+      "created": "2026-03-05T04:19:18.648197Z",
+      "modified": "2026-03-05T04:19:18.648197Z",
       "name": "Blockchain C2 and WebSocket Exfiltration from Payment Pages",
       "description": "Detects payment page scripts making calls to blockchain RPC endpoints or establishing WebSocket connections to unknown servers, indicating potential e-skimmer data exfiltration via blockchain-based command-and-control infrastructure. Advanced Magecart variants observed in 2025 use a loader script on the compromised site that queries a blockchain smart contract (Ethereum, BNB Chain) to retrieve the address of a second-stage payload server, then establishes a WebSocket connection for both payload delivery and data exfiltration. This technique provides censorship-resistant C2 that cannot be disrupted through conventional domain seizure or hosting provider takedown. Detection focuses on identifying JSON-RPC calls to blockchain node endpoints (Infura, Alchemy, direct nodes) and WebSocket connections to non-payment-related servers originating from payment page context.\n",
       "labels": [
@@ -1832,8 +1832,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--71161841-50a4-553e-8298-90679ee3457f",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.420902Z",
-      "modified": "2026-03-05T03:29:10.420902Z",
+      "created": "2026-03-05T04:19:18.651434Z",
+      "modified": "2026-03-05T04:19:18.651434Z",
       "name": "Unauthorized Checkout Page DOM Modification",
       "description": "Detects modifications to checkout page DOM elements \u2014 including payment form fields, submit buttons, and iframe injections \u2014 that occur outside authorized deployment windows or without corresponding change management records. E-skimmer operators manipulate checkout page DOM to inject fake payment form overlays, intercept form submission events, or create invisible iframes that mirror payment forms to capture card data. Legitimate checkout page modifications should only occur during scheduled deployment windows and should be tracked in version control and change management systems. Any DOM mutation on payment form elements that does not correlate with an authorized release is a high-confidence indicator of e-skimmer injection. This rule supports PCI DSS 4.0 Requirement 6.4.3 for script and content integrity monitoring on payment pages.\n",
       "labels": [
@@ -1856,8 +1856,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--94fb388d-a7ce-5e2b-8187-e37980886768",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.426402Z",
-      "modified": "2026-03-05T03:29:10.426402Z",
+      "created": "2026-03-05T04:19:18.654269Z",
+      "modified": "2026-03-05T04:19:18.654269Z",
       "name": "Scam Merchant High-Velocity Transaction Pattern",
       "description": "Detects merchant accounts exhibiting high initial transaction velocity, elevated chargeback ratios, and short account age \u2014 a pattern consistent with purchase scam merchant operations. Recorded Future identified 3,600+ scam merchant accounts in 2025, a 2.5x increase from 2024, operating across 40+ countries and 230+ acquirers. Scam merchants typically process high transaction volumes within their first 30-90 days to extract maximum revenue before chargeback volume triggers acquirer intervention and account termination. Normal new merchant ramp-up is fewer than 50 transactions per day in the first 30 days, ramping to 200+ by day 90. Scam merchants frequently exceed 200 transactions per day within the first two weeks, combined with chargeback rates exceeding 1.5% within 60 days of account opening. This rule also flags merchants with account ages under 90 days that have already accumulated chargeback ratios above scheme monitoring thresholds.\n",
       "labels": [
@@ -1880,8 +1880,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--ed51b5f1-7313-5c03-8035-5f952191be4b",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.431111Z",
-      "modified": "2026-03-05T03:29:10.431111Z",
+      "created": "2026-03-05T04:19:18.657116Z",
+      "modified": "2026-03-05T04:19:18.657116Z",
       "name": "Subscription Trap Billing Pattern Detection",
       "description": "Detects recurring billing patterns characteristic of subscription trap scam merchants, where initial low-value trial charges are followed by significantly higher recurring charges to merchants with elevated dispute rates. Purchase scam operators enroll victims in subscription billing through obscured terms buried in checkout flows \u2014 initial charges are typically under $10 (trial pricing) while subsequent recurring charges escalate to $50-$200+ per cycle. Recorded Future identified this pattern across scam merchant networks in 2025, with some operations adding a secondary \"transaction recovery service\" charge in H2 2025. Detection focuses on merchants where the ratio of maximum to minimum charge amount exceeds 5:1, recurring billing constitutes more than 30% of transactions, initial charges are below $10, and the merchant has an elevated dispute rate relative to its age and category. Normal subscription merchants show a recurring billing enrollment rate of 5-15% of total transactions, and legitimate trial-to-paid conversions typically maintain a ratio under 3:1.\n",
       "labels": [
@@ -1904,8 +1904,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--8747121c-17d7-5d48-b76c-be51043db966",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.435224Z",
-      "modified": "2026-03-05T03:29:10.435224Z",
+      "created": "2026-03-05T04:19:18.660411Z",
+      "modified": "2026-03-05T04:19:18.660411Z",
       "name": "Wallet Provisioning Following OTP Interception Indicator",
       "description": "Detects digital wallet provisioning events where the OTP or verification code was delivered within minutes of a social engineering indicator, such as an inbound call from a suspicious source, a phishing link click, or a smishing response. Legitimate wallet provisioning is typically self-initiated, with OTP-to-provisioning intervals of 30-120 seconds. When provisioning occurs within 15 seconds of OTP delivery, or when OTP delivery is preceded by a phishing or social engineering indicator within a 30-minute window, this strongly suggests automated interception-to-provision attack chains associated with digital wallet fraud (TP-0037). The card provisioning attempt is the critical disruption point where refined controls can prevent downstream contactless fraud.\n",
       "labels": [
@@ -1929,8 +1929,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--6a69c5aa-73c3-554b-b135-6cc5878d3845",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.43886Z",
-      "modified": "2026-03-05T03:29:10.43886Z",
+      "created": "2026-03-05T04:19:18.664432Z",
+      "modified": "2026-03-05T04:19:18.664432Z",
       "name": "NFC Relay Geographic Impossibility on Contactless Transaction",
       "description": "Detects contactless (tap-to-pay) transactions where the POS terminal location is geographically impossible given the cardholder's last known location. When a contactless transaction occurs at a POS terminal more than 100 kilometers from the cardholder's most recent authenticated activity (mobile banking login, ATM withdrawal, or prior in-person transaction) within a timeframe that makes physical travel impossible, it indicates NFC relay (ghost-tapping) or unauthorized wallet token use. This rule specifically targets the Phase 4 execution stage of digital wallet fraud and NFC relay attacks (TP-0037), where money mules conduct contactless purchases using relayed card data at POS terminals geographically distant from the legitimate cardholder.\n",
       "labels": [
@@ -1953,8 +1953,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--291f1ee4-7043-5f3b-8cdf-49de177dbad5",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.44223Z",
-      "modified": "2026-03-05T03:29:10.44223Z",
+      "created": "2026-03-05T04:19:18.667209Z",
+      "modified": "2026-03-05T04:19:18.667209Z",
       "name": "Ghost-Tap Multi-Terminal Contactless Velocity Anomaly",
       "description": "Detects multiple contactless transactions from the same wallet token or card credential across multiple distinct POS terminals within a short timeframe. Normal cardholder behavior produces a maximum of 2-3 contactless transactions per hour across different terminals during shopping activity. NFC relay (ghost-tapping) operations using tools such as SuperCardX, NFCGate, Hyper NFC, or Valkirie NFC enable simultaneous contactless transactions at multiple POS terminals by relaying stolen card data to multiple money mule devices. This rule detects the Phase 4 execution pattern of TP-0037 where the same wallet token appears at 3 or more distinct POS terminals within 30 minutes, a pattern that is physically impossible for a single cardholder and pathognomonic for NFC relay fraud.\n",
       "labels": [
@@ -1978,8 +1978,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--c6f54147-c64d-5a19-8622-eb94bc34ab09",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.445489Z",
-      "modified": "2026-03-05T03:29:10.445489Z",
+      "created": "2026-03-05T04:19:18.670227Z",
+      "modified": "2026-03-05T04:19:18.670227Z",
       "name": "Card Testing Micro-Authorization Velocity Spike",
       "description": "Detects high velocity of sub-dollar ($0.01-$0.99) authorization attempts from the same merchant or source against multiple distinct card numbers, a pattern characteristic of automated card testing operations. Recorded Future's 2025 report identified over 1,350 tester merchant accounts, with 94% being newly registered merchants. Normal merchant sub-dollar authorization rates are under 0.5% of total authorizations. Card testing operations generate authorization streams where sub-dollar transactions dominate, decline rates exceed 70%, and unique card numbers per source per hour reach 50-500+. This rule targets Phase 4 of TP-0038, detecting the execution of automated card validation at scale through micro-authorization patterns that deviate from legitimate merchant transaction profiles.\n",
       "labels": [
@@ -2002,8 +2002,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--dcca6d63-aebd-5363-81f9-8d3e7121bee7",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.449874Z",
-      "modified": "2026-03-05T03:29:10.449874Z",
+      "created": "2026-03-05T04:19:18.673033Z",
+      "modified": "2026-03-05T04:19:18.673033Z",
       "name": "BIN Enumeration Sequential Card Number Attack",
       "description": "Detects sequential or near-sequential card number authorization attempts sharing the same Bank Identification Number (BIN) prefix with incremental variation in the remaining digits. BIN enumeration attacks generate valid card numbers by iterating through possible combinations within a BIN range, validating each against live payment infrastructure through sub-dollar authorization requests. Sequential card numbers from the same BIN prefix have a zero false positive rate for legitimate merchants \u2014 this pattern is exclusively associated with fraudulent enumeration. Recorded Future's 2025 report documents BIN attacks as a primary method for generating valid card credentials for downstream fraud, with enumerated cards feeding into card testing (TP-0038), digital wallet provisioning (TP-0037), and card-not-present fraud operations. This rule targets Phase 4 of TP-0038.\n",
       "labels": [
@@ -2026,8 +2026,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--d0e19b34-ac81-5322-901f-2033e1f95ace",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.464458Z",
-      "modified": "2026-03-05T03:29:10.464458Z",
+      "created": "2026-03-05T04:19:18.675727Z",
+      "modified": "2026-03-05T04:19:18.675727Z",
       "name": "Agent Intent Manipulation \u2014 Purchase Divergence from User Intent",
       "description": "Detects transactions initiated by AI agents where the product or service purchased diverges significantly from the user's stated intent or historical purchasing patterns, or where the receiving merchant is flagged as high-risk. This rule targets Phase 3 (Positioning) of agentic commerce fraud, where threat actors manipulate agent purchasing intent to redirect transactions to attacker-controlled merchants or execute purchases that do not reflect the consumer's actual desires. Key indicators include purchases in product categories the user has never engaged with, transactions at merchants created within the last 30 days, transaction amounts exceeding 3x the user's historical average, and merchants with elevated risk scores.\n",
       "labels": [
@@ -2050,8 +2050,8 @@
       "spec_version": "2.1",
       "id": "course-of-action--ba15f2bd-676c-5b91-a9b5-0f9dce53ab4c",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
-      "created": "2026-03-05T03:29:10.47137Z",
-      "modified": "2026-03-05T03:29:10.47137Z",
+      "created": "2026-03-05T04:19:18.6796Z",
+      "modified": "2026-03-05T04:19:18.6796Z",
       "name": "Agent Transaction Velocity Anomaly",
       "description": "Detects AI agent-initiated transactions at velocities exceeding human purchasing patterns, including multiple purchases per minute and simultaneous multi-merchant purchases within a single agent session. This rule targets Phase 4 (Execution) of agentic commerce fraud, where compromised or manipulated agents execute unauthorized transactions at machine speed. Normal agent purchasing velocity is 1-5 purchases per user session with 2-15 minutes of comparison shopping per purchase. Velocities exceeding 10x human baseline (more than 5 transactions per minute or purchases across more than 3 merchants within a 60-second window) suggest automated fraud exploitation rather than legitimate agent-assisted shopping.\n",
       "labels": [
@@ -2063,6 +2063,128 @@
           "source_name": "FLAME Project",
           "description": "Detection Logic DL-0086",
           "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0086"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--321b303e-1b9a-5083-913f-00784bc78d6c",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-05T04:19:18.682673Z",
+      "modified": "2026-03-05T04:19:18.682673Z",
+      "name": "BNPL Account Opening Risk Signal Cluster",
+      "description": "Detects BNPL account applications exhibiting multiple risk signals indicative of synthetic identity fraud. Specifically targets accounts opened with email domains less than 30 days old, minimal digital footprint (score below 0.2), and patterns consistent with emulator-based mass account creation. BNPL providers using soft-check-only approval processes are particularly vulnerable to synthetic identities that pass initial verification but exhibit these digital footprint anomalies. This rule supports detection at Phase 2 of TP-0040 by identifying high-risk onboarding patterns before the synthetic identity progresses to credit grooming and multi-provider stacking.\n",
+      "labels": [
+        "bnpl-fraud",
+        "identity-theft"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0087",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0087"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--8053e5fc-794a-5999-9c29-e06b73cdab81",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-05T04:19:18.685549Z",
+      "modified": "2026-03-05T04:19:18.685549Z",
+      "name": "BNPL Multi-Provider Application Velocity",
+      "description": "Detects identities applying to three or more distinct BNPL providers within a 72-hour window, a pattern characteristic of multi-provider stacking operations. Legitimate consumers rarely apply to more than two BNPL providers within a week. Synthetic identity rings exploit the absence of cross-bureau BNPL loan reporting to accumulate $3,000-$15,000 in aggregate exposure across providers while each provider sees only their individual exposure. This rule requires consortium-level data sharing to be effective, as individual providers cannot detect cross-provider application velocity in isolation. At Phase 3 of TP-0040, multi-provider stacking represents the critical positioning step before coordinated bust-out execution.\n",
+      "labels": [
+        "bnpl-fraud",
+        "first-party-fraud",
+        "identity-theft"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0088",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0088"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--af86402b-86c3-5966-914d-6a7645665f87",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-05T04:19:18.688025Z",
+      "modified": "2026-03-05T04:19:18.688025Z",
+      "name": "BNPL Spending Step-Up to Limit Bust-Out Pattern",
+      "description": "Detects the characteristic spending escalation pattern of BNPL bust-out fraud, where accounts begin with small purchases (under $50) during a credit grooming phase, then rapidly escalate to purchases consuming 85% or more of the available credit limit within 14 days. This pattern distinguishes synthetic bust-out operations from legitimate consumer behavior, where spending typically ramps gradually over weeks to months. Recorded in organized rings deploying 50-1,000+ synthetic identities, the grooming-to-bustout transition represents the highest-confidence detection window for TP-0040 Phase 4 execution, as the sharp behavioral shift from conservative to aggressive spending is difficult for fraudsters to avoid without sacrificing the speed required for coordinated multi-provider bust-out.\n",
+      "labels": [
+        "bnpl-fraud",
+        "first-party-fraud",
+        "bust-out"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0089",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0089"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--573203a1-f89a-5928-b712-c04fefa51806",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-05T04:19:18.690695Z",
+      "modified": "2026-03-05T04:19:18.690695Z",
+      "name": "BNPL Item-Not-Received Claim Velocity",
+      "description": "Detects accounts filing three or more item-not-received (INR) claims within a 90-day rolling window where the average disputed order value exceeds $300. Legitimate INR dispute rates are under 1% of orders, with most disputes involving genuine delivery failures. Organized phantom delivery fraud and friendly fraud operations systematically file INR claims after receiving goods, targeting high-value orders to maximize returns. This rule supports TP-0040 Phase 4 detection by identifying accounts exhibiting claim patterns consistent with organized INR abuse rather than genuine delivery issues. The $300 average threshold filters out low-value legitimate disputes while capturing the high-value targeting characteristic of organized fraud.\n",
+      "labels": [
+        "bnpl-fraud",
+        "first-party-fraud"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0090",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0090"
+        }
+      ],
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--615d7004-5dd6-5d7c-9669-bfb2d5373bbc",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "created": "2026-03-05T04:19:18.693045Z",
+      "modified": "2026-03-05T04:19:18.693045Z",
+      "name": "BNPL Cross-Account Device Clustering",
+      "description": "Detects four or more distinct BNPL accounts created from or accessed by the same device fingerprint within a 30-day window, indicating potential synthetic identity ring activity or account farming operations. Normal BNPL usage involves 1-2 accounts per device over 12 months. Emulator-based mass account opening tools with device fingerprint spoofing can create dozens of accounts per day from a single physical device, but sophisticated device fingerprinting systems can detect emulator signatures and fingerprint collision patterns. This rule supports TP-0040 Phase 3 detection by identifying device-level clustering that precedes multi-provider stacking and coordinated bust-out.\n",
+      "labels": [
+        "bnpl-fraud",
+        "identity-theft"
+      ],
+      "external_references": [
+        {
+          "source_name": "FLAME Project",
+          "description": "Detection Logic DL-0091",
+          "url": "https://elchacal801.github.io/flame-fraud/?dl=DL-0091"
         }
       ],
       "object_marking_refs": [

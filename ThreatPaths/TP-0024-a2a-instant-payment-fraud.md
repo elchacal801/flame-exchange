@@ -5,7 +5,7 @@
 id: TP-0024
 title: "Account-to-Account Instant Payment Fraud (Zelle / FedNow / Pix / UPI)"
 category: ThreatPath
-date: 2026-03-02
+date: 2026-03-04
 author: "FLAME Project"
 source: "Original Research — multi-source intelligence compilation"
 tlp: WHITE
@@ -406,6 +406,8 @@ ORDER BY t.amount DESC;
 
 - **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional fraud investigation methodology applicable to A2A payment fraud kill chain analysis.
 
+- **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Mule laundering speed data, UK Banking Consortium results, consortium intelligence effectiveness metrics.
+
 ---
 
 ## Cross-References
@@ -439,6 +441,12 @@ This threat path represents one of the most significant systemic fraud risks in 
 **Regulatory divergence**: Jurisdictions are taking fundamentally different approaches to A2A payment fraud liability. The UK's mandatory reimbursement model (PSR PS23/3) places loss liability on sending institutions, creating strong incentives for pre-payment controls. The U.S. approach under Regulation E remains ambiguous for authorized payments, creating a gap where APP fraud victims often have no recovery path. This regulatory divergence influences both actor targeting (preference for jurisdictions with weaker consumer protection) and institutional investment in controls.
 
 **Mule network dependency**: This threat path is entirely dependent on mule account infrastructure for monetization. Disrupting mule networks — through enhanced new account opening controls, cross-institutional network analysis, and law enforcement coordination — has a multiplicative effect because the same mule infrastructure supports multiple fraud types (APP fraud, BEC, romance scams, investment scams).
+
+### Mule Laundering Speed & Consortium Intelligence — LNRS 2026
+
+Network retro analysis documented a complete laundering cycle in just 30 minutes — stolen funds from two separate scam victims washed through multiple banks and ultimately through gaming and retail websites. The UK Banking Consortium (Jan-Sep 2025) tagged 377,000 mule payments representing £100M in stolen funds (65% YoY surge), identifying 22K digital identities, 80K devices, and 17K beneficiaries. Total consortium-detected fraudulent payments reached £508M across 1.4M payments in 8 months.
+
+Combining CNP risk data with Digital Identity Network and Internet Banking intelligence lifted fraud detection from 43% to 75% (at 1.0% false positive rate), representing a $28.2M annualized increase in detected fraud value for a single major banking client. Consortium intelligence lifts fraud capture 43% over isolated approaches.
 
 ---
 
