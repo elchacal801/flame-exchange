@@ -5,6 +5,7 @@ Tests pure functions: frontmatter extraction, body extraction,
 summary extraction, evidence parsing, and SQL whitelist validation.
 """
 
+import json
 import sqlite3
 import tempfile
 from pathlib import Path
@@ -349,3 +350,38 @@ class TestRegulatoryRefs:
         result = _fetch_list(test_db, "submission_regulatory_refs", "reg_id", "TP-REG-TEST")
         assert "REG-PSD3-SCA" in result
         assert "REG-FFIEC-AUTH" in result
+
+
+# ---------------------------------------------------------------------------
+# Contributor extraction tests
+# ---------------------------------------------------------------------------
+
+class TestContributorExtraction:
+    def test_contributors_json_exists(self) -> None:
+        path = Path(__file__).resolve().parent.parent / "database" / "flame-contributors.json"
+        assert path.exists(), "database/flame-contributors.json must exist after build"
+
+    def test_contributors_json_structure(self) -> None:
+        path = Path(__file__).resolve().parent.parent / "database" / "flame-contributors.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        assert "contributors" in data
+        assert "generated_at" in data
+        assert isinstance(data["contributors"], list)
+
+    def test_contributors_have_required_fields(self) -> None:
+        path = Path(__file__).resolve().parent.parent / "database" / "flame-contributors.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        assert len(data["contributors"]) > 0
+        for c in data["contributors"]:
+            assert "name" in c
+            assert "threat_paths" in c
+            assert "detection_rules" in c
+            assert "baselines" in c
+            assert "emulation_playbooks" in c
+            assert "total" in c
+
+    def test_contributors_sorted_by_total(self) -> None:
+        path = Path(__file__).resolve().parent.parent / "database" / "flame-contributors.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        totals = [c["total"] for c in data["contributors"]]
+        assert totals == sorted(totals, reverse=True)

@@ -88,6 +88,10 @@
         dom.navigatorClose = document.getElementById('navigator-close');
         dom.navigatorBody = document.getElementById('navigator-body');
         dom.navigatorTabs = document.getElementById('navigator-tabs');
+        dom.contributorsBtn = document.getElementById('contributors-btn');
+        dom.contributorsModal = document.getElementById('contributors-modal');
+        dom.contributorsClose = document.getElementById('contributors-close');
+        dom.contributorsBody = document.getElementById('contributors-body');
     }
 
     // -----------------------------------------------------------------------
@@ -236,6 +240,24 @@
             renderNavigator(framework);
             document.getElementById('nav-export-json').style.display = framework === 'attack' ? 'inline-block' : 'none';
         });
+
+        // Contributors modal
+        if (dom.contributorsBtn) {
+            dom.contributorsBtn.addEventListener('click', function () {
+                renderContributorsModal();
+                dom.contributorsModal.style.display = 'flex';
+            });
+        }
+        if (dom.contributorsClose) {
+            dom.contributorsClose.addEventListener('click', function () {
+                dom.contributorsModal.style.display = 'none';
+            });
+        }
+        if (dom.contributorsModal) {
+            dom.contributorsModal.addEventListener('click', function (e) {
+                if (e.target === dom.contributorsModal) dom.contributorsModal.style.display = 'none';
+            });
+        }
 
         // Navigator exports
         document.getElementById('nav-export-svg').addEventListener('click', exportNavigatorSVG);
@@ -1901,6 +1923,71 @@
             legendHtml += '</span>';
         });
         legendDiv.innerHTML = legendHtml;
+    }
+
+    // -----------------------------------------------------------------------
+    // Contributors Leaderboard
+    // -----------------------------------------------------------------------
+
+    function renderContributorsModal() {
+        var body = dom.contributorsBody;
+        if (!body) return;
+
+        body.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--color-text-dim);">Loading contributors...</div>';
+
+        fetch('database/flame-contributors.json')
+            .then(function (res) { return res.json(); })
+            .then(function (data) {
+                var contributors = data.contributors || [];
+                var html = '';
+
+                // Hero
+                html += '<div class="contributors-hero">';
+                html += '<span class="contributors-hero-icon">🔥</span>';
+                html += '<p class="contributors-hero-tagline">Community contributions powering fraud intelligence</p>';
+                html += '</div>';
+
+                // Total
+                var totalContribs = 0;
+                contributors.forEach(function (c) { totalContribs += c.total; });
+                html += '<div class="contributors-total">' + contributors.length + ' contributors &middot; ' + totalContribs + ' total contributions</div>';
+
+                if (contributors.length === 0) {
+                    html += '<div style="padding: 2rem; text-align: center; color: var(--color-text-dim);">No contributor data available.</div>';
+                } else {
+                    html += '<table class="leaderboard-table">';
+                    html += '<thead><tr>';
+                    html += '<th>Rank</th>';
+                    html += '<th>Contributor</th>';
+                    html += '<th>TPs</th>';
+                    html += '<th>DL Rules</th>';
+                    html += '<th>Baselines</th>';
+                    html += '<th>EPs</th>';
+                    html += '<th>Total</th>';
+                    html += '</tr></thead>';
+                    html += '<tbody>';
+
+                    contributors.forEach(function (c, i) {
+                        html += '<tr>';
+                        html += '<td>' + (i + 1) + '</td>';
+                        html += '<td>' + escapeHtml(c.name) + '</td>';
+                        html += '<td>' + c.threat_paths + '</td>';
+                        html += '<td>' + c.detection_rules + '</td>';
+                        html += '<td>' + c.baselines + '</td>';
+                        html += '<td>' + c.emulation_playbooks + '</td>';
+                        html += '<td><strong>' + c.total + '</strong></td>';
+                        html += '</tr>';
+                    });
+
+                    html += '</tbody></table>';
+                }
+
+                body.innerHTML = html;
+            })
+            .catch(function (err) {
+                body.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--color-text-dim);">Failed to load contributor data.</div>';
+                console.error('Contributors load error:', err);
+            });
     }
 
     // -----------------------------------------------------------------------

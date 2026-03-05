@@ -1493,6 +1493,85 @@ def export_api_v1(conn: sqlite3.Connection, root: Path,
 
 
 # ---------------------------------------------------------------------------
+# Contributor extraction
+# ---------------------------------------------------------------------------
+
+
+def extract_contributors(conn: sqlite3.Connection, root: Path) -> list[dict]:
+    """Extract contributor data from submission frontmatter and EP files."""
+    contributors: dict[str, dict] = {}  # name -> stats
+
+    def _ensure(author: str) -> None:
+        if author not in contributors:
+            contributors[author] = {
+                "name": author,
+                "threat_paths": 0,
+                "detection_rules": 0,
+                "baselines": 0,
+                "emulation_playbooks": 0,
+                "total": 0,
+            }
+
+    # Count TPs and Baselines from submissions table
+    cur = conn.execute("SELECT id, author FROM submissions")
+    for row in cur.fetchall():
+        sub_id = row[0]
+        author = row[1] or "Unknown"
+        _ensure(author)
+        if sub_id.startswith("TP-"):
+            contributors[author]["threat_paths"] += 1
+        elif sub_id.startswith("BL-") or sub_id.startswith("BASE-"):
+            contributors[author]["baselines"] += 1
+
+    # Count DL rules - credit each rule to the author of its first linked TP
+    dl_rows = conn.execute(
+        "SELECT dr.id FROM detection_rules dr ORDER BY dr.dl_id"
+    ).fetchall()
+    for (rule_id,) in dl_rows:
+        tp_row = conn.execute(
+            "SELECT s.author FROM detection_rule_threat_paths drtp "
+            "JOIN submissions s ON drtp.tp_id = s.id "
+            "WHERE drtp.rule_id = ? ORDER BY drtp.tp_id LIMIT 1",
+            (rule_id,),
+        ).fetchone()
+        author = (tp_row[0] if tp_row and tp_row[0] else "Unknown")
+        _ensure(author)
+        contributors[author]["detection_rules"] += 1
+
+    # Count EPs from EmulationPlaybooks/ directory
+    ep_dir = root / "EmulationPlaybooks"
+    if ep_dir.exists():
+        for ep_file in ep_dir.glob("EP-*.json"):
+            try:
+                ep_data = json.loads(ep_file.read_text(encoding="utf-8"))
+                author = ep_data.get("author", "Unknown")
+                _ensure(author)
+                contributors[author]["emulation_playbooks"] += 1
+            except (json.JSONDecodeError, OSError):
+                continue
+
+    # Calculate totals and sort
+    for c in contributors.values():
+        c["total"] = (
+            c["threat_paths"] + c["detection_rules"]
+            + c["baselines"] + c["emulation_playbooks"]
+        )
+
+    return sorted(contributors.values(), key=lambda x: x["total"], reverse=True)
+
+
+def export_contributors_json(contributors: list[dict], root: Path) -> int:
+    """Export contributor data to JSON file."""
+    output = {
+        "contributors": contributors,
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+    }
+    path = root / "database" / "flame-contributors.json"
+    path.write_text(json.dumps(output, indent=2), encoding="utf-8")
+    return len(contributors)
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -1656,6 +1735,11 @@ def main():
     # Generate RSS feed
     rss_count = generate_rss_feed(conn, root)
     log.info("Generated RSS feed with %d items", rss_count)
+
+    # Extract and export contributor data
+    contributors = extract_contributors(conn, root)
+    contrib_count = export_contributors_json(contributors, root)
+    log.info("Exported %d contributors to %s", contrib_count, root / "database" / "flame-contributors.json")
 
     conn.close()
 

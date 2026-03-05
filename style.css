@@ -2833,3 +2833,62 @@ h4 {
     background: var(--color-accent);
     color: white;
 }
+
+
+/* ------------------------------------------------------------------ */
+/* Contributor Leaderboard                                            */
+/* ------------------------------------------------------------------ */
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.leaderboard-table th {
+    color: var(--text-secondary, var(--color-text-dim));
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.leaderboard-table td:first-child {
+    font-weight: 600;
+    color: var(--primary-color, var(--color-accent));
+}
+
+.leaderboard-table tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.contributors-hero {
+    text-align: center;
+    padding: 1.5rem 0 1rem;
+}
+
+.contributors-hero-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.contributors-hero-tagline {
+    color: var(--color-text-dim);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.contributors-total {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: var(--color-text-dim);
+}
