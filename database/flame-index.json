@@ -4274,5 +4274,276 @@
       }
     ],
     "evidence_count": 0
+  },
+  {
+    "id": "TP-0041",
+    "title": "RDGA-Based Infrastructure Campaigns",
+    "category": "ThreatPath",
+    "date": "2026-03-05",
+    "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Infoblox DNS Intelligence)",
+    "source": "https://www.infoblox.com/threat-intel/threat-reports/",
+    "tlp": "WHITE",
+    "summary": "Registered Domain Generation Algorithms (RDGAs) represent a fundamentally different infrastructure threat from traditional embedded Domain Generation Algorithms (DGAs). In a traditional DGA, a malware...",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "crypto",
+      "investment"
+    ],
+    "fraud_types": [
+      "rdga-infrastructure"
+    ],
+    "tags": [
+      "rdga",
+      "registered-dga",
+      "prolific-puma",
+      "vextrio-viper",
+      "savvy-seahorse",
+      "revolver-rabbit",
+      "vault-viper",
+      "zone-file-analysis",
+      "dns-intelligence",
+      "bulk-registration",
+      "nameserver-clustering"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1583.003",
+      "T1568.002",
+      "T1071.001",
+      "T1090"
+    ],
+    "ft3_tactics": [
+      "FTA010",
+      "FTA009",
+      "FT007",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Defence Evasion",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0042",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0043",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0042",
+    "title": "Traffic Distribution System (TDS) Chain Exploitation",
+    "category": "ThreatPath",
+    "date": "2026-03-05",
+    "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Infoblox DNS Intelligence)",
+    "source": "https://www.infoblox.com/threat-intel/threat-reports/",
+    "tlp": "WHITE",
+    "summary": "Traffic Distribution Systems (TDS) represent a critical infrastructure layer in the modern cybercrime ecosystem, functioning as the routing fabric that connects victim traffic to downstream fraud camp...",
+    "confidence_score": 85,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "payments",
+      "retail"
+    ],
+    "fraud_types": [
+      "tds-exploitation",
+      "malvertising",
+      "phishing"
+    ],
+    "tags": [
+      "tds",
+      "traffic-distribution-system",
+      "vextrio",
+      "hazy-hawk",
+      "malvertising",
+      "redirect-chain",
+      "cloaking",
+      "affiliate-fraud",
+      "dns-hijack",
+      "seo-poisoning"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1608.005",
+      "T1189",
+      "T1090.002",
+      "T1071.001",
+      "T1036"
+    ],
+    "ft3_tactics": [
+      "FTA010",
+      "FTA005",
+      "FTA009",
+      "FT007",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Defence Evasion",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0041",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0043",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0043",
+    "title": "AI-Accelerated Fraud Infrastructure Generation",
+    "category": "ThreatPath",
+    "date": "2026-03-05",
+    "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report — multi-source synthesis)",
+    "source": "https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/",
+    "tlp": "WHITE",
+    "summary": "Generative AI has fundamentally collapsed the economics of fraud infrastructure generation. What previously required 16 hours of skilled human effort — crafting phishing emails, building credential ha...",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "payments",
+      "crypto"
+    ],
+    "fraud_types": [
+      "ai-accelerated-fraud-infrastructure",
+      "phishing",
+      "brand-impersonation"
+    ],
+    "tags": [
+      "ai-generated",
+      "llm-phishing",
+      "genai-scams",
+      "deepfake",
+      "campaign-automation",
+      "scam-as-a-service",
+      "domain-generation",
+      "content-generation",
+      "ai-vishing",
+      "infrastructure-economics"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1566.001",
+      "T1566.002",
+      "T1598",
+      "T1585.001",
+      "T1585.002",
+      "T1608.005"
+    ],
+    "ft3_tactics": [
+      "FTA005",
+      "FTA009",
+      "FTA010",
+      "FT007",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "End-user Interaction",
+      "Credential Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0029",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0041",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0042",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 0
   }
 ]

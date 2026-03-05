@@ -1,0 +1,25 @@
+{
+  "tp_id": "TP-0043",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    d.nameserver_cluster_id,\n    d.registrar_id,\n    COUNT(DISTINCT d.domain_name) AS domain_count,\n    MIN(d.registration_date) AS first_registration,\n    MAX(d.registration_date) AS last_registration,\n    DATEDIFF(hour, MIN(d.registration_date), MAX(d.registration_date)) AS registration_window_hours,\n    AVG(d.domain_name_entropy) AS avg_entropy,\n    AVG(d.domain_name_length) AS avg_name_length,\n    COUNT(DISTINCT d.tld) AS tld_count,\n    COUNT(DISTINCT c.cert_id) AS certs_issued,\n    AVG(DATEDIFF(hour, d.registration_date, c.issuance_date)) AS avg_hours_to_cert\nFROM domain_registrations d\nLEFT JOIN certificate_transparency c ON d.domain_name = c.common_name\nWHERE d.registration_date >= CURRENT_DATE - INTERVAL '7 days'\nGROUP BY d.nameserver_cluster_id, d.registrar_id\nHAVING COUNT(DISTINCT d.domain_name) >= 20\n   AND DATEDIFF(hour, MIN(d.registration_date), MAX(d.registration_date)) <= 48\n   AND AVG(DATEDIFF(hour, d.registration_date, c.issuance_date)) <= 4\nORDER BY domain_count DESC;",
+      "title": "SQL — AI-Generated Domain Infrastructure Clustering Detection (Phase 3)"
+    },
+    {
+      "type": "spl",
+      "content": "index=email_security sourcetype=email_gateway action=blocked OR action=quarantined\n    category=\"phishing\" OR category=\"spearphishing\"\n| eval ai_content_score = if(isnotnull(ai_content_probability), ai_content_probability, 0)\n| bin _time span=1h\n| stats count AS phishing_count,\n        avg(ai_content_score) AS avg_ai_score,\n        dc(sender_domain) AS unique_sender_domains,\n        dc(target_email) AS unique_targets,\n        dc(landing_page_domain) AS unique_landing_domains\n    BY _time\n| eventstats avg(phishing_count) AS baseline_count, stdev(phishing_count) AS stdev_count\n| eval z_score = (phishing_count - baseline_count) / stdev_count\n| where z_score > 3 AND avg_ai_score > 0.7\n| eval landing_to_sender_ratio = unique_landing_domains / unique_sender_domains\n| table _time, phishing_count, z_score, avg_ai_score, unique_sender_domains, unique_targets, unique_landing_domains, landing_to_sender_ratio\n| sort - z_score",
+      "title": "Splunk — AI-Generated Phishing Email Volume Anomaly Detection (Phase 2)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Bulk Let's Encrypt Certificate Issuance Correlated with New Domain Registration\nstatus: experimental\ndescription: >\n  Detects clusters of Let's Encrypt certificate issuance for domains registered\n  within the previous 48 hours that share nameserver infrastructure. AI-accelerated\n  fraud infrastructure campaigns automate the full pipeline from domain registration\n  to certificate provisioning, resulting in characteristic timing patterns where\n  certificates are issued within hours of domain registration across a cluster of\n  domains sharing the same nameservers.\nlogsource:\n    product: certificate_transparency\n    service: ct_log\ndetection:\n    selection:\n        certificate_authority: \"Let's Encrypt\"\n        domain_age_hours|lte: 48\n    aggregation:\n        count|gte: 10\n        groupby: nameserver_cluster_id\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: high\ntags:\n    - cfpf.phase3.positioning\n    - attack.t1583.001\n    - attack.t1608.005\n    - flame.ai_infrastructure\n    - flame.phishing",
+      "title": "Sigma — Bulk Let's Encrypt Certificate Issuance for Newly Registered Domains (Phase 3)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Real-Time Credential Relay from Phishing Page to Legitimate Service\nstatus: experimental\ndescription: >\n  Detects authentication attempts against legitimate services that occur within\n  a short time window after credential entry on known or suspected phishing pages.\n  AI-orchestrated credential relay systems automate the real-time capture and\n  replay of credentials, including MFA tokens, to hijack sessions before\n  time-based tokens expire.\nlogsource:\n    product: identity\n    service: authentication\ndetection:\n    selection:\n        event_type: 'login_attempt'\n        source_reputation|lte: 30\n        authentication_result: 'success'\n    filter_timing:\n        credential_first_seen_phishing_page|lte: 300\n    condition: selection and filter_timing\nlevel: critical\ntags:\n    - cfpf.phase4.execution\n    - attack.t1566.002\n    - attack.t1598\n    - flame.credential_relay\n    - flame.ai_phishing",
+      "title": "Sigma — Credential Relay Timing Detection (Phase 4)"
+    }
+  ]
+}

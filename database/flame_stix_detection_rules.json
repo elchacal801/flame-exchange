@@ -442,5 +442,83 @@
     "content": "title: BNPL Cross-Account Device Clustering Detection\nstatus: experimental\ndescription: >\n  Detects multiple BNPL accounts created from or accessed by the same device\n  fingerprint within a rolling window, indicating potential synthetic identity\n  ring activity or account farming operations.\nlogsource:\n    product: ecommerce\n    service: bnpl_onboarding\ndetection:\n    selection:\n        event_type: 'account_creation'\n        account_type: 'bnpl'\n    aggregation:\n        count|gte: 4\n        groupby: device_fingerprint_hash\n        timeframe: 30d\n    condition: selection and aggregation\nlevel: high\ntags:\n    - cfpf.phase3.positioning\n    - attack.t1586\n    - flame.ecommerce\n    - flame.bnpl_fraud\n    - flame.synthetic_stacking",
     "title": "Sigma — Device Clustering Detection (Phase 3)",
     "tp_id": "TP-0040"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    zd.nameserver_pair,\n    zd.registrar_id,\n    COUNT(DISTINCT zd.domain_name) AS domains_registered,\n    MIN(zd.registration_date) AS first_registration,\n    MAX(zd.registration_date) AS last_registration,\n    DATEDIFF(hour, MIN(zd.registration_date), MAX(zd.registration_date)) AS registration_window_hours,\n    AVG(LENGTH(zd.sld)) AS avg_sld_length,\n    STDDEV(LENGTH(zd.sld)) AS sld_length_stddev,\n    COUNT(DISTINCT zd.tld) AS tld_count,\n    COUNT(DISTINCT zd.resolved_ip) AS unique_ips\nFROM zone_file_diffs zd\nWHERE zd.diff_date >= CURRENT_DATE - INTERVAL '1 day'\n  AND zd.event_type = 'new_registration'\nGROUP BY zd.nameserver_pair, zd.registrar_id\nHAVING COUNT(DISTINCT zd.domain_name) >= 50\n   AND DATEDIFF(hour, MIN(zd.registration_date), MAX(zd.registration_date)) <= 24\nORDER BY domains_registered DESC;",
+    "title": "SQL — Zone File Diff RDGA Registration Burst Detection (Phase 2)",
+    "tp_id": "TP-0041"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    ns.nameserver_pair,\n    ns.nameserver_ip,\n    COUNT(DISTINCT d.domain_name) AS domain_count,\n    COUNT(DISTINCT d.registrar_id) AS registrar_count,\n    AVG(DATEDIFF(day, d.registration_date, CURRENT_DATE)) AS avg_domain_age_days,\n    MIN(d.registration_date) AS earliest_registration,\n    COUNT(DISTINCT d.resolved_ip) AS unique_resolved_ips,\n    COUNT(DISTINCT d.tld) AS tld_diversity\nFROM dns_records ns\nJOIN domains d ON ns.domain_name = d.domain_name\nWHERE ns.record_type = 'NS'\n  AND d.registration_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY ns.nameserver_pair, ns.nameserver_ip\nHAVING COUNT(DISTINCT d.domain_name) >= 100\n   AND AVG(DATEDIFF(day, d.registration_date, CURRENT_DATE)) < 30\nORDER BY domain_count DESC;",
+    "title": "SQL — Nameserver Concentration Anomaly Detection (Phase 2-3)",
+    "tp_id": "TP-0041"
+  },
+  {
+    "type": "spl",
+    "content": "index=dns sourcetype=dns_query\n| lookup rdga_cluster_feed domain AS query_domain OUTPUT cluster_id, cluster_confidence, actor_attribution, campaign_type\n| where isnotnull(cluster_id) AND cluster_confidence >= 75\n| stats count AS query_count,\n        dc(src_ip) AS unique_endpoints,\n        dc(query_domain) AS unique_rdga_domains,\n        values(actor_attribution) AS attributed_actors,\n        values(campaign_type) AS campaign_types,\n        earliest(_time) AS first_query,\n        latest(_time) AS last_query\n    BY cluster_id\n| where query_count >= 5 OR unique_endpoints >= 3\n| eval duration_hours = round((last_query - first_query) / 3600, 1)\n| table cluster_id, attributed_actors, campaign_types, unique_rdga_domains, unique_endpoints, query_count, duration_hours\n| sort - unique_endpoints",
+    "title": "Splunk — RDGA Domain Resolution Detection in Enterprise DNS (Phase 4)",
+    "tp_id": "TP-0041"
+  },
+  {
+    "type": "sigma",
+    "content": "title: DNS Resolution of Domains Served by Known RDGA Nameserver Clusters\nstatus: experimental\ndescription: >\n  Detects DNS queries resolving domains that are served by authoritative\n  nameservers identified as part of RDGA campaigns through zone file analysis\n  and nameserver clustering. RDGA campaigns are characterized by hundreds to\n  thousands of domains sharing a small number of nameservers, with correlated\n  registration timing and lexical patterns.\nlogsource:\n    product: dns\n    service: query_log\ndetection:\n    selection:\n        query_type:\n            - 'A'\n            - 'AAAA'\n            - 'CNAME'\n    filter_rdga_ns:\n        authoritative_ns|contains:\n            - 'ns1.rdga-indicator-1.example'\n            - 'ns2.rdga-indicator-1.example'\n    condition: selection and filter_rdga_ns\nlevel: high\ntags:\n    - cfpf.phase4.execution\n    - attack.t1568.002\n    - attack.t1583.001\n    - flame.rdga\n    - flame.dns_intelligence",
+    "title": "Sigma — RDGA Nameserver Cluster DNS Resolution (Phase 3-4)",
+    "tp_id": "TP-0041"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Bulk Let's Encrypt Certificate Issuance for Correlated Domains\nstatus: experimental\ndescription: >\n  Detects bulk TLS certificate issuance events from Let's Encrypt (or other\n  free CAs) for domains that share registration timing, nameserver\n  infrastructure, or lexical patterns consistent with RDGA campaigns.\n  Certificate Transparency log monitoring enables detection of RDGA domain\n  activation before malicious content is deployed.\nlogsource:\n    product: certificate_transparency\n    service: ct_log\ndetection:\n    selection:\n        issuer_cn|contains: \"Let's Encrypt\"\n        certificate_type: 'DV'\n    aggregation:\n        count|gte: 50\n        groupby: issuer_account_fingerprint\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: medium\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1583.001\n    - flame.rdga\n    - flame.certificate_intelligence",
+    "title": "Sigma — Bulk Let's Encrypt Certificate Issuance Correlation (Phase 2)",
+    "tp_id": "TP-0041"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    d.domain_name,\n    d.domain_age_days,\n    d.registrar,\n    COUNT(DISTINCT q.source_ip) AS unique_endpoints,\n    COUNT(*) AS total_queries,\n    COUNT(DISTINCT DATE(q.query_timestamp)) AS active_days,\n    AVG(q.ttl_seconds) AS avg_ttl,\n    COUNT(DISTINCT q.cname_target) AS cname_chain_depth,\n    CASE\n        WHEN d.domain_age_days < 30 AND COUNT(DISTINCT q.source_ip) > 50 THEN 'HIGH'\n        WHEN d.domain_age_days < 90 AND COUNT(DISTINCT q.source_ip) > 20 THEN 'MEDIUM'\n        ELSE 'LOW'\n    END AS risk_level\nFROM dns_query_logs q\nJOIN domain_intelligence d ON q.queried_domain = d.domain_name\nWHERE q.query_timestamp >= CURRENT_DATE - INTERVAL '7 days'\n  AND d.category IN ('uncategorized', 'newly_registered', 'suspicious')\n  AND d.domain_age_days < 90\nGROUP BY d.domain_name, d.domain_age_days, d.registrar\nHAVING COUNT(DISTINCT q.source_ip) >= 10\n   AND AVG(q.ttl_seconds) < 300\nORDER BY unique_endpoints DESC, total_queries DESC;",
+    "title": "SQL -- TDS Domain Contact Rate Analysis (Phase 4)",
+    "tp_id": "TP-0042"
+  },
+  {
+    "type": "spl",
+    "content": "index=proxy sourcetype=web_proxy\n| transaction session_id maxspan=30s\n| eval redirect_count = mvcount(dest_domain) - 1\n| where redirect_count >= 3\n| eval unique_domains = mvdedup(dest_domain)\n| eval unique_domain_count = mvcount(unique_domains)\n| where unique_domain_count >= 3\n| lookup domain_age_lookup domain AS dest_domain OUTPUT domain_age_days\n| eval young_domains = mvfilter(domain_age_days < 30 OR isnull(domain_age_days))\n| eval young_domain_count = mvcount(young_domains)\n| where young_domain_count >= 2\n| eval chain_domains = mvjoin(unique_domains, \" -> \")\n| stats count AS occurrences,\n        dc(src_ip) AS affected_endpoints,\n        values(chain_domains) AS redirect_chains,\n        values(http_status) AS status_codes\n    BY session_id\n| where occurrences > 0\n| sort - affected_endpoints\n| table session_id, affected_endpoints, redirect_chains, status_codes, occurrences",
+    "title": "Splunk -- Multi-Hop Redirect Chain Detection (Phase 3)",
+    "tp_id": "TP-0042"
+  },
+  {
+    "type": "sigma",
+    "content": "title: DNS CNAME Resolution to Newly Provisioned Cloud Resource\nstatus: experimental\ndescription: >\n  Detects DNS CNAME records belonging to high-reputation organizational domains\n  that resolve to cloud service endpoints (Azure, AWS, GitHub Pages, Cloudflare)\n  where the underlying resource was recently provisioned. This pattern is\n  consistent with Hazy Hawk-style DNS hijacking of abandoned cloud resources,\n  where attackers register new cloud resources matching orphaned CNAME targets\n  to inherit trusted domain reputation for TDS entry point deployment.\nlogsource:\n    product: dns\n    service: passive_dns\ndetection:\n    selection_cname:\n        record_type: 'CNAME'\n        cname_target|contains:\n            - '.azurewebsites.net'\n            - '.cloudfront.net'\n            - '.s3.amazonaws.com'\n            - '.github.io'\n            - '.pages.dev'\n            - '.herokuapp.com'\n    filter_known_resources:\n        cloud_resource_age_days|gte: 90\n    selection_reputation:\n        parent_domain_reputation: 'trusted'\n    condition: selection_cname and selection_reputation and not filter_known_resources\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1583.001\n    - attack.t1036\n    - flame.tds\n    - flame.dns_hijack\n    - flame.hazy_hawk",
+    "title": "Sigma -- CNAME Hijacking Detection (Hazy Hawk Pattern) (Phase 2)",
+    "tp_id": "TP-0042"
+  },
+  {
+    "type": "sigma",
+    "content": "title: DNS Queries to Suspected RDGA-Generated Domains\nstatus: experimental\ndescription: >\n  Detects DNS queries from enterprise endpoints to domains exhibiting\n  characteristics of Registered Domain Generation Algorithm (RDGA) output,\n  including high-entropy names, algorithmic structure, recent registration,\n  and low TTL values. RDGA domains are used by TDS operators (notably VexTrio)\n  to maintain large pools of disposable redirect relay domains.\nlogsource:\n    product: dns\n    service: dns_query\ndetection:\n    selection:\n        query_name|re: '^[a-z0-9]{8,15}\\.(top|xyz|click|link|online|site|info|buzz)$'\n    filter_legitimate:\n        query_name|contains:\n            - 'google'\n            - 'microsoft'\n            - 'amazon'\n            - 'cloudflare'\n    condition: selection and not filter_legitimate\n    aggregation:\n        count|gte: 5\n        groupby: src_ip\n        timeframe: 10m\nlevel: medium\ntags:\n    - cfpf.phase3.positioning\n    - attack.t1583.001\n    - attack.t1090.002\n    - flame.tds\n    - flame.rdga\n    - flame.vextrio",
+    "title": "Sigma -- RDGA Domain Pattern Detection (Phase 3)",
+    "tp_id": "TP-0042"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    d.nameserver_cluster_id,\n    d.registrar_id,\n    COUNT(DISTINCT d.domain_name) AS domain_count,\n    MIN(d.registration_date) AS first_registration,\n    MAX(d.registration_date) AS last_registration,\n    DATEDIFF(hour, MIN(d.registration_date), MAX(d.registration_date)) AS registration_window_hours,\n    AVG(d.domain_name_entropy) AS avg_entropy,\n    AVG(d.domain_name_length) AS avg_name_length,\n    COUNT(DISTINCT d.tld) AS tld_count,\n    COUNT(DISTINCT c.cert_id) AS certs_issued,\n    AVG(DATEDIFF(hour, d.registration_date, c.issuance_date)) AS avg_hours_to_cert\nFROM domain_registrations d\nLEFT JOIN certificate_transparency c ON d.domain_name = c.common_name\nWHERE d.registration_date >= CURRENT_DATE - INTERVAL '7 days'\nGROUP BY d.nameserver_cluster_id, d.registrar_id\nHAVING COUNT(DISTINCT d.domain_name) >= 20\n   AND DATEDIFF(hour, MIN(d.registration_date), MAX(d.registration_date)) <= 48\n   AND AVG(DATEDIFF(hour, d.registration_date, c.issuance_date)) <= 4\nORDER BY domain_count DESC;",
+    "title": "SQL — AI-Generated Domain Infrastructure Clustering Detection (Phase 3)",
+    "tp_id": "TP-0043"
+  },
+  {
+    "type": "spl",
+    "content": "index=email_security sourcetype=email_gateway action=blocked OR action=quarantined\n    category=\"phishing\" OR category=\"spearphishing\"\n| eval ai_content_score = if(isnotnull(ai_content_probability), ai_content_probability, 0)\n| bin _time span=1h\n| stats count AS phishing_count,\n        avg(ai_content_score) AS avg_ai_score,\n        dc(sender_domain) AS unique_sender_domains,\n        dc(target_email) AS unique_targets,\n        dc(landing_page_domain) AS unique_landing_domains\n    BY _time\n| eventstats avg(phishing_count) AS baseline_count, stdev(phishing_count) AS stdev_count\n| eval z_score = (phishing_count - baseline_count) / stdev_count\n| where z_score > 3 AND avg_ai_score > 0.7\n| eval landing_to_sender_ratio = unique_landing_domains / unique_sender_domains\n| table _time, phishing_count, z_score, avg_ai_score, unique_sender_domains, unique_targets, unique_landing_domains, landing_to_sender_ratio\n| sort - z_score",
+    "title": "Splunk — AI-Generated Phishing Email Volume Anomaly Detection (Phase 2)",
+    "tp_id": "TP-0043"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Bulk Let's Encrypt Certificate Issuance Correlated with New Domain Registration\nstatus: experimental\ndescription: >\n  Detects clusters of Let's Encrypt certificate issuance for domains registered\n  within the previous 48 hours that share nameserver infrastructure. AI-accelerated\n  fraud infrastructure campaigns automate the full pipeline from domain registration\n  to certificate provisioning, resulting in characteristic timing patterns where\n  certificates are issued within hours of domain registration across a cluster of\n  domains sharing the same nameservers.\nlogsource:\n    product: certificate_transparency\n    service: ct_log\ndetection:\n    selection:\n        certificate_authority: \"Let's Encrypt\"\n        domain_age_hours|lte: 48\n    aggregation:\n        count|gte: 10\n        groupby: nameserver_cluster_id\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: high\ntags:\n    - cfpf.phase3.positioning\n    - attack.t1583.001\n    - attack.t1608.005\n    - flame.ai_infrastructure\n    - flame.phishing",
+    "title": "Sigma — Bulk Let's Encrypt Certificate Issuance for Newly Registered Domains (Phase 3)",
+    "tp_id": "TP-0043"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Real-Time Credential Relay from Phishing Page to Legitimate Service\nstatus: experimental\ndescription: >\n  Detects authentication attempts against legitimate services that occur within\n  a short time window after credential entry on known or suspected phishing pages.\n  AI-orchestrated credential relay systems automate the real-time capture and\n  replay of credentials, including MFA tokens, to hijack sessions before\n  time-based tokens expire.\nlogsource:\n    product: identity\n    service: authentication\ndetection:\n    selection:\n        event_type: 'login_attempt'\n        source_reputation|lte: 30\n        authentication_result: 'success'\n    filter_timing:\n        credential_first_seen_phishing_page|lte: 300\n    condition: selection and filter_timing\nlevel: critical\ntags:\n    - cfpf.phase4.execution\n    - attack.t1566.002\n    - attack.t1598\n    - flame.credential_relay\n    - flame.ai_phishing",
+    "title": "Sigma — Credential Relay Timing Detection (Phase 4)",
+    "tp_id": "TP-0043"
   }
 ]

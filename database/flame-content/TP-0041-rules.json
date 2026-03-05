@@ -1,0 +1,30 @@
+{
+  "tp_id": "TP-0041",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    zd.nameserver_pair,\n    zd.registrar_id,\n    COUNT(DISTINCT zd.domain_name) AS domains_registered,\n    MIN(zd.registration_date) AS first_registration,\n    MAX(zd.registration_date) AS last_registration,\n    DATEDIFF(hour, MIN(zd.registration_date), MAX(zd.registration_date)) AS registration_window_hours,\n    AVG(LENGTH(zd.sld)) AS avg_sld_length,\n    STDDEV(LENGTH(zd.sld)) AS sld_length_stddev,\n    COUNT(DISTINCT zd.tld) AS tld_count,\n    COUNT(DISTINCT zd.resolved_ip) AS unique_ips\nFROM zone_file_diffs zd\nWHERE zd.diff_date >= CURRENT_DATE - INTERVAL '1 day'\n  AND zd.event_type = 'new_registration'\nGROUP BY zd.nameserver_pair, zd.registrar_id\nHAVING COUNT(DISTINCT zd.domain_name) >= 50\n   AND DATEDIFF(hour, MIN(zd.registration_date), MAX(zd.registration_date)) <= 24\nORDER BY domains_registered DESC;",
+      "title": "SQL — Zone File Diff RDGA Registration Burst Detection (Phase 2)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT\n    ns.nameserver_pair,\n    ns.nameserver_ip,\n    COUNT(DISTINCT d.domain_name) AS domain_count,\n    COUNT(DISTINCT d.registrar_id) AS registrar_count,\n    AVG(DATEDIFF(day, d.registration_date, CURRENT_DATE)) AS avg_domain_age_days,\n    MIN(d.registration_date) AS earliest_registration,\n    COUNT(DISTINCT d.resolved_ip) AS unique_resolved_ips,\n    COUNT(DISTINCT d.tld) AS tld_diversity\nFROM dns_records ns\nJOIN domains d ON ns.domain_name = d.domain_name\nWHERE ns.record_type = 'NS'\n  AND d.registration_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY ns.nameserver_pair, ns.nameserver_ip\nHAVING COUNT(DISTINCT d.domain_name) >= 100\n   AND AVG(DATEDIFF(day, d.registration_date, CURRENT_DATE)) < 30\nORDER BY domain_count DESC;",
+      "title": "SQL — Nameserver Concentration Anomaly Detection (Phase 2-3)"
+    },
+    {
+      "type": "spl",
+      "content": "index=dns sourcetype=dns_query\n| lookup rdga_cluster_feed domain AS query_domain OUTPUT cluster_id, cluster_confidence, actor_attribution, campaign_type\n| where isnotnull(cluster_id) AND cluster_confidence >= 75\n| stats count AS query_count,\n        dc(src_ip) AS unique_endpoints,\n        dc(query_domain) AS unique_rdga_domains,\n        values(actor_attribution) AS attributed_actors,\n        values(campaign_type) AS campaign_types,\n        earliest(_time) AS first_query,\n        latest(_time) AS last_query\n    BY cluster_id\n| where query_count >= 5 OR unique_endpoints >= 3\n| eval duration_hours = round((last_query - first_query) / 3600, 1)\n| table cluster_id, attributed_actors, campaign_types, unique_rdga_domains, unique_endpoints, query_count, duration_hours\n| sort - unique_endpoints",
+      "title": "Splunk — RDGA Domain Resolution Detection in Enterprise DNS (Phase 4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: DNS Resolution of Domains Served by Known RDGA Nameserver Clusters\nstatus: experimental\ndescription: >\n  Detects DNS queries resolving domains that are served by authoritative\n  nameservers identified as part of RDGA campaigns through zone file analysis\n  and nameserver clustering. RDGA campaigns are characterized by hundreds to\n  thousands of domains sharing a small number of nameservers, with correlated\n  registration timing and lexical patterns.\nlogsource:\n    product: dns\n    service: query_log\ndetection:\n    selection:\n        query_type:\n            - 'A'\n            - 'AAAA'\n            - 'CNAME'\n    filter_rdga_ns:\n        authoritative_ns|contains:\n            - 'ns1.rdga-indicator-1.example'\n            - 'ns2.rdga-indicator-1.example'\n    condition: selection and filter_rdga_ns\nlevel: high\ntags:\n    - cfpf.phase4.execution\n    - attack.t1568.002\n    - attack.t1583.001\n    - flame.rdga\n    - flame.dns_intelligence",
+      "title": "Sigma — RDGA Nameserver Cluster DNS Resolution (Phase 3-4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Bulk Let's Encrypt Certificate Issuance for Correlated Domains\nstatus: experimental\ndescription: >\n  Detects bulk TLS certificate issuance events from Let's Encrypt (or other\n  free CAs) for domains that share registration timing, nameserver\n  infrastructure, or lexical patterns consistent with RDGA campaigns.\n  Certificate Transparency log monitoring enables detection of RDGA domain\n  activation before malicious content is deployed.\nlogsource:\n    product: certificate_transparency\n    service: ct_log\ndetection:\n    selection:\n        issuer_cn|contains: \"Let's Encrypt\"\n        certificate_type: 'DV'\n    aggregation:\n        count|gte: 50\n        groupby: issuer_account_fingerprint\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: medium\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1583.001\n    - flame.rdga\n    - flame.certificate_intelligence",
+      "title": "Sigma — Bulk Let's Encrypt Certificate Issuance Correlation (Phase 2)"
+    }
+  ]
+}

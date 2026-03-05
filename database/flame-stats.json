@@ -1,10 +1,11 @@
 {
-  "total": 40,
-  "fraudTypes": 60,
+  "total": 43,
+  "fraudTypes": 63,
   "fraudTypeList": [
     "BEC",
     "account-takeover",
     "advance-fee-fraud",
+    "ai-accelerated-fraud-infrastructure",
     "ai-document-fraud",
     "application-fraud",
     "approval-phishing",
@@ -51,12 +52,14 @@
     "premium-diversion",
     "provider-fraud",
     "purchase-scam",
+    "rdga-infrastructure",
     "refunding-as-a-service",
     "romance-scam",
     "social-engineering",
     "synthetic-identity",
     "synthetic-medical-fraud",
     "tax-fraud",
+    "tds-exploitation",
     "unauthorized-transaction",
     "upcoding",
     "vendor-impersonation",
@@ -83,11 +86,11 @@
     "web3"
   ],
   "phaseCoverage": {
-    "P1": 39,
-    "P2": 37,
-    "P3": 40,
-    "P4": 39,
-    "P5": 39
+    "P1": 42,
+    "P2": 40,
+    "P3": 43,
+    "P4": 42,
+    "P5": 42
   },
   "topTags": [
     {
@@ -96,7 +99,7 @@
     },
     {
       "tag": "deepfake",
-      "count": 4
+      "count": 5
     },
     {
       "tag": "high-value",
@@ -129,6 +132,10 @@
     {
       "tag": "synthetic-identity",
       "count": 3
+    },
+    {
+      "tag": "ai-generated",
+      "count": 2
     },
     {
       "tag": "bust-out",
@@ -165,10 +172,6 @@
     {
       "tag": "medicare-fraud",
       "count": 2
-    },
-    {
-      "tag": "organized-crime",
-      "count": 2
     }
   ],
   "coverageMatrix": [
@@ -196,6 +199,17 @@
     },
     {
       "fraud_type": "advance-fee-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
+      "fraud_type": "ai-accelerated-fraud-infrastructure",
       "phases": {
         "P1": 1,
         "P2": 1,
@@ -285,13 +299,13 @@
     {
       "fraud_type": "brand-impersonation",
       "phases": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 1,
-        "P4": 1,
-        "P5": 1
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
       },
-      "total_tps": 1
+      "total_tps": 2
     },
     {
       "fraud_type": "business-email-compromise",
@@ -579,13 +593,13 @@
     {
       "fraud_type": "malvertising",
       "phases": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 1,
-        "P4": 1,
-        "P5": 1
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
       },
-      "total_tps": 1
+      "total_tps": 2
     },
     {
       "fraud_type": "malware",
@@ -667,13 +681,13 @@
     {
       "fraud_type": "phishing",
       "phases": {
-        "P1": 3,
-        "P2": 3,
-        "P3": 3,
-        "P4": 3,
-        "P5": 3
+        "P1": 5,
+        "P2": 5,
+        "P3": 5,
+        "P4": 5,
+        "P5": 5
       },
-      "total_tps": 3
+      "total_tps": 5
     },
     {
       "fraud_type": "premium-diversion",
@@ -699,6 +713,17 @@
     },
     {
       "fraud_type": "purchase-scam",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
+      "fraud_type": "rdga-infrastructure",
       "phases": {
         "P1": 1,
         "P2": 1,
@@ -774,6 +799,17 @@
       "total_tps": 1
     },
     {
+      "fraud_type": "tds-exploitation",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
       "fraud_type": "unauthorized-transaction",
       "phases": {
         "P1": 2,
@@ -842,5 +878,5 @@
     },
     "lastUpdated": "2026-03-05"
   },
-  "generatedAt": "2026-03-05T06:02:06.225622+00:00"
+  "generatedAt": "2026-03-05T23:30:40.860939+00:00"
 }
