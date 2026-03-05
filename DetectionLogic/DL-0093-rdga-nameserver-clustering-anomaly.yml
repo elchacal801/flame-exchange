@@ -1,0 +1,51 @@
+title: RDGA Nameserver Clustering Anomaly
+id: 8d4c1e67-a2f3-4b98-bf05-6c9e7a3d52e1
+status: experimental
+description: >
+  Detects disproportionate concentration of newly registered domains pointing to
+  the same nameserver infrastructure within a 24-hour window. RDGA operators
+  typically provision hundreds or thousands of domains but anchor them to a small
+  set of nameservers they control, creating a fan-in pattern that is statistically
+  anomalous compared to legitimate registrar or hosting provider distributions.
+  Legitimate nameservers serving large numbers of new domains tend to be well-known
+  hosting or registrar nameservers with established reputation. This rule identifies
+  nameserver endpoints receiving an abnormal influx of newly registered domain
+  delegations, filtering out known hosting infrastructure. Supports TP-0041 Phase 2
+  detection of RDGA nameserver infrastructure consolidation.
+references:
+  - https://www.domaintools.com/resources/blog/rdga-nameserver-clustering/
+  - https://www.icann.org/dns-abuse-trends
+threat_paths:
+  - TP-0041
+cfpf_phase: P2
+fraud_types:
+  - rdga-infrastructure
+logsource:
+  product: dns_intelligence
+  service: zone_file_diff
+detection:
+  selection:
+    event_type: 'domain_registration'
+    registration_source: 'zone_file_diff'
+  aggregation:
+    count|gte: 50
+    groupby: nameserver_fqdn
+    timeframe: 24h
+  exclusion:
+    nameserver_fqdn|endswith:
+      - '.registrar-servers.com'
+      - '.domaincontrol.com'
+      - '.cloudflare.com'
+      - '.awsdns-'
+      - '.googledomains.com'
+  condition: selection and aggregation and not exclusion
+falsepositives:
+  - New hosting providers onboarding large customer bases rapidly
+  - DNS migration events where many domains switch nameservers simultaneously
+  - Reseller registrars consolidating domains under shared nameserver infrastructure
+level: high
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1583.003
+  - flame.rdga
+  - flame.nameserver_clustering

@@ -89,7 +89,7 @@ REQUIRED_BASELINE_FIELDS = [
 
 VALID_DL_STATUSES = {"experimental", "test", "stable", "deprecated"}
 VALID_DL_LEVELS = {"informational", "low", "medium", "high", "critical"}
-VALID_DL_PRODUCTS = {"banking", "insurance", "ecommerce", "crypto", "healthcare", "government", "telecom"}
+VALID_DL_PRODUCTS = {"banking", "insurance", "ecommerce", "crypto", "healthcare", "government", "telecom", "dns_intelligence"}
 REQUIRED_DL_FIELDS = [
     "title", "id", "status", "description", "threat_paths",
     "cfpf_phase", "fraud_types", "logsource", "detection",

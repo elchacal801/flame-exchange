@@ -1,0 +1,46 @@
+title: RDGA Registration Timing Pattern Detection
+id: 3a7e2f91-c4b8-4d65-9e12-8b6a3f0d71c4
+status: experimental
+description: >
+  Detects clusters of domain registrations exhibiting algorithmically regular
+  timing intervals in zone file diffs, a hallmark of Registered Domain Generation
+  Algorithm (RDGA) infrastructure provisioning. Legitimate bulk registrations
+  by brand protection services or hosting providers typically show irregular,
+  human-driven timing patterns. RDGA tooling operates programmatically, producing
+  registration bursts with low standard deviation in inter-registration intervals.
+  This rule alerts when a cluster of newly registered domains exceeds a size
+  threshold and the inter-registration timing standard deviation falls below a
+  regularity threshold, indicating automated generation. Supports TP-0041 Phase 2
+  detection of RDGA-based initial access infrastructure staging.
+references:
+  - https://www.farsightsecurity.com/blog/txt-record/rdga-20230901/
+  - https://unit42.paloaltonetworks.com/registered-dga-detection/
+threat_paths:
+  - TP-0041
+cfpf_phase: P2
+fraud_types:
+  - rdga-infrastructure
+logsource:
+  product: dns_intelligence
+  service: zone_file_diff
+detection:
+  selection:
+    event_type: 'domain_registration'
+    registration_source: 'zone_file_diff'
+  aggregation:
+    count|gte: 15
+    groupby: registrant_cluster_id
+    timeframe: 1h
+  timing_regularity:
+    inter_registration_stddev|lte: 2.0
+  condition: selection and aggregation and timing_regularity
+falsepositives:
+  - Brand protection services registering defensive domains in automated batches
+  - Large hosting providers onboarding customer domains via API
+  - Domain portfolio companies performing scheduled bulk acquisitions
+level: high
+tags:
+  - cfpf.phase2.initial_access
+  - attack.t1583.001
+  - flame.rdga
+  - flame.bulk_registration
