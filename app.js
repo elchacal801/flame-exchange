@@ -127,6 +127,7 @@
 
         FlameData.load().then(function (data) {
             allSubmissions = data;
+            FlameViz.init(data);
             initializeUI();
             handleRoute();
             // Load search index and regulatory alerts in parallel (non-blocking)
@@ -217,10 +218,28 @@
         // Relationship Graph
         dom.graphBtn.addEventListener('click', function () {
             dom.graphModal.style.display = 'flex';
-            renderRelationshipGraph();
+            FlameViz.renderGlobalGraph(
+                document.getElementById('graph-container'),
+                document.getElementById('graph-legend'),
+                document.getElementById('graph-controls'),
+                { onNavigate: function (id) { dom.graphModal.style.display = 'none'; navigateTo('detail', id); } }
+            );
         });
         dom.graphClose.addEventListener('click', function () { dom.graphModal.style.display = 'none'; });
         dom.graphModal.addEventListener('click', function (e) { if (e.target === dom.graphModal) dom.graphModal.style.display = 'none'; });
+        document.getElementById('graph-fullscreen-btn').addEventListener('click', function () {
+            document.getElementById('graph-modal-content').classList.toggle('graph-fullscreen');
+            var container = document.getElementById('graph-container');
+            var svg = container.querySelector('svg');
+            if (svg) {
+                svg.setAttribute('width', container.clientWidth);
+                svg.setAttribute('height', container.clientHeight);
+            }
+        });
+        document.getElementById('graph-export-svg').addEventListener('click', function () {
+            var svg = document.getElementById('graph-container').querySelector('svg');
+            if (svg) FlameViz.exportSVG(svg, 'flame-relationship-graph.svg');
+        });
 
         // Framework Navigator
         dom.navigatorBtn.addEventListener('click', function () {
@@ -594,6 +613,11 @@
         }
         html += '</div>';
 
+        // Attack flow diagram
+        html += '<div class="attack-flow-section" id="attack-flow-section">';
+        html += '<div class="attack-flow-container" id="attack-flow-container"></div>';
+        html += '</div>';
+
         // Taxonomy toggle
         html += '<div class="taxonomy-toggle" id="taxonomy-toggle">';
         html += '<button class="tax-btn' + (activeTaxonomy === 'cfpf' ? ' active' : '') + '" data-taxonomy="cfpf">CFPF Phases</button>';
@@ -682,6 +706,15 @@
 
         html += '</div>';
 
+        // Ego neighborhood graph
+        html += '<div class="ego-graph-section" id="ego-graph-section">';
+        html += '<div class="ego-graph-header">';
+        html += '<h3 class="ego-graph-title">Relationship Neighborhood</h3>';
+        html += '<label class="ego-hop-toggle"><input type="checkbox" id="ego-2hop"> <span>2-hop</span></label>';
+        html += '</div>';
+        html += '<div class="ego-graph-container" id="ego-graph-container"></div>';
+        html += '</div>';
+
         // Body content (rendered from markdown)
         if (item.body) {
             html += '<div class="detail-body" id="detail-body">';
@@ -705,6 +738,32 @@
         addCopyButtons();
         highlightLookLeftRight();
         loadAndRenderDetectionRules(item.id);
+
+        // Render attack flow diagram
+        if (item.body) {
+            FlameViz.renderAttackFlow(
+                document.getElementById('attack-flow-container'),
+                item,
+                null
+            );
+        }
+
+        // Render ego neighborhood graph
+        FlameViz.renderEgoGraph(
+            document.getElementById('ego-graph-container'),
+            item.id,
+            { maxHops: 1, onNavigate: function (id) { navigateTo('detail', id); } }
+        );
+        var ego2hopCheckbox = document.getElementById('ego-2hop');
+        if (ego2hopCheckbox) {
+            ego2hopCheckbox.addEventListener('change', function () {
+                FlameViz.renderEgoGraph(
+                    document.getElementById('ego-graph-container'),
+                    item.id,
+                    { maxHops: this.checked ? 2 : 1, onNavigate: function (id) { navigateTo('detail', id); } }
+                );
+            });
+        }
 
         // Scroll to top
         dom.detailView.scrollTop = 0;
@@ -753,6 +812,9 @@
             });
 
             container.innerHTML = html;
+
+            // Update attack flow with detection rule badges
+            FlameViz.updateAttackFlowRules(rules);
 
             // Bind copy buttons
             container.querySelectorAll('.dl-copy-btn').forEach(function (btn) {
@@ -1704,231 +1766,8 @@
     }
 
     // -----------------------------------------------------------------------
-    // Relationship Graph (D3.js)
+    // Relationship Graph — delegated to FlameViz (viz.js)
     // -----------------------------------------------------------------------
-
-    var REL_COLORS = {
-        'feeds-into': '#ef4444',
-        'enables': '#3b82f6',
-        'enhances': '#a855f7',
-        'provides-mules-for': '#22c55e',
-        'shares-infrastructure': '#f97316',
-        'escalates-from': '#eab308',
-        'related-to': '#6b7280',
-    };
-
-    var SECTOR_COLORS = [
-        '#0ea5e9', '#f43f5e', '#a78bfa', '#34d399', '#fbbf24',
-        '#06b6d4', '#fb923c', '#e879f9', '#4ade80', '#f87171'
-    ];
-
-    function renderRelationshipGraph() {
-        var container = document.getElementById('graph-container');
-        var legendDiv = document.getElementById('graph-legend');
-        if (!container) return;
-
-        // Clear previous
-        container.innerHTML = '';
-        legendDiv.innerHTML = '';
-
-        var data = FlameData.getData();
-        if (!data || data.length === 0) return;
-
-        // Build node and link data
-        var nodeMap = {};
-        var sectorSet = {};
-        data.forEach(function (tp) {
-            var primarySector = (tp.sectors && tp.sectors.length > 0) ? tp.sectors[0] : 'other';
-            sectorSet[primarySector] = true;
-            nodeMap[tp.id] = {
-                id: tp.id,
-                title: tp.title || tp.id,
-                sector: primarySector,
-                confidence: tp.confidence_score,
-                phases: (tp.cfpf_phases || []).length,
-            };
-        });
-
-        var sectorList = Object.keys(sectorSet).sort();
-        var sectorColorMap = {};
-        sectorList.forEach(function (s, i) {
-            sectorColorMap[s] = SECTOR_COLORS[i % SECTOR_COLORS.length];
-        });
-
-        var nodes = [];
-        Object.keys(nodeMap).forEach(function (id) { nodes.push(nodeMap[id]); });
-
-        var links = [];
-        var linkSet = {};
-        data.forEach(function (tp) {
-            (tp.related_tps || []).forEach(function (rel) {
-                if (nodeMap[rel.id]) {
-                    var key = tp.id + '->' + rel.id;
-                    if (!linkSet[key]) {
-                        linkSet[key] = true;
-                        links.push({
-                            source: tp.id,
-                            target: rel.id,
-                            relationship: rel.relationship || 'related-to',
-                        });
-                    }
-                }
-            });
-        });
-
-        // SVG setup
-        var width = container.clientWidth || 800;
-        var height = Math.max(container.clientHeight || 500, 500);
-
-        var svg = d3.select(container)
-            .append('svg')
-            .attr('width', width)
-            .attr('height', height)
-            .attr('viewBox', '0 0 ' + width + ' ' + height);
-
-        // Zoom group
-        var g = svg.append('g');
-
-        var zoom = d3.zoom()
-            .scaleExtent([0.2, 4])
-            .on('zoom', function (event) {
-                g.attr('transform', event.transform);
-            });
-
-        svg.call(zoom);
-
-        // Arrow markers for each relationship type
-        var defs = svg.append('defs');
-        Object.keys(REL_COLORS).forEach(function (rel) {
-            defs.append('marker')
-                .attr('id', 'arrow-' + rel)
-                .attr('viewBox', '0 -5 10 10')
-                .attr('refX', 20)
-                .attr('refY', 0)
-                .attr('markerWidth', 6)
-                .attr('markerHeight', 6)
-                .attr('orient', 'auto')
-                .append('path')
-                .attr('d', 'M0,-5L10,0L0,5')
-                .attr('fill', REL_COLORS[rel]);
-        });
-
-        // Force simulation
-        var simulation = d3.forceSimulation(nodes)
-            .force('link', d3.forceLink(links).id(function (d) { return d.id; }).distance(120))
-            .force('charge', d3.forceManyBody().strength(-300))
-            .force('center', d3.forceCenter(width / 2, height / 2))
-            .force('collision', d3.forceCollide().radius(30));
-
-        // Draw links
-        var link = g.append('g')
-            .attr('class', 'graph-links')
-            .selectAll('line')
-            .data(links)
-            .enter()
-            .append('line')
-            .attr('stroke', function (d) { return REL_COLORS[d.relationship] || REL_COLORS['related-to']; })
-            .attr('stroke-width', 1.5)
-            .attr('stroke-opacity', 0.6)
-            .attr('marker-end', function (d) { return 'url(#arrow-' + (d.relationship || 'related-to') + ')'; });
-
-        // Draw nodes
-        var node = g.append('g')
-            .attr('class', 'graph-nodes')
-            .selectAll('g')
-            .data(nodes)
-            .enter()
-            .append('g')
-            .attr('cursor', 'pointer')
-            .call(d3.drag()
-                .on('start', function (event, d) {
-                    if (!event.active) simulation.alphaTarget(0.3).restart();
-                    d.fx = d.x;
-                    d.fy = d.y;
-                })
-                .on('drag', function (event, d) {
-                    d.fx = event.x;
-                    d.fy = event.y;
-                })
-                .on('end', function (event, d) {
-                    if (!event.active) simulation.alphaTarget(0);
-                    d.fx = null;
-                    d.fy = null;
-                })
-            );
-
-        node.append('circle')
-            .attr('r', function (d) { return 6 + (d.phases || 0) * 1.5; })
-            .attr('fill', function (d) { return sectorColorMap[d.sector] || '#6b7280'; })
-            .attr('stroke', '#000')
-            .attr('stroke-width', 1);
-
-        node.append('text')
-            .attr('class', 'graph-node-label')
-            .attr('dx', 12)
-            .attr('dy', 4)
-            .text(function (d) { return d.id; });
-
-        // Tooltip
-        var tooltip = d3.select(container)
-            .append('div')
-            .attr('class', 'graph-tooltip')
-            .style('display', 'none');
-
-        node.on('mouseover', function (event, d) {
-            tooltip.style('display', 'block')
-                .html('<strong>' + escapeHtml(d.id) + '</strong><br>' + escapeHtml(d.title));
-            // Highlight connected links
-            link.attr('stroke-opacity', function (l) {
-                return (l.source.id === d.id || l.target.id === d.id) ? 1 : 0.15;
-            }).attr('stroke-width', function (l) {
-                return (l.source.id === d.id || l.target.id === d.id) ? 2.5 : 1;
-            });
-        })
-        .on('mousemove', function (event) {
-            var rect = container.getBoundingClientRect();
-            tooltip.style('left', (event.clientX - rect.left + 12) + 'px')
-                .style('top', (event.clientY - rect.top - 10) + 'px');
-        })
-        .on('mouseout', function () {
-            tooltip.style('display', 'none');
-            link.attr('stroke-opacity', 0.6).attr('stroke-width', 1.5);
-        })
-        .on('click', function (event, d) {
-            // Close modal and navigate to detail view
-            dom.graphModal.style.display = 'none';
-            navigateTo('detail', d.id);
-        });
-
-        // Simulation tick
-        simulation.on('tick', function () {
-            link
-                .attr('x1', function (d) { return d.source.x; })
-                .attr('y1', function (d) { return d.source.y; })
-                .attr('x2', function (d) { return d.target.x; })
-                .attr('y2', function (d) { return d.target.y; });
-
-            node.attr('transform', function (d) { return 'translate(' + d.x + ',' + d.y + ')'; });
-        });
-
-        // Legend — relationship types
-        var legendHtml = '';
-        Object.keys(REL_COLORS).forEach(function (rel) {
-            legendHtml += '<span class="graph-legend-item">';
-            legendHtml += '<span class="graph-legend-swatch" style="background: ' + REL_COLORS[rel] + ';"></span>';
-            legendHtml += formatLabel(rel);
-            legendHtml += '</span>';
-        });
-        // Sector colors
-        legendHtml += '<span class="graph-legend-item" style="margin-left: 16px; font-weight: 600;">Sectors:</span>';
-        sectorList.forEach(function (s) {
-            legendHtml += '<span class="graph-legend-item">';
-            legendHtml += '<span class="graph-legend-swatch" style="background: ' + sectorColorMap[s] + '; width: 12px; height: 12px; border-radius: 50%;"></span>';
-            legendHtml += formatLabel(s);
-            legendHtml += '</span>';
-        });
-        legendDiv.innerHTML = legendHtml;
-    }
 
     // -----------------------------------------------------------------------
     // Contributors Leaderboard

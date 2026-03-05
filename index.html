@@ -278,11 +278,18 @@
     <!-- Relationship Graph Modal                                         -->
     <!-- ================================================================ -->
     <div class="modal-overlay" id="graph-modal" style="display:none;">
-        <div class="modal-content modal-wide modal-graph">
+        <div class="modal-content modal-wide modal-graph" id="graph-modal-content">
             <div class="modal-header">
                 <h2>Threat Path Relationship Graph</h2>
-                <button class="modal-close" id="graph-close">&times;</button>
+                <div class="graph-toolbar">
+                    <input type="text" id="graph-search" placeholder="Search TP..."
+                           class="graph-search-input" autocomplete="off">
+                    <button class="graph-toolbar-btn" id="graph-fullscreen-btn" title="Toggle Fullscreen">&#x26F6;</button>
+                    <button class="graph-toolbar-btn" id="graph-export-svg" title="Export SVG">SVG</button>
+                    <button class="modal-close" id="graph-close">&times;</button>
+                </div>
             </div>
+            <div class="graph-controls" id="graph-controls"></div>
             <div class="modal-body" id="graph-body">
                 <div id="graph-container"></div>
                 <div class="graph-legend" id="graph-legend"></div>
@@ -365,6 +372,7 @@
     <script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
     <script src="flame-data.js"></script>
+    <script src="viz.js"></script>
     <script src="app.js"></script>
 </body>
 
