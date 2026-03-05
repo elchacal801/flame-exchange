@@ -1,12 +1,13 @@
 name: Generate New Threat Path
 description: Submit a URL to automatically generate a FLAME threat path using AI
 title: "[TP Request] "
-labels: ["enhancement", "ai-generation"]
+labels: ["enhancement", "ai-generation", "submission"]
 body:
   - type: markdown
     attributes:
       value: |
         Please provide a URL to a news article, DOJ press release, or threat intelligence report. The FLAME AI ingestion script will read the article and automatically generate a draft Threat Path.
+
   - type: input
     id: source_url
     attributes:
@@ -15,3 +16,41 @@ body:
       placeholder: "https://www.justice.gov/usao-..."
     validations:
       required: true
+
+  - type: dropdown
+    id: sector
+    attributes:
+      label: "Primary Sector"
+      description: "Which financial sector is most affected?"
+      options:
+        - Banking
+        - Credit Union
+        - Cross-sector
+        - Crypto
+        - Education
+        - Employment
+        - Fintech
+        - Government
+        - Healthcare
+        - Insurance
+        - Investment
+        - Payments
+        - Real Estate
+        - Retail
+        - Staffing
+        - Trade
+        - Travel
+        - Web3
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: cfpf_phases
+    attributes:
+      label: "CFPF Phases (select all that apply)"
+      options:
+        - label: "P1 — Recon"
+        - label: "P2 — Initial Access"
+        - label: "P3 — Positioning"
+        - label: "P4 — Execution"
+        - label: "P5 — Monetization"

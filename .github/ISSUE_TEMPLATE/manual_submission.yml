@@ -1,7 +1,7 @@
 name: "Submit a Threat Path Manually"
 description: "Submit a fraud threat path for review without using the AI intake pipeline."
 title: "[Manual] "
-labels: ["manual-submission", "review-needed"]
+labels: ["manual-submission", "review-needed", "submission"]
 body:
   - type: markdown
     attributes:
@@ -41,6 +41,56 @@ body:
         - "Detection Logic (rules/queries/analytics)"
     validations:
       required: true
+
+  - type: dropdown
+    id: sector
+    attributes:
+      label: "Primary Sector"
+      description: "Which financial sector is most affected?"
+      options:
+        - Banking
+        - Credit Union
+        - Cross-sector
+        - Crypto
+        - Education
+        - Employment
+        - Fintech
+        - Government
+        - Healthcare
+        - Insurance
+        - Investment
+        - Payments
+        - Real Estate
+        - Retail
+        - Staffing
+        - Trade
+        - Travel
+        - Web3
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: fraud_types
+    attributes:
+      label: "Fraud Types (select all that apply)"
+      options:
+        - label: "Identity Fraud (synthetic identity, account takeover, impersonation)"
+        - label: "Payment Fraud (wire, ACH, check, card-not-present)"
+        - label: "Social Engineering (BEC, phishing, vishing, smishing)"
+        - label: "Digital/Cyber (deepfake, credential stuffing, malware-enabled)"
+        - label: "Insider/First-Party (employee fraud, first-party fraud, collusion)"
+        - label: "Other (describe in content below)"
+
+  - type: checkboxes
+    id: cfpf_phases
+    attributes:
+      label: "CFPF Phases (select all that apply)"
+      options:
+        - label: "P1 — Recon"
+        - label: "P2 — Initial Access"
+        - label: "P3 — Positioning"
+        - label: "P4 — Execution"
+        - label: "P5 — Monetization"
 
   - type: textarea
     id: content

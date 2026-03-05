@@ -1,0 +1,95 @@
+name: "Submit an Emulation Playbook"
+description: "Submit an adversary emulation playbook for fraud detection testing."
+title: "[Playbook] "
+labels: ["submission", "emulation-playbook"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit Emulation Playbook
+        Emulation playbooks enable fraud teams to simulate real-world fraud scenarios
+        and validate detection coverage. See `Templates/emulation-playbook-template.json`
+        for the required JSON schema.
+
+  - type: input
+    id: title
+    attributes:
+      label: "Playbook Title"
+      description: "Descriptive title for the emulation scenario"
+      placeholder: "e.g., Synthetic Identity Bust-Out Simulation"
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: "Your Name or Handle"
+      placeholder: "Your name or GitHub handle"
+    validations:
+      required: true
+
+  - type: input
+    id: target_tps
+    attributes:
+      label: "Target Threat Paths"
+      description: "Which threat paths does this playbook test? (comma-separated TP IDs)"
+      placeholder: "TP-0003, TP-0016"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: sector
+    attributes:
+      label: "Primary Sector"
+      options:
+        - Banking
+        - Credit Union
+        - Cross-sector
+        - Crypto
+        - Education
+        - Employment
+        - Fintech
+        - Government
+        - Healthcare
+        - Insurance
+        - Investment
+        - Payments
+        - Real Estate
+        - Retail
+        - Staffing
+        - Trade
+        - Travel
+        - Web3
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: cfpf_phases
+    attributes:
+      label: "CFPF Phases Covered"
+      options:
+        - label: "P1 — Recon"
+        - label: "P2 — Initial Access"
+        - label: "P3 — Positioning"
+        - label: "P4 — Execution"
+        - label: "P5 — Monetization"
+
+  - type: textarea
+    id: playbook_json
+    attributes:
+      label: "Playbook JSON"
+      description: "Paste the full playbook JSON following the EP-XXXX schema. See Templates/emulation-playbook-template.json for structure."
+      render: json
+      placeholder: '{"id": "EP-XXXX", "title": "...", ...}'
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "This playbook is based on publicly documented fraud techniques"
+          required: true
+        - label: "I have reviewed existing playbooks for potential duplicates"
+          required: true

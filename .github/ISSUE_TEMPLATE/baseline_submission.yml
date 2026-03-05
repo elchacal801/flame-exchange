@@ -1,0 +1,89 @@
+name: "Submit a Baseline Profile"
+description: "Submit an environmental baseline for fraud detection benchmarking."
+title: "[Baseline] "
+labels: ["submission", "baseline"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Submit Baseline Profile
+        Baselines establish normal behavioral ranges that detection rules compare against.
+        See existing baselines in the `Baselines/` directory for format reference.
+
+  - type: input
+    id: title
+    attributes:
+      label: "Baseline Title"
+      description: "Descriptive title for the baseline measurement"
+      placeholder: "e.g., A2A Payment Velocity Baseline"
+    validations:
+      required: true
+
+  - type: input
+    id: author
+    attributes:
+      label: "Your Name or Handle"
+      placeholder: "Your name or GitHub handle"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: sector
+    attributes:
+      label: "Primary Sector"
+      options:
+        - Banking
+        - Credit Union
+        - Cross-sector
+        - Crypto
+        - Education
+        - Employment
+        - Fintech
+        - Government
+        - Healthcare
+        - Insurance
+        - Investment
+        - Payments
+        - Real Estate
+        - Retail
+        - Staffing
+        - Trade
+        - Travel
+        - Web3
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: "Baseline Description"
+      description: "What does this baseline measure and why is it useful for fraud detection?"
+      placeholder: "Describe the behavioral pattern being baselined..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: methodology
+    attributes:
+      label: "Measurement Methodology"
+      description: "How should this baseline be calculated? Include data sources, time windows, and statistical methods."
+      placeholder: "Describe how to measure and calculate this baseline..."
+    validations:
+      required: true
+
+  - type: input
+    id: related_tps
+    attributes:
+      label: "Related Threat Paths"
+      description: "Which threat paths does this baseline support? (comma-separated TP IDs)"
+      placeholder: "TP-0001, TP-0012"
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "This baseline is based on publicly available methodologies or anonymized data"
+          required: true
+        - label: "I have reviewed existing baselines for potential duplicates"
+          required: true

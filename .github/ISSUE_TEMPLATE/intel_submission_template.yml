@@ -1,7 +1,7 @@
 name: "🔥 Intel Submission — Generate Threat Path from URL"
 description: "Submit a fraud intel source URL and FLAME's AI pipeline will generate a structured threat path draft for review."
 title: "[Intel] "
-labels: ["intel-submission", "ai-generation"]
+labels: ["intel-submission", "ai-generation", "submission"]
 body:
   - type: markdown
     attributes:
@@ -60,15 +60,23 @@ body:
       description: "Which financial sector is most affected?"
       options:
         - Banking
-        - Insurance
         - Credit Union
-        - Investment
-        - Fintech
-        - Payments
-        - Crypto
-        - Healthcare
-        - Government
         - Cross-sector
+        - Crypto
+        - Education
+        - Employment
+        - Fintech
+        - Government
+        - Healthcare
+        - Insurance
+        - Investment
+        - Payments
+        - Real Estate
+        - Retail
+        - Staffing
+        - Trade
+        - Travel
+        - Web3
     validations:
       required: true
 
@@ -91,6 +99,17 @@ body:
         - label: "Money Mule / Crypto Laundering"
         - label: "Deepfake / Impersonation"
         - label: "Other (describe in context above)"
+
+  - type: checkboxes
+    id: cfpf_phases
+    attributes:
+      label: "CFPF Phases (select all that apply)"
+      options:
+        - label: "P1 — Recon"
+        - label: "P2 — Initial Access"
+        - label: "P3 — Positioning"
+        - label: "P4 — Execution"
+        - label: "P5 — Monetization"
 
   - type: checkboxes
     id: confirmation
