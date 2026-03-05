@@ -227,19 +227,8 @@
         });
         dom.graphClose.addEventListener('click', function () { dom.graphModal.style.display = 'none'; });
         dom.graphModal.addEventListener('click', function (e) { if (e.target === dom.graphModal) dom.graphModal.style.display = 'none'; });
-        document.getElementById('graph-fullscreen-btn').addEventListener('click', function () {
-            document.getElementById('graph-modal-content').classList.toggle('graph-fullscreen');
-            var container = document.getElementById('graph-container');
-            var svg = container.querySelector('svg');
-            if (svg) {
-                svg.setAttribute('width', container.clientWidth);
-                svg.setAttribute('height', container.clientHeight);
-            }
-        });
-        document.getElementById('graph-export-svg').addEventListener('click', function () {
-            var svg = document.getElementById('graph-container').querySelector('svg');
-            if (svg) FlameViz.exportSVG(svg, 'flame-relationship-graph.svg');
-        });
+        // Fullscreen toggle handled by FlameViz.renderGlobalGraph() in viz.js
+        // SVG export handled by FlameViz.renderGlobalGraph() in viz.js
 
         // Framework Navigator
         dom.navigatorBtn.addEventListener('click', function () {
