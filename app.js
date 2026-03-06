@@ -92,6 +92,17 @@
         dom.contributorsModal = document.getElementById('contributors-modal');
         dom.contributorsClose = document.getElementById('contributors-close');
         dom.contributorsBody = document.getElementById('contributors-body');
+        dom.ucffBtn = document.getElementById('ucff-btn');
+        dom.ucffModal = document.getElementById('ucff-modal');
+        dom.ucffClose = document.getElementById('ucff-close');
+        dom.ucffSliderPanel = document.getElementById('ucff-slider-panel');
+        dom.ucffSummary = document.getElementById('ucff-summary');
+        dom.ucffRadar = document.getElementById('ucff-radar');
+        dom.ucffGridBody = document.getElementById('ucff-grid-body');
+        dom.ucffGrid = document.getElementById('ucff-grid');
+        dom.ucffExportBtn = document.getElementById('ucff-export-btn');
+        dom.ucffImportBtn = document.getElementById('ucff-import-btn');
+        dom.ucffFileInput = document.getElementById('ucff-file-input');
     }
 
     // -----------------------------------------------------------------------
@@ -266,6 +277,21 @@
                 if (e.target === dom.contributorsModal) dom.contributorsModal.style.display = 'none';
             });
         }
+
+        // UCFF Maturity Assessment
+        dom.ucffBtn.addEventListener('click', function () {
+            dom.ucffModal.style.display = 'flex';
+            initUcffAssessment();
+        });
+        dom.ucffClose.addEventListener('click', function () { dom.ucffModal.style.display = 'none'; });
+        dom.ucffModal.addEventListener('click', function (e) { if (e.target === dom.ucffModal) dom.ucffModal.style.display = 'none'; });
+        dom.ucffExportBtn.addEventListener('click', exportUcffAssessment);
+        dom.ucffImportBtn.addEventListener('click', function () { dom.ucffFileInput.click(); });
+        dom.ucffFileInput.addEventListener('change', importUcffAssessment);
+        dom.ucffGrid.querySelector('thead').addEventListener('click', function (e) {
+            var th = e.target.closest('th[data-sort]');
+            if (th) sortUcffGrid(th.dataset.sort);
+        });
 
         // Navigator exports
         document.getElementById('nav-export-svg').addEventListener('click', exportNavigatorSVG);
@@ -1821,6 +1847,196 @@
                 body.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--color-text-dim);">Failed to load contributor data.</div>';
                 console.error('Contributors load error:', err);
             });
+    }
+
+    // -----------------------------------------------------------------------
+    // UCFF Maturity Self-Assessment
+    // -----------------------------------------------------------------------
+
+    var UCFF_DOMAINS = ['commit', 'assess', 'plan', 'act', 'monitor', 'report', 'improve'];
+
+    var UCFF_LEVEL_DESCS = {
+        1: 'Ad hoc, reactive fraud management',
+        2: 'Basic fraud function with some defined processes',
+        3: 'Formalized fraud program with proactive capabilities',
+        4: 'Data-driven, continuously improving fraud program',
+        5: 'Industry-leading, predictive fraud management',
+    };
+
+    var ucffUserLevels = {};
+    var ucffResults = [];
+    var ucffSortKey = 'gap';
+    var ucffSortAsc = false;
+
+    function initUcffAssessment() {
+        var html = '<h3>Your Maturity Levels</h3>';
+        UCFF_DOMAINS.forEach(function (d) {
+            var level = ucffUserLevels[d] || 1;
+            html += '<div class="ucff-domain-slider">';
+            html += '<label>' + capitalize(d) + ' <span class="ucff-level-badge" id="ucff-badge-' + d + '">Level ' + level + '</span></label>';
+            html += '<input type="range" min="1" max="5" value="' + level + '" id="ucff-slider-' + d + '" data-domain="' + d + '">';
+            html += '<div class="ucff-level-desc" id="ucff-desc-' + d + '">' + UCFF_LEVEL_DESCS[level] + '</div>';
+            html += '</div>';
+        });
+        dom.ucffSliderPanel.innerHTML = html;
+
+        UCFF_DOMAINS.forEach(function (d) {
+            if (!ucffUserLevels[d]) ucffUserLevels[d] = 1;
+            document.getElementById('ucff-slider-' + d).addEventListener('input', function (e) {
+                var val = parseInt(e.target.value);
+                ucffUserLevels[d] = val;
+                document.getElementById('ucff-badge-' + d).textContent = 'Level ' + val;
+                document.getElementById('ucff-desc-' + d).textContent = UCFF_LEVEL_DESCS[val];
+                computeUcffResults();
+            });
+        });
+
+        computeUcffResults();
+    }
+
+    function parseUcffLevel(val) {
+        if (!val || val === '') return 0;
+        var m = String(val).match(/(\d)/);
+        return m ? parseInt(m[1]) : 0;
+    }
+
+    function computeUcffResults() {
+        var data = FlameData.getData();
+        ucffResults = [];
+
+        var ceilingLevels = {};
+        UCFF_DOMAINS.forEach(function (d) { ceilingLevels[d] = 0; });
+
+        data.forEach(function (tp) {
+            var ucff = tp.ucff_domains || {};
+            var gapScore = 0;
+            var worstGap = 0;
+            var worstDomain = '';
+
+            UCFF_DOMAINS.forEach(function (d) {
+                var required = parseUcffLevel(ucff[d]);
+                if (required > ceilingLevels[d]) ceilingLevels[d] = required;
+                var gap = Math.max(0, required - (ucffUserLevels[d] || 1));
+                gapScore += gap;
+                if (gap > worstGap) {
+                    worstGap = gap;
+                    worstDomain = d;
+                }
+            });
+
+            var status = gapScore === 0 ? 'covered' : gapScore <= 3 ? 'partial' : 'blind';
+            ucffResults.push({
+                id: tp.id,
+                title: tp.title,
+                gap: gapScore,
+                worst: worstDomain,
+                worstGap: worstGap,
+                status: status,
+            });
+        });
+
+        var covered = ucffResults.filter(function (r) { return r.status === 'covered'; }).length;
+        var partial = ucffResults.filter(function (r) { return r.status === 'partial'; }).length;
+        var blind = ucffResults.filter(function (r) { return r.status === 'blind'; }).length;
+
+        var domainGaps = {};
+        UCFF_DOMAINS.forEach(function (d) { domainGaps[d] = 0; });
+        ucffResults.forEach(function (r) {
+            if (r.worst) domainGaps[r.worst] += r.worstGap;
+        });
+        var weakest = UCFF_DOMAINS.reduce(function (a, b) { return domainGaps[a] >= domainGaps[b] ? a : b; });
+
+        dom.ucffSummary.innerHTML =
+            '<div class="ucff-stat-card covered"><div class="ucff-stat-value">' + covered + '</div><div class="ucff-stat-label">Covered</div></div>' +
+            '<div class="ucff-stat-card partial"><div class="ucff-stat-value">' + partial + '</div><div class="ucff-stat-label">Partial Gaps</div></div>' +
+            '<div class="ucff-stat-card blind"><div class="ucff-stat-value">' + blind + '</div><div class="ucff-stat-label">Blind Spots</div></div>' +
+            '<div class="ucff-stat-card"><div class="ucff-stat-value">' + capitalize(weakest) + '</div><div class="ucff-stat-label">Weakest Domain</div></div>';
+
+        FlameViz.renderRadarChart(dom.ucffRadar, ucffUserLevels, ceilingLevels, UCFF_DOMAINS);
+
+        sortUcffGrid(ucffSortKey, true);
+    }
+
+    function sortUcffGrid(key, skipToggle) {
+        if (!skipToggle) {
+            if (ucffSortKey === key) {
+                ucffSortAsc = !ucffSortAsc;
+            } else {
+                ucffSortKey = key;
+                ucffSortAsc = key === 'id' || key === 'title';
+            }
+        }
+
+        dom.ucffGrid.querySelectorAll('th').forEach(function (th) {
+            th.classList.remove('ucff-sort-active', 'ucff-sort-asc');
+            if (th.dataset.sort === ucffSortKey) {
+                th.classList.add('ucff-sort-active');
+                if (ucffSortAsc) th.classList.add('ucff-sort-asc');
+            }
+        });
+
+        var sorted = ucffResults.slice().sort(function (a, b) {
+            var va = a[ucffSortKey], vb = b[ucffSortKey];
+            if (typeof va === 'string') {
+                var cmp = va.localeCompare(vb);
+                return ucffSortAsc ? cmp : -cmp;
+            }
+            return ucffSortAsc ? va - vb : vb - va;
+        });
+
+        dom.ucffGridBody.innerHTML = sorted.map(function (r) {
+            var statusClass = 'ucff-status-' + r.status;
+            var statusLabel = r.status === 'covered' ? 'Covered' : r.status === 'partial' ? 'Partial' : 'Blind';
+            return '<tr>' +
+                '<td>' + escapeHtml(r.id) + '</td>' +
+                '<td>' + escapeHtml(r.title) + '</td>' +
+                '<td>' + r.gap + '</td>' +
+                '<td>' + (r.worst ? capitalize(r.worst) : '\u2014') + '</td>' +
+                '<td><span class="ucff-status ' + statusClass + '">' + statusLabel + '</span></td>' +
+                '</tr>';
+        }).join('');
+    }
+
+    function capitalize(s) {
+        return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    function exportUcffAssessment() {
+        var payload = {
+            version: 1,
+            timestamp: new Date().toISOString(),
+            levels: Object.assign({}, ucffUserLevels),
+        };
+        var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'flame-ucff-assessment.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    function importUcffAssessment(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+            try {
+                var data = JSON.parse(ev.target.result);
+                if (data.levels) {
+                    UCFF_DOMAINS.forEach(function (d) {
+                        if (data.levels[d] >= 1 && data.levels[d] <= 5) {
+                            ucffUserLevels[d] = data.levels[d];
+                        }
+                    });
+                    initUcffAssessment();
+                }
+            } catch (err) {
+                alert('Invalid assessment file.');
+            }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
     }
 
     // -----------------------------------------------------------------------

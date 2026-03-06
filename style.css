@@ -3315,3 +3315,208 @@ h4 {
         display: none;
     }
 }
+
+/* ================================================================ */
+/* UCFF Maturity Assessment                                         */
+/* ================================================================ */
+
+.ucff-modal-content {
+    max-width: 1100px;
+    max-height: 90vh;
+}
+
+.ucff-body {
+    padding: 0;
+}
+
+.ucff-panels {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 70vh;
+}
+
+.ucff-slider-panel {
+    padding: var(--space-lg);
+    border-right: 1px solid var(--color-border);
+    overflow-y: auto;
+}
+
+.ucff-slider-panel h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-dim);
+    margin-bottom: var(--space-lg);
+}
+
+.ucff-domain-slider {
+    margin-bottom: var(--space-lg);
+}
+
+.ucff-domain-slider label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+}
+
+.ucff-domain-slider .ucff-level-badge {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+}
+
+.ucff-domain-slider input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+}
+
+.ucff-domain-slider .ucff-level-desc {
+    font-size: 0.72rem;
+    color: var(--color-text-dim);
+    margin-top: 2px;
+    line-height: 1.3;
+}
+
+.ucff-results-panel {
+    padding: var(--space-lg);
+    overflow-y: auto;
+    max-height: calc(90vh - 60px);
+}
+
+.ucff-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.ucff-stat-card {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    text-align: center;
+}
+
+.ucff-stat-card .ucff-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.ucff-stat-card .ucff-stat-label {
+    font-size: 0.72rem;
+    color: var(--color-text-dim);
+    margin-top: 2px;
+}
+
+.ucff-stat-card.covered .ucff-stat-value { color: #22c55e; }
+.ucff-stat-card.partial .ucff-stat-value { color: #eab308; }
+.ucff-stat-card.blind .ucff-stat-value { color: #ef4444; }
+
+.ucff-radar {
+    margin-bottom: var(--space-lg);
+    display: flex;
+    justify-content: center;
+}
+
+.ucff-radar svg text {
+    fill: var(--color-text);
+    font-size: 11px;
+}
+
+.ucff-grid-wrapper {
+    overflow-x: auto;
+}
+
+.ucff-grid {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+
+.ucff-grid th {
+    text-align: left;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 2px solid var(--color-border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    color: var(--color-text-dim);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.ucff-grid th:hover {
+    color: var(--color-text);
+}
+
+.ucff-grid th.ucff-sort-active::after {
+    content: ' \25BC';
+}
+
+.ucff-grid th.ucff-sort-active.ucff-sort-asc::after {
+    content: ' \25B2';
+}
+
+.ucff-grid td {
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.ucff-grid tbody tr:hover {
+    background: var(--color-surface-2);
+}
+
+.ucff-grid .ucff-status {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.ucff-status-covered { background: rgba(34,197,94,0.15); color: #22c55e; }
+.ucff-status-partial { background: rgba(234,179,8,0.15); color: #eab308; }
+.ucff-status-blind { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+.ucff-header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.ucff-action-btn {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    cursor: pointer;
+}
+
+.ucff-action-btn:hover {
+    background: var(--color-surface-3, var(--color-border));
+}
+
+@media (max-width: 768px) {
+    .ucff-panels {
+        grid-template-columns: 1fr;
+    }
+    .ucff-slider-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--color-border);
+    }
+    .ucff-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

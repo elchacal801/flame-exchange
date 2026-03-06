@@ -972,6 +972,92 @@ const FlameViz = (function () {
     }
 
     // -------------------------------------------------------------------
+    // UCFF Radar Chart
+    // -------------------------------------------------------------------
+
+    function renderRadarChart(container, userLevels, ceilingLevels, domains) {
+        container.innerHTML = '';
+        var size = 300, cx = size / 2, cy = size / 2, radius = 110;
+        var n = domains.length;
+
+        var svg = d3.select(container).append('svg')
+            .attr('width', size).attr('height', size)
+            .attr('viewBox', '0 0 ' + size + ' ' + size);
+
+        // Draw grid rings (levels 1-5)
+        for (var lvl = 1; lvl <= 5; lvl++) {
+            var r = (lvl / 5) * radius;
+            var ringPoints = domains.map(function (_, i) {
+                var angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+                return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+            });
+            svg.append('polygon')
+                .attr('points', ringPoints.map(function (p) { return p[0] + ',' + p[1]; }).join(' '))
+                .attr('fill', 'none')
+                .attr('stroke', 'var(--color-border)')
+                .attr('stroke-width', lvl === 5 ? 1.5 : 0.5);
+        }
+
+        // Draw axis lines
+        domains.forEach(function (_, i) {
+            var angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+            svg.append('line')
+                .attr('x1', cx).attr('y1', cy)
+                .attr('x2', cx + radius * Math.cos(angle))
+                .attr('y2', cy + radius * Math.sin(angle))
+                .attr('stroke', 'var(--color-border)')
+                .attr('stroke-width', 0.5);
+        });
+
+        // Domain labels
+        domains.forEach(function (d, i) {
+            var angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+            var lx = cx + (radius + 20) * Math.cos(angle);
+            var ly = cy + (radius + 20) * Math.sin(angle);
+            svg.append('text')
+                .attr('x', lx).attr('y', ly)
+                .attr('text-anchor', 'middle')
+                .attr('dominant-baseline', 'middle')
+                .style('font-size', '11px')
+                .style('font-weight', '600')
+                .style('text-transform', 'capitalize')
+                .text(d);
+        });
+
+        function polyPoints(levels) {
+            return domains.map(function (d, i) {
+                var val = levels[d] || 0;
+                var r = (val / 5) * radius;
+                var angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+                return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+            });
+        }
+
+        // Ceiling polygon (red)
+        var ceilPts = polyPoints(ceilingLevels);
+        svg.append('polygon')
+            .attr('points', ceilPts.map(function (p) { return p[0] + ',' + p[1]; }).join(' '))
+            .attr('fill', 'rgba(239,68,68,0.1)')
+            .attr('stroke', '#ef4444')
+            .attr('stroke-width', 2);
+
+        // User polygon (blue)
+        var userPts = polyPoints(userLevels);
+        svg.append('polygon')
+            .attr('points', userPts.map(function (p) { return p[0] + ',' + p[1]; }).join(' '))
+            .attr('fill', 'rgba(59,130,246,0.15)')
+            .attr('stroke', '#3b82f6')
+            .attr('stroke-width', 2);
+
+        // Legend
+        var legend = svg.append('g').attr('transform', 'translate(8, ' + (size - 30) + ')');
+        legend.append('rect').attr('width', 12).attr('height', 12).attr('fill', 'rgba(59,130,246,0.4)');
+        legend.append('text').attr('x', 16).attr('y', 10).style('font-size', '10px').text('Your Maturity');
+        legend.append('rect').attr('x', 110).attr('width', 12).attr('height', 12).attr('fill', 'rgba(239,68,68,0.4)');
+        legend.append('text').attr('x', 126).attr('y', 10).style('font-size', '10px').text('Threat Ceiling');
+    }
+
+    // -------------------------------------------------------------------
     // Public API
     // -------------------------------------------------------------------
 
@@ -982,6 +1068,7 @@ const FlameViz = (function () {
         updateAttackFlowRules: updateAttackFlowRules,
         renderEgoGraph: renderEgoGraph,
         renderGlobalGraph: renderGlobalGraph,
+        renderRadarChart: renderRadarChart,
         REL_COLORS: REL_COLORS,
         SECTOR_COLORS: SECTOR_COLORS,
     };
