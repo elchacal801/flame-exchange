@@ -213,6 +213,7 @@ Organized fraud networks exploit the open-enrollment admissions model of communi
 ## Underground Ecosystem Context
 
 ### Service Supply Chain
+
 | Role | Service Type | Underground Availability | Typical Cost Range |
 |------|-------------|--------------------------|-------------------|
 | Synthetic Identity Provider | Fullz (name, SSN, DOB, address) packages for ghost student creation | High | $10-50 per identity, bulk discounts for 100+ |
@@ -222,6 +223,7 @@ Organized fraud networks exploit the open-enrollment admissions model of communi
 | FAFSA Filing Service | Bulk FAFSA completion using provided identity data | Medium | $25-75 per FAFSA filing |
 
 ### Tool Ecosystem
+
 - Enrollment form automation bots with anti-detection (human-like typing, mouse movement simulation)
 - CAPTCHA solving services (both automated and human-farm based)
 - Residential proxy and VPN rotation services for IP diversity
@@ -230,9 +232,11 @@ Organized fraud networks exploit the open-enrollment admissions model of communi
 - Bank account opening automation for prepaid/online-only banks
 
 ### Underground Marketplace Presence
+
 Ghost student fraud operations are discussed on English-language fraud forums, Telegram channels focused on "finessing" educational aid, and social media platforms where techniques are shared as "life hacks" or "financial aid tips." Activity level is high, particularly during FAFSA filing windows (October-June). Community college systems are the primary targets due to open enrollment, but four-year institutions with online programs are increasingly targeted. The operation is often framed in underground communities as low-risk due to perceived lax enforcement and the difficulty of cross-institutional detection.
 
 ### Intelligence Sources
+
 - DOE Office of Inspector General (OIG) semiannual reports and fraud alerts
 - GAO reports on federal student aid program integrity
 - California Community Colleges Chancellor's Office fraud prevention reports
@@ -274,6 +278,7 @@ Ghost student fraud operations are discussed on English-language fraud forums, T
 | IMPROVE | Level 3 (Established) | Post-enrollment cycle fraud analysis comparing flagged applications to actual enrollment outcomes; identity verification control effectiveness metrics; bot detection tuning based on evolving automation techniques; policy updates based on emerging ghost student tactics |
 
 ### Maturity Levels Reference
+
 - **Level 1 (Initial):** Ad hoc, reactive fraud management
 - **Level 2 (Developing):** Basic fraud function exists with some defined processes
 - **Level 3 (Established):** Formalized fraud program with proactive capabilities
@@ -382,13 +387,13 @@ index=financial_aid sourcetype=disbursements
 
 ## References
 
-- **Equifax Education Fraud Prevention Case Studies**: Documents $180M in prevented ghost student fraud in a single year and describes identity verification approaches for enrollment systems.
+- **Equifax Education Fraud Prevention Case Studies**: Documents $180M in prevented ghost student fraud in a single year and describes identity verification approaches for enrollment systems. [Link](https://www.equifax.com/business/education/)
 
-- **California Community Colleges Chancellor's Office — Fraud Prevention Reports**: Details the 31-34% fraudulent application rate across the California community college system and describes the institutional response framework.
+- **California Community Colleges Chancellor's Office — Fraud Prevention Reports**: Details the 31-34% fraudulent application rate across the California community college system and describes the institutional response framework. [Link](https://www.cccco.edu/)
 
-- **DOE Office of Inspector General — Semiannual Reports**: Federal oversight findings on financial aid fraud patterns, including ghost student schemes and systemic vulnerabilities in FAFSA processing.
+- **DOE Office of Inspector General — Semiannual Reports**: Federal oversight findings on financial aid fraud patterns, including ghost student schemes and systemic vulnerabilities in FAFSA processing. [Link](https://www2.ed.gov/about/offices/list/oig/reports.html)
 
-- **GAO — Federal Student Aid Program Integrity Reports**: Government accountability analysis of financial aid fraud controls and recommendations for systemic improvements.
+- **GAO — Federal Student Aid Program Integrity Reports**: Government accountability analysis of financial aid fraud controls and recommendations for systemic improvements. [Link](https://www.gao.gov/education)
 
 - **Related FLAME Threat Paths**: [TP-0022: Government Program Fraud](TP-0022-government-program-fraud.md) (broader government benefit fraud patterns); [TP-0003: Synthetic Identity](TP-0003-synthetic-identity-bust-out.md) (synthetic identity creation techniques used for ghost student personas).
 

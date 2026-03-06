@@ -390,19 +390,19 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
 
 ## References
 
-1. Chainalysis. "Crypto Crime Mid-Year 2025 Update." Chainalysis Blog, 2025. https://www.chainalysis.com/blog/crypto-crime-midyear-2025/
-2. Chainalysis. "2025 Crypto Crime Report: Cryptocurrency Money Laundering Networks." Chainalysis, 2025.
-3. TRM Labs. "Illicit Crypto Ecosystem Report 2025." TRM Labs, 2025.
-4. TRM Labs. "Chinese-Language Underground Banking and Crypto Volume Analysis." TRM Labs Research, 2025.
-5. CrimsonVector. "Strategic Intelligence Report: Cryptocurrency Laundering Infrastructure and CMLN Operations." CrimsonVector, 2026.
-6. Chainalysis. "DPRK Cryptocurrency Theft and Laundering Lifecycle Analysis." Chainalysis Research, 2025.
-7. Chainalysis. "Black U Services: Industrial-Scale USDT Laundering Operations." Chainalysis Blog, 2025.
-8. FLAME Project. "TP-0044: State-Criminal Infrastructure Convergence." FLAME Threat Path Library, 2026.
-9. FLAME Project. "TP-0045: Sanctions Evasion via Fraud Infrastructure." FLAME Threat Path Library, 2026.
+1. Chainalysis. "Crypto Crime Mid-Year 2025 Update." Chainalysis Blog, 2025. [Link](https://www.chainalysis.com/blog/crypto-crime-midyear-2025/)
+2. Chainalysis. "2025 Crypto Crime Report: Cryptocurrency Money Laundering Networks." Chainalysis, 2025. [Link](https://www.chainalysis.com/blog/crypto-crime-report)
+3. TRM Labs. "Illicit Crypto Ecosystem Report 2025." TRM Labs, 2025. [Link](https://www.trmlabs.com/report/illicit-crypto-ecosystem)
+4. TRM Labs. "Chinese-Language Underground Banking and Crypto Volume Analysis." TRM Labs Research, 2025. [Link](https://www.trmlabs.com/report/illicit-crypto-ecosystem)
+5. CrimsonVector. "Strategic Intelligence Report: Cryptocurrency Laundering Infrastructure and CMLN Operations." CrimsonVector, 2026 — no public URL (proprietary report)
+6. Chainalysis. "DPRK Cryptocurrency Theft and Laundering Lifecycle Analysis." Chainalysis Research, 2025. [Link](https://www.chainalysis.com/blog/crypto-crime-midyear-2025/)
+7. Chainalysis. "Black U Services: Industrial-Scale USDT Laundering Operations." Chainalysis Blog, 2025. [Link](https://www.chainalysis.com/blog/crypto-crime-midyear-2025/)
+8. FLAME Project. "TP-0044: State-Criminal Infrastructure Convergence." FLAME Threat Path Library, 2026. [Link](TP-0044-state-criminal-infrastructure-convergence.md)
+9. FLAME Project. "TP-0045: Sanctions Evasion via Fraud Infrastructure." FLAME Threat Path Library, 2026. [Link](TP-0045-sanctions-evasion-via-fraud-infrastructure.md)
 10. FLAME Project. "TP-0047: Related Threat Path." FLAME Threat Path Library, 2026.
-11. FLAME Project. "DL-0113: On-Chain CMLN Detection Logic." FLAME Detection Library, 2026.
-12. FLAME Project. "DL-0114: DNS/Hosting CMLN Infrastructure Detection Logic." FLAME Detection Library, 2026.
-13. FLAME Project. "BL-0027: Cryptocurrency Transaction Velocity Baseline." FLAME Baseline Library, 2026.
+11. FLAME Project. "DL-0113: On-Chain CMLN Detection Logic." FLAME Detection Library, 2026 — internal reference
+12. FLAME Project. "DL-0114: DNS/Hosting CMLN Infrastructure Detection Logic." FLAME Detection Library, 2026 — internal reference
+13. FLAME Project. "BL-0027: Cryptocurrency Transaction Velocity Baseline." FLAME Baseline Library, 2026 — internal reference
 
 ---
 

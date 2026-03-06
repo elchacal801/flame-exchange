@@ -354,7 +354,7 @@ tags:
 
 ## References
 
-- **National Retail Federation -- 2024 Retail Security Survey**: Documents $103B in total return fraud annually and identifies triangulation as a growing organized retail crime vector, with marketplace fraud contributing to escalating chargeback losses.
+- **National Retail Federation -- 2024 Retail Security Survey**: Documents $103B in total return fraud annually and identifies triangulation as a growing organized retail crime vector, with marketplace fraud contributing to escalating chargeback losses. [Link](https://nrf.com/research/national-retail-security-survey)
 
 - **Juniper Research -- E-Commerce Fraud Report**: Estimates $48B+ in annual marketplace fraud losses and documents 207% growth in North American e-commerce fraud, driven in part by triangulation schemes.
 

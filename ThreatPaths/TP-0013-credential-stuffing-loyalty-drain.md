@@ -207,7 +207,7 @@ Credential stuffing remains one of the highest-volume attack patterns in financi
 - Akamai: State of the Internet — Credential Stuffing Reports
 - Shape Security (F5): Credential Spill Report
 - Loyalty Security Alliance: Points Fraud Prevention
-- OWASP: Credential Stuffing Prevention Cheat Sheet
+- OWASP: Credential Stuffing Prevention Cheat Sheet. [Link](https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html)
 - Group-IB Fraud Intelligence: "Credentials Stuffing using BAS" scheme report (BAS tooling analysis, technique-level Fraud Matrix mapping)
 
 ## Revision History

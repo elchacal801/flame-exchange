@@ -187,8 +187,8 @@ detection:
 
 ## References
 
-- FBI IC3 PSA: "Real Estate Wire Fraud"
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
+- FBI IC3 PSA: "Real Estate Wire Fraud". [Link](https://www.ic3.gov/PSA/2024/PSA240411)
+- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - American Land Title Association (ALTA): Wire Fraud Prevention Best Practices
 - CertifID: Real Estate Wire Fraud Report (annual)
 

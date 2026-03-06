@@ -146,10 +146,10 @@ ORDER BY d.device_fingerprint, d.deposit_date;
 
 ## References
 
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
-- FinCEN: Check Fraud SAR Trends (2023-2024)
-- USPS OIG: Mail Theft and Check Fraud Reports
-- ABA Banking Journal: "The Check Fraud Epidemic"
+- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FinCEN: Check Fraud SAR Trends (2023-2024). [Link](https://www.fincen.gov/sites/default/files/shared/FTA_Check_Fraud_508_FINAL.pdf)
+- USPS OIG: Mail Theft and Check Fraud Reports. [Link](https://www.uspsoig.gov/)
+- ABA Banking Journal: "The Check Fraud Epidemic". [Link](https://bankingjournal.aba.com/)
 - Frank on Fraud: Check washing methodology analysis
 
 ## Revision History

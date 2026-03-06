@@ -232,10 +232,10 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 
 ## References
 
-- Wall Street Journal: "Fraudsters Used AI to Mimic CEO's Voice in Unusual Cybercrime Case" (2019)
+- Wall Street Journal: "Fraudsters Used AI to Mimic CEO's Voice in Unusual Cybercrime Case" (2019). [Link](https://www.wsj.com/articles/fraudsters-use-ai-to-mimic-ceos-voice-in-unusual-cybercrime-case-11567157402)
 - Arup Engineering deepfake video call fraud ($25M, 2024)
 - Regula: "The Deepfake Trends 2024" survey
-- FS-ISAC: Generative AI in Financial Services guidance
+- FS-ISAC: Generative AI in Financial Services guidance. [Link](https://www.fsisac.com/navigating-cyber-2025)
 - Group-IB Fraud Intelligence: "C-level impersonation Using Deepvoice" scheme report (technique-level Fraud Matrix mapping)
 - World Economic Forum: "Deepfake Identity Verification" (January 2026) — cross-reference with voice synthesis ecosystem and deepfake countermeasures
 

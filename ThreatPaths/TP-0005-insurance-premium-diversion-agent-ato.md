@@ -149,9 +149,9 @@ This threat path is particularly relevant for insurance carriers because the age
 
 ## References
 
-- Coalition Against Insurance Fraud: Annual Report
-- NAIC: Cybersecurity and Insurance Fraud Whitepaper
-- State insurance commissioner enforcement actions (various)
+- Coalition Against Insurance Fraud: Annual Report. [Link](https://insurancefraud.org/)
+- NAIC: Cybersecurity and Insurance Fraud Whitepaper. [Link](https://content.naic.org/cipr-topics/cybersecurity)
+- State insurance commissioner enforcement actions (various) — no single public URL
 
 ## Revision History
 

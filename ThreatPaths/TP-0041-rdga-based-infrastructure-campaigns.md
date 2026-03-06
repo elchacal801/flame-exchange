@@ -455,23 +455,23 @@ tags:
 
 ## References
 
-- **Infoblox — DNS Threat Intelligence Reports**: Primary source for RDGA domain telemetry, named actor attribution (Prolific Puma, VexTrio Viper, Savvy Seahorse, Revolver Rabbit, Vault Viper), and detection methodology based on zone file analysis and passive DNS clustering. Source of the 3 million+ RDGA domain observation and tens of thousands of daily discoveries.
+- **Infoblox — DNS Threat Intelligence Reports**: Primary source for RDGA domain telemetry, named actor attribution (Prolific Puma, VexTrio Viper, Savvy Seahorse, Revolver Rabbit, Vault Viper), and detection methodology based on zone file analysis and passive DNS clustering. Source of the 3 million+ RDGA domain observation and tens of thousands of daily discoveries. [Link](https://www.infoblox.com/threat-intel/)
 
-- **Infoblox — Prolific Puma: Shadow Link Shortening Service Analysis**: Technical analysis of Prolific Puma's RDGA-based malicious link shortening service, including domain generation patterns, nameserver infrastructure, and affiliate criminal customer base.
+- **Infoblox — Prolific Puma: Shadow Link Shortening Service Analysis**: Technical analysis of Prolific Puma's RDGA-based malicious link shortening service, including domain generation patterns, nameserver infrastructure, and affiliate criminal customer base. [Link](https://www.infoblox.com/threat-intel/)
 
-- **Infoblox — VexTrio Viper: Massive TDS Infrastructure Analysis**: Documentation of VexTrio Viper's 70,000+ TDS domain infrastructure serving 60+ affiliate cybercrime groups, including RDGA domain generation patterns and redirect chain architecture.
+- **Infoblox — VexTrio Viper: Massive TDS Infrastructure Analysis**: Documentation of VexTrio Viper's 70,000+ TDS domain infrastructure serving 60+ affiliate cybercrime groups, including RDGA domain generation patterns and redirect chain architecture. [Link](https://www.infoblox.com/threat-intel/)
 
-- **Infoblox — Savvy Seahorse: Investment Scam Infrastructure**: Analysis of Savvy Seahorse's RDGA-based investment scam campaign infrastructure, including domain generation techniques, geographic targeting, and victim acquisition methods.
+- **Infoblox — Savvy Seahorse: Investment Scam Infrastructure**: Analysis of Savvy Seahorse's RDGA-based investment scam campaign infrastructure, including domain generation techniques, geographic targeting, and victim acquisition methods. [Link](https://www.infoblox.com/threat-intel/)
 
-- **Infoblox — Revolver Rabbit: 500,000 Domain Registration Campaign**: Case study of Revolver Rabbit's industrial-scale RDGA operation, documenting the registration of 500,000+ domains at an estimated cost exceeding $1 million.
+- **Infoblox — Revolver Rabbit: 500,000 Domain Registration Campaign**: Case study of Revolver Rabbit's industrial-scale RDGA operation, documenting the registration of 500,000+ domains at an estimated cost exceeding $1 million. [Link](https://www.infoblox.com/threat-intel/)
 
 - **CrimsonVector — Strategic Intelligence Report: Fraud Infrastructure Threat Landscape (March 2026)**: Synthesized intelligence report contextualizing RDGA operations within the broader fraud infrastructure ecosystem, including graph-based detection paradigm analysis and RDGA-as-a-Service emergence.
 
-- **ICANN — Centralized Zone Data Service (CZDS)**: Zone file access program enabling daily diff analysis for RDGA detection; foundational data source for registration burst detection.
+- **ICANN — Centralized Zone Data Service (CZDS)**: Zone file access program enabling daily diff analysis for RDGA detection; foundational data source for registration burst detection. [Link](https://www.icann.org/)
 
 - **Farsight Security (DNSDB) — Passive DNS Intelligence**: Passive DNS database providing historical resolution data for RDGA domain lifecycle analysis and nameserver infrastructure mapping.
 
-- **MITRE ATT&CK — Enterprise Matrix**: Framework mapping for RDGA-related adversary techniques, including T1583.001 (Acquire Infrastructure: Domains), T1568.002 (Dynamic Resolution: Domain Generation Algorithms), T1583.003 (Virtual Private Server).
+- **MITRE ATT&CK — Enterprise Matrix**: Framework mapping for RDGA-related adversary techniques, including T1583.001 (Acquire Infrastructure: Domains), T1568.002 (Dynamic Resolution: Domain Generation Algorithms), T1583.003 (Virtual Private Server). [Link](https://attack.mitre.org/)
 
 - **Related FLAME Threat Paths**: [TP-0042: Traffic Distribution System Chain Exploitation](TP-0042-tds-chain-exploitation.md) (RDGA domains enable TDS infrastructure); [TP-0043: AI-Accelerated Fraud Infrastructure Generation](TP-0043-ai-accelerated-fraud-infrastructure-generation.md) (AI may assist RDGA pattern generation).
 

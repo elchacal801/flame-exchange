@@ -132,6 +132,7 @@ The following five-stage lifecycle model captures the recurring pattern observed
 Bulletproof hosting migration constitutes a distinct infrastructure threat that enables virtually all other cyber-enabled fraud types. BPH providers are not merely passive hosting services — they are active participants in the fraud ecosystem, providing guaranteed uptime for phishing infrastructure, malware delivery, C2 communications, and fraud marketplace hosting. The migration pattern itself represents a threat because it allows sanctioned entities to reconstitute operations rapidly, undermining the deterrent effect of sanctions and law enforcement actions.
 
 **Key threat indicators at P1:**
+
 - OFAC SDN list additions for hosting entities (Funnull May 2025, Aeza July 2025, Media Land November 2025)
 - CISA advisories noting increased BPH use against critical infrastructure
 - CrimsonVector reporting on BPH ecosystem consolidation and cloud abuse patterns
@@ -376,6 +377,7 @@ This cloud abuse pattern effectively launders IP reputation, creating a detectio
 **Data sources:** BGP telemetry (RIPE RIS, RouteViews), OFAC SDN-associated IP ranges, historical ASN ownership records.
 
 **Detection logic:**
+
 1. Maintain a watchlist of IP prefixes associated with OFAC-designated BPH entities
 2. Monitor BGP announcements for any re-advertisement of watched prefixes from new origin ASNs
 3. Correlate new origin ASN registration details with known BPH operator identifiers (registrant names, addresses, abuse contacts)
@@ -390,6 +392,7 @@ This cloud abuse pattern effectively launders IP reputation, creating a detectio
 **Data sources:** Passive DNS feeds, CT log data, historical CNAME mapping baselines (BL-0026).
 
 **Detection logic:**
+
 1. Baseline CNAME clustering patterns for known BPH operations (e.g., Funnull's 548-CNAME structure)
 2. Monitor passive DNS for emergence of structurally similar CNAME clusters on new IP ranges
 3. Apply graph similarity analysis to compare new CNAME structures against historical BPH patterns
@@ -404,6 +407,7 @@ This cloud abuse pattern effectively launders IP reputation, creating a detectio
 **Data sources:** Passive DNS feeds, domain registration data (WHOIS/RDAP), sanctions announcement timelines.
 
 **Detection logic:**
+
 1. Monitor for bulk DNS A/AAAA record changes affecting 1,000+ domains within a 72-hour window
 2. Correlate timing of bulk changes with OFAC designation announcements (within +/- 7 days)
 3. Analyze destination IP ranges for hosting concentration (>80% of migrated domains pointing to <5 new IP ranges)
@@ -415,18 +419,18 @@ This cloud abuse pattern effectively launders IP reputation, creating a detectio
 
 ## References
 
-1. CrimsonVector Strategic Intelligence Report — "Bulletproof Hosting Ecosystem: Migration Patterns and Infrastructure Lifecycle Analysis" (2026)
-2. CISA Advisory — "Increased Use of Bulletproof Hosting Against Critical Infrastructure" (2025). https://www.cisa.gov/topics/cyber-threats-and-advisories
-3. U.S. Department of the Treasury, OFAC — Designation of Funnull Technology Inc. (May 2025). https://home.treasury.gov/policy-issues/office-of-foreign-assets-control-sanctions-programs-and-information
-4. U.S. Department of the Treasury, OFAC — Designation of Aeza Group / Smart Digital LLC / Datavice LLC (July 2025)
-5. U.S. Department of the Treasury, OFAC — Designation of Media Land LLC (November 2025)
-6. Mandiant — "Polyfill.io Supply Chain Compromise: Technical Analysis" (2025)
-7. Recorded Future — "Cloud Infrastructure Abuse by Bulletproof Hosting Providers" (2025)
-8. RIPE NCC — BGP Routing Information Service (RIS). https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris
-9. University of Oregon RouteViews Project — BGP Telemetry Archive. http://www.routeviews.org/
-10. Krebs, B. — "Media Land: The Russian Hosting Service Behind Ransomware Campaigns" (2025)
-11. Chainalysis — "Sanctions Evasion and Cryptocurrency Infrastructure" (2026). https://www.chainalysis.com/blog/crypto-crime-midyear-2025/
-12. TRM Labs — "Infrastructure Lifecycle of Sanctioned Hosting Entities" (2026)
+1. CrimsonVector Strategic Intelligence Report — "Bulletproof Hosting Ecosystem: Migration Patterns and Infrastructure Lifecycle Analysis" (2026) — no public URL (proprietary report)
+2. CISA Advisory — "Increased Use of Bulletproof Hosting Against Critical Infrastructure" (2025). [Link](https://www.cisa.gov/topics/cyber-threats-and-advisories)
+3. U.S. Department of the Treasury, OFAC — Designation of Funnull Technology Inc. (May 2025). [Link](https://home.treasury.gov/policy-issues/office-of-foreign-assets-control-sanctions-programs-and-information)
+4. U.S. Department of the Treasury, OFAC — Designation of Aeza Group / Smart Digital LLC / Datavice LLC (July 2025). [Link](https://home.treasury.gov/policy-issues/office-of-foreign-assets-control-sanctions-programs-and-information)
+5. U.S. Department of the Treasury, OFAC — Designation of Media Land LLC (November 2025). [Link](https://home.treasury.gov/policy-issues/office-of-foreign-assets-control-sanctions-programs-and-information)
+6. Mandiant — "Polyfill.io Supply Chain Compromise: Technical Analysis" (2025). [Link](https://cloud.google.com/blog/topics/threat-intelligence/)
+7. Recorded Future — "Cloud Infrastructure Abuse by Bulletproof Hosting Providers" (2025). [Link](https://www.recordedfuture.com/research)
+8. RIPE NCC — BGP Routing Information Service (RIS). [Link](https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris)
+9. University of Oregon RouteViews Project — BGP Telemetry Archive. [Link](http://www.routeviews.org/)
+10. Krebs, B. — "Media Land: The Russian Hosting Service Behind Ransomware Campaigns" (2025). [Link](https://krebsonsecurity.com/)
+11. Chainalysis — "Sanctions Evasion and Cryptocurrency Infrastructure" (2026). [Link](https://www.chainalysis.com/blog/crypto-crime-midyear-2025/)
+12. TRM Labs — "Infrastructure Lifecycle of Sanctioned Hosting Entities" (2026). [Link](https://www.trmlabs.com/report/illicit-crypto-ecosystem)
 
 ---
 
@@ -451,6 +455,7 @@ Funnull's purchase of Polyfill.io represents an alarming precedent: a BPH operat
 ### Note 5: Cross-Reference with Related Threat Paths
 
 This threat path should be analyzed in conjunction with:
+
 - **TP-0045** (Sanctions Evasion via Fraud Infrastructure): BPH migration is a primary mechanism for sanctions evasion
 - **TP-0041** (RDGA-Based Infrastructure Campaigns): Funnull's 332,000+ DGA-generated domains represent the intersection of BPH and RDGA techniques
 - **TP-0042** (TDS Chain Exploitation): BPH providers host traffic distribution systems that redirect victims through multiple jurisdictions

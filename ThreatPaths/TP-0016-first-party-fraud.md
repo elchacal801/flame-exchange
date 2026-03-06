@@ -190,10 +190,10 @@ Consortium intelligence (cross-institutional data sharing) lifts fraud capture r
 ## References
 
 - FLAME Project Internal Knowledge Base.
-- Federal Reserve: "Synthetic Identity Fraud in the U.S. Payment System" (2021) — includes first-party bust-out typologies.
+- Federal Reserve: "Synthetic Identity Fraud in the U.S. Payment System" (2021) — includes first-party bust-out typologies. [Link](https://fedpaymentsimprovement.org/strategic-initiatives/payments-security/synthetic-identity-payments-fraud/)
 - Aite-Novarica Group: "First-Party Fraud: The Growing Challenge" (2023) — industry loss estimates and detection model benchmarks.
-- ABA Banking Journal: "The Bust-Out Problem" — credit lifecycle exploitation patterns.
-- ACFE: Report to the Nations — occupational and consumer fraud classification methodologies.
+- ABA Banking Journal: "The Bust-Out Problem" — credit lifecycle exploitation patterns. [Link](https://bankingjournal.aba.com/)
+- ACFE: Report to the Nations — occupational and consumer fraud classification methodologies. [Link](https://www.acfe.com/report-to-the-nations/2024/)
 - **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: First-party fraud scale data, viral fraud cohort analysis, consortium intelligence effectiveness metrics.
 
 ---

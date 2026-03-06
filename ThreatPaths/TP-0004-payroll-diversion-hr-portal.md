@@ -153,9 +153,9 @@ Payroll diversion is a high-confidence, low-complexity variant of BEC that explo
 
 ## References
 
-- FBI IC3 PSA I-091819-PSA: "Cybercriminals Use Social Engineering and Technical Attacks to Circumvent Multi-Factor Authentication"
-- FBI IC3 PSA: "Business Email Compromise: Payroll Diversion"
-- KnowBe4: Payroll Diversion Phishing Trends
+- FBI IC3 PSA I-091819-PSA: "Cybercriminals Use Social Engineering and Technical Attacks to Circumvent Multi-Factor Authentication". [Link](https://www.ic3.gov/PSA/2019/PSA190910)
+- FBI IC3 PSA: "Business Email Compromise: Payroll Diversion". [Link](https://www.ic3.gov/PSA/2019/PSA190110)
+- KnowBe4: Payroll Diversion Phishing Trends. [Link](https://www.knowbe4.com/phishing-threat-trends)
 
 ## Revision History
 

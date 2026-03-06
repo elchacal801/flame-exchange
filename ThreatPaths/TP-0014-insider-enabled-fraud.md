@@ -182,10 +182,10 @@ Insider fraud is the hardest threat path to detect because the actor has legitim
 
 ## References
 
-- ACFE: Report to the Nations (biennial) — occupational fraud statistics
+- ACFE: Report to the Nations (biennial) — occupational fraud statistics. [Link](https://www.acfe.com/report-to-the-nations/2024/)
 - FDIC: Enforcement Decisions (insider fraud)
 - DOJ: Bank fraud prosecution press releases
-- CERT National Insider Threat Center: Common Sense Guide
+- CERT National Insider Threat Center: Common Sense Guide. [Link](https://resources.sei.cmu.edu/library/asset-view.cfm?assetid=508010)
 
 ## Revision History
 

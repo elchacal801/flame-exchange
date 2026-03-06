@@ -298,6 +298,7 @@ Underground forums and encrypted communication channels reveal the operational m
 | IMPROVE | Level 3 (Established) | Post-incident analysis of state-criminal convergence incidents with specific focus on cross-team coordination effectiveness, infrastructure overlap detection gap analysis, and attribution accuracy assessment; lessons learned integration across CTI, fraud, crypto compliance, and AML functions |
 
 ### Maturity Levels Reference
+
 - **Level 1 (Initial):** Ad hoc, reactive fraud management
 - **Level 2 (Developing):** Basic fraud function exists with some defined processes
 - **Level 3 (Established):** Formalized fraud program with proactive capabilities
@@ -498,15 +499,15 @@ A coordinated campaign targeting 25 South Korean financial institutions in a sin
 
 DPRK cryptocurrency theft proceeds are systematically laundered through Chinese Money Laundering Networks, which provide cryptocurrency-to-fiat conversion services through OTC desks and underground banking channels. Blockchain analytics firms have traced DPRK theft proceeds through characteristic patterns: initial theft -> rapid chain-hopping (multiple cryptocurrency conversions within 24-48 hours) -> distribution across dozens of intermediate wallets -> dormancy period (weeks to months) -> convergence on CMLN-associated addresses -> fiat conversion. The CMLN ecosystem processes billions in annual volume across both state-sponsored and criminal flows, making it the critical convergence nexus for monetization.
 
-### References
+### Source References
 
-- Microsoft Threat Intelligence. "Moonstone Sleet deploys Qilin ransomware." March 2025. https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/
-- Gen Digital. "Shared infrastructure between Gamaredon and Lazarus Group." July 2025.
-- Atlantic Council. "Hidden Enablers: DPRK Third-Country Exploitation Pathways." 2025.
-- Chainalysis. "2025 Crypto Crime Report: DPRK Cryptocurrency Theft." 2025.
-- CrimsonVector. "Strategic Intelligence Report: State-Criminal Convergence." 2025-2026.
-- FBI/CISA. "Advisory on DPRK IT Worker Infiltration." 2025.
-- OFAC. "Sanctions Designations: DPRK-Linked Cryptocurrency Wallets." 2024-2025.
+- Microsoft Threat Intelligence. "Moonstone Sleet deploys Qilin ransomware." March 2025. [Link](https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/)
+- Gen Digital. "Shared infrastructure between Gamaredon and Lazarus Group." July 2025. [Link](https://www.gendigital.com/blog)
+- Atlantic Council. "Hidden Enablers: DPRK Third-Country Exploitation Pathways." 2025. [Link](https://www.atlanticcouncil.org/)
+- Chainalysis. "2025 Crypto Crime Report: DPRK Cryptocurrency Theft." 2025. [Link](https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/)
+- CrimsonVector. "Strategic Intelligence Report: State-Criminal Convergence." 2025-2026 — no public URL (proprietary report).
+- FBI/CISA. "Advisory on DPRK IT Worker Infiltration." 2025. [Link](https://www.cisa.gov/topics/cyber-threats-and-advisories)
+- OFAC. "Sanctions Designations: DPRK-Linked Cryptocurrency Wallets." 2024-2025. [Link](https://ofac.treasury.gov/)
 
 ---
 

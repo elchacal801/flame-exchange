@@ -170,10 +170,10 @@ AND c.call_end >= t.timestamp;
 
 ## References
 
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
-- FBI IC3: Tech Support Fraud PSAs
-- UK Payment Systems Regulator: APP Fraud Data (annual)
-- FTC: Consumer Sentinel Data — Impersonation Scams
+- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FBI IC3: Tech Support Fraud PSAs. [Link](https://www.ic3.gov/PSA/2023/PSA231019)
+- UK Payment Systems Regulator: APP Fraud Data (annual). [Link](https://www.psr.org.uk/)
+- FTC: Consumer Sentinel Data — Impersonation Scams. [Link](https://www.ftc.gov/enforcement/consumer-sentinel-network)
 - Which?: "Authorized Push Payment Scam" investigation
 
 ## Revision History

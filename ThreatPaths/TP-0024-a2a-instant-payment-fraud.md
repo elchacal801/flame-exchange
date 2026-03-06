@@ -394,7 +394,7 @@ ORDER BY t.amount DESC;
 
 ## References
 
-- **UK Payment Systems Regulator (PSR)**: APP fraud mandatory reimbursement policy (PS23/3), reporting GBP 450.7M in APP fraud losses via Faster Payments in 2023.
+- **UK Payment Systems Regulator (PSR)**: APP fraud mandatory reimbursement policy (PS23/3), reporting GBP 450.7M in APP fraud losses via Faster Payments in 2023. [Link](https://www.psr.org.uk/)
 
 - **Banco Central do Brasil**: Pix fraud statistics reporting R$2.7 billion in losses (43% year-over-year increase), with Mecanismo Especial de Devolu (MED) recovery mechanism data.
 
@@ -402,9 +402,9 @@ ORDER BY t.amount DESC;
 
 - **Federal Reserve**: FedNow service fraud risk management guidance, noting 1,400+ participating institutions and expanding.
 
-- **FBI IC3 2024 Internet Crime Report**: Investment fraud and BEC/payment diversion as leading loss categories, with increasing exploitation of instant payment rails.
+- **FBI IC3 2024 Internet Crime Report**: Investment fraud and BEC/payment diversion as leading loss categories, with increasing exploitation of instant payment rails. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 
-- **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional fraud investigation methodology applicable to A2A payment fraud kill chain analysis.
+- **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional fraud investigation methodology applicable to A2A payment fraud kill chain analysis. [Link](https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf)
 
 - **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Mule laundering speed data, UK Banking Consortium results, consortium intelligence effectiveness metrics.
 

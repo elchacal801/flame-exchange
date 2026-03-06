@@ -124,6 +124,7 @@ Deepfake document fraud targets the Know Your Customer (KYC) and remote account 
 ## Underground Ecosystem Context
 
 ### Service Supply Chain
+
 | Role | Service Type | Underground Availability | Typical Cost Range |
 |------|-------------|--------------------------|-------------------|
 | Document Forger | AI-generated identity documents (passports, licenses, utility bills) | High | $5-$50 per document |
@@ -134,12 +135,15 @@ Deepfake document fraud targets the Know Your Customer (KYC) and remote account 
 | End-to-End KYC Bypass | Full-service KYC bypass combining all above steps | Low | $200-$1,000 per verified account |
 
 ### Tool Ecosystem
+
 AI document generation tools (template-based and GAN-based), face-swapping applications (17+ tools identified in WEF evaluation, ranging from free open-source to commercial SaaS), camera injection/virtual camera tools (8+ tools identified), device emulators and modified mobile apps, residential proxy networks, automated KYC submission frameworks.
 
 ### Underground Marketplace Presence
+
 Deepfake KYC bypass services are actively advertised on Telegram channels specializing in financial fraud, dark web marketplaces, and carding forums. The market has stratified into component sellers (document-only, face-swap-only) and full-service providers offering end-to-end account opening. Pricing inversely correlates with target institution's IDV sophistication. Crypto exchange accounts command premium prices due to monetization potential.
 
 ### Intelligence Sources
+
 - WEF "Deepfake Identity Verification" (January 2026) — comprehensive tool ecosystem evaluation
 - Recorded Future deepfake marketplace monitoring
 - Document verification vendor threat reports (Onfido, Socure, ID R&D)
@@ -177,6 +181,7 @@ Deepfake KYC bypass services are actively advertised on Telegram channels specia
 | IMPROVE | Level 3 (Established) | Continuous deepfake detection model retraining with emerging samples, periodic red-team deepfake testing against production IDV controls, feedback from downstream fraud (mule/bust-out) back into onboarding thresholds |
 
 ### Maturity Levels Reference
+
 - **Level 1 (Initial):** Ad hoc, reactive fraud management
 - **Level 2 (Developing):** Basic fraud function exists with some defined processes
 - **Level 3 (Established):** Formalized fraud program with proactive capabilities
@@ -214,9 +219,9 @@ The WEF "Deepfake Identity Verification" paper (January 2026) identifies five ac
 
 ## References
 
-- FLAME Project Internal Knowledge Base.
-- Document Verification Industry Reports (e.g., Onfido, Socure, ID R&D regarding GenAI threats).
-- World Economic Forum: "Deepfake Identity Verification" (January 2026) — three-stage KYC attack methodology and tool ecosystem evaluation
+- FLAME Project Internal Knowledge Base — no public URL
+- Document Verification Industry Reports (e.g., Onfido, Socure, ID R&D regarding GenAI threats). [Onfido](https://onfido.com/landing/identity-fraud-report/) | [Socure](https://www.socure.com/)
+- World Economic Forum: "Deepfake Identity Verification" (January 2026) — three-stage KYC attack methodology and tool ecosystem evaluation. [Link](https://www.weforum.org/publications/)
 
 ---
 

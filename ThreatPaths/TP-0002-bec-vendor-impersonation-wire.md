@@ -162,9 +162,9 @@ OfficeActivity
 
 ## References
 
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
-- FinCEN Advisory FIN-2019-A005: "Advisory on Business Email Compromise"
-- Abnormal Security: Annual BEC Trends Report
+- FBI IC3: \"2024 Internet Crime Report\" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FinCEN Advisory FIN-2019-A005: \"Advisory on Business Email Compromise.\" [Link](https://www.fincen.gov/sites/default/files/advisory/2019-07-16/FinCEN%20BEC%20Advisory%20508%20FINAL.pdf)
+- Abnormal Security: Annual BEC Trends Report. [Link](https://abnormalsecurity.com/resources/state-of-email-security)
 
 ## Revision History
 

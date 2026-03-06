@@ -435,15 +435,15 @@ ORDER BY t.amount DESC;
 
 ## References
 
-- **FBI IC3 2024 Internet Crime Report**: Investment fraud reported as the single largest fraud loss category at $6.57 billion, with cryptocurrency investment fraud accounting for $5.8 billion. Notes increasing use of AI and deepfakes in investment scam operations.
+- **FBI IC3 2024 Internet Crime Report**: Investment fraud reported as the single largest fraud loss category at $6.57 billion, with cryptocurrency investment fraud accounting for $5.8 billion. Notes increasing use of AI and deepfakes in investment scam operations. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 
-- **Chainalysis 2025 Crypto Crime Report**: Analysis demonstrating that AI-enabled scam operations extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average), quantifying the direct revenue impact of GenAI adoption.
+- **Chainalysis 2025 Crypto Crime Report**: Analysis demonstrating that AI-enabled scam operations extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average), quantifying the direct revenue impact of GenAI adoption. [Link](https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/)
 
-- **SEC Office of Investor Education**: Ongoing investor alerts on fraudulent trading platforms, deepfake celebrity endorsement scams, and pig butchering operations targeting retail investors.
+- **SEC Office of Investor Education**: Ongoing investor alerts on fraudulent trading platforms, deepfake celebrity endorsement scams, and pig butchering operations targeting retail investors. [Link](https://www.sec.gov/education)
 
 - **Interpol Global Financial Fraud Assessment (2024)**: Cross-jurisdictional analysis of investment fraud operations with emphasis on Southeast Asian scam compound infrastructure.
 
-- **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional investigation methodology applicable to investment fraud kill chain analysis.
+- **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional investigation methodology applicable to investment fraud kill chain analysis. [Link](https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf)
 
 ---
 

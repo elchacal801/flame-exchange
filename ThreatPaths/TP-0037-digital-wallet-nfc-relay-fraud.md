@@ -409,11 +409,11 @@ tags:
 
 ## References
 
-- **Recorded Future -- Annual Payment Fraud Intelligence Report 2025**: Primary source documenting OTP interception trends, digital wallet fraud evolution, NFC relay tool ecosystem, and underground forum activity including EvilginX, SuperCardX, xl-hook, PhantomOS, NFCGate, Valkirie NFC, and Hyper NFC.
+- **Recorded Future -- Annual Payment Fraud Intelligence Report 2025**: Primary source documenting OTP interception trends, digital wallet fraud evolution, NFC relay tool ecosystem, and underground forum activity including EvilginX, SuperCardX, xl-hook, PhantomOS, NFCGate, Valkirie NFC, and Hyper NFC. [Link](https://www.recordedfuture.com/research/)
 
-- **Cleafy Labs -- SuperCardX Analysis (April 2025)**: Technical analysis of the SuperCardX NFC relay malware-as-a-service platform enabling multiple simultaneous NFC relay fraud campaigns from Chinese-speaking threat actors.
+- **Cleafy Labs -- SuperCardX Analysis (April 2025)**: Technical analysis of the SuperCardX NFC relay malware-as-a-service platform enabling multiple simultaneous NFC relay fraud campaigns from Chinese-speaking threat actors. [Link](https://www.cleafy.com/cleafy-labs/supercardx-exposed-understanding-the-threat-posed-by-a-sophisticated-nfc-relay-attack)
 
-- **TransUnion -- 2025 Global Identity and Fraud Report**: Data confirming OTPs as the most common form of secondary authentication globally, providing context for why OTP interception remains the primary attack vector for wallet provisioning fraud.
+- **TransUnion -- 2025 Global Identity and Fraud Report**: Data confirming OTPs as the most common form of secondary authentication globally, providing context for why OTP interception remains the primary attack vector for wallet provisioning fraud. [Link](https://www.transunion.com/)
 
 - **UK National Cyber Security Centre -- Winter Fuel Payment Phishing Campaign (June 2025)**: Documented phishing campaign demonstrating the full attack chain from government service impersonation through OTP theft to digital wallet provisioning fraud.
 

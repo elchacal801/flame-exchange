@@ -413,9 +413,9 @@ tags:
 
 - **Consumer Financial Protection Bureau — BNPL Interpretive Rule (rescinded March 2025)**: Regulatory context for US BNPL oversight gap.
 
-- **Financial Conduct Authority — BNPL Regulation Consultation 2025**: FCA plans for full BNPL regulation by 2026.
+- **Financial Conduct Authority — BNPL Regulation Consultation 2025**: FCA plans for full BNPL regulation by 2026. [Link](https://www.fca.org.uk/)
 
-- **Australian Securities and Investments Commission — BNPL Licensing Requirements**: ASIC licensing requirements effective June 2025.
+- **Australian Securities and Investments Commission — BNPL Licensing Requirements**: ASIC licensing requirements effective June 2025. [Link](https://asic.gov.au/)
 
 - **DataVisor — Synthetic Identity Fraud in BNPL Report 2024**: Synthetic identity stacking mechanics and detection approaches.
 

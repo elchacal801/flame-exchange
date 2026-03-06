@@ -380,17 +380,17 @@ tags:
 
 ## References
 
-- **Recorded Future -- Annual Payment Fraud Intelligence Report 2025**: Primary intelligence source documenting the emergence of agentic commerce as a fraud attack surface, including analysis of Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay; d0ctrine PoC documentation; and structural parallels to early open banking fraud dynamics.
+- **Recorded Future -- Annual Payment Fraud Intelligence Report 2025**: Primary intelligence source documenting the emergence of agentic commerce as a fraud attack surface, including analysis of Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay; d0ctrine PoC documentation; and structural parallels to early open banking fraud dynamics. [Link](https://www.recordedfuture.com/research/)
 
 - **d0ctrine -- Agentic Fraud Workflow PoC** (April 2025): Underground publication outlining agent-automated fraud execution techniques, human interaction mimicry, and behavioral/device control evasion specific to AI agent commerce platforms.
 
 - **Anthropic -- Autonomous AI Cyber-Espionage Disclosure** (November 2025): First documented case of autonomous AI-orchestrated cyber-espionage with associated fraudulent purchase attempt, demonstrating convergence of AI-enabled threats across fraud and cyber domains.
 
-- **Amazon Buy for Me -- Technical Documentation**: Architecture and authorization flow documentation for Amazon's AI agent purchasing pilot program.
+- **Amazon Buy for Me -- Technical Documentation**: Architecture and authorization flow documentation for Amazon's AI agent purchasing pilot program. [Link](https://www.aboutamazon.com/)
 
-- **Visa -- Intelligent Commerce Specification**: Technical specification for Visa's agentic commerce framework enabling AI agent-initiated payment processing.
+- **Visa -- Intelligent Commerce Specification**: Technical specification for Visa's agentic commerce framework enabling AI agent-initiated payment processing. [Link](https://usa.visa.com/)
 
-- **Mastercard -- Agent Pay Pilot Documentation**: Architecture documentation for Mastercard's AI agent payment delegation framework.
+- **Mastercard -- Agent Pay Pilot Documentation**: Architecture documentation for Mastercard's AI agent payment delegation framework. [Link](https://www.mastercard.com/)
 
 - **Related FLAME Threat Paths**: [TP-0025](TP-0025.md) (related -- AI-enabled fraud patterns); [TP-0029: AI Synthetic Identity & Document Forgery](TP-0029-ai-synthetic-identity-document-forgery.md) (enhances -- AI-generated deception techniques applicable to agent manipulation); [TP-0013](TP-0013.md) (related -- credential-based attack patterns applicable to agent authentication).
 

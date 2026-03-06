@@ -355,9 +355,9 @@ tags:
 
 ## References
 
-- **Entrust 2025 Identity Fraud Report**: Documents 311% increase in AI-generated document fraud and the crossover point where digital forgery surpassed physical forgery at 57% of all detected cases (244% increase from prior year).
+- **Entrust 2025 Identity Fraud Report**: Documents 311% increase in AI-generated document fraud and the crossover point where digital forgery surpassed physical forgery at 57% of all detected cases (244% increase from prior year). [Link](https://www.entrust.com/resources/reports/identity-fraud-report)
 
-- **Federal Reserve Board -- Synthetic Identity Fraud Mitigation**: FRB research estimating $6B+ in annual synthetic identity fraud losses to the US financial system, with guidance on detection methodologies and industry collaboration frameworks.
+- **Federal Reserve Board -- Synthetic Identity Fraud Mitigation**: FRB research estimating $6B+ in annual synthetic identity fraud losses to the US financial system, with guidance on detection methodologies and industry collaboration frameworks. [Link](https://fedpaymentsimprovement.org/strategic-initiatives/payments-security/synthetic-identity-payments-fraud/)
 
 - **Trend Micro -- Underground KYC Bypass Market Research**: Documents pricing and availability of KYC bypass services, including standard packages (~$30) and platform-specific packages ($180-$200 for Binance-specific verification).
 

@@ -366,7 +366,7 @@ index=domain_monitoring sourcetype=cert_transparency
 
 ## References
 
-- **ScamSniffer — 2024 Web3 Phishing Report**: Documents $494M stolen via wallet drainers in 2024, Inferno Drainer's market dominance, and the evolution of Permit/Permit2 exploitation techniques.
+- **ScamSniffer — 2024 Web3 Phishing Report**: Documents $494M stolen via wallet drainers in 2024, Inferno Drainer's market dominance, and the evolution of Permit/Permit2 exploitation techniques. [Link](https://www.scamsniffer.io/)
 
 - **Chainalysis — 2025 Crypto Crime Report**: Comprehensive analysis of crypto money laundering networks (CMLNs) processing $16.1B, cross-chain bridge laundering typologies, and the DaaS affiliate ecosystem.
 

@@ -407,11 +407,11 @@ ORDER BY t.total_amount_30d DESC;
 
 - **Pindrop Voice Intelligence Report (2025)**: Reports 1,300% increase in deepfake voice fraud attempts against financial institutions, with voice cloning requiring as little as 3 seconds of sample audio.
 
-- **FBI IC3 2024 Internet Crime Report**: Romance fraud and confidence schemes among top loss categories, with increasing AI enhancement documented.
+- **FBI IC3 2024 Internet Crime Report**: Romance fraud and confidence schemes among top loss categories, with increasing AI enhancement documented. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 
 - **Interpol Operation Storm Makers II (2024)**: Cross-jurisdictional disruption of scam compound operations in Southeast Asia, documenting the industrial scale of romance scam operations.
 
-- **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional investigation methodology applicable to romance fraud kill chain analysis.
+- **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional investigation methodology applicable to romance fraud kill chain analysis. [Link](https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf)
 
 ---
 

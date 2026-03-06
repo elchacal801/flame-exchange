@@ -159,10 +159,10 @@ This threat path is particularly relevant to disability insurance carriers. The 
 
 ## References
 
-- DOJ: Various disability fraud prosecution press releases
-- Coalition Against Insurance Fraud: annual reports
-- NICB: Insurance Fraud Reporting
-- Industry sources: Disability claims fraud detection best practices
+- DOJ: Various disability fraud prosecution press releases. [Link](https://www.justice.gov/criminal/criminal-fraud)
+- Coalition Against Insurance Fraud: annual reports. [Link](https://insurancefraud.org/)
+- NICB: Insurance Fraud Reporting. [Link](https://www.nicb.org/)
+- Industry sources: Disability claims fraud detection best practices — no single public URL
 
 ## Revision History
 

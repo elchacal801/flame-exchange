@@ -237,8 +237,8 @@ Thin-file exploitation is a growing concern: digitally fluent young people and n
 
 ## References
 
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
-- Federal Reserve: "Synthetic Identity Fraud in the U.S. Payment System" (2021)
+- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- Federal Reserve: "Synthetic Identity Fraud in the U.S. Payment System" (2021). [Link](https://fedpaymentsimprovement.org/strategic-initiatives/payments-security/synthetic-identity-payments-fraud/)
 - OCC Bulletin on Synthetic Identity Fraud Risk
 - Socure: Synthetic Identity Fraud Report
 - ACFE: "The Growing Threat of Synthetic Identity Fraud"

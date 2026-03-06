@@ -405,13 +405,13 @@ tags:
 
 ## References
 
-- **Recorded Future — Annual Payment Fraud Intelligence Report 2025**: Primary source providing scam merchant enumeration (3,600+ accounts, 40+ countries, 230+ acquirers), subscription trap tactics, dual monetization evidence (50+ merchants linked to dark web card data), AI-augmented scam operations evidence, and the H2 2025 "recovery service" secondary scam tactic.
+- **Recorded Future — Annual Payment Fraud Intelligence Report 2025**: Primary source providing scam merchant enumeration (3,600+ accounts, 40+ countries, 230+ acquirers), subscription trap tactics, dual monetization evidence (50+ merchants linked to dark web card data), AI-augmented scam operations evidence, and the H2 2025 "recovery service" secondary scam tactic. [Link](https://www.recordedfuture.com/research/)
 
-- **Global Anti-Scam Alliance / Feedzai — Global State of Scams Report 2024**: Aggregate scam loss estimate exceeding $1 trillion globally; breakdown by scam type and geography.
+- **Global Anti-Scam Alliance / Feedzai — Global State of Scams Report 2024**: Aggregate scam loss estimate exceeding $1 trillion globally; breakdown by scam type and geography. [Link](https://www.globalantiscam.org/)
 
 - **Mastercard — Purchase Scams: A Growing Threat to the Payments Ecosystem (May 2025)**: Whitepaper analyzing purchase scam mechanics, acquirer-side detection opportunities, and industry response recommendations.
 
-- **UK Payment Systems Regulator — APP Fraud Reimbursement Requirements (October 2024)**: Regulatory framework mandating PSP reimbursement of APP fraud victims; implications for acquirer liability in purchase scam scenarios.
+- **UK Payment Systems Regulator — APP Fraud Reimbursement Requirements (October 2024)**: Regulatory framework mandating PSP reimbursement of APP fraud victims; implications for acquirer liability in purchase scam scenarios. [Link](https://www.psr.org.uk/)
 
 - **Australian Government — Scams Prevention Framework (2025)**: Cross-sector regulatory framework imposing obligations on banks, telecommunications providers, and digital platforms to prevent, detect, and respond to scams.
 

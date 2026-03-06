@@ -224,11 +224,11 @@ Supply chain payment fraud extends beyond traditional BEC (TP-0002) by targeting
 
 ## References
 
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — BEC and vendor fraud statistics.
+- FBI IC3: "2024 Internet Crime Report" (April 2025) — BEC and vendor fraud statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - FLAME Project Internal Knowledge Base.
 - Deloitte: "Supply Chain Fraud: Managing the Risks" — procurement fraud typologies.
-- ACFE: Report to the Nations — vendor billing scheme classification and detection.
-- CISA: "Supply Chain Compromise" advisory series — cybersecurity intersection with payment fraud.
+- ACFE: Report to the Nations — vendor billing scheme classification and detection. [Link](https://www.acfe.com/report-to-the-nations/2024/)
+- CISA: "Supply Chain Compromise" advisory series — cybersecurity intersection with payment fraud. [Link](https://www.cisa.gov/topics/cyber-threats-and-advisories)
 
 ---
 

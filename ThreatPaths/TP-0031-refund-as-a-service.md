@@ -342,7 +342,7 @@ index=customer_service sourcetype=refund_claims
 
 ## References
 
-- **NRF 2024 National Retail Security Survey**: Industry-wide return fraud loss estimates; documents the $103B annual return fraud figure and rising trend in organized refund abuse.
+- **NRF 2024 National Retail Security Survey**: Industry-wide return fraud loss estimates; documents the $103B annual return fraud figure and rising trend in organized refund abuse. [Link](https://nrf.com/research/national-retail-security-survey)
 
 - **Appriss Retail — Consumer Returns in the Retail Industry (2024)**: Detailed breakdown of return fraud typologies including FTID, DNA, and SNAD, with retailer survey data on policy exploitation patterns.
 

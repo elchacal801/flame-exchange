@@ -31,6 +31,25 @@ class OFACSource(RegulatorySource):
         resp.raise_for_status()
         return resp.content
 
+    # Map OFAC SDN program codes to config category keys.
+    # This allows map_category_to_tps() to find matches in the YAML config.
+    _PROGRAM_CATEGORY_MAP = {
+        "SDGT": "terrorism-financing",
+        "FTO": "terrorism-financing",
+        "IRAN": "sanctions-evasion",
+        "SYRIA": "sanctions-evasion",
+        "UKRAINE-EO13661": "sanctions-evasion",
+        "UKRAINE-EO13662": "sanctions-evasion",
+        "RUSSIA-EO14024": "sanctions-evasion",
+        "CUBA": "sanctions-evasion",
+        "DPRK": "sanctions-evasion",
+        "VENEZUELA": "sanctions-evasion",
+        "SDNTK": "narcotics-trafficking",
+        "TCO": "narcotics-trafficking",
+        "CYBER2": "cyber-sanctions",
+        "NPWMD": "weapons-proliferation",
+    }
+
     def parse(self, raw_data: bytes) -> List[RegulatoryAlert]:
         """Parse OFAC SDN XML into a list of RegulatoryAlert objects.
 
@@ -63,8 +82,17 @@ class OFACSource(RegulatorySource):
                     if prog.text:
                         programs.append(prog.text.strip())
 
-            category = "SDN List Addition"
+            # Derive category from SDN programs; collect all matching TP IDs
+            tp_ids: List[str] = []
+            category = "sanctions-evasion"  # default fallback
+            for prog in programs:
+                mapped_cat = self._PROGRAM_CATEGORY_MAP.get(prog)
+                if mapped_cat:
+                    category = mapped_cat
+                    break
+
             tp_ids = self.map_category_to_tps(category)
+
             title = f"OFAC SDN: {first} {last} ({sdn_type})"
             summary = f"SDN entry — type: {sdn_type}, programs: {', '.join(programs)}"
 

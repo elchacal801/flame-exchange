@@ -310,6 +310,7 @@ Intelligence from law enforcement operations and NGO reporting reveals a structu
 | IMPROVE | Level 3 (Established) | Post-incident analysis of trafficking-linked fraud cases with specific focus on detection timing (how early in the CFPF lifecycle was the fraud identified), victim outcome (were losses prevented or minimized through intervention), and infrastructure intelligence (were new compound-associated wallet addresses, domains, or entities identified for future detection); lessons learned integration across fraud, crypto compliance, AML, and law enforcement liaison functions |
 
 ### Maturity Levels Reference
+
 - **Level 1 (Initial):** Ad hoc, reactive fraud management
 - **Level 2 (Developing):** Basic fraud function exists with some defined processes
 - **Level 3 (Established):** Formalized fraud program with proactive capabilities
@@ -500,15 +501,15 @@ OFAC designated Funnull Technology, a content delivery network (CDN) provider th
 
 ### Source References
 
-- FBI Internet Crime Complaint Center (IC3). "2024 Internet Crime Report." 2025.
-- Chainalysis. "2025 Crypto Crime Mid-Year Update." 2025. https://www.chainalysis.com/blog/crypto-crime-midyear-2025/
-- U.S. Department of the Treasury, OFAC. "Sanctions Designations: Prince Group / Huione." 2025.
-- U.S. Department of the Treasury, OFAC. "Sanctions Designations: Karen National Army, Shwe Kokko." 2025.
-- U.S. Department of the Treasury, OFAC. "Sanctions Designations: Funnull Technology." 2025.
-- U.S. Department of Justice. "Scam Center Strike Force Operational Results." 2025.
-- CrimsonVector. "Strategic Intelligence Report: Trafficking-Linked Fraud Infrastructure." 2025-2026.
-- United Nations Office on Drugs and Crime. "Casinos, Cyber Fraud, and Trafficking in Persons for Forced Criminality in Southeast Asia." 2024.
-- TRM Labs. "Cryptocurrency Flows to Human Trafficking Services." 2025.
+- FBI Internet Crime Complaint Center (IC3). "2024 Internet Crime Report." 2025. [Link](https://www.ic3.gov/)
+- Chainalysis. "2025 Crypto Crime Mid-Year Update." 2025. [Link](https://www.chainalysis.com/blog/crypto-crime-midyear-2025/)
+- U.S. Department of the Treasury, OFAC. "Sanctions Designations: Prince Group / Huione." 2025. [Link](https://ofac.treasury.gov/)
+- U.S. Department of the Treasury, OFAC. "Sanctions Designations: Karen National Army, Shwe Kokko." 2025. [Link](https://ofac.treasury.gov/)
+- U.S. Department of the Treasury, OFAC. "Sanctions Designations: Funnull Technology." 2025. [Link](https://ofac.treasury.gov/)
+- U.S. Department of Justice. "Scam Center Strike Force Operational Results." 2025. [Link](https://www.justice.gov/)
+- CrimsonVector. "Strategic Intelligence Report: Trafficking-Linked Fraud Infrastructure." 2025-2026 — no public URL (proprietary report).
+- United Nations Office on Drugs and Crime. "Casinos, Cyber Fraud, and Trafficking in Persons for Forced Criminality in Southeast Asia." 2024. [Link](https://www.unodc.org/roseap/en/2024/08/online-fraud-southeast-asia-2024/story.html)
+- TRM Labs. "Cryptocurrency Flows to Human Trafficking Services." 2025. [Link](https://www.trmlabs.com/resources)
 
 ---
 

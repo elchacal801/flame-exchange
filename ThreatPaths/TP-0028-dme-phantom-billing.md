@@ -350,7 +350,7 @@ tags:
 
 - **CMS DME Supplier Enrollment Moratorium**: CMS imposed a 6-month moratorium on new DME supplier enrollment in designated high-fraud geographic areas, demonstrating the severity of the phantom billing problem and the regulatory response.
 
-- **GAO -- Medicare DME: Claim Review Programs Could Be Improved (GAO-24-106358)**: Identifies ongoing vulnerabilities in Medicare's pre-payment and post-payment claim review processes for DME suppliers.
+- **GAO -- Medicare DME: Claim Review Programs Could Be Improved (GAO-24-106358)**: Identifies ongoing vulnerabilities in Medicare's pre-payment and post-payment claim review processes for DME suppliers. [Link](https://www.gao.gov/products/gao-24-106358)
 
 - **FBI Financial Crimes Report -- Healthcare Fraud Section**: Documents Cuban-American organized crime ring models and other transnational structures operating DME phantom billing schemes across multiple US states.
 

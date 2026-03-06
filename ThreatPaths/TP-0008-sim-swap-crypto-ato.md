@@ -201,9 +201,9 @@ SIM swap attacks represent a critical intersection of telecommunications and fin
 
 ## References
 
-- FBI IC3 PSA: "SIM Swapping"
+- FBI IC3 PSA: "SIM Swapping". [Link](https://www.ic3.gov/PSA/2022/PSA220208)
 - DOJ: "Eight Individuals Charged in SIM Swap Conspiracy" (various indictments)
-- Chainalysis: Crypto Crime Report (annual)
+- Chainalysis: Crypto Crime Report (annual). [Link](https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/)
 - T-Mobile, AT&T carrier SIM swap prevention documentation
 
 ## Revision History

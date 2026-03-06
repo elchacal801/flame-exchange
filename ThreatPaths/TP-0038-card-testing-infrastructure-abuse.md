@@ -380,13 +380,13 @@ tags:
 
 ## References
 
-- **Recorded Future -- Annual Payment Fraud Intelligence Report 2025**: Primary source documenting 1,350+ tester merchant accounts, 94% new merchant rate, 27M card records on Telegram linked to validation activity, 7 new tester services in 2025, and abused merchant examples including school e-commerce and U.S. state court payment systems.
+- **Recorded Future -- Annual Payment Fraud Intelligence Report 2025**: Primary source documenting 1,350+ tester merchant accounts, 94% new merchant rate, 27M card records on Telegram linked to validation activity, 7 new tester services in 2025, and abused merchant examples including school e-commerce and U.S. state court payment systems. [Link](https://www.recordedfuture.com/research/)
 
-- **Payment Card Industry Data Security Standard (PCI DSS) v4.0**: Framework requirements for merchant and payment processor security controls, including authorization monitoring and anomaly detection capabilities relevant to card testing detection.
+- **Payment Card Industry Data Security Standard (PCI DSS) v4.0**: Framework requirements for merchant and payment processor security controls, including authorization monitoring and anomaly detection capabilities relevant to card testing detection. [Link](https://www.pcisecuritystandards.org/document_library/)
 
-- **Visa Account Attack Intelligence (VAAI)**: Visa's card testing detection and reporting service providing payment network-level visibility into BIN enumeration and tester merchant activity.
+- **Visa Account Attack Intelligence (VAAI)**: Visa's card testing detection and reporting service providing payment network-level visibility into BIN enumeration and tester merchant activity. [Link](https://usa.visa.com/)
 
-- **Mastercard Decision Intelligence**: Mastercard's authorization scoring system incorporating card testing pattern detection as an input to real-time authorization decisions.
+- **Mastercard Decision Intelligence**: Mastercard's authorization scoring system incorporating card testing pattern detection as an input to real-time authorization decisions. [Link](https://www.mastercard.com/)
 
 - **Related FLAME Threat Paths**: [TP-0030: eCommerce Triangulation Fraud](TP-0030-ecommerce-triangulation-fraud.md) (downstream consumer of validated cards); [TP-0037: Digital Wallet Fraud & NFC Relay Attacks](TP-0037-digital-wallet-nfc-relay-fraud.md) (validated cards used for wallet provisioning); [TP-0013: Credential Stuffing & Loyalty Point Drain](TP-0013-credential-stuffing-loyalty-drain.md) (shared automated attack infrastructure).
 

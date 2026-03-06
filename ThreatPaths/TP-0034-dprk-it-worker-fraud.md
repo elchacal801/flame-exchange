@@ -440,23 +440,23 @@ tags:
 
 ## References
 
-- **FBI IC3 — North Korean IT Worker Threats to U.S. Businesses** (July 2025): Public Service Announcement detailing DPRK IT worker TTPs, indicators, and recommended mitigations.
+- **FBI IC3 — North Korean IT Worker Threats to U.S. Businesses** (July 2025): Public Service Announcement detailing DPRK IT worker TTPs, indicators, and recommended mitigations. [Link](https://www.ic3.gov/PSA/2025/PSA250701)
 
-- **FBI IC3 — North Korean IT Workers Conducting Data Extortion** (January 2025): PSA documenting the escalation from salary extraction to post-termination data extortion.
+- **FBI IC3 — North Korean IT Workers Conducting Data Extortion** (January 2025): PSA documenting the escalation from salary extraction to post-termination data extortion. [Link](https://www.ic3.gov/PSA/2025/PSA250123)
 
-- **DOJ — Nationwide Actions to Combat Illicit North Korean Government Revenue Generation** (November 2025): Press release detailing enforcement actions against DPRK IT worker facilitator networks, including $15M+ in civil forfeitures.
+- **DOJ — Nationwide Actions to Combat Illicit North Korean Government Revenue Generation** (November 2025): Press release detailing enforcement actions against DPRK IT worker facilitator networks, including $15M+ in civil forfeitures. [Link](https://www.justice.gov/opa/pr/)
 
-- **Google Cloud Threat Intelligence — Mitigating the DPRK IT Worker Threat** (2025): Detailed analysis of DPRK IT worker TTPs, including AI-assisted interviews and VPN infrastructure patterns.
+- **Google Cloud Threat Intelligence — Mitigating the DPRK IT Worker Threat** (2025): Detailed analysis of DPRK IT worker TTPs, including AI-assisted interviews and VPN infrastructure patterns. [Link](https://cloud.google.com/blog/topics/threat-intelligence/)
 
-- **Google Cloud Threat Intelligence — DPRK IT Workers Expanding in Scope and Scale** (2025): Updated analysis documenting geographic expansion beyond the U.S. to UK, EU, and APAC targets.
+- **Google Cloud Threat Intelligence — DPRK IT Workers Expanding in Scope and Scale** (2025): Updated analysis documenting geographic expansion beyond the U.S. to UK, EU, and APAC targets. [Link](https://cloud.google.com/blog/topics/threat-intelligence/)
 
-- **Microsoft Threat Intelligence — Jasper Sleet: North Korean Remote IT Workers' Evolving Tactics** (June 2025): Analysis of the "Jasper Sleet" activity group's interview and infiltration techniques.
+- **Microsoft Threat Intelligence — Jasper Sleet: North Korean Remote IT Workers' Evolving Tactics** (June 2025): Analysis of the "Jasper Sleet" activity group's interview and infiltration techniques. [Link](https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/)
 
-- **CrowdStrike — DPRK IT Worker Incident Reports**: 304 documented incidents across technology, financial services, and healthcare sectors.
+- **CrowdStrike — DPRK IT Worker Incident Reports**: 304 documented incidents across technology, financial services, and healthcare sectors. [Link](https://www.crowdstrike.com/blog/)
 
-- **Palo Alto Unit 42 — Global Companies Are Unknowingly Paying North Koreans** (2025): Technical analysis of DPRK IT worker detection indicators and facilitator network patterns.
+- **Palo Alto Unit 42 — Global Companies Are Unknowingly Paying North Koreans** (2025): Technical analysis of DPRK IT worker detection indicators and facilitator network patterns. [Link](https://unit42.paloaltonetworks.com/)
 
-- **SentinelOne — DPRK IT Workers: A Network of Active Front Companies** (2025): Analysis of front company infrastructure used by DPRK IT workers for freelance platform operations.
+- **SentinelOne — DPRK IT Workers: A Network of Active Front Companies** (2025): Analysis of front company infrastructure used by DPRK IT workers for freelance platform operations. [Link](https://www.sentinelone.com/blog/)
 
 - **Related FLAME Threat Paths**: [TP-0015: Employment Fraud via Brand Impersonation](TP-0015-employment-fraud-brand-impersonation.md) (civilian employment fraud); [TP-0029: AI Synthetic Identity & Document Forgery](TP-0029-ai-synthetic-identity-document-forgery.md) (AI-enhanced identity fabrication); [TP-0019: Business Identity Theft](TP-0019-business-identity-theft.md) (organizational identity compromise).
 

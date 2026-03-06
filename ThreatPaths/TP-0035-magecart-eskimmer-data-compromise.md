@@ -408,15 +408,15 @@ tags:
 
 ## References
 
-- **Recorded Future — Annual Payment Fraud Intelligence Report 2025**: Primary source providing quantitative e-skimmer infection telemetry (10,500+ active infections, 7,300+ new infections, 23.4M compromised transactions), MaaS platform profiles (Sniffer by Fleras, AcceptCar), blockchain C2 technical analysis, and GTM abuse case studies.
+- **Recorded Future — Annual Payment Fraud Intelligence Report 2025**: Primary source providing quantitative e-skimmer infection telemetry (10,500+ active infections, 7,300+ new infections, 23.4M compromised transactions), MaaS platform profiles (Sniffer by Fleras, AcceptCar), blockchain C2 technical analysis, and GTM abuse case studies. [Link](https://www.recordedfuture.com/research/)
 
-- **PCI Security Standards Council — PCI DSS v4.0 Requirement 6.4.3**: Requirement for automated mechanisms to detect and alert on unauthorized modifications to payment page scripts, including integrity monitoring and change detection.
+- **PCI Security Standards Council — PCI DSS v4.0 Requirement 6.4.3**: Requirement for automated mechanisms to detect and alert on unauthorized modifications to payment page scripts, including integrity monitoring and change detection. [Link](https://www.pcisecuritystandards.org/)
 
 - **RiskIQ / Microsoft — Magecart Threat Landscape Reports**: Historical analysis of Magecart group operations, supply chain attack vectors, and e-skimmer evolution from 2018 through 2025.
 
 - **Feroot / Jscrambler / Source Defense — Client-Side Security Research**: Technical analysis of e-skimmer obfuscation techniques, analytics mimicry patterns, and blockchain C2 infrastructure.
 
-- **MITRE ATT&CK — Enterprise Matrix**: Framework mapping for adversary techniques used in e-skimmer campaigns, including T1059.007, T1189, T1027, T1041.
+- **MITRE ATT&CK — Enterprise Matrix**: Framework mapping for adversary techniques used in e-skimmer campaigns, including T1059.007, T1189, T1027, T1041. [Link](https://attack.mitre.org/)
 
 - **Related FLAME Threat Paths**: [TP-0013: Card-Not-Present Fraud](TP-0013-card-not-present-fraud.md) (downstream fraud using skimmed data); [TP-0030: Triangulation Fraud](TP-0030-triangulation-fraud.md) (stolen cards used to fulfill scam merchant orders); [TP-0038: Card Testing Operations](TP-0038-card-testing-operations.md) (stolen card validation before monetization).
 

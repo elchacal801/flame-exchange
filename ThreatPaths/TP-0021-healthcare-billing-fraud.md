@@ -165,11 +165,11 @@ Healthcare fraud is estimated to cost $100B-$300B annually in the United States,
 ## References
 
 - FLAME Project Internal Knowledge Base.
-- U.S. Department of Justice (DOJ): National Health Care Fraud Takedown reports (annual).
-- HHS Office of Inspector General: Medicare Fraud Strike Force case summaries.
-- CMS: Medicare Fraud & Abuse — detection methodologies and provider audit typologies.
+- U.S. Department of Justice (DOJ): National Health Care Fraud Takedown reports (annual). [Link](https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement)
+- HHS Office of Inspector General: Medicare Fraud Strike Force case summaries. [Link](https://oig.hhs.gov/reports-and-publications/)
+- CMS: Medicare Fraud & Abuse — detection methodologies and provider audit typologies. [Link](https://www.cms.gov/About-CMS/Components/CPI/CPI-Fraud-Detection)
 - NHCAA (National Health Care Anti-Fraud Association): "The Challenge of Health Care Fraud" — industry loss estimates.
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — healthcare-related fraud complaint data.
+- FBI IC3: "2024 Internet Crime Report" (April 2025) — healthcare-related fraud complaint data. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 
 ---
 

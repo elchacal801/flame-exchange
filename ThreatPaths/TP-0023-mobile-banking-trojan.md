@@ -191,11 +191,11 @@ The mobile banking trojan ecosystem is dominated by a handful of malware-as-a-se
 ## References
 
 - FLAME Project Internal Knowledge Base.
-- ThreatFabric: "Mobile Threat Landscape" annual reports — malware family analysis and ATS capability evolution.
-- Cleafy: "Android Banking Trojan Tracker" — overlay attack and ATS detection research.
+- ThreatFabric: "Mobile Threat Landscape" annual reports — malware family analysis and ATS capability evolution. [Link](https://www.threatfabric.com/)
+- Cleafy: "Android Banking Trojan Tracker" — overlay attack and ATS detection research. [Link](https://www.cleafy.com/)
 - Google: Android Security & Privacy Year in Review — Play Protect statistics and accessibility service policy changes.
-- OWASP Mobile Security: "Mobile Application Security Verification Standard (MASVS)" — RASP and anti-tampering requirements.
-- Europol: Internet Organised Crime Threat Assessment (IOCTA) — mobile malware as a service trends.
+- OWASP Mobile Security: "Mobile Application Security Verification Standard (MASVS)" — RASP and anti-tampering requirements. [Link](https://mas.owasp.org/MASVS/)
+- Europol: Internet Organised Crime Threat Assessment (IOCTA) — mobile malware as a service trends. [Link](https://www.europol.europa.eu/publications-events/main-reports/internet-organised-crime-threat-assessment-iocta)
 
 ---
 

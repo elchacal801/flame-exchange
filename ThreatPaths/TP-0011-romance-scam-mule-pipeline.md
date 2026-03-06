@@ -264,10 +264,10 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 
 ## References
 
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
-- FinCEN Advisory FIN-2020-A008: "Advisory on Imposter Scams and Money Mule Schemes"
-- INTERPOL: Operation First Light (scam compound raids)
-- UNODC: "Online Scam Operations in Southeast Asia"
+- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FinCEN Advisory FIN-2020-A008: "Advisory on Imposter Scams and Money Mule Schemes". [Link](https://www.fincen.gov/sites/default/files/advisory/2020-07-30/Advisory-Imposter-Scams-508.pdf)
+- INTERPOL: Operation First Light (scam compound raids). [Link](https://www.interpol.int/en/News-and-Events/News/2024/INTERPOL-led-operation-targets-online-scam-networks)
+- UNODC: "Online Scam Operations in Southeast Asia". [Link](https://www.unodc.org/roseap/en/2024/08/online-fraud-southeast-asia-2024/story.html)
 - Group-IB Fraud Intelligence: "Evolving Mule Tactics" report (6-stage mule evolution analysis, META region Q4 2023 – Q1 2025, detection methodology)
 - **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Mule network operational scale data, Gen Z recruitment statistics, enforcement action summaries.
 

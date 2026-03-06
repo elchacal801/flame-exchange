@@ -1087,6 +1087,11 @@
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>',
                 title: 'Framework Navigator',
                 desc: 'Cross-framework coverage matrix across CFPF, FT3, Group-IB, and ATT&CK'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+                title: 'Regulatory Pulse',
+                desc: '6-source live feed (OFAC, FinCEN, SEC, OCC, FBI IC3, CFPB) with TP mapping and severity triage'
             }
         ];
 
@@ -1124,7 +1129,11 @@
             { name: 'Phase 3: SIGNAL', desc: 'STIX extension, MISP galaxy, TAXII feeds, regulatory mapping, framework navigator', status: 'done' },
             { name: 'Phase 4: BEACON', desc: 'Community contributions, intake pipeline, RSS/webhook feeds, production hardening', status: 'done' },
             { name: 'Phase 5: SIGNAL-RF', desc: 'Recorded Future 2025 integration — 5 new TPs (e-skimmer, purchase scam, digital wallet, card testing, agentic commerce), 12 detection rules, 5 baselines', status: 'done' },
-            { name: 'Phase 6: SIGNAL-LNRS', desc: 'LexisNexis 2026 integration — BNPL multi-provider fraud TP, 5 detection rules, 1 baseline, 5 existing TP enhancements with quantitative intelligence', status: 'current' }
+            { name: 'Phase 6: SIGNAL-LNRS', desc: 'LexisNexis 2026 integration — BNPL multi-provider fraud TP, 5 detection rules, 1 baseline, 5 existing TP enhancements', status: 'done' },
+            { name: 'Phase 7: Infrastructure Intelligence', desc: 'TAX-01/02 expansion, TP-0041–0043 (AI-accelerated fraud infrastructure, financial institution impersonation, cross-border money mule), DL-0092–100, BL-0021–23', status: 'done' },
+            { name: 'Phase 8: Geopolitical Context', desc: 'TAX-03–05 expansion, TP-0044–0046 (state-criminal convergence, sanctions evasion routing, geopolitically timed campaigns), DL-0101–07, BL-0024–25', status: 'done' },
+            { name: 'Phase 9: Emerging Threats', desc: 'TAX-06 expansion, TP-0047–0049 (human trafficking–linked fraud, TDS chain exploitation, crypto laundering infrastructure), DL-0108–14, BL-0026–27, EP-0006–07', status: 'done' },
+            { name: 'Phase 10: Regulatory Pulse', desc: '6-source automated feed (OFAC, FinCEN, SEC, OCC, FBI IC3, CFPB), program-based TP mapping, twice-daily CI/CD refresh, reference quality audit', status: 'current' }
         ];
         phases.forEach(function (p) {
             html += '<div class="about-roadmap-item about-roadmap-' + p.status + '">';
@@ -1141,12 +1150,13 @@
         html += '<h3>Recent Milestones</h3>';
         html += '<div class="about-changelog">';
         var changelog = [
-            { date: '2026-03', text: 'Phase 6 SIGNAL-LNRS: LexisNexis 2026 integration — TP-0040 BNPL fraud, 5 detection rules, 5 TP enhancements with quantitative intelligence' },
-            { date: '2026-03', text: 'Phase 5 SIGNAL-RF: Recorded Future 2025 integration — TP-0035 through TP-0039, 12 new detection rules, 5 baselines, 4 new fraud types' },
+            { date: '2026-03', text: 'Phase 10: Regulatory Pulse — OFAC program-based TP mapping, 6-source category mapping, twice-daily CI/CD, CFPB enabled, reference audit' },
+            { date: '2026-03', text: 'Phase 9: Emerging Threats — TP-0047–0049, DL-0108–14, BL-0026–27, EP-0006–07 (human trafficking, TDS exploitation, crypto laundering)' },
+            { date: '2026-03', text: 'Phase 8: Geopolitical Context — TP-0044–0046, DL-0101–07, BL-0024–25 (state-criminal convergence, sanctions evasion, geo-timed campaigns)' },
+            { date: '2026-03', text: 'Phase 7: Infrastructure Intelligence — TP-0041–0043, DL-0092–100, BL-0021–23 (AI fraud infrastructure, FI impersonation, cross-border mules)' },
+            { date: '2026-03', text: 'Phase 6 SIGNAL-LNRS: LexisNexis 2026 integration — TP-0040 BNPL fraud, 5 detection rules, 5 TP enhancements' },
+            { date: '2026-03', text: 'Phase 5 SIGNAL-RF: Recorded Future 2025 integration — TP-0035–0039, 12 new detection rules, 5 baselines, 4 new fraud types' },
             { date: '2026-03', text: 'Phase 4 BEACON: RSS feed, 5 emulation playbooks, contributor leaderboard, peer review workflow' },
-            { date: '2026-03', text: 'Contributor submission interface with contribute.html and 5 Issue Form templates' },
-            { date: '2026-03', text: 'Emulation Playbook schema (EP-XXXX) with CFPF-mapped steps and DL cross-references' },
-            { date: '2026-03', text: 'TP-0034 DPRK IT Worker Fraud: 7 detection rules, baseline profile, full CFPF mapping' },
             { date: '2026-03', text: 'STIX 2.1 fraud extension with 4 custom SDOs, TAXII 2.1, MISP galaxy' },
             { date: '2026-03', text: 'Regulatory mapping (15 regulations, 6 jurisdictions), Framework Navigator' },
             { date: '2026-03', text: 'MCP server, static JSON API, Sigma export pipeline' },
@@ -1420,7 +1430,7 @@
             if (a.source) {
                 sourcesSet[a.source] = true;
             }
-            if (a.tp_count && a.tp_count > 0) {
+            if (a.mapped_tp_ids && a.mapped_tp_ids.length > 0) {
                 tpMapped++;
             }
         });
@@ -1443,9 +1453,40 @@
             drawerBadge.textContent = alertCountText;
         }
 
-        // Sort alerts globally (descending date)
+        // Robust date parser for heterogeneous regulatory date formats
+        // Handles: ISO "2026-01-15", RFC 2822 "Wed, 14 Jan 2026",
+        //          informal "Sept. 30, 2025", "Jan. 6, 2026", "Feb. 27, 2026",
+        //          US slash "03/20/2025", publication "mm/dd/yyyy"
+        var _MONTH_MAP = {
+            jan: 0, january: 0, feb: 1, february: 1, mar: 2, march: 2,
+            apr: 3, april: 3, may: 4, jun: 5, june: 5,
+            jul: 6, july: 6, aug: 7, august: 7, sep: 8, sept: 8, september: 8,
+            oct: 9, october: 9, nov: 10, november: 10, dec: 11, december: 11
+        };
+
+        function parseRegDate(str) {
+            if (!str) return 0;
+            // Try native Date.parse first (handles ISO, RFC 2822)
+            var ts = Date.parse(str);
+            if (!isNaN(ts)) return ts;
+            // Handle informal: "Sept. 30, 2025", "Jan. 6, 2026"
+            var m = str.match(/([A-Za-z]+)\.?\s+(\d{1,2}),?\s+(\d{4})/);
+            if (m) {
+                var mon = _MONTH_MAP[m[1].toLowerCase().replace(/\.$/, '')];
+                if (mon !== undefined) return new Date(parseInt(m[3], 10), mon, parseInt(m[2], 10)).getTime();
+            }
+            // Handle "dd Mon yyyy" or "Mon dd, yyyy" other variants
+            var m2 = str.match(/(\d{1,2})\s+([A-Za-z]+)\.?\s+(\d{4})/);
+            if (m2) {
+                var mon2 = _MONTH_MAP[m2[2].toLowerCase().replace(/\.$/, '')];
+                if (mon2 !== undefined) return new Date(parseInt(m2[3], 10), mon2, parseInt(m2[1], 10)).getTime();
+            }
+            return 0;
+        }
+
+        // Sort alerts globally (descending date — newest first)
         var sortedAlerts = alerts.slice().sort(function (a, b) {
-            return (b.date || '').localeCompare(a.date || '');
+            return parseRegDate(b.date) - parseRegDate(a.date);
         });
 
         // Source Filter Element
@@ -1520,7 +1561,8 @@
                 }
 
                 html += '<td><span class="reg-severity-pill ' + escapeHtml(sevClass) + '">' + escapeHtml(a.severity || '') + '</span></td>';
-                html += '<td style="text-align:center;">' + escapeHtml(String(a.tp_count != null ? a.tp_count : '—')) + '</td>';
+                var tpDisplay = (a.mapped_tp_ids && a.mapped_tp_ids.length > 0) ? a.mapped_tp_ids.length : '—';
+                html += '<td style="text-align:center;">' + escapeHtml(String(tpDisplay)) + '</td>';
                 html += '</tr>';
 
                 // Expanding Context Row

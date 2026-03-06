@@ -331,6 +331,7 @@ Underground forums and Telegram channels have seen a surge in AI-related fraud t
 | IMPROVE | Level 3 (Established) | Post-incident analysis of detection gap duration for AI-generated campaigns; comparative effectiveness measurement of content-based vs infrastructure-based detection; false positive rate optimization for infrastructure-layer detection rules; feedback loop from credential compromise incidents to detection model improvement |
 
 ### Maturity Levels Reference
+
 - **Level 1 (Initial):** Ad hoc, reactive fraud management
 - **Level 2 (Developing):** Basic fraud function exists with some defined processes
 - **Level 3 (Established):** Formalized fraud program with proactive capabilities
@@ -472,25 +473,25 @@ tags:
 
 ## References
 
-- **KnowBe4 — Phishing Threat Trends Report 2025**: Primary source for AI-generated content prevalence in phishing emails (82.6%).
+- **KnowBe4 — Phishing Threat Trends Report 2025**: Primary source for AI-generated content prevalence in phishing emails (82.6%). [Link](https://www.knowbe4.com/phishing-threat-trends)
 
-- **SlashNext — State of Phishing Report 2025**: Primary source for longitudinal phishing volume increase since ChatGPT launch (1,265%).
+- **SlashNext — State of Phishing Report 2025**: Primary source for longitudinal phishing volume increase since ChatGPT launch (1,265%). [Link](https://slashnext.com/)
 
-- **Hoxhunt — Phishing Trends Report 2025**: Primary source for AI phishing effectiveness comparison with elite human red teams (24% more effective by March 2025).
+- **Hoxhunt — Phishing Trends Report 2025**: Primary source for AI phishing effectiveness comparison with elite human red teams (24% more effective by March 2025). [Link](https://www.hoxhunt.com/blog)
 
-- **CrowdStrike — 2025 Global Threat Report**: Primary source for AI-generated vs human-crafted phishing click-through rate comparison (54% vs 12%).
+- **CrowdStrike — 2025 Global Threat Report**: Primary source for AI-generated vs human-crafted phishing click-through rate comparison (54% vs 12%). [Link](https://www.crowdstrike.com/en-us/global-threat-report/)
 
-- **Chainalysis — 2026 Crypto Crime Report**: Primary source for AI-enabled scam profitability multiplier (4.5x) and scam technology vendor revenue data ($375.9M in crypto in 2024). Source URL: https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/
+- **Chainalysis — 2026 Crypto Crime Report**: Primary source for AI-enabled scam profitability multiplier (4.5x) and scam technology vendor revenue data ($375.9M in crypto in 2024). [Link](https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/)
 
-- **TRM Labs — Crypto Crime Report 2025**: Primary source for AI service vendor growth rate (1,900% CAGR) and GenAI-enabled scam growth estimates.
+- **TRM Labs — Crypto Crime Report 2025**: Primary source for AI service vendor growth rate (1,900% CAGR) and GenAI-enabled scam growth estimates. [Link](https://www.trmlabs.com/resources)
 
-- **Sift — Q2 2025 Digital Trust & Safety Index**: Primary source for GenAI-enabled scam growth measurement (456% lower bound estimate).
+- **Sift — Q2 2025 Digital Trust & Safety Index**: Primary source for GenAI-enabled scam growth measurement (456% lower bound estimate). [Link](https://pages.sift.com/digital-trust-safety-index)
 
-- **Infoblox — DNS Threat Intelligence Research**: Infrastructure-layer detection methodology, RDGA analysis, and the thesis that graph-based infrastructure intelligence at the DNS layer is the primary defensible detection paradigm against AI-accelerated fraud.
+- **Infoblox — DNS Threat Intelligence Research**: Infrastructure-layer detection methodology, RDGA analysis, and the thesis that graph-based infrastructure intelligence at the DNS layer is the primary defensible detection paradigm against AI-accelerated fraud. [Link](https://www.infoblox.com/threat-intel/)
 
-- **CrimsonVector — Strategic Intelligence Report: Fraud Infrastructure Threat Landscape (March 2026)**: Synthesis source providing the analytical framework for AI-accelerated fraud infrastructure economics, campaign creation time estimates (16 hours to 5 minutes), and scam page generation rate (38,000+/day).
+- **CrimsonVector — Strategic Intelligence Report: Fraud Infrastructure Threat Landscape (March 2026)**: Synthesis source providing the analytical framework for AI-accelerated fraud infrastructure economics, campaign creation time estimates (16 hours to 5 minutes), and scam page generation rate (38,000+/day) — no public URL (proprietary report).
 
-- **MITRE ATT&CK — Enterprise Matrix**: Framework mapping for adversary techniques used in AI-accelerated phishing and infrastructure generation campaigns, including T1583.001, T1566.001, T1566.002, T1598, T1585.001, T1585.002, T1608.005.
+- **MITRE ATT&CK — Enterprise Matrix**: Framework mapping for adversary techniques used in AI-accelerated phishing and infrastructure generation campaigns, including T1583.001, T1566.001, T1566.002, T1598, T1585.001, T1585.002, T1608.005. [Link](https://attack.mitre.org/)
 
 - **Related FLAME Threat Paths**: [TP-0041: RDGA-Based Infrastructure Campaigns](TP-0041-rdga-based-infrastructure-campaigns.md) (AI may assist RDGA pattern generation); [TP-0042: Traffic Distribution System Chain Exploitation](TP-0042-tds-chain-exploitation.md) (AI generates TDS landing page content); [TP-0029: AI Synthetic Identity & Document Forgery](TP-0029-ai-synthetic-identity-document-forgery.md) (AI document forgery for identity verification bypass).
 

@@ -228,6 +228,7 @@ Per the CFPF case study: **mitigating the malvertising at Phase 1** — partneri
 | IMPROVE | Level 2 (Developing) | Post-incident review process linking cyber indicators to fraud outcomes, customer education content updates based on emerging malvertising and vishing TTPs |
 
 ### Maturity Levels Reference
+
 - **Level 1 (Initial):** Ad hoc, reactive fraud management
 - **Level 2 (Developing):** Basic fraud function exists with some defined processes
 - **Level 3 (Established):** Formalized fraud program with proactive capabilities
@@ -294,7 +295,7 @@ tags:
 
 - **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Primary source. Treasury management ATO case study appears on pages 8-9, documenting the cross-functional investigation that traced malvertising → vishing → ATO → wire fraud chain. Reports ~10 attacks/day, six-to-seven-figure losses, and 8-month prevention after addressing malvertising. [PDF](https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf)
 
-- **FBI IC3 2024 Internet Crime Report**: Business Email Compromise and account takeover remain top financial loss categories, with BEC alone accounting for $2.9B+ in reported losses.
+- **FBI IC3 2024 Internet Crime Report**: Business Email Compromise and account takeover remain top financial loss categories, with BEC alone accounting for $2.9B+ in reported losses. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 
 - **BankInfoSecurity — "New Framework Targets Rising Financial Crime Threats" (2025)**: Coverage of the CFPF launch, noting that cyber and fraud teams "traditionally get involved at different points in the attack lifecycle." [Link](https://www.bankinfosecurity.com/new-framework-targets-rising-financial-crime-threats-a-28112)
 

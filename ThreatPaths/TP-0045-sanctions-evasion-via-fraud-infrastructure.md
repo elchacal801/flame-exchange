@@ -307,6 +307,7 @@ Underground forums and Telegram channels demonstrate a well-understood playbook 
 | IMPROVE | Level 3 (Established) | Post-incident analysis of sanctions-evasion infrastructure detection gaps; sanctions screening system effectiveness review following each OFAC designation; blockchain analytics coverage gap analysis; supply chain dependency audit following compromise incidents; BPH rebranding detection rule tuning based on observed migration patterns |
 
 ### Maturity Levels Reference
+
 - **Level 1 (Initial):** Ad hoc, reactive fraud management
 - **Level 2 (Developing):** Basic fraud function exists with some defined processes
 - **Level 3 (Established):** Formalized fraud program with proactive capabilities
@@ -474,12 +475,12 @@ tags:
 
 ### Key References
 
-1. Chainalysis, "2026 Crypto Crime Report: Sanctions Evasion and Illicit Finance," 2026
-2. TRM Labs, "The Illicit Crypto Economy: Sanctions Evasion Infrastructure," 2026
-3. OFAC, SDN List Updates — Funnull Technology (May 2025), Aeza Group (July 2025), Garantex/Grinex (November 2025)
-4. Infoblox, "Funnull Technology: 332,000 DGA Domains and the Polyfill.io Supply Chain Attack," 2025
-5. CrimsonVector, "Strategic Intelligence Report: Convergent Threat Infrastructure," 2026
-6. FinCEN, "Huione Group Designation: Primary Money Laundering Concern," 2025
+1. Chainalysis, "2026 Crypto Crime Report: Sanctions Evasion and Illicit Finance," 2026. [Link](https://www.chainalysis.com/blog/crypto-crime-midyear-2025/)
+2. TRM Labs, "The Illicit Crypto Economy: Sanctions Evasion Infrastructure," 2026. [Link](https://www.trmlabs.com/report/illicit-crypto-ecosystem)
+3. OFAC, SDN List Updates — Funnull Technology (May 2025), Aeza Group (July 2025), Garantex/Grinex (November 2025). [Link](https://home.treasury.gov/policy-issues/office-of-foreign-assets-control-sanctions-programs-and-information)
+4. Infoblox, "Funnull Technology: 332,000 DGA Domains and the Polyfill.io Supply Chain Attack," 2025. [Link](https://blogs.infoblox.com/)
+5. CrimsonVector, "Strategic Intelligence Report: Convergent Threat Infrastructure," 2026 — no public URL (proprietary report)
+6. FinCEN, "Huione Group Designation: Primary Money Laundering Concern," 2025. [Link](https://www.fincen.gov/news/news-releases)
 
 ---
 

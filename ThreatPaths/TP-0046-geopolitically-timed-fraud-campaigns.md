@@ -294,6 +294,7 @@ The boundary between these layers is increasingly blurred. Orange Cyberdefense w
 **Objective**: Detect pre-positioned phishing and fraud infrastructure registered in anticipation of election-cycle exploitation.
 
 **Detection Logic**:
+
 - Monitor domain registration feeds for spikes in registrations combining election-related keywords (vote, election, ballot, candidate names) with financial institution brand names
 - Correlate registration timing with election calendars -- flag registrations occurring 30-60 days before scheduled elections in relevant jurisdictions
 - Identify registrant clustering -- multiple election-themed domains registered by the same entity or through the same registrar within a short time window
@@ -308,6 +309,7 @@ The boundary between these layers is increasingly blurred. Orange Cyberdefense w
 **Objective**: Detect infrastructure migration and retaliatory campaign activation triggered by sanctions announcements.
 
 **Detection Logic**:
+
 - Monitor OFAC SDN list updates, EU sanctions designations, and UK OFSI announcements as trigger events
 - Within 72 hours of sanctions announcements, scan for: domain transfers away from sanctioned registrars, hosting migrations from sanctioned providers, new domain registrations impersonating sanctioned or sanctioning-country financial institutions
 - Correlate infrastructure migration patterns with known threat actor hosting preferences and registrar usage patterns
@@ -322,6 +324,7 @@ The boundary between these layers is increasingly blurred. Orange Cyberdefense w
 **Objective**: Detect and attribute politically-motivated DDoS campaigns targeting financial sector infrastructure, with emphasis on Layer 7 DNS attack patterns.
 
 **Detection Logic**:
+
 - Monitor for DDoS attack patterns consistent with known hacktivist tooling (DDoSTia signature patterns, LOIC variants, custom Layer 7 tools)
 - Correlate attack timing with geopolitical events -- flag DDoS attacks initiated within 24-48 hours of diplomatic statements, military escalations, or sanctions announcements
 - Analyze Layer 7 DNS attack traffic for patterns specific to financial sector targeting (targeting of banking API endpoints, payment processing URLs, online banking login pages)
@@ -366,15 +369,15 @@ The 550+ claimed DDoS attacks from politically motivated groups against U.S. fin
 
 Finance Derivative 2026 research documented systematic domain registration patterns preceding multiple national elections. In each case, registration spikes of election-themed domains incorporating financial institution brand names were observed 30-60 days before election dates. Domains were parked during the pre-election period and activated within days of the election, hosting credential harvesting pages that exploited voter anxiety about election outcomes and their financial implications. The pattern was consistent across geographies, suggesting either shared tradecraft or common operators targeting multiple election cycles.
 
-### References
+### Key References
 
-1. Radware. "Global Threat Analysis Report." 2024. https://www.radware.com/threat-analysis/
-2. Finance Derivative. "Hacktivist Attacks on Financial Services: Election Timing Analysis." 2026.
-3. Orange Cyberdefense. "Security Navigator 2025: Hacktivism and Cyber-Physical Risk." 2025.
-4. CrimsonVector. "Strategic Intelligence Report: Geopolitically-Motivated Threat Actor Convergence." 2025-2026.
+1. Radware. "Global Threat Analysis Report." 2024. [Link](https://www.radware.com/resources/threat-analysis-reports/)
+2. Finance Derivative. "Hacktivist Attacks on Financial Services: Election Timing Analysis." 2026 — no public URL (proprietary report)
+3. Orange Cyberdefense. "Security Navigator 2025: Hacktivism and Cyber-Physical Risk." 2025. [Link](https://www.orangecyberdefense.com/global/security-navigator)
+4. CrimsonVector. "Strategic Intelligence Report: Geopolitically-Motivated Threat Actor Convergence." 2025-2026 — no public URL (proprietary report)
 5. NoName057(16) Telegram channel activity analysis (open-source monitoring). 2023-2025.
-6. OFAC Sanctions Actions Database. U.S. Department of the Treasury. Ongoing.
-7. EU Sanctions Map. European Council. Ongoing.
+6. OFAC Sanctions Actions Database. U.S. Department of the Treasury. Ongoing. [Link](https://sanctionssearch.ofac.treas.gov/)
+7. EU Sanctions Map. European Council. Ongoing. [Link](https://sanctionsmap.eu/)
 
 ---
 

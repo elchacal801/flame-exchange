@@ -29,9 +29,13 @@ sources:
         - TP-0040
       corruption:
         - TP-0041
+      # Fallback: parser sets category='Advisory' for all scraped entries
+      Advisory:
+        - TP-0001
+        - TP-0003
 
   cfpb:
-    enabled: false
+    enabled: true
     api_url: "https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/"
     category_mapping:
       elder-fraud:
@@ -84,6 +88,10 @@ sources:
         - TP-0061
       fair-lending:
         - TP-0052
+      # Fallback: parser sets category='Bulletin' for all scraped entries
+      Bulletin:
+        - TP-0001
+        - TP-0060
 
   sec:
     enabled: true
@@ -103,6 +111,9 @@ sources:
         - TP-0073
       cryptocurrency-fraud:
         - TP-0033
+      # Fallback: parser sets category='Litigation Release' for all entries
+      Litigation Release:
+        - TP-0031
 
   ofac:
     enabled: true

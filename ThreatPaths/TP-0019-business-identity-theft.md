@@ -199,11 +199,11 @@ Business identity theft is an underreported threat vector because victimized bus
 ## References
 
 - FLAME Project Internal Knowledge Base.
-- FinCEN: Alerts on Business Email Compromise and Shell Companies.
-- SBA Office of Inspector General: Pandemic Fraud Reports (PPP/EIDL business identity theft patterns).
-- IRS: "Identity Theft Information for Businesses" — EIN theft prevention guidance.
+- FinCEN: Alerts on Business Email Compromise and Shell Companies. [Link](https://www.fincen.gov/resources/advisoriesbulletinsfact-sheets)
+- SBA Office of Inspector General: Pandemic Fraud Reports (PPP/EIDL business identity theft patterns). [Link](https://www.sba.gov/about-sba/oversight-advocacy/office-inspector-general)
+- IRS: "Identity Theft Information for Businesses" — EIN theft prevention guidance. [Link](https://www.irs.gov/identity-theft-fraud-scams/identity-theft-information-for-businesses)
 - National White Collar Crime Center (NW3C): "Business Identity Theft: The Next Frontier" — state-level filing exploitation typologies.
-- FinCEN: Beneficial Ownership Information (BOI) reporting requirements (2024).
+- FinCEN: Beneficial Ownership Information (BOI) reporting requirements (2024). [Link](https://www.fincen.gov/boi)
 
 ---
 

@@ -2,7 +2,8 @@ name: Fetch Regulatory Data
 
 on:
   schedule:
-    - cron: '0 6 * * 1-5'  # Weekdays at 6 AM UTC
+    - cron: '0 6 * * 1-5'   # Weekdays at 6 AM UTC
+    - cron: '0 18 * * 1-5'  # Weekdays at 6 PM UTC
   workflow_dispatch:  # Manual trigger
 
 permissions:

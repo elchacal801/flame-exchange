@@ -349,7 +349,7 @@ class TestOFACSource:
         assert a0.alert_id == "ofac-12345"
         assert a0.title == "OFAC SDN: John DOE (Individual)"
         assert a0.severity == "high"
-        assert a0.category == "SDN List Addition"
+        assert a0.category == "terrorism-financing"
 
         a1 = alerts[1]
         assert a1.alert_id == "ofac-67890"
@@ -365,18 +365,19 @@ class TestOFACSource:
         assert alerts[0].title == "OFAC SDN: Jane SMITH (Individual)"
 
     def test_parse_maps_tp_ids(self):
-        """parse() should map SDN List Addition via category_mapping."""
+        """parse() should map SDN programs via category_mapping."""
         config = _make_config({
             "sdn_url": "https://ofac.example.com/SDN.XML",
             "category_mapping": {
-                "SDN List Addition": ["TP-0001", "TP-0080"],
+                "terrorism-financing": ["TP-0001", "TP-0080"],
+                "cyber-sanctions": ["TP-0020", "TP-0084"],
             },
         })
         src = OFACSource(config)
         alerts = src.parse(OFAC_SDN_XML)
 
-        assert alerts[0].mapped_tp_ids == ["TP-0001", "TP-0080"]
-        assert alerts[1].mapped_tp_ids == ["TP-0001", "TP-0080"]
+        assert alerts[0].mapped_tp_ids == ["TP-0001", "TP-0080"]  # SDGT → terrorism-financing
+        assert alerts[1].mapped_tp_ids == ["TP-0020", "TP-0084"]  # CYBER2 → cyber-sanctions
 
     def test_parse_summary_contains_programs(self):
         """Summary should contain program list information."""

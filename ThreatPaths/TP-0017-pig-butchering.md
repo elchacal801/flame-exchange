@@ -263,10 +263,10 @@ WHERE c.age >= 60
 
 ## References
 
-- FinCEN Advisory on Pig Butchering (FIN-2023-A002).
-- FBI IC3 2023-2024 Cryptocurrency Fraud Reports.
-- Recorded Future: "2026 State of Security" (CTA-2026-0212) — SE Asian TCO fraud operations, marketplace resilience, AI tool evolution
-- FBI IC3 2024 Internet Crime Report — investment fraud and crypto loss figures
+- FinCEN Advisory on Pig Butchering (FIN-2023-A002). [Link](https://www.fincen.gov/sites/default/files/shared/FinCEN_Advisory_Pig_Butchering_FINAL_508c.pdf)
+- FBI IC3 2023-2024 Cryptocurrency Fraud Reports. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- Recorded Future: "2026 State of Security" (CTA-2026-0212) — SE Asian TCO fraud operations, marketplace resilience, AI tool evolution. [Link](https://www.recordedfuture.com/research/)
+- FBI IC3 2024 Internet Crime Report — investment fraud and crypto loss figures. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 
 ---
 

@@ -176,8 +176,8 @@ Employment fraud has surged alongside the normalization of remote work, as job s
 
 ## References
 
-- FBI IC3: Internet Crime Report 2023 — Employment/Business Fraud
-- FTC: Job Scams Report (2024)
+- FBI IC3: Internet Crime Report 2023 — Employment/Business Fraud. [Link](https://www.ic3.gov/AnnualReport/Reports/2023_IC3Report.pdf)
+- FTC: Job Scams Report (2024). [Link](https://www.ftc.gov/news-events/data-visualizations/data-spotlight/2024/08/job-scams)
 - Better Business Bureau: Employment Scam Tracker
 - Right at Home: Official careers page (for brand impersonation comparison)
 

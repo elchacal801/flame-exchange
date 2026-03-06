@@ -548,6 +548,55 @@ def load_detection_rule(conn: sqlite3.Connection, dl_data: dict, filepath: Path)
 # Regulatory alerts
 # ---------------------------------------------------------------------------
 
+# Month abbreviations (including informal ones like "Sept." used by some sources)
+_MONTH_ABBR = {
+    "jan": 1, "january": 1, "feb": 2, "february": 2, "mar": 3, "march": 3,
+    "apr": 4, "april": 4, "may": 5, "jun": 6, "june": 6,
+    "jul": 7, "july": 7, "aug": 8, "august": 8, "sep": 9, "sept": 9, "september": 9,
+    "oct": 10, "october": 10, "nov": 11, "november": 11, "dec": 12, "december": 12,
+}
+
+
+def _normalize_date_to_iso(raw: str) -> str:
+    """Best-effort conversion of a date string to ISO 8601 (YYYY-MM-DD).
+
+    Handles:
+    - Already ISO: "2026-01-15" -> "2026-01-15"
+    - RFC 2822: "Wed, 14 Jan 2026" -> "2026-01-14"
+    - Informal: "Sept. 30, 2025", "Jan. 6, 2026" -> ISO
+    - US slash: "03/20/2025" -> "2025-03-20"
+    - Fallback: returns the original string unchanged
+    """
+    s = raw.strip()
+    if not s:
+        return s
+
+    # Already ISO?
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", s):
+        return s
+
+    # US slash: mm/dd/yyyy
+    m = re.match(r"^(\d{1,2})/(\d{1,2})/(\d{4})$", s)
+    if m:
+        return f"{m.group(3)}-{int(m.group(1)):02d}-{int(m.group(2)):02d}"
+
+    # RFC 2822 or informal: "Wed, 14 Jan 2026", "14 Jan 2026"
+    m = re.match(r"(?:\w+,\s*)?(\d{1,2})\s+([A-Za-z]+)\.?\s+(\d{4})", s)
+    if m:
+        mon = _MONTH_ABBR.get(m.group(2).lower().rstrip("."))
+        if mon:
+            return f"{m.group(3)}-{mon:02d}-{int(m.group(1)):02d}"
+
+    # Informal: "Sept. 30, 2025", "January 6, 2026"
+    m = re.match(r"([A-Za-z]+)\.?\s+(\d{1,2}),?\s+(\d{4})", s)
+    if m:
+        mon = _MONTH_ABBR.get(m.group(1).lower().rstrip("."))
+        if mon:
+            return f"{m.group(3)}-{mon:02d}-{int(m.group(2)):02d}"
+
+    # Fallback: return as-is
+    return s
+
 def build_regulatory_alerts(conn: sqlite3.Connection, csv_path: Path) -> int:
     """Ingest regulatory alerts from a CSV file into the database.
 
@@ -577,7 +626,7 @@ def build_regulatory_alerts(conn: sqlite3.Connection, csv_path: Path) -> int:
                     alert_id,
                     row.get("source", "").strip(),
                     row.get("title", "").strip(),
-                    row.get("date", "").strip(),
+                    _normalize_date_to_iso(row.get("date", "")),
                     row.get("category", "").strip(),
                     row.get("severity", "").strip(),
                     row.get("url", "").strip(),

@@ -178,7 +178,7 @@ HAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits
 
 ## References
 
-- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics
+- FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - FLAME Project Internal Knowledge Base.
 - U.S. Secret Service Advisories on Pandemic Fraud Networks.
 
