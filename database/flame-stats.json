@@ -1,6 +1,6 @@
 {
-  "total": 46,
-  "fraudTypes": 65,
+  "total": 49,
+  "fraudTypes": 70,
   "fraudTypeList": [
     "BEC",
     "account-takeover",
@@ -13,14 +13,17 @@
     "autonomous-ai-fraud",
     "benefit-fraud",
     "bnpl-fraud",
+    "bph-migration",
     "brand-impersonation",
     "business-email-compromise",
     "bust-out",
     "card-testing",
     "check-fraud",
+    "cmln-operations",
     "collusion",
     "credential-stuffing",
     "crypto-laundering",
+    "crypto-laundering-infrastructure",
     "data-theft",
     "deepfake",
     "deepfake-fraud",
@@ -34,6 +37,7 @@
     "fraudulent-claim",
     "ghost-student-fraud",
     "healthcare-fraud",
+    "human-trafficking-facilitation",
     "identity-theft",
     "impersonation",
     "insider-threat",
@@ -56,6 +60,7 @@
     "refunding-as-a-service",
     "romance-scam",
     "sanctions-evasion-infrastructure",
+    "scam-compound-operations",
     "social-engineering",
     "state-criminal-convergence",
     "synthetic-identity",
@@ -88,11 +93,11 @@
     "web3"
   ],
   "phaseCoverage": {
-    "P1": 45,
-    "P2": 43,
-    "P3": 46,
-    "P4": 45,
-    "P5": 45
+    "P1": 48,
+    "P2": 46,
+    "P3": 49,
+    "P4": 48,
+    "P5": 48
   },
   "topTags": [
     {
@@ -104,11 +109,11 @@
       "count": 5
     },
     {
-      "tag": "high-value",
-      "count": 4
+      "tag": "pig-butchering",
+      "count": 5
     },
     {
-      "tag": "pig-butchering",
+      "tag": "high-value",
       "count": 4
     },
     {
@@ -120,7 +125,15 @@
       "count": 3
     },
     {
+      "tag": "cryptocurrency",
+      "count": 3
+    },
+    {
       "tag": "elder-fraud",
+      "count": 3
+    },
+    {
+      "tag": "huione-group",
       "count": 3
     },
     {
@@ -136,6 +149,10 @@
       "count": 3
     },
     {
+      "tag": "aeza",
+      "count": 2
+    },
+    {
       "tag": "ai-generated",
       "count": 2
     },
@@ -144,11 +161,11 @@
       "count": 2
     },
     {
-      "tag": "commercial-banking",
+      "tag": "cmln",
       "count": 2
     },
     {
-      "tag": "cryptocurrency",
+      "tag": "commercial-banking",
       "count": 2
     },
     {
@@ -161,18 +178,6 @@
     },
     {
       "tag": "employment-fraud",
-      "count": 2
-    },
-    {
-      "tag": "evilginx",
-      "count": 2
-    },
-    {
-      "tag": "genai",
-      "count": 2
-    },
-    {
-      "tag": "kyc-bypass",
       "count": 2
     }
   ],
@@ -299,6 +304,17 @@
       "total_tps": 1
     },
     {
+      "fraud_type": "bph-migration",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
       "fraud_type": "brand-impersonation",
       "phases": {
         "P1": 2,
@@ -353,6 +369,17 @@
       "total_tps": 1
     },
     {
+      "fraud_type": "cmln-operations",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
       "fraud_type": "collusion",
       "phases": {
         "P1": 1,
@@ -377,13 +404,24 @@
     {
       "fraud_type": "crypto-laundering",
       "phases": {
-        "P1": 5,
-        "P2": 5,
-        "P3": 5,
-        "P4": 5,
-        "P5": 5
+        "P1": 6,
+        "P2": 6,
+        "P3": 6,
+        "P4": 6,
+        "P5": 6
       },
-      "total_tps": 5
+      "total_tps": 6
+    },
+    {
+      "fraud_type": "crypto-laundering-infrastructure",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
     },
     {
       "fraud_type": "data-theft",
@@ -525,6 +563,17 @@
         "P2": 1
       },
       "total_tps": 2
+    },
+    {
+      "fraud_type": "human-trafficking-facilitation",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
     },
     {
       "fraud_type": "identity-theft",
@@ -760,6 +809,17 @@
     {
       "fraud_type": "sanctions-evasion-infrastructure",
       "phases": {
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
+      },
+      "total_tps": 2
+    },
+    {
+      "fraud_type": "scam-compound-operations",
+      "phases": {
         "P1": 1,
         "P2": 1,
         "P3": 1,
@@ -902,5 +962,5 @@
     },
     "lastUpdated": "2026-03-06"
   },
-  "generatedAt": "2026-03-06T00:58:07.947929+00:00"
+  "generatedAt": "2026-03-06T01:18:40.352399+00:00"
 }

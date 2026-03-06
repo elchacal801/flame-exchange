@@ -4958,5 +4958,266 @@
       }
     ],
     "evidence_count": 0
+  },
+  {
+    "id": "TP-0047",
+    "title": "Human Trafficking-Linked Fraud Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-03-05",
+    "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, FBI IC3, Chainalysis, OFAC)",
+    "source": "https://www.chainalysis.com/blog/crypto-crime-midyear-2025/",
+    "tlp": "WHITE",
+    "summary": "> **Scope Limitation**: This threat path documents the fraud infrastructure that is operationally dependent on or intersects with human trafficking networks in Southeast Asia. It does not attempt to d...",
+    "confidence_score": 80,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": null,
+    "geopolitical_timing": null,
+    "nation_state_nexus": null,
+    "sectors": [
+      "crypto",
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "human-trafficking-facilitation",
+      "scam-compound-operations",
+      "crypto-laundering"
+    ],
+    "tags": [
+      "human-trafficking",
+      "scam-compound",
+      "pig-butchering",
+      "southeast-asia",
+      "huione-group",
+      "karen-national-army",
+      "ofac-sanctions",
+      "cryptocurrency",
+      "recruitment-fraud"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1566.001",
+      "T1566.002",
+      "T1071.001",
+      "T1048"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 4",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 4",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0108",
+      "DL-0109"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0044",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0045",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "feeds-into"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0048",
+    "title": "Bulletproof Hosting Migration Patterns",
+    "category": "ThreatPath",
+    "date": "2026-03-05",
+    "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, OFAC, CISA)",
+    "source": "https://www.cisa.gov/topics/cyber-threats-and-advisories",
+    "tlp": "WHITE",
+    "summary": "Bulletproof hosting (BPH) providers represent one of the most critical enablers of modern cybercrime and fraud infrastructure. Unlike legitimate hosting services that comply with abuse reports and law...",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": null,
+    "geopolitical_timing": null,
+    "nation_state_nexus": null,
+    "sectors": [
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "bph-migration",
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "bulletproof-hosting",
+      "bph-migration",
+      "funnull",
+      "aeza",
+      "media-land",
+      "ofac-sanctions",
+      "cloud-abuse",
+      "bgp-analysis",
+      "cname-clustering",
+      "infrastructure-lifecycle"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.003",
+      "T1583.004",
+      "T1584.004",
+      "T1036",
+      "T1578"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Defence Evasion",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0110",
+      "DL-0111",
+      "DL-0112"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0041",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0042",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0045",
+        "relationship": "shares-infrastructure"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0049",
+    "title": "Cryptocurrency Laundering Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-03-05",
+    "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs)",
+    "source": "https://www.chainalysis.com/blog/crypto-crime-midyear-2025/",
+    "tlp": "WHITE",
+    "summary": "Cryptocurrency Money Laundering Networks (CMLNs) have emerged as the dominant infrastructure layer enabling the monetization of virtually every category of crypto-enabled fraud and cybercrime. In 2025...",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": null,
+    "geopolitical_timing": null,
+    "nation_state_nexus": null,
+    "sectors": [
+      "crypto",
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering-infrastructure",
+      "cmln-operations"
+    ],
+    "tags": [
+      "cmln",
+      "cryptocurrency-laundering",
+      "no-kyc-exchange",
+      "otc-broker",
+      "black-u",
+      "dprk-laundering-cycle",
+      "cross-chain-bridge",
+      "huione-group",
+      "chainalysis",
+      "trm-labs"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1071.001",
+      "T1048",
+      "T1565.003"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Monetization",
+      "Laundering"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 4",
+      "assess": "Level 4",
+      "plan": "Level 4",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 4",
+      "improve": "Level 4"
+    },
+    "detection_rule_ids": [
+      "DL-0113",
+      "DL-0114"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0044",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0045",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0047",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
   }
 ]

@@ -699,6 +699,49 @@
         <category>CFPF-P5</category>
     </item>
     <item>
+      <title>[TP-0047] Human Trafficking-Linked Fraud Infrastructure</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0047</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0047</guid>
+      <description>&gt; **Scope Limitation**: This threat path documents the fraud infrastructure that is operationally dependent on or intersects with human trafficking networks in Southeast Asia. It does not attempt to d</description>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
+        <category>crypto-laundering</category>
+        <category>human-trafficking-facilitation</category>
+        <category>scam-compound-operations</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0048] Bulletproof Hosting Migration Patterns</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0048</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0048</guid>
+      <description>Bulletproof hosting (BPH) providers represent one of the most critical enablers of modern cybercrime and fraud infrastructure. Unlike legitimate hosting services that comply with abuse reports and law</description>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
+        <category>bph-migration</category>
+        <category>sanctions-evasion-infrastructure</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0049] Cryptocurrency Laundering Infrastructure</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0049</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0049</guid>
+      <description>Cryptocurrency Money Laundering Networks (CMLNs) have emerged as the dominant infrastructure layer enabling the monetization of virtually every category of crypto-enabled fraud and cybercrime. In 2025</description>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
+        <category>cmln-operations</category>
+        <category>crypto-laundering-infrastructure</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
       <link>https://elchacal801.github.io/flame-fraud</link>
       <guid isPermaLink="false">flame-dl-DL-0001</guid>
@@ -1653,6 +1696,66 @@
       <guid isPermaLink="false">flame-dl-DL-0107</guid>
       <description>Detect Layer 7 DNS attack patterns targeting financial services infrastructure that correlate with geopolitical event timelines. Differentiates politically motivated DDoS from criminal extortion DDoS </description>
         <category>state-criminal-convergence</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0108] Pig Butchering Domain Infrastructure Clustering</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0108</guid>
+      <description>Detect clusters of domains exhibiting pig butchering investment platform characteristics: similar page structures, cryptocurrency wallet integration, registration through privacy-protected registrars,</description>
+        <category>human-trafficking-facilitation</category>
+        <category>scam-compound-operations</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0109] Scam Compound Cryptocurrency Payment Infrastructure</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0109</guid>
+      <description>Detect domain clusters with cryptocurrency payment page patterns (wallet address display, QR code generation, transaction verification) registered in bulk through shared registrar/nameserver infrastru</description>
+        <category>crypto-laundering</category>
+        <category>human-trafficking-facilitation</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0110] BPH IP Block Migration Post-Sanctions</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0110</guid>
+      <description>Detect IP address blocks previously associated with sanctioned or seized BPH providers appearing under new BGP announcements from different ASNs. Track continuity of malicious hosting through IP block</description>
+        <category>bph-migration</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0111] Cloud Provider IP Abuse for BPH Resale</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0111</guid>
+      <description>Detect patterns consistent with legitimate cloud provider IP blocks being resold for BPH: unusual CNAME density (100+ domains per IP), diverse domain registrants sharing the same cloud IP range, and h</description>
+        <category>bph-migration</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0112] CNAME Clustering for DGA Domain Networks</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0112</guid>
+      <description>Detect anomalous CNAME record density where hundreds or thousands of apparently unrelated domains share CNAME chains terminating at a small number of infrastructure endpoints. Indicates centrally mana</description>
+        <category>bph-migration</category>
+        <category>rdga-infrastructure</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0113] CMLN Wallet Cluster Velocity</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0113</guid>
+      <description>Detect cryptocurrency wallet clusters exhibiting CMLN operational characteristics: high transaction velocity (average processing time under 2 minutes), incoming transfers from multiple unrelated sourc</description>
+        <category>cmln-operations</category>
+        <category>crypto-laundering-infrastructure</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0114] No-KYC Exchange Off-Ramp Pattern</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0114</guid>
+      <description>Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ram</description>
+        <category>crypto-laundering-infrastructure</category>
         <category>severity-high</category>
     </item>
   </channel>

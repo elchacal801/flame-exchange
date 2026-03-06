@@ -276,6 +276,24 @@
     "text": "Geopolitically-timed fraud campaigns represent a structurally distinct threat category in which financially-motivated and ideologically-motivated threat actors deliberately synchronize attack operations with elections, military conflicts, sanctions announcements, and other geopolitical inflection points. Research from Finance Derivative 2026 validates that hacktivist attacks on banks and payment providers are carefully timed to elections and geopolitical events, exploiting the operational distraction, heightened public anxiety, and degraded institutional response capacity that accompany political crises. This synchronization is not opportunistic -- it reflects deliberate pre-positioning of infrastructure, coordinated target selection based on political alignment, and campaign activation triggers tied to specific geopolitical milestones.\n\nThe financial sector bears a disproportionate share of this activity. According to Radware's 2024 threat analysis, financial services absorbed 44% of total Layer 7 DNS attack activity, with a 393% year-over-year growth in DDoS volume per financial organization. In Q1 2025 alone, over 550 claimed DDoS attacks from politically motivated groups targeted U.S. financial institutions. Pro-Russian groups such as NoName057(16) and Killnet successors systematically target financial institutions in countries with pro-Ukrainian foreign policy positions, while pro-Palestinian groups direct operations against Western and Gulf financial sectors. Orange Cyberdefense has warned that hacktivism is extending beyond traditional IT targets toward cyber-physical risk in ICS/OT environments, raising the stakes for critical financial infrastructure.\n\nThe convergence of state-aligned hacktivist operations with financially-motivated fraud creates a compounding threat. DDoS campaigns degrade monitoring and verification systems, creating windows of opportunity for credential harvesting, account takeover, and unauthorized transactions. Election-timed domain registration spikes indicate pre-positioning of phishing infrastructure weeks before anticipated political events. Sanctions-announcement correlations reveal infrastructure migration patterns triggered by OFAC and EU sanctions designations. This threat path documents the full lifecycle of geopolitically-timed fraud campaigns and proposes detection approaches anchored to geopolitical event calendars rather than purely technical indicators.\n\n---"
   },
   {
+    "id": "TP-0047",
+    "type": "threat_path",
+    "title": "Human Trafficking-Linked Fraud Infrastructure",
+    "text": "> **Scope Limitation**: This threat path documents the fraud infrastructure that is operationally dependent on or intersects with human trafficking networks in Southeast Asia. It does not attempt to document human trafficking operations themselves, which fall under law enforcement, human rights, and national security mandates. The analytical focus is on the financial crime infrastructure — the platforms, payment flows, laundering mechanisms, and technological systems — that trafficking-linked scam compounds use to execute fraud at industrial scale. Understanding this infrastructure is essential for financial institutions, cryptocurrency compliance teams, and fraud operations because the proceeds of trafficking-linked fraud flow through regulated financial systems and blockchain networks that these organizations are obligated to monitor, detect, and report.\n\nAmericans lost at least $10 billion to Southeast Asia-based scam operations in 2024, representing a 66% year-over-year increase (FBI IC3, CrimsonVector synthesis). These operations are overwhelmingly staffed by trafficked persons — an estimated 150,000 people are trapped in Cambodian scam compounds and 100,000 in Myanmar, forced to execute fraud against victims worldwide under threat of violence, debt bondage, and resale between compound operators. The industrialized scale of these operations has created a distinct fraud infrastructure ecosystem that spans trafficking recruitment, compound operations, and fraud execution — three layers that share financial flows, cryptocurrency wallets, and laundering networks.\n\nCryptocurrency flows to suspected human trafficking services surged 85% year-over-year in 2025 (Chainalysis), reflecting both the growth of compound operations and the increasing reliance on cryptocurrency for cross-border value transfer within the trafficking-fraud ecosystem. Recruitment payments for trafficked workers typically range from $1,000 to $10,000, paid in cryptocurrency to brokers who deliver victims to compound operators. The Huione Group — a Cambodia-based conglomerate operating a marketplace, payment platform, and stablecoin (USDH) — processed $98 billion in cryptocurrency inflows, with over $4 billion confirmed as illicit, serving as a central financial hub for scam compound operations across the region.\n\nLaw enforcement and regulatory responses have escalated significantly. The U.S. Scam Center Strike Force froze or seized $578 million in cryptocurrency in its first three months of operation. OFAC sanctioned the Karen National Army (a Myanmar ethnic armed organization controlling scam compound zones), Shwe Kokko operators (developers of a major scam compound complex in Myanmar), Funnull Technology (a CDN provider hosting scam infrastructure), and 146 targets associated with the Prince Group (a Cambodian conglomerate linked to Huione). These designations directly implicate the financial infrastructure documented in this threat path.\n\nThe convergence of human trafficking and financial fraud creates a threat that is qualitatively different from traditional fraud schemes. The trafficked workforce provides compound operators with near-zero labor costs, 24/7 operational capacity, and disposable operators who can be replaced or resold. This enables fraud operations at a scale and persistence that purely criminal organizations cannot match, while the human trafficking dimension creates legal, regulatory, and reputational risks for any financial institution whose systems process the resulting proceeds.\n\n---"
+  },
+  {
+    "id": "TP-0048",
+    "type": "threat_path",
+    "title": "Bulletproof Hosting Migration Patterns",
+    "text": "Bulletproof hosting (BPH) providers represent one of the most critical enablers of modern cybercrime and fraud infrastructure. Unlike legitimate hosting services that comply with abuse reports and law enforcement requests, BPH operators explicitly guarantee service continuity for criminal clients — ignoring takedown notices, hosting phishing kits, malware command-and-control infrastructure, ransomware leak sites, and fraud marketplaces. CISA has noted a \"marked increase\" in BPH use against critical infrastructure across all sectors, reflecting a maturation of the BPH ecosystem from ad hoc service provision to industrialized criminal infrastructure-as-a-service.\n\nThis threat path documents the migration patterns that BPH providers follow when subjected to law enforcement disruption, OFAC sanctions, or coordinated takedown actions. Analysis of three major BPH operations — Funnull Technology (332,000+ domains, 548 CNAMEs, OFAC designated May 2025), Aeza Group rebranding to Smart Digital/Datavice (OFAC sanctioned July 2025), and Media Land (OFAC sanctioned November 2025) — reveals a consistent five-stage lifecycle: Operation, Detection/Sanctions, Migration, Rebranding, and Resumption. The lifecycle completes in as few as 7-14 days, meaning sanctions announcements do not terminate BPH services but instead trigger pre-planned migration sequences that reconstitute criminal hosting capability under new identities.\n\nA particularly concerning evolution is the shift toward cloud provider abuse, where BPH operators purchase legitimate cloud IP ranges in bulk from major providers and resell them to criminal clients. This technique blends malicious traffic with legitimate cloud workloads, making network-level detection significantly harder and rendering IP-based blocklists ineffective. The convergence of BPH migration patterns with cloud abuse creates a compounding detection challenge that requires infrastructure-behavioral analysis rather than static indicator matching.\n\n---"
+  },
+  {
+    "id": "TP-0049",
+    "type": "threat_path",
+    "title": "Cryptocurrency Laundering Infrastructure",
+    "text": "Cryptocurrency Money Laundering Networks (CMLNs) have emerged as the dominant infrastructure layer enabling the monetization of virtually every category of crypto-enabled fraud and cybercrime. In 2025, CMLNs processed $16.1 billion across 1,799+ active wallets, averaging approximately $44 million per day (Chainalysis 2026). CMLNs now represent approximately 20% of all known illicit cryptocurrency laundering over the past five years, making them the single most consequential infrastructure component in the crypto-crime ecosystem. Critically, CMLN inflows have grown 7,325x faster than illicit inflows to centralized exchanges since 2020 -- a structural shift indicating that professional laundering networks have almost entirely displaced direct exchange-based cash-out as the preferred monetization pathway.\n\nThe CMLN ecosystem is composed of six distinct service types, each with specialized operational characteristics: running point brokers, money mules, OTC services, \"Black U\" services, gambling platforms, and money movement services. These service types operate as a layered, modular infrastructure -- threat actors can chain multiple CMLN services together to create complex laundering paths that frustrate blockchain analytics and law enforcement tracing. The \"Black U\" service category is particularly notable: a single Black U operation processed $1 billion in just 236 days with an average transaction processing time of 1.6 minutes, demonstrating industrial-scale, near-real-time laundering capability.\n\nTRM Labs reports that Chinese-language escrow and underground banking volume exceeded $103 billion in adjusted crypto volume in 2025, indicating that CMLNs are deeply embedded in transnational organized crime networks operating at a scale that rivals legitimate financial infrastructure. CMLNs launder over 10% of funds stolen in pig butchering scams, establishing a direct operational link between upstream social engineering fraud and downstream crypto laundering infrastructure. The DPRK laundering cycle -- a structured 45-day process moving from distancing through integration to off-ramping -- demonstrates that nation-state actors have adopted CMLN infrastructure as a core component of their financial operations.\n\nThis threat path documents the CMLN service taxonomy, maps the laundering lifecycle across CFPF phases, and identifies both on-chain and infrastructure-layer detection approaches that can be operationalized to disrupt CMLN operations at scale.\n\n---"
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -918,6 +936,48 @@
     "text": "Detect Layer 7 DNS attack patterns targeting financial services infrastructure that correlate with geopolitical event timelines. Differentiates politically motivated DDoS from criminal extortion DDoS by examining claim attribution (Telegram channel claims), target selection patterns (geopolitically aligned targets), and timing correlation with political events.\n"
   },
   {
+    "id": "DL-0108",
+    "type": "detection_rule",
+    "title": "Pig Butchering Domain Infrastructure Clustering",
+    "text": "Detect clusters of domains exhibiting pig butchering investment platform characteristics: similar page structures, cryptocurrency wallet integration, registration through privacy-protected registrars, hosted on known scam compound infrastructure IP ranges. Documents Funnull-pattern CNAME clustering.\n"
+  },
+  {
+    "id": "DL-0109",
+    "type": "detection_rule",
+    "title": "Scam Compound Cryptocurrency Payment Infrastructure",
+    "text": "Detect domain clusters with cryptocurrency payment page patterns (wallet address display, QR code generation, transaction verification) registered in bulk through shared registrar/nameserver infrastructure.\n"
+  },
+  {
+    "id": "DL-0110",
+    "type": "detection_rule",
+    "title": "BPH IP Block Migration Post-Sanctions",
+    "text": "Detect IP address blocks previously associated with sanctioned or seized BPH providers appearing under new BGP announcements from different ASNs. Track continuity of malicious hosting through IP block ownership changes.\n"
+  },
+  {
+    "id": "DL-0111",
+    "type": "detection_rule",
+    "title": "Cloud Provider IP Abuse for BPH Resale",
+    "text": "Detect patterns consistent with legitimate cloud provider IP blocks being resold for BPH: unusual CNAME density (100+ domains per IP), diverse domain registrants sharing the same cloud IP range, and high abuse-report-to-domain ratios. Documents Funnull-pattern indicators (332K domains across 548 CNAMEs).\n"
+  },
+  {
+    "id": "DL-0112",
+    "type": "detection_rule",
+    "title": "CNAME Clustering for DGA Domain Networks",
+    "text": "Detect anomalous CNAME record density where hundreds or thousands of apparently unrelated domains share CNAME chains terminating at a small number of infrastructure endpoints. Indicates centrally managed infrastructure reusing cloud or CDN providers for mass domain hosting.\n"
+  },
+  {
+    "id": "DL-0113",
+    "type": "detection_rule",
+    "title": "CMLN Wallet Cluster Velocity",
+    "text": "Detect cryptocurrency wallet clusters exhibiting CMLN operational characteristics: high transaction velocity (average processing time under 2 minutes), incoming transfers from multiple unrelated sources, and rapid outbound distribution to exchange or OTC wallets.\n"
+  },
+  {
+    "id": "DL-0114",
+    "type": "detection_rule",
+    "title": "No-KYC Exchange Off-Ramp Pattern",
+    "text": "Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ramping through Chinese OTC brokers (days 20-45). Temporal pattern matching against known laundering cycle timelines.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",
@@ -1060,5 +1120,17 @@
     "type": "baseline",
     "title": "Geopolitical Event Domain Registration Norms",
     "text": "This baseline defines normal and anomalous domain registration volumes correlated with geopolitical events, supporting detection logic for TP-0045 and TP-0046. It establishes behavioral norms for financial brand-impersonating domain registrations during steady-state periods, pre-election escalation windows, post-sanctions infrastructure migration patterns, and seasonal adjustment factors. These baselines are derived from the CrimsonVector Strategic Intelligence Report, Finance Derivative 2026 geopolitical risk analysis, and Radware application threat intelligence. Organizations should calibrate these thresholds against their monitored brand keyword lists and geographic scope of elections and sanctions events."
+  },
+  {
+    "id": "BL-0026",
+    "type": "baseline",
+    "title": "BPH Migration Timing and Relocation Norms",
+    "text": "This baseline defines normal and anomalous timing patterns for bulletproof hosting (BPH) provider infrastructure migration following sanctions designations, law enforcement actions, or upstream provider deplatforming events. It establishes behavioral norms for the speed and completeness of hosted domain migration, the timing of rebranding entity registration relative to enforcement events, and the geographic trajectory of infrastructure relocation. These baselines are derived from the CrimsonVector Strategic Intelligence Report analysis of the Aeza Group sanctions case, OFAC enforcement action timelines, and CISA bulletproof hosting advisories. Organizations should calibrate these thresholds against their monitored BPH provider watchlists and sanctions designation feeds to detect infrastructure migration campaigns in progress."
+  },
+  {
+    "id": "BL-0027",
+    "type": "baseline",
+    "title": "Cryptocurrency Laundering Cycle Duration Norms",
+    "text": "This baseline defines normal and anomalous timing patterns for cryptocurrency laundering cycles, covering the full lifecycle from initial theft or illicit acquisition through distancing, integration, and final off-ramping to fiat currency. It establishes behavioral norms for DPRK state-sponsored laundering operations, Chinese Money Laundering Network (CMLN) processing services, legitimate exchange settlement timelines, pig butchering proceeds laundering, and cross-chain bridge hopping during the distancing phase. These baselines are derived from the CrimsonVector Strategic Intelligence Report, Chainalysis 2026 Crypto Crime Report, and TRM Labs illicit flow analysis. Organizations should calibrate detection thresholds against these timing norms to distinguish legitimate cryptocurrency transaction patterns from laundering activity."
   }
 ]

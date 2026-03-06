@@ -5155,5 +5155,285 @@
       "Legitimate traffic spikes during financial events (market crashes, IPOs)",
       "CDN misconfigurations causing query amplification"
     ]
+  },
+  {
+    "id": "7a3e1d4f-9c82-4b16-a5f3-2e8d7c1b0a94",
+    "dl_id": "DL-0108",
+    "title": "Pig Butchering Domain Infrastructure Clustering",
+    "status": "experimental",
+    "description": "Detect clusters of domains exhibiting pig butchering investment platform characteristics: similar page structures, cryptocurrency wallet integration, registration through privacy-protected registrars, hosted on known scam compound infrastructure IP ranges. Documents Funnull-pattern CNAME clustering.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "domain_cluster|contains": [
+          "investment_keywords"
+        ],
+        "shared_registrar": true,
+        "privacy_protected_whois": true,
+        "cname_density|gt": "threshold"
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0047"
+    ],
+    "fraud_types": [
+      "human-trafficking-facilitation",
+      "scam-compound-operations"
+    ],
+    "tags": [
+      "TP-0047",
+      "cname",
+      "domain-clustering",
+      "funnull-pattern",
+      "pig-butchering",
+      "scam-compound"
+    ],
+    "falsepositives": [
+      "Legitimate cryptocurrency investment platform launches",
+      "Fintech startup domain portfolios"
+    ]
+  },
+  {
+    "id": "b2f84e6a-3d17-4c95-8e2b-5f9a0c3d1e76",
+    "dl_id": "DL-0109",
+    "title": "Scam Compound Cryptocurrency Payment Infrastructure",
+    "status": "experimental",
+    "description": "Detect domain clusters with cryptocurrency payment page patterns (wallet address display, QR code generation, transaction verification) registered in bulk through shared registrar/nameserver infrastructure.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "bulk_registered_domains": true,
+        "crypto_payment_indicators": true,
+        "shared_ns_infrastructure": true
+      },
+      "condition": "selection and certificate_correlation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "ct_log"
+    },
+    "threat_path_ids": [
+      "TP-0047"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "human-trafficking-facilitation"
+    ],
+    "tags": [
+      "TP-0047",
+      "bulk-registration",
+      "crypto-payment",
+      "payment-infrastructure",
+      "scam-compound"
+    ],
+    "falsepositives": [
+      "Legitimate cryptocurrency payment processors",
+      "Merchant crypto payment gateway deployments"
+    ]
+  },
+  {
+    "id": "c4d92f8b-6e53-4a01-b7c9-8d1f3e2a5b04",
+    "dl_id": "DL-0110",
+    "title": "BPH IP Block Migration Post-Sanctions",
+    "status": "experimental",
+    "description": "Detect IP address blocks previously associated with sanctioned or seized BPH providers appearing under new BGP announcements from different ASNs. Track continuity of malicious hosting through IP block ownership changes.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "previously_sanctioned_ip_range": true,
+        "new_bgp_announcement": true,
+        "different_asn": true,
+        "timeframe|lte": "90d"
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "ip_allocation"
+    },
+    "threat_path_ids": [
+      "TP-0048"
+    ],
+    "fraud_types": [
+      "bph-migration"
+    ],
+    "tags": [
+      "TP-0048",
+      "bgp-monitoring",
+      "bph-migration",
+      "ip-block-transfer",
+      "sanctions"
+    ],
+    "falsepositives": [
+      "Legitimate IP range transfers between hosting providers",
+      "Normal BGP re-advertisement after acquisitions"
+    ]
+  },
+  {
+    "id": "e195d6c5-e8a4-431e-823e-1cfee4c5bde6",
+    "dl_id": "DL-0111",
+    "title": "Cloud Provider IP Abuse for BPH Resale",
+    "status": "experimental",
+    "description": "Detect patterns consistent with legitimate cloud provider IP blocks being resold for BPH: unusual CNAME density (100+ domains per IP), diverse domain registrants sharing the same cloud IP range, and high abuse-report-to-domain ratios. Documents Funnull-pattern indicators (332K domains across 548 CNAMEs).\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "cloud_provider_ip": true,
+        "cname_density|gt": 100,
+        "diverse_registrants": true,
+        "abuse_ratio|gt": "threshold"
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0048"
+    ],
+    "fraud_types": [
+      "bph-migration"
+    ],
+    "tags": [
+      "TP-0048",
+      "bph-migration",
+      "cloud-abuse",
+      "cname-density",
+      "funnull-pattern"
+    ],
+    "falsepositives": [
+      "Legitimate CDN customers with high domain count",
+      "SaaS platforms hosting multiple customer domains"
+    ]
+  },
+  {
+    "id": "ffd86830-bd1d-4255-b383-851aa686ea07",
+    "dl_id": "DL-0112",
+    "title": "CNAME Clustering for DGA Domain Networks",
+    "status": "experimental",
+    "description": "Detect anomalous CNAME record density where hundreds or thousands of apparently unrelated domains share CNAME chains terminating at a small number of infrastructure endpoints. Indicates centrally managed infrastructure reusing cloud or CDN providers for mass domain hosting.\n",
+    "cfpf_phase": "P3",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "cname_chain_endpoint_count|gt": "threshold",
+        "unique_domain_count|gt": 500,
+        "cname_chain_depth|gte": 2
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "passive_dns"
+    },
+    "threat_path_ids": [
+      "TP-0048"
+    ],
+    "fraud_types": [
+      "bph-migration",
+      "rdga-infrastructure"
+    ],
+    "tags": [
+      "TP-0048",
+      "bph-migration",
+      "cname-clustering",
+      "dga",
+      "infrastructure-centralization"
+    ],
+    "falsepositives": [
+      "Large CDN deployments (Cloudflare, Akamai)",
+      "Legitimate marketing platforms with many customer domains"
+    ]
+  },
+  {
+    "id": "6013d91d-b3cc-4cbf-9246-f2f36abcafd2",
+    "dl_id": "DL-0113",
+    "title": "CMLN Wallet Cluster Velocity",
+    "status": "experimental",
+    "description": "Detect cryptocurrency wallet clusters exhibiting CMLN operational characteristics: high transaction velocity (average processing time under 2 minutes), incoming transfers from multiple unrelated sources, and rapid outbound distribution to exchange or OTC wallets.\n",
+    "cfpf_phase": "P5",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "wallet_cluster": true,
+        "avg_processing_time|lt": 120,
+        "inbound_source_count|gt": 10,
+        "outbound_to_exchange_ratio|gt": 0.7
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "chain_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0049"
+    ],
+    "fraud_types": [
+      "cmln-operations",
+      "crypto-laundering-infrastructure"
+    ],
+    "tags": [
+      "TP-0049",
+      "black-u",
+      "cmln",
+      "crypto-laundering",
+      "transaction-velocity",
+      "wallet-cluster"
+    ],
+    "falsepositives": [
+      "High-frequency trading bots",
+      "Legitimate payment processors with rapid settlement cycles"
+    ]
+  },
+  {
+    "id": "8cc41ee7-09ba-412d-bcaa-ddbf2242676f",
+    "dl_id": "DL-0114",
+    "title": "No-KYC Exchange Off-Ramp Pattern",
+    "status": "experimental",
+    "description": "Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ramping through Chinese OTC brokers (days 20-45). Temporal pattern matching against known laundering cycle timelines.\n",
+    "cfpf_phase": "P5",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "defi_hop_count|gte": 3,
+        "defi_hop_timeframe|lte": "5d",
+        "no_kyc_exchange_deposit_timeframe|lte": "14d",
+        "otc_broker_withdrawal_timeframe|lte": "45d"
+      },
+      "condition": "selection and temporal_sequence"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "chain_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0049"
+    ],
+    "fraud_types": [
+      "crypto-laundering-infrastructure"
+    ],
+    "tags": [
+      "45-day-pattern",
+      "TP-0049",
+      "cross-chain",
+      "dprk-cycle",
+      "no-kyc",
+      "off-ramp"
+    ],
+    "falsepositives": [
+      "Legitimate DeFi users with complex multi-protocol strategies",
+      "Institutional rebalancing across multiple venues"
+    ]
   }
 ]

@@ -5,8 +5,8 @@
       "threat_paths": 33,
       "detection_rules": 41,
       "baselines": 22,
-      "emulation_playbooks": 5,
-      "total": 101
+      "emulation_playbooks": 7,
+      "total": 103
     },
     {
       "name": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
@@ -49,7 +49,31 @@
       "total": 5
     },
     {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, OFAC, CISA)",
+      "threat_paths": 1,
+      "detection_rules": 3,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 5
+    },
+    {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs)",
+      "threat_paths": 1,
+      "detection_rules": 2,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 4
+    },
+    {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Finance Derivative 2026, Radware, Orange Cyberdefense)",
+      "threat_paths": 1,
+      "detection_rules": 2,
+      "baselines": 0,
+      "emulation_playbooks": 0,
+      "total": 3
+    },
+    {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, FBI IC3, Chainalysis, OFAC)",
       "threat_paths": 1,
       "detection_rules": 2,
       "baselines": 0,
@@ -89,5 +113,5 @@
       "total": 1
     }
   ],
-  "generated_at": "2026-03-06T00:58:08.613381+00:00"
+  "generated_at": "2026-03-06T01:18:40.954272+00:00"
 }
