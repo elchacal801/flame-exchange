@@ -1,0 +1,35 @@
+title: CNAME Clustering for DGA Domain Networks
+id: ffd86830-bd1d-4255-b383-851aa686ea07
+status: experimental
+date: 2026/03/05
+threat_paths:
+  - TP-0048
+cfpf_phase: P3
+fraud_types:
+  - bph-migration
+  - rdga-infrastructure
+description: >
+  Detect anomalous CNAME record density where hundreds or thousands of
+  apparently unrelated domains share CNAME chains terminating at a small
+  number of infrastructure endpoints. Indicates centrally managed
+  infrastructure reusing cloud or CDN providers for mass domain hosting.
+logsource:
+  product: dns_intelligence
+  category: cname_analysis
+  service: passive_dns
+detection:
+  selection:
+    cname_chain_endpoint_count|gt: threshold
+    unique_domain_count|gt: 500
+    cname_chain_depth|gte: 2
+  condition: selection
+falsepositives:
+  - Large CDN deployments (Cloudflare, Akamai)
+  - Legitimate marketing platforms with many customer domains
+level: medium
+tags:
+  - cname-clustering
+  - dga
+  - infrastructure-centralization
+  - bph-migration
+  - TP-0048

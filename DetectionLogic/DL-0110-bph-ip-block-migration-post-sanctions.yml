@@ -1,0 +1,34 @@
+title: BPH IP Block Migration Post-Sanctions
+id: c4d92f8b-6e53-4a01-b7c9-8d1f3e2a5b04
+status: experimental
+date: 2026/03/05
+threat_paths:
+  - TP-0048
+cfpf_phase: P3
+fraud_types:
+  - bph-migration
+description: >
+  Detect IP address blocks previously associated with sanctioned or seized
+  BPH providers appearing under new BGP announcements from different ASNs.
+  Track continuity of malicious hosting through IP block ownership changes.
+logsource:
+  product: dns_intelligence
+  category: bgp_monitoring
+  service: ip_allocation
+detection:
+  selection:
+    previously_sanctioned_ip_range: true
+    new_bgp_announcement: true
+    different_asn: true
+    timeframe|lte: 90d
+  condition: selection
+falsepositives:
+  - Legitimate IP range transfers between hosting providers
+  - Normal BGP re-advertisement after acquisitions
+level: high
+tags:
+  - bph-migration
+  - bgp-monitoring
+  - ip-block-transfer
+  - sanctions
+  - TP-0048

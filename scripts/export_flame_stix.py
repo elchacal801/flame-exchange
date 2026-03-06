@@ -167,6 +167,9 @@ SCHEME_TYPE_MAP = {
     "ai-accelerated-fraud-infrastructure": "infrastructure-generation",
     "sanctions-evasion-infrastructure": "sanctions-evasion",
     "state-criminal-convergence": "state-criminal-convergence",
+    "human-trafficking-facilitation": "human-trafficking",
+    "bph-migration": "infrastructure-migration",
+    "crypto-laundering-infrastructure": "crypto-laundering",
 }
 
 

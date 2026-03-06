@@ -1,0 +1,34 @@
+title: Scam Compound Cryptocurrency Payment Infrastructure
+id: b2f84e6a-3d17-4c95-8e2b-5f9a0c3d1e76
+status: experimental
+date: 2026/03/05
+threat_paths:
+  - TP-0047
+cfpf_phase: P4
+fraud_types:
+  - human-trafficking-facilitation
+  - crypto-laundering
+description: >
+  Detect domain clusters with cryptocurrency payment page patterns (wallet
+  address display, QR code generation, transaction verification) registered
+  in bulk through shared registrar/nameserver infrastructure.
+logsource:
+  product: dns_intelligence
+  category: payment_infrastructure
+  service: ct_log
+detection:
+  selection:
+    bulk_registered_domains: true
+    crypto_payment_indicators: true
+    shared_ns_infrastructure: true
+  condition: selection and certificate_correlation
+falsepositives:
+  - Legitimate cryptocurrency payment processors
+  - Merchant crypto payment gateway deployments
+level: high
+tags:
+  - scam-compound
+  - crypto-payment
+  - payment-infrastructure
+  - bulk-registration
+  - TP-0047

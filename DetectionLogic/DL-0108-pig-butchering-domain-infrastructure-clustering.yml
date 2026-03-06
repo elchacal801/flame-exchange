@@ -1,0 +1,38 @@
+title: Pig Butchering Domain Infrastructure Clustering
+id: 7a3e1d4f-9c82-4b16-a5f3-2e8d7c1b0a94
+status: experimental
+date: 2026/03/05
+threat_paths:
+  - TP-0047
+cfpf_phase: P3
+fraud_types:
+  - human-trafficking-facilitation
+  - scam-compound-operations
+description: >
+  Detect clusters of domains exhibiting pig butchering investment platform
+  characteristics: similar page structures, cryptocurrency wallet integration,
+  registration through privacy-protected registrars, hosted on known scam
+  compound infrastructure IP ranges. Documents Funnull-pattern CNAME clustering.
+logsource:
+  product: dns_intelligence
+  category: domain_clustering
+  service: zone_file_diff
+detection:
+  selection:
+    domain_cluster|contains:
+      - investment_keywords
+    shared_registrar: true
+    privacy_protected_whois: true
+    cname_density|gt: threshold
+  condition: selection
+falsepositives:
+  - Legitimate cryptocurrency investment platform launches
+  - Fintech startup domain portfolios
+level: high
+tags:
+  - pig-butchering
+  - scam-compound
+  - domain-clustering
+  - cname
+  - funnull-pattern
+  - TP-0047

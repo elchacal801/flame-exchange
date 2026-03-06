@@ -1,0 +1,35 @@
+title: Cloud Provider IP Abuse for BPH Resale
+id: e195d6c5-e8a4-431e-823e-1cfee4c5bde6
+status: experimental
+date: 2026/03/05
+threat_paths:
+  - TP-0048
+cfpf_phase: P2
+fraud_types:
+  - bph-migration
+description: >
+  Detect patterns consistent with legitimate cloud provider IP blocks being
+  resold for BPH: unusual CNAME density (100+ domains per IP), diverse domain
+  registrants sharing the same cloud IP range, and high abuse-report-to-domain
+  ratios. Documents Funnull-pattern indicators (332K domains across 548 CNAMEs).
+logsource:
+  product: dns_intelligence
+  category: cname_analysis
+  service: zone_file_diff
+detection:
+  selection:
+    cloud_provider_ip: true
+    cname_density|gt: 100
+    diverse_registrants: true
+    abuse_ratio|gt: threshold
+  condition: selection
+falsepositives:
+  - Legitimate CDN customers with high domain count
+  - SaaS platforms hosting multiple customer domains
+level: medium
+tags:
+  - bph-migration
+  - cloud-abuse
+  - cname-density
+  - funnull-pattern
+  - TP-0048

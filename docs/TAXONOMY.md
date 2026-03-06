@@ -34,6 +34,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `BEC` | Business email compromise schemes |
 | `benefit-fraud` | Fraudulent claims for government or employer benefits |
 | `billing-fraud` | Submission of false or inflated billing claims |
+| `bph-migration` | Bulletproof hosting migration and rebranding patterns post-sanctions or post-takedown, including infrastructure relocation and cloud provider abuse |
 | `brand-impersonation` | Fraudulent use of brand identity to deceive victims |
 | `business-email-compromise` | Compromise of business email for fraudulent purposes |
 | `bust-out` | Building credit then maxing out and disappearing |
@@ -42,6 +43,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `collusion` | Coordinated fraud involving insiders or multiple actors |
 | `credential-stuffing` | Automated credential reuse attacks |
 | `crypto-laundering` | Money laundering via cryptocurrency |
+| `crypto-laundering-infrastructure` | Cryptocurrency laundering infrastructure at the network level, including CMLN operations, no-KYC exchange off-ramping, and cross-chain bridge exploitation |
 | `data-theft` | Exfiltration of PII or financial data |
 | `deepfake` | AI-generated audio/video impersonation |
 | `deepfake-fraud` | Deepfake-enabled fraud spanning voice, video, and document forgery |
@@ -54,6 +56,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `fraudulent-claim` | False or exaggerated insurance claims |
 | `ghost-student-fraud` | Fabricated student identities to harvest financial aid |
 | `healthcare-fraud` | Fraud targeting healthcare systems and insurance |
+| `human-trafficking-facilitation` | Fraud infrastructure that directly supports human trafficking operations, including recruitment sites, compound control infrastructure, and cryptocurrency payment rails |
 | `identity-theft` | Theft and misuse of personal identity information |
 | `impersonation` | Identity impersonation (non-synthetic) |
 | `insider-threat` | Employee or contractor abuse of access |

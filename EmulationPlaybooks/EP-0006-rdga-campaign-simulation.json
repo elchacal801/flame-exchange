@@ -1,0 +1,106 @@
+{
+    "id": "EP-0006",
+    "title": "RDGA Campaign Simulation",
+    "description": "Simulates an end-to-end RDGA-based infrastructure campaign testing detection coverage across CFPF phases P1-P5 for RDGA domain registration, nameserver clustering, TDS integration, and campaign monetization patterns.",
+    "author": "FLAME Project",
+    "date": "2026-03-05",
+    "target_threat_paths": [
+        "TP-0041",
+        "TP-0042"
+    ],
+    "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+    ],
+    "fraud_types": [
+        "rdga-infrastructure",
+        "tds-exploitation"
+    ],
+    "sectors": [
+        "cross-sector",
+        "banking",
+        "crypto"
+    ],
+    "prerequisites": {
+        "environment": "Test environment with domain registration API access (sandbox/test registrar), DNS infrastructure for nameserver configuration, web server infrastructure for TDS redirect chain deployment, TLS certificate provisioning (Let's Encrypt staging), and traffic simulation capabilities. Requires ability to generate bulk domain names, configure DNS records, deploy redirect logic, and simulate victim traffic flows.",
+        "tools": [
+            "Domain registration API (test/sandbox mode)",
+            "DNS management platform",
+            "Web server infrastructure (nginx/Apache for TDS simulation)",
+            "Let's Encrypt staging certificate provisioning",
+            "Traffic generation and simulation framework",
+            "Passive DNS monitoring dashboard",
+            "Certificate transparency log monitor"
+        ],
+        "access_required": "Test-environment access to domain registration APIs, DNS configuration, web server deployment, TLS certificate provisioning, and traffic simulation systems. Ability to generate and register bulk domain names in a sandboxed environment and configure redirect chains."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Simulate RDGA Algorithm Domain Generation",
+            "action": "Execute a simulated Registered Domain Generation Algorithm to produce a list of 1,000 or more candidate domain names with controlled lexical patterns. The algorithm should incorporate character frequency distributions, bigram patterns, and domain length distributions that mirror known RDGA families (Prolific Puma, Revolver Rabbit). Generate domains across multiple TLDs (.com, .net, .xyz, .info, .top) with consistent lexical fingerprints such as fixed-length alphanumeric strings, absence of dictionary words, and uniform entropy scores. Record the full generated domain list with associated lexical metrics for downstream analysis.",
+            "automation": null,
+            "expected_result": "The generated domain list should exhibit measurable RDGA lexical characteristics including high Shannon entropy (above 3.5 bits per character), absence of dictionary word substrings, and consistent length distributions. This step validates that detection systems can identify RDGA-pattern domains through lexical analysis before registration occurs.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Simulate Bulk Domain Registration with Concentrated Infrastructure",
+            "action": "From the generated domain list, select a subset of 50-100 domains and simulate bulk registration through a single registrar using the test registration API. Configure all registered domains to point to a concentrated set of 2-3 nameservers, replicating the nameserver clustering behavior observed in RDGA campaigns where hundreds of domains share a small nameserver pool. Register domains in rapid succession within a 1-2 hour window to simulate the burst registration pattern characteristic of RDGA operators. Record registration timestamps, assigned nameservers, and registrar metadata for each domain.",
+            "automation": null,
+            "expected_result": "RDGA cluster detection should identify the nameserver concentration anomaly where 50-100 newly registered domains resolve through only 2-3 nameservers. Bulk registration velocity detection should flag the burst registration pattern. The combination of RDGA-lexical domain names with concentrated nameserver infrastructure should generate high-confidence RDGA campaign alerts.",
+            "detection_rule_ref": "DL-0092"
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P2",
+            "title": "Simulate Bulk Let's Encrypt Certificate Provisioning",
+            "action": "Provision TLS certificates for all registered domains using the Let's Encrypt staging environment. Execute certificate requests in rapid succession, simulating the bulk certificate provisioning pattern where RDGA operators obtain certificates for hundreds of domains within hours of registration. Use HTTP-01 or DNS-01 challenge validation for each domain. Record certificate serial numbers, issuance timestamps, Subject Alternative Names (SANs), and the temporal gap between domain registration and certificate issuance for each domain.",
+            "automation": null,
+            "expected_result": "Certificate transparency monitoring should detect the burst of certificate issuances for newly registered domains with RDGA-pattern names. The short registration-to-certificate latency (under 24 hours) combined with bulk issuance volume should trigger certificate provisioning anomaly alerts. SAN analysis should identify certificate clustering patterns.",
+            "detection_rule_ref": "DL-0099"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P3",
+            "title": "Simulate TDS Redirect Chain with Cloaking Rules",
+            "action": "Deploy TDS (Traffic Distribution System) redirect logic on the web servers behind the registered domains. Configure multi-hop redirect chains with 3-5 intermediate redirect nodes before reaching the final landing page. Implement cloaking rules that serve benign content (parked page or generic website) to requests originating from datacenter IP ranges, known security scanner user agents, and search engine crawlers, while redirecting residential IP traffic through the full TDS chain to simulated malicious landing pages. Configure geographic and device-type filtering to route different victim profiles to different campaign endpoints.",
+            "automation": null,
+            "expected_result": "TDS chain detection should identify the multi-hop redirect pattern with 3-5 intermediate nodes. Cloaking detection should flag the differential response behavior between datacenter and residential IP sources. Redirect chain analysis should map the full TDS topology from entry domain through intermediate nodes to final landing pages.",
+            "detection_rule_ref": "DL-0095"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P4",
+            "title": "Simulate Victim Traffic Through RDGA-TDS Infrastructure",
+            "action": "Generate simulated victim traffic from residential-profile IP addresses through the RDGA-TDS infrastructure. Simulate diverse victim profiles including different geographic locations, device types, browser fingerprints, and referrer sources (search engine results, malvertising clicks, social media links). Route traffic through the full TDS chain and record the complete redirect path, response codes, timing between hops, and final landing page destinations for each simulated session. Include traffic volumes representative of a mid-scale campaign (1,000-5,000 sessions per day).",
+            "automation": null,
+            "expected_result": "Victim traffic pattern detection should identify the high volume of sessions following identical or near-identical redirect paths through RDGA-registered domains. Session analysis should flag the consistent redirect chain structure and timing patterns. Landing page categorization should identify the final destinations as credential harvesting, scam, or malware distribution pages.",
+            "detection_rule_ref": "DL-0100"
+        },
+        {
+            "step_number": 6,
+            "cfpf_phase": "P5",
+            "title": "Simulate Affiliate Revenue Tracking and Infrastructure Rotation",
+            "action": "Simulate the monetization phase by configuring affiliate tracking parameters across the TDS redirect chain, including UTM parameters, affiliate IDs, and conversion tracking pixels on landing pages. After 48 hours of simulated campaign operation, execute an infrastructure rotation by replacing 30-50% of the active RDGA domains with newly registered domains from the generated list, updating DNS records and TDS configurations to maintain campaign continuity while retiring burned domains. Record the rotation timing, replacement domain selection, and the continuity of affiliate tracking across the rotation event.",
+            "automation": null,
+            "expected_result": "Infrastructure rotation detection should identify the pattern of RDGA domains being replaced while maintaining consistent nameserver clustering and TDS chain structure. Affiliate tracking continuity analysis should link pre-rotation and post-rotation campaign infrastructure through shared tracking parameters. The rotation pattern should validate detection system resilience against infrastructure churn.",
+            "detection_rule_ref": null
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": [
+            "DL-0092",
+            "DL-0095",
+            "DL-0099",
+            "DL-0100"
+        ],
+        "alerts_generated": "RDGA cluster and nameserver concentration alerts during bulk registration; certificate provisioning anomaly alerts during TLS setup; TDS redirect chain and cloaking detection alerts during infrastructure deployment; victim traffic pattern and landing page categorization alerts during campaign execution.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for RDGA-based infrastructure campaigns. Validates RDGA lexical detection during algorithm output analysis (P1), bulk registration and certificate provisioning monitoring during infrastructure setup (P2), TDS chain and cloaking detection during redirect deployment (P3), victim traffic routing analysis during campaign operation (P4), and infrastructure rotation detection during monetization and maintenance (P5)."
+    }
+}

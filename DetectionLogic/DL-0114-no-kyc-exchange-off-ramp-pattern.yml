@@ -1,0 +1,37 @@
+title: No-KYC Exchange Off-Ramp Pattern
+id: 8cc41ee7-09ba-412d-bcaa-ddbf2242676f
+status: experimental
+date: 2026/03/05
+threat_paths:
+  - TP-0049
+cfpf_phase: P5
+fraud_types:
+  - crypto-laundering-infrastructure
+description: >
+  Detect cryptocurrency flows matching the DPRK 45-day laundering cycle
+  pattern: initial rapid distancing through DeFi protocols (days 1-5),
+  integration through no-KYC exchanges (days 5-14), and off-ramping through
+  Chinese OTC brokers (days 20-45). Temporal pattern matching against known
+  laundering cycle timelines.
+logsource:
+  product: crypto
+  category: blockchain_analytics
+  service: chain_monitoring
+detection:
+  selection:
+    defi_hop_count|gte: 3
+    defi_hop_timeframe|lte: 5d
+    no_kyc_exchange_deposit_timeframe|lte: 14d
+    otc_broker_withdrawal_timeframe|lte: 45d
+  condition: selection and temporal_sequence
+falsepositives:
+  - Legitimate DeFi users with complex multi-protocol strategies
+  - Institutional rebalancing across multiple venues
+level: high
+tags:
+  - no-kyc
+  - dprk-cycle
+  - off-ramp
+  - 45-day-pattern
+  - cross-chain
+  - TP-0049
