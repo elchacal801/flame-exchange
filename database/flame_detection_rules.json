@@ -4859,5 +4859,301 @@
       "New TLD launches or sunrise periods with high legitimate registration volume",
       "Large enterprise domain portfolio acquisitions through a single registrar"
     ]
+  },
+  {
+    "id": "7e3a1f94-c2d8-4b16-a905-df42e8b7c631",
+    "dl_id": "DL-0101",
+    "title": "State-Criminal Shared Infrastructure Overlap",
+    "status": "experimental",
+    "description": "Detect when IP addresses, nameservers, or hosting infrastructure previously attributed to state-sponsored threat actors begin hosting domains or services associated with criminal campaigns (or vice versa). Uses graph-based detection to identify shared IP CIDR blocks, nameserver overlap, and temporal proximity of domain registrations. State-criminal convergence represents an emerging threat where nation-state infrastructure is repurposed for financially motivated crime, or criminal bulletproof hosting serves dual-use purposes for both espionage and fraud operations. This detection correlates threat intelligence attribution data with passive DNS records and infrastructure registration metadata to surface shared hosting patterns across historically distinct threat actor categories.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "shared_ip_cidr_overlap|exists": true,
+        "nameserver_reuse_cross_attribution|exists": true,
+        "attribution_category|contains": [
+          "state-sponsored",
+          "criminal"
+        ]
+      },
+      "temporal_proximity": {
+        "domain_registration_delta|lte": "7d"
+      },
+      "condition": "selection and temporal_proximity"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "threat_intel_enriched"
+    },
+    "threat_path_ids": [
+      "TP-0044"
+    ],
+    "fraud_types": [
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "TP-0044",
+      "graph-detection",
+      "infrastructure-overlap",
+      "nation-state",
+      "state-criminal"
+    ],
+    "falsepositives": [
+      "Shared hosting providers with both state-actor and criminal clients",
+      "CDN/cloud infrastructure serving diverse customer bases"
+    ]
+  },
+  {
+    "id": "b4f29d81-e5a3-47c0-9132-8a6c0fe15d73",
+    "dl_id": "DL-0102",
+    "title": "Sanctions Designation Infrastructure Migration",
+    "status": "experimental",
+    "description": "Detect infrastructure migration patterns following OFAC sanctions designations. Domains previously resolving to sanctioned entity IP ranges migrate to new hosting within 7-30 days of designation, retaining similar DNS configurations but different IP blocks. Tracks Aeza to Smart Digital/Datavice and Garantex to Grinex migration patterns. Sanctions designations trigger predictable infrastructure migration behavior where sanctioned entities rapidly move domains and services to new IP ranges while preserving nameserver configurations, MX records, and SSL certificate patterns. This detection correlates OFAC designation dates with zone file diffs and passive DNS records to identify domains that migrate from sanctioned IP ranges to new hosting within the expected evasion window, flagging infrastructure that retains structural DNS similarity despite IP block changes.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "previous_ip_range_sanctioned|exists": true,
+        "new_ip_range_different|exists": true,
+        "ns_pattern_similarity_score|gte": 0.8,
+        "migration_window_days|lte": 30
+      },
+      "sanctions_temporal_correlation": {
+        "days_since_ofac_designation|lte": 30,
+        "days_since_ofac_designation|gte": 0
+      },
+      "condition": "selection and sanctions_temporal_correlation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0045"
+    ],
+    "fraud_types": [
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "TP-0045",
+      "bph-rebranding",
+      "infrastructure-migration",
+      "ofac",
+      "sanctions-evasion"
+    ],
+    "falsepositives": [
+      "Legitimate hosting provider changes coinciding with sanctions timelines",
+      "CDN failover events"
+    ]
+  },
+  {
+    "id": "5c8d6a27-f190-4e3b-b84d-2a9e71c03f58",
+    "dl_id": "DL-0103",
+    "title": "Stablecoin Settlement Pattern Anomaly",
+    "status": "experimental",
+    "description": "Detect stablecoin transaction patterns consistent with sanctions evasion settlement. Identifies Monday-Friday volume surges with weekend drops (business settlement pattern), transaction clustering to known no-KYC exchange addresses, and volume patterns matching the A7A5 ruble-backed stablecoin profile. Sanctions evasion through stablecoin settlement produces distinctive temporal patterns that mirror traditional business settlement cycles rather than typical retail crypto trading behavior. The weekday-to-weekend volume ratio, combined with clustering of transactions to addresses associated with no-KYC exchanges, provides a high-confidence signal for institutional sanctions evasion activity. This detection establishes rolling baselines for address-level volume patterns and alerts when weekday-weekend ratios and exchange clustering metrics exceed defined thresholds.\n",
+    "cfpf_phase": "P4",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "weekday_volume_ratio|gte": 3.0,
+        "clustering_to_no_kyc_exchanges|gte": 0.6
+      },
+      "volume_pattern": {
+        "stablecoin_type|contains": [
+          "USDT",
+          "USDC",
+          "A7A5"
+        ],
+        "daily_volume_usd|gte": 10000
+      },
+      "condition": "selection and volume_pattern"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "chain_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0045"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "TP-0045",
+      "a7a5",
+      "crypto-laundering",
+      "sanctions-evasion",
+      "settlement-pattern",
+      "stablecoin"
+    ],
+    "falsepositives": [
+      "Legitimate institutional settlement patterns",
+      "OTC desk activity during business hours"
+    ]
+  },
+  {
+    "id": "9f1b4e63-d7a2-4508-bc91-3e0f85c24a96",
+    "dl_id": "DL-0104",
+    "title": "BPH Rebranding Chain Detection",
+    "status": "experimental",
+    "description": "Detect bulletproof hosting providers that rebrand following law enforcement or sanctions action. Identifies new hosting entities advertising the same IP ranges, same BGP ASN prefixes, or same upstream transit providers as recently sanctioned or seized BPH operations. Tracks the Garantex to Grinex and Aeza to Smart Digital/Datavice patterns. Bulletproof hosting providers under sanctions or law enforcement pressure follow predictable rebranding patterns — registering new corporate entities while retaining the same underlying network infrastructure. BGP route announcements, IP range allocations, and upstream transit provider relationships persist across rebrandings, providing durable detection signals. This rule monitors for new hosting entities that share ASN prefixes, IP CIDR blocks, or transit provider relationships with recently sanctioned or seized BPH operations within a 90-day window following enforcement action.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "new_entity_same_asn|exists": true,
+        "new_entity_same_ip_range|exists": true,
+        "new_entity_same_transit_provider|exists": true,
+        "days_since_sanctioned_entity_shutdown|lte": 90
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "ip_allocation"
+    },
+    "threat_path_ids": [
+      "TP-0045"
+    ],
+    "fraud_types": [
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "TP-0045",
+      "aeza",
+      "bgp-analysis",
+      "bph-rebranding",
+      "garantex-grinex",
+      "sanctions-evasion"
+    ],
+    "falsepositives": [
+      "Legitimate IP range transfers between hosting providers",
+      "Normal BGP re-advertisement after provider changes"
+    ]
+  },
+  {
+    "id": "4b8e2a71-d3f9-4c57-ae12-6f1d0b3c8e94",
+    "dl_id": "DL-0105",
+    "title": "Election-Cycle Domain Registration Spike",
+    "status": "experimental",
+    "description": "Detect anomalous increases in domain registrations containing financial institution brand names or financial services keywords during election periods. Compares registration volumes against a 90-day rolling baseline, alerting on 3x+ increases within 30 days of scheduled elections. Integrates with election calendar data for predictive detection.\n",
+    "cfpf_phase": "P1",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "registration_volume_ratio|gte": 3.0,
+        "baseline_window": "90d",
+        "domain_name|contains": [
+          "financial_brand_keywords"
+        ],
+        "registration_date_within_election|lte": "30d"
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "threat_path_ids": [
+      "TP-0046"
+    ],
+    "fraud_types": [
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "TP-0046",
+      "domain-registration",
+      "election-cycle",
+      "financial-brands",
+      "geopolitical-timing"
+    ],
+    "falsepositives": [
+      "Legitimate financial marketing campaigns during election seasons",
+      "Political donation platform launches"
+    ]
+  },
+  {
+    "id": "9c5f3d82-a1e7-4b68-bf34-2e8a7c4d19f5",
+    "dl_id": "DL-0106",
+    "title": "Sanctions-Announcement Infrastructure Correlation",
+    "status": "experimental",
+    "description": "Detect correlations between OFAC/EU sanctions announcements and subsequent infrastructure changes. Identifies new domain registrations by sanctioned entity-linked registrars, IP block migrations, and new BGP announcements from previously quiet ASNs within 14 days of sanctions designation.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "new_registrations_from_linked_registrar|exists": true,
+        "ip_block_migration|exists": true,
+        "new_bgp_announcement|exists": true,
+        "event_within_sanctions_designation|lte": "14d"
+      },
+      "condition": "selection and temporal_correlation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "sanctions_feed_enriched"
+    },
+    "threat_path_ids": [
+      "TP-0045",
+      "TP-0046"
+    ],
+    "fraud_types": [
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "TP-0045",
+      "TP-0046",
+      "infrastructure-change",
+      "ofac",
+      "sanctions-correlation",
+      "temporal-correlation"
+    ],
+    "falsepositives": [
+      "Coincidental infrastructure changes near sanctions dates",
+      "Legitimate registrar customer migration"
+    ]
+  },
+  {
+    "id": "e7a24b16-f893-4d2c-9a05-3c6e8f1b47d2",
+    "dl_id": "DL-0107",
+    "title": "Politically-Motivated DDoS Financial Sector Targeting",
+    "status": "experimental",
+    "description": "Detect Layer 7 DNS attack patterns targeting financial services infrastructure that correlate with geopolitical event timelines. Differentiates politically motivated DDoS from criminal extortion DDoS by examining claim attribution (Telegram channel claims), target selection patterns (geopolitically aligned targets), and timing correlation with political events.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "l7_dns_query_volume_ratio|gte": 10.0,
+        "target_is_financial_services": true,
+        "geopolitical_event_within|lte": "72h"
+      },
+      "condition": "selection and timing_correlation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "l7_dns_monitoring"
+    },
+    "threat_path_ids": [
+      "TP-0046"
+    ],
+    "fraud_types": [
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "TP-0046",
+      "ddos",
+      "financial-sector",
+      "geopolitical-timing",
+      "l7-dns",
+      "noname057",
+      "politically-motivated"
+    ],
+    "falsepositives": [
+      "Legitimate traffic spikes during financial events (market crashes, IPOs)",
+      "CDN misconfigurations causing query amplification"
+    ]
   }
 ]

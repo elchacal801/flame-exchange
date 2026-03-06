@@ -1,6 +1,6 @@
 {
-  "total": 43,
-  "fraudTypes": 63,
+  "total": 46,
+  "fraudTypes": 65,
   "fraudTypeList": [
     "BEC",
     "account-takeover",
@@ -55,7 +55,9 @@
     "rdga-infrastructure",
     "refunding-as-a-service",
     "romance-scam",
+    "sanctions-evasion-infrastructure",
     "social-engineering",
+    "state-criminal-convergence",
     "synthetic-identity",
     "synthetic-medical-fraud",
     "tax-fraud",
@@ -86,11 +88,11 @@
     "web3"
   ],
   "phaseCoverage": {
-    "P1": 42,
-    "P2": 40,
-    "P3": 43,
-    "P4": 42,
-    "P5": 42
+    "P1": 45,
+    "P2": 43,
+    "P3": 46,
+    "P4": 45,
+    "P5": 45
   },
   "topTags": [
     {
@@ -150,6 +152,10 @@
       "count": 2
     },
     {
+      "tag": "dprk",
+      "count": 2
+    },
+    {
       "tag": "e-commerce",
       "count": 2
     },
@@ -167,10 +173,6 @@
     },
     {
       "tag": "kyc-bypass",
-      "count": 2
-    },
-    {
-      "tag": "medicare-fraud",
       "count": 2
     }
   ],
@@ -375,13 +377,13 @@
     {
       "fraud_type": "crypto-laundering",
       "phases": {
-        "P1": 3,
-        "P2": 3,
-        "P3": 3,
-        "P4": 3,
-        "P5": 3
+        "P1": 5,
+        "P2": 5,
+        "P3": 5,
+        "P4": 5,
+        "P5": 5
       },
-      "total_tps": 3
+      "total_tps": 5
     },
     {
       "fraud_type": "data-theft",
@@ -604,13 +606,13 @@
     {
       "fraud_type": "malware",
       "phases": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 2,
-        "P4": 2,
-        "P5": 2
+        "P1": 3,
+        "P2": 3,
+        "P3": 3,
+        "P4": 3,
+        "P5": 3
       },
-      "total_tps": 2
+      "total_tps": 3
     },
     {
       "fraud_type": "money-mule",
@@ -756,6 +758,17 @@
       "total_tps": 3
     },
     {
+      "fraud_type": "sanctions-evasion-infrastructure",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
       "fraud_type": "social-engineering",
       "phases": {
         "P1": 7,
@@ -765,6 +778,17 @@
         "P5": 7
       },
       "total_tps": 7
+    },
+    {
+      "fraud_type": "state-criminal-convergence",
+      "phases": {
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
+      },
+      "total_tps": 2
     },
     {
       "fraud_type": "synthetic-identity",
@@ -876,7 +900,7 @@
       "ofac": 18704,
       "sec": 100
     },
-    "lastUpdated": "2026-03-05"
+    "lastUpdated": "2026-03-06"
   },
-  "generatedAt": "2026-03-05T23:42:41.653001+00:00"
+  "generatedAt": "2026-03-06T00:58:07.947929+00:00"
 }

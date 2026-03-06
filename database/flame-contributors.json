@@ -41,13 +41,53 @@
       "total": 6
     },
     {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs, OFAC)",
+      "threat_paths": 1,
+      "detection_rules": 4,
+      "baselines": 0,
+      "emulation_playbooks": 0,
+      "total": 5
+    },
+    {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Finance Derivative 2026, Radware, Orange Cyberdefense)",
+      "threat_paths": 1,
+      "detection_rules": 2,
+      "baselines": 0,
+      "emulation_playbooks": 0,
+      "total": 3
+    },
+    {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report \u2014 multi-source synthesis)",
       "threat_paths": 1,
       "detection_rules": 1,
       "baselines": 0,
       "emulation_playbooks": 0,
       "total": 2
+    },
+    {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, Atlantic Council)",
+      "threat_paths": 1,
+      "detection_rules": 1,
+      "baselines": 0,
+      "emulation_playbooks": 0,
+      "total": 2
+    },
+    {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Gen Digital, Microsoft Threat Intelligence)",
+      "threat_paths": 0,
+      "detection_rules": 0,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 1
+    },
+    {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Finance Derivative 2026, Radware)",
+      "threat_paths": 0,
+      "detection_rules": 0,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 1
     }
   ],
-  "generated_at": "2026-03-05T23:42:42.277713+00:00"
+  "generated_at": "2026-03-06T00:58:08.613381+00:00"
 }

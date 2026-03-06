@@ -657,6 +657,48 @@
         <category>CFPF-P5</category>
     </item>
     <item>
+      <title>[TP-0044] State-Criminal Infrastructure Convergence</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0044</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0044</guid>
+      <description>State-sponsored threat actors and criminal cyber organizations are converging into hybrid operational structures that share infrastructure, tooling, and monetization networks. This convergence represe</description>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
+        <category>crypto-laundering</category>
+        <category>malware</category>
+        <category>state-criminal-convergence</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0045] Sanctions Evasion via Fraud Infrastructure</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0045</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0045</guid>
+      <description>Sanctions evasion has evolved from a compliance challenge into a distinct infrastructure threat path, driven by the convergence of bulletproof hosting (BPH), purpose-built stablecoins, and rapid entit</description>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
+        <category>crypto-laundering</category>
+        <category>sanctions-evasion-infrastructure</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0046] Geopolitically-Timed Fraud Campaigns</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0046</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0046</guid>
+      <description>Geopolitically-timed fraud campaigns represent a structurally distinct threat category in which financially-motivated and ideologically-motivated threat actors deliberately synchronize attack operatio</description>
+      <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
+        <category>state-criminal-convergence</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
       <link>https://elchacal801.github.io/flame-fraud</link>
       <guid isPermaLink="false">flame-dl-DL-0001</guid>
@@ -1554,6 +1596,63 @@
         <category>ai-accelerated-fraud-infrastructure</category>
         <category>rdga-infrastructure</category>
         <category>tds-exploitation</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0101] State-Criminal Shared Infrastructure Overlap</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0101</guid>
+      <description>Detect when IP addresses, nameservers, or hosting infrastructure previously attributed to state-sponsored threat actors begin hosting domains or services associated with criminal campaigns (or vice ve</description>
+        <category>state-criminal-convergence</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0102] Sanctions Designation Infrastructure Migration</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0102</guid>
+      <description>Detect infrastructure migration patterns following OFAC sanctions designations. Domains previously resolving to sanctioned entity IP ranges migrate to new hosting within 7-30 days of designation, reta</description>
+        <category>sanctions-evasion-infrastructure</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0103] Stablecoin Settlement Pattern Anomaly</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0103</guid>
+      <description>Detect stablecoin transaction patterns consistent with sanctions evasion settlement. Identifies Monday-Friday volume surges with weekend drops (business settlement pattern), transaction clustering to </description>
+        <category>crypto-laundering</category>
+        <category>sanctions-evasion-infrastructure</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0104] BPH Rebranding Chain Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0104</guid>
+      <description>Detect bulletproof hosting providers that rebrand following law enforcement or sanctions action. Identifies new hosting entities advertising the same IP ranges, same BGP ASN prefixes, or same upstream</description>
+        <category>sanctions-evasion-infrastructure</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0105] Election-Cycle Domain Registration Spike</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0105</guid>
+      <description>Detect anomalous increases in domain registrations containing financial institution brand names or financial services keywords during election periods. Compares registration volumes against a 90-day r</description>
+        <category>state-criminal-convergence</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0106] Sanctions-Announcement Infrastructure Correlation</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0106</guid>
+      <description>Detect correlations between OFAC/EU sanctions announcements and subsequent infrastructure changes. Identifies new domain registrations by sanctioned entity-linked registrars, IP block migrations, and </description>
+        <category>sanctions-evasion-infrastructure</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0107] Politically-Motivated DDoS Financial Sector Targeting</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0107</guid>
+      <description>Detect Layer 7 DNS attack patterns targeting financial services infrastructure that correlate with geopolitical event timelines. Differentiates politically motivated DDoS from criminal extortion DDoS </description>
+        <category>state-criminal-convergence</category>
         <category>severity-high</category>
     </item>
   </channel>

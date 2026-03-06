@@ -520,5 +520,47 @@
     "content": "title: Real-Time Credential Relay from Phishing Page to Legitimate Service\nstatus: experimental\ndescription: >\n  Detects authentication attempts against legitimate services that occur within\n  a short time window after credential entry on known or suspected phishing pages.\n  AI-orchestrated credential relay systems automate the real-time capture and\n  replay of credentials, including MFA tokens, to hijack sessions before\n  time-based tokens expire.\nlogsource:\n    product: identity\n    service: authentication\ndetection:\n    selection:\n        event_type: 'login_attempt'\n        source_reputation|lte: 30\n        authentication_result: 'success'\n    filter_timing:\n        credential_first_seen_phishing_page|lte: 300\n    condition: selection and filter_timing\nlevel: critical\ntags:\n    - cfpf.phase4.execution\n    - attack.t1566.002\n    - attack.t1598\n    - flame.credential_relay\n    - flame.ai_phishing",
     "title": "Sigma — Credential Relay Timing Detection (Phase 4)",
     "tp_id": "TP-0043"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect IP addresses, domains, or certificates associated with multiple threat actor groups\n-- indicating state-criminal infrastructure convergence\nSELECT\n    i.ip_address,\n    i.domain,\n    i.ssl_cert_sha256,\n    GROUP_CONCAT(DISTINCT ta.threat_actor_name ORDER BY ta.threat_actor_name) AS associated_actors,\n    COUNT(DISTINCT ta.threat_actor_category) AS category_count,\n    GROUP_CONCAT(DISTINCT ta.threat_actor_category) AS categories,\n    MIN(i.first_seen) AS first_observed,\n    MAX(i.last_seen) AS last_observed,\n    DATEDIFF(MAX(i.last_seen), MIN(i.first_seen)) AS observation_window_days\nFROM infrastructure_indicators i\nJOIN threat_actor_attribution ta ON i.indicator_id = ta.indicator_id\nWHERE ta.confidence_score >= 70\n  AND i.last_seen >= DATE_SUB(CURRENT_DATE, INTERVAL 90 DAY)\nGROUP BY i.ip_address, i.domain, i.ssl_cert_sha256\nHAVING COUNT(DISTINCT ta.threat_actor_name) >= 2\n   AND COUNT(DISTINCT ta.threat_actor_category) >= 2  -- At least one state + one criminal\nORDER BY category_count DESC, observation_window_days ASC;",
+    "title": "Graph-Based Infrastructure Overlap Detection (Phase 3)",
+    "tp_id": "TP-0044"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Ransomware Deployment Following State-Actor Initial Access Pattern\nid: dl-0101-sigma-001\nstatus: experimental\ndescription: >\n  Detects ransomware deployment preceded by initial access techniques\n  associated with DPRK threat actors (trojanized packages, fake job\n  interview payloads, social engineering through LinkedIn)\nlogsource:\n  category: process_creation\n  product: windows\ndetection:\n  selection_ransomware:\n    Image|endswith:\n      - '\\qilin.exe'\n      - '\\encryptor.exe'\n    CommandLine|contains:\n      - '--encrypt'\n      - '-r --all'\n  selection_prior_access:\n    ParentImage|endswith:\n      - '\\node.exe'\n      - '\\python.exe'\n      - '\\npm.exe'\n    CommandLine|contains:\n      - 'eval('\n      - 'exec('\n      - 'subprocess'\n  timeframe: 72h\n  condition: selection_ransomware and selection_prior_access\nlevel: critical\ntags:\n  - attack.execution\n  - attack.t1486\n  - attack.t1059\nfalsepositives:\n  - Legitimate development environments running encryption tools (rare)",
+    "title": "SIGMA Rule — Ransomware with State-Actor Initial Access Indicators",
+    "tp_id": "TP-0044"
+  },
+  {
+    "type": "sql",
+    "content": "-- Track infrastructure migration patterns following OFAC sanctions designations\n-- State actors typically migrate within 48-72 hours of designation\nSELECT\n    sd.designation_date,\n    sd.designated_entity,\n    old_infra.ip_address AS pre_sanctions_ip,\n    old_infra.hosting_provider AS pre_sanctions_host,\n    new_infra.ip_address AS post_sanctions_ip,\n    new_infra.hosting_provider AS post_sanctions_host,\n    new_infra.first_seen AS migration_date,\n    DATEDIFF(new_infra.first_seen, sd.designation_date) AS days_to_migrate,\n    similarity_score(old_infra.ssl_config, new_infra.ssl_config) AS ssl_similarity,\n    similarity_score(old_infra.dns_config, new_infra.dns_config) AS dns_similarity\nFROM sanctions_designations sd\nJOIN infrastructure_indicators old_infra\n  ON old_infra.attributed_entity = sd.designated_entity\n  AND old_infra.last_seen >= sd.designation_date\nJOIN infrastructure_indicators new_infra\n  ON new_infra.first_seen BETWEEN sd.designation_date AND DATE_ADD(sd.designation_date, INTERVAL 30 DAY)\n  AND new_infra.ip_address != old_infra.ip_address\nWHERE (similarity_score(old_infra.ssl_config, new_infra.ssl_config) > 0.7\n   OR similarity_score(old_infra.dns_config, new_infra.dns_config) > 0.7\n   OR similarity_score(old_infra.malware_config, new_infra.malware_config) > 0.8)\nORDER BY sd.designation_date DESC, days_to_migrate ASC;",
+    "title": "SQL — Post-Sanctions Infrastructure Migration Detection",
+    "tp_id": "TP-0044"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT\n    t.transaction_id,\n    t.timestamp,\n    t.from_wallet,\n    t.to_wallet,\n    t.amount_usd,\n    t.stablecoin_type,\n    s.ofac_designation_date,\n    s.entity_name AS sanctioned_entity,\n    e.hop_distance,\n    e.exposure_score\nFROM blockchain_transactions t\nJOIN wallet_exposure_analysis e ON t.from_wallet = e.wallet_address OR t.to_wallet = e.wallet_address\nJOIN ofac_sdn_wallet_clusters s ON e.sanctioned_cluster_id = s.cluster_id\nWHERE t.timestamp >= CURRENT_DATE - INTERVAL '30 days'\n  AND e.hop_distance <= 3\n  AND t.amount_usd >= 10000\nORDER BY e.exposure_score DESC, t.amount_usd DESC;",
+    "title": "SQL -- OFAC SDN List Cross-Referencing with Blockchain Exposure (Phase 2-4)",
+    "tp_id": "TP-0045"
+  },
+  {
+    "type": "spl",
+    "content": "index=bgp_routing sourcetype=bgp_updates\n| eval event_type = case(\n    action=\"announce\", \"BGP_ANNOUNCE\",\n    action=\"withdraw\", \"BGP_WITHDRAW\"\n)\n| join type=left asn [\n    | inputlookup ofac_sanctioned_asns.csv\n    | rename asn AS sanctioned_asn, entity_name AS sanctioned_entity\n    | eval asn = sanctioned_asn\n]\n| stats\n    count AS bgp_events,\n    dc(prefix) AS unique_prefixes,\n    values(sanctioned_entity) AS related_sanctioned_entities,\n    earliest(_time) AS first_event,\n    latest(_time) AS last_event\n    BY asn, peer_asn\n| where isnotnull(related_sanctioned_entities)\n  OR [\n    | inputlookup ofac_sanctioned_asn_peers.csv\n    | return 1000 peer_asn\n  ]\n| eval time_window_hours = round((last_event - first_event) / 3600, 2)\n| where bgp_events >= 5 AND time_window_hours <= 72\n| table asn, peer_asn, bgp_events, unique_prefixes, related_sanctioned_entities, first_event, last_event, time_window_hours\n| sort - bgp_events",
+    "title": "Splunk -- BPH Rebranding Detection via BGP/ASN Analysis (Phase 3)",
+    "tp_id": "TP-0045"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Infrastructure Migration Correlated with OFAC Sanctions Announcement\nstatus: experimental\ndescription: >\n  Detects infrastructure migration patterns (DNS record changes, new domain\n  registrations, BGP route announcements) that occur within a 72-hour window\n  of OFAC SDN list updates targeting hosting or financial infrastructure\n  entities. Sanctioned entities execute pre-planned migration sequences that\n  generate observable infrastructure signals correlated with sanctions\n  announcement timelines.\nlogsource:\n    product: dns\n    service: passive_dns\ndetection:\n    selection_dns_migration:\n        event_type: 'dns_record_change'\n        record_type:\n            - 'A'\n            - 'AAAA'\n            - 'CNAME'\n            - 'NS'\n    filter_sanctioned_infrastructure:\n        previous_ip|cidr:\n            - 'sanctioned_ip_range_1/24'\n            - 'sanctioned_ip_range_2/24'\n    filter_timing:\n        ofac_announcement_delta_hours|lte: 72\n    condition: selection_dns_migration and filter_sanctioned_infrastructure and filter_timing\nlevel: critical\ntags:\n    - cfpf.phase2.initial_access\n    - cfpf.phase3.positioning\n    - attack.t1583.001\n    - attack.t1036\n    - flame.sanctions_evasion\n    - flame.bph_rebranding",
+    "title": "Sigma -- Sanctions-Announcement Infrastructure Migration Correlation (Phase 2-3)",
+    "tp_id": "TP-0045"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Stablecoin Smart Contract Deployment Without Freeze Function\nstatus: experimental\ndescription: >\n  Detects new stablecoin smart contract deployments that lack administrative\n  freeze or blacklist functions. Legitimate regulated stablecoins (USDT, USDC)\n  include these functions for law enforcement compliance. The deliberate\n  absence of freeze capability — as seen in Huione's USDH — indicates a\n  stablecoin designed specifically for sanctions evasion and law enforcement\n  resistance.\nlogsource:\n    product: blockchain\n    service: smart_contract_deployment\ndetection:\n    selection:\n        contract_type: 'ERC20_stablecoin'\n        has_freeze_function: false\n        has_blacklist_function: false\n        initial_supply_usd|gte: 1000000\n    condition: selection\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - flame.sanctions_evasion\n    - flame.stablecoin\n    - flame.usdh",
+    "title": "Sigma -- Unfreezable Stablecoin Contract Detection (Phase 2)",
+    "tp_id": "TP-0045"
   }
 ]

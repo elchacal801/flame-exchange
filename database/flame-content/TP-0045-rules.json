@@ -1,0 +1,25 @@
+{
+  "tp_id": "TP-0045",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT\n    t.transaction_id,\n    t.timestamp,\n    t.from_wallet,\n    t.to_wallet,\n    t.amount_usd,\n    t.stablecoin_type,\n    s.ofac_designation_date,\n    s.entity_name AS sanctioned_entity,\n    e.hop_distance,\n    e.exposure_score\nFROM blockchain_transactions t\nJOIN wallet_exposure_analysis e ON t.from_wallet = e.wallet_address OR t.to_wallet = e.wallet_address\nJOIN ofac_sdn_wallet_clusters s ON e.sanctioned_cluster_id = s.cluster_id\nWHERE t.timestamp >= CURRENT_DATE - INTERVAL '30 days'\n  AND e.hop_distance <= 3\n  AND t.amount_usd >= 10000\nORDER BY e.exposure_score DESC, t.amount_usd DESC;",
+      "title": "SQL -- OFAC SDN List Cross-Referencing with Blockchain Exposure (Phase 2-4)"
+    },
+    {
+      "type": "spl",
+      "content": "index=bgp_routing sourcetype=bgp_updates\n| eval event_type = case(\n    action=\"announce\", \"BGP_ANNOUNCE\",\n    action=\"withdraw\", \"BGP_WITHDRAW\"\n)\n| join type=left asn [\n    | inputlookup ofac_sanctioned_asns.csv\n    | rename asn AS sanctioned_asn, entity_name AS sanctioned_entity\n    | eval asn = sanctioned_asn\n]\n| stats\n    count AS bgp_events,\n    dc(prefix) AS unique_prefixes,\n    values(sanctioned_entity) AS related_sanctioned_entities,\n    earliest(_time) AS first_event,\n    latest(_time) AS last_event\n    BY asn, peer_asn\n| where isnotnull(related_sanctioned_entities)\n  OR [\n    | inputlookup ofac_sanctioned_asn_peers.csv\n    | return 1000 peer_asn\n  ]\n| eval time_window_hours = round((last_event - first_event) / 3600, 2)\n| where bgp_events >= 5 AND time_window_hours <= 72\n| table asn, peer_asn, bgp_events, unique_prefixes, related_sanctioned_entities, first_event, last_event, time_window_hours\n| sort - bgp_events",
+      "title": "Splunk -- BPH Rebranding Detection via BGP/ASN Analysis (Phase 3)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Infrastructure Migration Correlated with OFAC Sanctions Announcement\nstatus: experimental\ndescription: >\n  Detects infrastructure migration patterns (DNS record changes, new domain\n  registrations, BGP route announcements) that occur within a 72-hour window\n  of OFAC SDN list updates targeting hosting or financial infrastructure\n  entities. Sanctioned entities execute pre-planned migration sequences that\n  generate observable infrastructure signals correlated with sanctions\n  announcement timelines.\nlogsource:\n    product: dns\n    service: passive_dns\ndetection:\n    selection_dns_migration:\n        event_type: 'dns_record_change'\n        record_type:\n            - 'A'\n            - 'AAAA'\n            - 'CNAME'\n            - 'NS'\n    filter_sanctioned_infrastructure:\n        previous_ip|cidr:\n            - 'sanctioned_ip_range_1/24'\n            - 'sanctioned_ip_range_2/24'\n    filter_timing:\n        ofac_announcement_delta_hours|lte: 72\n    condition: selection_dns_migration and filter_sanctioned_infrastructure and filter_timing\nlevel: critical\ntags:\n    - cfpf.phase2.initial_access\n    - cfpf.phase3.positioning\n    - attack.t1583.001\n    - attack.t1036\n    - flame.sanctions_evasion\n    - flame.bph_rebranding",
+      "title": "Sigma -- Sanctions-Announcement Infrastructure Migration Correlation (Phase 2-3)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Stablecoin Smart Contract Deployment Without Freeze Function\nstatus: experimental\ndescription: >\n  Detects new stablecoin smart contract deployments that lack administrative\n  freeze or blacklist functions. Legitimate regulated stablecoins (USDT, USDC)\n  include these functions for law enforcement compliance. The deliberate\n  absence of freeze capability — as seen in Huione's USDH — indicates a\n  stablecoin designed specifically for sanctions evasion and law enforcement\n  resistance.\nlogsource:\n    product: blockchain\n    service: smart_contract_deployment\ndetection:\n    selection:\n        contract_type: 'ERC20_stablecoin'\n        has_freeze_function: false\n        has_blacklist_function: false\n        initial_supply_usd|gte: 1000000\n    condition: selection\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - flame.sanctions_evasion\n    - flame.stablecoin\n    - flame.usdh",
+      "title": "Sigma -- Unfreezable Stablecoin Contract Detection (Phase 2)"
+    }
+  ]
+}
