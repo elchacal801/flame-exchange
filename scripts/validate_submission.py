@@ -51,11 +51,15 @@ try:
         VALID_SECTORS = set(_tax.get("sectors", []))
         VALID_FRAUD_TYPES = set(_tax.get("fraud_types", []))
         VALID_INFRA_GEN_METHODS = set(_tax.get("infrastructure_generation_method", []))
+        VALID_GEO_TIMING = set(_tax.get("geopolitical_timing", []))
+        VALID_NATION_STATE_NEXUS = set(_tax.get("nation_state_nexus", []))
 except Exception as _e:
     print(f"WARNING: Failed to load taxonomy from {TAXONOMY_FILE}: {_e}", file=sys.stderr)
     VALID_SECTORS = set()
     VALID_FRAUD_TYPES = set()
     VALID_INFRA_GEN_METHODS = set()
+    VALID_GEO_TIMING = set()
+    VALID_NATION_STATE_NEXUS = set()
 
 # Load regulatory requirements config for validation
 REGULATORY_CONFIG_FILE = Path(__file__).resolve().parent.parent / "config" / "regulatory_requirements.yaml"
@@ -498,6 +502,24 @@ def validate_file(filepath: Path) -> ValidationResult:
             result.error(
                 f"Invalid infrastructure_generation_method '{infra_gen}'. "
                 f"Must be one of: {', '.join(sorted(VALID_INFRA_GEN_METHODS))}"
+            )
+
+    # Geopolitical timing (optional, must match allowed values)
+    geo_timing = meta.get("geopolitical_timing")
+    if geo_timing is not None:
+        if geo_timing not in VALID_GEO_TIMING:
+            result.error(
+                f"Invalid geopolitical_timing '{geo_timing}'. "
+                f"Must be one of: {', '.join(sorted(VALID_GEO_TIMING))}"
+            )
+
+    # Nation-state nexus (optional, must match allowed values)
+    ns_nexus = meta.get("nation_state_nexus")
+    if ns_nexus is not None:
+        if ns_nexus not in VALID_NATION_STATE_NEXUS:
+            result.error(
+                f"Invalid nation_state_nexus '{ns_nexus}'. "
+                f"Must be one of: {', '.join(sorted(VALID_NATION_STATE_NEXUS))}"
             )
 
     # MITRE ATT&CK format validation

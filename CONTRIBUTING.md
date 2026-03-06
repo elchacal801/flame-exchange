@@ -78,6 +78,8 @@ tags:
 - **groupib_stages**: Group-IB Fraud Matrix stage names. Include where applicable.
 - **ucff_domains**: Group-IB Unified Counter Fraud Framework (UCFF) domain maturity mapping. An object with seven keys (`commit`, `assess`, `plan`, `act`, `monitor`, `report`, `improve`). Values are free-text descriptions of minimum maturity or key deliverables. Leave values as empty strings when not applicable. This field is optional.
 - **infrastructure_generation_method**: Optional. Use when the infrastructure generation technique is a defining characteristic of the threat path. Values: `manual` (human-operated registration), `dga-embedded` (algorithm in malware), `rdga-registered` (registered DGA, secret algorithm), `ai-assisted` (AI-generated infrastructure at scale). Example: TP-0041 uses `rdga-registered`, TP-0043 uses `ai-assisted`.
+- **geopolitical_timing**: Optional. Use when campaigns are correlated with geopolitical events. Values: `none`, `election-cycle`, `sanctions-response`, `conflict-triggered`, `seasonal-political`. Example: TP-0045 uses `sanctions-response`, TP-0046 uses `election-cycle`.
+- **nation_state_nexus**: Optional. Classifies the degree of nation-state involvement. Values: `none`, `suspected` (circumstantial evidence), `confirmed` (government attribution or 2+ independent CTI firms), `hybrid` (documented state-criminal convergence). Example: TP-0044 uses `hybrid`, TP-0045 uses `confirmed`.
 - **tlp**: PUBLIC submissions only. Use `WHITE`.
 
 ## Required Sections

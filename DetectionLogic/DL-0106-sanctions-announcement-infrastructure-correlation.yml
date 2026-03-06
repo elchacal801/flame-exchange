@@ -1,0 +1,37 @@
+title: Sanctions-Announcement Infrastructure Correlation
+id: 9c5f3d82-a1e7-4b68-bf34-2e8a7c4d19f5
+status: experimental
+description: >
+  Detect correlations between OFAC/EU sanctions announcements and subsequent
+  infrastructure changes. Identifies new domain registrations by sanctioned
+  entity-linked registrars, IP block migrations, and new BGP announcements
+  from previously quiet ASNs within 14 days of sanctions designation.
+date: 2026/03/05
+threat_paths:
+  - TP-0045
+  - TP-0046
+cfpf_phase: P3
+fraud_types:
+  - sanctions-evasion-infrastructure
+logsource:
+  product: dns_intelligence
+  category: infrastructure_correlation
+  service: sanctions_feed_enriched
+detection:
+  selection:
+    new_registrations_from_linked_registrar|exists: true
+    ip_block_migration|exists: true
+    new_bgp_announcement|exists: true
+    event_within_sanctions_designation|lte: 14d
+  condition: selection and temporal_correlation
+falsepositives:
+  - Coincidental infrastructure changes near sanctions dates
+  - Legitimate registrar customer migration
+level: high
+tags:
+  - sanctions-correlation
+  - ofac
+  - infrastructure-change
+  - temporal-correlation
+  - TP-0045
+  - TP-0046

@@ -76,9 +76,11 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `rdga-infrastructure` | Registered Domain Generation Algorithm campaigns where all generated domains are registered and the algorithm is secret |
 | `refunding-as-a-service` | Industrialized refund fraud operations (FTID, RaaS) |
 | `romance-scam` | Relationship-based social engineering fraud |
+| `sanctions-evasion-infrastructure` | Infrastructure specifically built or repurposed to evade international sanctions (OFAC SDN, EU sanctions lists), including alternative payment rails, stablecoins, and BPH rebranding |
 | `scam-compound-operations` | Organized scam compound operations with human trafficking nexus |
 | `smishing` | SMS-based phishing and social engineering |
 | `social-engineering` | Manipulation of individuals to divulge information or take action |
+| `state-criminal-convergence` | Threat paths where nation-state actors and criminal organizations share infrastructure, tools, or operational relationships, crossing the traditional APT/criminal boundary |
 | `synthetic-identity` | Fabricated identities using real + fake PII |
 | `synthetic-medical-fraud` | AI-generated medical records for healthcare billing fraud |
 | `tds-exploitation` | Traffic Distribution System exploitation as an infrastructure-layer threat, including multi-hop redirect chains with cloaking capabilities |
@@ -113,6 +115,33 @@ Standardized sector labels for targeting context:
 | `trade` | International trade and trade finance |
 | `travel` | Travel and hospitality industry |
 | `web3` | Web3, DeFi, and decentralized infrastructure |
+
+## Geopolitical Timing
+
+Optional field linking threat paths to geopolitical event categories that influence campaign timing and targeting:
+
+| Value | Description |
+|-------|-------------|
+| `none` | No observed geopolitical timing correlation |
+| `election-cycle` | Campaigns timed to election periods |
+| `sanctions-response` | Infrastructure changes triggered by sanctions announcements |
+| `conflict-triggered` | Activity spikes correlated with military conflicts |
+| `seasonal-political` | Campaigns timed to political budget cycles, legislative sessions, or diplomatic summits |
+
+Existing threat paths are not required to retroactively populate this field.
+
+## Nation-State Nexus
+
+Optional field classifying the degree of nation-state involvement in a threat path:
+
+| Value | Description | Evidentiary Standard |
+|-------|-------------|---------------------|
+| `none` | No nation-state involvement | Default assumption |
+| `suspected` | Circumstantial evidence of state involvement | Documented infrastructure overlap or timing correlation |
+| `confirmed` | Attribution by government agencies or multiple independent CTI firms | At least one government attribution or two independent CTI firm attributions |
+| `hybrid` | Documented convergence of state and criminal actors | E.g., Moonstone Sleet deploying Qilin ransomware; DPRK using criminal RaaS |
+
+Existing threat paths are not required to retroactively populate this field.
 
 ## Infrastructure Generation Method
 
@@ -188,6 +217,8 @@ mitre_f3: []
 groupib_stages: []
 ucff_domains: {}
 infrastructure_generation_method: manual  # optional: manual | dga-embedded | rdga-registered | ai-assisted
+geopolitical_timing: none                # optional: none | election-cycle | sanctions-response | conflict-triggered | seasonal-political
+nation_state_nexus: none                 # optional: none | suspected | confirmed | hybrid
 tags:
   - descriptive-tag
 ---

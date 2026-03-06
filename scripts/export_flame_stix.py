@@ -165,6 +165,8 @@ SCHEME_TYPE_MAP = {
     "rdga-infrastructure": "infrastructure-generation",
     "tds-exploitation": "infrastructure-generation",
     "ai-accelerated-fraud-infrastructure": "infrastructure-generation",
+    "sanctions-evasion-infrastructure": "sanctions-evasion",
+    "state-criminal-convergence": "state-criminal-convergence",
 }
 
 
@@ -203,6 +205,14 @@ def build_fraud_scheme(tp: dict) -> dict:
     infra_gen = tp.get("infrastructure_generation_method")
     if infra_gen:
         obj["x_flame_infrastructure_generation_method"] = infra_gen
+
+    geo_timing = tp.get("geopolitical_timing")
+    if geo_timing:
+        obj["x_flame_geopolitical_timing"] = geo_timing
+
+    ns_nexus = tp.get("nation_state_nexus")
+    if ns_nexus:
+        obj["x_flame_nation_state_nexus"] = ns_nexus
 
     return obj
 

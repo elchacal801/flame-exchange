@@ -107,8 +107,10 @@ class FlameDataLoader:
         fraud_type: str = "",
         cfpf_phase: str = "",
         infrastructure_generation_method: str = "",
+        geopolitical_timing: str = "",
+        nation_state_nexus: str = "",
     ) -> list[dict[str, Any]]:
-        """Filter TPs by query (substring in title/summary), sector, fraud_type, cfpf_phase, or infrastructure_generation_method."""
+        """Filter TPs by query, sector, fraud_type, cfpf_phase, infrastructure_generation_method, geopolitical_timing, or nation_state_nexus."""
         results: list[dict[str, Any]] = []
         query_lower = query.lower()
 
@@ -134,6 +136,14 @@ class FlameDataLoader:
 
             # Infrastructure generation method filter
             if infrastructure_generation_method and tp.get("infrastructure_generation_method") != infrastructure_generation_method:
+                continue
+
+            # Geopolitical timing filter
+            if geopolitical_timing and tp.get("geopolitical_timing") != geopolitical_timing:
+                continue
+
+            # Nation-state nexus filter
+            if nation_state_nexus and tp.get("nation_state_nexus") != nation_state_nexus:
                 continue
 
             results.append(tp)

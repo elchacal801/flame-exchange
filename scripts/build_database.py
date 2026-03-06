@@ -184,7 +184,9 @@ CREATE TABLE IF NOT EXISTS submissions (
     confidence_score INTEGER,
     source_reliability TEXT,
     info_credibility INTEGER,
-    infrastructure_generation_method TEXT
+    infrastructure_generation_method TEXT,
+    geopolitical_timing TEXT,
+    nation_state_nexus TEXT
 );
 
 CREATE TABLE IF NOT EXISTS submission_sectors (
@@ -253,6 +255,8 @@ CREATE TABLE IF NOT EXISTS techniques (
 );
 
 CREATE INDEX IF NOT EXISTS idx_infra_gen ON submissions(infrastructure_generation_method);
+CREATE INDEX IF NOT EXISTS idx_geo_timing ON submissions(geopolitical_timing);
+CREATE INDEX IF NOT EXISTS idx_ns_nexus ON submissions(nation_state_nexus);
 CREATE INDEX IF NOT EXISTS idx_sectors ON submission_sectors(sector);
 CREATE INDEX IF NOT EXISTS idx_fraud_types ON submission_fraud_types(fraud_type);
 CREATE INDEX IF NOT EXISTS idx_cfpf ON submission_cfpf_phases(phase);
@@ -358,8 +362,8 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
         """INSERT OR REPLACE INTO submissions
            (id, title, category, date, author, source, tlp, summary, body, file_path,
             confidence_score, source_reliability, info_credibility,
-            infrastructure_generation_method)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            infrastructure_generation_method, geopolitical_timing, nation_state_nexus)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             sub_id,
             meta.get("title", ""),
@@ -375,6 +379,8 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
             meta.get("source_reliability"),
             meta.get("info_credibility"),
             meta.get("infrastructure_generation_method"),
+            meta.get("geopolitical_timing"),
+            meta.get("nation_state_nexus"),
         )
     )
 

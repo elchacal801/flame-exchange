@@ -47,6 +47,10 @@ mitre_attack:                    # MITRE ATT&CK technique IDs (supplementary)
 # Infrastructure intelligence (optional)
 infrastructure_generation_method: ""  # manual | dga-embedded | rdga-registered | ai-assisted
 
+# Geopolitical context (optional)
+geopolitical_timing: ""              # none | election-cycle | sanctions-response | conflict-triggered | seasonal-political
+nation_state_nexus: ""               # none | suspected | confirmed | hybrid
+
 # Confidence scoring (Admiralty Code)
 confidence_score: 0              # 0-100 composite (auto-derived from reliability + credibility)
 source_reliability: "F"          # A=Completely reliable ... F=Cannot be judged

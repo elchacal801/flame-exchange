@@ -1,0 +1,50 @@
+title: Stablecoin Settlement Pattern Anomaly
+id: 5c8d6a27-f190-4e3b-b84d-2a9e71c03f58
+status: experimental
+description: >
+  Detect stablecoin transaction patterns consistent with sanctions evasion
+  settlement. Identifies Monday-Friday volume surges with weekend drops
+  (business settlement pattern), transaction clustering to known no-KYC
+  exchange addresses, and volume patterns matching the A7A5 ruble-backed
+  stablecoin profile. Sanctions evasion through stablecoin settlement
+  produces distinctive temporal patterns that mirror traditional business
+  settlement cycles rather than typical retail crypto trading behavior.
+  The weekday-to-weekend volume ratio, combined with clustering of
+  transactions to addresses associated with no-KYC exchanges, provides
+  a high-confidence signal for institutional sanctions evasion activity.
+  This detection establishes rolling baselines for address-level volume
+  patterns and alerts when weekday-weekend ratios and exchange clustering
+  metrics exceed defined thresholds.
+date: 2026/03/05
+threat_paths:
+  - TP-0045
+cfpf_phase: P4
+fraud_types:
+  - sanctions-evasion-infrastructure
+  - crypto-laundering
+logsource:
+  product: crypto
+  category: blockchain_analytics
+  service: chain_monitoring
+detection:
+  selection:
+    weekday_volume_ratio|gte: 3.0
+    clustering_to_no_kyc_exchanges|gte: 0.6
+  volume_pattern:
+    stablecoin_type|contains:
+      - USDT
+      - USDC
+      - A7A5
+    daily_volume_usd|gte: 10000
+  condition: selection and volume_pattern
+falsepositives:
+  - Legitimate institutional settlement patterns
+  - OTC desk activity during business hours
+level: medium
+tags:
+  - stablecoin
+  - sanctions-evasion
+  - a7a5
+  - crypto-laundering
+  - settlement-pattern
+  - TP-0045

@@ -1,4 +1,17 @@
 {
+    "geopolitical_timing": [
+        "none",
+        "election-cycle",
+        "sanctions-response",
+        "conflict-triggered",
+        "seasonal-political"
+    ],
+    "nation_state_nexus": [
+        "none",
+        "suspected",
+        "confirmed",
+        "hybrid"
+    ],
     "infrastructure_generation_method": [
         "manual",
         "dga-embedded",
@@ -86,9 +99,11 @@
         "rdga-infrastructure",
         "refunding-as-a-service",
         "romance-scam",
+        "sanctions-evasion-infrastructure",
         "scam-compound-operations",
         "smishing",
         "social-engineering",
+        "state-criminal-convergence",
         "synthetic-identity",
         "synthetic-medical-fraud",
         "tds-exploitation",

@@ -1,0 +1,46 @@
+title: Sanctions Designation Infrastructure Migration
+id: b4f29d81-e5a3-47c0-9132-8a6c0fe15d73
+status: experimental
+description: >
+  Detect infrastructure migration patterns following OFAC sanctions designations.
+  Domains previously resolving to sanctioned entity IP ranges migrate to new
+  hosting within 7-30 days of designation, retaining similar DNS configurations
+  but different IP blocks. Tracks Aeza to Smart Digital/Datavice and Garantex to
+  Grinex migration patterns. Sanctions designations trigger predictable
+  infrastructure migration behavior where sanctioned entities rapidly move
+  domains and services to new IP ranges while preserving nameserver
+  configurations, MX records, and SSL certificate patterns. This detection
+  correlates OFAC designation dates with zone file diffs and passive DNS
+  records to identify domains that migrate from sanctioned IP ranges to new
+  hosting within the expected evasion window, flagging infrastructure that
+  retains structural DNS similarity despite IP block changes.
+date: 2026/03/05
+threat_paths:
+  - TP-0045
+cfpf_phase: P3
+fraud_types:
+  - sanctions-evasion-infrastructure
+logsource:
+  product: dns_intelligence
+  category: infrastructure_migration
+  service: zone_file_diff
+detection:
+  selection:
+    previous_ip_range_sanctioned|exists: true
+    new_ip_range_different|exists: true
+    ns_pattern_similarity_score|gte: 0.8
+    migration_window_days|lte: 30
+  sanctions_temporal_correlation:
+    days_since_ofac_designation|lte: 30
+    days_since_ofac_designation|gte: 0
+  condition: selection and sanctions_temporal_correlation
+falsepositives:
+  - Legitimate hosting provider changes coinciding with sanctions timelines
+  - CDN failover events
+level: high
+tags:
+  - sanctions-evasion
+  - ofac
+  - infrastructure-migration
+  - bph-rebranding
+  - TP-0045
