@@ -162,6 +162,9 @@ SCHEME_TYPE_MAP = {
     "deepfake": "deepfake",
     "deepfake-fraud": "deepfake",
     "identity-theft": "identity-theft",
+    "rdga-infrastructure": "infrastructure-generation",
+    "tds-exploitation": "infrastructure-generation",
+    "ai-accelerated-fraud-infrastructure": "infrastructure-generation",
 }
 
 
@@ -195,6 +198,12 @@ def build_fraud_scheme(tp: dict) -> dict:
         "external_references": build_external_refs(tp),
         "object_marking_refs": [TLP_CLEAR_ID],
     }
+
+    # Custom properties for new frontmatter fields
+    infra_gen = tp.get("infrastructure_generation_method")
+    if infra_gen:
+        obj["x_flame_infrastructure_generation_method"] = infra_gen
+
     return obj
 
 

@@ -106,8 +106,9 @@ class FlameDataLoader:
         sector: str = "",
         fraud_type: str = "",
         cfpf_phase: str = "",
+        infrastructure_generation_method: str = "",
     ) -> list[dict[str, Any]]:
-        """Filter TPs by query (substring in title/summary), sector, fraud_type, cfpf_phase."""
+        """Filter TPs by query (substring in title/summary), sector, fraud_type, cfpf_phase, or infrastructure_generation_method."""
         results: list[dict[str, Any]] = []
         query_lower = query.lower()
 
@@ -129,6 +130,10 @@ class FlameDataLoader:
 
             # CFPF phase filter
             if cfpf_phase and cfpf_phase not in tp.get("cfpf_phases", []):
+                continue
+
+            # Infrastructure generation method filter
+            if infrastructure_generation_method and tp.get("infrastructure_generation_method") != infrastructure_generation_method:
                 continue
 
             results.append(tp)

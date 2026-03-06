@@ -77,6 +77,7 @@ tags:
 - **mitre_f3**: MITRE F3 IDs. Leave as empty list (placeholder for when F3 ships).
 - **groupib_stages**: Group-IB Fraud Matrix stage names. Include where applicable.
 - **ucff_domains**: Group-IB Unified Counter Fraud Framework (UCFF) domain maturity mapping. An object with seven keys (`commit`, `assess`, `plan`, `act`, `monitor`, `report`, `improve`). Values are free-text descriptions of minimum maturity or key deliverables. Leave values as empty strings when not applicable. This field is optional.
+- **infrastructure_generation_method**: Optional. Use when the infrastructure generation technique is a defining characteristic of the threat path. Values: `manual` (human-operated registration), `dga-embedded` (algorithm in malware), `rdga-registered` (registered DGA, secret algorithm), `ai-assisted` (AI-generated infrastructure at scale). Example: TP-0041 uses `rdga-registered`, TP-0043 uses `ai-assisted`.
 - **tlp**: PUBLIC submissions only. Use `WHITE`.
 
 ## Required Sections

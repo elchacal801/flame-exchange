@@ -44,6 +44,9 @@ ucff_domains:                    # Group-IB UCFF domain alignment
 mitre_attack:                    # MITRE ATT&CK technique IDs (supplementary)
   - T1566
 
+# Infrastructure intelligence (optional)
+infrastructure_generation_method: ""  # manual | dga-embedded | rdga-registered | ai-assisted
+
 # Confidence scoring (Admiralty Code)
 confidence_score: 0              # 0-100 composite (auto-derived from reliability + credibility)
 source_reliability: "F"          # A=Completely reliable ... F=Cannot be judged

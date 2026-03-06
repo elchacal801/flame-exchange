@@ -22,18 +22,20 @@ def search_threat_paths(
     sector: str = "",
     fraud_type: str = "",
     cfpf_phase: str = "",
+    infrastructure_generation_method: str = "",
 ) -> str:
-    """Search FLAME threat paths by keyword, sector, fraud type, or CFPF phase.
+    """Search FLAME threat paths by keyword, sector, fraud type, CFPF phase, or infrastructure generation method.
 
     Args:
         query: Search text to match against TP title and summary
         sector: Filter by sector (e.g., 'banking', 'insurance', 'crypto')
         fraud_type: Filter by fraud type (e.g., 'account-takeover', 'wire-fraud')
         cfpf_phase: Filter by CFPF phase (P1-P5)
+        infrastructure_generation_method: Filter by infra generation method ('manual', 'dga-embedded', 'rdga-registered', 'ai-assisted')
 
     Returns matching threat paths with id, title, summary, confidence_score, cfpf_phases, and fraud_types.
     """
-    results = loader.search_threat_paths(query, sector, fraud_type, cfpf_phase)
+    results = loader.search_threat_paths(query, sector, fraud_type, cfpf_phase, infrastructure_generation_method)
     return json.dumps(
         [
             {
