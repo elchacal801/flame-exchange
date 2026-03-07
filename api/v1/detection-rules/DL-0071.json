@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.202559+00:00",
+    "generated_at": "2026-03-07T15:53:54.635962+00:00",
     "total": 1
   },
   "data": {
@@ -33,6 +33,19 @@
       "product": "git_platform",
       "service": "audit_log"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "action",
+        "actor_account_age_days",
+        "repo_team_match",
+        "repos_cloned_24h"
+      ]
+    },
+    "references": [
+      "https://unit42.paloaltonetworks.com/north-korean-it-workers/",
+      "https://www.ic3.gov/PSA/2025/PSA250123"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],

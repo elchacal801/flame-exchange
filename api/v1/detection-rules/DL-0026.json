@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.035285+00:00",
+    "generated_at": "2026-03-07T15:53:54.509122+00:00",
     "total": 1
   },
   "data": {
@@ -30,6 +30,17 @@
       "product": "banking",
       "service": "core_banking"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "conversion_type",
+        "days_since_last_credential_change",
+        "event_type"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0005"

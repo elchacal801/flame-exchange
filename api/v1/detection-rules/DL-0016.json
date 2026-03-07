@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.002534+00:00",
+    "generated_at": "2026-03-07T15:53:54.485832+00:00",
     "total": 1
   },
   "data": {
@@ -21,12 +21,29 @@
         "user_agent|re": "^Mozilla/5\\.0.*$"
       },
       "timeframe": "30m",
-      "condition": "selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\n"
+      "condition": "selection and selection_characteristics"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "auth_result",
+        "event_type",
+        "user_agent"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Distributed Credential Stuffing\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=/^Mozilla/5\\.0.*$/\n| groupBy(user_agent, function=[count(as=event_count), collect(source_ip)])\n| event_count > 20\n| groupBy(user_agent, function=[count(as=event_count), collect(username)])\n| event_count > 50",
+      "splunk": "`comment(\"Splunk SPL for Distributed Credential Stuffing\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count()\")`\nindex=flame_banking sourcetype=flame:auth_logs\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=\"^Mozilla/5\\.0.*$\"\n| stats dc(source_ip) as unique_source_ip by user_agent\n| where unique_source_ip > 20\n| stats dc(username) as unique_username by user_agent\n| where unique_username > 50"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1110/004/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0013"

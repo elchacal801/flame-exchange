@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.057411+00:00",
+    "generated_at": "2026-03-07T15:53:54.527256+00:00",
     "total": 1
   },
   "data": {
@@ -19,12 +19,29 @@
         "transaction_amount_is_round": true
       },
       "timeframe": "30d",
-      "condition": "selection | count() by account_id > 4"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount",
+        "transaction_amount_is_round"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Round-Dollar Wire Amount Pattern\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 4\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 4",
+      "splunk": "`comment(\"Splunk SPL for Round-Dollar Wire Amount Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 4\")`\nindex=flame_banking sourcetype=flame:wire_system\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| stats count as event_count by account_id\n| where event_count > 4"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/CTR_Overview.pdf"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0006"

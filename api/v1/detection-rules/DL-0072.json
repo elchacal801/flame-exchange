@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.205761+00:00",
+    "generated_at": "2026-03-07T15:53:54.638977+00:00",
     "total": 1
   },
   "data": {
@@ -31,6 +31,23 @@
       "product": "endpoint",
       "service": "edr"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "credential_access_count_24h",
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "user_tenure_days",
+          "source": "Account analytics enrichment (user tenure from onboarding date)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.microsoft.com/en-us/security/blog/2025/06/30/jasper-sleet-north-korean-remote-it-workers-evolving-tactics-to-infiltrate-organizations/",
+      "https://cloud.google.com/blog/topics/threat-intelligence/mitigating-dprk-it-worker-threat"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],

@@ -1,38 +1,65 @@
 title: Mule Recruitment Test Deposit Pattern
 id: 2573a85a-fc13-40ab-bbf9-0578fe82b907
 status: experimental
-description: >
-  Detects accounts receiving multiple small "test" deposits from many distinct external
-  sources. Mule recruiters validate new mule accounts by sending micro-deposits from
-  various fraud proceeds before routing larger amounts. The pattern of many small
-  inbound transfers from unrelated senders is highly anomalous for personal accounts.
+description: 'Detects accounts receiving multiple small "test" deposits from many distinct external sources. Mule recruiters
+  validate new mule accounts by sending micro-deposits from various fraud proceeds before routing larger amounts. The pattern
+  of many small inbound transfers from unrelated senders is highly anomalous for personal accounts.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf
 threat_paths:
-  - TP-0011
-  - TP-0001
+- TP-0011
+- TP-0001
 cfpf_phase: P5
 fraud_types:
-  - money-mule
+- money-mule
 logsource:
   product: banking
   service: ach_processing
 detection:
   selection_small_deposits:
     event_type:
-      - 'ACH_CREDIT'
-      - 'P2P_CREDIT'
-      - 'WIRE_CREDIT'
+    - ACH_CREDIT
+    - P2P_CREDIT
+    - WIRE_CREDIT
     transaction_amount|lte: 100
     transaction_amount|gte: 1
   timeframe: 14d
-  condition: selection_small_deposits | count(distinct originator_id) by account_id > 8
+  condition: selection_small_deposits
+data_sources:
+  native_fields:
+  - event_type
+  - transaction_amount
+queries:
+  logscale: |-
+    // LogScale LQL for Mule Recruitment Test Deposit Pattern
+    // Repository: flame-banking-ach-processing
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8
+    (event_type="ACH_CREDIT" OR event_type="P2P_CREDIT" OR event_type="WIRE_CREDIT")
+    transaction_amount<=100
+    transaction_amount>=1
+    | groupBy(account_id, function=[count(as=event_count), collect(originator_id)])
+    | event_count > 8
+  splunk: |-
+    `comment("Splunk SPL for Mule Recruitment Test Deposit Pattern")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8")`
+    index=flame_banking sourcetype=flame:ach_processing
+    (event_type="ACH_CREDIT" OR event_type="P2P_CREDIT" OR event_type="WIRE_CREDIT")
+    transaction_amount<=100
+    transaction_amount>=1
+    | stats dc(originator_id) as unique_originator_id by account_id
+    | where unique_originator_id > 8
 falsepositives:
-  - Account verification micro-deposits from legitimate fintech platforms linking accounts
-  - Social media influencers receiving many small tips or donations
+- Account verification micro-deposits from legitimate fintech platforms linking accounts
+- Social media influencers receiving many small tips or donations
 level: medium
 tags:
-  - cfpf.phase5.monetization
-  - attack.t1583
-  - flame.mule_indicator
+- cfpf.phase5.monetization
+- attack.t1583
+- flame.mule_indicator

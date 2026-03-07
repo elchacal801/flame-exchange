@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.028923+00:00",
+    "generated_at": "2026-03-07T15:53:54.504834+00:00",
     "total": 1
   },
   "data": {
@@ -27,6 +27,24 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "beneficiary_account_type",
+        "event_type",
+        "transaction_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_name_match",
+          "source": "Name matching enrichment (fuzzy name matching against account holder)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0004",
       "TP-0006"

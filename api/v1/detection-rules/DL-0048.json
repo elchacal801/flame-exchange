@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.114371+00:00",
+    "generated_at": "2026-03-07T15:53:54.573595+00:00",
     "total": 1
   },
   "data": {
@@ -42,6 +42,27 @@
       "product": "banking",
       "service": "mfa_logs"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "mfa_method"
+      ],
+      "enrichment_required": [
+        {
+          "field": "phone_carrier",
+          "source": "Phone intelligence enrichment (carrier identification lookup)"
+        },
+        {
+          "field": "phone_number_type",
+          "source": "Phone intelligence enrichment (carrier type lookup — mobile/VoIP/landline)"
+        }
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1556/006/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"

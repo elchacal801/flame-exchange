@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.138462+00:00",
+    "generated_at": "2026-03-07T15:53:54.591532+00:00",
     "total": 1
   },
   "data": {
@@ -44,6 +44,33 @@
       "product": "banking",
       "service": "document_verification"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "creation_tool_detected",
+        "document_type",
+        "event_type",
+        "exif_data_present"
+      ],
+      "enrichment_required": [
+        {
+          "field": "font_consistency_score",
+          "source": "Document forensics enrichment (font analysis model score)"
+        },
+        {
+          "field": "gan_artifact_score",
+          "source": "AI document analysis enrichment (GAN artifact detection model score)"
+        },
+        {
+          "field": "microprint_validation",
+          "source": "Document forensics enrichment (microprint verification system)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/publications/Digitaltransformation/Digital-Identity-in-Brief.html"
+    ],
     "threat_path_ids": [
       "TP-0018"
     ],

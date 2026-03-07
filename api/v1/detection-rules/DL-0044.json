@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.097553+00:00",
+    "generated_at": "2026-03-07T15:53:54.560930+00:00",
     "total": 1
   },
   "data": {
@@ -27,12 +27,30 @@
         "mfa_result": "success"
       },
       "timeframe": "120m",
-      "condition": "selection_carrier_change | followed_by selection_auth on phone_number within 120m\n"
+      "condition": "selection_carrier_change and selection_auth"
     },
     "logsource": {
       "product": "telecom",
       "service": "identity_management"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "mfa_method",
+        "mfa_result",
+        "status"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Carrier Change Authentication Correlation\n// Repository: flame-telecom-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n// Sequential correlation — use LogScale sequence detection\n// Correlate stages sequentially on phone_number within 120m",
+      "splunk": "`comment(\"Splunk SPL for Carrier Change Authentication Correlation\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\")`\nindex=flame_telecom sourcetype=flame:identity_management\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n| transaction phone_number maxspan=120m\n| where eventcount >= 2\n`comment(\"Sequential correlation across stages\")`"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1111/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"

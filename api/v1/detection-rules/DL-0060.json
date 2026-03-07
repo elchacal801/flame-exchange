@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.160440+00:00",
+    "generated_at": "2026-03-07T15:53:54.608596+00:00",
     "total": 1
   },
   "data": {
@@ -17,13 +17,29 @@
         "event_type": "zelle_recipient_lookup",
         "lookup_result": "not_found"
       },
-      "condition": "selection | count() by account_id > 10",
+      "condition": "selection",
       "timeframe": "1h"
     },
     "logsource": {
       "product": "banking",
       "service": "a2a_processing"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "lookup_result"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Zelle Recipient Enumeration via Multiple Failed Lookups\n// Repository: flame-banking-a2a-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 10\nevent_type=\"zelle_recipient_lookup\"\nlookup_result=\"not_found\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 10",
+      "splunk": "`comment(\"Splunk SPL for Zelle Recipient Enumeration via Multiple Failed Lookups\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 10\")`\nindex=flame_banking sourcetype=flame:a2a_processing event_type=\"zelle_recipient_lookup\" lookup_result=\"not_found\"\n| stats count as event_count by account_id\n| where event_count > 10"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.zellepay.com/faq/zelle-safety"
+    ],
     "threat_path_ids": [
       "TP-0012",
       "TP-0024"

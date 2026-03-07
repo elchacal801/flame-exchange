@@ -40,8 +40,8 @@ class TestRSSFeed:
     def test_feed_has_tp_and_dl_items(self, feed_path: Path) -> None:
         tree = ET.parse(feed_path)
         items = tree.findall(".//channel/item")
-        # Should have 34 TPs + 74 DL rules = 108
-        assert len(items) == 108, f"Expected 108 items (34 TPs + 74 DL), got {len(items)}"
+        # Should have 49 TPs + 114 DL rules = 163
+        assert len(items) == 163, f"Expected 163 items (49 TPs + 114 DL), got {len(items)}"
 
     def test_item_has_required_elements(self, feed_path: Path) -> None:
         tree = ET.parse(feed_path)

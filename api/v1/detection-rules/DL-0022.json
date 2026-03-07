@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.022460+00:00",
+    "generated_at": "2026-03-07T15:53:54.500794+00:00",
     "total": 1
   },
   "data": {
@@ -31,6 +31,23 @@
       "product": "banking",
       "service": "core_banking"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "account_dormancy_days",
+          "source": "Account analytics enrichment (days since last transaction calculation)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0004"

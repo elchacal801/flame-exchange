@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.166293+00:00",
+    "generated_at": "2026-03-07T15:53:54.611136+00:00",
     "total": 1
   },
   "data": {
@@ -27,13 +27,29 @@
           "rrof_submitted"
         ]
       },
-      "condition": "(selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)",
+      "condition": "selection_payment and selection_refund",
       "timeframe": "2h"
     },
     "logsource": {
       "product": "banking",
       "service": "instant_payments"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "payment_rail"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Real-Time Payment Followed by Immediate Refund or Return Request\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n// Temporal ordered correlation — use join() in LogScale\n| join({...}, field=payment_reference_id, mode=inner)",
+      "splunk": "`comment(\"Splunk SPL for Real-Time Payment Followed by Immediate Refund or Return Request\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\")`\nindex=flame_banking sourcetype=flame:instant_payments\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n| transaction payment_reference_id maxspan=2h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.theclearinghouse.org/payment-systems/rtp"
+    ],
     "threat_path_ids": [
       "TP-0024"
     ],

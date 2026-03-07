@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.185048+00:00",
+    "generated_at": "2026-03-07T15:53:54.623356+00:00",
     "total": 1
   },
   "data": {
@@ -32,6 +32,20 @@
       "product": "ecommerce",
       "service": "order_management"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_inr_claims_90d",
+        "carrier_delivery_status",
+        "dispute_reason",
+        "event_type",
+        "order_total_usd"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.ftc.gov/business-guidance/resources/consumer-sentinel-network-data-book-2023"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0031"

@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-07T15:53:54.744441+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "7a3e1d4f-9c82-4b16-a5f3-2e8d7c1b0a94",
+    "dl_id": "DL-0108",
+    "title": "Pig Butchering Domain Infrastructure Clustering",
+    "status": "experimental",
+    "description": "Detect clusters of domains exhibiting pig butchering investment platform characteristics: similar page structures, cryptocurrency wallet integration, registration through privacy-protected registrars, hosted on known scam compound infrastructure IP ranges. Documents Funnull-pattern CNAME clustering.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "domain_cluster|contains": [
+          "investment_keywords"
+        ],
+        "shared_registrar": true,
+        "privacy_protected_whois": true,
+        "cname_density|gt": "threshold"
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "domain_cluster"
+      ],
+      "enrichment_required": [
+        {
+          "field": "cname_density",
+          "source": "DNS analytics enrichment (CNAME density calculation)"
+        },
+        {
+          "field": "privacy_protected_whois",
+          "source": "WHOIS analytics enrichment (privacy protection detection)"
+        },
+        {
+          "field": "shared_registrar",
+          "source": "WHOIS analytics enrichment (shared registrar detection)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0047"
+    ],
+    "fraud_types": [
+      "human-trafficking-facilitation",
+      "scam-compound-operations"
+    ],
+    "tags": [
+      "TP-0047",
+      "attack.t1583.001",
+      "cfpf.phase3.positioning",
+      "cname",
+      "domain-clustering",
+      "funnull-pattern",
+      "pig-butchering",
+      "scam-compound"
+    ],
+    "falsepositives": [
+      "Legitimate cryptocurrency investment platform launches",
+      "Fintech startup domain portfolios"
+    ]
+  }
+}

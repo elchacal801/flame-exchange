@@ -1,18 +1,19 @@
 title: CMLN Wallet Cluster Velocity
 id: 6013d91d-b3cc-4cbf-9246-f2f36abcafd2
 status: experimental
+description: 'Detect cryptocurrency wallet clusters exhibiting CMLN operational characteristics: high transaction velocity
+  (average processing time under 2 minutes), incoming transfers from multiple unrelated sources, and rapid outbound distribution
+  to exchange or OTC wallets.
+
+  '
 date: 2026/03/05
+sigma_compatible: true
 threat_paths:
-  - TP-0049
+- TP-0049
 cfpf_phase: P5
 fraud_types:
-  - crypto-laundering-infrastructure
-  - cmln-operations
-description: >
-  Detect cryptocurrency wallet clusters exhibiting CMLN operational
-  characteristics: high transaction velocity (average processing time under
-  2 minutes), incoming transfers from multiple unrelated sources, and rapid
-  outbound distribution to exchange or OTC wallets.
+- crypto-laundering-infrastructure
+- cmln-operations
 logsource:
   product: crypto
   category: blockchain_analytics
@@ -24,14 +25,26 @@ detection:
     inbound_source_count|gt: 10
     outbound_to_exchange_ratio|gt: 0.7
   condition: selection
+data_sources:
+  enrichment_required:
+  - field: avg_processing_time
+    source: Cluster analytics enrichment (average processing time calculation)
+  - field: inbound_source_count
+    source: Flow analytics enrichment (distinct inbound source count)
+  - field: outbound_to_exchange_ratio
+    source: Flow analytics enrichment (outbound exchange ratio calculation)
+  - field: wallet_cluster
+    source: Blockchain analytics enrichment (wallet cluster identification)
 falsepositives:
-  - High-frequency trading bots
-  - Legitimate payment processors with rapid settlement cycles
+- High-frequency trading bots
+- Legitimate payment processors with rapid settlement cycles
 level: high
 tags:
-  - cmln
-  - wallet-cluster
-  - transaction-velocity
-  - black-u
-  - crypto-laundering
-  - TP-0049
+- cfpf.phase5.monetization
+- attack.t1657
+- cmln
+- wallet-cluster
+- transaction-velocity
+- black-u
+- crypto-laundering
+- TP-0049

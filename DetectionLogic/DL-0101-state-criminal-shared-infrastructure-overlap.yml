@@ -1,24 +1,22 @@
 title: State-Criminal Shared Infrastructure Overlap
 id: 7e3a1f94-c2d8-4b16-a905-df42e8b7c631
 status: experimental
-description: >
-  Detect when IP addresses, nameservers, or hosting infrastructure previously
-  attributed to state-sponsored threat actors begin hosting domains or services
-  associated with criminal campaigns (or vice versa). Uses graph-based detection
-  to identify shared IP CIDR blocks, nameserver overlap, and temporal proximity
-  of domain registrations. State-criminal convergence represents an emerging
-  threat where nation-state infrastructure is repurposed for financially
-  motivated crime, or criminal bulletproof hosting serves dual-use purposes
-  for both espionage and fraud operations. This detection correlates threat
-  intelligence attribution data with passive DNS records and infrastructure
-  registration metadata to surface shared hosting patterns across historically
-  distinct threat actor categories.
+description: 'Detect when IP addresses, nameservers, or hosting infrastructure previously attributed to state-sponsored threat
+  actors begin hosting domains or services associated with criminal campaigns (or vice versa). Uses graph-based detection
+  to identify shared IP CIDR blocks, nameserver overlap, and temporal proximity of domain registrations. State-criminal convergence
+  represents an emerging threat where nation-state infrastructure is repurposed for financially motivated crime, or criminal
+  bulletproof hosting serves dual-use purposes for both espionage and fraud operations. This detection correlates threat intelligence
+  attribution data with passive DNS records and infrastructure registration metadata to surface shared hosting patterns across
+  historically distinct threat actor categories.
+
+  '
 date: 2026/03/05
+sigma_compatible: true
 threat_paths:
-  - TP-0044
+- TP-0044
 cfpf_phase: P3
 fraud_types:
-  - state-criminal-convergence
+- state-criminal-convergence
 logsource:
   product: dns_intelligence
   category: infrastructure_overlap
@@ -28,18 +26,30 @@ detection:
     shared_ip_cidr_overlap|exists: true
     nameserver_reuse_cross_attribution|exists: true
     attribution_category|contains:
-      - state-sponsored
-      - criminal
+    - state-sponsored
+    - criminal
   temporal_proximity:
     domain_registration_delta|lte: 7d
   condition: selection and temporal_proximity
+data_sources:
+  enrichment_required:
+  - field: attribution_category
+    source: Threat intelligence enrichment (attribution category classification)
+  - field: domain_registration_delta
+    source: WHOIS analytics enrichment (registration timing delta)
+  - field: nameserver_reuse_cross_attribution
+    source: DNS analytics enrichment (cross-attribution nameserver reuse)
+  - field: shared_ip_cidr_overlap
+    source: Infrastructure correlation enrichment (shared CIDR overlap detection)
 falsepositives:
-  - Shared hosting providers with both state-actor and criminal clients
-  - CDN/cloud infrastructure serving diverse customer bases
+- Shared hosting providers with both state-actor and criminal clients
+- CDN/cloud infrastructure serving diverse customer bases
 level: high
 tags:
-  - state-criminal
-  - infrastructure-overlap
-  - graph-detection
-  - nation-state
-  - TP-0044
+- cfpf.phase3.positioning
+- attack.t1583.001
+- state-criminal
+- infrastructure-overlap
+- graph-detection
+- nation-state
+- TP-0044

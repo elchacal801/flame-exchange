@@ -1,45 +1,67 @@
 title: MFA Push Bombing
 id: 90bc08ab-511f-42d5-9fe1-21af23617d9f
 status: experimental
-description: >
-  Detects rapid repeated MFA push notifications sent to the same user, a technique known as
-  MFA fatigue or push bombing. Attackers who have obtained valid credentials bombard the victim
-  with push authentication requests, hoping the user will approve one out of frustration or
-  confusion, thereby granting the attacker access.
+description: 'Detects rapid repeated MFA push notifications sent to the same user, a technique known as MFA fatigue or push
+  bombing. Attackers who have obtained valid credentials bombard the victim with push authentication requests, hoping the
+  user will approve one out of frustration or confusion, thereby granting the attacker access.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://attack.mitre.org/techniques/T1621/
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1621/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0008
-  - TP-0001
+- TP-0008
+- TP-0001
 cfpf_phase: P2
 fraud_types:
-  - account-takeover
+- account-takeover
 logsource:
   product: banking
   service: mfa_logs
 detection:
   selection:
-    event_type: 'mfa_push_sent'
-    mfa_method: 'push'
+    event_type: mfa_push_sent
+    mfa_method: push
   selection_denied:
     mfa_result|contains:
-      - 'denied'
-      - 'timeout'
-      - 'ignored'
+    - denied
+    - timeout
+    - ignored
   timeframe: 10m
-  condition: >
-    selection
-    | count() by user_id > 5
-    and count(selection_denied) by user_id > 3
-
-  # Pattern: 5+ push requests to same user in 10 minutes with 3+ denied/timed-out
-  # followed by an eventual approval indicates push fatigue attack
+  condition: selection
+data_sources:
+  native_fields:
+  - event_type
+  - mfa_method
+  - mfa_result
+queries:
+  logscale: |-
+    // LogScale LQL for MFA Push Bombing
+    // Repository: flame-banking-mfa-logs
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection | count() by user_id > 5 and count(selection_denied) by user_id > 3
+    event_type="mfa_push_sent"
+    mfa_method="push"
+    (mfa_result="denied" OR mfa_result="timeout" OR mfa_result="ignored")
+    | groupBy(user_id, function=count(as=event_count))
+    | event_count > 5
+  splunk: |-
+    `comment("Splunk SPL for MFA Push Bombing")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection | count() by user_id > 5 and count(selection_denied) by user_id > 3")`
+    index=flame_banking sourcetype=flame:mfa_logs
+    event_type="mfa_push_sent"
+    mfa_method="push"
+    (mfa_result="denied" OR mfa_result="timeout" OR mfa_result="ignored")
+    | stats count as event_count by user_id
+    | where event_count > 5
 falsepositives:
-  - Connectivity issues causing MFA push retries from legitimate authentication flows
-  - Users who accidentally trigger multiple login attempts from different app instances
+- Connectivity issues causing MFA push retries from legitimate authentication flows
+- Users who accidentally trigger multiple login attempts from different app instances
 level: high
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1621
-  - attack.t1078
+- cfpf.phase2.initial_access
+- attack.t1621
+- attack.t1078

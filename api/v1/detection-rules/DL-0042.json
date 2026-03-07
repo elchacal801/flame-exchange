@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.089474+00:00",
+    "generated_at": "2026-03-07T15:53:54.554172+00:00",
     "total": 1
   },
   "data": {
@@ -23,12 +23,28 @@
         "transaction_amount|gte": 1
       },
       "timeframe": "14d",
-      "condition": "selection_small_deposits | count(distinct originator_id) by account_id > 8"
+      "condition": "selection_small_deposits"
     },
     "logsource": {
       "product": "banking",
       "service": "ach_processing"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Mule Recruitment Test Deposit Pattern\n// Repository: flame-banking-ach-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8\n(event_type=\"ACH_CREDIT\" OR event_type=\"P2P_CREDIT\" OR event_type=\"WIRE_CREDIT\")\ntransaction_amount<=100\ntransaction_amount>=1\n| groupBy(account_id, function=[count(as=event_count), collect(originator_id)])\n| event_count > 8",
+      "splunk": "`comment(\"Splunk SPL for Mule Recruitment Test Deposit Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8\")`\nindex=flame_banking sourcetype=flame:ach_processing\n(event_type=\"ACH_CREDIT\" OR event_type=\"P2P_CREDIT\" OR event_type=\"WIRE_CREDIT\")\ntransaction_amount<=100\ntransaction_amount>=1\n| stats dc(originator_id) as unique_originator_id by account_id\n| where unique_originator_id > 8"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0011"

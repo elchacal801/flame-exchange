@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.170042+00:00",
+    "generated_at": "2026-03-07T15:53:54.613635+00:00",
     "total": 1
   },
   "data": {
@@ -36,6 +36,21 @@
       "product": "ecommerce",
       "service": "returns_processing"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "order_expected_weight_oz",
+        "refund_reason",
+        "tracking_delivery_address_match",
+        "tracking_id_pattern_match",
+        "tracking_package_weight_oz"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.uspis.gov/news/scam-article/package-delivery-scams"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0031"

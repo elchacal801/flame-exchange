@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.127811+00:00",
+    "generated_at": "2026-03-07T15:53:54.581609+00:00",
     "total": 1
   },
   "data": {
@@ -34,6 +34,27 @@
       "product": "banking",
       "service": "voice_authentication"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "caller_claim",
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "ani_matches_directory",
+          "source": "Phone directory lookup enrichment (ANI verification against known numbers)"
+        },
+        {
+          "field": "callback_number_verified",
+          "source": "Phone directory lookup enrichment (callback number verification)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fcc.gov/consumers/guides/spoofing-and-caller-id"
+    ],
     "threat_path_ids": [
       "TP-0007"
     ],

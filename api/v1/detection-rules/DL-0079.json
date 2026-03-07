@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.237984+00:00",
+    "generated_at": "2026-03-07T15:53:54.663408+00:00",
     "total": 1
   },
   "data": {
@@ -33,6 +33,28 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "billing_type",
+        "initial_charge_amount",
+        "merchant_account_age_days",
+        "subsequent_charge_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "merchant_dispute_rate_pct",
+          "source": "Merchant analytics enrichment (dispute rate calculation)"
+        },
+        {
+          "field": "recurring_transaction_pct",
+          "source": "Transaction analytics enrichment (recurring pattern calculation)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0036"
     ],

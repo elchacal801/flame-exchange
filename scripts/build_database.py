@@ -308,7 +308,12 @@ CREATE TABLE IF NOT EXISTS detection_rules (
     logsource_product TEXT,
     logsource_service TEXT,
     detection_yaml TEXT,
-    file_path TEXT NOT NULL
+    file_path TEXT NOT NULL,
+    sigma_compatible BOOLEAN,
+    native_query_required BOOLEAN,
+    data_sources_json TEXT,
+    queries_json TEXT,
+    references_json TEXT
 );
 
 CREATE TABLE IF NOT EXISTS detection_rule_threat_paths (
@@ -499,11 +504,18 @@ def load_detection_rule(conn: sqlite3.Connection, dl_data: dict, filepath: Path)
     logsource = dl_data.get("logsource", {}) or {}
     detection = dl_data.get("detection", {}) or {}
 
+    # Serialize optional complex fields
+    data_sources = dl_data.get("data_sources")
+    queries = dl_data.get("queries")
+    references = dl_data.get("references")
+
     conn.execute(
         """INSERT OR REPLACE INTO detection_rules
            (id, dl_id, title, status, description, cfpf_phase, level,
-            logsource_product, logsource_service, detection_yaml, file_path)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            logsource_product, logsource_service, detection_yaml, file_path,
+            sigma_compatible, native_query_required,
+            data_sources_json, queries_json, references_json)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             rule_id,
             dl_id,
@@ -516,6 +528,11 @@ def load_detection_rule(conn: sqlite3.Connection, dl_data: dict, filepath: Path)
             logsource.get("service", ""),
             json.dumps(detection, default=str),
             str(filepath),
+            dl_data.get("sigma_compatible"),
+            dl_data.get("native_query_required"),
+            json.dumps(data_sources, default=str) if data_sources else None,
+            json.dumps(queries, default=str) if queries else None,
+            json.dumps(references, default=str) if references else None,
         )
     )
 
@@ -968,7 +985,9 @@ def export_detection_rules_json(conn: sqlite3.Connection, output_path: Path) -> 
     """Export all detection rules to a JSON file."""
     cursor = conn.execute(
         "SELECT id, dl_id, title, status, description, cfpf_phase, level, "
-        "logsource_product, logsource_service, detection_yaml, file_path "
+        "logsource_product, logsource_service, detection_yaml, file_path, "
+        "sigma_compatible, native_query_required, "
+        "data_sources_json, queries_json, references_json "
         "FROM detection_rules ORDER BY dl_id"
     )
     columns = [desc[0] for desc in cursor.description]
@@ -990,6 +1009,28 @@ def export_detection_rules_json(conn: sqlite3.Connection, output_path: Path) -> 
             "product": entry.pop("logsource_product", ""),
             "service": entry.pop("logsource_service", ""),
         }
+
+        # Add sigma audit fields
+        sigma_compat = entry.pop("sigma_compatible", None)
+        if sigma_compat is not None:
+            entry["sigma_compatible"] = bool(sigma_compat)
+
+        native_req = entry.pop("native_query_required", None)
+        if native_req:
+            entry["native_query_required"] = bool(native_req)
+
+        # Parse JSON-serialized complex fields
+        for json_field, output_key in [
+            ("data_sources_json", "data_sources"),
+            ("queries_json", "queries"),
+            ("references_json", "references"),
+        ]:
+            raw = entry.pop(json_field, None)
+            if raw:
+                try:
+                    entry[output_key] = json.loads(raw)
+                except (json.JSONDecodeError, TypeError):
+                    pass
 
         # Fetch related lists
         tp_rows = conn.execute(
@@ -1225,6 +1266,28 @@ def _build_detection_rule_entry(conn, row, columns):
         "product": entry.pop("logsource_product", ""),
         "service": entry.pop("logsource_service", ""),
     }
+
+    # Add sigma audit fields
+    sigma_compat = entry.pop("sigma_compatible", None)
+    if sigma_compat is not None:
+        entry["sigma_compatible"] = bool(sigma_compat)
+
+    native_req = entry.pop("native_query_required", None)
+    if native_req:
+        entry["native_query_required"] = bool(native_req)
+
+    # Parse JSON-serialized complex fields
+    for json_field, output_key in [
+        ("data_sources_json", "data_sources"),
+        ("queries_json", "queries"),
+        ("references_json", "references"),
+    ]:
+        raw = entry.pop(json_field, None)
+        if raw:
+            try:
+                entry[output_key] = json.loads(raw)
+            except (json.JSONDecodeError, TypeError):
+                pass
 
     # Fetch related lists
     tp_rows = conn.execute(
@@ -1466,7 +1529,9 @@ def export_api_v1(conn: sqlite3.Connection, root: Path,
     # -------------------------------------------------------------------
     dl_cursor = conn.execute(
         "SELECT id, dl_id, title, status, description, cfpf_phase, level, "
-        "logsource_product, logsource_service, detection_yaml, file_path "
+        "logsource_product, logsource_service, detection_yaml, file_path, "
+        "sigma_compatible, native_query_required, "
+        "data_sources_json, queries_json, references_json "
         "FROM detection_rules ORDER BY dl_id"
     )
     dl_columns = [desc[0] for desc in dl_cursor.description]
@@ -1485,7 +1550,9 @@ def export_api_v1(conn: sqlite3.Connection, root: Path,
     dl_detail_dir = api_dir / "detection-rules"
     dl_cursor = conn.execute(
         "SELECT id, dl_id, title, status, description, cfpf_phase, level, "
-        "logsource_product, logsource_service, detection_yaml, file_path "
+        "logsource_product, logsource_service, detection_yaml, file_path, "
+        "sigma_compatible, native_query_required, "
+        "data_sources_json, queries_json, references_json "
         "FROM detection_rules ORDER BY dl_id"
     )
     dl_columns = [desc[0] for desc in dl_cursor.description]

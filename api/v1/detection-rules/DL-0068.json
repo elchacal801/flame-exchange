@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.192363+00:00",
+    "generated_at": "2026-03-07T15:53:54.628469+00:00",
     "total": 1
   },
   "data": {
@@ -37,6 +37,19 @@
       "product": "hr_platform",
       "service": "applicant_tracking"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "address_country",
+        "education_country",
+        "event_type",
+        "linkedin_age_days"
+      ]
+    },
+    "references": [
+      "https://www.ic3.gov/PSA/2025/PSA250723-4",
+      "https://www.fbi.gov/investigate/cyber/alerts/2025/north-korean-it-worker-threats-to-u-s-businesses"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],

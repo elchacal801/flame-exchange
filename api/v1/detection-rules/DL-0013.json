@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:29.992370+00:00",
+    "generated_at": "2026-03-07T15:53:54.478709+00:00",
     "total": 1
   },
   "data": {
@@ -20,12 +20,27 @@
         ]
       },
       "timeframe": "60m",
-      "condition": "selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\n"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Geographic Impossibility Login\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\n(event_type=\"login_success\" OR event_type=\"login_attempt\")\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(user_id, where=[...])",
+      "splunk": "`comment(\"Splunk SPL for Geographic Impossibility Login\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\")`\nindex=flame_banking sourcetype=flame:auth_logs (event_type=\"login_success\" OR event_type=\"login_attempt\")\n| transaction user_id maxspan=60m\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1078/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0008",
       "TP-0013"

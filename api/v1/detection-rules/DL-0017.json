@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.005722+00:00",
+    "generated_at": "2026-03-07T15:53:54.488593+00:00",
     "total": 1
   },
   "data": {
@@ -36,6 +36,31 @@
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "auth_result",
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "source_asn_type",
+          "source": "ASN classification enrichment (ISP, hosting, enterprise)"
+        },
+        {
+          "field": "source_ip_category",
+          "source": "IP classification enrichment (ISP, datacenter, mobile, residential)"
+        },
+        {
+          "field": "source_ip_threat_intel",
+          "source": "Threat intelligence feed enrichment (IP reputation, proxy/VPN classification)"
+        }
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1090/002/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0008",
       "TP-0013"

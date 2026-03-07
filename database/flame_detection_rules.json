@@ -12,12 +12,26 @@
         "transaction_type": "ACH_IN"
       },
       "timeframe": "30d",
-      "condition": "selection_inbound | count(distinct originator_name) by account_id > 3"
+      "condition": "selection_inbound"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "transaction_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Mule Account Velocity Pattern\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\ntransaction_type=\"ACH_IN\"\n| groupBy(account_id, function=[count(as=event_count), collect(originator_name)])\n| event_count > 3",
+      "splunk": "`comment(\"Splunk SPL for Mule Account Velocity Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring transaction_type=\"ACH_IN\"\n| stats dc(originator_name) as unique_originator_name by account_id\n| where unique_originator_name > 3"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0002",
@@ -57,12 +71,29 @@
         ]
       },
       "timeframe": "5m",
-      "condition": "selection and not filter_legitimate | count(distinct target_credential) by host_id > 20"
+      "condition": "selection and not filter_legitimate"
     },
     "logsource": {
       "product": "banking",
       "service": "endpoint_detection"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "action",
+        "event_type",
+        "process_name"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Infostealer Credential Dump Velocity\n// Repository: flame-banking-endpoint-detection\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| groupBy(host_id, function=[count(as=event_count), collect(target_credential)])\n| event_count > 20",
+      "splunk": "`comment(\"Splunk SPL for Infostealer Credential Dump Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\")`\nindex=flame_banking sourcetype=flame:endpoint_detection\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| stats dc(target_credential) as unique_target_credential by host_id\n| where unique_target_credential > 20"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1555/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0023"
@@ -119,6 +150,19 @@
       "product": "banking",
       "service": "endpoint_detection"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "file_access_type",
+        "file_path",
+        "process_name",
+        "process_signed"
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1539/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -184,6 +228,18 @@
       "product": "banking",
       "service": "endpoint_detection"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "file_access_type",
+        "file_path",
+        "process_name"
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1555/003/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0023"
@@ -237,6 +293,25 @@
       "product": "banking",
       "service": "web_proxy"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "content_type",
+        "http_method",
+        "request_body_length",
+        "url_path"
+      ],
+      "enrichment_required": [
+        {
+          "field": "domain_age_days",
+          "source": "WHOIS enrichment (domain registration date lookup)"
+        }
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1071/001/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0023"
@@ -272,12 +347,28 @@
         ]
       },
       "timeframe": "15m",
-      "condition": "selection | count(distinct user_id) by source_ip > 10"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "auth_result",
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Credential Testing After Dump\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct user_id) by source_ip > 10\nevent_type=\"login_attempt\"\n(auth_result=\"failure\" OR auth_result=\"success\")\n| groupBy(source_ip, function=[count(as=event_count), collect(user_id)])\n| event_count > 10",
+      "splunk": "`comment(\"Splunk SPL for Credential Testing After Dump\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct user_id) by source_ip > 10\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" (auth_result=\"failure\" OR auth_result=\"success\")\n| stats dc(user_id) as unique_user_id by source_ip\n| where unique_user_id > 10"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1110/004/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -338,6 +429,20 @@
       "product": "banking",
       "service": "endpoint_detection"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "archive_file_list",
+        "event_type",
+        "file_extension",
+        "process_path",
+        "process_signed"
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1560/001/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0023"
@@ -369,12 +474,27 @@
         "event_type": "login_success"
       },
       "timeframe": "1h",
-      "condition": "selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Multiple Account Access from Single Source\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3\nevent_type=\"login_success\"\n| groupBy(source_ip, function=[count(as=event_count), collect(account_id)])\n| event_count > 5\n| groupBy(device_fingerprint, function=[count(as=event_count), collect(account_id)])\n| event_count > 3",
+      "splunk": "`comment(\"Splunk SPL for Multiple Account Access from Single Source\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_success\"\n| stats dc(account_id) as unique_account_id by source_ip\n| where unique_account_id > 5\n| stats dc(account_id) as unique_account_id by device_fingerprint\n| where unique_account_id > 3"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1078/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -410,12 +530,30 @@
         "geo_country": "%original_session_country%",
         "device_fingerprint": "%original_device_fingerprint%"
       },
-      "condition": "selection and not filter_same_context | count() by session_token > 1"
+      "condition": "selection and not filter_same_context"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "device_fingerprint",
+        "event_type",
+        "geo_country",
+        "session_token"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Stolen Session Token Replay\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_same_context | count() by session_token > 1\nevent_type=\"session_activity\"\nsession_token=true\ngeo_country=\"%original_session_country%\"\ndevice_fingerprint=\"%original_device_fingerprint%\"\n| groupBy(session_token, function=count(as=event_count))\n| event_count > 1",
+      "splunk": "`comment(\"Splunk SPL for Stolen Session Token Replay\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_same_context | count() by session_token > 1\")`\nindex=flame_banking sourcetype=flame:auth_logs\nevent_type=\"session_activity\"\nsession_token=true\ngeo_country=\"%original_session_country%\"\ndevice_fingerprint=\"%original_device_fingerprint%\"\n| stats count as event_count by session_token\n| where event_count > 1"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1539/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -469,6 +607,19 @@
       "product": "banking",
       "service": "endpoint_detection"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "file_access_type",
+        "file_path",
+        "process_integrity_level",
+        "process_name"
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1555/003/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0023"
@@ -543,6 +694,20 @@
       "product": "crypto",
       "service": "endpoint_detection"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "file_access_type",
+        "file_extension",
+        "file_name",
+        "file_path",
+        "process_name"
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1005/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0008",
       "TP-0023"
@@ -581,12 +746,29 @@
         ]
       },
       "timeframe": "5m",
-      "condition": "selection and not filter_internal | count() by source_ip > 50"
+      "condition": "selection and not filter_internal"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "source_ip"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Login Velocity Anomaly\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_internal | count() by source_ip > 50\nevent_type=\"login_attempt\"\n(source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| groupBy(source_ip, function=count(as=event_count))\n| event_count > 50",
+      "splunk": "`comment(\"Splunk SPL for Login Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_internal | count() by source_ip > 50\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" (source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| stats count as event_count by source_ip\n| where event_count > 50"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1110/004/",
+      "https://owasp.org/www-community/attacks/Credential_stuffing",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0013"
@@ -621,12 +803,27 @@
         ]
       },
       "timeframe": "60m",
-      "condition": "selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\n"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Geographic Impossibility Login\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\n(event_type=\"login_success\" OR event_type=\"login_attempt\")\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(user_id, where=[...])",
+      "splunk": "`comment(\"Splunk SPL for Geographic Impossibility Login\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\")`\nindex=flame_banking sourcetype=flame:auth_logs (event_type=\"login_success\" OR event_type=\"login_attempt\")\n| transaction user_id maxspan=60m\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1078/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0008",
       "TP-0013"
@@ -658,12 +855,28 @@
         "event_type": "session_start",
         "device_fingerprint|exists": true
       },
-      "condition": "selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezone_offset\n  or webgl_renderer != baseline.webgl_renderer\n  or canvas_hash != baseline.canvas_hash\n)\n"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "web_gateway"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "device_fingerprint",
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Device Fingerprint Anomaly\n// Repository: flame-banking-web-gateway\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezo\nevent_type=\"session_start\"\ndevice_fingerprint=true\n// Aggregation logic from original condition:\n// selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezone_offset\n  or webgl_renderer != baseline.webgl_renderer\n  or canvas_hash != baseline.canvas_hash\n)\n",
+      "splunk": "`comment(\"Splunk SPL for Device Fingerprint Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_\")`\nindex=flame_banking sourcetype=flame:web_gateway event_type=\"session_start\" device_fingerprint=true\n`comment(\"Aggregation logic from: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_\")`\n| stats count as event_count by account_id\n| where event_count > 1"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1036/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -696,12 +909,29 @@
         "auth_result": "failure"
       },
       "timeframe": "10m",
-      "condition": "selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\n"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "auth_result",
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Combo List Iteration Pattern\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\n| groupBy(source_ip, function=[count(as=event_count), collect(username)])\n| event_count > 15",
+      "splunk": "`comment(\"Splunk SPL for Combo List Iteration Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" auth_result=\"failure\"\n| stats dc(username) as unique_username by source_ip\n| where unique_username > 15"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1110/004/",
+      "https://owasp.org/www-community/attacks/Credential_stuffing",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0013"
@@ -737,12 +967,29 @@
         "user_agent|re": "^Mozilla/5\\.0.*$"
       },
       "timeframe": "30m",
-      "condition": "selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\n"
+      "condition": "selection and selection_characteristics"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "auth_result",
+        "event_type",
+        "user_agent"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Distributed Credential Stuffing\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=/^Mozilla/5\\.0.*$/\n| groupBy(user_agent, function=[count(as=event_count), collect(source_ip)])\n| event_count > 20\n| groupBy(user_agent, function=[count(as=event_count), collect(username)])\n| event_count > 50",
+      "splunk": "`comment(\"Splunk SPL for Distributed Credential Stuffing\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count()\")`\nindex=flame_banking sourcetype=flame:auth_logs\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=\"^Mozilla/5\\.0.*$\"\n| stats dc(source_ip) as unique_source_ip by user_agent\n| where unique_source_ip > 20\n| stats dc(username) as unique_username by user_agent\n| where unique_username > 50"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1110/004/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0013"
@@ -793,6 +1040,31 @@
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "auth_result",
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "source_asn_type",
+          "source": "ASN classification enrichment (ISP, hosting, enterprise)"
+        },
+        {
+          "field": "source_ip_category",
+          "source": "IP classification enrichment (ISP, datacenter, mobile, residential)"
+        },
+        {
+          "field": "source_ip_threat_intel",
+          "source": "Threat intelligence feed enrichment (IP reputation, proxy/VPN classification)"
+        }
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1090/002/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0008",
       "TP-0013"
@@ -825,12 +1097,28 @@
         "auth_result": "failure"
       },
       "timeframe": "30m",
-      "condition": "selection | count(distinct username) by password_hash > 20 and count(distinct password_hash) by source_ip < 3\n"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "auth_result",
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Credential Spray Single Password\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct username) by password_hash > 20 and count(distinct password_hash) by source_ip < 3\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\n| groupBy(password_hash, function=[count(as=event_count), collect(username)])\n| event_count > 20\n| groupBy(source_ip, function=[count(as=event_count), collect(password_hash)])\n| event_count < 3",
+      "splunk": "`comment(\"Splunk SPL for Credential Spray Single Password\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct username) by password_hash > 20 and count(distinct password_hash) by source_ip < 3\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" auth_result=\"failure\"\n| stats dc(username) as unique_username by password_hash\n| where unique_username > 20\n| stats dc(password_hash) as unique_password_hash by source_ip\n| where unique_password_hash < 3"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1110/003/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0013"
@@ -866,12 +1154,27 @@
         ]
       },
       "timeframe": "24h",
-      "condition": "selection | count(distinct beneficiary_id) by account_id > 3"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "core_banking"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Beneficiary Change Velocity Anomaly\n// Repository: flame-banking-core-banking\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct beneficiary_id) by account_id > 3\n(event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 3",
+      "splunk": "`comment(\"Splunk SPL for Beneficiary Change Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct beneficiary_id) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:core_banking (event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 3"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0004",
@@ -914,12 +1217,28 @@
         "field_changed": "mailing_address"
       },
       "timeframe": "72h",
-      "condition": "(selection_email and selection_phone and selection_address) | count() by account_id >= 3"
+      "condition": "selection_email and selection_phone and selection_address"
     },
     "logsource": {
       "product": "banking",
       "service": "identity_management"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "field_changed"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Rapid Contact Information Change\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count >= 3",
+      "splunk": "`comment(\"Splunk SPL for Rapid Contact Information Change\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| stats count as event_count by account_id\n| where event_count >= 3"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0005"
@@ -962,12 +1281,29 @@
         "transaction_amount|gte": 5000
       },
       "timeframe": "4h",
-      "condition": "selection_mfa_change | near selection_high_value_txn by account_id"
+      "condition": "selection_mfa_change and selection_high_value_txn"
     },
     "logsource": {
       "product": "banking",
       "service": "identity_management"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "new_mfa_method",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for MFA Method Switch Before High-Value Transaction\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_mfa_change | near selection_high_value_txn by account_id\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+      "splunk": "`comment(\"Splunk SPL for MFA Method Switch Before High-Value Transaction\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_mfa_change | near selection_high_value_txn by account_id\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://attack.mitre.org/techniques/T1556/"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0005",
@@ -1015,6 +1351,23 @@
       "product": "banking",
       "service": "core_banking"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "account_dormancy_days",
+          "source": "Account analytics enrichment (days since last transaction calculation)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0004"
@@ -1063,6 +1416,17 @@
       "product": "banking",
       "service": "core_banking"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "action",
+        "channel",
+        "event_type"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0005"
@@ -1103,6 +1467,24 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "beneficiary_account_type",
+        "event_type",
+        "transaction_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_name_match",
+          "source": "Name matching enrichment (fuzzy name matching against account holder)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0004",
       "TP-0006"
@@ -1153,6 +1535,23 @@
       "product": "banking",
       "service": "core_banking"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "account_balance",
+          "source": "Core banking enrichment (real-time balance lookup)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2022-A002.pdf"
+    ],
     "threat_path_ids": [
       "TP-0004",
       "TP-0005",
@@ -1198,6 +1597,17 @@
       "product": "banking",
       "service": "core_banking"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "conversion_type",
+        "days_since_last_credential_change",
+        "event_type"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0005"
@@ -1240,6 +1650,28 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount",
+        "wire_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_bank_relationship",
+          "source": "Beneficiary analytics enrichment (bank relationship lookup)"
+        },
+        {
+          "field": "beneficiary_country_first_time",
+          "source": "Beneficiary analytics enrichment (first-time country flag)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0006"
@@ -1285,12 +1717,28 @@
         "transaction_amount|lt": 3000
       },
       "timeframe": "7d",
-      "condition": "(selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)"
+      "condition": "(selection_under_10k"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Transaction Amount Clustering Near Reporting Threshold\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"CASH_DEPOSIT\")\ntransaction_amount>=9000\ntransaction_amount<10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"INTERNATIONAL_TRANSFER\")\ntransaction_amount>=2800\ntransaction_amount<3000\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 2\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 2",
+      "splunk": "`comment(\"Splunk SPL for Transaction Amount Clustering Near Reporting Threshold\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"CASH_DEPOSIT\")\ntransaction_amount>=9000\ntransaction_amount<10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"INTERNATIONAL_TRANSFER\")\ntransaction_amount>=2800\ntransaction_amount<3000\n| stats count as event_count by account_id\n| where event_count > 2\n| stats count as event_count by account_id\n| where event_count > 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/CTR_Overview.pdf"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0020"
@@ -1334,12 +1782,28 @@
         "transaction_amount|lt": 10000
       },
       "timeframe": "48h",
-      "condition": "selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2"
+      "condition": "selection_large_inbound and selection_multiple_outbound"
     },
     "logsource": {
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Split Transfer Chain Detection\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 2",
+      "splunk": "`comment(\"Splunk SPL for Split Transfer Chain Detection\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:wire_system\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0006",
@@ -1390,6 +1854,20 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "channel",
+        "event_type",
+        "initiated_outside_business_hours",
+        "transaction_amount",
+        "wire_status"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0006"
@@ -1432,12 +1910,28 @@
         "transaction_amount|gte": 8000
       },
       "timeframe": "6h",
-      "condition": "selection_inbound | near selection_outbound by account_id"
+      "condition": "selection_inbound and selection_outbound"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Rapid Outbound Wire After Large Inbound\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | near selection_outbound by account_id\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=8000\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+      "splunk": "`comment(\"Splunk SPL for Rapid Outbound Wire After Large Inbound\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=8000\n| transaction account_id maxspan=6h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0002",
@@ -1483,6 +1977,25 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "event_type",
+        "transaction_amount",
+        "wire_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_country_in_business_profile",
+          "source": "KYC profile enrichment (business profile country matching)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0006",
       "TP-0020"
@@ -1516,12 +2029,29 @@
         "transaction_amount_is_round": true
       },
       "timeframe": "30d",
-      "condition": "selection | count() by account_id > 4"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount",
+        "transaction_amount_is_round"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Round-Dollar Wire Amount Pattern\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 4\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 4",
+      "splunk": "`comment(\"Splunk SPL for Round-Dollar Wire Amount Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 4\")`\nindex=flame_banking sourcetype=flame:wire_system\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| stats count as event_count by account_id\n| where event_count > 4"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/CTR_Overview.pdf"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0006"
@@ -1559,12 +2089,28 @@
         ]
       },
       "timeframe": "30d",
-      "condition": "selection_returns | count() by originator_id > 5"
+      "condition": "selection_returns"
     },
     "logsource": {
       "product": "banking",
       "service": "ach_processing"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "return_code"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for ACH Return Rate Anomaly\n// Repository: flame-banking-ach-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_returns | count() by originator_id > 5\nevent_type=\"ACH_RETURN\"\n(return_code=\"R10\" OR return_code=\"R29\" OR return_code=\"R07\" OR return_code=\"R08\")\n| groupBy(originator_id, function=count(as=event_count))\n| event_count > 5",
+      "splunk": "`comment(\"Splunk SPL for ACH Return Rate Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_returns | count() by originator_id > 5\")`\nindex=flame_banking sourcetype=flame:ach_processing event_type=\"ACH_RETURN\" (return_code=\"R10\" OR return_code=\"R29\" OR return_code=\"R07\" OR return_code=\"R08\")\n| stats count as event_count by originator_id\n| where event_count > 5"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.nacha.org/system/files/2024-06/2024-ACH-Rules-Book.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0002"
@@ -1619,6 +2165,29 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "beneficiary_country",
+        "event_type",
+        "transaction_amount",
+        "wire_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_relationship_days",
+          "source": "Relationship analytics enrichment (beneficiary tenure calculation)"
+        },
+        {
+          "field": "prior_transaction_count",
+          "source": "Account analytics enrichment (historical transaction count)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/countries/black-and-grey-lists.html"
+    ],
     "threat_path_ids": [
       "TP-0006",
       "TP-0020"
@@ -1655,7 +2224,7 @@
         ]
       },
       "timeframe": "30m",
-      "condition": "selection | count() by session_id > 5",
+      "condition": "selection",
       "enrichment": {
         "aggregate": "sum(transaction_amount) by account_id",
         "threshold_multiplier": 3.0
@@ -1665,6 +2234,22 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "aggregate",
+        "event_type",
+        "threshold_multiplier"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Payment Instruction Velocity Spike\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by session_id > 5\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| groupBy(session_id, function=count(as=event_count))\n| event_count > 5",
+      "splunk": "`comment(\"Splunk SPL for Payment Instruction Velocity Spike\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by session_id > 5\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| stats count as event_count by session_id\n| where event_count > 5"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0006"
@@ -1705,12 +2290,28 @@
         "transaction_amount|gte": 500
       },
       "timeframe": "4h",
-      "condition": "selection_inbound | near selection_atm_withdrawal by account_id"
+      "condition": "selection_inbound and selection_atm_withdrawal"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Mule Rapid ATM Withdrawal After Inbound Transfer\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | near selection_atm_withdrawal by account_id\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=2000\nevent_type=\"ATM_WITHDRAWAL\"\ntransaction_amount>=500\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+      "splunk": "`comment(\"Splunk SPL for Mule Rapid ATM Withdrawal After Inbound Transfer\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_atm_withdrawal by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=2000\nevent_type=\"ATM_WITHDRAWAL\"\ntransaction_amount>=500\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0011",
@@ -1752,7 +2353,7 @@
         ]
       },
       "timeframe": "30d",
-      "condition": "selection and selection_high_volume | count() by account_id > 20",
+      "condition": "selection and selection_high_volume",
       "enrichment": {
         "peer_comparison": {
           "metric": "transaction_count",
@@ -1764,6 +2365,28 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "peer_comparison"
+      ],
+      "enrichment_required": [
+        {
+          "field": "account_age_days",
+          "source": "Account analytics enrichment (account opening date lookup)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Account Age vs Transaction Volume Mismatch\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_high_volume | count() by account_id > 20\naccount_age_days<90\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\npeer_comparison=\"{'metric': 'transaction_count', 'threshold': 'percentile_95'}\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 20",
+      "splunk": "`comment(\"Splunk SPL for Account Age vs Transaction Volume Mismatch\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_high_volume | count() by account_id > 20\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\naccount_age_days<90\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\npeer_comparison=\"{'metric': 'transaction_count', 'threshold': 'percentile_95'}\"\n| stats count as event_count by account_id\n| where event_count > 20"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2022-A002.pdf"
+    ],
     "threat_path_ids": [
       "TP-0011",
       "TP-0022"
@@ -1804,12 +2427,28 @@
         ]
       },
       "timeframe": "7d",
-      "condition": "selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\n"
+      "condition": "selection_inbound"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "originating_bank_external"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Multi-Bank Funnel Pattern\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\noriginating_bank_external=true\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\n| groupBy(account_id, function=[count(as=event_count), collect(originating_bank_id)])\n| event_count > 3\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count <= 2",
+      "splunk": "`comment(\"Splunk SPL for Multi-Bank Funnel Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\noriginating_bank_external=true\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\n| stats dc(originating_bank_id) as unique_originating_bank_id by account_id\n| where unique_originating_bank_id > 3\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id <= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0011",
@@ -1862,12 +2501,30 @@
         ]
       },
       "timeframe": "24h",
-      "condition": "selection_inbound | near selection_crypto_outbound by account_id"
+      "condition": "selection_inbound and selection_crypto_outbound"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "beneficiary_category",
+        "beneficiary_name",
+        "event_type",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Crypto Off-Ramp After Wire or ACH Receipt\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | near selection_crypto_outbound by account_id\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=1000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\nbeneficiary_category=\"crypto_exchange\"\n(beneficiary_name=\"Coinbase\" OR beneficiary_name=\"Binance\" OR beneficiary_name=\"Kraken\" OR beneficiary_name=\"FTX\" OR beneficiary_name=\"Gemini\" OR beneficiary_name=\"Crypto.com\" OR beneficiary_name=\"Bitfinex\")\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+      "splunk": "`comment(\"Splunk SPL for Crypto Off-Ramp After Wire or ACH Receipt\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_crypto_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=1000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\nbeneficiary_category=\"crypto_exchange\"\n(beneficiary_name=\"Coinbase\" OR beneficiary_name=\"Binance\" OR beneficiary_name=\"Kraken\" OR beneficiary_name=\"FTX\" OR beneficiary_name=\"Gemini\")\n| transaction account_id maxspan=24h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2019-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0022"
@@ -1909,12 +2566,30 @@
         "outbound_event": "P2P_DEBIT"
       },
       "timeframe": "2h",
-      "condition": "selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\n"
+      "condition": "selection_p2p"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "inbound_event",
+        "outbound_event",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Peer-to-Peer Transfer Chain (Smurfing Pattern)\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\n(event_type=\"P2P_TRANSFER\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"ZELLE_SEND\" OR event_type=\"VENMO_TRANSFER\")\ntransaction_amount>=500\ninbound_event=\"P2P_CREDIT\"\noutbound_event=\"P2P_DEBIT\"\n| groupBy(account_id, function=[count(as=event_count), collect(counterparty_account_id)])\n| event_count > 2",
+      "splunk": "`comment(\"Splunk SPL for Peer-to-Peer Transfer Chain (Smurfing Pattern)\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"P2P_TRANSFER\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"ZELLE_SEND\" OR event_type=\"VENMO_TRANSFER\")\ntransaction_amount>=500\ninbound_event=\"P2P_CREDIT\"\noutbound_event=\"P2P_DEBIT\"\n| stats dc(counterparty_account_id) as unique_counterparty_account_id by account_id\n| where unique_counterparty_account_id > 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0011",
@@ -1953,12 +2628,28 @@
         "transaction_amount|gte": 1
       },
       "timeframe": "14d",
-      "condition": "selection_small_deposits | count(distinct originator_id) by account_id > 8"
+      "condition": "selection_small_deposits"
     },
     "logsource": {
       "product": "banking",
       "service": "ach_processing"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Mule Recruitment Test Deposit Pattern\n// Repository: flame-banking-ach-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8\n(event_type=\"ACH_CREDIT\" OR event_type=\"P2P_CREDIT\" OR event_type=\"WIRE_CREDIT\")\ntransaction_amount<=100\ntransaction_amount>=1\n| groupBy(account_id, function=[count(as=event_count), collect(originator_id)])\n| event_count > 8",
+      "splunk": "`comment(\"Splunk SPL for Mule Recruitment Test Deposit Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8\")`\nindex=flame_banking sourcetype=flame:ach_processing\n(event_type=\"ACH_CREDIT\" OR event_type=\"P2P_CREDIT\" OR event_type=\"WIRE_CREDIT\")\ntransaction_amount<=100\ntransaction_amount>=1\n| stats dc(originator_id) as unique_originator_id by account_id\n| where unique_originator_id > 8"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0011"
@@ -2004,12 +2695,34 @@
         "post_transaction_balance|lte": 500
       },
       "timeframe": "12h",
-      "condition": "selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\n"
+      "condition": "selection_pass_through and selection_rapid_egress and selection_low_retention"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "post_transaction_balance",
+          "source": "Core banking enrichment (post-transaction balance calculation)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Rapid Fund Layering Through Shell Accounts\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 3",
+      "splunk": "`comment(\"Splunk SPL for Rapid Fund Layering Through Shell Accounts\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| stats count as event_count by account_id\n| where event_count > 3"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0011",
@@ -2053,12 +2766,30 @@
         "mfa_result": "success"
       },
       "timeframe": "120m",
-      "condition": "selection_carrier_change | followed_by selection_auth on phone_number within 120m\n"
+      "condition": "selection_carrier_change and selection_auth"
     },
     "logsource": {
       "product": "telecom",
       "service": "identity_management"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "mfa_method",
+        "mfa_result",
+        "status"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Carrier Change Authentication Correlation\n// Repository: flame-telecom-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n// Sequential correlation — use LogScale sequence detection\n// Correlate stages sequentially on phone_number within 120m",
+      "splunk": "`comment(\"Splunk SPL for Carrier Change Authentication Correlation\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\")`\nindex=flame_telecom sourcetype=flame:identity_management\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n| transaction phone_number maxspan=120m\n| where eventcount >= 2\n`comment(\"Sequential correlation across stages\")`"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1111/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -2103,6 +2834,31 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "device_first_seen_days",
+          "source": "Device profiling enrichment (first-seen date from device intelligence)"
+        },
+        {
+          "field": "device_trust_level",
+          "source": "Device profiling enrichment (trust score from device intelligence platform)"
+        },
+        {
+          "field": "time_since_auth_minutes",
+          "source": "Session analytics enrichment (minutes since last authentication)"
+        }
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1078/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -2142,12 +2898,29 @@
         ]
       },
       "timeframe": "10m",
-      "condition": "selection | count() by user_id > 5 and count(selection_denied) by user_id > 3\n"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "mfa_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "mfa_method",
+        "mfa_result"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for MFA Push Bombing\n// Repository: flame-banking-mfa-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by user_id > 5 and count(selection_denied) by user_id > 3\nevent_type=\"mfa_push_sent\"\nmfa_method=\"push\"\n(mfa_result=\"denied\" OR mfa_result=\"timeout\" OR mfa_result=\"ignored\")\n| groupBy(user_id, function=count(as=event_count))\n| event_count > 5",
+      "splunk": "`comment(\"Splunk SPL for MFA Push Bombing\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by user_id > 5 and count(selection_denied) by user_id > 3\")`\nindex=flame_banking sourcetype=flame:mfa_logs\nevent_type=\"mfa_push_sent\"\nmfa_method=\"push\"\n(mfa_result=\"denied\" OR mfa_result=\"timeout\" OR mfa_result=\"ignored\")\n| stats count as event_count by user_id\n| where event_count > 5"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1621/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -2195,12 +2968,30 @@
         "transaction_amount|gte": 1000
       },
       "timeframe": "24h",
-      "condition": "stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n"
+      "condition": "stage1_sim_change and stage2_password_reset and stage3_high_value_action"
     },
     "logsource": {
       "product": "banking",
       "service": "identity_management"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "reset_method",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for SIM Swap Indicator Chain\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n// Sequential correlation — use LogScale sequence detection\n// Correlate stages sequentially on on within 24h",
+      "splunk": "`comment(\"Splunk SPL for SIM Swap Indicator Chain\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\")`\nindex=flame_banking sourcetype=flame:identity_management\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n| transaction on maxspan=24h\n| where eventcount >= 2\n`comment(\"Sequential correlation across stages\")`"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1111/",
+      "https://attack.mitre.org/techniques/T1098/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0008"
     ],
@@ -2256,6 +3047,27 @@
       "product": "banking",
       "service": "mfa_logs"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "mfa_method"
+      ],
+      "enrichment_required": [
+        {
+          "field": "phone_carrier",
+          "source": "Phone intelligence enrichment (carrier identification lookup)"
+        },
+        {
+          "field": "phone_number_type",
+          "source": "Phone intelligence enrichment (carrier type lookup — mobile/VoIP/landline)"
+        }
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1556/006/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -2310,6 +3122,19 @@
       "product": "banking",
       "service": "identity_management"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "new_mfa_method",
+        "previous_mfa_method"
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1556/006/",
+      "https://attack.mitre.org/techniques/T1098/005/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"
@@ -2353,6 +3178,27 @@
       "product": "banking",
       "service": "voice_authentication"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "enrollment_status",
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "historical_avg_score",
+          "source": "Behavioral baseline enrichment (rolling average from analytics platform)"
+        },
+        {
+          "field": "voice_confidence_score",
+          "source": "Voice biometric engine scoring (real-time voice verification)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://pages.nist.gov/frvt/reportcards/speaker/overview.html"
+    ],
     "threat_path_ids": [
       "TP-0007",
       "TP-0018"
@@ -2402,6 +3248,27 @@
       "product": "banking",
       "service": "voice_authentication"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "caller_claim",
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "ani_matches_directory",
+          "source": "Phone directory lookup enrichment (ANI verification against known numbers)"
+        },
+        {
+          "field": "callback_number_verified",
+          "source": "Phone directory lookup enrichment (callback number verification)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fcc.gov/consumers/guides/spoofing-and-caller-id"
+    ],
     "threat_path_ids": [
       "TP-0007"
     ],
@@ -2447,6 +3314,34 @@
       "product": "banking",
       "service": "voice_authentication"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "breath_sound_detected",
+          "source": "Audio analysis enrichment (breath detection model)"
+        },
+        {
+          "field": "codec_reencoding_detected",
+          "source": "Audio analysis enrichment (codec fingerprinting pipeline)"
+        },
+        {
+          "field": "pitch_variance",
+          "source": "Audio analysis enrichment (voice characteristics analysis)"
+        },
+        {
+          "field": "spectral_flatness_score",
+          "source": "Audio analysis enrichment (spectral analysis pipeline)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://arxiv.org/abs/2308.14970"
+    ],
     "threat_path_ids": [
       "TP-0007",
       "TP-0018"
@@ -2496,6 +3391,35 @@
       "product": "banking",
       "service": "video_kyc"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "session_status"
+      ],
+      "enrichment_required": [
+        {
+          "field": "blink_rate_per_minute",
+          "source": "Video analysis enrichment (blink detection model)"
+        },
+        {
+          "field": "face_background_lighting_delta",
+          "source": "Video analysis enrichment (lighting consistency analysis)"
+        },
+        {
+          "field": "frame_rate_variance",
+          "source": "Video analysis enrichment (frame rate anomaly detection)"
+        },
+        {
+          "field": "lip_sync_offset_ms",
+          "source": "Video analysis enrichment (lip-sync analysis model)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://pages.nist.gov/frvt/html/frvt_morph.html"
+    ],
     "threat_path_ids": [
       "TP-0018"
     ],
@@ -2554,6 +3478,33 @@
       "product": "banking",
       "service": "document_verification"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "creation_tool_detected",
+        "document_type",
+        "event_type",
+        "exif_data_present"
+      ],
+      "enrichment_required": [
+        {
+          "field": "font_consistency_score",
+          "source": "Document forensics enrichment (font analysis model score)"
+        },
+        {
+          "field": "gan_artifact_score",
+          "source": "AI document analysis enrichment (GAN artifact detection model score)"
+        },
+        {
+          "field": "microprint_validation",
+          "source": "Document forensics enrichment (microprint verification system)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/publications/Digitaltransformation/Digital-Identity-in-Brief.html"
+    ],
     "threat_path_ids": [
       "TP-0018"
     ],
@@ -2602,6 +3553,27 @@
       "product": "banking",
       "service": "instant_payments"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "payment_rail"
+      ],
+      "enrichment_required": [
+        {
+          "field": "credential_change_hours_ago",
+          "source": "Change correlation enrichment (hours since last credential change)"
+        },
+        {
+          "field": "payee_relationship",
+          "source": "Relationship analytics enrichment (payee relationship status lookup)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.federalreserve.gov/paymentsystems/fednow_about.htm"
+    ],
     "threat_path_ids": [
       "TP-0012",
       "TP-0024"
@@ -2638,13 +3610,29 @@
           "ACH_SAMEDAY"
         ]
       },
-      "condition": "selection | count() by account_id | compare(op=gt, period=30d, stdev=3)",
+      "condition": "selection",
       "timeframe": "1d"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "payment_rail"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Instant Payment Velocity Spike Above 30-Day Baseline\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\n// Aggregation logic from original condition:\n// selection | count() by account_id | compare(op=gt, period=30d, stdev=3)",
+      "splunk": "`comment(\"Splunk SPL for Instant Payment Velocity Spike Above 30-Day Baseline\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring event_type=\"instant_payment_initiated\" (payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\n`comment(\"Aggregation logic from: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\")`\n| stats count as event_count by account_id\n| where event_count > 1"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-11/FinCEN%20Advisory%20Convertible%20Virtual%20Currency%20FINAL%20508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0012",
       "TP-0024"
@@ -2693,13 +3681,36 @@
       "filter_amount": {
         "outbound_amount_pct_of_inbound|gte": 80
       },
-      "condition": "(selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)",
+      "condition": "selection_inbound and selection_outbound and filter_amount",
       "timeframe": "4h"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "inbound_rail",
+        "outbound_rail"
+      ],
+      "enrichment_required": [
+        {
+          "field": "outbound_amount_pct_of_inbound",
+          "source": "Transaction correlation enrichment (outbound-to-inbound amount ratio)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Cross-Platform Deposit and Withdrawal Chain\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n// Temporal ordered correlation — use join() in LogScale\n| join({...}, field=account_id, mode=inner)",
+      "splunk": "`comment(\"Splunk SPL for Cross-Platform Deposit and Withdrawal Chain\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html"
+    ],
     "threat_path_ids": [
       "TP-0012",
       "TP-0024"
@@ -2740,13 +3751,35 @@
       "filter_at_limit": {
         "amount_pct_of_rail_limit|gte": 95
       },
-      "condition": "selection and filter_at_limit | count() by account_id > 3",
+      "condition": "selection and filter_at_limit",
       "timeframe": "24h"
     },
     "logsource": {
       "product": "banking",
       "service": "a2a_processing"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "payment_rail"
+      ],
+      "enrichment_required": [
+        {
+          "field": "amount_pct_of_rail_limit",
+          "source": "Payment rail enrichment (percentage of rail transaction limit)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Repeated A2A Payments at Maximum Per-Transaction Limit\n// Repository: flame-banking-a2a-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and filter_at_limit | count() by account_id > 3\nevent_type=\"a2a_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\namount_pct_of_rail_limit>=95\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 3",
+      "splunk": "`comment(\"Splunk SPL for Repeated A2A Payments at Maximum Per-Transaction Limit\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and filter_at_limit | count() by account_id > 3\")`\nindex=flame_banking sourcetype=flame:a2a_processing\nevent_type=\"a2a_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\namount_pct_of_rail_limit>=95\n| stats count as event_count by account_id\n| where event_count > 3"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.zellepay.com/faq/how-much-money-can-i-send"
+    ],
     "threat_path_ids": [
       "TP-0012",
       "TP-0024"
@@ -2786,13 +3819,35 @@
       "filter_new_account": {
         "account_age_days|lt": 30
       },
-      "condition": "selection and filter_new_account | count() by account_id > 5",
+      "condition": "selection and filter_new_account",
       "timeframe": "48h"
     },
     "logsource": {
       "product": "banking",
       "service": "instant_payments"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "payment_rail"
+      ],
+      "enrichment_required": [
+        {
+          "field": "account_age_days",
+          "source": "Account analytics enrichment (account opening date lookup)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for New Account Sending Multiple Instant Payments\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and filter_new_account | count() by account_id > 5\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\naccount_age_days<30\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 5",
+      "splunk": "`comment(\"Splunk SPL for New Account Sending Multiple Instant Payments\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and filter_new_account | count() by account_id > 5\")`\nindex=flame_banking sourcetype=flame:instant_payments\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\naccount_age_days<30\n| stats count as event_count by account_id\n| where event_count > 5"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.occ.treas.gov/topics/supervision-and-examination/bank-operations/financial-crime/suspicious-activity-reports/index-suspicious-activity-reports.html"
+    ],
     "threat_path_ids": [
       "TP-0024"
     ],
@@ -2823,13 +3878,29 @@
         "event_type": "zelle_recipient_lookup",
         "lookup_result": "not_found"
       },
-      "condition": "selection | count() by account_id > 10",
+      "condition": "selection",
       "timeframe": "1h"
     },
     "logsource": {
       "product": "banking",
       "service": "a2a_processing"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "lookup_result"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Zelle Recipient Enumeration via Multiple Failed Lookups\n// Repository: flame-banking-a2a-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 10\nevent_type=\"zelle_recipient_lookup\"\nlookup_result=\"not_found\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 10",
+      "splunk": "`comment(\"Splunk SPL for Zelle Recipient Enumeration via Multiple Failed Lookups\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 10\")`\nindex=flame_banking sourcetype=flame:a2a_processing event_type=\"zelle_recipient_lookup\" lookup_result=\"not_found\"\n| stats count as event_count by account_id\n| where event_count > 10"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.zellepay.com/faq/zelle-safety"
+    ],
     "threat_path_ids": [
       "TP-0012",
       "TP-0024"
@@ -2870,13 +3941,29 @@
           "rrof_submitted"
         ]
       },
-      "condition": "(selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)",
+      "condition": "selection_payment and selection_refund",
       "timeframe": "2h"
     },
     "logsource": {
       "product": "banking",
       "service": "instant_payments"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "payment_rail"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Real-Time Payment Followed by Immediate Refund or Return Request\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n// Temporal ordered correlation — use join() in LogScale\n| join({...}, field=payment_reference_id, mode=inner)",
+      "splunk": "`comment(\"Splunk SPL for Real-Time Payment Followed by Immediate Refund or Return Request\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\")`\nindex=flame_banking sourcetype=flame:instant_payments\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n| transaction payment_reference_id maxspan=2h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.theclearinghouse.org/payment-systems/rtp"
+    ],
     "threat_path_ids": [
       "TP-0024"
     ],
@@ -2926,6 +4013,21 @@
       "product": "ecommerce",
       "service": "returns_processing"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "order_expected_weight_oz",
+        "refund_reason",
+        "tracking_delivery_address_match",
+        "tracking_id_pattern_match",
+        "tracking_package_weight_oz"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.uspis.gov/news/scam-article/package-delivery-scams"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0031"
@@ -2969,6 +4071,17 @@
       "product": "ecommerce",
       "service": "order_management"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "condition",
+        "event_type"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://nrf.com/research/2023-retail-security-survey"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0031"
@@ -3020,6 +4133,20 @@
       "product": "ecommerce",
       "service": "order_management"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "billing_shipping_address_match",
+        "event_type",
+        "shipping_address_distinct_accounts",
+        "shipping_address_orders_7d",
+        "shipping_address_type"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.europol.europa.eu/publications-events/publications/e-commerce-fraud"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0030"
@@ -3066,6 +4193,19 @@
       "product": "ecommerce",
       "service": "returns_processing"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "condition",
+        "event_type",
+        "order_reference_matched",
+        "receipt_provided"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://nrf.com/research/2023-retail-security-survey"
+    ],
     "threat_path_ids": [
       "TP-0031"
     ],
@@ -3111,6 +4251,20 @@
       "product": "ecommerce",
       "service": "order_management"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_inr_claims_90d",
+        "carrier_delivery_status",
+        "dispute_reason",
+        "event_type",
+        "order_total_usd"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.ftc.gov/business-guidance/resources/consumer-sentinel-network-data-book-2023"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0031"
@@ -3165,6 +4319,27 @@
       "product": "ecommerce",
       "service": "payment_gateway"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "device_fingerprint_promo_uses_30d",
+        "event_type",
+        "payment_method_hash_promo_uses_30d",
+        "promo_code_applied",
+        "promo_type",
+        "source_ip_promo_uses_30d"
+      ],
+      "enrichment_required": [
+        {
+          "field": "account_age_days",
+          "source": "Account analytics enrichment (account opening date lookup)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.chargebacks911.com/promo-abuse/"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0030"
@@ -3216,6 +4391,19 @@
       "product": "hr_platform",
       "service": "applicant_tracking"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "address_country",
+        "education_country",
+        "event_type",
+        "linkedin_age_days"
+      ]
+    },
+    "references": [
+      "https://www.ic3.gov/PSA/2025/PSA250723-4",
+      "https://www.fbi.gov/investigate/cyber/alerts/2025/north-korean-it-worker-threats-to-u-s-businesses"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],
@@ -3267,6 +4455,30 @@
       "product": "vpn",
       "service": "authentication"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "connection_hops",
+          "source": "Network path analysis enrichment (traceroute or proxy-chain detection)"
+        },
+        {
+          "field": "src_ip_type",
+          "source": "IP classification enrichment (internal/external/cloud/residential_proxy)"
+        },
+        {
+          "field": "src_ip_vpn_provider",
+          "source": "VPN/proxy provider lookup (e.g., Spur, IPinfo privacy detection)"
+        }
+      ]
+    },
+    "references": [
+      "https://cloud.google.com/blog/topics/threat-intelligence/mitigating-dprk-it-worker-threat",
+      "https://www.microsoft.com/en-us/security/blog/2025/06/30/jasper-sleet-north-korean-remote-it-workers-evolving-tactics-to-infiltrate-organizations/"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],
@@ -3297,12 +4509,27 @@
         "event_type": "user_login"
       },
       "timeframe": "24h",
-      "condition": "selection | count(distinct src_timezone) by user_id > 2"
+      "condition": "selection"
     },
     "logsource": {
       "product": "identity_platform",
       "service": "authentication"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Multi-Operator Behavioral Shift — Timezone and Communication Anomaly\n// Repository: flame-identity-platform-authentication\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct src_timezone) by user_id > 2\nevent_type=\"user_login\"\n| groupBy(user_id, function=[count(as=event_count), collect(src_timezone)])\n| event_count > 2",
+      "splunk": "`comment(\"Splunk SPL for Multi-Operator Behavioral Shift — Timezone and Communication Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct src_timezone) by user_id > 2\")`\nindex=flame_identity sourcetype=flame:authentication event_type=\"user_login\"\n| stats dc(src_timezone) as unique_src_timezone by user_id\n| where unique_src_timezone > 2"
+    },
+    "references": [
+      "https://cloud.google.com/blog/topics/threat-intelligence/dprk-it-workers-expanding-scope-scale/",
+      "https://www.ic3.gov/PSA/2025/PSA250123"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],
@@ -3351,6 +4578,19 @@
       "product": "git_platform",
       "service": "audit_log"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "action",
+        "actor_account_age_days",
+        "repo_team_match",
+        "repos_cloned_24h"
+      ]
+    },
+    "references": [
+      "https://unit42.paloaltonetworks.com/north-korean-it-workers/",
+      "https://www.ic3.gov/PSA/2025/PSA250123"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],
@@ -3397,6 +4637,23 @@
       "product": "endpoint",
       "service": "edr"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "credential_access_count_24h",
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "user_tenure_days",
+          "source": "Account analytics enrichment (user tenure from onboarding date)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.microsoft.com/en-us/security/blog/2025/06/30/jasper-sleet-north-korean-remote-it-workers-evolving-tactics-to-infiltrate-organizations/",
+      "https://cloud.google.com/blog/topics/threat-intelligence/mitigating-dprk-it-worker-threat"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],
@@ -3436,12 +4693,35 @@
         ],
         "time_since_deposit_hours|lte": 48
       },
-      "condition": "selection_deposit | near selection_conversion"
+      "condition": "selection_deposit and selection_conversion"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "outbound_type",
+        "transaction_category",
+        "transaction_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "time_since_deposit_hours",
+          "source": "Transaction correlation enrichment (hours since last inbound deposit)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Salary Direct Deposit Rapid Cryptocurrency Conversion\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_deposit | near selection_conversion\ntransaction_type=\"ACH_IN\"\ntransaction_category=\"payroll\"\n(outbound_type=\"crypto_exchange\" OR outbound_type=\"p2p_crypto\" OR outbound_type=\"wire_to_exchange\")\ntime_since_deposit_hours<=48\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+      "splunk": "`comment(\"Splunk SPL for Salary Direct Deposit Rapid Cryptocurrency Conversion\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_deposit | near selection_conversion\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\ntransaction_type=\"ACH_IN\"\ntransaction_category=\"payroll\"\n(outbound_type=\"crypto_exchange\" OR outbound_type=\"p2p_crypto\" OR outbound_type=\"wire_to_exchange\")\ntime_since_deposit_hours<=48\n| transaction account_id maxspan=1h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.justice.gov/opa/pr/justice-department-announces-nationwide-actions-combat-illicit-north-korean-government",
+      "https://www.ic3.gov/PSA/2025/PSA250723-4"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],
@@ -3484,6 +4764,18 @@
       "product": "security_operations",
       "service": "incident_management"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "actor_employment_status",
+        "actor_termination_days",
+        "event_type"
+      ]
+    },
+    "references": [
+      "https://www.ic3.gov/PSA/2025/PSA250123",
+      "https://cloud.google.com/blog/topics/threat-intelligence/dprk-it-workers-expanding-scope-scale/"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],
@@ -3553,6 +4845,25 @@
       "product": "ecommerce",
       "service": "web_security"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "blocked_uri",
+        "change_type",
+        "event_type",
+        "page_uri",
+        "script_domain"
+      ],
+      "enrichment_required": [
+        {
+          "field": "script_domain_age_days",
+          "source": "WHOIS enrichment (domain registration date for script origins)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0035"
     ],
@@ -3632,6 +4943,19 @@
       "product": "ecommerce",
       "service": "network_traffic"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "connection_type",
+        "dst_domain",
+        "request_body",
+        "request_method",
+        "src_page_uri"
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0035"
     ],
@@ -3703,6 +5027,20 @@
       "product": "ecommerce",
       "service": "client_side_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "deployment_id",
+        "deployment_window",
+        "event_type",
+        "mutation_source",
+        "page_uri",
+        "target_element"
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0035"
     ],
@@ -3753,6 +5091,26 @@
       "product": "ecommerce",
       "service": "merchant_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "merchant_account_age_days",
+        "unique_cards_per_day"
+      ],
+      "enrichment_required": [
+        {
+          "field": "chargeback_ratio_pct",
+          "source": "Payment analytics enrichment (chargeback ratio calculation)"
+        },
+        {
+          "field": "daily_transaction_count",
+          "source": "Account analytics enrichment (daily transaction count aggregation)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0036"
     ],
@@ -3802,6 +5160,28 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "billing_type",
+        "initial_charge_amount",
+        "merchant_account_age_days",
+        "subsequent_charge_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "merchant_dispute_rate_pct",
+          "source": "Merchant analytics enrichment (dispute rate calculation)"
+        },
+        {
+          "field": "recurring_transaction_pct",
+          "source": "Transaction analytics enrichment (recurring pattern calculation)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0036"
     ],
@@ -3854,6 +5234,25 @@
       "product": "banking",
       "service": "wallet_provisioning"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "otp_delivery_elapsed_seconds",
+        "otp_to_provisioning_seconds",
+        "preceding_event_type",
+        "preceding_event_window"
+      ],
+      "enrichment_required": [
+        {
+          "field": "device_first_seen",
+          "source": "Device profiling enrichment (first-seen timestamp from device intelligence)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0037"
     ],
@@ -3909,6 +5308,29 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "cardholder_last_activity_minutes",
+        "cardholder_last_known_lat",
+        "cardholder_last_known_lon",
+        "entry_mode",
+        "transaction_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "geo_distance_km",
+          "source": "Geolocation enrichment (geodesic distance calculation between IP geolocations)"
+        },
+        {
+          "field": "required_speed_kmh",
+          "source": "Geolocation enrichment (travel speed calculation between login locations)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0037"
     ],
@@ -3963,6 +5385,21 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "dc_terminal_city",
+        "dc_terminal_id",
+        "entry_mode",
+        "groupby",
+        "timeframe",
+        "transaction_type"
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0037"
     ],
@@ -4017,6 +5454,26 @@
       "product": "ecommerce",
       "service": "payment_gateway"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "dc_card_number_hash",
+        "event_type",
+        "groupby",
+        "timeframe",
+        "transaction_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "decline_rate",
+          "source": "Payment analytics enrichment (decline rate calculation over window)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0038"
     ],
@@ -4074,6 +5531,27 @@
       "product": "ecommerce",
       "service": "payment_gateway"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "card_number_increment_pattern",
+        "count",
+        "event_type",
+        "groupby",
+        "sequential_card_numbers",
+        "timeframe",
+        "transaction_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "decline_rate",
+          "source": "Payment analytics enrichment (decline rate calculation over window)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0038"
     ],
@@ -4122,6 +5600,33 @@
       "product": "ecommerce",
       "service": "agent_transactions"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "initiated_by"
+      ],
+      "enrichment_required": [
+        {
+          "field": "amount_exceeds_3x_user_avg",
+          "source": "Behavioral analytics enrichment (user spending baseline comparison)"
+        },
+        {
+          "field": "category_in_user_history",
+          "source": "Behavioral analytics enrichment (purchase history category matching)"
+        },
+        {
+          "field": "merchant_age_days",
+          "source": "Merchant profiling enrichment (merchant onboarding date lookup)"
+        },
+        {
+          "field": "merchant_risk_score",
+          "source": "Merchant risk scoring enrichment (fraud risk model)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0039"
     ],
@@ -4171,6 +5676,19 @@
       "product": "ecommerce",
       "service": "agent_transactions"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "dc(merchant_id)",
+        "groupby",
+        "initiated_by",
+        "timeframe"
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0039"
     ],
@@ -4216,6 +5734,26 @@
       "product": "ecommerce",
       "service": "bnpl_onboarding"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "application_status"
+      ],
+      "enrichment_required": [
+        {
+          "field": "digital_footprint_score",
+          "source": "Identity verification enrichment (digital footprint scoring service)"
+        },
+        {
+          "field": "email_domain_age_days",
+          "source": "WHOIS enrichment (email domain registration date lookup)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.lexisnexis.com/risk/global-fraud-identity-report"
+    ],
     "threat_path_ids": [
       "TP-0040"
     ],
@@ -4263,6 +5801,20 @@
       "product": "ecommerce",
       "service": "credit_application"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "application_status",
+        "application_type",
+        "count",
+        "dc_provider_id",
+        "groupby",
+        "timeframe"
+      ]
+    },
+    "references": [
+      "https://www.lexisnexis.com/risk/global-fraud-identity-report"
+    ],
     "threat_path_ids": [
       "TP-0040"
     ],
@@ -4311,6 +5863,18 @@
       "product": "ecommerce",
       "service": "bnpl_transactions"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "days_first_to_max_order",
+        "first_order_value",
+        "max_order_pct_of_limit"
+      ]
+    },
+    "references": [
+      "https://www.lexisnexis.com/risk/global-fraud-identity-report"
+    ],
     "threat_path_ids": [
       "TP-0040"
     ],
@@ -4359,6 +5923,20 @@
       "product": "ecommerce",
       "service": "bnpl_disputes"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "avg_disputed_order_value",
+        "count",
+        "dispute_type",
+        "groupby",
+        "timeframe"
+      ]
+    },
+    "references": [
+      "https://www.lexisnexis.com/risk/global-fraud-identity-report"
+    ],
     "threat_path_ids": [
       "TP-0040"
     ],
@@ -4404,6 +5982,19 @@
       "product": "ecommerce",
       "service": "bnpl_onboarding"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "count",
+        "event_type",
+        "groupby",
+        "timeframe"
+      ]
+    },
+    "references": [
+      "https://www.lexisnexis.com/risk/global-fraud-identity-report"
+    ],
     "threat_path_ids": [
       "TP-0040"
     ],
@@ -4452,6 +6043,26 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "event_type",
+        "groupby",
+        "registration_source",
+        "timeframe"
+      ],
+      "enrichment_required": [
+        {
+          "field": "inter_registration_stddev",
+          "source": "Statistical baseline enrichment (timing regularity calculation)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.farsightsecurity.com/blog/txt-record/rdga-20230901/",
+      "https://unit42.paloaltonetworks.com/registered-dga-detection/"
+    ],
     "threat_path_ids": [
       "TP-0041"
     ],
@@ -4503,6 +6114,21 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "event_type",
+        "groupby",
+        "nameserver_fqdn",
+        "registration_source",
+        "timeframe"
+      ]
+    },
+    "references": [
+      "https://www.domaintools.com/resources/blog/rdga-nameserver-clustering/",
+      "https://www.icann.org/dns-abuse-trends"
+    ],
     "threat_path_ids": [
       "TP-0041"
     ],
@@ -4551,6 +6177,30 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "event_type",
+        "groupby",
+        "registration_source",
+        "timeframe"
+      ],
+      "enrichment_required": [
+        {
+          "field": "domain_cluster_similarity_score",
+          "source": "Clustering analytics enrichment (NLP/lexical similarity scoring)"
+        },
+        {
+          "field": "shared_nameserver_ratio",
+          "source": "DNS analytics enrichment (shared nameserver ratio calculation)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.icann.org/en/system/files/files/sac-115-en.pdf",
+      "https://dnsabuse.globalcyberalliance.org/"
+    ],
     "threat_path_ids": [
       "TP-0041"
     ],
@@ -4599,6 +6249,28 @@
       "product": "dns_intelligence",
       "service": "web_proxy"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "redirect_hop_count",
+        "redirect_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "intermediate_domain_max_age_days",
+          "source": "WHOIS enrichment (max domain age in redirect chain)"
+        },
+        {
+          "field": "intermediate_domain_min_reputation",
+          "source": "Reputation scoring enrichment (min reputation in redirect chain)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.proofpoint.com/us/blog/threat-insight/traffic-distribution-systems",
+      "https://blog.google/threat-analysis-group/tds-redirect-chains/"
+    ],
     "threat_path_ids": [
       "TP-0042"
     ],
@@ -4656,6 +6328,25 @@
       "product": "dns_intelligence",
       "service": "web_proxy"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "response_category",
+        "response_similarity_score",
+        "visitor_profile"
+      ],
+      "enrichment_required": [
+        {
+          "field": "target_domain_age_days",
+          "source": "WHOIS enrichment (target domain registration date lookup)"
+        }
+      ]
+    },
+    "references": [
+      "https://developers.google.com/search/docs/essentials/cloaking",
+      "https://www.akamai.com/blog/security/tds-cloaking-evasion-techniques"
+    ],
     "threat_path_ids": [
       "TP-0042"
     ],
@@ -4700,6 +6391,33 @@
       "product": "dns_intelligence",
       "service": "dns_resolution"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "event_type",
+        "groupby",
+        "timeframe"
+      ],
+      "enrichment_required": [
+        {
+          "field": "ip_cidr_overlap",
+          "source": "Infrastructure correlation enrichment (CIDR overlap analysis)"
+        },
+        {
+          "field": "registrant_divergence",
+          "source": "WHOIS analytics enrichment (registrant divergence detection)"
+        },
+        {
+          "field": "registration_time_delta",
+          "source": "Temporal analytics enrichment (registration timing delta calculation)"
+        }
+      ]
+    },
+    "references": [
+      "https://unit42.paloaltonetworks.com/traffic-distribution-systems/",
+      "https://www.domaintools.com/resources/blog/tracking-tds-infrastructure"
+    ],
     "threat_path_ids": [
       "TP-0042"
     ],
@@ -4745,6 +6463,33 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "event_type",
+        "groupby",
+        "timeframe"
+      ],
+      "enrichment_required": [
+        {
+          "field": "dga_entropy_score",
+          "source": "DGA detection enrichment (Shannon entropy calculation for domain names)"
+        },
+        {
+          "field": "domain_word_count",
+          "source": "NLP enrichment (word count analysis for domain structure)"
+        },
+        {
+          "field": "lexical_nlp_score",
+          "source": "NLP enrichment (lexical analysis score for domain naming patterns)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.akamai.com/blog/security-research/ai-generated-domains-detection",
+      "https://arxiv.org/abs/2301.10395"
+    ],
     "threat_path_ids": [
       "TP-0043"
     ],
@@ -4788,6 +6533,27 @@
       "product": "dns_intelligence",
       "service": "ct_log"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "event_type",
+        "groupby",
+        "issuer_org",
+        "timeframe"
+      ],
+      "enrichment_required": [
+        {
+          "field": "registration_to_cert_delta",
+          "source": "Certificate analytics enrichment (time between registration and cert issuance)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.certificate-transparency.org/",
+      "https://letsencrypt.org/stats/",
+      "https://research.google/pubs/pub53367/"
+    ],
     "threat_path_ids": [
       "TP-0041",
       "TP-0042",
@@ -4836,6 +6602,26 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "event_type",
+        "groupby",
+        "timeframe"
+      ],
+      "enrichment_required": [
+        {
+          "field": "registration_volume_zscore",
+          "source": "Statistical baseline enrichment (z-score against 30-day rolling mean)"
+        }
+      ]
+    },
+    "references": [
+      "https://czds.icann.org/",
+      "https://www.verisign.com/en_US/channel-resources/domain-registry-products/zone-file/index.xhtml",
+      "https://www.farsightsecurity.com/solutions/dnsdb/"
+    ],
     "threat_path_ids": [
       "TP-0041",
       "TP-0042",
@@ -4886,6 +6672,27 @@
       "product": "dns_intelligence",
       "service": "threat_intel_enriched"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "attribution_category",
+          "source": "Threat intelligence enrichment (attribution category classification)"
+        },
+        {
+          "field": "domain_registration_delta",
+          "source": "WHOIS analytics enrichment (registration timing delta)"
+        },
+        {
+          "field": "nameserver_reuse_cross_attribution",
+          "source": "DNS analytics enrichment (cross-attribution nameserver reuse)"
+        },
+        {
+          "field": "shared_ip_cidr_overlap",
+          "source": "Infrastructure correlation enrichment (shared CIDR overlap detection)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0044"
     ],
@@ -4894,6 +6701,8 @@
     ],
     "tags": [
       "TP-0044",
+      "attack.t1583.001",
+      "cfpf.phase3.positioning",
       "graph-detection",
       "infrastructure-overlap",
       "nation-state",
@@ -4929,6 +6738,31 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "days_since_ofac_designation",
+          "source": "Sanctions feed enrichment (days since OFAC designation)"
+        },
+        {
+          "field": "migration_window_days",
+          "source": "Infrastructure analytics enrichment (migration window calculation)"
+        },
+        {
+          "field": "new_ip_range_different",
+          "source": "Network analytics enrichment (new IP range divergence detection)"
+        },
+        {
+          "field": "ns_pattern_similarity_score",
+          "source": "DNS analytics enrichment (nameserver pattern similarity)"
+        },
+        {
+          "field": "previous_ip_range_sanctioned",
+          "source": "Sanctions feed enrichment (prior sanctions designation check)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0045"
     ],
@@ -4937,7 +6771,9 @@
     ],
     "tags": [
       "TP-0045",
+      "attack.t1583.003",
       "bph-rebranding",
+      "cfpf.phase3.positioning",
       "infrastructure-migration",
       "ofac",
       "sanctions-evasion"
@@ -4974,6 +6810,26 @@
       "product": "crypto",
       "service": "chain_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "stablecoin_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "clustering_to_no_kyc_exchanges",
+          "source": "Address attribution enrichment (exchange classification lookup)"
+        },
+        {
+          "field": "daily_volume_usd",
+          "source": "Account analytics enrichment (daily volume in USD calculation)"
+        },
+        {
+          "field": "weekday_volume_ratio",
+          "source": "Temporal analytics enrichment (weekday vs weekend volume ratio)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0045"
     ],
@@ -4984,6 +6840,8 @@
     "tags": [
       "TP-0045",
       "a7a5",
+      "attack.t1657",
+      "cfpf.phase4.execution",
       "crypto-laundering",
       "sanctions-evasion",
       "settlement-pattern",
@@ -5015,6 +6873,27 @@
       "product": "dns_intelligence",
       "service": "ip_allocation"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "days_since_sanctioned_entity_shutdown",
+          "source": "Sanctions feed enrichment (days since entity shutdown)"
+        },
+        {
+          "field": "new_entity_same_asn",
+          "source": "Infrastructure correlation enrichment (new entity on same ASN)"
+        },
+        {
+          "field": "new_entity_same_ip_range",
+          "source": "Infrastructure correlation enrichment (new entity in same IP range)"
+        },
+        {
+          "field": "new_entity_same_transit_provider",
+          "source": "Infrastructure correlation enrichment (same transit provider detection)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0045"
     ],
@@ -5024,8 +6903,10 @@
     "tags": [
       "TP-0045",
       "aeza",
+      "attack.t1583.003",
       "bgp-analysis",
       "bph-rebranding",
+      "cfpf.phase3.positioning",
       "garantex-grinex",
       "sanctions-evasion"
     ],
@@ -5057,6 +6938,23 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "baseline_window",
+        "domain_name"
+      ],
+      "enrichment_required": [
+        {
+          "field": "registration_date_within_election",
+          "source": "Temporal enrichment (election cycle proximity detection)"
+        },
+        {
+          "field": "registration_volume_ratio",
+          "source": "Statistical baseline enrichment (ratio against historical baseline)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0046"
     ],
@@ -5065,6 +6963,8 @@
     ],
     "tags": [
       "TP-0046",
+      "attack.t1583.001",
+      "cfpf.phase1.reconnaissance",
       "domain-registration",
       "election-cycle",
       "financial-brands",
@@ -5096,6 +6996,26 @@
       "product": "dns_intelligence",
       "service": "sanctions_feed_enriched"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "new_registrations_from_linked_registrar"
+      ],
+      "enrichment_required": [
+        {
+          "field": "event_within_sanctions_designation",
+          "source": "Sanctions feed enrichment (temporal proximity to designation)"
+        },
+        {
+          "field": "ip_block_migration",
+          "source": "Network analytics enrichment (IP block migration detection)"
+        },
+        {
+          "field": "new_bgp_announcement",
+          "source": "BGP monitoring enrichment (new BGP announcement detection)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0045",
       "TP-0046"
@@ -5106,6 +7026,8 @@
     "tags": [
       "TP-0045",
       "TP-0046",
+      "attack.t1583.001",
+      "cfpf.phase3.positioning",
       "infrastructure-change",
       "ofac",
       "sanctions-correlation",
@@ -5136,6 +7058,23 @@
       "product": "dns_intelligence",
       "service": "l7_dns_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "geopolitical_event_within",
+          "source": "Geopolitical enrichment (temporal proximity to geopolitical events)"
+        },
+        {
+          "field": "l7_dns_query_volume_ratio",
+          "source": "DNS analytics enrichment (L7 query volume ratio calculation)"
+        },
+        {
+          "field": "target_is_financial_services",
+          "source": "Target classification enrichment (industry classification lookup)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0046"
     ],
@@ -5144,6 +7083,8 @@
     ],
     "tags": [
       "TP-0046",
+      "attack.t1498",
+      "cfpf.phase4.execution",
       "ddos",
       "financial-sector",
       "geopolitical-timing",
@@ -5179,6 +7120,26 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "domain_cluster"
+      ],
+      "enrichment_required": [
+        {
+          "field": "cname_density",
+          "source": "DNS analytics enrichment (CNAME density calculation)"
+        },
+        {
+          "field": "privacy_protected_whois",
+          "source": "WHOIS analytics enrichment (privacy protection detection)"
+        },
+        {
+          "field": "shared_registrar",
+          "source": "WHOIS analytics enrichment (shared registrar detection)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0047"
     ],
@@ -5188,6 +7149,8 @@
     ],
     "tags": [
       "TP-0047",
+      "attack.t1583.001",
+      "cfpf.phase3.positioning",
       "cname",
       "domain-clustering",
       "funnull-pattern",
@@ -5219,6 +7182,23 @@
       "product": "dns_intelligence",
       "service": "ct_log"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "bulk_registered_domains",
+          "source": "DNS analytics enrichment (bulk registration detection)"
+        },
+        {
+          "field": "crypto_payment_indicators",
+          "source": "Payment analytics enrichment (crypto payment detection indicators)"
+        },
+        {
+          "field": "shared_ns_infrastructure",
+          "source": "DNS analytics enrichment (shared nameserver detection)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0047"
     ],
@@ -5228,7 +7208,9 @@
     ],
     "tags": [
       "TP-0047",
+      "attack.t1657",
       "bulk-registration",
+      "cfpf.phase4.execution",
       "crypto-payment",
       "payment-infrastructure",
       "scam-compound"
@@ -5259,6 +7241,26 @@
       "product": "dns_intelligence",
       "service": "ip_allocation"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "timeframe"
+      ],
+      "enrichment_required": [
+        {
+          "field": "different_asn",
+          "source": "Network analytics enrichment (ASN diversity analysis)"
+        },
+        {
+          "field": "new_bgp_announcement",
+          "source": "BGP monitoring enrichment (new BGP announcement detection)"
+        },
+        {
+          "field": "previously_sanctioned_ip_range",
+          "source": "Sanctions feed enrichment (IP range sanctions history lookup)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0048"
     ],
@@ -5267,8 +7269,10 @@
     ],
     "tags": [
       "TP-0048",
+      "attack.t1583.003",
       "bgp-monitoring",
       "bph-migration",
+      "cfpf.phase3.positioning",
       "ip-block-transfer",
       "sanctions"
     ],
@@ -5298,6 +7302,27 @@
       "product": "dns_intelligence",
       "service": "zone_file_diff"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "abuse_ratio",
+          "source": "IP reputation enrichment (abuse report ratio for IP range)"
+        },
+        {
+          "field": "cloud_provider_ip",
+          "source": "IP classification enrichment (cloud provider IP identification)"
+        },
+        {
+          "field": "cname_density",
+          "source": "DNS analytics enrichment (CNAME density calculation)"
+        },
+        {
+          "field": "diverse_registrants",
+          "source": "WHOIS analytics enrichment (registrant diversity analysis)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0048"
     ],
@@ -5306,7 +7331,9 @@
     ],
     "tags": [
       "TP-0048",
+      "attack.t1583.003",
       "bph-migration",
+      "cfpf.phase2.initial_access",
       "cloud-abuse",
       "cname-density",
       "funnull-pattern"
@@ -5336,6 +7363,23 @@
       "product": "dns_intelligence",
       "service": "passive_dns"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "cname_chain_depth",
+          "source": "DNS analytics enrichment (CNAME chain depth calculation)"
+        },
+        {
+          "field": "cname_chain_endpoint_count",
+          "source": "DNS analytics enrichment (CNAME chain endpoint count)"
+        },
+        {
+          "field": "unique_domain_count",
+          "source": "DNS analytics enrichment (unique domain count aggregation)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0048"
     ],
@@ -5345,7 +7389,9 @@
     ],
     "tags": [
       "TP-0048",
+      "attack.t1583.001",
       "bph-migration",
+      "cfpf.phase3.positioning",
       "cname-clustering",
       "dga",
       "infrastructure-centralization"
@@ -5376,6 +7422,27 @@
       "product": "crypto",
       "service": "chain_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "avg_processing_time",
+          "source": "Cluster analytics enrichment (average processing time calculation)"
+        },
+        {
+          "field": "inbound_source_count",
+          "source": "Flow analytics enrichment (distinct inbound source count)"
+        },
+        {
+          "field": "outbound_to_exchange_ratio",
+          "source": "Flow analytics enrichment (outbound exchange ratio calculation)"
+        },
+        {
+          "field": "wallet_cluster",
+          "source": "Blockchain analytics enrichment (wallet cluster identification)"
+        }
+      ]
+    },
     "threat_path_ids": [
       "TP-0049"
     ],
@@ -5385,7 +7452,9 @@
     ],
     "tags": [
       "TP-0049",
+      "attack.t1657",
       "black-u",
+      "cfpf.phase5.monetization",
       "cmln",
       "crypto-laundering",
       "transaction-velocity",
@@ -5417,6 +7486,15 @@
       "product": "crypto",
       "service": "chain_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "defi_hop_count",
+        "defi_hop_timeframe",
+        "no_kyc_exchange_deposit_timeframe",
+        "otc_broker_withdrawal_timeframe"
+      ]
+    },
     "threat_path_ids": [
       "TP-0049"
     ],
@@ -5426,6 +7504,8 @@
     "tags": [
       "45-day-pattern",
       "TP-0049",
+      "attack.t1657",
+      "cfpf.phase5.monetization",
       "cross-chain",
       "dprk-cycle",
       "no-kyc",

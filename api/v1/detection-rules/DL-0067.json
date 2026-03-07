@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.188549+00:00",
+    "generated_at": "2026-03-07T15:53:54.626157+00:00",
     "total": 1
   },
   "data": {
@@ -40,6 +40,27 @@
       "product": "ecommerce",
       "service": "payment_gateway"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "device_fingerprint_promo_uses_30d",
+        "event_type",
+        "payment_method_hash_promo_uses_30d",
+        "promo_code_applied",
+        "promo_type",
+        "source_ip_promo_uses_30d"
+      ],
+      "enrichment_required": [
+        {
+          "field": "account_age_days",
+          "source": "Account analytics enrichment (account opening date lookup)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.chargebacks911.com/promo-abuse/"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0030"

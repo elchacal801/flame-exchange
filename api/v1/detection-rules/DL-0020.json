@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.016325+00:00",
+    "generated_at": "2026-03-07T15:53:54.495924+00:00",
     "total": 1
   },
   "data": {
@@ -26,12 +26,28 @@
         "field_changed": "mailing_address"
       },
       "timeframe": "72h",
-      "condition": "(selection_email and selection_phone and selection_address) | count() by account_id >= 3"
+      "condition": "selection_email and selection_phone and selection_address"
     },
     "logsource": {
       "product": "banking",
       "service": "identity_management"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "field_changed"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Rapid Contact Information Change\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count >= 3",
+      "splunk": "`comment(\"Splunk SPL for Rapid Contact Information Change\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| stats count as event_count by account_id\n| where event_count >= 3"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0005"

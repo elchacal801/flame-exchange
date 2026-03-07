@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.230109+00:00",
+    "generated_at": "2026-03-07T15:53:54.656175+00:00",
     "total": 1
   },
   "data": {
@@ -54,6 +54,20 @@
       "product": "ecommerce",
       "service": "client_side_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "deployment_id",
+        "deployment_window",
+        "event_type",
+        "mutation_source",
+        "page_uri",
+        "target_element"
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0035"
     ],
