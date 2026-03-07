@@ -109,6 +109,7 @@ VALID_INFO_CREDIBILITY = {1, 2, 3, 4, 5, 6}
 VALID_RELATIONSHIP_TYPES = {
     "feeds-into", "shares-infrastructure", "escalates-from",
     "provides-mules-for", "enables", "enhances", "related-to",
+    "variant-of",
 }
 
 REQUIRED_BODY_SECTIONS = [
