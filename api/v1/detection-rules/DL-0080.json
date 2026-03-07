@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.241835+00:00",
+    "generated_at": "2026-03-07T15:53:54.666668+00:00",
     "total": 1
   },
   "data": {
@@ -36,6 +36,25 @@
       "product": "banking",
       "service": "wallet_provisioning"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "otp_delivery_elapsed_seconds",
+        "otp_to_provisioning_seconds",
+        "preceding_event_type",
+        "preceding_event_window"
+      ],
+      "enrichment_required": [
+        {
+          "field": "device_first_seen",
+          "source": "Device profiling enrichment (first-seen timestamp from device intelligence)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0037"
     ],

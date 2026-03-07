@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:29.975163+00:00",
+    "generated_at": "2026-03-07T15:53:54.466243+00:00",
     "total": 1
   },
   "data": {
@@ -17,12 +17,27 @@
         "event_type": "login_success"
       },
       "timeframe": "1h",
-      "condition": "selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Multiple Account Access from Single Source\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3\nevent_type=\"login_success\"\n| groupBy(source_ip, function=[count(as=event_count), collect(account_id)])\n| event_count > 5\n| groupBy(device_fingerprint, function=[count(as=event_count), collect(account_id)])\n| event_count > 3",
+      "splunk": "`comment(\"Splunk SPL for Multiple Account Access from Single Source\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_success\"\n| stats dc(account_id) as unique_account_id by source_ip\n| where unique_account_id > 5\n| stats dc(account_id) as unique_account_id by device_fingerprint\n| where unique_account_id > 3"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1078/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"

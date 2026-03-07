@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.258492+00:00",
+    "generated_at": "2026-03-07T15:53:54.679781+00:00",
     "total": 1
   },
   "data": {
@@ -41,6 +41,27 @@
       "product": "ecommerce",
       "service": "payment_gateway"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "card_number_increment_pattern",
+        "count",
+        "event_type",
+        "groupby",
+        "sequential_card_numbers",
+        "timeframe",
+        "transaction_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "decline_rate",
+          "source": "Payment analytics enrichment (decline rate calculation over window)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0038"
     ],

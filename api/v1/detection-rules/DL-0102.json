@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-07T15:53:54.729545+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "b4f29d81-e5a3-47c0-9132-8a6c0fe15d73",
+    "dl_id": "DL-0102",
+    "title": "Sanctions Designation Infrastructure Migration",
+    "status": "experimental",
+    "description": "Detect infrastructure migration patterns following OFAC sanctions designations. Domains previously resolving to sanctioned entity IP ranges migrate to new hosting within 7-30 days of designation, retaining similar DNS configurations but different IP blocks. Tracks Aeza to Smart Digital/Datavice and Garantex to Grinex migration patterns. Sanctions designations trigger predictable infrastructure migration behavior where sanctioned entities rapidly move domains and services to new IP ranges while preserving nameserver configurations, MX records, and SSL certificate patterns. This detection correlates OFAC designation dates with zone file diffs and passive DNS records to identify domains that migrate from sanctioned IP ranges to new hosting within the expected evasion window, flagging infrastructure that retains structural DNS similarity despite IP block changes.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "previous_ip_range_sanctioned|exists": true,
+        "new_ip_range_different|exists": true,
+        "ns_pattern_similarity_score|gte": 0.8,
+        "migration_window_days|lte": 30
+      },
+      "sanctions_temporal_correlation": {
+        "days_since_ofac_designation|lte": 30,
+        "days_since_ofac_designation|gte": 0
+      },
+      "condition": "selection and sanctions_temporal_correlation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "zone_file_diff"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "days_since_ofac_designation",
+          "source": "Sanctions feed enrichment (days since OFAC designation)"
+        },
+        {
+          "field": "migration_window_days",
+          "source": "Infrastructure analytics enrichment (migration window calculation)"
+        },
+        {
+          "field": "new_ip_range_different",
+          "source": "Network analytics enrichment (new IP range divergence detection)"
+        },
+        {
+          "field": "ns_pattern_similarity_score",
+          "source": "DNS analytics enrichment (nameserver pattern similarity)"
+        },
+        {
+          "field": "previous_ip_range_sanctioned",
+          "source": "Sanctions feed enrichment (prior sanctions designation check)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0045"
+    ],
+    "fraud_types": [
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "TP-0045",
+      "attack.t1583.003",
+      "bph-rebranding",
+      "cfpf.phase3.positioning",
+      "infrastructure-migration",
+      "ofac",
+      "sanctions-evasion"
+    ],
+    "falsepositives": [
+      "Legitimate hosting provider changes coinciding with sanctions timelines",
+      "CDN failover events"
+    ]
+  }
+}

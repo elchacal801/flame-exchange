@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:29.999523+00:00",
+    "generated_at": "2026-03-07T15:53:54.483335+00:00",
     "total": 1
   },
   "data": {
@@ -18,12 +18,29 @@
         "auth_result": "failure"
       },
       "timeframe": "10m",
-      "condition": "selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\n"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "auth_logs"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "auth_result",
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Combo List Iteration Pattern\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\n| groupBy(source_ip, function=[count(as=event_count), collect(username)])\n| event_count > 15",
+      "splunk": "`comment(\"Splunk SPL for Combo List Iteration Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" auth_result=\"failure\"\n| stats dc(username) as unique_username by source_ip\n| where unique_username > 15"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1110/004/",
+      "https://owasp.org/www-community/attacks/Credential_stuffing",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0013"

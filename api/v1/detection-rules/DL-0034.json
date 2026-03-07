@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.060906+00:00",
+    "generated_at": "2026-03-07T15:53:54.529559+00:00",
     "total": 1
   },
   "data": {
@@ -23,12 +23,28 @@
         ]
       },
       "timeframe": "30d",
-      "condition": "selection_returns | count() by originator_id > 5"
+      "condition": "selection_returns"
     },
     "logsource": {
       "product": "banking",
       "service": "ach_processing"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "return_code"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for ACH Return Rate Anomaly\n// Repository: flame-banking-ach-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_returns | count() by originator_id > 5\nevent_type=\"ACH_RETURN\"\n(return_code=\"R10\" OR return_code=\"R29\" OR return_code=\"R07\" OR return_code=\"R08\")\n| groupBy(originator_id, function=count(as=event_count))\n| event_count > 5",
+      "splunk": "`comment(\"Splunk SPL for ACH Return Rate Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_returns | count() by originator_id > 5\")`\nindex=flame_banking sourcetype=flame:ach_processing event_type=\"ACH_RETURN\" (return_code=\"R10\" OR return_code=\"R29\" OR return_code=\"R07\" OR return_code=\"R08\")\n| stats count as event_count by originator_id\n| where event_count > 5"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.nacha.org/system/files/2024-06/2024-ACH-Rules-Book.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0002"

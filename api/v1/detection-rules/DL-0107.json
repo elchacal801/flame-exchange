@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-07T15:53:54.742119+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "e7a24b16-f893-4d2c-9a05-3c6e8f1b47d2",
+    "dl_id": "DL-0107",
+    "title": "Politically-Motivated DDoS Financial Sector Targeting",
+    "status": "experimental",
+    "description": "Detect Layer 7 DNS attack patterns targeting financial services infrastructure that correlate with geopolitical event timelines. Differentiates politically motivated DDoS from criminal extortion DDoS by examining claim attribution (Telegram channel claims), target selection patterns (geopolitically aligned targets), and timing correlation with political events.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "l7_dns_query_volume_ratio|gte": 10.0,
+        "target_is_financial_services": true,
+        "geopolitical_event_within|lte": "72h"
+      },
+      "condition": "selection and timing_correlation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "l7_dns_monitoring"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "geopolitical_event_within",
+          "source": "Geopolitical enrichment (temporal proximity to geopolitical events)"
+        },
+        {
+          "field": "l7_dns_query_volume_ratio",
+          "source": "DNS analytics enrichment (L7 query volume ratio calculation)"
+        },
+        {
+          "field": "target_is_financial_services",
+          "source": "Target classification enrichment (industry classification lookup)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0046"
+    ],
+    "fraud_types": [
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "TP-0046",
+      "attack.t1498",
+      "cfpf.phase4.execution",
+      "ddos",
+      "financial-sector",
+      "geopolitical-timing",
+      "l7-dns",
+      "noname057",
+      "politically-motivated"
+    ],
+    "falsepositives": [
+      "Legitimate traffic spikes during financial events (market crashes, IPOs)",
+      "CDN misconfigurations causing query amplification"
+    ]
+  }
+}

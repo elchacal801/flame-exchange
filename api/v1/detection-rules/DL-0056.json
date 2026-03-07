@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.146049+00:00",
+    "generated_at": "2026-03-07T15:53:54.596903+00:00",
     "total": 1
   },
   "data": {
@@ -22,13 +22,29 @@
           "ACH_SAMEDAY"
         ]
       },
-      "condition": "selection | count() by account_id | compare(op=gt, period=30d, stdev=3)",
+      "condition": "selection",
       "timeframe": "1d"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "payment_rail"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Instant Payment Velocity Spike Above 30-Day Baseline\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\n// Aggregation logic from original condition:\n// selection | count() by account_id | compare(op=gt, period=30d, stdev=3)",
+      "splunk": "`comment(\"Splunk SPL for Instant Payment Velocity Spike Above 30-Day Baseline\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring event_type=\"instant_payment_initiated\" (payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\n`comment(\"Aggregation logic from: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\")`\n| stats count as event_count by account_id\n| where event_count > 1"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-11/FinCEN%20Advisory%20Convertible%20Virtual%20Currency%20FINAL%20508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0012",
       "TP-0024"

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.250540+00:00",
+    "generated_at": "2026-03-07T15:53:54.673876+00:00",
     "total": 1
   },
   "data": {
@@ -38,6 +38,21 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "count",
+        "dc_terminal_city",
+        "dc_terminal_id",
+        "entry_mode",
+        "groupby",
+        "timeframe",
+        "transaction_type"
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0037"
     ],

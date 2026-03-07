@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.284752+00:00",
+    "generated_at": "2026-03-07T15:53:54.698810+00:00",
     "total": 1
   },
   "data": {
@@ -28,6 +28,19 @@
       "product": "ecommerce",
       "service": "bnpl_onboarding"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "count",
+        "event_type",
+        "groupby",
+        "timeframe"
+      ]
+    },
+    "references": [
+      "https://www.lexisnexis.com/risk/global-fraud-identity-report"
+    ],
     "threat_path_ids": [
       "TP-0040"
     ],

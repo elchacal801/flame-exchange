@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-07T15:53:54.748828+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "c4d92f8b-6e53-4a01-b7c9-8d1f3e2a5b04",
+    "dl_id": "DL-0110",
+    "title": "BPH IP Block Migration Post-Sanctions",
+    "status": "experimental",
+    "description": "Detect IP address blocks previously associated with sanctioned or seized BPH providers appearing under new BGP announcements from different ASNs. Track continuity of malicious hosting through IP block ownership changes.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "previously_sanctioned_ip_range": true,
+        "new_bgp_announcement": true,
+        "different_asn": true,
+        "timeframe|lte": "90d"
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "ip_allocation"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "timeframe"
+      ],
+      "enrichment_required": [
+        {
+          "field": "different_asn",
+          "source": "Network analytics enrichment (ASN diversity analysis)"
+        },
+        {
+          "field": "new_bgp_announcement",
+          "source": "BGP monitoring enrichment (new BGP announcement detection)"
+        },
+        {
+          "field": "previously_sanctioned_ip_range",
+          "source": "Sanctions feed enrichment (IP range sanctions history lookup)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0048"
+    ],
+    "fraud_types": [
+      "bph-migration"
+    ],
+    "tags": [
+      "TP-0048",
+      "attack.t1583.003",
+      "bgp-monitoring",
+      "bph-migration",
+      "cfpf.phase3.positioning",
+      "ip-block-transfer",
+      "sanctions"
+    ],
+    "falsepositives": [
+      "Legitimate IP range transfers between hosting providers",
+      "Normal BGP re-advertisement after acquisitions"
+    ]
+  }
+}

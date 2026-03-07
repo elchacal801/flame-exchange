@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:29.962618+00:00",
+    "generated_at": "2026-03-07T15:53:54.455989+00:00",
     "total": 1
   },
   "data": {
@@ -50,6 +50,18 @@
       "product": "banking",
       "service": "endpoint_detection"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "file_access_type",
+        "file_path",
+        "process_name"
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1555/003/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0023"

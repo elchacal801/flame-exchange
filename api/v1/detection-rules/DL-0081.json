@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.246721+00:00",
+    "generated_at": "2026-03-07T15:53:54.670564+00:00",
     "total": 1
   },
   "data": {
@@ -38,6 +38,29 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "cardholder_last_activity_minutes",
+        "cardholder_last_known_lat",
+        "cardholder_last_known_lon",
+        "entry_mode",
+        "transaction_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "geo_distance_km",
+          "source": "Geolocation enrichment (geodesic distance calculation between IP geolocations)"
+        },
+        {
+          "field": "required_speed_kmh",
+          "source": "Geolocation enrichment (travel speed calculation between login locations)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0037"
     ],

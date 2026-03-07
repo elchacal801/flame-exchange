@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.108460+00:00",
+    "generated_at": "2026-03-07T15:53:54.569862+00:00",
     "total": 1
   },
   "data": {
@@ -34,12 +34,30 @@
         "transaction_amount|gte": 1000
       },
       "timeframe": "24h",
-      "condition": "stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n"
+      "condition": "stage1_sim_change and stage2_password_reset and stage3_high_value_action"
     },
     "logsource": {
       "product": "banking",
       "service": "identity_management"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "reset_method",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for SIM Swap Indicator Chain\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n// Sequential correlation — use LogScale sequence detection\n// Correlate stages sequentially on on within 24h",
+      "splunk": "`comment(\"Splunk SPL for SIM Swap Indicator Chain\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\")`\nindex=flame_banking sourcetype=flame:identity_management\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n| transaction on maxspan=24h\n| where eventcount >= 2\n`comment(\"Sequential correlation across stages\")`"
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1111/",
+      "https://attack.mitre.org/techniques/T1098/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0008"
     ],

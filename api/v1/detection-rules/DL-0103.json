@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-07T15:53:54.732368+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "5c8d6a27-f190-4e3b-b84d-2a9e71c03f58",
+    "dl_id": "DL-0103",
+    "title": "Stablecoin Settlement Pattern Anomaly",
+    "status": "experimental",
+    "description": "Detect stablecoin transaction patterns consistent with sanctions evasion settlement. Identifies Monday-Friday volume surges with weekend drops (business settlement pattern), transaction clustering to known no-KYC exchange addresses, and volume patterns matching the A7A5 ruble-backed stablecoin profile. Sanctions evasion through stablecoin settlement produces distinctive temporal patterns that mirror traditional business settlement cycles rather than typical retail crypto trading behavior. The weekday-to-weekend volume ratio, combined with clustering of transactions to addresses associated with no-KYC exchanges, provides a high-confidence signal for institutional sanctions evasion activity. This detection establishes rolling baselines for address-level volume patterns and alerts when weekday-weekend ratios and exchange clustering metrics exceed defined thresholds.\n",
+    "cfpf_phase": "P4",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "weekday_volume_ratio|gte": 3.0,
+        "clustering_to_no_kyc_exchanges|gte": 0.6
+      },
+      "volume_pattern": {
+        "stablecoin_type|contains": [
+          "USDT",
+          "USDC",
+          "A7A5"
+        ],
+        "daily_volume_usd|gte": 10000
+      },
+      "condition": "selection and volume_pattern"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "chain_monitoring"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "stablecoin_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "clustering_to_no_kyc_exchanges",
+          "source": "Address attribution enrichment (exchange classification lookup)"
+        },
+        {
+          "field": "daily_volume_usd",
+          "source": "Account analytics enrichment (daily volume in USD calculation)"
+        },
+        {
+          "field": "weekday_volume_ratio",
+          "source": "Temporal analytics enrichment (weekday vs weekend volume ratio)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0045"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "TP-0045",
+      "a7a5",
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "crypto-laundering",
+      "sanctions-evasion",
+      "settlement-pattern",
+      "stablecoin"
+    ],
+    "falsepositives": [
+      "Legitimate institutional settlement patterns",
+      "OTC desk activity during business hours"
+    ]
+  }
+}

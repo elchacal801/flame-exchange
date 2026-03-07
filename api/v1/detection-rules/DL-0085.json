@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.263224+00:00",
+    "generated_at": "2026-03-07T15:53:54.682962+00:00",
     "total": 1
   },
   "data": {
@@ -34,6 +34,33 @@
       "product": "ecommerce",
       "service": "agent_transactions"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "initiated_by"
+      ],
+      "enrichment_required": [
+        {
+          "field": "amount_exceeds_3x_user_avg",
+          "source": "Behavioral analytics enrichment (user spending baseline comparison)"
+        },
+        {
+          "field": "category_in_user_history",
+          "source": "Behavioral analytics enrichment (purchase history category matching)"
+        },
+        {
+          "field": "merchant_age_days",
+          "source": "Merchant profiling enrichment (merchant onboarding date lookup)"
+        },
+        {
+          "field": "merchant_risk_score",
+          "source": "Merchant risk scoring enrichment (fraud risk model)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
+    ],
     "threat_path_ids": [
       "TP-0039"
     ],

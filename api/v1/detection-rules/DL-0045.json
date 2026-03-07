@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.101362+00:00",
+    "generated_at": "2026-03-07T15:53:54.563748+00:00",
     "total": 1
   },
   "data": {
@@ -30,6 +30,31 @@
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "device_first_seen_days",
+          "source": "Device profiling enrichment (first-seen date from device intelligence)"
+        },
+        {
+          "field": "device_trust_level",
+          "source": "Device profiling enrichment (trust score from device intelligence platform)"
+        },
+        {
+          "field": "time_since_auth_minutes",
+          "source": "Session analytics enrichment (minutes since last authentication)"
+        }
+      ]
+    },
+    "references": [
+      "https://attack.mitre.org/techniques/T1078/",
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0008"

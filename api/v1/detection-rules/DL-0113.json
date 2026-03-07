@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-07T15:53:54.755853+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "6013d91d-b3cc-4cbf-9246-f2f36abcafd2",
+    "dl_id": "DL-0113",
+    "title": "CMLN Wallet Cluster Velocity",
+    "status": "experimental",
+    "description": "Detect cryptocurrency wallet clusters exhibiting CMLN operational characteristics: high transaction velocity (average processing time under 2 minutes), incoming transfers from multiple unrelated sources, and rapid outbound distribution to exchange or OTC wallets.\n",
+    "cfpf_phase": "P5",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "wallet_cluster": true,
+        "avg_processing_time|lt": 120,
+        "inbound_source_count|gt": 10,
+        "outbound_to_exchange_ratio|gt": 0.7
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "chain_monitoring"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "avg_processing_time",
+          "source": "Cluster analytics enrichment (average processing time calculation)"
+        },
+        {
+          "field": "inbound_source_count",
+          "source": "Flow analytics enrichment (distinct inbound source count)"
+        },
+        {
+          "field": "outbound_to_exchange_ratio",
+          "source": "Flow analytics enrichment (outbound exchange ratio calculation)"
+        },
+        {
+          "field": "wallet_cluster",
+          "source": "Blockchain analytics enrichment (wallet cluster identification)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0049"
+    ],
+    "fraud_types": [
+      "cmln-operations",
+      "crypto-laundering-infrastructure"
+    ],
+    "tags": [
+      "TP-0049",
+      "attack.t1657",
+      "black-u",
+      "cfpf.phase5.monetization",
+      "cmln",
+      "crypto-laundering",
+      "transaction-velocity",
+      "wallet-cluster"
+    ],
+    "falsepositives": [
+      "High-frequency trading bots",
+      "Legitimate payment processors with rapid settlement cycles"
+    ]
+  }
+}

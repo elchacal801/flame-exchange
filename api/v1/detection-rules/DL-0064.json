@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.178698+00:00",
+    "generated_at": "2026-03-07T15:53:54.618105+00:00",
     "total": 1
   },
   "data": {
@@ -37,6 +37,20 @@
       "product": "ecommerce",
       "service": "order_management"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "billing_shipping_address_match",
+        "event_type",
+        "shipping_address_distinct_accounts",
+        "shipping_address_orders_7d",
+        "shipping_address_type"
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.europol.europa.eu/publications-events/publications/e-commerce-fraud"
+    ],
     "threat_path_ids": [
       "TP-0013",
       "TP-0030"

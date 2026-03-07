@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.269913+00:00",
+    "generated_at": "2026-03-07T15:53:54.688111+00:00",
     "total": 1
   },
   "data": {
@@ -29,6 +29,26 @@
       "product": "ecommerce",
       "service": "bnpl_onboarding"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "application_status"
+      ],
+      "enrichment_required": [
+        {
+          "field": "digital_footprint_score",
+          "source": "Identity verification enrichment (digital footprint scoring service)"
+        },
+        {
+          "field": "email_domain_age_days",
+          "source": "WHOIS enrichment (email domain registration date lookup)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.lexisnexis.com/risk/global-fraud-identity-report"
+    ],
     "threat_path_ids": [
       "TP-0040"
     ],

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.134643+00:00",
+    "generated_at": "2026-03-07T15:53:54.587460+00:00",
     "total": 1
   },
   "data": {
@@ -35,6 +35,35 @@
       "product": "banking",
       "service": "video_kyc"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "session_status"
+      ],
+      "enrichment_required": [
+        {
+          "field": "blink_rate_per_minute",
+          "source": "Video analysis enrichment (blink detection model)"
+        },
+        {
+          "field": "face_background_lighting_delta",
+          "source": "Video analysis enrichment (lighting consistency analysis)"
+        },
+        {
+          "field": "frame_rate_variance",
+          "source": "Video analysis enrichment (frame rate anomaly detection)"
+        },
+        {
+          "field": "lip_sync_offset_ms",
+          "source": "Video analysis enrichment (lip-sync analysis model)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://pages.nist.gov/frvt/html/frvt_morph.html"
+    ],
     "threat_path_ids": [
       "TP-0018"
     ],

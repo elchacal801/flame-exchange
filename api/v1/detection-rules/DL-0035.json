@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.065308+00:00",
+    "generated_at": "2026-03-07T15:53:54.532154+00:00",
     "total": 1
   },
   "data": {
@@ -40,6 +40,29 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "beneficiary_country",
+        "event_type",
+        "transaction_amount",
+        "wire_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_relationship_days",
+          "source": "Relationship analytics enrichment (beneficiary tenure calculation)"
+        },
+        {
+          "field": "prior_transaction_count",
+          "source": "Account analytics enrichment (historical transaction count)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fatf-gafi.org/en/countries/black-and-grey-lists.html"
+    ],
     "threat_path_ids": [
       "TP-0006",
       "TP-0020"

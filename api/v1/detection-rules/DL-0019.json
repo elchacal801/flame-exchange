@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.012684+00:00",
+    "generated_at": "2026-03-07T15:53:54.493377+00:00",
     "total": 1
   },
   "data": {
@@ -21,12 +21,27 @@
         ]
       },
       "timeframe": "24h",
-      "condition": "selection | count(distinct beneficiary_id) by account_id > 3"
+      "condition": "selection"
     },
     "logsource": {
       "product": "banking",
       "service": "core_banking"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Beneficiary Change Velocity Anomaly\n// Repository: flame-banking-core-banking\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct beneficiary_id) by account_id > 3\n(event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 3",
+      "splunk": "`comment(\"Splunk SPL for Beneficiary Change Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct beneficiary_id) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:core_banking (event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 3"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0004",

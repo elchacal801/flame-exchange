@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.054730+00:00",
+    "generated_at": "2026-03-07T15:53:54.524883+00:00",
     "total": 1
   },
   "data": {
@@ -29,6 +29,25 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "account_type",
+        "event_type",
+        "transaction_amount",
+        "wire_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_country_in_business_profile",
+          "source": "KYC profile enrichment (business profile country matching)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0006",
       "TP-0020"

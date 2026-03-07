@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-07T15:53:54.734970+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "9f1b4e63-d7a2-4508-bc91-3e0f85c24a96",
+    "dl_id": "DL-0104",
+    "title": "BPH Rebranding Chain Detection",
+    "status": "experimental",
+    "description": "Detect bulletproof hosting providers that rebrand following law enforcement or sanctions action. Identifies new hosting entities advertising the same IP ranges, same BGP ASN prefixes, or same upstream transit providers as recently sanctioned or seized BPH operations. Tracks the Garantex to Grinex and Aeza to Smart Digital/Datavice patterns. Bulletproof hosting providers under sanctions or law enforcement pressure follow predictable rebranding patterns — registering new corporate entities while retaining the same underlying network infrastructure. BGP route announcements, IP range allocations, and upstream transit provider relationships persist across rebrandings, providing durable detection signals. This rule monitors for new hosting entities that share ASN prefixes, IP CIDR blocks, or transit provider relationships with recently sanctioned or seized BPH operations within a 90-day window following enforcement action.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "new_entity_same_asn|exists": true,
+        "new_entity_same_ip_range|exists": true,
+        "new_entity_same_transit_provider|exists": true,
+        "days_since_sanctioned_entity_shutdown|lte": 90
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "ip_allocation"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "enrichment_required": [
+        {
+          "field": "days_since_sanctioned_entity_shutdown",
+          "source": "Sanctions feed enrichment (days since entity shutdown)"
+        },
+        {
+          "field": "new_entity_same_asn",
+          "source": "Infrastructure correlation enrichment (new entity on same ASN)"
+        },
+        {
+          "field": "new_entity_same_ip_range",
+          "source": "Infrastructure correlation enrichment (new entity in same IP range)"
+        },
+        {
+          "field": "new_entity_same_transit_provider",
+          "source": "Infrastructure correlation enrichment (same transit provider detection)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0045"
+    ],
+    "fraud_types": [
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "TP-0045",
+      "aeza",
+      "attack.t1583.003",
+      "bgp-analysis",
+      "bph-rebranding",
+      "cfpf.phase3.positioning",
+      "garantex-grinex",
+      "sanctions-evasion"
+    ],
+    "falsepositives": [
+      "Legitimate IP range transfers between hosting providers",
+      "Normal BGP re-advertisement after provider changes"
+    ]
+  }
+}

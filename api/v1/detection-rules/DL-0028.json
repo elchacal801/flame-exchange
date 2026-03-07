@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.041301+00:00",
+    "generated_at": "2026-03-07T15:53:54.514260+00:00",
     "total": 1
   },
   "data": {
@@ -31,12 +31,28 @@
         "transaction_amount|lt": 3000
       },
       "timeframe": "7d",
-      "condition": "(selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)"
+      "condition": "(selection_under_10k"
     },
     "logsource": {
       "product": "banking",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Transaction Amount Clustering Near Reporting Threshold\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"CASH_DEPOSIT\")\ntransaction_amount>=9000\ntransaction_amount<10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"INTERNATIONAL_TRANSFER\")\ntransaction_amount>=2800\ntransaction_amount<3000\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 2\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 2",
+      "splunk": "`comment(\"Splunk SPL for Transaction Amount Clustering Near Reporting Threshold\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"CASH_DEPOSIT\")\ntransaction_amount>=9000\ntransaction_amount<10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"INTERNATIONAL_TRANSFER\")\ntransaction_amount>=2800\ntransaction_amount<3000\n| stats count as event_count by account_id\n| where event_count > 2\n| stats count as event_count by account_id\n| where event_count > 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/shared/CTR_Overview.pdf"
+    ],
     "threat_path_ids": [
       "TP-0002",
       "TP-0020"

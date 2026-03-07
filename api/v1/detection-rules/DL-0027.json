@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.038185+00:00",
+    "generated_at": "2026-03-07T15:53:54.511419+00:00",
     "total": 1
   },
   "data": {
@@ -28,6 +28,28 @@
       "product": "banking",
       "service": "wire_system"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "transaction_amount",
+        "wire_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_bank_relationship",
+          "source": "Beneficiary analytics enrichment (bank relationship lookup)"
+        },
+        {
+          "field": "beneficiary_country_first_time",
+          "source": "Beneficiary analytics enrichment (first-time country flag)"
+        }
+      ]
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://www.fincen.gov/sites/default/files/advisory/2019-10-01/BEC_Advisory_FINAL_508.pdf"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0006"

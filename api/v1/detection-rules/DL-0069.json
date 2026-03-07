@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.196480+00:00",
+    "generated_at": "2026-03-07T15:53:54.631309+00:00",
     "total": 1
   },
   "data": {
@@ -35,6 +35,30 @@
       "product": "vpn",
       "service": "authentication"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "connection_hops",
+          "source": "Network path analysis enrichment (traceroute or proxy-chain detection)"
+        },
+        {
+          "field": "src_ip_type",
+          "source": "IP classification enrichment (internal/external/cloud/residential_proxy)"
+        },
+        {
+          "field": "src_ip_vpn_provider",
+          "source": "VPN/proxy provider lookup (e.g., Spur, IPinfo privacy detection)"
+        }
+      ]
+    },
+    "references": [
+      "https://cloud.google.com/blog/topics/threat-intelligence/mitigating-dprk-it-worker-threat",
+      "https://www.microsoft.com/en-us/security/blog/2025/06/30/jasper-sleet-north-korean-remote-it-workers-evolving-tactics-to-infiltrate-organizations/"
+    ],
     "threat_path_ids": [
       "TP-0034"
     ],

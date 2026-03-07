@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.273312+00:00",
+    "generated_at": "2026-03-07T15:53:54.691160+00:00",
     "total": 1
   },
   "data": {
@@ -31,6 +31,20 @@
       "product": "ecommerce",
       "service": "credit_application"
     },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "application_status",
+        "application_type",
+        "count",
+        "dc_provider_id",
+        "groupby",
+        "timeframe"
+      ]
+    },
+    "references": [
+      "https://www.lexisnexis.com/risk/global-fraud-identity-report"
+    ],
     "threat_path_ids": [
       "TP-0040"
     ],

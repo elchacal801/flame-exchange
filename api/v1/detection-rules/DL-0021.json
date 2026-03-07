@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-05T04:32:30.019600+00:00",
+    "generated_at": "2026-03-07T15:53:54.498635+00:00",
     "total": 1
   },
   "data": {
@@ -29,12 +29,29 @@
         "transaction_amount|gte": 5000
       },
       "timeframe": "4h",
-      "condition": "selection_mfa_change | near selection_high_value_txn by account_id"
+      "condition": "selection_mfa_change and selection_high_value_txn"
     },
     "logsource": {
       "product": "banking",
       "service": "identity_management"
     },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "new_mfa_method",
+        "transaction_amount"
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for MFA Method Switch Before High-Value Transaction\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_mfa_change | near selection_high_value_txn by account_id\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+      "splunk": "`comment(\"Splunk SPL for MFA Method Switch Before High-Value Transaction\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_mfa_change | near selection_high_value_txn by account_id\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
+    },
+    "references": [
+      "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
+      "https://attack.mitre.org/techniques/T1556/"
+    ],
     "threat_path_ids": [
       "TP-0001",
       "TP-0005",

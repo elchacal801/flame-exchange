@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-07T15:53:54.739770+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "9c5f3d82-a1e7-4b68-bf34-2e8a7c4d19f5",
+    "dl_id": "DL-0106",
+    "title": "Sanctions-Announcement Infrastructure Correlation",
+    "status": "experimental",
+    "description": "Detect correlations between OFAC/EU sanctions announcements and subsequent infrastructure changes. Identifies new domain registrations by sanctioned entity-linked registrars, IP block migrations, and new BGP announcements from previously quiet ASNs within 14 days of sanctions designation.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "new_registrations_from_linked_registrar|exists": true,
+        "ip_block_migration|exists": true,
+        "new_bgp_announcement|exists": true,
+        "event_within_sanctions_designation|lte": "14d"
+      },
+      "condition": "selection and temporal_correlation"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "sanctions_feed_enriched"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "new_registrations_from_linked_registrar"
+      ],
+      "enrichment_required": [
+        {
+          "field": "event_within_sanctions_designation",
+          "source": "Sanctions feed enrichment (temporal proximity to designation)"
+        },
+        {
+          "field": "ip_block_migration",
+          "source": "Network analytics enrichment (IP block migration detection)"
+        },
+        {
+          "field": "new_bgp_announcement",
+          "source": "BGP monitoring enrichment (new BGP announcement detection)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0045",
+      "TP-0046"
+    ],
+    "fraud_types": [
+      "sanctions-evasion-infrastructure"
+    ],
+    "tags": [
+      "TP-0045",
+      "TP-0046",
+      "attack.t1583.001",
+      "cfpf.phase3.positioning",
+      "infrastructure-change",
+      "ofac",
+      "sanctions-correlation",
+      "temporal-correlation"
+    ],
+    "falsepositives": [
+      "Coincidental infrastructure changes near sanctions dates",
+      "Legitimate registrar customer migration"
+    ]
+  }
+}
