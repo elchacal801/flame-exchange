@@ -1,40 +1,63 @@
 title: Login Velocity Anomaly
 id: 8bc12d63-f909-4e07-93a3-a342d10e65f3
 status: experimental
-description: >
-  Detects abnormal login attempt velocity from a single source IP or subnet, indicative of
-  automated credential stuffing tools. Legitimate users produce low single-digit login attempts
-  per minute; credential stuffing tools generate dozens to hundreds, often targeting the
-  authentication API directly rather than the web login form.
+description: 'Detects abnormal login attempt velocity from a single source IP or subnet, indicative of automated credential
+  stuffing tools. Legitimate users produce low single-digit login attempts per minute; credential stuffing tools generate
+  dozens to hundreds, often targeting the authentication API directly rather than the web login form.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://attack.mitre.org/techniques/T1110/004/
-  - https://owasp.org/www-community/attacks/Credential_stuffing
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1110/004/
+- https://owasp.org/www-community/attacks/Credential_stuffing
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0013
-  - TP-0001
+- TP-0013
+- TP-0001
 cfpf_phase: P2
 fraud_types:
-  - credential-stuffing
-  - account-takeover
+- credential-stuffing
+- account-takeover
 logsource:
   product: banking
   service: auth_logs
 detection:
   selection:
-    event_type: 'login_attempt'
+    event_type: login_attempt
   filter_internal:
     source_ip|cidr:
-      - '10.0.0.0/8'
-      - '172.16.0.0/12'
-      - '192.168.0.0/16'
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
   timeframe: 5m
-  condition: selection and not filter_internal | count() by source_ip > 50
+  condition: selection and not filter_internal
+data_sources:
+  native_fields:
+  - event_type
+  - source_ip
+queries:
+  logscale: |-
+    // LogScale LQL for Login Velocity Anomaly
+    // Repository: flame-banking-auth-logs
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection and not filter_internal | count() by source_ip > 50
+    event_type="login_attempt"
+    (source_ip="10.0.0.0/8" OR source_ip="172.16.0.0/12" OR source_ip="192.168.0.0/16")
+    | groupBy(source_ip, function=count(as=event_count))
+    | event_count > 50
+  splunk: |-
+    `comment("Splunk SPL for Login Velocity Anomaly")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection and not filter_internal | count() by source_ip > 50")`
+    index=flame_banking sourcetype=flame:auth_logs event_type="login_attempt" (source_ip="10.0.0.0/8" OR source_ip="172.16.0.0/12" OR source_ip="192.168.0.0/16")
+    | stats count as event_count by source_ip
+    | where event_count > 50
 falsepositives:
-  - Load testing or penetration testing activities against authentication endpoints
-  - Misconfigured monitoring scripts with aggressive polling intervals
+- Load testing or penetration testing activities against authentication endpoints
+- Misconfigured monitoring scripts with aggressive polling intervals
 level: high
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1110.004
-  - attack.t1110
+- cfpf.phase2.initial_access
+- attack.t1110.004
+- attack.t1110

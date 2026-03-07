@@ -1,43 +1,50 @@
 title: Bulk Code Repository Clone by New Employee
 id: 7ea01858-c819-5131-a895-ff9465384ef7
 status: experimental
-description: >
-  Detects a new employee (within first 14 days of onboarding) cloning or
-  downloading multiple code repositories, especially repositories outside their
-  assigned team or project scope. DPRK IT workers frequently begin exfiltrating
-  source code within hours of gaining access, cloning entire organizational
-  repositories to personal GitHub accounts or external cloud storage.
+description: 'Detects a new employee (within first 14 days of onboarding) cloning or downloading multiple code repositories,
+  especially repositories outside their assigned team or project scope. DPRK IT workers frequently begin exfiltrating source
+  code within hours of gaining access, cloning entire organizational repositories to personal GitHub accounts or external
+  cloud storage.
+
+  '
+sigma_compatible: true
 references:
-  - https://unit42.paloaltonetworks.com/north-korean-it-workers/
-  - https://www.ic3.gov/PSA/2025/PSA250123
+- https://unit42.paloaltonetworks.com/north-korean-it-workers/
+- https://www.ic3.gov/PSA/2025/PSA250123
 threat_paths:
-  - TP-0034
+- TP-0034
 cfpf_phase: P4
 fraud_types:
-  - dprk-it-worker-fraud
-  - data-theft
+- dprk-it-worker-fraud
+- data-theft
 logsource:
   product: git_platform
   service: audit_log
 detection:
   selection:
     action|contains:
-      - 'repo.clone'
-      - 'repo.download'
-      - 'repo.fork'
+    - repo.clone
+    - repo.download
+    - repo.fork
     actor_account_age_days|lte: 14
   filter_volume:
     repos_cloned_24h|gte: 5
   filter_out_of_scope:
     repo_team_match: false
   condition: selection and (filter_volume or filter_out_of_scope)
+data_sources:
+  native_fields:
+  - action
+  - actor_account_age_days
+  - repo_team_match
+  - repos_cloned_24h
 falsepositives:
-  - New employees in platform engineering or DevOps roles who legitimately need broad repository access
-  - Engineers onboarding onto large monorepo projects that require full clone
+- New employees in platform engineering or DevOps roles who legitimately need broad repository access
+- Engineers onboarding onto large monorepo projects that require full clone
 level: high
 tags:
-  - cfpf.phase4.execution
-  - attack.t1005
-  - attack.t1020
-  - flame.dprk
-  - flame.insider_threat
+- cfpf.phase4.execution
+- attack.t1005
+- attack.t1020
+- flame.dprk
+- flame.insider_threat

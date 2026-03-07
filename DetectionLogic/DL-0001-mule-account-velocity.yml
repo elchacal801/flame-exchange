@@ -1,32 +1,52 @@
 title: Mule Account Velocity Pattern
 id: 5a4b11f2-7b0b-4de0-8fb3-a8c3d7031911
 status: experimental
-description: Detects rapid inbound transfers from multiple unique senders followed by immediate outbound movement, typical of money mule activity. This rule is a shared component applicable to TP-0001, TP-0002, TP-0011, and TP-0022.
+description: Detects rapid inbound transfers from multiple unique senders followed by immediate outbound movement, typical
+  of money mule activity. This rule is a shared component applicable to TP-0001, TP-0002, TP-0011, and TP-0022.
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0001
-  - TP-0002
-  - TP-0011
-  - TP-0022
+- TP-0001
+- TP-0002
+- TP-0011
+- TP-0022
 cfpf_phase: P5
 fraud_types:
-  - money-mule
+- money-mule
 logsource:
-    product: banking
-    service: transaction_monitoring
+  product: banking
+  service: transaction_monitoring
 detection:
-    selection_inbound:
-        transaction_type: 'ACH_IN'
-    timeframe: 30d
-    condition: selection_inbound | count(distinct originator_name) by account_id > 3
-
-    # Needs correlation with rapid outbound (ideally via an Event Query Language or Splunk transaction command)
+  selection_inbound:
+    transaction_type: ACH_IN
+  timeframe: 30d
+  condition: selection_inbound
+data_sources:
+  native_fields:
+  - transaction_type
+queries:
+  logscale: |-
+    // LogScale LQL for Mule Account Velocity Pattern
+    // Repository: flame-banking-transaction-monitoring
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection_inbound | count(distinct originator_name) by account_id > 3
+    transaction_type="ACH_IN"
+    | groupBy(account_id, function=[count(as=event_count), collect(originator_name)])
+    | event_count > 3
+  splunk: |-
+    `comment("Splunk SPL for Mule Account Velocity Pattern")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection_inbound | count(distinct originator_name) by account_id > 3")`
+    index=flame_banking sourcetype=flame:transaction_monitoring transaction_type="ACH_IN"
+    | stats dc(originator_name) as unique_originator_name by account_id
+    | where unique_originator_name > 3
 falsepositives:
-  - Legitimate payroll processing accounts receiving from multiple employers
-  - Business accounts with normal multi-party receivables
+- Legitimate payroll processing accounts receiving from multiple employers
+- Business accounts with normal multi-party receivables
 level: high
 tags:
-    - attack.t1583
-    - cfpf.phase5.monetization
-    - flame.shared
+- attack.t1583
+- cfpf.phase5.monetization
+- flame.shared

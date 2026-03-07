@@ -1,34 +1,31 @@
 title: AI-Generated Domain Lexical Pattern Detection
 id: 8b4e2f6c-d1a3-47e9-b5c8-9f3a7d0e6c12
 status: experimental
-description: >
-  Detects domain registrations exhibiting lexical patterns consistent with
-  AI-generated names: natural-language-like domain names that are
-  grammatically plausible but not established brands, unusual TLD selection
-  patterns, and registration in bulk with similar lexical characteristics.
-  Large language models can produce domain names that bypass traditional DGA
-  detection because they use real words and plausible constructions rather
-  than random character strings. This rule identifies clusters of newly
-  registered domains sharing lexical similarity scores above threshold,
-  exhibiting natural-language n-gram distributions, and registered through
-  the same registrar within a compressed time window. AI-generated domain
-  portfolios tend to follow detectable stylistic patterns such as
-  consistent word-count, hyphenation style, and semantic category
-  clustering that distinguish them from organic registrations.
+description: 'Detects domain registrations exhibiting lexical patterns consistent with AI-generated names: natural-language-like
+  domain names that are grammatically plausible but not established brands, unusual TLD selection patterns, and registration
+  in bulk with similar lexical characteristics. Large language models can produce domain names that bypass traditional DGA
+  detection because they use real words and plausible constructions rather than random character strings. This rule identifies
+  clusters of newly registered domains sharing lexical similarity scores above threshold, exhibiting natural-language n-gram
+  distributions, and registered through the same registrar within a compressed time window. AI-generated domain portfolios
+  tend to follow detectable stylistic patterns such as consistent word-count, hyphenation style, and semantic category clustering
+  that distinguish them from organic registrations.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.akamai.com/blog/security-research/ai-generated-domains-detection
-  - https://arxiv.org/abs/2301.10395
+- https://www.akamai.com/blog/security-research/ai-generated-domains-detection
+- https://arxiv.org/abs/2301.10395
 threat_paths:
-  - TP-0043
+- TP-0043
 cfpf_phase: P2
 fraud_types:
-  - ai-accelerated-fraud-infrastructure
+- ai-accelerated-fraud-infrastructure
 logsource:
   product: dns_intelligence
   service: zone_file_diff
 detection:
   selection:
-    event_type: 'new_domain_registration'
+    event_type: new_domain_registration
     lexical_nlp_score|gte: 0.75
     dga_entropy_score|lte: 3.5
     domain_word_count|gte: 2
@@ -37,13 +34,26 @@ detection:
     groupby: registrar_id
     timeframe: 24h
   condition: selection and aggregation
+data_sources:
+  native_fields:
+  - count
+  - event_type
+  - groupby
+  - timeframe
+  enrichment_required:
+  - field: dga_entropy_score
+    source: DGA detection enrichment (Shannon entropy calculation for domain names)
+  - field: domain_word_count
+    source: NLP enrichment (word count analysis for domain structure)
+  - field: lexical_nlp_score
+    source: NLP enrichment (lexical analysis score for domain naming patterns)
 falsepositives:
-  - Legitimate brand portfolio registrations by marketing agencies
-  - Domain investment companies registering descriptive keyword domains
-  - New product launch campaigns registering multiple related domains
+- Legitimate brand portfolio registrations by marketing agencies
+- Domain investment companies registering descriptive keyword domains
+- New product launch campaigns registering multiple related domains
 level: medium
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1583.001
-  - flame.ai_generated
-  - flame.domain_lexical_analysis
+- cfpf.phase2.initial_access
+- attack.t1583.001
+- flame.ai_generated
+- flame.domain_lexical_analysis

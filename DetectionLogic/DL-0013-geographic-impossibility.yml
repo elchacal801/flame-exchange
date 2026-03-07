@@ -1,43 +1,58 @@
 title: Geographic Impossibility Login
 id: ee20082a-9729-4d14-bd2e-642e837edafe
 status: experimental
-description: >
-  Detects login attempts from geographically impossible locations within a short timeframe.
-  When a user authenticates from one country and a second authentication occurs from a distant
-  country within a window that makes physical travel impossible, it strongly indicates credential
-  compromise and concurrent use by an attacker.
+description: 'Detects login attempts from geographically impossible locations within a short timeframe. When a user authenticates
+  from one country and a second authentication occurs from a distant country within a window that makes physical travel impossible,
+  it strongly indicates credential compromise and concurrent use by an attacker.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://attack.mitre.org/techniques/T1078/
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1078/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0013
-  - TP-0008
+- TP-0013
+- TP-0008
 cfpf_phase: P2
 fraud_types:
-  - credential-stuffing
-  - account-takeover
+- credential-stuffing
+- account-takeover
 logsource:
   product: banking
   service: auth_logs
 detection:
   selection:
     event_type|contains:
-      - 'login_success'
-      - 'login_attempt'
+    - login_success
+    - login_attempt
   timeframe: 60m
-  condition: >
-    selection
-    | near by user_id
-    | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000
-    and time_diff < 60m
-
-  # Correlation: two login events for same user_id where geodesic distance
-  # between source IPs exceeds 1000 km within 60 minutes (impossible at ~900 km/h air travel)
+  condition: selection
+data_sources:
+  native_fields:
+  - event_type
+queries:
+  logscale: |-
+    // LogScale LQL for Geographic Impossibility Login
+    // Repository: flame-banking-auth-logs
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m
+    (event_type="login_success" OR event_type="login_attempt")
+    // Temporal correlation — use join() or selfJoinFilter() in LogScale
+    // to correlate the selection events within the timeframe
+    | selfJoinFilter(user_id, where=[...])
+  splunk: |-
+    `comment("Splunk SPL for Geographic Impossibility Login")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m")`
+    index=flame_banking sourcetype=flame:auth_logs (event_type="login_success" OR event_type="login_attempt")
+    | transaction user_id maxspan=60m
+    | where eventcount >= 2
 falsepositives:
-  - Users employing VPN services that change egress country between sessions
-  - Corporate proxy chains routing through geographically distributed data centers
+- Users employing VPN services that change egress country between sessions
+- Corporate proxy chains routing through geographically distributed data centers
 level: high
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1078
-  - attack.t1110.004
+- cfpf.phase2.initial_access
+- attack.t1078
+- attack.t1110.004

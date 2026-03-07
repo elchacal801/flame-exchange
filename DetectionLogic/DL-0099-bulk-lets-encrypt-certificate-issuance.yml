@@ -1,55 +1,61 @@
 title: Bulk Let's Encrypt Certificate Issuance Clustering
 id: d5f0a3e7-c298-4b6d-a1e4-7c9b3f8d2e50
 status: experimental
-description: >
-  Detects clusters of Let's Encrypt certificate issuances for domains
-  sharing nameserver or registrar characteristics within a short time
-  window. RDGA and AI-generated campaigns frequently provision certificates
-  in bulk immediately after registration to enable HTTPS on fraudulent
-  landing pages and phishing sites. Legitimate bulk certificate issuance
-  typically occurs through established organizations with consistent
-  registration history. This rule identifies anomalous spikes in
-  certificate issuance where multiple domains share infrastructure
-  indicators such as common nameservers, registrar, or IP allocation, and
-  certificates are issued within hours of domain registration. The
-  combination of rapid registration-to-certificate timing and shared
-  infrastructure strongly indicates coordinated fraudulent domain
-  provisioning for campaign deployment.
+description: 'Detects clusters of Let''s Encrypt certificate issuances for domains sharing nameserver or registrar characteristics
+  within a short time window. RDGA and AI-generated campaigns frequently provision certificates in bulk immediately after
+  registration to enable HTTPS on fraudulent landing pages and phishing sites. Legitimate bulk certificate issuance typically
+  occurs through established organizations with consistent registration history. This rule identifies anomalous spikes in
+  certificate issuance where multiple domains share infrastructure indicators such as common nameservers, registrar, or IP
+  allocation, and certificates are issued within hours of domain registration. The combination of rapid registration-to-certificate
+  timing and shared infrastructure strongly indicates coordinated fraudulent domain provisioning for campaign deployment.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.certificate-transparency.org/
-  - https://letsencrypt.org/stats/
-  - https://research.google/pubs/pub53367/
+- https://www.certificate-transparency.org/
+- https://letsencrypt.org/stats/
+- https://research.google/pubs/pub53367/
 threat_paths:
-  - TP-0041
-  - TP-0042
-  - TP-0043
+- TP-0041
+- TP-0042
+- TP-0043
 cfpf_phase: P2
 fraud_types:
-  - rdga-infrastructure
-  - tds-exploitation
-  - ai-accelerated-fraud-infrastructure
+- rdga-infrastructure
+- tds-exploitation
+- ai-accelerated-fraud-infrastructure
 logsource:
   product: dns_intelligence
   service: ct_log
 detection:
   selection:
-    event_type: 'certificate_issuance'
-    issuer_org: 'Let''s Encrypt'
-    registration_to_cert_delta|lte: '24h'
+    event_type: certificate_issuance
+    issuer_org: Let's Encrypt
+    registration_to_cert_delta|lte: 24h
   aggregation:
     count|gte: 15
     groupby: nameserver_cluster
     timeframe: 6h
   condition: selection and aggregation
+data_sources:
+  native_fields:
+  - count
+  - event_type
+  - groupby
+  - issuer_org
+  - timeframe
+  enrichment_required:
+  - field: registration_to_cert_delta
+    source: Certificate analytics enrichment (time between registration and cert issuance)
 falsepositives:
-  - Large-scale legitimate deployments using automated certificate provisioning (e.g., SaaS platforms onboarding customer domains)
-  - Hosting providers that auto-provision Let's Encrypt certificates for new customer sites
-  - CDN providers issuing certificates for newly onboarded domains
+- Large-scale legitimate deployments using automated certificate provisioning (e.g., SaaS platforms onboarding customer domains)
+- Hosting providers that auto-provision Let's Encrypt certificates for new customer sites
+- CDN providers issuing certificates for newly onboarded domains
 level: high
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1583.001
-  - flame.rdga
-  - flame.tds
-  - flame.ai_generated
-  - flame.certificate_abuse
+- cfpf.phase2.initial_access
+- attack.t1583.001
+- flame.rdga
+- flame.tds
+- flame.ai_generated
+- flame.certificate_abuse

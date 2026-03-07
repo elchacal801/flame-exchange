@@ -1,51 +1,84 @@
 title: Crypto Off-Ramp After Wire or ACH Receipt
 id: b2b07a01-733a-47f1-addd-0dc4af07cab5
 status: experimental
-description: >
-  Detects a pattern where an account receives a wire or ACH credit and then promptly
-  initiates a transfer to a known cryptocurrency exchange or digital asset platform.
-  Converting fraud proceeds to cryptocurrency provides near-irreversible laundering,
-  making this a critical monetization indicator.
+description: 'Detects a pattern where an account receives a wire or ACH credit and then promptly initiates a transfer to a
+  known cryptocurrency exchange or digital asset platform. Converting fraud proceeds to cryptocurrency provides near-irreversible
+  laundering, making this a critical monetization indicator.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.fincen.gov/sites/default/files/shared/FIN-2019-A003.pdf
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.fincen.gov/sites/default/files/shared/FIN-2019-A003.pdf
 threat_paths:
-  - TP-0022
-  - TP-0002
+- TP-0022
+- TP-0002
 cfpf_phase: P5
 fraud_types:
-  - money-mule
-  - crypto-laundering
+- money-mule
+- crypto-laundering
 logsource:
   product: banking
   service: transaction_monitoring
 detection:
   selection_inbound:
     event_type:
-      - 'WIRE_CREDIT'
-      - 'ACH_CREDIT'
+    - WIRE_CREDIT
+    - ACH_CREDIT
     transaction_amount|gte: 1000
   selection_crypto_outbound:
     event_type:
-      - 'WIRE_INITIATION'
-      - 'ACH_DEBIT'
-    beneficiary_category: 'crypto_exchange'
-    # Known crypto exchange beneficiary names or MCC codes
+    - WIRE_INITIATION
+    - ACH_DEBIT
+    beneficiary_category: crypto_exchange
     beneficiary_name|contains:
-      - 'Coinbase'
-      - 'Binance'
-      - 'Kraken'
-      - 'FTX'
-      - 'Gemini'
-      - 'Crypto.com'
-      - 'Bitfinex'
+    - Coinbase
+    - Binance
+    - Kraken
+    - FTX
+    - Gemini
+    - Crypto.com
+    - Bitfinex
   timeframe: 24h
-  condition: selection_inbound | near selection_crypto_outbound by account_id
+  condition: selection_inbound and selection_crypto_outbound
+data_sources:
+  native_fields:
+  - beneficiary_category
+  - beneficiary_name
+  - event_type
+  - transaction_amount
+queries:
+  logscale: |-
+    // LogScale LQL for Crypto Off-Ramp After Wire or ACH Receipt
+    // Repository: flame-banking-transaction-monitoring
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection_inbound | near selection_crypto_outbound by account_id
+    (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT")
+    transaction_amount>=1000
+    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
+    beneficiary_category="crypto_exchange"
+    (beneficiary_name="Coinbase" OR beneficiary_name="Binance" OR beneficiary_name="Kraken" OR beneficiary_name="FTX" OR beneficiary_name="Gemini" OR beneficiary_name="Crypto.com" OR beneficiary_name="Bitfinex")
+    // Temporal correlation — use join() or selfJoinFilter() in LogScale
+    // to correlate the selection events within the timeframe
+    | selfJoinFilter(account_id, where=[...])
+  splunk: |-
+    `comment("Splunk SPL for Crypto Off-Ramp After Wire or ACH Receipt")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection_inbound | near selection_crypto_outbound by account_id")`
+    index=flame_banking sourcetype=flame:transaction_monitoring
+    (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT")
+    transaction_amount>=1000
+    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
+    beneficiary_category="crypto_exchange"
+    (beneficiary_name="Coinbase" OR beneficiary_name="Binance" OR beneficiary_name="Kraken" OR beneficiary_name="FTX" OR beneficiary_name="Gemini")
+    | transaction account_id maxspan=24h
+    | where eventcount >= 2
 falsepositives:
-  - Legitimate cryptocurrency investors or traders funding exchange accounts from bank proceeds
-  - Businesses with crypto treasury strategies converting fiat after receivables
+- Legitimate cryptocurrency investors or traders funding exchange accounts from bank proceeds
+- Businesses with crypto treasury strategies converting fiat after receivables
 level: high
 tags:
-  - cfpf.phase5.monetization
-  - attack.t1583
-  - flame.mule_indicator
+- cfpf.phase5.monetization
+- attack.t1583
+- flame.mule_indicator

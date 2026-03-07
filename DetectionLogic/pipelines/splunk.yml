@@ -1,0 +1,473 @@
+name: FLAME Splunk Pipeline
+priority: 10
+description: >
+  Field mapping pipeline for Splunk Enterprise / Splunk Cloud.
+  Maps FLAME custom logsource taxonomy and field names to Splunk
+  indexes, sourcetypes, and CIM-aligned field conventions.
+
+transformations:
+
+  # ============================================================
+  # Logsource → Splunk Index/Sourcetype Mappings
+  # ============================================================
+
+  # --- Banking ---
+  - id: sp_banking_auth
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:auth"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: auth_logs
+
+  - id: sp_banking_txn_monitoring
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:txn_monitoring"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: transaction_monitoring
+
+  - id: sp_banking_core
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:core_banking"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: core_banking
+
+  - id: sp_banking_wire
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:wire_system"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: wire_system
+
+  - id: sp_banking_identity
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:identity_mgmt"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: identity_management
+
+  - id: sp_banking_mfa
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:mfa"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: mfa_logs
+
+  - id: sp_banking_endpoint
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:edr"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: endpoint_detection
+
+  - id: sp_banking_web_proxy
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:web_proxy"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: web_proxy
+
+  - id: sp_banking_web_gateway
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:web_gateway"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: web_gateway
+
+  - id: sp_banking_voice_auth
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:voice_auth"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: voice_authentication
+
+  - id: sp_banking_video_kyc
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:video_kyc"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: video_kyc
+
+  - id: sp_banking_doc_verify
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:doc_verify"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: document_verification
+
+  - id: sp_banking_instant_payments
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:instant_payments"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: instant_payments
+
+  - id: sp_banking_a2a
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:a2a"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: a2a_processing
+
+  - id: sp_banking_ach
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:ach"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: ach_processing
+
+  - id: sp_banking_wallet
+    type: add_condition
+    conditions:
+      - "index=flame_banking sourcetype=flame:wallet"
+    rule_conditions:
+      - type: logsource
+        product: banking
+        service: wallet_provisioning
+
+  # --- Telecom ---
+  - id: sp_telecom_identity
+    type: add_condition
+    conditions:
+      - "index=flame_telecom sourcetype=flame:telecom_identity"
+    rule_conditions:
+      - type: logsource
+        product: telecom
+        service: identity_management
+
+  # --- VPN ---
+  - id: sp_vpn_auth
+    type: add_condition
+    conditions:
+      - "index=flame_vpn sourcetype=flame:vpn_auth"
+    rule_conditions:
+      - type: logsource
+        product: vpn
+        service: authentication
+
+  # --- Endpoint ---
+  - id: sp_endpoint_edr
+    type: add_condition
+    conditions:
+      - "index=flame_endpoint sourcetype=flame:edr"
+    rule_conditions:
+      - type: logsource
+        product: endpoint
+        service: edr
+
+  # --- Ecommerce ---
+  - id: sp_ecommerce_web_security
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:web_security"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: web_security
+
+  - id: sp_ecommerce_payment_gw
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:payment_gateway"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: payment_gateway
+
+  - id: sp_ecommerce_client_monitor
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:client_monitor"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: client_side_monitoring
+
+  - id: sp_ecommerce_network
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:network"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: network_traffic
+
+  - id: sp_ecommerce_merchant
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:merchant"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: merchant_monitoring
+
+  - id: sp_ecommerce_orders
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:orders"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: order_management
+
+  - id: sp_ecommerce_returns
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:returns"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: returns_processing
+
+  - id: sp_ecommerce_agent_txns
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:agent_txns"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: agent_transactions
+
+  - id: sp_ecommerce_credit_app
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:credit_app"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: credit_application
+
+  - id: sp_ecommerce_bnpl_onboarding
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:bnpl"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: bnpl_onboarding
+
+  - id: sp_ecommerce_bnpl_txns
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:bnpl"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: bnpl_transactions
+
+  - id: sp_ecommerce_bnpl_disputes
+    type: add_condition
+    conditions:
+      - "index=flame_ecommerce sourcetype=flame:bnpl"
+    rule_conditions:
+      - type: logsource
+        product: ecommerce
+        service: bnpl_disputes
+
+  # --- Crypto ---
+  - id: sp_crypto_chain
+    type: add_condition
+    conditions:
+      - "index=flame_crypto sourcetype=flame:chain_monitoring"
+    rule_conditions:
+      - type: logsource
+        product: crypto
+        service: chain_monitoring
+
+  - id: sp_crypto_endpoint
+    type: add_condition
+    conditions:
+      - "index=flame_crypto sourcetype=flame:crypto_edr"
+    rule_conditions:
+      - type: logsource
+        product: crypto
+        service: endpoint_detection
+
+  # --- DNS Intelligence ---
+  - id: sp_dns_zone_file
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:zone_file_diff"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: zone_file_diff
+
+  - id: sp_dns_web_proxy
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:dns_webproxy"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: web_proxy
+
+  - id: sp_dns_passive
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:passive_dns"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: passive_dns
+
+  - id: sp_dns_resolution
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:dns_resolution"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: dns_resolution
+
+  - id: sp_dns_ct_log
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:ct_log"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: ct_log
+
+  - id: sp_dns_sanctions
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:sanctions_feed"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: sanctions_feed_enriched
+
+  - id: sp_dns_threat_intel
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:threat_intel"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: threat_intel_enriched
+
+  - id: sp_dns_ip_allocation
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:ip_allocation"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: ip_allocation
+
+  - id: sp_dns_l7_monitoring
+    type: add_condition
+    conditions:
+      - "index=flame_dns sourcetype=flame:l7_dns"
+    rule_conditions:
+      - type: logsource
+        product: dns_intelligence
+        service: l7_dns_monitoring
+
+  # --- Identity / HR / Git / Security Ops ---
+  - id: sp_identity_platform
+    type: add_condition
+    conditions:
+      - "index=flame_identity sourcetype=flame:identity_auth"
+    rule_conditions:
+      - type: logsource
+        product: identity_platform
+        service: authentication
+
+  - id: sp_hr_platform
+    type: add_condition
+    conditions:
+      - "index=flame_hr sourcetype=flame:ats"
+    rule_conditions:
+      - type: logsource
+        product: hr_platform
+        service: applicant_tracking
+
+  - id: sp_git_platform
+    type: add_condition
+    conditions:
+      - "index=flame_git sourcetype=flame:git_audit"
+    rule_conditions:
+      - type: logsource
+        product: git_platform
+        service: audit_log
+
+  - id: sp_secops
+    type: add_condition
+    conditions:
+      - "index=flame_secops sourcetype=flame:incident_mgmt"
+    rule_conditions:
+      - type: logsource
+        product: security_operations
+        service: incident_management
+
+  # ============================================================
+  # Field Name Mappings (Sigma → Splunk CIM-aligned)
+  # ============================================================
+  # Splunk CIM uses lowercase with underscores. Most FLAME fields
+  # are already in this convention. Map where Splunk conventions differ.
+
+  - id: sp_field_mappings
+    type: field_name_mapping
+    mapping:
+      event_type: event_type
+      transaction_type: transaction_type
+      transaction_amount: transaction_amount
+      account_id: account_id
+      user_id: user_id
+      source_ip: src_ip
+      src_ip: src_ip
+      device_fingerprint: device_fingerprint
+      session_token: session_token
+      auth_result: auth_result
+      mfa_method: mfa_method
+      mfa_result: mfa_result
+      process_name: process_name
+      process_path: process_path
+      process_signed: process_signed
+      file_path: file_path
+      file_access_type: file_access_type
+      http_method: http_method
+      url_path: url_path
+      content_type: content_type
+      request_body_length: request_body_length
+      domain_age_days: domain_age_days
+      beneficiary_name: beneficiary_name
+      beneficiary_country: beneficiary_country
+      beneficiary_category: beneficiary_category
+      payment_rail: payment_rail
+      geo_country: geo_country
+      user_agent: http_user_agent
+      timestamp: _time
