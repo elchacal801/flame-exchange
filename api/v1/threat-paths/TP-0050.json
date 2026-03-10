@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-10T00:00:00.000000+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "TP-0050",
+    "title": "Calendar/Invite Injection Phishing",
+    "category": "ThreatPath",
+    "date": "2026-03-10",
+    "author": "FLAME Project",
+    "source": "Malwarebytes Labs / Google Workspace security advisories",
+    "tlp": "WHITE",
+    "summary": "Phishing campaigns that abuse calendar invite protocols (Google Calendar, Outlook/Exchange) to bypass email gateway filtering. Attackers send emails containing .ics calendar invitations that auto-populate on victim calendars, creating persistent lure events that outlive the original email. These campaigns are commonly paired with RDGA sender infrastructure (TP-0041) and tech support / fake AV renewal lures (TP-0012). An observed March 2026 campaign delivered 6,000+ emails across 10 sender domains, with 9 of 10 domains generated via RDGA techniques on high-abuse TLDs.",
+    "confidence_score": 78,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "rdga-registered",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "calendar-phishing",
+      "social-engineering"
+    ],
+    "tags": [
+      "calendar-phishing",
+      "invite-injection",
+      "ics-abuse",
+      "google-calendar",
+      "outlook-calendar",
+      "fake-renewal-scam",
+      "antivirus-scam",
+      "rdga-sender-domains",
+      "calendar-spam"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.003",
+      "T1566.002",
+      "T1204.001",
+      "T1036.005",
+      "T1583.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA009",
+      "FTA010",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-CFPB-REGE",
+      "REG-UK-PSR-APP"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0041",
+        "relationship": "shares-infrastructure"
+      }
+    ],
+    "evidence_count": 1
+  }
+}
