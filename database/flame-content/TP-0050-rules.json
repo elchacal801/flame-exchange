@@ -3,23 +3,18 @@
   "rules": [
     {
       "type": "spl",
-      "title": "Email Gateway .ics Attachment from Newly-Registered Domain Detection",
-      "content": "index=email sourcetype=email_gateway\n| where attachment_type=\"text/calendar\" OR attachment_extension=\".ics\"\n| lookup domain_age_feed sender_domain OUTPUT domain_age_days\n| where domain_age_days < 30\n| stats count by sender_domain, recipient, subject, domain_age_days\n| where count > 5\n| sort -count"
+      "content": "index=email sourcetype=email_gateway\n| where attachment_type=\"text/calendar\" OR attachment_extension=\".ics\"\n| lookup domain_age_feed sender_domain OUTPUT domain_age_days\n| where domain_age_days < 30\n| stats count by sender_domain, recipient, subject, domain_age_days\n| where count > 5\n| sort -count",
+      "title": "Email Gateway — .ics from Newly-Registered Domains (Splunk SPL)"
     },
     {
       "type": "sql",
-      "title": "Calendar Event Injection from Newly-Registered High-Abuse TLD Domains",
-      "content": "SELECT ce.event_id, ce.organizer_email, ce.title, ce.created_at,\n       d.domain_name, d.registration_date, d.tld\nFROM calendar_events ce\nJOIN domain_intel d ON ce.organizer_domain = d.domain_name\nWHERE ce.organizer_is_external = TRUE\nAND ce.auto_accepted = TRUE\nAND d.registration_date > CURRENT_DATE - INTERVAL '30 days'\nAND d.tld IN ('.cyou', '.sbs', '.click', '.biz', '.top', '.xyz')\nORDER BY ce.created_at DESC;"
+      "content": "SELECT ce.event_id, ce.organizer_email, ce.title, ce.created_at,\n       d.domain_name, d.registration_date, d.tld\nFROM calendar_events ce\nJOIN domain_intel d ON ce.organizer_domain = d.domain_name\nWHERE ce.organizer_is_external = TRUE\nAND ce.auto_accepted = TRUE\nAND d.registration_date > CURRENT_DATE - INTERVAL '30 days'\nAND d.tld IN ('.cyou', '.sbs', '.click', '.biz', '.top', '.xyz')\nORDER BY ce.created_at DESC;",
+      "title": "Calendar Event Injection Detection (SQL)"
     },
     {
       "type": "sql",
-      "title": "RDGA Sender Domain Consonant Ratio Detection for Calendar Phishing",
-      "content": "SELECT domain_label,\n       LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n       NULLIF(LENGTH(domain_label), 0) AS consonant_ratio,\n       tld, registration_date\nFROM zone_file_domains\nWHERE registration_date > CURRENT_DATE - INTERVAL '7 days'\nAND tld IN ('.cyou', '.sbs', '.click')\nAND LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n    NULLIF(LENGTH(domain_label), 0) > 0.75\nORDER BY registration_date DESC;"
-    },
-    {
-      "type": "sigma",
-      "title": "Calendar Invite Injection from Suspicious External Organizer",
-      "content": "title: Calendar Invite Injection from Suspicious External Organizer\nid: f8a2c4e1-9b3d-4f7a-8e6c-1d2a3b4c5d6e\nstatus: experimental\ndescription: Detects calendar events auto-accepted from external organizers on newly-registered or high-abuse TLD domains, indicating potential calendar phishing injection.\nreferences:\n  - https://github.com/FraudLens/flame\nthreat_paths:\n  - TP-0050\ncfpf_phase: P2\nfraud_types:\n  - calendar-phishing\nlogsource:\n    product: google-workspace\n    service: calendar\ndetection:\n    selection_external:\n        organizer.is_external: true\n        event.auto_accepted: true\n    selection_tld:\n        organizer.domain|endswith:\n            - '.cyou'\n            - '.sbs'\n            - '.click'\n            - '.biz'\n            - '.top'\n            - '.xyz'\n    condition: selection_external AND selection_tld\nfalsepositives:\n  - Legitimate calendar invitations from organizations using newer TLDs\n  - Automated scheduling services using recently registered domains\nlevel: high\ntags:\n  - attack.t1566.003\n  - cfpf.phase2.calendar_injection\n  - flame.calendar_phishing"
+      "content": "SELECT domain_label,\n       LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n       NULLIF(LENGTH(domain_label), 0) AS consonant_ratio,\n       tld, registration_date\nFROM zone_file_domains\nWHERE registration_date > CURRENT_DATE - INTERVAL '7 days'\nAND tld IN ('.cyou', '.sbs', '.click')\nAND LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n    NULLIF(LENGTH(domain_label), 0) > 0.75\nORDER BY registration_date DESC;",
+      "title": "RDGA Sender Domain Consonant Ratio Detection (SQL)"
     }
   ]
 }

@@ -586,5 +586,23 @@
     "content": "-- Monitor cryptocurrency transactions flowing to Huione-associated infrastructure\n-- including Huione Guarantee marketplace, Huione Pay, and USDH stablecoin contracts\nSELECT\n    tx.transaction_hash,\n    tx.from_address,\n    tx.to_address,\n    tx.amount_usd,\n    tx.token_symbol,\n    tx.chain,\n    tx.timestamp,\n    hw.entity_name AS huione_entity,\n    hw.entity_type,\n    hw.sanctions_status,\n    COALESCE(src_risk.risk_score, 0) AS source_risk_score,\n    COALESCE(src_risk.risk_category, 'unknown') AS source_risk_category\nFROM cryptocurrency_transactions tx\nJOIN huione_wallet_database hw ON tx.to_address = hw.wallet_address\nLEFT JOIN wallet_risk_scores src_risk ON tx.from_address = src_risk.wallet_address\nWHERE tx.timestamp >= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 7 DAY)\n  AND tx.amount_usd >= 1000\nORDER BY tx.amount_usd DESC;",
     "title": "Blockchain Analytics — Huione Ecosystem Transaction Monitoring (Phase 5)",
     "tp_id": "TP-0047"
+  },
+  {
+    "type": "spl",
+    "content": "index=email sourcetype=email_gateway\n| where attachment_type=\"text/calendar\" OR attachment_extension=\".ics\"\n| lookup domain_age_feed sender_domain OUTPUT domain_age_days\n| where domain_age_days < 30\n| stats count by sender_domain, recipient, subject, domain_age_days\n| where count > 5\n| sort -count",
+    "title": "Email Gateway — .ics from Newly-Registered Domains (Splunk SPL)",
+    "tp_id": "TP-0050"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT ce.event_id, ce.organizer_email, ce.title, ce.created_at,\n       d.domain_name, d.registration_date, d.tld\nFROM calendar_events ce\nJOIN domain_intel d ON ce.organizer_domain = d.domain_name\nWHERE ce.organizer_is_external = TRUE\nAND ce.auto_accepted = TRUE\nAND d.registration_date > CURRENT_DATE - INTERVAL '30 days'\nAND d.tld IN ('.cyou', '.sbs', '.click', '.biz', '.top', '.xyz')\nORDER BY ce.created_at DESC;",
+    "title": "Calendar Event Injection Detection (SQL)",
+    "tp_id": "TP-0050"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT domain_label,\n       LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n       NULLIF(LENGTH(domain_label), 0) AS consonant_ratio,\n       tld, registration_date\nFROM zone_file_domains\nWHERE registration_date > CURRENT_DATE - INTERVAL '7 days'\nAND tld IN ('.cyou', '.sbs', '.click')\nAND LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n    NULLIF(LENGTH(domain_label), 0) > 0.75\nORDER BY registration_date DESC;",
+    "title": "RDGA Sender Domain Consonant Ratio Detection (SQL)",
+    "tp_id": "TP-0050"
   }
 ]

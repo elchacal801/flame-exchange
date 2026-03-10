@@ -58,5 +58,15 @@
     "domain_count": "",
     "confidence": "Very High",
     "cfpf_phase_coverage": ""
+  },
+  {
+    "evidence_id": "EV-TP0050-2026-001",
+    "tp_id": "TP-0050",
+    "title": "March 2026 Calendar Phishing Campaign — RDGA Infrastructure",
+    "source": "Email security telemetry, March 2026",
+    "cluster": "10 sender domains, 9 RDGA-generated",
+    "domain_count": "10 domains (bsvohkitq.cyou, btdsjidb.cyou, ecnbusne.sbs, jphecm.biz, lzawqyhpcn.sbs, okbitd.org, rthhmjsmk.org, usebindbeee.click, xkrqfnzk.click + 1 compromised .sch.id domain)",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P2"
   }
 ]
