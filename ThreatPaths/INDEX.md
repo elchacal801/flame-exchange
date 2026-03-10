@@ -1,6 +1,6 @@
 # FLAME Threat Path Index
 
-> 49 threat paths covering 70 fraud types across 16 sectors
+> 50 threat paths covering 72 fraud types across 16 sectors
 > Framework-agnostic: mapped to CFPF phases with cross-references to FT3, ATT&CK, and Group-IB Fraud Matrix
 
 ## Coverage Summary
@@ -56,6 +56,7 @@
 | TP-0047 | Human Trafficking-Linked Fraud Infrastructure | human-trafficking-facilitation, scam-compound-operations, crypto-laundering | Crypto, Banking, Cross-sector | P1-P5 |
 | TP-0048 | Bulletproof Hosting Migration Patterns | bph-migration, sanctions-evasion-infrastructure | Cross-sector | P1-P5 |
 | TP-0049 | Cryptocurrency Laundering Infrastructure | crypto-laundering-infrastructure, cmln-operations | Crypto, Banking, Cross-sector | P1-P5 |
+| TP-0050 | Calendar/Invite Injection Phishing | calendar-phishing, social-engineering | Banking, Cross-sector | P1-P5 |
 
 ## Coverage by Fraud Type
 
@@ -76,6 +77,7 @@
 | Brand Impersonation | TP-0036, TP-0043 |
 | Business Email Compromise | TP-0019, TP-0020 |
 | Bust Out | TP-0016 |
+| Calendar Phishing | TP-0050 |
 | Card Testing | TP-0038 |
 | Check Fraud | TP-0009 |
 | Cmln Operations | TP-0049 |
@@ -111,7 +113,7 @@
 | Payment Diversion | TP-0002, TP-0006, TP-0024, TP-0030 |
 | Payroll Diversion | TP-0004 |
 | Phantom Billing | TP-0021, TP-0028 |
-| Phishing | TP-0004, TP-0005, TP-0032, TP-0042, TP-0043 |
+| Phishing | TP-0004, TP-0005, TP-0032, TP-0042, TP-0043, TP-0050 |
 | Premium Diversion | TP-0005 |
 | Provider Fraud | TP-0010, TP-0028 |
 | Purchase Scam | TP-0036 |
@@ -120,7 +122,7 @@
 | Romance Scam | TP-0011, TP-0025, TP-0027 |
 | Sanctions Evasion Infrastructure | TP-0045, TP-0048 |
 | Scam Compound Operations | TP-0047 |
-| Social Engineering | TP-0017, TP-0025, TP-0027, TP-0036, TP-0037, TP-0039, TP-0040 |
+| Social Engineering | TP-0017, TP-0025, TP-0027, TP-0036, TP-0037, TP-0039, TP-0040, TP-0050 |
 | State Criminal Convergence | TP-0044, TP-0046 |
 | Synthetic Identity | TP-0003, TP-0018, TP-0022, TP-0029, TP-0033 |
 | Synthetic Medical Fraud | TP-0028 |
@@ -136,9 +138,9 @@
 
 | Sector | Threat Paths |
 |--------|-------------|
-| Banking | TP-0001, TP-0002, TP-0003, TP-0006, TP-0007, TP-0008, TP-0009, TP-0012, TP-0013, TP-0014, TP-0016, TP-0017, TP-0018, TP-0019, TP-0020, TP-0022, TP-0023, TP-0024, TP-0025, TP-0026, TP-0027, TP-0029, TP-0034, TP-0036, TP-0037, TP-0040, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0049 |
+| Banking | TP-0001, TP-0002, TP-0003, TP-0006, TP-0007, TP-0008, TP-0009, TP-0012, TP-0013, TP-0014, TP-0016, TP-0017, TP-0018, TP-0019, TP-0020, TP-0022, TP-0023, TP-0024, TP-0025, TP-0026, TP-0027, TP-0029, TP-0034, TP-0036, TP-0037, TP-0040, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0049, TP-0050 |
 | Credit Union | TP-0009, TP-0012, TP-0014, TP-0016, TP-0018 |
-| Cross Sector | TP-0002, TP-0004, TP-0006, TP-0007, TP-0011, TP-0013, TP-0017, TP-0020, TP-0025, TP-0027, TP-0039, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0048, TP-0049 |
+| Cross Sector | TP-0002, TP-0004, TP-0006, TP-0007, TP-0011, TP-0013, TP-0017, TP-0020, TP-0025, TP-0027, TP-0039, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0048, TP-0049, TP-0050 |
 | Crypto | TP-0008, TP-0017, TP-0023, TP-0026, TP-0032, TP-0034, TP-0041, TP-0043, TP-0044, TP-0045, TP-0047, TP-0049 |
 | Education | TP-0033 |
 | Employment | TP-0015, TP-0034 |
@@ -157,12 +159,12 @@
 
 | Framework | Mapping Status | Notes |
 |-----------|---------------|-------|
-| FS-ISAC CFPF | All 49 TPs mapped | Primary organizational structure |
-| MITRE ATT&CK | 43 of 49 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
-| Stripe FT3 | Mapped (43/49) | MIT-licensed JSON vendored in data/ft3/ |
+| FS-ISAC CFPF | All 50 TPs mapped | Primary organizational structure |
+| MITRE ATT&CK | 44 of 50 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
+| Stripe FT3 | Mapped (44/50) | MIT-licensed JSON vendored in data/ft3/ |
 | MITRE F3 | Awaiting release | Will map when F3 ships |
-| Group-IB Fraud Matrix | 49 of 49 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
-| Group-IB UCFF | 49 of 49 TPs aligned | 7-domain lifecycle maturity assessment |
+| Group-IB Fraud Matrix | 50 of 50 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
+| Group-IB UCFF | 50 of 50 TPs aligned | 7-domain lifecycle maturity assessment |
 
 ## Cross-Threat Path Connections
 
