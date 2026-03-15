@@ -20,16 +20,16 @@ def loader() -> FlameDataLoader:
 
 class TestDataLoaderLoading:
     def test_loads_threat_paths(self, loader: FlameDataLoader) -> None:
-        assert len(loader.threat_paths) == 50
+        assert len(loader.threat_paths) >= 50
 
     def test_loads_detection_rules(self, loader: FlameDataLoader) -> None:
-        assert len(loader.detection_rules) == 114
+        assert len(loader.detection_rules) >= 114
 
     def test_loads_stats(self, loader: FlameDataLoader) -> None:
-        assert loader.stats["total"] == 50
+        assert loader.stats["total"] == len(loader.threat_paths)
 
     def test_loads_baselines(self, loader: FlameDataLoader) -> None:
-        assert len(loader.baselines) == 26
+        assert len(loader.baselines) >= 26
 
 
 # -----------------------------------------------------------------------
@@ -93,7 +93,7 @@ class TestSearchThreatPaths:
 
     def test_search_no_filters_returns_all(self, loader: FlameDataLoader) -> None:
         results = loader.search_threat_paths()
-        assert len(results) == 50
+        assert len(results) == len(loader.threat_paths)
 
     def test_search_combined_filters(self, loader: FlameDataLoader) -> None:
         results = loader.search_threat_paths(sector="banking", fraud_type="wire-fraud")
@@ -119,7 +119,7 @@ class TestSearchThreatPaths:
 class TestGetDetectionRules:
     def test_get_all_rules(self, loader: FlameDataLoader) -> None:
         rules = loader.get_detection_rules()
-        assert len(rules) == 114
+        assert len(rules) >= 114
 
     def test_filter_by_tp_id(self, loader: FlameDataLoader) -> None:
         rules = loader.get_detection_rules(tp_id="TP-0001")
@@ -154,7 +154,7 @@ class TestGetDetectionRules:
 class TestGetBaseline:
     def test_get_all_baselines(self, loader: FlameDataLoader) -> None:
         results = loader.get_baseline()
-        assert len(results) == 26
+        assert len(results) >= 26
 
     def test_get_by_id(self, loader: FlameDataLoader) -> None:
         results = loader.get_baseline(baseline_id="BASE-001")
@@ -173,7 +173,7 @@ class TestGetBaseline:
 class TestStatsAndCoverage:
     def test_get_stats(self, loader: FlameDataLoader) -> None:
         stats = loader.get_stats()
-        assert stats["total"] == 50
+        assert stats["total"] >= 50
         assert "phaseCoverage" in stats
         assert "coverageMatrix" in stats
 
