@@ -294,7 +294,7 @@ ORDER BY registration_date DESC;
 
 ---
 
-## Case Studies & References
+## References
 
 - Malwarebytes Labs: Calendar phishing campaign analysis (February 2026) — documented Google Calendar and Zoom meeting invite abuse
 - Google Workspace Security: Advisory on external calendar invite auto-accept settings
