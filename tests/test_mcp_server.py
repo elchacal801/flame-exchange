@@ -20,13 +20,13 @@ def loader() -> FlameDataLoader:
 
 class TestDataLoaderLoading:
     def test_loads_threat_paths(self, loader: FlameDataLoader) -> None:
-        assert len(loader.threat_paths) == 49
+        assert len(loader.threat_paths) == 50
 
     def test_loads_detection_rules(self, loader: FlameDataLoader) -> None:
         assert len(loader.detection_rules) == 114
 
     def test_loads_stats(self, loader: FlameDataLoader) -> None:
-        assert loader.stats["total"] == 49
+        assert loader.stats["total"] == 50
 
     def test_loads_baselines(self, loader: FlameDataLoader) -> None:
         assert len(loader.baselines) == 26
@@ -93,7 +93,7 @@ class TestSearchThreatPaths:
 
     def test_search_no_filters_returns_all(self, loader: FlameDataLoader) -> None:
         results = loader.search_threat_paths()
-        assert len(results) == 49
+        assert len(results) == 50
 
     def test_search_combined_filters(self, loader: FlameDataLoader) -> None:
         results = loader.search_threat_paths(sector="banking", fraud_type="wire-fraud")
@@ -173,7 +173,7 @@ class TestGetBaseline:
 class TestStatsAndCoverage:
     def test_get_stats(self, loader: FlameDataLoader) -> None:
         stats = loader.get_stats()
-        assert stats["total"] == 49
+        assert stats["total"] == 50
         assert "phaseCoverage" in stats
         assert "coverageMatrix" in stats
 
