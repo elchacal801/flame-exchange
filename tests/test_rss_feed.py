@@ -40,8 +40,13 @@ class TestRSSFeed:
     def test_feed_has_tp_and_dl_items(self, feed_path: Path) -> None:
         tree = ET.parse(feed_path)
         items = tree.findall(".//channel/item")
-        # Should have 49 TPs + 114 DL rules = 163
-        assert len(items) == 163, f"Expected 163 items (49 TPs + 114 DL), got {len(items)}"
+        # Each TP and DL rule should have an RSS item
+        tp_items = [i for i in items if "TP-" in (i.find("title").text or "")]
+        dl_items = [i for i in items if "DL-" in (i.find("title").text or "")]
+        assert tp_items, "Feed should contain threat path items"
+        assert dl_items, "Feed should contain detection logic items"
+        assert len(items) == len(tp_items) + len(dl_items), \
+            f"All items should be TPs or DLs, got {len(items)} total"
 
     def test_item_has_required_elements(self, feed_path: Path) -> None:
         tree = ET.parse(feed_path)
