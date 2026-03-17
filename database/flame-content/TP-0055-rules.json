@@ -1,0 +1,20 @@
+{
+  "tp_id": "TP-0055",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT w.wallet_address,\n       SUM(CASE WHEN t.direction = 'IN' THEN t.amount_usd ELSE 0 END) AS total_inflows,\n       SUM(CASE WHEN t.direction = 'OUT' THEN t.amount_usd ELSE 0 END) AS total_outflows,\n       COUNT(DISTINCT CASE WHEN t.direction = 'IN' THEN t.counterparty END) AS unique_depositors,\n       MAX(t.block_timestamp) - MIN(t.block_timestamp) AS platform_active_days,\n       SUM(CASE WHEN t.direction = 'OUT' AND t.counterparty IN (\n           SELECT wallet_address FROM wallets WHERE first_deposit_date > platform_start\n       ) THEN t.amount_usd ELSE 0 END) AS recycled_to_new_investors\nFROM wallet_transactions t\nJOIN wallets w ON t.wallet_address = w.wallet_address\nWHERE w.platform_tag = 'investment_platform'\nGROUP BY w.wallet_address\nHAVING recycled_to_new_investors / NULLIF(total_inflows, 0) > 0.60\nORDER BY total_inflows DESC;",
+      "title": "Ponzi Wallet Structure Detection (SQL)"
+    },
+    {
+      "type": "spl",
+      "content": "index=blockchain sourcetype=crypto_transactions\n| where transaction_type=\"deposit\" AND platform_category=\"investment\"\n| join wallet_address [\n    search index=blockchain sourcetype=crypto_transactions\n    | where service_type IN (\"mixer\", \"tumbler\", \"privacy_coin_swap\")\n    | rename counterparty AS wallet_address\n]\n| eval hours_to_mix=(mixing_timestamp - deposit_timestamp)/3600\n| where hours_to_mix < 24\n| stats count by wallet_address, platform_name, hours_to_mix, mixing_service\n| sort -count",
+      "title": "Crypto Mixing Chain-Hop Detection Following Platform Deposit (Splunk SPL)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT t.transaction_id, t.wallet_address, t.counterparty_wallet,\n       t.amount_usd, t.transaction_date,\n       s.sdn_name, s.sdn_category, s.hop_distance\nFROM crypto_transactions t\nJOIN sdn_wallet_clusters s\n  ON t.counterparty_wallet = s.wallet_address\n  OR t.counterparty_wallet IN (\n    SELECT wallet_address FROM wallet_hops\n    WHERE source_wallet IN (SELECT wallet_address FROM sdn_wallet_clusters)\n    AND hop_count <= 2\n  )\nWHERE t.transaction_date > CURRENT_DATE - INTERVAL '90 days'\nAND t.amount_usd > 10000\nORDER BY t.amount_usd DESC;",
+      "title": "OFAC SDN-Adjacent Wallet Interaction (SQL)"
+    }
+  ]
+}

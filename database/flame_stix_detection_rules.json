@@ -604,5 +604,125 @@
     "content": "SELECT domain_label,\n       LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n       NULLIF(LENGTH(domain_label), 0) AS consonant_ratio,\n       tld, registration_date\nFROM zone_file_domains\nWHERE registration_date > CURRENT_DATE - INTERVAL '7 days'\nAND tld IN ('.cyou', '.sbs', '.click')\nAND LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n    NULLIF(LENGTH(domain_label), 0) > 0.75\nORDER BY registration_date DESC;",
     "title": "RDGA Sender Domain Consonant Ratio Detection (SQL)",
     "tp_id": "TP-0050"
+  },
+  {
+    "type": "spl",
+    "content": "index=web_proxy sourcetype=proxy_logs\n| where url_category=\"qr-scan\" OR referrer_category=\"qr-scan\"\n| rex field=url \"https?://(?P<fqdn>[^/]+)\"\n| lookup domain_age_feed fqdn OUTPUT domain_age_days, domain_registrar\n| where domain_age_days < 30\n| stats count by fqdn, domain_age_days, src_ip, user\n| where count > 1\n| sort -domain_age_days",
+    "title": "QR Code Destination URL — Newly-Registered Domain Detection (Splunk SPL)",
+    "tp_id": "TP-0051"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT a.account_id, a.auth_timestamp, a.auth_ip, a.auth_device_id,\n       e.enrollment_timestamp, e.enrolled_device_id, e.enrollment_ip,\n       DATEDIFF('minute', a.auth_timestamp, e.enrollment_timestamp) AS minutes_to_enrollment\nFROM auth_events a\nJOIN mfa_device_enrollments e ON a.account_id = e.account_id\nWHERE e.enrollment_timestamp > a.auth_timestamp\nAND DATEDIFF('minute', a.auth_timestamp, e.enrollment_timestamp) < 10\nAND a.auth_device_id != e.enrolled_device_id\nAND a.auth_ip != e.enrollment_ip\nORDER BY minutes_to_enrollment ASC;",
+    "title": "New 2FA Device Enrollment Following Recent Authentication (SQL)",
+    "tp_id": "TP-0051"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT t.account_id, t.transfer_timestamp, t.beneficiary_account_id,\n       t.amount, t.currency, e.enrollment_timestamp,\n       DATEDIFF('minute', e.enrollment_timestamp, t.transfer_timestamp) AS minutes_post_enrollment\nFROM transactions t\nJOIN mfa_device_enrollments e ON t.account_id = e.account_id\nWHERE t.transfer_type IN ('mobile_money', 'faster_payment', 'wire')\nAND t.beneficiary_is_new = TRUE\nAND t.transfer_timestamp > e.enrollment_timestamp\nAND DATEDIFF('minute', e.enrollment_timestamp, t.transfer_timestamp) < 60\nAND t.amount > 1000\nORDER BY t.amount DESC;",
+    "title": "Mobile Money Transfer Velocity Post-New-Device-Auth (SQL)",
+    "tp_id": "TP-0051"
+  },
+  {
+    "type": "spl",
+    "content": "index=transactions sourcetype=payment_events\n| where payment_type=\"cryptocurrency\"\n| lookup customer_social_media_events customer_id OUTPUT last_new_contact_date, contact_platform\n| eval days_since_new_contact = (now() - strptime(last_new_contact_date, \"%Y-%m-%d\")) / 86400\n| where days_since_new_contact < 30\n| where is_first_crypto_transaction = \"true\"\n| stats count by customer_id, payment_type, amount, crypto_address, contact_platform, days_since_new_contact\n| sort -amount",
+    "title": "First Crypto Transaction Following New Social Media Contact (Splunk SPL)",
+    "tp_id": "TP-0052"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT t.account_id, t.transaction_date, t.amount, t.currency,\n       t.beneficiary_name, t.beneficiary_account, p.registration_status,\n       p.regulatory_body, p.registration_date\nFROM transactions t\nLEFT JOIN investment_platform_registry p\n  ON t.beneficiary_name ILIKE '%' || p.platform_name || '%'\n  OR t.beneficiary_account = p.platform_account\nWHERE t.transaction_type IN ('crypto_deposit', 'wire', 'faster_payment')\nAND t.beneficiary_category = 'investment_platform'\nAND (p.registration_status IS NULL OR p.registration_status = 'unregistered')\nAND t.transaction_date > CURRENT_DATE - INTERVAL '90 days'\nORDER BY t.amount DESC;",
+    "title": "Investment Platform Deposit — Unregistered Entity Detection (SQL)",
+    "tp_id": "TP-0052"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT v.victim_account_id, v.sar_id, v.report_date,\n       t.transaction_hash, t.crypto_address, t.amount,\n       m.service_name AS mixer_service, m.hop_count\nFROM sar_reports v\nJOIN crypto_transactions t ON v.victim_account_id = t.account_id\nJOIN crypto_mixing_proximity m ON t.transaction_hash = m.transaction_hash\nWHERE v.fraud_category IN ('sextortion', 'investment_fraud', 'hybrid_fraud')\nAND m.hop_count <= 3\nAND t.transaction_date BETWEEN v.incident_start_date AND v.report_date + INTERVAL '30 days'\nORDER BY t.amount DESC;",
+    "title": "Cryptocurrency Address — Mixing Service Proximity Detection (SQL)",
+    "tp_id": "TP-0052"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT la.dealership_id, la.dealership_name,\n       COUNT(DISTINCT la.application_id) AS application_count,\n       COUNT(DISTINCT la.applicant_ssn) AS unique_applicants,\n       MIN(la.application_date) AS first_application,\n       MAX(la.application_date) AS last_application,\n       SUM(la.requested_loan_amount) AS total_requested\nFROM loan_applications la\nWHERE la.loan_type = 'auto'\nAND la.application_date > CURRENT_DATE - INTERVAL '30 days'\nGROUP BY la.dealership_id, la.dealership_name\nHAVING COUNT(DISTINCT la.application_id) >= 3\nAND DATEDIFF('day', MIN(la.application_date), MAX(la.application_date)) <= 14\nORDER BY total_requested DESC;",
+    "title": "Auto Loan Application Clustering — Same Dealership / Short Window (SQL)",
+    "tp_id": "TP-0053"
+  },
+  {
+    "type": "spl",
+    "content": "index=telematics sourcetype=vehicle_gps\n| lookup auto_loans loan_id OUTPUT origination_date, borrower_zip, loan_amount, vehicle_value\n| eval days_since_origination = (now() - strptime(origination_date, \"%Y-%m-%d\")) / 86400\n| where days_since_origination < 60\n| where vehicle_value > 30000\n| iplookup geo_data lat lng OUTPUT region, country\n| where country != borrower_country\n| stats count by loan_id, vehicle_vin, origination_date, last_known_location, country, loan_amount\n| sort -loan_amount",
+    "title": "Vehicle GPS Departure Anomaly — High-Value Loans (Splunk SPL)",
+    "tp_id": "TP-0053"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT la.loan_id, la.application_date, la.vehicle_vin, la.vehicle_value,\n       la.loan_amount, la.ltv_ratio, la.dealership_name,\n       lp.first_payment_date, lp.last_payment_date,\n       lp.payments_made, lp.default_date,\n       DATEDIFF('day', la.application_date, lp.default_date) AS days_to_default\nFROM loan_applications la\nJOIN loan_payment_history lp ON la.loan_id = lp.loan_id\nWHERE la.loan_type = 'auto'\nAND la.ltv_ratio >= 0.90\nAND la.vehicle_value >= 30000\nAND lp.payments_made <= 3\nAND lp.default_date IS NOT NULL\nAND DATEDIFF('day', la.application_date, lp.default_date) < 120\nORDER BY la.vehicle_value DESC;",
+    "title": "Early Default Anomaly — High-LTV Auto Loans (SQL)",
+    "tp_id": "TP-0053"
+  },
+  {
+    "type": "spl",
+    "content": "index=proxy sourcetype=web_proxy\n| eval dest_domain=lower(dest_domain)\n| lookup faas_kit_fingerprints dest_domain OUTPUT kit_family, operator_cluster\n| where isnotnull(kit_family)\n| stats count by dest_domain, kit_family, operator_cluster, src_ip\n| where count > 1\n| sort -count",
+    "title": "FaaS Phishing Kit Fingerprint Detection — Shared Infrastructure (Splunk SPL)",
+    "tp_id": "TP-0054"
+  },
+  {
+    "type": "spl",
+    "content": "index=email sourcetype=email_gateway\n| lookup domain_age_feed sender_domain OUTPUT domain_age_days\n| where domain_age_days < 30\n| regex body=\"(?i)(wire transfer|bank transfer|urgent payment|account number|routing number|IBAN|SWIFT)\"\n| stats count by sender_domain, recipient, subject, domain_age_days\n| sort -count",
+    "title": "BEC Wire Alert — Email from Newly Registered Domain with Wire Instructions (Splunk SPL)",
+    "tp_id": "TP-0054"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT pg.page_url, pg.ssl_fingerprint, pg.js_hash, pg.css_hash,\n       f.kit_family, f.operator_cluster, d.registration_date\nFROM payment_gateway_scans pg\nJOIN faas_kit_signatures f\n  ON pg.js_hash = f.js_hash OR pg.css_hash = f.css_hash\nJOIN domain_intel d ON pg.domain = d.domain_name\nWHERE d.registration_date > CURRENT_DATE - INTERVAL '30 days'\nORDER BY d.registration_date DESC;",
+    "title": "FaaS Payment Gateway Clone Detection (SQL)",
+    "tp_id": "TP-0054"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT c1.campaign_id AS campaign_a,\n       c2.campaign_id AS campaign_b,\n       h.hosting_asn, h.hosting_ip_range,\n       COUNT(*) AS shared_domains\nFROM campaign_domains c1\nJOIN campaign_domains c2 ON c1.hosting_ip = c2.hosting_ip\n  AND c1.campaign_id < c2.campaign_id\nJOIN hosting_intel h ON c1.hosting_ip = h.ip_address\nGROUP BY c1.campaign_id, c2.campaign_id, h.hosting_asn, h.hosting_ip_range\nHAVING COUNT(*) > 3\nORDER BY shared_domains DESC;",
+    "title": "Cross-Campaign Infrastructure Clustering (SQL)",
+    "tp_id": "TP-0054"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT w.wallet_address,\n       SUM(CASE WHEN t.direction = 'IN' THEN t.amount_usd ELSE 0 END) AS total_inflows,\n       SUM(CASE WHEN t.direction = 'OUT' THEN t.amount_usd ELSE 0 END) AS total_outflows,\n       COUNT(DISTINCT CASE WHEN t.direction = 'IN' THEN t.counterparty END) AS unique_depositors,\n       MAX(t.block_timestamp) - MIN(t.block_timestamp) AS platform_active_days,\n       SUM(CASE WHEN t.direction = 'OUT' AND t.counterparty IN (\n           SELECT wallet_address FROM wallets WHERE first_deposit_date > platform_start\n       ) THEN t.amount_usd ELSE 0 END) AS recycled_to_new_investors\nFROM wallet_transactions t\nJOIN wallets w ON t.wallet_address = w.wallet_address\nWHERE w.platform_tag = 'investment_platform'\nGROUP BY w.wallet_address\nHAVING recycled_to_new_investors / NULLIF(total_inflows, 0) > 0.60\nORDER BY total_inflows DESC;",
+    "title": "Ponzi Wallet Structure Detection (SQL)",
+    "tp_id": "TP-0055"
+  },
+  {
+    "type": "spl",
+    "content": "index=blockchain sourcetype=crypto_transactions\n| where transaction_type=\"deposit\" AND platform_category=\"investment\"\n| join wallet_address [\n    search index=blockchain sourcetype=crypto_transactions\n    | where service_type IN (\"mixer\", \"tumbler\", \"privacy_coin_swap\")\n    | rename counterparty AS wallet_address\n]\n| eval hours_to_mix=(mixing_timestamp - deposit_timestamp)/3600\n| where hours_to_mix < 24\n| stats count by wallet_address, platform_name, hours_to_mix, mixing_service\n| sort -count",
+    "title": "Crypto Mixing Chain-Hop Detection Following Platform Deposit (Splunk SPL)",
+    "tp_id": "TP-0055"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT t.transaction_id, t.wallet_address, t.counterparty_wallet,\n       t.amount_usd, t.transaction_date,\n       s.sdn_name, s.sdn_category, s.hop_distance\nFROM crypto_transactions t\nJOIN sdn_wallet_clusters s\n  ON t.counterparty_wallet = s.wallet_address\n  OR t.counterparty_wallet IN (\n    SELECT wallet_address FROM wallet_hops\n    WHERE source_wallet IN (SELECT wallet_address FROM sdn_wallet_clusters)\n    AND hop_count <= 2\n  )\nWHERE t.transaction_date > CURRENT_DATE - INTERVAL '90 days'\nAND t.amount_usd > 10000\nORDER BY t.amount_usd DESC;",
+    "title": "OFAC SDN-Adjacent Wallet Interaction (SQL)",
+    "tp_id": "TP-0055"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT cr.participant_id, cr.participant_name,\n       COUNT(DISTINCT cr.claim_id) AS claim_count,\n       COUNT(DISTINCT cr.insurer_id) AS insurer_count,\n       MIN(c.incident_date) AS first_incident,\n       MAX(c.incident_date) AS last_incident,\n       ARRAY_AGG(DISTINCT c.incident_location) AS locations\nFROM claim_participants cr\nJOIN claims c ON cr.claim_id = c.claim_id\nWHERE c.incident_date > CURRENT_DATE - INTERVAL '24 months'\nGROUP BY cr.participant_id, cr.participant_name\nHAVING COUNT(DISTINCT cr.claim_id) > 2\nORDER BY claim_count DESC, insurer_count DESC;",
+    "title": "Claims Geographic Clustering — Recurring Participant Detection (SQL)",
+    "tp_id": "TP-0056"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT p.provider_id, p.provider_name, p.specialty,\n       COUNT(DISTINCT b.patient_id) AS unique_patients,\n       COUNT(b.claim_id) AS total_claims,\n       COUNT(b.claim_id)::FLOAT / NULLIF(COUNT(DISTINCT b.patient_id), 0) AS claims_per_patient,\n       MODE() WITHIN GROUP (ORDER BY b.procedure_code) AS dominant_procedure,\n       COUNT(CASE WHEN b.procedure_code = MODE() WITHIN GROUP (ORDER BY b.procedure_code)\n             THEN 1 END)::FLOAT / COUNT(b.claim_id) AS dominant_procedure_ratio\nFROM billing_claims b\nJOIN providers p ON b.provider_id = p.provider_id\nWHERE b.claim_date > CURRENT_DATE - INTERVAL '12 months'\nGROUP BY p.provider_id, p.provider_name, p.specialty\nHAVING claims_per_patient > 4\nOR dominant_procedure_ratio > 0.80\nORDER BY claims_per_patient DESC;",
+    "title": "Medical Provider Billing Anomaly Detection (SQL)",
+    "tp_id": "TP-0056"
+  },
+  {
+    "type": "spl",
+    "content": "index=claims_portal sourcetype=document_submission\n| eval doc_created_date=strptime(metadata_creation_date, \"%Y-%m-%d\")\n| eval incident_date=strptime(claim_incident_date, \"%Y-%m-%d\")\n| eval days_before_incident=(incident_date - doc_created_date)/86400\n| where days_before_incident < 0\n| stats count by claim_id, document_type, metadata_author, metadata_software, days_before_incident\n| where count > 0\n| sort -days_before_incident",
+    "title": "Document Submission Metadata Anomaly Detection (Splunk SPL)",
+    "tp_id": "TP-0056"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT c.claim_id, c.policy_id, c.incident_date, c.filed_date,\n       ch.change_type, ch.change_date,\n       DATEDIFF('day', ch.change_date, c.filed_date) AS days_between_change_and_claim\nFROM claims c\nJOIN policy_changes ch ON c.policy_id = ch.policy_id\nWHERE ch.change_type IN ('bank_account', 'address', 'contact_phone', 'email')\nAND ch.change_date BETWEEN c.incident_date - INTERVAL '30 days' AND c.filed_date\nORDER BY days_between_change_and_claim ASC;",
+    "title": "Policy Change Proximity to Claim Filing (SQL)",
+    "tp_id": "TP-0056"
   }
 ]
