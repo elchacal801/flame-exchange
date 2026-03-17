@@ -138,7 +138,15 @@
       "Bash(git push)",
       "Bash(git fetch origin main)",
       "Bash(git rebase origin/main)",
-      "Bash(git stash --include-untracked)"
+      "Bash(git stash --include-untracked)",
+      "Bash(gh issue:*)",
+      "Bash(do echo:*)",
+      "Bash(sed:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(node:*)"
     ]
   }
 }
