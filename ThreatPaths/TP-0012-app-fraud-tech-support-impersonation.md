@@ -168,6 +168,8 @@ AND c.call_end >= t.timestamp;
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $1.46B in tech support scam losses, confirming it as one of the highest-loss fraud categories. Elderly victims (60+) are disproportionately impacted, contributing to $4.9B in total IC3-reported losses across all categories in 2024. Tech support and bank impersonation scams exploit the authority trust dynamic, making them particularly effective against older demographics who are more likely to respond to unsolicited phone calls.
 
+**INTERPOL 2026 Update — Physical Impersonation Evolution**: INTERPOL has documented a significant shift in impersonation fraud in Eastern Asia: criminals posing as law enforcement or bank representatives now instruct victims to leave cash at their doorsteps, where physical accomplices collect it. This bridges virtual deception and real-world crime, creating a hybrid threat that requires coordination between cyber fraud and physical security teams. Additionally, "grandparent scams" (fabricated family emergencies demanding immediate payment) have surged across the Caribbean and Europe, exploiting emotional vulnerability rather than technical sophistication. These variants expand the TP-0012 threat surface beyond tech support impersonation to broader authority/family impersonation vectors.
+
 ## References
 
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
@@ -175,6 +177,7 @@ AND c.call_end >= t.timestamp;
 - UK Payment Systems Regulator: APP Fraud Data (annual). [Link](https://www.psr.org.uk/)
 - FTC: Consumer Sentinel Data — Impersonation Scams. [Link](https://www.ftc.gov/enforcement/consumer-sentinel-network)
 - Which?: "Authorized Push Payment Scam" investigation
+- INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents evolution of impersonation fraud from remote calls to physical theft in Eastern Asia (doorstep cash collection by accomplices); reports surge in "grandparent scams" / "shock calls" across Caribbean and Europe involving fabricated family emergencies
 
 ## Revision History
 
@@ -182,3 +185,4 @@ AND c.call_end >= t.timestamp;
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
+| 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — physical impersonation evolution and grandparent scam surge |

@@ -413,6 +413,8 @@ ORDER BY t.total_amount_30d DESC;
 
 - **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional investigation methodology applicable to romance fraud kill chain analysis. [Link](https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf)
 
+- INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents Fraud-as-a-Service platforms powered by generative AI and LLMs enabling widespread adoption of cybercrime; platforms provide automated phishing websites, fake payment gateways, and bot-generated fake testimonials
+
 ---
 
 ## Cross-References
@@ -445,6 +447,8 @@ This threat path represents the convergence of two major trends in financial cri
 
 **Detection arms race**: As GenAI capabilities improve, the artifacts that current deepfake detection tools rely on (spectral anomalies in voice, face boundary artifacts in video) will become increasingly subtle. Institutions investing in deepfake detection must plan for continuous model retraining and should not rely exclusively on technical detection — behavioral analytics (payment patterns, communication correlation) provide more durable detection signals.
 
+**INTERPOL 2026 Update — FaaS Enablement**: INTERPOL confirms that "Fraud-as-a-Service" platforms powered by generative AI and large language models have enabled low-skill actors to launch professional-grade romance-variant APP campaigns with minimal effort. These platforms provide ready-made tools including automated phishing websites, fake payment gateways, and bot-generated fake testimonials that mimic legitimate communications. See TP-0054 for the full FaaS platform threat path. The democratization of these tools means that romance APP campaigns are no longer limited to sophisticated criminal organizations — individual actors with subscription access can now execute campaigns previously requiring teams.
+
 ---
 
 ## Revision History
@@ -452,3 +456,4 @@ This threat path represents the convergence of two major trends in financial cri
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-02 | FLAME Project | Initial submission |
+| 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — FaaS platform enablement of romance APP campaigns |

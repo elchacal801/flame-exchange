@@ -259,6 +259,8 @@ WHERE c.age >= 60
 
 **2024-2026 Intelligence Update (RF CTA-2026-0212):** The pig butchering threat landscape has industrialized dramatically. Nearly $10B in crypto-based scam losses were reported in 2024, with investment fraud accounting for $6.5B per IC3. Southeast Asian transnational criminal organizations (TCOs) operate industrial-scale scam compounds in Cambodia and Myanmar, increasingly using coerced and trafficked labor alongside AI automation. The underground marketplace supporting these operations shows remarkable resilience — when Huione Guarantee (a Telegram-based fraud tool marketplace) was disrupted, successors like Tudou emerged rapidly. An emerging technique variant, "ghost-tapping," uses pre-loaded stolen payment credentials on NFC-enabled devices for contactless payment fraud at physical POS terminals. Malicious AI models (Nytheon AI, Xanthorox AI, GhostGPT) have replaced earlier tools like WormGPT and FraudGPT, offering more sophisticated social engineering capabilities. The infostealer-as-a-service (MaaS) pipeline continues to lower the barrier to entry for less technically skilled operators.
 
+**INTERPOL 2026 Update — Scale and Evolution**: The INTERPOL GFFTA 2026 confirms investment fraud (including pig butchering) as the costliest fraud type globally. FBI IC3 data shows USD 5.6 billion in US investment fraud losses in 2023 alone. Key evolutions: (1) AI-generated dashboards now show victims fabricated portfolio returns, making the deception harder to detect; (2) hybrid investment-sextortion schemes use deepfakes to blackmail victims who attempt to withdraw, adding a coercion layer to the pig butchering model (see TP-0052); (3) fraudsters tailor pitches to exploit religious, ethnic, or national identities in victims' native languages, indicating sophisticated audience segmentation. Defrauded funds are frequently laundered through cryptocurrencies across Southeast Asia, South Asia, MENA, Europe, and Africa.
+
 ---
 
 ## References
@@ -267,6 +269,8 @@ WHERE c.age >= 60
 - FBI IC3 2023-2024 Cryptocurrency Fraud Reports. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - Recorded Future: "2026 State of Security" (CTA-2026-0212) — SE Asian TCO fraud operations, marketplace resilience, AI tool evolution. [Link](https://www.recordedfuture.com/research/)
 - FBI IC3 2024 Internet Crime Report — investment fraud and crypto loss figures. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — reports investment fraud as the most financially damaging fraud type globally; documents hybrid investment-sextortion schemes using deepfakes; notes AI-generated dashboards showing fabricated returns
+- FBI Internet Crime Complaint Center (IC3), *2024 Internet Crime Report*, April 2025 — USD 5.6 billion in investment fraud losses reported in the United States alone (2023)
 
 ---
 
@@ -276,3 +280,4 @@ WHERE c.age >= 60
 |------|--------|--------|
 | 2026-02-20 | FLAME Project | Initial creation |
 | 2026-02-28 | FLAME Project | Enriched with RF 2026 TCO intelligence, Underground Ecosystem Context, ghost-tapping variant |
+| 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — investment fraud scale, AI dashboard intelligence, sextortion-hybrid convergence |

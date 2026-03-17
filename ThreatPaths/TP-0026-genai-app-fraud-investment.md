@@ -445,6 +445,8 @@ ORDER BY t.amount DESC;
 
 - **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional investigation methodology applicable to investment fraud kill chain analysis. [Link](https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf)
 
+- INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents Fraud-as-a-Service platforms powered by generative AI and LLMs enabling widespread adoption of cybercrime; platforms provide automated phishing websites, fake payment gateways, and bot-generated fake testimonials
+
 ---
 
 ## Cross-References
@@ -481,6 +483,8 @@ This threat path represents the single largest financial fraud category by total
 
 **Secondary victimization**: Investment fraud victims are among the most vulnerable to secondary exploitation. "Recovery scams" — where actors impersonate law enforcement, regulators, or recovery services and charge fees to "retrieve" lost funds — target known victims and can extract additional losses of $5,000-$50,000. Financial institutions should proactively warn confirmed investment fraud victims about recovery scam risks.
 
+**INTERPOL 2026 Update — FaaS Enablement**: INTERPOL reports that Fraud-as-a-Service platforms now provide investment-variant APP campaign toolkits including AI-generated crypto trading dashboards, fake exchange interfaces with manipulated return displays, and bot-generated testimonials from fake "successful investors." These platforms (see TP-0054) have enabled an explosion of investment fraud campaigns across Asia-Pacific and Europe, with criminals promoting deceptive platforms offering unrealistic returns on cryptocurrencies, renewable energy, or luxury assets. The FaaS model enables campaign operators to focus on victim engagement while the platform handles infrastructure.
+
 ---
 
 ## Revision History
@@ -488,3 +492,4 @@ This threat path represents the single largest financial fraud category by total
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-02 | FLAME Project | Initial submission |
+| 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — FaaS platform enablement of investment APP campaigns |

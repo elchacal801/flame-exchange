@@ -508,6 +508,7 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 - CrimsonVector. "Strategic Intelligence Report: State-Criminal Convergence." 2025-2026 — no public URL (proprietary report).
 - FBI/CISA. "Advisory on DPRK IT Worker Infiltration." 2025. [Link](https://www.cisa.gov/topics/cyber-threats-and-advisories)
 - OFAC. "Sanctions Designations: DPRK-Linked Cryptocurrency Wallets." 2024-2025. [Link](https://ofac.treasury.gov/)
+- INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents arrest of suspect linked to Tren de Aragua in connection with USD 150 million cryptocurrency fraud scheme used to launder proceeds from drug trafficking and extortion across Chile, Colombia, Venezuela and the Iberian Peninsula; highlights convergence of financial fraud and organized crime in South America
 
 ---
 
@@ -519,6 +520,8 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 - **Evolving threat**: The Moonstone Sleet / Qilin partnership may represent a model that other state actors adopt. Iranian and Chinese state-aligned groups with financial motivations may similarly adopt criminal RaaS platforms, expanding the state-criminal convergence threat beyond the DPRK-Russia axis currently documented.
 - **Sanctions evasion as driver**: DPRK's primary motivation for criminal convergence is sanctions evasion — generating revenue through means that circumvent traditional financial system controls. As sanctions enforcement tightens on cryptocurrency exchanges and CMLN operations, DPRK will likely adapt by adopting new monetization pathways (DeFi protocols, privacy coins, peer-to-peer settlement), requiring continuous monitoring adaptation.
 
+**INTERPOL 2026 Update — South American Narco-Fraud Convergence**: INTERPOL documents a significant case: a suspect with alleged links to Tren de Aragua was arrested in connection with a USD 150 million cryptocurrency fraud scheme used to launder drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula. This represents a concrete instance of state-criminal convergence where South American crime syndicates — traditionally linked to drug trafficking, arms trafficking, and money laundering — are now actively operating financial fraud as a primary revenue stream, not merely using fraud infrastructure incidentally. See TP-0055 for the dedicated crypto-narco nexus threat path.
+
 ---
 
 ## Revision History
@@ -526,3 +529,4 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 | Date | Version | Author | Changes |
 |------|---------|--------|---------|
 | 2026-03-05 | 1.0 | FLAME Project | Initial publication based on CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, and Atlantic Council sources |
+| 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — Tren de Aragua narco-crypto convergence case |

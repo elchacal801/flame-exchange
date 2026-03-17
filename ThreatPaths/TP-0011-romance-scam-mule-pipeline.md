@@ -262,6 +262,8 @@ Global enforcement actions are escalating: Europol supported operations against 
 
 Mule recruitment increasingly targets youth: 35% of Gen Z say they would consider moving money for a stranger for a fee, 14% "very likely." Among 18-24 year olds, 30% say they or someone they know has been approached, and 27% would be open to it. Three mule typologies are now recognized: complicit (willing participants), recruited (persuaded, paid, or forced), and exploited (unwitting participants whose accounts are misused).
 
+**INTERPOL 2026 Update — MENA and European Patterns**: INTERPOL reports that in the MENA region, investment fraud victims are being coerced into acting as money mules, allowing their bank accounts to serve as transit hubs for funds stolen from other victims. This represents a convergence of investment fraud and mule recruitment that differs from the traditional romance-to-mule pipeline. In Europe, INTERPOL documents re-victimization patterns where initial fraud victims are subsequently recruited as mules through fraudsters posing as "recovery agents" or law enforcement — a secondary exploitation cycle that extends the mule pipeline beyond the romance vector.
+
 ## References
 
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
@@ -270,6 +272,7 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 - UNODC: "Online Scam Operations in Southeast Asia". [Link](https://www.unodc.org/roseap/en/2024/08/online-fraud-southeast-asia-2024/story.html)
 - Group-IB Fraud Intelligence: "Evolving Mule Tactics" report (6-stage mule evolution analysis, META region Q4 2023 – Q1 2025, detection methodology)
 - **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Mule network operational scale data, Gen Z recruitment statistics, enforcement action summaries.
+- INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents MENA region victims coerced into money mule roles via investment fraud schemes; European re-victimization patterns where fraud victims are recruited as mules through "recovery" scams
 
 ## Revision History
 
@@ -277,3 +280,4 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Underground Ecosystem Context, IC3 2024 loss figures |
+| 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — MENA and European mule recruitment patterns |

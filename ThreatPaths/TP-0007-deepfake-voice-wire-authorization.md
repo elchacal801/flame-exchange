@@ -230,6 +230,8 @@ AND NOT EXISTS (
 
 This threat path is evolving rapidly. In 2019, deepfake voice was novel and expensive. By 2025-2026, real-time voice cloning is available through commercial APIs for under $50/month. The Arup case (2024) demonstrated a multi-person deepfake video call — the entire authorization meeting was synthetic. Controls that rely on "call them back to verify" are necessary but may not be sufficient as voice cloning improves. Organizations should move toward out-of-band verification methods that don't rely on voice.
 
+**INTERPOL 2026 Update**: The INTERPOL GFFTA 2026 confirms that BEC fraud across Asia-Pacific has evolved to include real-time deepfake audio impersonation of CEOs and CFOs during live phone calls, bypassing traditional voice-based verification protocols. This represents an escalation from pre-recorded deepfake audio to interactive, real-time voice synthesis. Fraud-as-a-Service platforms (TP-0054) are now offering deepfake voice generation as a subscription service, lowering the barrier to entry for this attack vector.
+
 ## References
 
 - Wall Street Journal: "Fraudsters Used AI to Mimic CEO's Voice in Unusual Cybercrime Case" (2019). [Link](https://www.wsj.com/articles/fraudsters-use-ai-to-mimic-ceos-voice-in-unusual-cybercrime-case-11567157402)
@@ -238,6 +240,7 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 - FS-ISAC: Generative AI in Financial Services guidance. [Link](https://www.fsisac.com/navigating-cyber-2025)
 - Group-IB Fraud Intelligence: "C-level impersonation Using Deepvoice" scheme report (technique-level Fraud Matrix mapping)
 - World Economic Forum: "Deepfake Identity Verification" (January 2026) — cross-reference with voice synthesis ecosystem and deepfake countermeasures
+- INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents deepfake audio CEO/CFO impersonation during live BEC calls across Asia-Pacific region; notes FaaS platforms now offering deepfake voice generation tools
 
 ## Revision History
 
@@ -245,3 +248,4 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section, Underground Ecosystem Context, WEF deepfake intelligence |
+| 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — Asia-Pacific deepfake BEC intelligence |

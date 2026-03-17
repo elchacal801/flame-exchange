@@ -510,6 +510,9 @@ OFAC designated Funnull Technology, a content delivery network (CDN) provider th
 - CrimsonVector. "Strategic Intelligence Report: Trafficking-Linked Fraud Infrastructure." 2025-2026 — no public URL (proprietary report).
 - United Nations Office on Drugs and Crime. "Casinos, Cyber Fraud, and Trafficking in Persons for Forced Criminality in Southeast Asia." 2024. [Link](https://www.unodc.org/roseap/en/2024/08/online-fraud-southeast-asia-2024/story.html)
 - TRM Labs. "Cryptocurrency Flows to Human Trafficking Services." 2025. [Link](https://www.trmlabs.com/resources)
+- INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents scam centre expansion to South America (Spanish/Portuguese-speaking labour demand), Pacific Island nations, and MENA region; reports China-Myanmar-Thailand coordinated operations leading to demolition of 635 buildings in KK Park and full evacuation of Yatai New City with 14,000 foreign nationals from 54 countries detained; notes MENA scam centres targeting Syrian refugees with false promises of safe passage to Europe
+- UNODC, *Inflection Point: Global Implications of Scam Centres, Underground Banking and Illicit Online Marketplaces in Southeast Asia*, April 2025
+- INTERPOL, *Crime Trend Update: Human Trafficking-Fueled Scam Centres*, June 2025
 
 ---
 
@@ -522,6 +525,15 @@ OFAC designated Funnull Technology, a content delivery network (CDN) provider th
 - **Sanctions compliance velocity**: OFAC designations of trafficking-linked entities (Karen National Army, Shwe Kokko, Funnull, Prince Group) require rapid compliance response. However, compound operators routinely migrate infrastructure following sanctions designations — new wallet addresses, new domains, new corporate entities — within days. Compliance teams must implement dynamic sanctions screening that tracks entity migration rather than relying on static address-based blocking.
 - **Connection to related TPs**: This threat path shares infrastructure with TP-0045 (Sanctions Evasion via Fraud Infrastructure) through Huione Group and CMLN networks, relates to TP-0044 (State-Criminal Infrastructure Convergence) through DPRK involvement in cryptocurrency theft proceeds laundered through the same CMLN ecosystem, and feeds into TP-0049 through the downstream financial system impacts of trafficking-linked fraud proceeds.
 
+**INTERPOL 2026 Update — Global Scam Centre Expansion**: The INTERPOL GFFTA 2026 documents major developments in scam centre operations:
+
+1. **Geographic expansion**: Scam centres have expanded beyond Southeast Asia into South America, Pacific Island nations, and the MENA region. Transnational organized crime groups from East Asia are increasingly targeting South America, driving demand for Spanish- and Portuguese-speaking labour.
+2. **Myanmar crackdown**: Between February and December 2025, China, Myanmar, and Thailand conducted coordinated operations against scam compounds in Myanmar, leading to the demolition of 635 buildings in KK Park and the full evacuation of Yatai New City, with 14,000 foreign nationals from 54 countries detained.
+3. **MENA trafficking nexus**: Criminal networks in the MENA region target Syrian refugees via social media, luring them with false promises of safe passage to Europe, extracting up to USD 5,000 per victim in smuggling fees. Victims are transported via Lebanon or Türkiye to Cyprus and Italy, where they are forced into labour or abandoned — a hybrid digital-physical enterprise where fraud directly funds human exploitation.
+4. **Pacific exploitation**: Scam operations are exploiting weak regulatory oversight in Pacific Island nations, abusing Special Economic Zones, shell companies, and citizenship-by-investment programmes.
+
+These developments confirm the global metastasis of the scam centre model beyond its Southeast Asian origins.
+
 ---
 
 ## Revision History
@@ -529,3 +541,4 @@ OFAC designated Funnull Technology, a content delivery network (CDN) provider th
 | Date | Version | Author | Changes |
 |------|---------|--------|---------|
 | 2026-03-05 | 1.0 | FLAME Project | Initial publication based on CrimsonVector Strategic Intelligence Report, FBI IC3, Chainalysis, OFAC, and DOJ Scam Center Strike Force sources |
+| 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — global scam centre expansion, Myanmar crackdown, MENA trafficking nexus |
