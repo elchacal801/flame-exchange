@@ -1,6 +1,6 @@
 # FLAME Threat Path Index
 
-> 50 threat paths covering 72 fraud types across 16 sectors
+> 56 threat paths covering 76 fraud types across 16 sectors
 > Framework-agnostic: mapped to CFPF phases with cross-references to FT3, ATT&CK, and Group-IB Fraud Matrix
 
 ## Coverage Summary
@@ -57,24 +57,30 @@
 | TP-0048 | Bulletproof Hosting Migration Patterns | bph-migration, sanctions-evasion-infrastructure | Cross-sector | P1-P5 |
 | TP-0049 | Cryptocurrency Laundering Infrastructure | crypto-laundering-infrastructure, cmln-operations | Crypto, Banking, Cross-sector | P1-P5 |
 | TP-0050 | Calendar/Invite Injection Phishing | calendar-phishing, social-engineering | Banking, Cross-sector | P1-P5 |
+| TP-0051 | QR Code Payment Fraud / Quishing | quishing, credential-stuffing, account-takeover, social-engineering | Banking, Payments, Retail, Cross-sector | P1-P5 |
+| TP-0052 | Sextortion-Investment Hybrid Fraud | sextortion, investment-scam, deepfake, social-engineering, romance-scam | Banking, Crypto, Investment, Cross-sector | P1-P5 |
+| TP-0053 | Vehicle Export Financing Fraud | vehicle-export-fraud, identity-theft, application-fraud, loan-fraud | Banking, Cross-sector | P1-P5 |
+| TP-0054 | Fraud-as-a-Service (FaaS) Platforms | fraud-as-a-service, ai-accelerated-fraud-infrastructure, phishing, brand-impersonation | Cross-sector, Banking, Payments, Crypto, Technology | P1-P5 |
+| TP-0055 | Crypto Fraud–Terrorism/Narco Financing Nexus | crypto-laundering, investment-scam, state-criminal-convergence, money-mule | Crypto, Banking, Cross-sector | P1-P5 |
+| TP-0056 | Insurance Claims Fraud (Motor/Medical) | insurance-fraud, fraudulent-claim, identity-theft, documentary-fraud | Insurance, Healthcare, Banking, Government | P1-P5 |
 
 ## Coverage by Fraud Type
 
 | Fraud Type | Threat Paths |
 |------------|-------------|
 | Bec | TP-0002, TP-0004, TP-0006, TP-0007 |
-| Account Takeover | TP-0001, TP-0004, TP-0005, TP-0008, TP-0012, TP-0013, TP-0014, TP-0019, TP-0023, TP-0027, TP-0037, TP-0039, TP-0040 |
+| Account Takeover | TP-0001, TP-0004, TP-0005, TP-0008, TP-0012, TP-0013, TP-0014, TP-0019, TP-0023, TP-0027, TP-0037, TP-0039, TP-0040, TP-0051 |
 | Advance Fee Fraud | TP-0015 |
-| Ai Accelerated Fraud Infrastructure | TP-0043 |
+| Ai Accelerated Fraud Infrastructure | TP-0043, TP-0054 |
 | Ai Document Fraud | TP-0029 |
-| Application Fraud | TP-0003, TP-0029 |
+| Application Fraud | TP-0003, TP-0029, TP-0053 |
 | Approval Phishing | TP-0032 |
 | Authorized Push Payment | TP-0017, TP-0024, TP-0025, TP-0026, TP-0027 |
 | Autonomous Ai Fraud | TP-0039 |
 | Benefit Fraud | TP-0022, TP-0033 |
 | Bnpl Fraud | TP-0040 |
 | Bph Migration | TP-0048 |
-| Brand Impersonation | TP-0036, TP-0043 |
+| Brand Impersonation | TP-0036, TP-0043, TP-0054 |
 | Business Email Compromise | TP-0019, TP-0020 |
 | Bust Out | TP-0016 |
 | Calendar Phishing | TP-0050 |
@@ -82,54 +88,59 @@
 | Check Fraud | TP-0009 |
 | Cmln Operations | TP-0049 |
 | Collusion | TP-0014 |
-| Credential Stuffing | TP-0013 |
-| Crypto Laundering | TP-0008, TP-0026, TP-0032, TP-0044, TP-0045, TP-0047 |
+| Credential Stuffing | TP-0013, TP-0051 |
+| Crypto Laundering | TP-0008, TP-0026, TP-0032, TP-0044, TP-0045, TP-0047, TP-0055 |
 | Crypto Laundering Infrastructure | TP-0049 |
 | Data Theft | TP-0014, TP-0034, TP-0035, TP-0038 |
-| Deepfake | TP-0007 |
+| Deepfake | TP-0007, TP-0052 |
 | Deepfake Fraud | TP-0025, TP-0026 |
 | Digital Wallet Fraud | TP-0037 |
 | Disability Fraud | TP-0010 |
-| Documentary Fraud | TP-0018 |
+| Documentary Fraud | TP-0018, TP-0056 |
 | Dprk It Worker Fraud | TP-0034 |
 | E Skimmer | TP-0035 |
 | Employment Fraud | TP-0034 |
 | First Party Fraud | TP-0016, TP-0030, TP-0031, TP-0036, TP-0040 |
-| Fraudulent Claim | TP-0010 |
+| Fraud As A Service | TP-0054 |
+| Fraudulent Claim | TP-0010, TP-0056 |
 | Ghost Student Fraud | TP-0033 |
 | Healthcare Fraud | TP-0021, TP-0028 |
 | Human Trafficking Facilitation | TP-0047 |
-| Identity Theft | TP-0015, TP-0018, TP-0019, TP-0022, TP-0030, TP-0034, TP-0035, TP-0038, TP-0040 |
+| Identity Theft | TP-0015, TP-0018, TP-0019, TP-0022, TP-0030, TP-0034, TP-0035, TP-0038, TP-0040, TP-0053, TP-0056 |
 | Impersonation | TP-0006, TP-0007, TP-0012, TP-0015 |
 | Insider Threat | TP-0014 |
-| Investment Scam | TP-0017, TP-0026 |
+| Insurance Fraud | TP-0056 |
+| Investment Scam | TP-0017, TP-0026, TP-0052, TP-0055 |
 | Invoice Fraud | TP-0002 |
-| Loan Fraud | TP-0019 |
+| Loan Fraud | TP-0019, TP-0053 |
 | Malvertising | TP-0001, TP-0042 |
 | Malware | TP-0023, TP-0035, TP-0044 |
-| Money Mule | TP-0011 |
+| Money Mule | TP-0011, TP-0055 |
 | New Account Fraud | TP-0003, TP-0018, TP-0029 |
 | Nfc Relay | TP-0037 |
 | Payment Diversion | TP-0002, TP-0006, TP-0024, TP-0030 |
 | Payroll Diversion | TP-0004 |
 | Phantom Billing | TP-0021, TP-0028 |
-| Phishing | TP-0004, TP-0005, TP-0032, TP-0042, TP-0043, TP-0050 |
+| Phishing | TP-0004, TP-0005, TP-0032, TP-0042, TP-0043, TP-0054 |
 | Premium Diversion | TP-0005 |
 | Provider Fraud | TP-0010, TP-0028 |
 | Purchase Scam | TP-0036 |
+| Quishing | TP-0051 |
 | Rdga Infrastructure | TP-0041 |
 | Refunding As A Service | TP-0031 |
-| Romance Scam | TP-0011, TP-0025, TP-0027 |
+| Romance Scam | TP-0011, TP-0025, TP-0027, TP-0052 |
 | Sanctions Evasion Infrastructure | TP-0045, TP-0048 |
 | Scam Compound Operations | TP-0047 |
-| Social Engineering | TP-0017, TP-0025, TP-0027, TP-0036, TP-0037, TP-0039, TP-0040, TP-0050 |
-| State Criminal Convergence | TP-0044, TP-0046 |
+| Sextortion | TP-0052 |
+| Social Engineering | TP-0017, TP-0025, TP-0027, TP-0036, TP-0037, TP-0039, TP-0040, TP-0050, TP-0051, TP-0052 |
+| State Criminal Convergence | TP-0044, TP-0046, TP-0055 |
 | Synthetic Identity | TP-0003, TP-0018, TP-0022, TP-0029, TP-0033 |
 | Synthetic Medical Fraud | TP-0028 |
 | Tax Fraud | TP-0022 |
 | Tds Exploitation | TP-0042 |
 | Unauthorized Transaction | TP-0023, TP-0039 |
 | Upcoding | TP-0021 |
+| Vehicle Export Fraud | TP-0053 |
 | Vendor Impersonation | TP-0020 |
 | Vishing | TP-0001, TP-0012 |
 | Wire Fraud | TP-0001, TP-0002, TP-0006, TP-0007, TP-0020, TP-0024 |
@@ -138,33 +149,33 @@
 
 | Sector | Threat Paths |
 |--------|-------------|
-| Banking | TP-0001, TP-0002, TP-0003, TP-0006, TP-0007, TP-0008, TP-0009, TP-0012, TP-0013, TP-0014, TP-0016, TP-0017, TP-0018, TP-0019, TP-0020, TP-0022, TP-0023, TP-0024, TP-0025, TP-0026, TP-0027, TP-0029, TP-0034, TP-0036, TP-0037, TP-0040, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0049, TP-0050 |
+| Banking | TP-0001, TP-0002, TP-0003, TP-0006, TP-0007, TP-0008, TP-0009, TP-0012, TP-0013, TP-0014, TP-0016, TP-0017, TP-0018, TP-0019, TP-0020, TP-0022, TP-0023, TP-0024, TP-0025, TP-0026, TP-0027, TP-0029, TP-0034, TP-0036, TP-0037, TP-0040, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0056 |
 | Credit Union | TP-0009, TP-0012, TP-0014, TP-0016, TP-0018 |
-| Cross Sector | TP-0002, TP-0004, TP-0006, TP-0007, TP-0011, TP-0013, TP-0017, TP-0020, TP-0025, TP-0027, TP-0039, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0048, TP-0049, TP-0050 |
-| Crypto | TP-0008, TP-0017, TP-0023, TP-0026, TP-0032, TP-0034, TP-0041, TP-0043, TP-0044, TP-0045, TP-0047, TP-0049 |
+| Cross Sector | TP-0002, TP-0004, TP-0006, TP-0007, TP-0011, TP-0013, TP-0017, TP-0020, TP-0025, TP-0027, TP-0039, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0048, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055 |
+| Crypto | TP-0008, TP-0017, TP-0023, TP-0026, TP-0032, TP-0034, TP-0041, TP-0043, TP-0044, TP-0045, TP-0047, TP-0049, TP-0052, TP-0054, TP-0055 |
 | Education | TP-0033 |
 | Employment | TP-0015, TP-0034 |
 | Fintech | TP-0003, TP-0008, TP-0013, TP-0018, TP-0023, TP-0024, TP-0029, TP-0035, TP-0037, TP-0038, TP-0039, TP-0040 |
-| Government | TP-0022, TP-0028, TP-0033, TP-0034 |
-| Healthcare | TP-0015, TP-0021, TP-0028, TP-0034 |
-| Insurance | TP-0005, TP-0010, TP-0014, TP-0021, TP-0028 |
-| Investment | TP-0019, TP-0026, TP-0041 |
-| Payments | TP-0024, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0043, TP-0046 |
-| Retail | TP-0030, TP-0031, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042 |
+| Government | TP-0022, TP-0028, TP-0033, TP-0034, TP-0056 |
+| Healthcare | TP-0015, TP-0021, TP-0028, TP-0034, TP-0056 |
+| Insurance | TP-0005, TP-0010, TP-0014, TP-0021, TP-0028, TP-0056 |
+| Investment | TP-0019, TP-0026, TP-0041, TP-0052 |
+| Payments | TP-0024, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0043, TP-0046, TP-0051, TP-0054 |
+| Retail | TP-0030, TP-0031, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0051 |
 | Staffing | TP-0015 |
-| Technology | TP-0034, TP-0039 |
+| Technology | TP-0034, TP-0039, TP-0054 |
 | Web3 | TP-0032 |
 
 ## Framework Coverage Status
 
 | Framework | Mapping Status | Notes |
 |-----------|---------------|-------|
-| FS-ISAC CFPF | All 50 TPs mapped | Primary organizational structure |
-| MITRE ATT&CK | 44 of 50 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
-| Stripe FT3 | Mapped (44/50) | MIT-licensed JSON vendored in data/ft3/ |
+| FS-ISAC CFPF | All 56 TPs mapped | Primary organizational structure |
+| MITRE ATT&CK | 50 of 56 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
+| Stripe FT3 | Mapped (50/56) | MIT-licensed JSON vendored in data/ft3/ |
 | MITRE F3 | Awaiting release | Will map when F3 ships |
-| Group-IB Fraud Matrix | 50 of 50 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
-| Group-IB UCFF | 50 of 50 TPs aligned | 7-domain lifecycle maturity assessment |
+| Group-IB Fraud Matrix | 56 of 56 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
+| Group-IB UCFF | 56 of 56 TPs aligned | 7-domain lifecycle maturity assessment |
 
 ## Cross-Threat Path Connections
 

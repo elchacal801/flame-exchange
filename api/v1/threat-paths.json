@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-07T15:53:54.139962+00:00",
-    "total": 49
+    "generated_at": "2026-03-17T05:26:54.117135+00:00",
+    "total": 56
   },
   "data": [
     {
@@ -5225,6 +5225,665 @@
         }
       ],
       "evidence_count": 0
+    },
+    {
+      "id": "TP-0050",
+      "title": "Calendar/Invite Injection Phishing",
+      "category": "ThreatPath",
+      "date": "2026-03-10",
+      "author": "FLAME Project",
+      "source": "Malwarebytes Labs / Google Workspace security advisories",
+      "tlp": "WHITE",
+      "summary": "Phishing campaigns that abuse calendar invite protocols (Google Calendar, Outlook/Exchange) to bypass email gateway filtering. Attackers send emails containing .ics calendar invitations that auto-populate on victim calendars, creating persistent lure events that outlive the original email. These campaigns are commonly paired with RDGA sender infrastructure (TP-0041) and tech support / fake AV renewal lures (TP-0012). An observed March 2026 campaign delivered 6,000+ emails across 10 sender domains, with 9 of 10 domains generated via RDGA techniques on high-abuse TLDs.",
+      "confidence_score": 78,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "rdga-registered",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "calendar-phishing",
+        "social-engineering"
+      ],
+      "tags": [
+        "calendar-phishing",
+        "invite-injection",
+        "ics-abuse",
+        "google-calendar",
+        "outlook-calendar",
+        "fake-renewal-scam",
+        "antivirus-scam",
+        "rdga-sender-domains",
+        "calendar-spam"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.003",
+        "T1566.002",
+        "T1204.001",
+        "T1036.005",
+        "T1583.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA009",
+        "FTA010",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-CFPB-REGE",
+        "REG-UK-PSR-APP"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0012",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0041",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0051",
+      "title": "QR Code Payment Fraud / Quishing",
+      "category": "ThreatPath",
+      "date": "2026-03-17",
+      "author": "FLAME Project",
+      "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+      "tlp": "WHITE",
+      "summary": "QR code payment fraud — colloquially termed \"quishing\" — exploits consumer trust in QR technology by distributing malicious codes via email, SMS, public posters, digital ads, and online marketplaces. INTERPOL's 2026 Threat Assessment documents a specific European modus operandi in which fraudsters impersonate buyers on online marketplaces, migrate victims off-platform to messaging apps using local phone numbers, and then send a fake QR code claiming that payment is available for collection at a local post office. Scanning the code leads to a fraudulent website impersonating the post office, where a \"Receive Money\" prompt redirects victims through a bank-selection menu to a fake bank login page. Entering credentials grants the fraudster full account access; the attacker immediately enrolls a new two-factor authentication (2FA) device to lock the victim out of notifications, then drains funds via mobile money transfer. In one documented European case, over USD 110,000 was stolen through this method. The attack chain is fast, highly localized, and exploits a fundamental gap in QR code UX: unlike hyperlinks, QR codes do not display a destination URL before the victim commits to following them.",
+      "confidence_score": 82,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "payments",
+        "retail",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "quishing",
+        "credential-stuffing",
+        "account-takeover",
+        "social-engineering"
+      ],
+      "tags": [
+        "qr-code-fraud",
+        "quishing",
+        "credential-harvesting",
+        "fake-bank-login",
+        "marketplace-fraud",
+        "2fa-bypass",
+        "mobile-money",
+        "post-office-impersonation"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.002",
+        "T1204.001",
+        "T1056.003",
+        "T1583.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA009",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-CFPB-REGE",
+        "REG-UK-PSR-APP",
+        "REG-PSD3-SCA"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0012",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0037",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0050",
+          "relationship": "enhances"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0052",
+      "title": "Sextortion-Investment Hybrid Fraud",
+      "category": "ThreatPath",
+      "date": "2026-03-17",
+      "author": "FLAME Project",
+      "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+      "tlp": "WHITE",
+      "summary": "Sextortion-investment hybrid fraud combines AI-generated deepfake intimate imagery or coerced image sharing with fraudulent investment scheme mechanics. INTERPOL's 2026 Threat Assessment identifies this as a globally escalating pattern driven by the low marginal effort required once a romance or social engineering relationship is established. INTERPOL documents three distinct regional variants: in North America, teen boys aged 14–17 are targeted with AI-generated deepfake images used to demand money under threat of exposure; in Latin America, financially motivated sextortion targets business executives with high-value ransom demands in cryptocurrency; and in Asia-Pacific, hybrid investment-sextortion schemes use deepfakes to blackmail victims as part of or alongside fake cryptocurrency and Forex investment platforms. In scam centres across Southeast Asia and Africa, INTERPOL reports that if standard investment fraud scripts fail to yield returns, operators are systematically instructed to pivot to sextortion — making the hybrid not an opportunistic escalation but a scripted operational fallback embedded in organized fraud operations. The investment fraud mechanics (TP-0017) and the sextortion mechanics are mutually reinforcing: blackmail leverage suppresses reporting, while the \"investment recovery\" pivot extracts additional funds under the guise of recouping losses.",
+      "confidence_score": 78,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "crypto",
+        "investment",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "sextortion",
+        "investment-scam",
+        "deepfake",
+        "social-engineering",
+        "romance-scam"
+      ],
+      "tags": [
+        "sextortion",
+        "investment-fraud",
+        "deepfake-imagery",
+        "romance-baiting",
+        "hybrid-fraud",
+        "crypto-laundering",
+        "teen-targeting",
+        "executive-targeting"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.003",
+        "T1589.001",
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Social Engineering",
+        "Resource Development",
+        "Initial Access",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-CFPB-REGE",
+        "REG-FINCEN-AML"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0011",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0017",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0025",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0026",
+          "relationship": "enhances"
+        }
+      ],
+      "evidence_count": 3
+    },
+    {
+      "id": "TP-0053",
+      "title": "Vehicle Export Financing Fraud",
+      "category": "ThreatPath",
+      "date": "2026-03-17",
+      "author": "FLAME Project",
+      "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+      "tlp": "WHITE",
+      "summary": "Vehicle export financing fraud is a transnational organized crime scheme first detected in North America in early 2024 and assessed by INTERPOL as spreading to other regions. Criminal networks use identity theft and recruited \"straw buyers\" to obtain auto loans for high-value vehicles from car dealerships, then export the vehicles overseas before lenders can detect fraud. To secure loan approvals, perpetrators submit forged employment records and falsified income and revenue statements. After taking possession of vehicles, they make minimal initial loan payments to establish credibility and delay default detection, then export the vehicles across international borders and default on the loans — leaving financial institutions with unrecoverable losses secured against assets that are now untraceable. INTERPOL notes that the scheme deliberately exploits the structural gap between loan default occurrence and fraud detection, which is typically measured in weeks rather than days. By the time vehicles are flagged as stolen and entered into national law enforcement databases, they have often already been exported and have bypassed INTERPOL's tracking systems. The trend is spreading beyond North America, exposing critical gaps in cross-border vehicle verification and auto loan fraud response globally.",
+      "confidence_score": 80,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "vehicle-export-fraud",
+        "identity-theft",
+        "application-fraud",
+        "loan-fraud"
+      ],
+      "tags": [
+        "vehicle-fraud",
+        "straw-buyer",
+        "auto-lending",
+        "export-fraud",
+        "cross-border",
+        "identity-theft",
+        "forged-documents",
+        "loan-default"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1589.001",
+        "T1586.002",
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA004"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Social Engineering",
+        "Initial Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-AML",
+        "REG-CFPB-REGE"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0018",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0019",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0054",
+      "title": "Fraud-as-a-Service (FaaS) Platforms",
+      "category": "ThreatPath",
+      "date": "2026-03-17",
+      "author": "FLAME Project",
+      "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+      "tlp": "WHITE",
+      "summary": "GenAI-powered \"Fraud-as-a-Service\" (FaaS) platforms that provide subscription-based access to professional-grade fraud toolkits. INTERPOL's Global Financial Fraud Threat Assessment 2026 documents the rapid proliferation of these platforms across Asia-Pacific, Africa, and Europe, noting that they have \"enabled widespread adoption of cybercrime\" by providing ready-made tools including automated phishing websites, fake payment gateways, deepfake generation tools, and bot-generated fake testimonials that mimic legitimate business communications. Low-skill actors can now launch sophisticated BEC and phishing campaigns with minimal effort. The FaaS model operates on an affiliate structure where proceeds are split between platform operators and campaign operators. Criminal peer-to-peer marketplaces provide end-to-end criminal infrastructure including phishing tools, fake trading platforms, AI-powered chatbots for victim grooming, and integrated money laundering services.\n\n**Distinction from TP-0043**: TP-0043 covers AI-accelerated *generation* of fraud infrastructure (the technical capability layer); TP-0054 covers the *marketplace/subscription model* that packages, commercializes, and democratizes access to these capabilities for non-technical actors.",
+      "confidence_score": 75,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "ai-assisted",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "cross-sector",
+        "banking",
+        "payments",
+        "crypto",
+        "technology"
+      ],
+      "fraud_types": [
+        "fraud-as-a-service",
+        "ai-accelerated-fraud-infrastructure",
+        "phishing",
+        "brand-impersonation"
+      ],
+      "tags": [
+        "fraud-as-a-service",
+        "faas",
+        "genai-fraud",
+        "phishing-kits",
+        "fake-payment-gateways",
+        "deepfake-tools",
+        "bot-testimonials",
+        "affiliate-fraud",
+        "democratized-fraud"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1583.003",
+        "T1588.002",
+        "T1566.001",
+        "T1566.002"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA009",
+        "FTA010",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Initial Access",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-CFPB-REGE",
+        "REG-DORA",
+        "REG-FINCEN-AML"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0041",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0042",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0043",
+          "relationship": "enhances"
+        }
+      ],
+      "evidence_count": 2
+    },
+    {
+      "id": "TP-0055",
+      "title": "Crypto Fraud–Terrorism/Narco Financing Nexus",
+      "category": "ThreatPath",
+      "date": "2026-03-17",
+      "author": "FLAME Project",
+      "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+      "tlp": "WHITE",
+      "summary": "Criminal syndicates traditionally linked to drug trafficking, arms trafficking, and organized violence are establishing cryptocurrency Ponzi and investment schemes to launder illicit proceeds and fund further criminal operations. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two distinct but related manifestations of this nexus: (1) in South America, the arrest of a suspect with alleged links to Tren de Aragua in connection with a USD 150 million cryptocurrency fraud scheme used to launder drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula; and (2) in Africa, Operation Catalyst uncovered a massive crypto-based Ponzi scheme affecting more than 100,000 victims across at least 17 countries — with investigations finding several large-valued wallets potentially linked to terrorism financing in Central Africa.\n\nThis represents a structural convergence: financial fraud is no longer ancillary to organized crime but has become a primary revenue stream for narco-terror organizations. The crypto medium enables proceeds to flow across borders before investigators can intervene, and the Ponzi/investment scheme wrapper provides both victim recruitment at scale and a veneer of legitimacy.",
+      "confidence_score": 78,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "suspected",
+      "sectors": [
+        "crypto",
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "investment-scam",
+        "state-criminal-convergence",
+        "money-mule"
+      ],
+      "tags": [
+        "crypto-fraud",
+        "narco-financing",
+        "terrorism-financing",
+        "ponzi-scheme",
+        "tren-de-aragua",
+        "crypto-mixing",
+        "cross-border-laundering",
+        "organized-crime-convergence"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1657",
+        "T1583.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA007"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Social Engineering",
+        "Initial Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-AML",
+        "REG-FATF-R16"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0044",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0045",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0049",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 2
+    },
+    {
+      "id": "TP-0056",
+      "title": "Insurance Claims Fraud (Motor/Medical)",
+      "category": "ThreatPath",
+      "date": "2026-03-17",
+      "author": "FLAME Project",
+      "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026 / FLAME gap analysis",
+      "tlp": "WHITE",
+      "summary": "Motor and medical insurance claims fraud involving staged accidents, fabricated medical events, and forged documentation. Perpetrators — ranging from individual opportunists to organized fraud rings — file fraudulent claims with insurers, often using stolen identities to submit claims under policies held by others or policies opened in victims' names. INTERPOL's 2026 Global Financial Fraud Threat Assessment notes that insurance fraud, notably involving car and medical insurance claims, \"has been escalating globally, greatly aided by digital technologies.\" Europe is the most impacted region: the UK recorded a 25% spike in motor insurance fraud in early 2025 driven by false applications and identity theft; France detected nearly USD 1 billion in insurance fraud in 2024; and German insurers flagged 10% of claims as suspicious with annual losses exceeding USD 7 billion.\n\nThis TP fills a gap in FLAME coverage. Existing insurance TPs address premium diversion (TP-0005) and disability fraud (TP-0010), but not the core motor/medical false claims pattern that represents the highest-volume insurance fraud globally. The government sector inclusion reflects that Medicare/Medicaid (US) and equivalent national health programs are targeted by the same false claims pattern applied to public payers.",
+      "confidence_score": 72,
+      "source_reliability": "C",
+      "info_credibility": 3,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "insurance",
+        "healthcare",
+        "banking",
+        "government"
+      ],
+      "fraud_types": [
+        "insurance-fraud",
+        "fraudulent-claim",
+        "identity-theft",
+        "documentary-fraud"
+      ],
+      "tags": [
+        "insurance-fraud",
+        "motor-fraud",
+        "medical-fraud",
+        "staged-accident",
+        "false-claims",
+        "forged-documentation",
+        "policy-identity-theft"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1589.001",
+        "T1656"
+      ],
+      "ft3_tactics": [
+        "FTA003",
+        "FTA004"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Social Engineering",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-CFPB-REGE",
+        "REG-FINCEN-AML"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0005",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0010",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0018",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0028",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 1
     }
   ]
 }
