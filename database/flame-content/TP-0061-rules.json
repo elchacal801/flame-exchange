@@ -1,0 +1,15 @@
+{
+  "tp_id": "TP-0061",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT d.domain, d.registration_date, h.ip_address, h.asn, h.hosting_provider,\n       ar.abuse_report_count, ar.days_since_oldest_report,\n       COUNT(DISTINCT fi.fraud_indicator_type) AS fraud_indicator_count\nFROM domains d\nJOIN hosting_records h ON d.domain = h.domain\nLEFT JOIN abuse_reports ar ON h.ip_address = ar.ip_address\nLEFT JOIN fraud_indicators fi ON d.domain = fi.domain\nWHERE h.hosting_provider IN ('Virtualine', 'Stark Industries', 'AEZA', 'Aurologic')\n   OR h.asn IN (SELECT asn FROM tae_provider_asns)\nGROUP BY d.domain, d.registration_date, h.ip_address, h.asn, h.hosting_provider,\n         ar.abuse_report_count, ar.days_since_oldest_report\nHAVING COUNT(DISTINCT fi.fraud_indicator_type) > 0\nORDER BY fraud_indicator_count DESC;",
+      "title": "TAE Infrastructure Hosting Detection (SQL)"
+    },
+    {
+      "type": "spl",
+      "content": "index=dns sourcetype=passive_dns\n| stats dc(answer) AS unique_ips values(answer) AS ip_list earliest(_time) AS first_seen latest(_time) AS last_seen by query\n| eval days_active=round((last_seen-first_seen)/86400, 1)\n| where unique_ips > 3 AND days_active < 30\n| mvexpand ip_list\n| lookup tae_ip_ranges ip_list OUTPUT tae_provider\n| where isnotnull(tae_provider)\n| stats count dc(query) AS domains values(tae_provider) AS providers by ip_list\n| sort -domains",
+      "title": "Infrastructure Rotation Detection (Splunk SPL)"
+    }
+  ]
+}

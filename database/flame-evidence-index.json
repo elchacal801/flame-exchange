@@ -40,6 +40,16 @@
     "cfpf_phase_coverage": "P1, P2, P3, P4"
   },
   {
+    "evidence_id": "EV-TP0017-2026-003",
+    "tp_id": "TP-0017",
+    "title": "INTERPOL/UNODC Scale and Loss Estimates",
+    "source": "INTERPOL GFFTA 2026; UNODC — Emerging Threats (September 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Very High — multi-source from international organizations",
+    "cfpf_phase_coverage": "Full lifecycle (P1-P5) — scale data applies across all phases"
+  },
+  {
     "evidence_id": "EV-TP0034-2026-001",
     "tp_id": "TP-0034",
     "title": "DOJ Enforcement Actions",
@@ -58,6 +68,66 @@
     "domain_count": "",
     "confidence": "Very High",
     "cfpf_phase_coverage": ""
+  },
+  {
+    "evidence_id": "EV-TP0034-2026-003",
+    "tp_id": "TP-0034",
+    "title": "Flare/IBM X-Force Internal DPRK Operations",
+    "source": "Flare / IBM X-Force — \"Inside the North Korean Infiltrator Threat\" (March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Very High — primary research with access to internal operational data",
+    "cfpf_phase_coverage": "P1 (platform coordination, collaborator recruitment), P2 (AI face/voice changers in interviews), P3 (VPN connections to internal platforms), P4-P5 (revenue tracking and extraction)"
+  },
+  {
+    "evidence_id": "EV-TP0034-2026-004",
+    "tp_id": "TP-0034",
+    "title": "Recorded Future PurpleBravo/PurpleDelta Infrastructure",
+    "source": "Recorded Future CTA-2026-0319 — \"2025 Year in Review: Malicious Infrastructure\" (March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Very High",
+    "cfpf_phase_coverage": "P1 (infrastructure provisioning), P2 (malware delivery via developer lures), P3-P4 (credential access, data exfiltration via InvisibleFerret)"
+  },
+  {
+    "evidence_id": "EV-TP0039-2026-002",
+    "tp_id": "TP-0039",
+    "title": "INTERPOL Confirmation of Agentic AI Fraud",
+    "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": ""
+  },
+  {
+    "evidence_id": "EV-TP0044-2026-002",
+    "tp_id": "TP-0044",
+    "title": "INTERPOL/Recorded Future Convergence Intelligence",
+    "source": "INTERPOL GFFTA 2026; Recorded Future CTA-2026-0319 (March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Very High — multi-source from law enforcement operations and infrastructure intelligence",
+    "cfpf_phase_coverage": "P1 (infrastructure provisioning), P3 (convergent hosting), P5 (sanctions evasion and rebranding)"
+  },
+  {
+    "evidence_id": "EV-TP0047-2026-003",
+    "tp_id": "TP-0047",
+    "title": "UNODC/INTERPOL Compound Operations Intelligence",
+    "source": "UNODC — Emerging Threats: AI & Automation in Cybercrime (September 2025); INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2 (chatbot-enabled initial contact), P3 (deepfake-enhanced trust building), P4 (scripted exploitation with sextortion fallback)"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-003",
+    "tp_id": "TP-0049",
+    "title": "INTERPOL/UNODC Laundering Intelligence",
+    "source": "INTERPOL GFFTA 2026; UNODC — Emerging Threats (September 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P5 (AI-enhanced laundering evasion)"
   },
   {
     "evidence_id": "EV-TP0050-2026-001",
@@ -110,6 +180,16 @@
     "cfpf_phase_coverage": ""
   },
   {
+    "evidence_id": "EV-TP0052-2026-002",
+    "tp_id": "TP-0052",
+    "title": "INTERPOL Sextortion Scripted Integration",
+    "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P3-P4 transition (sextortion activated when primary investment scam fails)"
+  },
+  {
     "evidence_id": "EV-TP0053-2026-001",
     "tp_id": "TP-0053",
     "title": "North America Vehicle Export Fraud Scheme — INTERPOL Detection, 2024",
@@ -140,6 +220,16 @@
     "cfpf_phase_coverage": "P1, P2, P5"
   },
   {
+    "evidence_id": "EV-TP0054-2026-002",
+    "tp_id": "TP-0054",
+    "title": "Multi-Source FaaS Ecosystem Intelligence",
+    "source": "INTERPOL GFFTA 2026; UNODC Sept 2025; Recorded Future CTA-2026-0319",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — multi-source from INTERPOL, UNODC, and Recorded Future",
+    "cfpf_phase_coverage": "P1 through P5 — full lifecycle FaaS ecosystem"
+  },
+  {
     "evidence_id": "EV-TP0055-2026-001",
     "tp_id": "TP-0055",
     "title": "Tren de Aragua USD 150M Cryptocurrency Fraud — INTERPOL Documentation",
@@ -160,6 +250,16 @@
     "cfpf_phase_coverage": "P1, P2, P3, P4, P5"
   },
   {
+    "evidence_id": "EV-TP0055-2026-002",
+    "tp_id": "TP-0055",
+    "title": "INTERPOL Crypto-Terror Financing Intelligence",
+    "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P5 (crypto laundering feeding terrorist financing)"
+  },
+  {
     "evidence_id": "EV-TP0056-2026-001",
     "tp_id": "TP-0056",
     "title": "European Motor Insurance Fraud Surge — INTERPOL GFFTA 2026",
@@ -168,5 +268,135 @@
     "domain_count": "",
     "confidence": "Medium (regional aggregate statistics; individual case details not disclosed)",
     "cfpf_phase_coverage": "P1, P2, P3, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0057-2026-001",
+    "tp_id": "TP-0057",
+    "title": "UNODC 600% Deepfake Surge in Criminal Channels",
+    "source": "UNODC Emerging Threats: AI & Automation in Cybercrime, September 2025",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0057-2026-002",
+    "tp_id": "TP-0057",
+    "title": "Flare/IBM X-Force DPRK AI Face/Voice Changers",
+    "source": "Flare/IBM X-Force: Inside the North Korean Infiltrator Threat, March 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P2, P3, P4"
+  },
+  {
+    "evidence_id": "EV-TP0057-2026-003",
+    "tp_id": "TP-0057",
+    "title": "Group-IB Voice Clone Capability Assessment",
+    "source": "Group-IB, Weaponised AI Is Powering the Fifth Wave of Cybercrime, January 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium",
+    "cfpf_phase_coverage": "P2, P4"
+  },
+  {
+    "evidence_id": "EV-TP0058-2026-001",
+    "tp_id": "TP-0058",
+    "title": "UNODC Compound Operational Intelligence",
+    "source": "UNODC Emerging Threats: AI & Automation in Cybercrime, September 2025",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1 through P5"
+  },
+  {
+    "evidence_id": "EV-TP0058-2026-002",
+    "tp_id": "TP-0058",
+    "title": "INTERPOL Compound Globalization Intelligence",
+    "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P3, P4"
+  },
+  {
+    "evidence_id": "EV-TP0059-2026-001",
+    "tp_id": "TP-0059",
+    "title": "UNODC Bot-Driven Mule Systems",
+    "source": "UNODC Emerging Threats: AI & Automation in Cybercrime, September 2025",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1 through P5"
+  },
+  {
+    "evidence_id": "EV-TP0059-2026-002",
+    "tp_id": "TP-0059",
+    "title": "Recorded Future KYC Bypass Toolkit Analysis",
+    "source": "Recorded Future CTA-2026-0319, March 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P1, P2"
+  },
+  {
+    "evidence_id": "EV-TP0059-2026-003",
+    "tp_id": "TP-0059",
+    "title": "INTERPOL Mule Network Scale Intelligence",
+    "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0060-2026-001",
+    "tp_id": "TP-0060",
+    "title": "Recorded Future TDS-as-Fraud-Infrastructure Analysis",
+    "source": "Recorded Future CTA-2026-0319, March 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P1 through P5"
+  },
+  {
+    "evidence_id": "EV-TP0060-2026-002",
+    "tp_id": "TP-0060",
+    "title": "Infoblox RDGA Actor TDS Operations",
+    "source": "Infoblox, Keitaro TDS and RDGA Actor Analysis, 2025",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0060-2026-003",
+    "tp_id": "TP-0060",
+    "title": "INTERPOL Investment Fraud Scale",
+    "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0061-2026-001",
+    "tp_id": "TP-0061",
+    "title": "Recorded Future TAE Provider Analysis",
+    "source": "Recorded Future CTA-2026-0319, March 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0061-2026-002",
+    "tp_id": "TP-0061",
+    "title": "INTERPOL Operation Shadow Storm",
+    "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P3"
   }
 ]

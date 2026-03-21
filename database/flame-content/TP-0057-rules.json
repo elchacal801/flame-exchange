@@ -1,0 +1,15 @@
+{
+  "tp_id": "TP-0057",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "index=endpoint sourcetype=sysmon EventCode=1\n| search (process_name=\"obs*\" OR process_name=\"*deepface*\" OR process_name=\"*manycam*\" OR process_name=\"*virtual*cam*\" OR process_name=\"*snap*camera*\")\n| join host [search index=network sourcetype=proxy dest_domain IN (\"*.zoom.us\", \"*.teams.microsoft.com\", \"*.webex.com\", \"*.meet.google.com\")]\n| stats count by host, process_name, user, dest_domain\n| where count > 0",
+      "title": "Virtual Camera Driver Detection During Sensitive Sessions (Splunk SPL)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT c.call_id, c.caller_id, c.call_timestamp,\n       v.spectral_score, v.prosody_score, v.response_latency_ms,\n       v.background_noise_consistency\nFROM call_recordings c\nJOIN voice_analysis v ON c.call_id = v.call_id\nWHERE v.spectral_score < 0.7\n  OR v.prosody_score < 0.6\n  OR v.response_latency_ms > 200\n  AND c.call_type = 'wire_authorization'\nORDER BY c.call_timestamp DESC;",
+      "title": "Voice Synthesis Anomaly Detection (SQL)"
+    }
+  ]
+}

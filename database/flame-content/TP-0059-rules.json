@@ -1,0 +1,15 @@
+{
+  "tp_id": "TP-0059",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "index=onboarding sourcetype=account_applications\n| eval completion_seconds=round((submit_time - start_time)/1000, 0)\n| where completion_seconds < 120\n| stats count AS fast_apps dc(identity_hash) AS unique_identities dc(device_fingerprint) AS unique_devices by src_ip, _time span=1h\n| where fast_apps > 3 OR (unique_identities > 2 AND unique_devices < 2)\n| sort -fast_apps",
+      "title": "Account Opening Velocity Anomaly Detection (Splunk SPL)"
+    },
+    {
+      "type": "sql",
+      "content": "WITH transfer_pairs AS (\n  SELECT t1.account_id AS sender, t2.account_id AS receiver,\n         COUNT(*) AS transfer_count, SUM(t1.amount) AS total_amount\n  FROM transactions t1\n  JOIN transactions t2 ON t1.dest_account = t2.account_id\n    AND t2.transaction_time BETWEEN t1.transaction_time AND t1.transaction_time + INTERVAL '30 minutes'\n  WHERE t1.account_age_days < 30 AND t2.account_age_days < 30\n  GROUP BY t1.account_id, t2.account_id\n)\nSELECT sender, receiver, transfer_count, total_amount\nFROM transfer_pairs\nWHERE transfer_count > 2\n  AND total_amount > 5000\nORDER BY total_amount DESC;",
+      "title": "Mule Network Graph Detection (SQL)"
+    }
+  ]
+}

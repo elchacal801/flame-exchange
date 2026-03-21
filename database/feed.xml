@@ -853,6 +853,89 @@
         <category>CFPF-P5</category>
     </item>
     <item>
+      <title>[TP-0057] Deepfake-as-a-Service Marketplace Ecosystem</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0057</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0057</guid>
+      <description>Deepfake-as-a-Service (DaaS) platforms operating on dark web marketplaces and Telegram that provide subscription-based access to deepfake generation tools — voice cloning, real-time face swapping, AI </description>
+      <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
+        <category>ai-face-voice-changer</category>
+        <category>deepfake-as-a-service</category>
+        <category>deepfake-fraud</category>
+        <category>fraud-as-a-service</category>
+        <category>impersonation</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0058] Scam Compound Operational Infrastructure</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0058</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0058</guid>
+      <description>Operational fraud mechanics inside industrialized scam compounds. UNODC documents $40B annual profits from scam compound operations, with multilingual AI chatbots deployed for automated victim engagem</description>
+      <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
+        <category>chatbot-enabled-fraud</category>
+        <category>human-trafficking-facilitation</category>
+        <category>investment-scam</category>
+        <category>romance-scam</category>
+        <category>scam-compound-operations</category>
+        <category>sextortion</category>
+        <category>social-engineering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0059] Automated Mule Account Infrastructure</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0059</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0059</guid>
+      <description>Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account system</description>
+      <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
+        <category>automated-mule-accounts</category>
+        <category>bot-driven-account-opening</category>
+        <category>kyc-circumvention</category>
+        <category>money-laundering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0060] Investment Fraud TDS Pipeline</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0060</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0060</guid>
+      <description>Traffic Distribution Systems (TDS) weaponized specifically for investment fraud delivery — routing potential victims from legitimate advertising platforms through multi-hop cloaking chains to fraudule</description>
+      <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
+        <category>cloaking</category>
+        <category>geo-routing</category>
+        <category>investment-fraud</category>
+        <category>rdga-infrastructure</category>
+        <category>traffic-distribution-system</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
+      <title>[TP-0061] Threat Actor Enabling Bulletproof Hosting Infrastructure</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0061</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0061</guid>
+      <description>Bulletproof hosting (BPH) providers and abuse-resistant infrastructure services that enable fraud operations by providing hosting that resists takedown requests, law enforcement cooperation, and abuse</description>
+      <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
+        <category>bulletproof-hosting</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>hosting-provider-complicity</category>
+        <category>infrastructure-rotation</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+    </item>
+    <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
       <link>https://elchacal801.github.io/flame-fraud</link>
       <guid isPermaLink="false">flame-dl-DL-0001</guid>
@@ -1867,6 +1950,91 @@
       <guid isPermaLink="false">flame-dl-DL-0114</guid>
       <description>Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ram</description>
         <category>crypto-laundering-infrastructure</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0115] DaaS Platform Transaction Pattern</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0115</guid>
+      <description>Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or </description>
+        <category>deepfake-as-a-service</category>
+        <category>fraud-as-a-service</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0116] Real-Time Face/Voice Changer Detection During Video Interview</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0116</guid>
+      <description>Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anoma</description>
+        <category>ai-face-voice-changer</category>
+        <category>deepfake-fraud</category>
+        <category>dprk-it-worker-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0117] Multilingual Chatbot Scam Pattern Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0117</guid>
+      <description>Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conver</description>
+        <category>chatbot-enabled-fraud</category>
+        <category>scam-compound-operations</category>
+        <category>social-engineering</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0118] Automated Mule Account Creation Velocity</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0118</guid>
+      <description>Detect automated account opening patterns indicative of mule account infrastructure buildout: (1) multiple applications originating from the same device fingerprint or IP address within a 24-hour wind</description>
+        <category>application-fraud</category>
+        <category>automated-mule-infrastructure</category>
+        <category>new-account-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0119] KYC Verification Bot Circumvention Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0119</guid>
+      <description>Detect automated circumvention of KYC identity verification processes: (1) liveness check submissions exhibiting synthetic face indicators such as GAN artifacts or uniform skin texture, (2) document p</description>
+        <category>application-fraud</category>
+        <category>new-account-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0120] Investment TDS Geo-Routing to Legitimate Platform</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0120</guid>
+      <description>Detect Traffic Distribution System (TDS) geo-routing patterns used in investment scam infrastructure: (1) same domain resolving to different IP addresses based on requester geography, (2) US-based vis</description>
+        <category>investment-tds-pipeline</category>
+        <category>tds-exploitation</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0121] DPRK Internal Platform Network Connection Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0121</guid>
+      <description>Detect connections to DPRK-associated internal collaboration platforms OConnect VPN and NetKey VPN, identified by Flare and IBM X-Force as tools used by DPRK IT workers: (1) VPN connections to known O</description>
+        <category>dprk-it-worker-fraud</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0122] Keitaro/Binom TDS Abuse Infrastructure Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0122</guid>
+      <description>Detect abuse of legitimate Traffic Distribution Systems Keitaro and Binom for fraud infrastructure: (1) HTTP redirect chains containing Keitaro tracking parameters such as click_id, campaign_id, and c</description>
+        <category>investment-tds-pipeline</category>
+        <category>tds-exploitation</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0123] TAE Infrastructure Rotation Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0123</guid>
+      <description>Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems </description>
+        <category>bph-migration</category>
+        <category>sanctions-evasion-infrastructure</category>
+        <category>state-criminal-convergence</category>
         <category>severity-high</category>
     </item>
   </channel>

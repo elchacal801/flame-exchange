@@ -724,5 +724,65 @@
     "content": "SELECT c.claim_id, c.policy_id, c.incident_date, c.filed_date,\n       ch.change_type, ch.change_date,\n       DATEDIFF('day', ch.change_date, c.filed_date) AS days_between_change_and_claim\nFROM claims c\nJOIN policy_changes ch ON c.policy_id = ch.policy_id\nWHERE ch.change_type IN ('bank_account', 'address', 'contact_phone', 'email')\nAND ch.change_date BETWEEN c.incident_date - INTERVAL '30 days' AND c.filed_date\nORDER BY days_between_change_and_claim ASC;",
     "title": "Policy Change Proximity to Claim Filing (SQL)",
     "tp_id": "TP-0056"
+  },
+  {
+    "type": "spl",
+    "content": "index=endpoint sourcetype=sysmon EventCode=1\n| search (process_name=\"obs*\" OR process_name=\"*deepface*\" OR process_name=\"*manycam*\" OR process_name=\"*virtual*cam*\" OR process_name=\"*snap*camera*\")\n| join host [search index=network sourcetype=proxy dest_domain IN (\"*.zoom.us\", \"*.teams.microsoft.com\", \"*.webex.com\", \"*.meet.google.com\")]\n| stats count by host, process_name, user, dest_domain\n| where count > 0",
+    "title": "Virtual Camera Driver Detection During Sensitive Sessions (Splunk SPL)",
+    "tp_id": "TP-0057"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT c.call_id, c.caller_id, c.call_timestamp,\n       v.spectral_score, v.prosody_score, v.response_latency_ms,\n       v.background_noise_consistency\nFROM call_recordings c\nJOIN voice_analysis v ON c.call_id = v.call_id\nWHERE v.spectral_score < 0.7\n  OR v.prosody_score < 0.6\n  OR v.response_latency_ms > 200\n  AND c.call_type = 'wire_authorization'\nORDER BY c.call_timestamp DESC;",
+    "title": "Voice Synthesis Anomaly Detection (SQL)",
+    "tp_id": "TP-0057"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT s.session_id, s.platform, s.first_message_ts,\n       AVG(m.response_time_ms) AS avg_response_ms,\n       STDDEV(m.response_time_ms) AS stddev_response_ms,\n       COUNT(DISTINCT m.language_detected) AS languages_used,\n       COUNT(*) AS message_count\nFROM chat_sessions s\nJOIN chat_messages m ON s.session_id = m.session_id\nWHERE m.direction = 'inbound'\nGROUP BY s.session_id, s.platform, s.first_message_ts\nHAVING STDDEV(m.response_time_ms) < 200\n   AND COUNT(DISTINCT m.language_detected) > 1\n   AND COUNT(*) > 20\nORDER BY s.first_message_ts DESC;",
+    "title": "Compound Chatbot Pattern Detection (SQL)",
+    "tp_id": "TP-0058"
+  },
+  {
+    "type": "spl",
+    "content": "index=transactions sourcetype=wire_transfer\n| eval dest_domain=lower(dest_domain)\n| lookup domain_age_feed dest_domain OUTPUT domain_age_days\n| where domain_age_days < 90\n| transaction customer_id maxspan=30d\n| where eventcount > 3 AND sum(amount) > 10000\n| eval avg_interval=duration/eventcount\n| where avg_interval > 86400 AND avg_interval < 604800\n| stats count sum(amount) AS total_amount by customer_id, dest_domain\n| sort -total_amount",
+    "title": "Compound Investment Platform Deposit Pattern (Splunk SPL)",
+    "tp_id": "TP-0058"
+  },
+  {
+    "type": "spl",
+    "content": "index=onboarding sourcetype=account_applications\n| eval completion_seconds=round((submit_time - start_time)/1000, 0)\n| where completion_seconds < 120\n| stats count AS fast_apps dc(identity_hash) AS unique_identities dc(device_fingerprint) AS unique_devices by src_ip, _time span=1h\n| where fast_apps > 3 OR (unique_identities > 2 AND unique_devices < 2)\n| sort -fast_apps",
+    "title": "Account Opening Velocity Anomaly Detection (Splunk SPL)",
+    "tp_id": "TP-0059"
+  },
+  {
+    "type": "sql",
+    "content": "WITH transfer_pairs AS (\n  SELECT t1.account_id AS sender, t2.account_id AS receiver,\n         COUNT(*) AS transfer_count, SUM(t1.amount) AS total_amount\n  FROM transactions t1\n  JOIN transactions t2 ON t1.dest_account = t2.account_id\n    AND t2.transaction_time BETWEEN t1.transaction_time AND t1.transaction_time + INTERVAL '30 minutes'\n  WHERE t1.account_age_days < 30 AND t2.account_age_days < 30\n  GROUP BY t1.account_id, t2.account_id\n)\nSELECT sender, receiver, transfer_count, total_amount\nFROM transfer_pairs\nWHERE transfer_count > 2\n  AND total_amount > 5000\nORDER BY total_amount DESC;",
+    "title": "Mule Network Graph Detection (SQL)",
+    "tp_id": "TP-0059"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT d.domain, d.registration_date, d.registrar,\n       dns.ttl, dns.query_count_24h,\n       LENGTH(SPLIT_PART(d.domain, '.', 1)) AS label_length,\n       r.redirect_depth, r.final_destination\nFROM domains d\nJOIN dns_records dns ON d.domain = dns.domain\nLEFT JOIN redirect_chains r ON d.domain = r.intermediate_domain\nWHERE d.registration_date > CURRENT_DATE - INTERVAL '30 days'\n  AND dns.ttl < 300\n  AND dns.query_count_24h > 100\n  AND LENGTH(SPLIT_PART(d.domain, '.', 1)) > 10\n  AND (r.final_destination LIKE '%invest%' OR r.final_destination LIKE '%trade%' OR r.final_destination LIKE '%broker%')\nORDER BY dns.query_count_24h DESC;",
+    "title": "RDGA Domain Investment Infrastructure Detection (SQL)",
+    "tp_id": "TP-0060"
+  },
+  {
+    "type": "spl",
+    "content": "index=proxy sourcetype=web_traffic\n| eval redirect_count=mvcount(redirect_chain)\n| where redirect_count > 3\n| eval final_domain=mvindex(redirect_chain, -1)\n| lookup domain_age_feed final_domain OUTPUT domain_age_days\n| where domain_age_days < 60\n| search final_url=\"*invest*\" OR final_url=\"*trade*\" OR final_url=\"*broker*\" OR final_url=\"*capital*\"\n| stats count dc(src_ip) AS unique_visitors values(redirect_chain) AS full_chain by final_domain\n| sort -count",
+    "title": "Cloaked Investment Ad Redirect Detection (Splunk SPL)",
+    "tp_id": "TP-0060"
+  },
+  {
+    "type": "sql",
+    "content": "SELECT d.domain, d.registration_date, h.ip_address, h.asn, h.hosting_provider,\n       ar.abuse_report_count, ar.days_since_oldest_report,\n       COUNT(DISTINCT fi.fraud_indicator_type) AS fraud_indicator_count\nFROM domains d\nJOIN hosting_records h ON d.domain = h.domain\nLEFT JOIN abuse_reports ar ON h.ip_address = ar.ip_address\nLEFT JOIN fraud_indicators fi ON d.domain = fi.domain\nWHERE h.hosting_provider IN ('Virtualine', 'Stark Industries', 'AEZA', 'Aurologic')\n   OR h.asn IN (SELECT asn FROM tae_provider_asns)\nGROUP BY d.domain, d.registration_date, h.ip_address, h.asn, h.hosting_provider,\n         ar.abuse_report_count, ar.days_since_oldest_report\nHAVING COUNT(DISTINCT fi.fraud_indicator_type) > 0\nORDER BY fraud_indicator_count DESC;",
+    "title": "TAE Infrastructure Hosting Detection (SQL)",
+    "tp_id": "TP-0061"
+  },
+  {
+    "type": "spl",
+    "content": "index=dns sourcetype=passive_dns\n| stats dc(answer) AS unique_ips values(answer) AS ip_list earliest(_time) AS first_seen latest(_time) AS last_seen by query\n| eval days_active=round((last_seen-first_seen)/86400, 1)\n| where unique_ips > 3 AND days_active < 30\n| mvexpand ip_list\n| lookup tae_ip_ranges ip_list OUTPUT tae_provider\n| where isnotnull(tae_provider)\n| stats count dc(query) AS domains values(tae_provider) AS providers by ip_list\n| sort -domains",
+    "title": "Infrastructure Rotation Detection (Splunk SPL)",
+    "tp_id": "TP-0061"
   }
 ]

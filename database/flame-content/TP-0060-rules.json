@@ -1,0 +1,15 @@
+{
+  "tp_id": "TP-0060",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT d.domain, d.registration_date, d.registrar,\n       dns.ttl, dns.query_count_24h,\n       LENGTH(SPLIT_PART(d.domain, '.', 1)) AS label_length,\n       r.redirect_depth, r.final_destination\nFROM domains d\nJOIN dns_records dns ON d.domain = dns.domain\nLEFT JOIN redirect_chains r ON d.domain = r.intermediate_domain\nWHERE d.registration_date > CURRENT_DATE - INTERVAL '30 days'\n  AND dns.ttl < 300\n  AND dns.query_count_24h > 100\n  AND LENGTH(SPLIT_PART(d.domain, '.', 1)) > 10\n  AND (r.final_destination LIKE '%invest%' OR r.final_destination LIKE '%trade%' OR r.final_destination LIKE '%broker%')\nORDER BY dns.query_count_24h DESC;",
+      "title": "RDGA Domain Investment Infrastructure Detection (SQL)"
+    },
+    {
+      "type": "spl",
+      "content": "index=proxy sourcetype=web_traffic\n| eval redirect_count=mvcount(redirect_chain)\n| where redirect_count > 3\n| eval final_domain=mvindex(redirect_chain, -1)\n| lookup domain_age_feed final_domain OUTPUT domain_age_days\n| where domain_age_days < 60\n| search final_url=\"*invest*\" OR final_url=\"*trade*\" OR final_url=\"*broker*\" OR final_url=\"*capital*\"\n| stats count dc(src_ip) AS unique_visitors values(redirect_chain) AS full_chain by final_domain\n| sort -count",
+      "title": "Cloaked Investment Ad Redirect Detection (Splunk SPL)"
+    }
+  ]
+}

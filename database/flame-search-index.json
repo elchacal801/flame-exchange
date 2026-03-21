@@ -336,6 +336,36 @@
     "text": "Motor and medical insurance claims fraud involving staged accidents, fabricated medical events, and forged documentation. Perpetrators — ranging from individual opportunists to organized fraud rings — file fraudulent claims with insurers, often using stolen identities to submit claims under policies held by others or policies opened in victims' names. INTERPOL's 2026 Global Financial Fraud Threat Assessment notes that insurance fraud, notably involving car and medical insurance claims, \"has been escalating globally, greatly aided by digital technologies.\" Europe is the most impacted region: the UK recorded a 25% spike in motor insurance fraud in early 2025 driven by false applications and identity theft; France detected nearly USD 1 billion in insurance fraud in 2024; and German insurers flagged 10% of claims as suspicious with annual losses exceeding USD 7 billion.\n\nThis TP fills a gap in FLAME coverage. Existing insurance TPs address premium diversion (TP-0005) and disability fraud (TP-0010), but not the core motor/medical false claims pattern that represents the highest-volume insurance fraud globally. The government sector inclusion reflects that Medicare/Medicaid (US) and equivalent national health programs are targeted by the same false claims pattern applied to public payers."
   },
   {
+    "id": "TP-0057",
+    "type": "threat_path",
+    "title": "Deepfake-as-a-Service Marketplace Ecosystem",
+    "text": "Deepfake-as-a-Service (DaaS) platforms operating on dark web marketplaces and Telegram that provide subscription-based access to deepfake generation tools — voice cloning, real-time face swapping, AI face/voice changers, and synthetic media production. UNODC documents a 600% surge in deepfake mentions across criminal Telegram channels with 10+ active vendor ecosystems serving Southeast Asian scam compounds. Group-IB confirms voice clones can be generated from as little as 10 seconds of target audio. Flare/IBM X-Force documents DPRK IT worker operatives using AI face/voice changers during live video interviews to impersonate Western identities. Pricing ranges from $100–$1,000/month subscriptions to per-use voice clone API calls.\n\n**Distinction from TP-0007**: TP-0007 covers the fraud execution pattern of deepfake voice authorization for wire transfers; TP-0057 covers the upstream *marketplace and tooling ecosystem* that produces and distributes the deepfake capabilities used in TP-0007 and other fraud types."
+  },
+  {
+    "id": "TP-0058",
+    "type": "threat_path",
+    "title": "Scam Compound Operational Infrastructure",
+    "text": "Operational fraud mechanics inside industrialized scam compounds. UNODC documents $40B annual profits from scam compound operations, with multilingual AI chatbots deployed for automated victim engagement and bot-driven operational scaling. INTERPOL reports 80 nationalities trafficked into compound operations, with geographic expansion from Southeast Asia into MENA and Africa. Compounds operate as industrial fraud factories with professional management hierarchies, performance metrics, shift-based operations, CRM systems tracking victim \"portfolios,\" and scripted sextortion fallback playbooks when investment scam conversion stalls.\n\n**Distinction from TP-0047**: TP-0047 covers the human trafficking and physical infrastructure nexus enabling compound existence; TP-0058 covers the operational fraud mechanics, management structures, and technology stack deployed inside compounds to execute fraud at scale."
+  },
+  {
+    "id": "TP-0059",
+    "type": "threat_path",
+    "title": "Automated Mule Account Infrastructure",
+    "text": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account systems integrated into scam compound laundering operations. Recorded Future identifies automated KYC circumvention toolkits on dark web marketplaces that combine synthetic identity documents, liveness check bypass tools, and device emulators to open accounts across multiple financial institutions simultaneously. INTERPOL reports mule networks comprising thousands of accounts per operation, enabling rapid layering of fraud proceeds across jurisdictions.\n\n**Distinction from TP-0049**: TP-0049 covers the downstream cryptocurrency laundering techniques; TP-0059 covers the upstream automated infrastructure that creates and manages the mule accounts used as the first layer of laundering."
+  },
+  {
+    "id": "TP-0060",
+    "type": "threat_path",
+    "title": "Investment Fraud TDS Pipeline",
+    "text": "Traffic Distribution Systems (TDS) weaponized specifically for investment fraud delivery — routing potential victims from legitimate advertising platforms through multi-hop cloaking chains to fraudulent investment platforms. Recorded Future documents TDS infrastructure as a critical fraud-enabling service exploited by investment scam operators. Infoblox identifies specific RDGA actors (Reckless Rabbit, Ruthless Rabbit, Savvy Seahorse) operating TDS infrastructure that routes victims based on geolocation, device fingerprint, and behavioral profile. Commercial TDS platforms (Keitaro, Binom) are abused for traffic cloaking and geo-routing, showing compliant content to security researchers while routing real victims to scam investment platforms.\n\n**Distinction from TP-0042**: TP-0042 covers TDS chain exploitation broadly across fraud types; TP-0060 covers the specific investment fraud TDS pipeline — from advertising click to fake investment platform — with emphasis on the investment-specific cloaking, victim qualification, and platform routing techniques."
+  },
+  {
+    "id": "TP-0061",
+    "type": "threat_path",
+    "title": "Threat Actor Enabling Bulletproof Hosting Infrastructure",
+    "text": "Bulletproof hosting (BPH) providers and abuse-resistant infrastructure services that enable fraud operations by providing hosting that resists takedown requests, law enforcement cooperation, and abuse complaints. Recorded Future identifies specific providers — Virtualine, Stark Industries, AEZA, Aurologic — as Threat Actor Enabling (TAE) entities operating from jurisdictions with weak enforcement. INTERPOL Operation Shadow Storm targeted fraud-enabling infrastructure providers. These TAE entities provide the foundational hosting layer for TDS infrastructure, fake investment platforms, DaaS platforms, mule account management systems, and FaaS marketplaces — making them a critical enabling dependency across multiple fraud threat paths.\n\n**Distinction from TP-0044**: TP-0044 covers the broader state-criminal infrastructure convergence pattern; TP-0061 focuses specifically on the commercial bulletproof hosting providers that sell abuse-resistant infrastructure to fraud operators as a business model."
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -1020,6 +1050,60 @@
     "text": "Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ramping through Chinese OTC brokers (days 20-45). Temporal pattern matching against known laundering cycle timelines.\n"
   },
   {
+    "id": "DL-0115",
+    "type": "detection_rule",
+    "title": "DaaS Platform Transaction Pattern",
+    "text": "Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.\n"
+  },
+  {
+    "id": "DL-0116",
+    "type": "detection_rule",
+    "title": "Real-Time Face/Voice Changer Detection During Video Interview",
+    "text": "Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.\n"
+  },
+  {
+    "id": "DL-0117",
+    "type": "detection_rule",
+    "title": "Multilingual Chatbot Scam Pattern Detection",
+    "text": "Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.\n"
+  },
+  {
+    "id": "DL-0118",
+    "type": "detection_rule",
+    "title": "Automated Mule Account Creation Velocity",
+    "text": "Detect automated account opening patterns indicative of mule account infrastructure buildout: (1) multiple applications originating from the same device fingerprint or IP address within a 24-hour window, (2) KYC document metadata anomalies such as identical creation timestamps or template-based formatting, (3) application completion in under 2 minutes suggesting automation, (4) absence of mouse movement or scroll events with rapid sequential field completion indicating bot-driven form filling.\n"
+  },
+  {
+    "id": "DL-0119",
+    "type": "detection_rule",
+    "title": "KYC Verification Bot Circumvention Detection",
+    "text": "Detect automated circumvention of KYC identity verification processes: (1) liveness check submissions exhibiting synthetic face indicators such as GAN artifacts or uniform skin texture, (2) document photo lighting conditions inconsistent with selfie environment suggesting pre-captured or generated images, (3) multiple verification attempts from geographically dispersed IP addresses using the same identity documents, (4) session duration and interaction patterns matching known automation tooling.\n"
+  },
+  {
+    "id": "DL-0120",
+    "type": "detection_rule",
+    "title": "Investment TDS Geo-Routing to Legitimate Platform",
+    "text": "Detect Traffic Distribution System (TDS) geo-routing patterns used in investment scam infrastructure: (1) same domain resolving to different IP addresses based on requester geography, (2) US-based visitors redirected to legitimate financial services such as eToro or Coinbase while non-US visitors are routed to newly registered scam domains, (3) CNAME records functioning as TDS routing mechanisms as observed in Savvy Seahorse campaigns. This evasion technique allows scam operators to avoid detection by security researchers and law enforcement in specific jurisdictions.\n"
+  },
+  {
+    "id": "DL-0121",
+    "type": "detection_rule",
+    "title": "DPRK Internal Platform Network Connection Detection",
+    "text": "Detect connections to DPRK-associated internal collaboration platforms OConnect VPN and NetKey VPN, identified by Flare and IBM X-Force as tools used by DPRK IT workers: (1) VPN connections to known OConnect or NetKey IP address ranges, (2) DNS queries resolving OConnect or NetKey domains, (3) VPN protocol signatures matching OConnect or NetKey handshake patterns, particularly from endpoints that are simultaneously connected to corporate VPN infrastructure. Dual-VPN usage is a strong indicator of DPRK IT worker activity on compromised enterprise networks.\n"
+  },
+  {
+    "id": "DL-0122",
+    "type": "detection_rule",
+    "title": "Keitaro/Binom TDS Abuse Infrastructure Detection",
+    "text": "Detect abuse of legitimate Traffic Distribution Systems Keitaro and Binom for fraud infrastructure: (1) HTTP redirect chains containing Keitaro tracking parameters such as click_id, campaign_id, and characteristic Keitaro URL path structures, (2) domains resolving to IP addresses associated with Keitaro or Binom hosting infrastructure, (3) redirect chain behavior patterns matching cloaking and visitor fingerprinting techniques used to evade security researchers while directing victims to investment scam landing pages.\n"
+  },
+  {
+    "id": "DL-0123",
+    "type": "detection_rule",
+    "title": "TAE Infrastructure Rotation Detection",
+    "text": "Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems within short timeframes, (2) RIPE NCC resource reallocation to newly created organizations with minimal operational history, (3) BGP announcement changes matching known TAE rebranding patterns such as Aeza to Hypercore to NetCrafters, (4) threat density score spikes on newly announced prefixes indicating migration of malicious infrastructure to fresh address space.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",
@@ -1174,5 +1258,23 @@
     "type": "baseline",
     "title": "Cryptocurrency Laundering Cycle Duration Norms",
     "text": "This baseline defines normal and anomalous timing patterns for cryptocurrency laundering cycles, covering the full lifecycle from initial theft or illicit acquisition through distancing, integration, and final off-ramping to fiat currency. It establishes behavioral norms for DPRK state-sponsored laundering operations, Chinese Money Laundering Network (CMLN) processing services, legitimate exchange settlement timelines, pig butchering proceeds laundering, and cross-chain bridge hopping during the distancing phase. These baselines are derived from the CrimsonVector Strategic Intelligence Report, Chainalysis 2026 Crypto Crime Report, and TRM Labs illicit flow analysis. Organizations should calibrate detection thresholds against these timing norms to distinguish legitimate cryptocurrency transaction patterns from laundering activity."
+  },
+  {
+    "id": "BL-0028",
+    "type": "baseline",
+    "title": "Deepfake Service Procurement Activity Norms",
+    "text": "This baseline defines normal and anomalous activity levels for deepfake service marketplace activity, video conferencing artifact detection, and underground channel activity levels. It establishes norms for deepfake-as-a-service (DaaS) vendor proliferation, virtual camera driver usage in legitimate versus fraudulent contexts, and voice synthesis detection thresholds. These baselines are derived from the UNODC Emerging Threats report (September 2025), INTERPOL Global Financial Fraud Threat Assessment 2026, and Recorded Future threat intelligence. Organizations should calibrate detection thresholds against these norms to distinguish legitimate use of video and audio processing tools from deepfake-enabled fraud operations. This baseline supports detection logic DL-0115 and DL-0116."
+  },
+  {
+    "id": "BL-0029",
+    "type": "baseline",
+    "title": "Automated Account Opening Velocity Norms",
+    "text": "This baseline defines normal and anomalous patterns for legitimate versus automated account opening activity, KYC verification timing, and per-device application rates. It establishes behavioral norms for application completion speed, document submission timing, device-level velocity, liveness check performance, and human interaction indicators during the onboarding process. These baselines are derived from the UNODC Emerging Threats report (September 2025) and INTERPOL Global Financial Fraud Threat Assessment 2026. Organizations should calibrate detection thresholds against these norms to identify bot-driven mule account creation and distinguish it from legitimate customer onboarding. This baseline supports detection logic DL-0118 and DL-0119."
+  },
+  {
+    "id": "BL-0030",
+    "type": "baseline",
+    "title": "Investment Platform TDS Routing Norms",
+    "text": "This baseline defines normal and anomalous patterns for legitimate investment platform referral chain behavior, geographic routing patterns, and Registered Domain Generation Algorithm (RDGA) domain registration volumes. It establishes norms for referral chain depth, domain age of referral sources, DNS TTL configurations, RDGA domain volumes per registrant, and geo-routing content consistency. These baselines are derived from Infoblox DNS Intelligence and Recorded Future threat intelligence. Organizations should calibrate detection thresholds against these norms to identify Traffic Distribution System (TDS) infrastructure used to route victims to fraudulent investment platforms while evading detection by routing analyst and crawler traffic to legitimate platforms. This baseline supports detection logic DL-0120 and DL-0122."
   }
 ]

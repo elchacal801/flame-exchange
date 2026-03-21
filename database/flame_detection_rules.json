@@ -7515,5 +7515,748 @@
       "Legitimate DeFi users with complex multi-protocol strategies",
       "Institutional rebalancing across multiple venues"
     ]
+  },
+  {
+    "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "dl_id": "DL-0115",
+    "title": "DaaS Platform Transaction Pattern",
+    "status": "experimental",
+    "description": "Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.\n",
+    "cfpf_phase": "P1",
+    "level": "medium",
+    "detection": {
+      "selection_recurring": {
+        "payment_type": "recurring",
+        "recurring_payment_amount|gte": 100,
+        "recurring_payment_amount|lte": 1000,
+        "recurring_payment_currency": "USD",
+        "recurring_payment_interval": "monthly",
+        "destination_wallet_flag|contains": [
+          "deepfake_service",
+          "daas_provider"
+        ]
+      },
+      "selection_onetime": {
+        "payment_type": "one-time",
+        "transaction_amount|gte": 50,
+        "transaction_amount|lte": 500,
+        "destination_wallet_flag|contains": [
+          "deepfake_service",
+          "daas_provider"
+        ]
+      },
+      "condition": "selection_recurring or selection_onetime"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "blockchain_analytics"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "payment_type",
+        "recurring_payment_amount",
+        "recurring_payment_currency",
+        "recurring_payment_interval",
+        "transaction_amount",
+        "destination_wallet_flag"
+      ],
+      "enrichment_required": [
+        {
+          "field": "destination_wallet_flag",
+          "source": "Threat intelligence enrichment (known DaaS provider wallet attribution)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0057"
+    ],
+    "fraud_types": [
+      "deepfake-as-a-service",
+      "fraud-as-a-service"
+    ],
+    "tags": [
+      "TP-0057",
+      "cfpf.phase1.recon",
+      "daas",
+      "deepfake",
+      "fraud-as-a-service",
+      "subscription-pattern"
+    ],
+    "falsepositives": [
+      "Legitimate AI SaaS subscriptions paid in cryptocurrency",
+      "NFT art purchases from digital artists",
+      "Legitimate face-swap or avatar generation services for entertainment"
+    ]
+  },
+  {
+    "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+    "dl_id": "DL-0116",
+    "title": "Real-Time Face/Voice Changer Detection During Video Interview",
+    "status": "experimental",
+    "description": "Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection_virtual_camera": {
+        "camera_driver_name|contains": [
+          "OBS Virtual",
+          "ManyCam",
+          "DeepFace",
+          "FaceSwap",
+          "Snap Camera"
+        ]
+      },
+      "selection_audio_anomaly": {
+        "audio_analysis_score|gt": 0.75,
+        "audio_formant_anomaly": true
+      },
+      "selection_lip_sync": {
+        "lip_sync_delta_ms|gt": 200
+      },
+      "condition": "selection_virtual_camera or selection_audio_anomaly or selection_lip_sync"
+    },
+    "logsource": {
+      "product": "collaboration",
+      "service": "video_conferencing"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "camera_driver_name",
+        "audio_analysis_score",
+        "audio_formant_anomaly",
+        "lip_sync_delta_ms"
+      ],
+      "enrichment_required": [
+        {
+          "field": "audio_analysis_score",
+          "source": "Audio analysis enrichment (spectral anomaly detection scoring)"
+        },
+        {
+          "field": "lip_sync_delta_ms",
+          "source": "Video analysis enrichment (lip-to-audio synchronization measurement)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Real-Time Face/Voice Changer Detection During Video Interview\n// Repository: flame-collaboration-video-monitoring\n// Native query required - audio/video analysis cannot be expressed in Sigma\ncamera_driver_name=/OBS Virtual|ManyCam|DeepFace|FaceSwap|Snap Camera/i\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| case {\n    camera_driver_name=/DeepFace|FaceSwap/i | risk_score:=90;\n    camera_driver_name=/OBS Virtual|ManyCam/i | risk_score:=50;\n    audio_analysis_score>0.75 | risk_score:=80;\n    lip_sync_delta_ms>200 | risk_score:=70;\n    * | risk_score:=0;\n  }\n| risk_score>=50\n| groupBy([user_id, session_id], function=[count(), collect([camera_driver_name, audio_analysis_score, lip_sync_delta_ms])])",
+      "splunk": "`comment(\"Splunk SPL for Real-Time Face/Voice Changer Detection During Video Interview\")`\n`comment(\"Native query required - audio/video analysis cannot be expressed in Sigma\")`\nindex=flame_collaboration sourcetype=flame:video_conferencing\n(camera_driver_name=\"*OBS Virtual*\" OR camera_driver_name=\"*ManyCam*\" OR camera_driver_name=\"*DeepFace*\" OR camera_driver_name=\"*FaceSwap*\")\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| eval risk_score=case(\n    camera_driver_name LIKE \"%DeepFace%\" OR camera_driver_name LIKE \"%FaceSwap%\", 90,\n    camera_driver_name LIKE \"%OBS Virtual%\" OR camera_driver_name LIKE \"%ManyCam%\", 50,\n    audio_analysis_score>0.75, 80,\n    lip_sync_delta_ms>200, 70)\n| where risk_score>=50\n| stats count values(camera_driver_name) as cameras values(audio_analysis_score) as audio_scores max(lip_sync_delta_ms) as max_lip_delta by user_id session_id"
+    },
+    "threat_path_ids": [
+      "TP-0034",
+      "TP-0057"
+    ],
+    "fraud_types": [
+      "ai-face-voice-changer",
+      "deepfake-fraud",
+      "dprk-it-worker-fraud"
+    ],
+    "tags": [
+      "TP-0034",
+      "TP-0057",
+      "cfpf.phase2.initial_access",
+      "deepfake",
+      "dprk",
+      "face-changer",
+      "flame.dprk",
+      "voice-changer"
+    ],
+    "falsepositives": [
+      "Legitimate OBS usage for screen sharing or streaming",
+      "Virtual background applications using camera driver interception",
+      "Legitimate audio processing software for noise cancellation",
+      "Poor network conditions causing audio-video desynchronization"
+    ]
+  },
+  {
+    "id": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+    "dl_id": "DL-0117",
+    "title": "Multilingual Chatbot Scam Pattern Detection",
+    "status": "experimental",
+    "description": "Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection_timing": {
+        "response_time_variance_ms|lt": 2000,
+        "message_count|gte": 10
+      },
+      "selection_template": {
+        "conversation_template_match_score|gt": 0.8
+      },
+      "selection_language_switch": {
+        "language_switch_count|gte": 1,
+        "conversation_languages_count|gte": 2
+      },
+      "selection_duplicate_phrasing": {
+        "cross_instance_phrase_similarity|gt": 0.9,
+        "reported_instances|gte": 2
+      },
+      "condition": "selection_timing and (selection_template or selection_language_switch or selection_duplicate_phrasing)"
+    },
+    "logsource": {
+      "product": "messaging_platform",
+      "service": "abuse_detection"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "response_time_variance_ms",
+        "message_count",
+        "conversation_template_match_score",
+        "language_switch_count",
+        "conversation_languages_count",
+        "cross_instance_phrase_similarity",
+        "reported_instances"
+      ],
+      "enrichment_required": [
+        {
+          "field": "conversation_template_match_score",
+          "source": "NLP enrichment (conversation template matching against known scam scripts)"
+        },
+        {
+          "field": "cross_instance_phrase_similarity",
+          "source": "Cross-instance analytics enrichment (phrase similarity scoring across reports)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0017",
+      "TP-0058"
+    ],
+    "fraud_types": [
+      "chatbot-enabled-fraud",
+      "scam-compound-operations",
+      "social-engineering"
+    ],
+    "tags": [
+      "TP-0017",
+      "TP-0058",
+      "cfpf.phase2.initial_access",
+      "chatbot",
+      "multilingual",
+      "scam-compound",
+      "scripted-fraud",
+      "social-engineering"
+    ],
+    "falsepositives": [
+      "Legitimate customer service chatbots with scripted responses",
+      "Auto-responders and out-of-office message systems",
+      "Language learning practice conversations"
+    ]
+  },
+  {
+    "id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
+    "dl_id": "DL-0118",
+    "title": "Automated Mule Account Creation Velocity",
+    "status": "experimental",
+    "description": "Detect automated account opening patterns indicative of mule account infrastructure buildout: (1) multiple applications originating from the same device fingerprint or IP address within a 24-hour window, (2) KYC document metadata anomalies such as identical creation timestamps or template-based formatting, (3) application completion in under 2 minutes suggesting automation, (4) absence of mouse movement or scroll events with rapid sequential field completion indicating bot-driven form filling.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection_speed": {
+        "application_duration_seconds|lt": 120
+      },
+      "selection_velocity": {
+        "device_applications_24h|gt": 3
+      },
+      "selection_bot": {
+        "mouse_events_count": 0,
+        "scroll_events_count": 0,
+        "field_completion_rate_ms|lt": 500
+      },
+      "selection_document": {
+        "kyc_document_metadata_anomaly": true
+      },
+      "condition": "selection_speed or selection_velocity or (selection_bot and selection_document)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "account_onboarding"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "application_duration_seconds",
+        "device_applications_24h",
+        "mouse_events_count",
+        "scroll_events_count",
+        "field_completion_rate_ms",
+        "kyc_document_metadata_anomaly"
+      ],
+      "enrichment_required": [
+        {
+          "field": "device_applications_24h",
+          "source": "Device intelligence enrichment (application count per device fingerprint in 24h)"
+        },
+        {
+          "field": "kyc_document_metadata_anomaly",
+          "source": "Document analysis enrichment (metadata consistency and template detection)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Automated Mule Account Creation Velocity\n// Repository: flame-banking-account-onboarding\n// Aggregation that cannot be expressed in Sigma\napplication_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0\n| groupBy([device_fingerprint, ip_address], function=[\n    count(as=app_count),\n    countDistinct(applicant_id, as=unique_applicants),\n    collect(applicant_id),\n    avg(application_duration_seconds, as=avg_duration),\n    min(application_duration_seconds, as=min_duration),\n    sum(mouse_events_count, as=total_mouse_events)\n  ])\n| app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| case {\n    app_count>10 | risk_level:=\"critical\";\n    app_count>5 | risk_level:=\"high\";\n    app_count>3 | risk_level:=\"medium\";\n  }",
+      "splunk": "`comment(\"Splunk SPL for Automated Mule Account Creation Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n(application_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0)\n| stats count as app_count dc(applicant_id) as unique_applicants values(applicant_id) as applicants\n  avg(application_duration_seconds) as avg_duration min(application_duration_seconds) as min_duration\n  sum(mouse_events_count) as total_mouse_events by device_fingerprint ip_address\n| where app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| eval risk_level=case(app_count>10, \"critical\", app_count>5, \"high\", app_count>3, \"medium\")"
+    },
+    "threat_path_ids": [
+      "TP-0059"
+    ],
+    "fraud_types": [
+      "application-fraud",
+      "automated-mule-infrastructure",
+      "new-account-fraud"
+    ],
+    "tags": [
+      "TP-0059",
+      "automation",
+      "bot-detection",
+      "cfpf.phase2.initial_access",
+      "mule-account",
+      "velocity"
+    ],
+    "falsepositives": [
+      "Legitimate batch account opening by businesses or payroll providers",
+      "Accessibility tools that bypass standard mouse interaction",
+      "Corporate onboarding processes using automated form-filling"
+    ]
+  },
+  {
+    "id": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b",
+    "dl_id": "DL-0119",
+    "title": "KYC Verification Bot Circumvention Detection",
+    "status": "experimental",
+    "description": "Detect automated circumvention of KYC identity verification processes: (1) liveness check submissions exhibiting synthetic face indicators such as GAN artifacts or uniform skin texture, (2) document photo lighting conditions inconsistent with selfie environment suggesting pre-captured or generated images, (3) multiple verification attempts from geographically dispersed IP addresses using the same identity documents, (4) session duration and interaction patterns matching known automation tooling.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection_synthetic": {
+        "liveness_synthetic_score|gt": 0.7
+      },
+      "selection_lighting": {
+        "document_lighting_mismatch": true,
+        "selfie_lighting_mismatch": true
+      },
+      "selection_multi_ip": {
+        "identity_multi_ip_count|gt": 2,
+        "ip_geo_dispersion_km|gt": 500
+      },
+      "selection_automation": {
+        "session_interaction_pattern": "automated",
+        "verification_attempt_count|gte": 3
+      },
+      "condition": "selection_synthetic or selection_lighting or selection_multi_ip or selection_automation"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "kyc_verification"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "liveness_synthetic_score",
+        "document_lighting_mismatch",
+        "selfie_lighting_mismatch",
+        "identity_multi_ip_count",
+        "ip_geo_dispersion_km",
+        "session_interaction_pattern",
+        "verification_attempt_count"
+      ],
+      "enrichment_required": [
+        {
+          "field": "liveness_synthetic_score",
+          "source": "Biometric analysis enrichment (GAN artifact and synthetic face detection scoring)"
+        },
+        {
+          "field": "ip_geo_dispersion_km",
+          "source": "Geolocation enrichment (IP geographic dispersion calculation)"
+        },
+        {
+          "field": "document_lighting_mismatch",
+          "source": "Document analysis enrichment (lighting environment consistency check)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0034",
+      "TP-0059"
+    ],
+    "fraud_types": [
+      "application-fraud",
+      "new-account-fraud",
+      "synthetic-identity"
+    ],
+    "tags": [
+      "TP-0034",
+      "TP-0059",
+      "bot-circumvention",
+      "cfpf.phase2.initial_access",
+      "gan-detection",
+      "kyc-bypass",
+      "synthetic-face"
+    ],
+    "falsepositives": [
+      "Poor camera quality producing artifacts similar to GAN indicators",
+      "Unusual lighting conditions during legitimate verification",
+      "Users re-attempting verification from different networks (mobile vs wifi)"
+    ]
+  },
+  {
+    "id": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c",
+    "dl_id": "DL-0120",
+    "title": "Investment TDS Geo-Routing to Legitimate Platform",
+    "status": "experimental",
+    "description": "Detect Traffic Distribution System (TDS) geo-routing patterns used in investment scam infrastructure: (1) same domain resolving to different IP addresses based on requester geography, (2) US-based visitors redirected to legitimate financial services such as eToro or Coinbase while non-US visitors are routed to newly registered scam domains, (3) CNAME records functioning as TDS routing mechanisms as observed in Savvy Seahorse campaigns. This evasion technique allows scam operators to avoid detection by security researchers and law enforcement in specific jurisdictions.\n",
+    "cfpf_phase": "P3",
+    "level": "medium",
+    "detection": {
+      "selection_geo_variance": {
+        "domain_ip_geo_variance": true,
+        "unique_resolution_ips|gte": 3,
+        "geo_routing_detected": true
+      },
+      "selection_legitimate_redirect": {
+        "redirect_target|contains": [
+          "etoro.com",
+          "coinbase.com",
+          "robinhood.com",
+          "fidelity.com"
+        ],
+        "source_geo": "US"
+      },
+      "selection_cname_tds": {
+        "cname_chain_length|gte": 2,
+        "cname_target_domain_age_days|lt": 30,
+        "cname_routing_pattern": true
+      },
+      "selection_domain_age": {
+        "domain_registration_age_days|lt": 30,
+        "non_us_redirect_target": true
+      },
+      "condition": "(selection_geo_variance and selection_legitimate_redirect) or (selection_cname_tds and selection_domain_age)"
+    },
+    "logsource": {
+      "product": "dns",
+      "service": "passive_dns"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "domain_ip_geo_variance",
+        "unique_resolution_ips",
+        "geo_routing_detected",
+        "redirect_target",
+        "source_geo",
+        "cname_chain_length",
+        "cname_target_domain_age_days",
+        "cname_routing_pattern",
+        "domain_registration_age_days",
+        "non_us_redirect_target"
+      ],
+      "enrichment_required": [
+        {
+          "field": "domain_ip_geo_variance",
+          "source": "Passive DNS enrichment (geographic resolution variance analysis)"
+        },
+        {
+          "field": "cname_routing_pattern",
+          "source": "DNS analytics enrichment (CNAME chain TDS pattern detection)"
+        },
+        {
+          "field": "domain_registration_age_days",
+          "source": "WHOIS enrichment (domain registration age calculation)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0042",
+      "TP-0060"
+    ],
+    "fraud_types": [
+      "investment-tds-pipeline",
+      "tds-exploitation"
+    ],
+    "tags": [
+      "TP-0042",
+      "TP-0060",
+      "cfpf.phase3.positioning",
+      "cname-routing",
+      "etoro-evasion",
+      "geo-routing",
+      "investment-scam",
+      "savvy-seahorse",
+      "tds"
+    ],
+    "falsepositives": [
+      "Legitimate CDN geo-routing for content delivery optimization",
+      "A/B testing by marketing platforms using geographic segmentation",
+      "Legitimate geo-restricted financial services with regional redirects"
+    ]
+  },
+  {
+    "id": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d",
+    "dl_id": "DL-0121",
+    "title": "DPRK Internal Platform Network Connection Detection",
+    "status": "experimental",
+    "description": "Detect connections to DPRK-associated internal collaboration platforms OConnect VPN and NetKey VPN, identified by Flare and IBM X-Force as tools used by DPRK IT workers: (1) VPN connections to known OConnect or NetKey IP address ranges, (2) DNS queries resolving OConnect or NetKey domains, (3) VPN protocol signatures matching OConnect or NetKey handshake patterns, particularly from endpoints that are simultaneously connected to corporate VPN infrastructure. Dual-VPN usage is a strong indicator of DPRK IT worker activity on compromised enterprise networks.\n",
+    "cfpf_phase": "P3",
+    "level": "critical",
+    "detection": {
+      "selection_vpn_product": {
+        "vpn_product|contains": [
+          "OConnect",
+          "NetKey"
+        ]
+      },
+      "selection_dns": {
+        "dns_query|contains": [
+          "oconnect",
+          "netkey",
+          "oconnect.net",
+          "netkey.io"
+        ]
+      },
+      "selection_dual_vpn": {
+        "concurrent_vpn_connections|gte": 2,
+        "corporate_vpn_active": true,
+        "external_vpn_detected": true
+      },
+      "condition": "selection_vpn_product or selection_dns or selection_dual_vpn"
+    },
+    "logsource": {
+      "product": "network",
+      "service": "vpn_monitoring"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "vpn_product",
+        "dns_query",
+        "concurrent_vpn_connections",
+        "corporate_vpn_active",
+        "external_vpn_detected"
+      ],
+      "enrichment_required": [
+        {
+          "field": "concurrent_vpn_connections",
+          "source": "Network analytics enrichment (concurrent VPN session detection)"
+        },
+        {
+          "field": "external_vpn_detected",
+          "source": "Endpoint telemetry enrichment (non-corporate VPN process detection)"
+        }
+      ]
+    },
+    "references": [
+      "https://flare.io/learn/resources/blog/dprk-it-workers",
+      "https://securityintelligence.com/x-force/dprk-it-workers-operations"
+    ],
+    "threat_path_ids": [
+      "TP-0034"
+    ],
+    "fraud_types": [
+      "dprk-it-worker-fraud"
+    ],
+    "tags": [
+      "TP-0034",
+      "cfpf.phase3.positioning",
+      "critical",
+      "dprk",
+      "dual-vpn",
+      "flame.dprk",
+      "netkey",
+      "oconnect",
+      "vpn"
+    ],
+    "falsepositives": [
+      "Legitimate OConnect videoconferencing usage in organizations where it is an approved tool",
+      "Security researchers analyzing DPRK infrastructure"
+    ]
+  },
+  {
+    "id": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e",
+    "dl_id": "DL-0122",
+    "title": "Keitaro/Binom TDS Abuse Infrastructure Detection",
+    "status": "experimental",
+    "description": "Detect abuse of legitimate Traffic Distribution Systems Keitaro and Binom for fraud infrastructure: (1) HTTP redirect chains containing Keitaro tracking parameters such as click_id, campaign_id, and characteristic Keitaro URL path structures, (2) domains resolving to IP addresses associated with Keitaro or Binom hosting infrastructure, (3) redirect chain behavior patterns matching cloaking and visitor fingerprinting techniques used to evade security researchers while directing victims to investment scam landing pages.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection_keitaro_params": {
+        "url_query|contains": [
+          "click_id=",
+          "campaign_id=",
+          "keitaro",
+          "/go/"
+        ],
+        "url_path|contains": [
+          "/tracker/",
+          "/click/",
+          "/go/"
+        ]
+      },
+      "selection_binom_params": {
+        "url_query|contains": [
+          "binom",
+          "cnv_id="
+        ],
+        "url_path|contains": [
+          "/click.php",
+          "/conversion.php"
+        ]
+      },
+      "selection_redirect_chain": {
+        "redirect_chain_length|gte": 3,
+        "redirect_chain_tds_fingerprint": true,
+        "final_destination_domain_age_days|lt": 30
+      },
+      "condition": "(selection_keitaro_params or selection_binom_params) and selection_redirect_chain"
+    },
+    "logsource": {
+      "product": "web_proxy",
+      "service": "http_log"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "url_query",
+        "url_path",
+        "redirect_chain_length",
+        "redirect_chain_tds_fingerprint",
+        "final_destination_domain_age_days"
+      ],
+      "enrichment_required": [
+        {
+          "field": "redirect_chain_tds_fingerprint",
+          "source": "Web proxy enrichment (TDS redirect pattern fingerprinting)"
+        },
+        {
+          "field": "final_destination_domain_age_days",
+          "source": "WHOIS enrichment (domain registration age for final redirect destination)"
+        }
+      ]
+    },
+    "queries": {
+      "logscale": "// LogScale LQL for Keitaro/Binom TDS Abuse Infrastructure Detection\n// Repository: flame-proxy-http-log\n// HTTP redirect chain analysis for TDS abuse patterns\n(url_query=/click_id=|campaign_id=|keitaro|binom|cnv_id=/)\nOR (url_path=/\\/tracker\\/|\\/click\\/|\\/go\\/|\\/click\\.php/)\n| selfJoinFilter(session_id, where=[{url_query=/keitaro/ OR url_path=/\\/tracker\\//} {url_query=/binom/ OR url_path=/\\/click\\.php/}])\n| groupBy([session_id, src_ip], function=[\n    count(as=redirect_count),\n    collect([url, final_destination])\n  ])\n| redirect_count>=3",
+      "splunk": "`comment(\"Splunk SPL for Keitaro/Binom TDS Abuse Infrastructure Detection\")`\n`comment(\"HTTP redirect chain analysis for TDS abuse patterns\")`\nindex=flame_proxy sourcetype=flame:http_log\n(url_query=\"*click_id=*\" OR url_query=\"*campaign_id=*\" OR url_query=\"*keitaro*\" OR url_query=\"*binom*\" OR url_query=\"*cnv_id=*\")\nOR (url_path=\"*/tracker/*\" OR url_path=\"*/click/*\" OR url_path=\"*/go/*\" OR url_path=\"*/click.php*\")\n| transaction session_id maxspan=30s\n| where eventcount>=3\n| eval redirect_chain=mvjoin(url, \" -> \")\n| eval has_keitaro=if(like(url_query, \"%keitaro%\") OR like(url_path, \"%/tracker/%\"), 1, 0)\n| eval has_binom=if(like(url_query, \"%binom%\") OR like(url_path, \"%/click.php%\"), 1, 0)\n| where has_keitaro=1 OR has_binom=1\n| stats count values(redirect_chain) as chains values(final_destination) as destinations by src_ip session_id"
+    },
+    "threat_path_ids": [
+      "TP-0042",
+      "TP-0060"
+    ],
+    "fraud_types": [
+      "investment-tds-pipeline",
+      "tds-exploitation"
+    ],
+    "tags": [
+      "TP-0042",
+      "TP-0060",
+      "binom",
+      "cfpf.phase2.initial_access",
+      "cloaking",
+      "investment-scam",
+      "keitaro",
+      "redirect-chain",
+      "tds"
+    ],
+    "falsepositives": [
+      "Legitimate digital marketing campaigns using Keitaro or Binom for affiliate analytics",
+      "Performance marketing redirect chains for authorized advertising"
+    ]
+  },
+  {
+    "id": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
+    "dl_id": "DL-0123",
+    "title": "TAE Infrastructure Rotation Detection",
+    "status": "experimental",
+    "description": "Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems within short timeframes, (2) RIPE NCC resource reallocation to newly created organizations with minimal operational history, (3) BGP announcement changes matching known TAE rebranding patterns such as Aeza to Hypercore to NetCrafters, (4) threat density score spikes on newly announced prefixes indicating migration of malicious infrastructure to fresh address space.\n",
+    "cfpf_phase": "P1",
+    "level": "high",
+    "detection": {
+      "selection_prefix_transfer": {
+        "prefix_transfer_days|lt": 30,
+        "source_asn_related": true,
+        "destination_asn_related": true
+      },
+      "selection_new_org": {
+        "new_organization_age_days|lt": 90,
+        "ripe_resource_allocation": true,
+        "organization_verification_status": "minimal"
+      },
+      "selection_threat_density": {
+        "threat_density_score|gt": 0.6,
+        "prefix_announcement_age_days|lt": 14,
+        "historical_abuse_on_prefix": false
+      },
+      "selection_rebranding": {
+        "asn_name_change_days|lt": 60,
+        "infrastructure_overlap_score|gt": 0.7
+      },
+      "condition": "(selection_prefix_transfer and selection_new_org) or selection_threat_density or (selection_prefix_transfer and selection_rebranding)"
+    },
+    "logsource": {
+      "product": "network",
+      "service": "bgp_monitoring"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "prefix_transfer_days",
+        "source_asn_related",
+        "destination_asn_related",
+        "new_organization_age_days",
+        "ripe_resource_allocation",
+        "organization_verification_status",
+        "threat_density_score",
+        "prefix_announcement_age_days",
+        "historical_abuse_on_prefix",
+        "asn_name_change_days",
+        "infrastructure_overlap_score"
+      ],
+      "enrichment_required": [
+        {
+          "field": "threat_density_score",
+          "source": "Threat intelligence enrichment (IP prefix threat density calculation)"
+        },
+        {
+          "field": "infrastructure_overlap_score",
+          "source": "BGP analytics enrichment (infrastructure overlap between old and new ASN announcements)"
+        },
+        {
+          "field": "source_asn_related",
+          "source": "WHOIS/RIR enrichment (ASN organizational relationship mapping)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0044",
+      "TP-0061"
+    ],
+    "fraud_types": [
+      "bph-migration",
+      "sanctions-evasion-infrastructure",
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "TP-0044",
+      "TP-0061",
+      "aeza",
+      "bgp",
+      "bulletproof-hosting",
+      "cfpf.phase1.recon",
+      "ip-rotation",
+      "ripe-abuse",
+      "sanctions-evasion",
+      "tae"
+    ],
+    "falsepositives": [
+      "Legitimate ISP mergers and acquisitions involving prefix transfers",
+      "Planned infrastructure migrations with proper documentation",
+      "Regional Internet Registry administrative reallocation"
+    ]
   }
 ]

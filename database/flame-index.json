@@ -718,7 +718,7 @@
     "source": "Wall Street Journal (2019 UK energy firm case) / Regula AI deepfake fraud surveys",
     "tlp": "WHITE",
     "summary": "Actors use AI-generated voice deepfakes to impersonate executives, clients, or authorized signers during phone-based wire transfer authorization. The first publicly documented case (2019) involved a U...",
-    "confidence_score": 68,
+    "confidence_score": 75,
     "source_reliability": "C",
     "info_credibility": 2,
     "infrastructure_generation_method": null,
@@ -739,7 +739,11 @@
       "CEO-fraud",
       "AI-enabled",
       "dual-authorization-bypass",
-      "emerging-threat"
+      "emerging-threat",
+      "daas",
+      "10-second-voice-clone",
+      "unodc",
+      "interpol-gffta"
     ],
     "cfpf_phases": [
       "P1",
@@ -789,7 +793,9 @@
       "REG-FATF-R16",
       "REG-FBI-IC3",
       "REG-OCC-FRAUD",
-      "REG-UK-PSR-APP"
+      "REG-UK-PSR-APP",
+      "REG-INTERPOL-GFFTA",
+      "REG-UNODC-EMERGING-THREATS"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -824,6 +830,10 @@
       },
       {
         "id": "TP-0025",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0057",
         "relationship": "related-to"
       }
     ],
@@ -1827,7 +1837,10 @@
       "pig-butchering",
       "crypto-scam",
       "romance-scam",
-      "app-fraud"
+      "app-fraud",
+      "interpol-gffta",
+      "unodc",
+      "40b-annual"
     ],
     "cfpf_phases": [
       "P1",
@@ -1874,7 +1887,9 @@
       "REG-FCA-APP",
       "REG-MAS-SRF",
       "REG-SEC-SAR",
-      "REG-UK-PSR-APP"
+      "REG-UK-PSR-APP",
+      "REG-INTERPOL-GFFTA",
+      "REG-UNODC-EMERGING-THREATS"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -1885,7 +1900,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0117"
+    ],
     "related_tps": [
       {
         "id": "TP-0026",
@@ -1896,7 +1913,7 @@
         "relationship": "shares-infrastructure"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0018",
@@ -3600,7 +3617,7 @@
     "category": "ThreatPath",
     "date": "2026-03-03",
     "author": "FLAME Project",
-    "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne",
+    "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)",
     "tlp": "WHITE",
     "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use sto...",
     "confidence_score": 85,
@@ -3635,7 +3652,16 @@
       "identity-theft",
       "code-exfiltration",
       "salary-diversion",
-      "facilitator-network"
+      "facilitator-network",
+      "rb-site",
+      "netkeyregister",
+      "oconnect-vpn",
+      "ip-messenger",
+      "western-collaborators",
+      "beavertail",
+      "invisibleferret",
+      "purplebravo",
+      "purpledelta"
     ],
     "cfpf_phases": [
       "P1",
@@ -3686,7 +3712,9 @@
     "regulatory_refs": [
       "REG-OFAC-SDN",
       "REG-FINCEN-CDD",
-      "REG-FBI-IC3"
+      "REG-FBI-IC3",
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-RF-CTA-2026-0319"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -3704,7 +3732,10 @@
       "DL-0071",
       "DL-0072",
       "DL-0073",
-      "DL-0074"
+      "DL-0074",
+      "DL-0116",
+      "DL-0119",
+      "DL-0121"
     ],
     "related_tps": [
       {
@@ -3722,9 +3753,17 @@
       {
         "id": "TP-0029",
         "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0045",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0057",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 4
   },
   {
     "id": "TP-0035",
@@ -4201,7 +4240,8 @@
       "open-banking-parallel",
       "amazon-buy-for-me",
       "visa-intelligent-commerce",
-      "mastercard-agent-pay"
+      "mastercard-agent-pay",
+      "interpol-gffta"
     ],
     "cfpf_phases": [
       "P1",
@@ -4242,7 +4282,8 @@
     "regulatory_refs": [
       "REG-CFPB-REGE",
       "REG-DORA",
-      "REG-PSD3-SCA"
+      "REG-PSD3-SCA",
+      "REG-INTERPOL-GFFTA"
     ],
     "ucff_domains": {
       "commit": "Level 2",
@@ -4271,7 +4312,7 @@
         "relationship": "enhances"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0040",
@@ -4430,7 +4471,10 @@
       "zone-file-analysis",
       "dns-intelligence",
       "bulk-registration",
-      "nameserver-clustering"
+      "nameserver-clustering",
+      "reckless-rabbit",
+      "ruthless-rabbit",
+      "infoblox"
     ],
     "cfpf_phases": [
       "P1",
@@ -4461,7 +4505,9 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-RF-CTA-2026-0319"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 4",
@@ -4486,6 +4532,10 @@
       {
         "id": "TP-0043",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0060",
+        "relationship": "shares-infrastructure"
       }
     ],
     "evidence_count": 0
@@ -4526,7 +4576,15 @@
       "cloaking",
       "affiliate-fraud",
       "dns-hijack",
-      "seo-poisoning"
+      "seo-poisoning",
+      "keitaro",
+      "binom",
+      "graycharlie",
+      "tag-124",
+      "clickfix",
+      "reckless-rabbit",
+      "ruthless-rabbit",
+      "savvy-seahorse"
     ],
     "cfpf_phases": [
       "P1",
@@ -4560,7 +4618,10 @@
       "Perform Fraud",
       "Monetization"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-RF-CTA-2026-0319"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 4",
@@ -4575,7 +4636,9 @@
       "DL-0096",
       "DL-0097",
       "DL-0099",
-      "DL-0100"
+      "DL-0100",
+      "DL-0120",
+      "DL-0122"
     ],
     "related_tps": [
       {
@@ -4585,6 +4648,10 @@
       {
         "id": "TP-0043",
         "relationship": "enables"
+      },
+      {
+        "id": "TP-0060",
+        "relationship": "shares-infrastructure"
       }
     ],
     "evidence_count": 0
@@ -4725,7 +4792,15 @@
       "qilin-ransomware",
       "cmln",
       "nation-state",
-      "hybrid-threat"
+      "hybrid-threat",
+      "interpol-gffta",
+      "recorded-future",
+      "virtualine",
+      "stark-industries",
+      "aeza",
+      "aurologic",
+      "operation-haechi",
+      "operation-redcard"
     ],
     "cfpf_phases": [
       "P1",
@@ -4754,7 +4829,13 @@
       "Monetization",
       "Laundering"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-INTERPOL-HAECHI",
+      "REG-INTERPOL-REDCARD",
+      "REG-INTERPOL-SHADOW-STORM",
+      "REG-RF-CTA-2026-0319"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 4",
@@ -4765,7 +4846,8 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [
-      "DL-0101"
+      "DL-0101",
+      "DL-0123"
     ],
     "related_tps": [
       {
@@ -4775,9 +4857,13 @@
       {
         "id": "TP-0045",
         "relationship": "enables"
+      },
+      {
+        "id": "TP-0061",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0045",
@@ -4993,7 +5079,10 @@
       "karen-national-army",
       "ofac-sanctions",
       "cryptocurrency",
-      "recruitment-fraud"
+      "recruitment-fraud",
+      "multilingual-chatbot",
+      "sextortion-fallback",
+      "unodc"
     ],
     "cfpf_phases": [
       "P1",
@@ -5019,7 +5108,10 @@
       "Monetization",
       "Laundering"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-INTERPOL-GFFTA"
+    ],
     "ucff_domains": {
       "commit": "Level 4",
       "assess": "Level 4",
@@ -5045,9 +5137,13 @@
       {
         "id": "TP-0049",
         "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0058",
+        "relationship": "shares-infrastructure"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0048",
@@ -5169,7 +5265,10 @@
       "cross-chain-bridge",
       "huione-group",
       "chainalysis",
-      "trm-labs"
+      "trm-labs",
+      "interpol-gffta",
+      "unodc",
+      "ai-evasion"
     ],
     "cfpf_phases": [
       "P1",
@@ -5190,7 +5289,10 @@
       "Monetization",
       "Laundering"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-UNODC-EMERGING-THREATS"
+    ],
     "ucff_domains": {
       "commit": "Level 4",
       "assess": "Level 4",
@@ -5218,7 +5320,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0050",
@@ -5440,7 +5542,9 @@
       "hybrid-fraud",
       "crypto-laundering",
       "teen-targeting",
-      "executive-targeting"
+      "executive-targeting",
+      "scripted-fallback",
+      "interpol-gffta"
     ],
     "cfpf_phases": [
       "P1",
@@ -5473,7 +5577,8 @@
     ],
     "regulatory_refs": [
       "REG-CFPB-REGE",
-      "REG-FINCEN-AML"
+      "REG-FINCEN-AML",
+      "REG-INTERPOL-GFFTA"
     ],
     "ucff_domains": {
       "commit": "Level 2",
@@ -5503,7 +5608,7 @@
         "relationship": "enhances"
       }
     ],
-    "evidence_count": 3
+    "evidence_count": 4
   },
   {
     "id": "TP-0053",
@@ -5634,7 +5739,12 @@
       "deepfake-tools",
       "bot-testimonials",
       "affiliate-fraud",
-      "democratized-fraud"
+      "democratized-fraud",
+      "442b-global-losses",
+      "4.5x-profitability",
+      "maas",
+      "phaas",
+      "recorded-future"
     ],
     "cfpf_phases": [
       "P1",
@@ -5667,7 +5777,9 @@
     "regulatory_refs": [
       "REG-CFPB-REGE",
       "REG-DORA",
-      "REG-FINCEN-AML"
+      "REG-FINCEN-AML",
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-RF-CTA-2026-0319"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -5691,9 +5803,13 @@
       {
         "id": "TP-0043",
         "relationship": "enhances"
+      },
+      {
+        "id": "TP-0061",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 3
   },
   {
     "id": "TP-0055",
@@ -5729,7 +5845,9 @@
       "tren-de-aragua",
       "crypto-mixing",
       "cross-border-laundering",
-      "organized-crime-convergence"
+      "organized-crime-convergence",
+      "interpol-gffta",
+      "operation-catalyst"
     ],
     "cfpf_phases": [
       "P1",
@@ -5758,7 +5876,8 @@
     ],
     "regulatory_refs": [
       "REG-FINCEN-AML",
-      "REG-FATF-R16"
+      "REG-FATF-R16",
+      "REG-INTERPOL-GFFTA"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -5784,7 +5903,7 @@
         "relationship": "shares-infrastructure"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 3
   },
   {
     "id": "TP-0056",
@@ -5878,5 +5997,529 @@
       }
     ],
     "evidence_count": 1
+  },
+  {
+    "id": "TP-0057",
+    "title": "Deepfake-as-a-Service Marketplace Ecosystem",
+    "category": "ThreatPath",
+    "date": "2026-03-20",
+    "author": "FLAME Project",
+    "source": "INTERPOL GFFTA 2026, UNODC Emerging Threats Sept 2025, Flare/IBM X-Force March 2026",
+    "tlp": "WHITE",
+    "summary": "Deepfake-as-a-Service (DaaS) platforms operating on dark web marketplaces and Telegram that provide subscription-based access to deepfake generation tools — voice cloning, real-time face swapping, AI ...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "ai-assisted",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "hybrid",
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "technology",
+      "employment",
+      "staffing"
+    ],
+    "fraud_types": [
+      "deepfake-as-a-service",
+      "deepfake-fraud",
+      "ai-face-voice-changer",
+      "fraud-as-a-service",
+      "impersonation"
+    ],
+    "tags": [
+      "deepfake-as-a-service",
+      "daas",
+      "voice-clone",
+      "face-swap",
+      "ai-face-changer",
+      "deepfacelive",
+      "telegram-daas",
+      "600pct-deepfake-surge",
+      "10-second-voice-clone",
+      "dark-web-marketplace"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1583.003",
+      "T1588.002",
+      "T1036",
+      "T1204.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA009",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-DORA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0115",
+      "DL-0116"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0007",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0034",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0043",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0047",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0054",
+        "relationship": "enhances"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0058",
+    "title": "Scam Compound Operational Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-03-20",
+    "author": "FLAME Project",
+    "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026",
+    "tlp": "WHITE",
+    "summary": "Operational fraud mechanics inside industrialized scam compounds. UNODC documents $40B annual profits from scam compound operations, with multilingual AI chatbots deployed for automated victim engagem...",
+    "confidence_score": 78,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "suspected",
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "crypto",
+      "investment"
+    ],
+    "fraud_types": [
+      "scam-compound-operations",
+      "chatbot-enabled-fraud",
+      "social-engineering",
+      "romance-scam",
+      "investment-scam",
+      "sextortion",
+      "human-trafficking-facilitation"
+    ],
+    "tags": [
+      "scam-compound",
+      "boiler-room",
+      "multilingual-chatbot",
+      "scripted-fraud",
+      "manager-hierarchy",
+      "shift-operations",
+      "sextortion-fallback",
+      "crm-systems",
+      "40b-annual-profits",
+      "80-nationalities"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.002",
+      "T1204.001",
+      "T1036",
+      "T1098"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA009",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-INTERPOL-HAECHI"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0117"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0017",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0047",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0052",
+        "relationship": "enhances"
+      }
+    ],
+    "evidence_count": 2
+  },
+  {
+    "id": "TP-0059",
+    "title": "Automated Mule Account Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-03-20",
+    "author": "FLAME Project",
+    "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319",
+    "tlp": "WHITE",
+    "summary": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account system...",
+    "confidence_score": 75,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "ai-assisted",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "crypto",
+      "fintech",
+      "payments"
+    ],
+    "fraud_types": [
+      "automated-mule-accounts",
+      "money-laundering",
+      "bot-driven-account-opening",
+      "kyc-circumvention"
+    ],
+    "tags": [
+      "automated-mule",
+      "bot-account-opening",
+      "kyc-bot",
+      "synthetic-identity",
+      "device-farm",
+      "emulator-farm",
+      "liveness-bypass",
+      "unodc",
+      "mule-herding",
+      "velocity-anomaly"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1136.001",
+      "T1136.003",
+      "T1078",
+      "T1583.001"
+    ],
+    "ft3_tactics": [
+      "FTA003",
+      "FTA005",
+      "FTA015"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-INTERPOL-GFFTA",
+      "REG-RF-CTA-2026-0319"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0118",
+      "DL-0119"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0017",
+        "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0054",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0058",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0060",
+    "title": "Investment Fraud TDS Pipeline",
+    "category": "ThreatPath",
+    "date": "2026-03-20",
+    "author": "FLAME Project",
+    "source": "Recorded Future CTA-2026-0319, Infoblox Keitaro/Binom Analysis 2025, INTERPOL GFFTA 2026",
+    "tlp": "WHITE",
+    "summary": "Traffic Distribution Systems (TDS) weaponized specifically for investment fraud delivery — routing potential victims from legitimate advertising platforms through multi-hop cloaking chains to fraudule...",
+    "confidence_score": 70,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "tds-routing",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "investment",
+      "crypto",
+      "insurance"
+    ],
+    "fraud_types": [
+      "traffic-distribution-system",
+      "investment-fraud",
+      "cloaking",
+      "geo-routing",
+      "rdga-infrastructure"
+    ],
+    "tags": [
+      "tds",
+      "keitaro",
+      "binom",
+      "investment-scam",
+      "cloaking",
+      "geo-routing",
+      "rdga",
+      "reckless-rabbit",
+      "ruthless-rabbit",
+      "savvy-seahorse",
+      "domain-age-evasion",
+      "referral-chain"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1583.003",
+      "T1102",
+      "T1036",
+      "T1568.002"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA009",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Traffic Distribution",
+      "End-user Interaction",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-RF-CTA-2026-0319",
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0120",
+      "DL-0122"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0017",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0034",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0041",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0042",
+        "relationship": "variant-of"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0061",
+    "title": "Threat Actor Enabling Bulletproof Hosting Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-03-20",
+    "author": "FLAME Project",
+    "source": "Recorded Future CTA-2026-0319, INTERPOL GFFTA 2026",
+    "tlp": "WHITE",
+    "summary": "Bulletproof hosting (BPH) providers and abuse-resistant infrastructure services that enable fraud operations by providing hosting that resists takedown requests, law enforcement cooperation, and abuse...",
+    "confidence_score": 68,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "hybrid",
+    "sectors": [
+      "cross-sector",
+      "technology",
+      "telecommunications"
+    ],
+    "fraud_types": [
+      "bulletproof-hosting",
+      "fraud-enabling-infrastructure",
+      "hosting-provider-complicity",
+      "infrastructure-rotation"
+    ],
+    "tags": [
+      "bulletproof-hosting",
+      "bph",
+      "virtualine",
+      "stark-industries",
+      "aeza",
+      "aurologic",
+      "infrastructure-rotation",
+      "abuse-resistant",
+      "fraud-infrastructure",
+      "hosting-complicity",
+      "recorded-future",
+      "interpol-shadow-storm"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1583.003",
+      "T1583.004",
+      "T1583.006",
+      "T1584.004"
+    ],
+    "ft3_tactics": [
+      "FTA015"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access"
+    ],
+    "regulatory_refs": [
+      "REG-RF-CTA-2026-0319",
+      "REG-INTERPOL-GFFTA",
+      "REG-INTERPOL-SHADOW-STORM"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0123"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0042",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0044",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0054",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0057",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0060",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 2
   }
 ]
