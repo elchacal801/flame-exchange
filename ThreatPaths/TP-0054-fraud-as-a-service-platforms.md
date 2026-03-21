@@ -61,6 +61,8 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0061
     relationship: related-to
+  - id: TP-0057
+    relationship: variant-of
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
@@ -84,6 +86,14 @@ tags:
   - maas
   - phaas
   - recorded-future
+  - vextrio
+  - ad-trafficko
+  - blank-cc-subscription-fraud
+  - fake-mobile-apps
+  - push-notification-abuse
+  - self-referential-scam
+  - black-hat-usa-2025
+  - infoblox-deanonymization
 ---
 ```
 
@@ -346,8 +356,27 @@ ORDER BY shared_domains DESC;
 
 ---
 
+### EV-TP0054-2025-003: VexTrio/Ad Trafficko — Blank Credit Card Subscription FaaS
+
+- **Source**: Renée Burton, Dave Mitchell, Christopher Kim (Infoblox Threat Intelligence), "No Hoodies Here: Organized Crime in AdTech," Black Hat USA 2025, August 6, 2025; Black Hat World forum references; third-party Russian-language affiliate marketing blog (archived pre-scrubbing)
+- **Region**: Global (corporate entities in Switzerland, Czech Republic, Italy; operations in 150+ countries)
+- **Key Finding**: Ad Trafficko (VexTrio company, owned by Eastern European group and Julio Serudi) operated blank credit card subscription fraud as a FaaS model. Affiliates receive customizable blank CC capture templates ("Free iPhone, $1.99 shipping" or "Walmart gift card, $0.99 shipping"). Victim enters card details believing they are paying a nominal shipping fee; Ad Trafficko charges $9.99 and enrolls victim in recurring subscription generating ongoing charges. Affiliate payouts reach $120 per successful "lead" (credit card capture). The scheme is explicitly the FaaS affiliate model documented in this TP — platform operator (Ad Trafficko) provides the fraud toolkit, affiliates execute campaigns, and revenue is split. This represents a concrete, deanonymized example of a FaaS platform with identified operators, corporate structure, and named individuals — the first such attribution for a blank CC subscription fraud FaaS.
+- **CFPF Phase Coverage**: P1 (affiliate recruitment via forums), P2 (template distribution to affiliates), P4 (credit card capture and subscription enrollment), P5 (revenue split between operator and affiliates)
+- **Confidence**: High — confirmed through Black Hat World forum posts, Russian-language documentation, and adversary content removal (all blank CC offers scrubbed from Ad Trafficko overnight after Infoblox disclosure, validating attribution). Full deanonymization report released concurrently with Black Hat USA 2025 presentation.
+- **Summary**: This evidence establishes that the FaaS affiliate model described in TP-0054 is not limited to AI-powered phishing and deepfake toolkits — it extends to payment card fraud via blank CC subscription templates. The deanonymized corporate structure (Ad Trafficko as one of ~100 VexTrio shell companies, operating from Lugano, Switzerland) demonstrates that FaaS platforms can be traced to organized criminal enterprises with identifiable corporate structures, not just anonymous dark web operators.
+
+### EV-TP0054-2025-004: VexTrio Fake Mobile App FaaS — Self-Referential Scam Cycle
+
+- **Source**: Black Hat USA 2025 presentation; Infoblox blog (user-experience testing and video documentation)
+- **Key Finding**: VexTrio operated fake mobile applications as a FaaS vertical for 7–8 years, distributed through Google Play Store, Apple App Store, and third-party forums. The "spam protection" app variant demonstrates a self-referential FaaS scam cycle: (1) push notification abuse infects victim's browser via fake CAPTCHA (100–150 notifications/day), (2) victim served ad for "spam protection" app through VexTrio TDS, (3) app requests device permissions that disable browser notifications, (4) app displays fabricated "blocked" notification screen, (5) after 24 hours, app transitions to $6.99/week subscription, (6) notifications return unless subscription is maintained. The fake VPN variants function as residential proxies with keyword-scanning capabilities targeting banking information — making users unwitting proxy nodes while harvesting their data. This represents a FaaS model where VexTrio controls the entire victim pipeline from initial infection through monetization.
+- **CFPF Phase Coverage**: P1 (app development), P2 (distribution via app stores and TDS), P3 (push notification abuse for trust manipulation), P4 (subscription enrollment), P5 ($6.99/week recurring revenue)
+- **Confidence**: Medium-High — apps documented through app store analysis and user-experience testing published on Infoblox blog.
+
+---
+
 ## References
 
+- Infoblox Threat Intelligence (Black Hat USA 2025), *"No Hoodies Here: Organized Crime in AdTech"*, Renée Burton, Dave Mitchell, Christopher Kim, August 6, 2025 — VexTrio corporate deanonymization, Ad Trafficko blank CC subscription FaaS, fake mobile app operations, affiliate fraud model with identified corporate structure
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — Asia and Pacific chapter: FaaS BEC enablement, deepfake voice impersonation, AI-powered phishing kits; Technology and AI chapter: criminal peer-to-peer marketplaces, cross-regional FaaS supply chains
 - Chainalysis, *Record $17 Billion Estimated Stolen in Crypto Scams and Fraud in 2025 as Impersonation Tactics and AI Enablement Surge*, January 2026 — AI-enabled fraud estimated 4.5x more profitable than non-enhanced tactics
 - Group-IB, *Weaponised AI Is Powering the Fifth Wave of Cybercrime*, January 2026 — deepfake audio capability accessible via dark web marketplaces using 10 seconds of audio
@@ -373,3 +402,4 @@ ORDER BY shared_domains DESC;
 |------|--------|--------|
 | 2026-03-17 | FLAME Project | Initial submission |
 | 2026-03-20 | FLAME Project | Enriched with INTERPOL $442B losses, UNODC bot verification data, Recorded Future MaaS/PhaaS professionalization intelligence, and bulletproof hosting enabler analysis |
+| 2026-03-21 | FLAME Project | Added VexTrio/Ad Trafficko blank CC subscription FaaS evidence (Black Hat USA 2025, Infoblox deanonymization); added fake mobile app FaaS evidence (self-referential scam cycle); added related TP-0057; added 8 new tags |
