@@ -1,0 +1,74 @@
+title: Indirect Prompt Injection in UCP Agent Browsing Content
+id: b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e
+status: experimental
+description: 'Detects indicators of indirect prompt injection payloads in web content encountered by UCP
+  shopping agents during autonomous browsing. Because UCP agents are designed to autonomously browse,
+  summarize and interact with merchant sites, they are highly susceptible to indirect prompt injection where
+  the attack is not typed by the user but encountered by the agent while performing a task. Threat actors
+  embed hidden payloads in deals aggregator sites, coupon pages, product listings, and merchant pages using
+  techniques including invisible text, hidden HTML span tags, metadata-embedded instructions, and CSS-hidden
+  content. These payloads target the agent''s context window to reprogram behavior — appending hidden Cart
+  Mandate line items, bypassing return verification steps, or redirecting transactions. This rule targets
+  Phase 2 (Initial Access) by scanning agent-ingested content for prompt injection indicators before they
+  can compromise agent behavior.
+
+  '
+references:
+- https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/
+date: 2026/03/21
+sigma_compatible: true
+threat_paths:
+- TP-0039
+cfpf_phase: P2
+fraud_types:
+- autonomous-ai-fraud
+- social-engineering
+logsource:
+  product: ecommerce
+  service: agent_content_scanner
+detection:
+  selection:
+    event_type: "agent_content_ingestion"
+  condition_hidden_cart_mandate:
+    content_contains_hidden_text: true
+    hidden_text_pattern|re: "(?i)(\\$?CartMandate|cart_mandate|line.?item|recipient.?email|display.?status.*hidden)"
+  condition_refund_injection:
+    content_contains_hidden_text: true
+    hidden_text_pattern|re: "(?i)(settlement\\.refund|order\\.return\\.verify|refund\\.instant|void-\\d+|skip.*verify)"
+  condition_invisible_elements:
+    invisible_span_detected: true
+    invisible_content_length|gt: 50
+    invisible_content_contains_instructions: true
+  condition_metadata_injection:
+    metadata_contains_instructions: true
+    metadata_instruction_pattern|re: "(?i)(system:|action:|observation:)"
+  condition: selection and (1 of condition_*)
+data_sources:
+  native_fields:
+  - event_type
+  - content_contains_hidden_text
+  - hidden_text_pattern
+  - invisible_span_detected
+  - invisible_content_length
+  - invisible_content_contains_instructions
+  - metadata_contains_instructions
+  - metadata_instruction_pattern
+  enrichment_required:
+  - field: content_contains_hidden_text
+    source: Content analysis enrichment (DOM parsing for CSS-hidden elements, zero-size text, invisible spans)
+  - field: metadata_contains_instructions
+    source: Content analysis enrichment (HTML metadata extraction and instruction pattern detection)
+  - field: invisible_content_contains_instructions
+    source: NLP enrichment (classify invisible content as containing actionable agent instructions)
+falsepositives:
+- Legitimate SEO metadata containing keyword patterns matching injection signatures
+- Accessibility-related hidden text (screen reader content) with instruction-like language
+- Web development frameworks using hidden elements for state management
+level: critical
+tags:
+- cfpf.phase2.initial_access
+- attack.t1059
+- flame.ecommerce
+- flame.agentic_commerce
+- flame.prompt_injection
+- flame.ucp
