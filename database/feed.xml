@@ -588,6 +588,9 @@
       <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
         <category>account-takeover</category>
         <category>autonomous-ai-fraud</category>
+        <category>gift-card-fraud</category>
+        <category>refunding-as-a-service</category>
+        <category>returns-fraud</category>
         <category>social-engineering</category>
         <category>unauthorized-transaction</category>
         <category>CFPF-P1</category>
@@ -1962,16 +1965,6 @@
         <category>severity-medium</category>
     </item>
     <item>
-      <title>[DL-0116] Real-Time Face/Voice Changer Detection During Video Interview</title>
-      <link>https://elchacal801.github.io/flame-fraud</link>
-      <guid isPermaLink="false">flame-dl-DL-0116</guid>
-      <description>Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anoma</description>
-        <category>ai-face-voice-changer</category>
-        <category>deepfake-fraud</category>
-        <category>dprk-it-worker-fraud</category>
-        <category>severity-high</category>
-    </item>
-    <item>
       <title>[DL-0117] Multilingual Chatbot Scam Pattern Detection</title>
       <link>https://elchacal801.github.io/flame-fraud</link>
       <guid isPermaLink="false">flame-dl-DL-0117</guid>
@@ -2028,13 +2021,69 @@
         <category>severity-medium</category>
     </item>
     <item>
-      <title>[DL-0123] TAE Infrastructure Rotation Detection</title>
+      <title>[DL-0124] UCP Cart Mandate Gift Card Injection via Indirect Prompt Injection</title>
       <link>https://elchacal801.github.io/flame-fraud</link>
-      <guid isPermaLink="false">flame-dl-DL-0123</guid>
-      <description>Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems </description>
+      <guid isPermaLink="false">flame-dl-DL-0124</guid>
+      <description>Detects unauthorized gift card line items appended to UCP Cart Mandate payloads by AI shopping agents whose context has been compromised via indirect prompt injection. Threat actors create deals aggre</description>
+        <category>autonomous-ai-fraud</category>
+        <category>gift-card-fraud</category>
+        <category>unauthorized-transaction</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0125] UCP Returns Logic Hijacking — Void Return and Verify Step Bypass</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0125</guid>
+      <description>Detects exploitation of the UCP returns state machine where AI agents skip the order.return.verify step and trigger settlement.refund.instant() using fraudulent tracking IDs (e.g., void-000). Threat a</description>
+        <category>autonomous-ai-fraud</category>
+        <category>refunding-as-a-service</category>
+        <category>returns-fraud</category>
+        <category>unauthorized-transaction</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0126] Indirect Prompt Injection in UCP Agent Browsing Content</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0126</guid>
+      <description>Detects indicators of indirect prompt injection payloads in web content encountered by UCP shopping agents during autonomous browsing. Because UCP agents are designed to autonomously browse, summarize</description>
+        <category>ai-face-voice-changer</category>
+        <category>autonomous-ai-fraud</category>
+        <category>deepfake-fraud</category>
+        <category>dprk-it-worker-fraud</category>
+        <category>social-engineering</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0127] TDS URL Parameter Fingerprint Tracking Across Rotating Domains</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0127</guid>
+      <description>Detects consistent URL query parameter patterns (TDS software behavioral signatures) appearing across multiple rotating domains, indicating a single TDS operator managing infrastructure through domain</description>
+        <category>affiliate-fraud</category>
         <category>bph-migration</category>
+        <category>malvertising</category>
         <category>sanctions-evasion-infrastructure</category>
         <category>state-criminal-convergence</category>
+        <category>tds-exploitation</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0128] Blank Credit Card Subscription Fraud Pattern Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0128</guid>
+      <description>Detects patterns consistent with blank credit card subscription fraud as operated by VexTrio/Ad Trafficko and similar affiliate fraud platforms. In this scheme, affiliates deploy customizable credit c</description>
+        <category>fraud-as-a-service</category>
+        <category>subscription-fraud</category>
+        <category>tds-exploitation</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0129] Fake Mobile App Residential Proxy and Subscription Scam Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0129</guid>
+      <description>Detects indicators of fake mobile applications that function as residential proxies or subscription scams, as documented in the VexTrio fake app operations (Black Hat USA 2025, Infoblox). VexTrio oper</description>
+        <category>push-notification-abuse</category>
+        <category>subscription-fraud</category>
+        <category>tds-exploitation</category>
         <category>severity-high</category>
     </item>
   </channel>

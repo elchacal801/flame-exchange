@@ -7590,87 +7590,6 @@
     ]
   },
   {
-    "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
-    "dl_id": "DL-0116",
-    "title": "Real-Time Face/Voice Changer Detection During Video Interview",
-    "status": "experimental",
-    "description": "Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.\n",
-    "cfpf_phase": "P2",
-    "level": "high",
-    "detection": {
-      "selection_virtual_camera": {
-        "camera_driver_name|contains": [
-          "OBS Virtual",
-          "ManyCam",
-          "DeepFace",
-          "FaceSwap",
-          "Snap Camera"
-        ]
-      },
-      "selection_audio_anomaly": {
-        "audio_analysis_score|gt": 0.75,
-        "audio_formant_anomaly": true
-      },
-      "selection_lip_sync": {
-        "lip_sync_delta_ms|gt": 200
-      },
-      "condition": "selection_virtual_camera or selection_audio_anomaly or selection_lip_sync"
-    },
-    "logsource": {
-      "product": "collaboration",
-      "service": "video_conferencing"
-    },
-    "sigma_compatible": false,
-    "native_query_required": true,
-    "data_sources": {
-      "native_fields": [
-        "camera_driver_name",
-        "audio_analysis_score",
-        "audio_formant_anomaly",
-        "lip_sync_delta_ms"
-      ],
-      "enrichment_required": [
-        {
-          "field": "audio_analysis_score",
-          "source": "Audio analysis enrichment (spectral anomaly detection scoring)"
-        },
-        {
-          "field": "lip_sync_delta_ms",
-          "source": "Video analysis enrichment (lip-to-audio synchronization measurement)"
-        }
-      ]
-    },
-    "queries": {
-      "logscale": "// LogScale LQL for Real-Time Face/Voice Changer Detection During Video Interview\n// Repository: flame-collaboration-video-monitoring\n// Native query required - audio/video analysis cannot be expressed in Sigma\ncamera_driver_name=/OBS Virtual|ManyCam|DeepFace|FaceSwap|Snap Camera/i\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| case {\n    camera_driver_name=/DeepFace|FaceSwap/i | risk_score:=90;\n    camera_driver_name=/OBS Virtual|ManyCam/i | risk_score:=50;\n    audio_analysis_score>0.75 | risk_score:=80;\n    lip_sync_delta_ms>200 | risk_score:=70;\n    * | risk_score:=0;\n  }\n| risk_score>=50\n| groupBy([user_id, session_id], function=[count(), collect([camera_driver_name, audio_analysis_score, lip_sync_delta_ms])])",
-      "splunk": "`comment(\"Splunk SPL for Real-Time Face/Voice Changer Detection During Video Interview\")`\n`comment(\"Native query required - audio/video analysis cannot be expressed in Sigma\")`\nindex=flame_collaboration sourcetype=flame:video_conferencing\n(camera_driver_name=\"*OBS Virtual*\" OR camera_driver_name=\"*ManyCam*\" OR camera_driver_name=\"*DeepFace*\" OR camera_driver_name=\"*FaceSwap*\")\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| eval risk_score=case(\n    camera_driver_name LIKE \"%DeepFace%\" OR camera_driver_name LIKE \"%FaceSwap%\", 90,\n    camera_driver_name LIKE \"%OBS Virtual%\" OR camera_driver_name LIKE \"%ManyCam%\", 50,\n    audio_analysis_score>0.75, 80,\n    lip_sync_delta_ms>200, 70)\n| where risk_score>=50\n| stats count values(camera_driver_name) as cameras values(audio_analysis_score) as audio_scores max(lip_sync_delta_ms) as max_lip_delta by user_id session_id"
-    },
-    "threat_path_ids": [
-      "TP-0034",
-      "TP-0057"
-    ],
-    "fraud_types": [
-      "ai-face-voice-changer",
-      "deepfake-fraud",
-      "dprk-it-worker-fraud"
-    ],
-    "tags": [
-      "TP-0034",
-      "TP-0057",
-      "cfpf.phase2.initial_access",
-      "deepfake",
-      "dprk",
-      "face-changer",
-      "flame.dprk",
-      "voice-changer"
-    ],
-    "falsepositives": [
-      "Legitimate OBS usage for screen sharing or streaming",
-      "Virtual background applications using camera driver interception",
-      "Legitimate audio processing software for noise cancellation",
-      "Poor network conditions causing audio-video desynchronization"
-    ]
-  },
-  {
     "id": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
     "dl_id": "DL-0117",
     "title": "Multilingual Chatbot Scam Pattern Detection",
@@ -8169,94 +8088,576 @@
     ]
   },
   {
-    "id": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
-    "dl_id": "DL-0123",
-    "title": "TAE Infrastructure Rotation Detection",
+    "id": "f1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c",
+    "dl_id": "DL-0124",
+    "title": "UCP Cart Mandate Gift Card Injection via Indirect Prompt Injection",
     "status": "experimental",
-    "description": "Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems within short timeframes, (2) RIPE NCC resource reallocation to newly created organizations with minimal operational history, (3) BGP announcement changes matching known TAE rebranding patterns such as Aeza to Hypercore to NetCrafters, (4) threat density score spikes on newly announced prefixes indicating migration of malicious infrastructure to fresh address space.\n",
-    "cfpf_phase": "P1",
-    "level": "high",
+    "description": "Detects unauthorized gift card line items appended to UCP Cart Mandate payloads by AI shopping agents whose context has been compromised via indirect prompt injection. Threat actors create deals aggregator or coupon sites containing hidden payloads that reprogram the agent's memory during browsing. The agent then appends a hidden digital gift card line item to the Cart Mandate JSON-RPC payload with the recipient email set to an attacker-controlled address and display_status set to hidden. The additional cost may be disguised as Tax/Fees in the user's UI. This rule targets Phase 3-4 (Positioning/Execution) of the attack, detecting the presence of gift card items with suspicious recipient addresses or hidden display status in checkout payloads.\n",
+    "cfpf_phase": "P3",
+    "level": "critical",
     "detection": {
-      "selection_prefix_transfer": {
-        "prefix_transfer_days|lt": 30,
-        "source_asn_related": true,
-        "destination_asn_related": true
+      "selection": {
+        "event_type": "cart_mandate_submission",
+        "initiated_by": "ai_agent"
       },
-      "selection_new_org": {
-        "new_organization_age_days|lt": 90,
-        "ripe_resource_allocation": true,
-        "organization_verification_status": "minimal"
+      "condition_hidden_gift_card": {
+        "line_item_type|contains": [
+          "gift_card",
+          "e_gift_card",
+          "digital_gift_card"
+        ],
+        "display_status": "hidden"
       },
-      "selection_threat_density": {
-        "threat_density_score|gt": 0.6,
-        "prefix_announcement_age_days|lt": 14,
-        "historical_abuse_on_prefix": false
+      "condition_external_recipient": {
+        "line_item_type|contains": [
+          "gift_card",
+          "e_gift_card",
+          "digital_gift_card"
+        ],
+        "recipient_email_matches_user": false
       },
-      "selection_rebranding": {
-        "asn_name_change_days|lt": 60,
-        "infrastructure_overlap_score|gt": 0.7
+      "condition_agent_added": {
+        "line_item_type|contains": [
+          "gift_card",
+          "e_gift_card",
+          "digital_gift_card"
+        ],
+        "line_item_added_by": "agent_auto",
+        "user_intent_contains_gift_card": false
       },
-      "condition": "(selection_prefix_transfer and selection_new_org) or selection_threat_density or (selection_prefix_transfer and selection_rebranding)"
+      "condition": "selection and (1 of condition_*)"
     },
     "logsource": {
-      "product": "network",
-      "service": "bgp_monitoring"
+      "product": "ecommerce",
+      "service": "ucp_checkout"
     },
     "sigma_compatible": true,
     "data_sources": {
       "native_fields": [
-        "prefix_transfer_days",
-        "source_asn_related",
-        "destination_asn_related",
-        "new_organization_age_days",
-        "ripe_resource_allocation",
-        "organization_verification_status",
-        "threat_density_score",
-        "prefix_announcement_age_days",
-        "historical_abuse_on_prefix",
-        "asn_name_change_days",
-        "infrastructure_overlap_score"
+        "event_type",
+        "initiated_by",
+        "line_item_type",
+        "display_status",
+        "recipient_email_matches_user",
+        "line_item_added_by",
+        "user_intent_contains_gift_card"
       ],
       "enrichment_required": [
         {
-          "field": "threat_density_score",
-          "source": "Threat intelligence enrichment (IP prefix threat density calculation)"
+          "field": "recipient_email_matches_user",
+          "source": "User profile enrichment (compare gift card recipient email against user's known email addresses)"
         },
         {
-          "field": "infrastructure_overlap_score",
-          "source": "BGP analytics enrichment (infrastructure overlap between old and new ASN announcements)"
-        },
-        {
-          "field": "source_asn_related",
-          "source": "WHOIS/RIR enrichment (ASN organizational relationship mapping)"
+          "field": "user_intent_contains_gift_card",
+          "source": "Intent analysis enrichment (parse user's original shopping intent for gift card purchase requests)"
         }
       ]
     },
+    "references": [
+      "https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/"
+    ],
     "threat_path_ids": [
+      "TP-0039"
+    ],
+    "fraud_types": [
+      "autonomous-ai-fraud",
+      "gift-card-fraud",
+      "unauthorized-transaction"
+    ],
+    "tags": [
+      "attack.t1059",
+      "attack.t1657",
+      "cfpf.phase3.positioning",
+      "cfpf.phase4.execution",
+      "flame.agentic_commerce",
+      "flame.ecommerce",
+      "flame.gift_card_fraud",
+      "flame.prompt_injection",
+      "flame.ucp"
+    ],
+    "falsepositives": [
+      "User explicitly requesting gift card purchases for others via agent",
+      "Corporate bulk gift card purchasing through automated procurement agents",
+      "Legitimate promotional gift card bundles included by merchants"
+    ]
+  },
+  {
+    "id": "a7b8c9d0-e1f2-4a3b-5c6d-7e8f9a0b1c2d",
+    "dl_id": "DL-0125",
+    "title": "UCP Returns Logic Hijacking — Void Return and Verify Step Bypass",
+    "status": "experimental",
+    "description": "Detects exploitation of the UCP returns state machine where AI agents skip the order.return.verify step and trigger settlement.refund.instant() using fraudulent tracking IDs (e.g., void-000). Threat actors embed hidden instructions in product page HTML metadata or invisible span tags that are ingested by the agent when it reads return instructions. The agent then processes the malicious command as a high-priority system update, bypassing return verification and issuing refunds without valid shipping confirmation. At scale, organized crime groups deploy bot farms to initiate thousands of void returns per hour, potentially liquidating a retailer's cash reserves. This rule targets Phase 4 (Execution) by detecting refund primitives triggered without proper verification, void tracking IDs, and anomalous refund velocity.\n",
+    "cfpf_phase": "P4",
+    "level": "critical",
+    "detection": {
+      "selection_void_tracking": {
+        "return_tracking_id|startswith": "void-"
+      },
+      "selection_verify_skip": {
+        "return_verify_step_completed": false,
+        "refund_method": "settlement.refund.instant"
+      },
+      "selection_no_shipping_scan": {
+        "shipping_scan_validated": false,
+        "refund_issued": true
+      },
+      "aggregation_velocity": {
+        "count|gte": 10,
+        "groupby": "merchant_id",
+        "timeframe": "1h"
+      },
+      "condition": "selection_void_tracking or selection_verify_skip or (selection_no_shipping_scan and aggregation_velocity)"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "ucp_returns"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "return_tracking_id",
+        "return_verify_step_completed",
+        "refund_method",
+        "shipping_scan_validated",
+        "refund_issued"
+      ],
+      "enrichment_required": [
+        {
+          "field": "shipping_scan_validated",
+          "source": "Shipping carrier enrichment (validate tracking ID against carrier API for actual shipment confirmation)"
+        },
+        {
+          "field": "return_verify_step_completed",
+          "source": "UCP state machine enrichment (verify order.return.verify step completion status)"
+        }
+      ]
+    },
+    "references": [
+      "https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/"
+    ],
+    "threat_path_ids": [
+      "TP-0031",
+      "TP-0039"
+    ],
+    "fraud_types": [
+      "autonomous-ai-fraud",
+      "refunding-as-a-service",
+      "returns-fraud",
+      "unauthorized-transaction"
+    ],
+    "tags": [
+      "attack.t1059",
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.agentic_commerce",
+      "flame.ecommerce",
+      "flame.organized_retail_crime",
+      "flame.returns_fraud",
+      "flame.ucp"
+    ],
+    "falsepositives": [
+      "Merchant-initiated refunds that bypass standard return flow (e.g., customer service overrides)",
+      "Digital product returns where physical shipping verification is not applicable",
+      "Promotional no-return-required refund policies"
+    ]
+  },
+  {
+    "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+    "dl_id": "DL-0126",
+    "title": "Indirect Prompt Injection in UCP Agent Browsing Content",
+    "status": "experimental",
+    "description": "Detects indicators of indirect prompt injection payloads in web content encountered by UCP shopping agents during autonomous browsing. Because UCP agents are designed to autonomously browse, summarize and interact with merchant sites, they are highly susceptible to indirect prompt injection where the attack is not typed by the user but encountered by the agent while performing a task. Threat actors embed hidden payloads in deals aggregator sites, coupon pages, product listings, and merchant pages using techniques including invisible text, hidden HTML span tags, metadata-embedded instructions, and CSS-hidden content. These payloads target the agent's context window to reprogram behavior — appending hidden Cart Mandate line items, bypassing return verification steps, or redirecting transactions. This rule targets Phase 2 (Initial Access) by scanning agent-ingested content for prompt injection indicators before they can compromise agent behavior.\n",
+    "cfpf_phase": "P2",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "event_type": "agent_content_ingestion"
+      },
+      "condition_hidden_cart_mandate": {
+        "content_contains_hidden_text": true,
+        "hidden_text_pattern|re": "(?i)(\\$?CartMandate|cart_mandate|line.?item|recipient.?email|display.?status.*hidden)"
+      },
+      "condition_refund_injection": {
+        "content_contains_hidden_text": true,
+        "hidden_text_pattern|re": "(?i)(settlement\\.refund|order\\.return\\.verify|refund\\.instant|void-\\d+|skip.*verify)"
+      },
+      "condition_invisible_elements": {
+        "invisible_span_detected": true,
+        "invisible_content_length|gt": 50,
+        "invisible_content_contains_instructions": true
+      },
+      "condition_metadata_injection": {
+        "metadata_contains_instructions": true,
+        "metadata_instruction_pattern|re": "(?i)(system:|action:|observation:)"
+      },
+      "condition": "selection and (1 of condition_*)"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "agent_content_scanner"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "event_type",
+        "content_contains_hidden_text",
+        "hidden_text_pattern",
+        "invisible_span_detected",
+        "invisible_content_length",
+        "invisible_content_contains_instructions",
+        "metadata_contains_instructions",
+        "metadata_instruction_pattern"
+      ],
+      "enrichment_required": [
+        {
+          "field": "content_contains_hidden_text",
+          "source": "Content analysis enrichment (DOM parsing for CSS-hidden elements, zero-size text, invisible spans)"
+        },
+        {
+          "field": "metadata_contains_instructions",
+          "source": "Content analysis enrichment (HTML metadata extraction and instruction pattern detection)"
+        },
+        {
+          "field": "invisible_content_contains_instructions",
+          "source": "NLP enrichment (classify invisible content as containing actionable agent instructions)"
+        }
+      ]
+    },
+    "references": [
+      "https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/"
+    ],
+    "threat_path_ids": [
+      "TP-0034",
+      "TP-0039",
+      "TP-0057"
+    ],
+    "fraud_types": [
+      "ai-face-voice-changer",
+      "autonomous-ai-fraud",
+      "deepfake-fraud",
+      "dprk-it-worker-fraud",
+      "social-engineering"
+    ],
+    "tags": [
+      "TP-0034",
+      "TP-0057",
+      "attack.t1059",
+      "cfpf.phase2.initial_access",
+      "cfpf.phase2.initial_access",
+      "deepfake",
+      "dprk",
+      "face-changer",
+      "flame.agentic_commerce",
+      "flame.dprk",
+      "flame.ecommerce",
+      "flame.prompt_injection",
+      "flame.ucp",
+      "voice-changer"
+    ],
+    "falsepositives": [
+      "Legitimate SEO metadata containing keyword patterns matching injection signatures",
+      "Accessibility-related hidden text (screen reader content) with instruction-like language",
+      "Web development frameworks using hidden elements for state management"
+    ]
+  },
+  {
+    "id": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
+    "dl_id": "DL-0127",
+    "title": "TDS URL Parameter Fingerprint Tracking Across Rotating Domains",
+    "status": "experimental",
+    "description": "Detects consistent URL query parameter patterns (TDS software behavioral signatures) appearing across multiple rotating domains, indicating a single TDS operator managing infrastructure through domain rotation. TDS operators require consistent parameter schemas to route traffic between affiliates, track conversions, and attribute payouts — these parameters are the TDS internal API contract visible in redirect URLs even when domain names rotate. The VexTrio TDS was tracked for years via its distinctive ?u=&o= query parameter format before corporate attribution was achieved (Black Hat USA 2025, Infoblox). This rule identifies recurring parameter fingerprints across newly registered or rapidly rotating domains as indicators of TDS infrastructure managed by a single operator.\n",
+    "cfpf_phase": "P3",
+    "level": "medium",
+    "detection": {
+      "selection_parameter_patterns": {
+        "url_query|re": [
+          "\\?u=[^&]*&o=[^&]*",
+          "\\?aff_id=[^&]*&click_id=[^&]*",
+          "\\?subid=[^&]*&source=[^&]*&clickid=[^&]*",
+          "\\?pid=[^&]*&offer_id=[^&]*"
+        ]
+      },
+      "selection_domain_characteristics": {
+        "dest_domain_age_days|lt": 90
+      },
+      "selection_redirect_context": {
+        "http_status|contains": [
+          "302",
+          "301",
+          "307"
+        ]
+      },
+      "condition": "selection_parameter_patterns and selection_domain_characteristics and selection_redirect_context"
+    },
+    "logsource": {
+      "product": "web_proxy",
+      "service": "http_log"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "url_query",
+        "dest_domain",
+        "dest_domain_age_days",
+        "http_status",
+        "src_ip",
+        "session_id"
+      ],
+      "enrichment_required": [
+        {
+          "field": "dest_domain_age_days",
+          "source": "WHOIS enrichment (domain registration age)"
+        }
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for TDS URL Parameter Fingerprint Tracking\")`\n`comment(\"Identifies consistent TDS parameter patterns across rotating domains\")`\nindex=flame_proxy sourcetype=flame:http_log http_status IN (301, 302, 307)\n(url_query=\"*?u=*&o=*\" OR url_query=\"*aff_id=*&click_id=*\" OR url_query=\"*subid=*&source=*&clickid=*\" OR url_query=\"*pid=*&offer_id=*\")\n| rex field=url_query \"(?<param_pattern>[a-z_]+=)[^&]*(&[a-z_]+=)[^&]*\"\n| eval param_fingerprint=param_pattern\n| lookup domain_age_feed dest_domain OUTPUT domain_age_days\n| where domain_age_days < 90 OR isnull(domain_age_days)\n| stats dc(dest_domain) AS unique_domains\n        values(dest_domain) AS domains\n        dc(src_ip) AS unique_visitors\n        count AS total_hits\n        earliest(_time) AS first_seen\n        latest(_time) AS last_seen\n    by param_fingerprint\n| where unique_domains >= 3\n| sort -unique_domains",
+      "logscale": "// LogScale LQL for TDS URL Parameter Fingerprint Tracking\n// Repository: flame-proxy-http-log\nhttp_status=/30[127]/\n| url_query=/\\?(u=[^&]*&o=|aff_id=[^&]*&click_id=|subid=[^&]*&source=[^&]*&clickid=|pid=[^&]*&offer_id=)/\n| regex(\"(?<param_fingerprint>[a-z_]+=)[^&]*(&[a-z_]+=)\", field=url_query)\n| groupBy([param_fingerprint], function=[\n    count(as=total_hits),\n    collectDistinct(dest_domain, as=unique_domains),\n    collectDistinct(src_ip, as=unique_visitors)\n  ])\n| length(unique_domains) >= 3"
+    },
+    "references": [
+      "https://blackhat.com/us-25/briefings/schedule/#no-hoodies-here-organized-crime-in-adtech-46001",
+      "https://www.infoblox.com/threat-intel/"
+    ],
+    "threat_path_ids": [
+      "TP-0042",
       "TP-0044",
+      "TP-0060",
       "TP-0061"
     ],
     "fraud_types": [
+      "affiliate-fraud",
       "bph-migration",
+      "malvertising",
       "sanctions-evasion-infrastructure",
-      "state-criminal-convergence"
+      "state-criminal-convergence",
+      "tds-exploitation"
     ],
     "tags": [
+      "TP-0042",
       "TP-0044",
+      "TP-0060",
       "TP-0061",
       "aeza",
+      "affiliate-tracking",
+      "behavioral-fingerprint",
       "bgp",
       "bulletproof-hosting",
       "cfpf.phase1.recon",
+      "cfpf.phase3.positioning",
+      "domain-rotation",
       "ip-rotation",
       "ripe-abuse",
       "sanctions-evasion",
-      "tae"
+      "tae",
+      "tds",
+      "url-parameter-fingerprint",
+      "vextrio"
     ],
     "falsepositives": [
-      "Legitimate ISP mergers and acquisitions involving prefix transfers",
-      "Planned infrastructure migrations with proper documentation",
-      "Regional Internet Registry administrative reallocation"
+      "Legitimate affiliate marketing campaigns using consistent tracking parameters across multiple publisher domains",
+      "A/B testing platforms rotating domains for conversion optimization",
+      "Advertising analytics platforms with standardized URL parameter schemas"
+    ]
+  },
+  {
+    "id": "d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a",
+    "dl_id": "DL-0128",
+    "title": "Blank Credit Card Subscription Fraud Pattern Detection",
+    "status": "experimental",
+    "description": "Detects patterns consistent with blank credit card subscription fraud as operated by VexTrio/Ad Trafficko and similar affiliate fraud platforms. In this scheme, affiliates deploy customizable credit card capture templates offering low-cost items (\"Free iPhone, $1.99 shipping\" or \"Walmart gift card, $0.99 shipping\"). Victims enter card details believing they are paying a nominal fee; the platform charges a higher amount ($9.99 typical) and enrolls them in recurring subscriptions generating ongoing charges. Affiliate payouts reach $120 per successful lead. This rule targets the transaction monitoring layer to identify: (1) initial nominal-amount card-not-present charges from newly registered or unknown merchants followed by recurring charges at higher amounts, (2) merchant descriptor patterns consistent with subscription enrollment services, (3) high chargeback ratios from merchants exhibiting these patterns. Source: Black Hat USA 2025 (Infoblox VexTrio deanonymization).\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_initial_charge": {
+        "transaction_type": "CNP",
+        "amount|lte": 2.99,
+        "merchant_category_code|contains": [
+          "5999",
+          "5968",
+          "5969",
+          "4816"
+        ]
+      },
+      "selection_followup_subscription": {
+        "transaction_type": "recurring",
+        "amount|gte": 6.99,
+        "same_card_hash": true,
+        "same_merchant_group": true,
+        "days_after_initial|lte": 7
+      },
+      "selection_merchant_risk": {
+        "merchant_registration_age_days|lt": 180,
+        "merchant_chargeback_ratio|gte": 0.05
+      },
+      "condition": "selection_initial_charge and (selection_followup_subscription or selection_merchant_risk)"
+    },
+    "logsource": {
+      "product": "transaction_monitoring",
+      "service": "payment_processor"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "transaction_type",
+        "amount",
+        "merchant_category_code",
+        "merchant_descriptor",
+        "card_hash",
+        "merchant_id",
+        "merchant_registration_age_days",
+        "merchant_chargeback_ratio"
+      ],
+      "enrichment_required": [
+        {
+          "field": "merchant_registration_age_days",
+          "source": "Merchant onboarding records (merchant account age)"
+        },
+        {
+          "field": "merchant_chargeback_ratio",
+          "source": "Payment processor chargeback analytics"
+        }
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Blank CC Subscription Fraud Pattern Detection\")`\n`comment(\"Identifies nominal-charge-to-recurring-subscription patterns (Ad Trafficko model)\")`\nindex=flame_txn sourcetype=flame:card_transactions transaction_type=CNP\n| eval is_nominal=(if(amount<=2.99, 1, 0))\n| eval is_recurring_followup=(if(transaction_type=\"recurring\" AND amount>=6.99, 1, 0))\n| stats\n    sum(is_nominal) AS nominal_charges\n    sum(is_recurring_followup) AS recurring_charges\n    dc(card_hash) AS unique_cards\n    avg(amount) AS avg_amount\n    max(amount) AS max_amount\n    values(merchant_descriptor) AS descriptors\n    latest(merchant_chargeback_ratio) AS chargeback_ratio\n  by merchant_id\n| where nominal_charges > 10 AND recurring_charges > 5\n| eval conversion_ratio=round(recurring_charges/nominal_charges, 2)\n| where conversion_ratio > 0.3 OR chargeback_ratio > 0.05\n| sort -recurring_charges",
+      "sql": "-- SQL for Blank CC Subscription Fraud Pattern Detection\n-- Identifies merchants exhibiting nominal-to-recurring subscription fraud patterns\nWITH initial_charges AS (\n  SELECT card_hash, merchant_id, merchant_descriptor, amount,\n         transaction_date, transaction_id\n  FROM card_transactions\n  WHERE transaction_type = 'CNP'\n    AND amount <= 2.99\n    AND transaction_date >= CURRENT_DATE - INTERVAL '30 days'\n),\nfollowup_subscriptions AS (\n  SELECT card_hash, merchant_id, amount,\n         transaction_date, transaction_type\n  FROM card_transactions\n  WHERE transaction_type = 'recurring'\n    AND amount >= 6.99\n    AND transaction_date >= CURRENT_DATE - INTERVAL '30 days'\n)\nSELECT\n  ic.merchant_id,\n  ic.merchant_descriptor,\n  COUNT(DISTINCT ic.transaction_id) AS nominal_charge_count,\n  COUNT(DISTINCT fs.card_hash) AS cards_enrolled_recurring,\n  AVG(fs.amount) AS avg_recurring_amount,\n  m.chargeback_ratio,\n  m.registration_date\nFROM initial_charges ic\nJOIN followup_subscriptions fs\n  ON ic.card_hash = fs.card_hash\n  AND ic.merchant_id = fs.merchant_id\n  AND fs.transaction_date BETWEEN ic.transaction_date AND ic.transaction_date + INTERVAL '7 days'\nJOIN merchant_profiles m ON ic.merchant_id = m.merchant_id\nGROUP BY ic.merchant_id, ic.merchant_descriptor, m.chargeback_ratio, m.registration_date\nHAVING COUNT(DISTINCT ic.transaction_id) > 10\n   AND COUNT(DISTINCT fs.card_hash) > 5\nORDER BY cards_enrolled_recurring DESC;"
+    },
+    "references": [
+      "https://blackhat.com/us-25/briefings/schedule/#no-hoodies-here-organized-crime-in-adtech-46001"
+    ],
+    "threat_path_ids": [
+      "TP-0042",
+      "TP-0054"
+    ],
+    "fraud_types": [
+      "fraud-as-a-service",
+      "subscription-fraud",
+      "tds-exploitation"
+    ],
+    "tags": [
+      "TP-0042",
+      "TP-0054",
+      "ad-trafficko",
+      "affiliate-fraud",
+      "blank-cc-submit",
+      "cfpf.phase4.execution",
+      "chargeback-anomaly",
+      "recurring-charge",
+      "subscription-fraud",
+      "vextrio"
+    ],
+    "falsepositives": [
+      "Legitimate free trial offers that convert to paid subscriptions (though legitimate merchants typically have lower chargeback ratios)",
+      "Promotional shipping offers from established e-commerce merchants",
+      "Subscription box services with nominal initial trial charges"
+    ]
+  },
+  {
+    "id": "e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b",
+    "dl_id": "DL-0129",
+    "title": "Fake Mobile App Residential Proxy and Subscription Scam Detection",
+    "status": "experimental",
+    "description": "Detects indicators of fake mobile applications that function as residential proxies or subscription scams, as documented in the VexTrio fake app operations (Black Hat USA 2025, Infoblox). VexTrio operated fake mobile apps for 7-8 years through Google Play Store, Apple App Store, and third-party forums. Three categories: (1) Fake VPNs that route user traffic through residential proxy networks (making users unwitting proxy nodes) with keyword-scanning capabilities targeting banking and personal information, (2) Fake Android cleaners (device optimization tools), (3) Fake spam/notification protection apps that operate a self-referential scam cycle — after push notification abuse infects the victim browser (100-150 notifications/day), victim is served an ad for a \"spam protection\" app that requests permissions to disable browser notifications, displays fabricated \"blocked\" notification screens, then transitions to $6.99/week subscription after 24 hours. This rule detects network-level and endpoint-level indicators of these app categories.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_proxy_behavior": {
+        "app_category|contains": [
+          "VPN",
+          "cleaner",
+          "optimizer",
+          "spam-blocker",
+          "notification-protector"
+        ],
+        "network_traffic_pattern": "residential_proxy",
+        "outbound_connections_to_unknown_ips|gte": 50,
+        "inbound_proxy_connections": true
+      },
+      "selection_keyword_scanning": {
+        "app_permission|contains": [
+          "READ_SMS",
+          "READ_CONTACTS",
+          "ACCESSIBILITY_SERVICE"
+        ],
+        "data_exfil_pattern": [
+          "banking_keyword_match",
+          "credential_harvest"
+        ]
+      },
+      "selection_subscription_scam": {
+        "push_notification_permission_change": "disable",
+        "in_app_purchase_amount|gte": 6.99,
+        "in_app_purchase_frequency": "weekly",
+        "time_from_install_to_purchase_hours|lte": 48
+      },
+      "selection_notification_abuse_precursor": {
+        "browser_push_notification_rate_per_day|gte": 50,
+        "notification_source_domain_age_days|lt": 30
+      },
+      "condition": "selection_proxy_behavior or selection_keyword_scanning or (selection_notification_abuse_precursor and selection_subscription_scam)"
+    },
+    "logsource": {
+      "product": "endpoint",
+      "service": "mobile_device_management"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "app_name",
+        "app_category",
+        "app_permissions",
+        "network_traffic_pattern",
+        "push_notification_rate",
+        "in_app_purchase_amount",
+        "in_app_purchase_frequency"
+      ],
+      "enrichment_required": [
+        {
+          "field": "network_traffic_pattern",
+          "source": "Network traffic analysis (proxy behavior detection via traffic flow analysis)"
+        },
+        {
+          "field": "notification_source_domain_age_days",
+          "source": "WHOIS enrichment for push notification source domains"
+        }
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Fake Mobile App Residential Proxy and Subscription Scam Detection\")`\n`comment(\"Detects VexTrio-pattern fake apps: residential proxy abuse and notification-to-subscription scam cycle\")`\n\n`comment(\"--- Detection 1: Fake VPN acting as residential proxy ---\")`\nindex=flame_endpoint sourcetype=flame:mobile_mdm app_category IN (\"VPN\", \"cleaner\", \"optimizer\", \"spam-blocker\")\n| stats\n    dc(dest_ip) AS unique_dest_ips\n    sum(bytes_out) AS total_bytes_out\n    sum(bytes_in) AS total_bytes_in\n    dc(src_port) AS unique_src_ports\n    values(app_name) AS app_names\n  by device_id, app_id\n| eval proxy_ratio=round(total_bytes_in/total_bytes_out, 2)\n| where unique_dest_ips > 50 AND proxy_ratio > 2\n| eval risk=\"residential_proxy_behavior\"\n\n`comment(\"--- Detection 2: Push notification abuse to subscription scam cycle ---\")`\nindex=flame_endpoint sourcetype=flame:mobile_mdm\n| eval has_notification_spike=(if(push_notification_count_24h >= 50, 1, 0))\n| eval has_app_install=(if(isnotnull(new_app_install) AND app_category IN (\"spam-blocker\", \"notification-protector\", \"cleaner\"), 1, 0))\n| eval has_subscription=(if(in_app_purchase_amount >= 6.99 AND in_app_purchase_type=\"subscription\", 1, 0))\n| transaction device_id maxspan=72h\n| where has_notification_spike=1 AND has_app_install=1 AND has_subscription=1\n| eval risk=\"notification_to_subscription_scam_cycle\"",
+      "sql": "-- SQL for Fake Mobile App Residential Proxy Detection\n-- Identifies apps with proxy-like traffic patterns (high inbound/outbound ratio, many destinations)\nSELECT\n  d.device_id,\n  a.app_name,\n  a.app_publisher,\n  a.app_category,\n  COUNT(DISTINCT nc.dest_ip) AS unique_destinations,\n  SUM(nc.bytes_out) AS total_bytes_out,\n  SUM(nc.bytes_in) AS total_bytes_in,\n  ROUND(SUM(nc.bytes_in)::numeric / NULLIF(SUM(nc.bytes_out), 0), 2) AS proxy_ratio,\n  a.install_date,\n  a.requested_permissions\nFROM device_inventory d\nJOIN installed_apps a ON d.device_id = a.device_id\nJOIN network_connections nc ON d.device_id = nc.device_id AND a.app_id = nc.app_id\nWHERE a.app_category IN ('VPN', 'cleaner', 'optimizer', 'spam-blocker', 'notification-protector')\n  AND nc.connection_date >= CURRENT_DATE - INTERVAL '7 days'\nGROUP BY d.device_id, a.app_name, a.app_publisher, a.app_category,\n         a.install_date, a.requested_permissions\nHAVING COUNT(DISTINCT nc.dest_ip) > 50\n   AND ROUND(SUM(nc.bytes_in)::numeric / NULLIF(SUM(nc.bytes_out), 0), 2) > 2.0\nORDER BY unique_destinations DESC;"
+    },
+    "references": [
+      "https://blackhat.com/us-25/briefings/schedule/#no-hoodies-here-organized-crime-in-adtech-46001",
+      "https://www.infoblox.com/threat-intel/"
+    ],
+    "threat_path_ids": [
+      "TP-0042",
+      "TP-0054"
+    ],
+    "fraud_types": [
+      "push-notification-abuse",
+      "subscription-fraud",
+      "tds-exploitation"
+    ],
+    "tags": [
+      "TP-0042",
+      "TP-0054",
+      "cfpf.phase4.execution",
+      "fake-mobile-app",
+      "keyword-scanning",
+      "push-notification-abuse",
+      "residential-proxy",
+      "self-referential-scam",
+      "subscription-scam",
+      "vextrio"
+    ],
+    "falsepositives": [
+      "Legitimate VPN applications with high connection counts (though legitimate VPNs typically connect to known VPN provider infrastructure, not diverse residential IPs)",
+      "Enterprise MDM tools that manage notification settings",
+      "Legitimate notification management apps from established publishers"
     ]
   }
 ]

@@ -3386,7 +3386,8 @@
       "DL-0062",
       "DL-0063",
       "DL-0065",
-      "DL-0066"
+      "DL-0066",
+      "DL-0125"
     ],
     "related_tps": [
       {
@@ -3733,9 +3734,9 @@
       "DL-0072",
       "DL-0073",
       "DL-0074",
-      "DL-0116",
       "DL-0119",
-      "DL-0121"
+      "DL-0121",
+      "DL-0126"
     ],
     "related_tps": [
       {
@@ -4211,9 +4212,9 @@
     "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
     "tlp": "WHITE",
     "summary": "Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transac...",
-    "confidence_score": 55,
-    "source_reliability": "C",
-    "info_credibility": 3,
+    "confidence_score": 65,
+    "source_reliability": "B",
+    "info_credibility": 2,
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
@@ -4228,7 +4229,10 @@
       "autonomous-ai-fraud",
       "social-engineering",
       "account-takeover",
-      "unauthorized-transaction"
+      "unauthorized-transaction",
+      "gift-card-fraud",
+      "returns-fraud",
+      "refunding-as-a-service"
     ],
     "tags": [
       "agentic-ai",
@@ -4241,7 +4245,20 @@
       "amazon-buy-for-me",
       "visa-intelligent-commerce",
       "mastercard-agent-pay",
-      "interpol-gffta"
+      "interpol-gffta",
+      "universal-commerce-protocol",
+      "ucp",
+      "agent-payments-protocol",
+      "ap2",
+      "indirect-prompt-injection",
+      "cart-mandate-poisoning",
+      "returns-logic-hijacking",
+      "organized-retail-crime",
+      "know-your-agent",
+      "agent-reputation-score",
+      "openclaw",
+      "gift-card-theft",
+      "nrf"
     ],
     "cfpf_phases": [
       "P1",
@@ -4296,7 +4313,10 @@
     },
     "detection_rule_ids": [
       "DL-0085",
-      "DL-0086"
+      "DL-0086",
+      "DL-0124",
+      "DL-0125",
+      "DL-0126"
     ],
     "related_tps": [
       {
@@ -4310,9 +4330,17 @@
       {
         "id": "TP-0029",
         "relationship": "enhances"
+      },
+      {
+        "id": "TP-0030",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0031",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 1
+    "evidence_count": 2
   },
   {
     "id": "TP-0040",
@@ -4549,12 +4577,12 @@
     "source": "https://www.infoblox.com/threat-intel/threat-reports/",
     "tlp": "WHITE",
     "summary": "Traffic Distribution Systems (TDS) represent a critical infrastructure layer in the modern cybercrime ecosystem, functioning as the routing fabric that connects victim traffic to downstream fraud camp...",
-    "confidence_score": 85,
-    "source_reliability": "B",
+    "confidence_score": 90,
+    "source_reliability": "A",
     "info_credibility": 2,
     "infrastructure_generation_method": null,
-    "geopolitical_timing": null,
-    "nation_state_nexus": null,
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
     "sectors": [
       "cross-sector",
       "banking",
@@ -4570,6 +4598,13 @@
       "tds",
       "traffic-distribution-system",
       "vextrio",
+      "vextrio-deanonymization",
+      "adspro-technology",
+      "los-pollos-hermanos",
+      "ad-trafficko",
+      "taco-loco",
+      "olock-code",
+      "tekk",
       "hazy-hawk",
       "malvertising",
       "redirect-chain",
@@ -4584,7 +4619,20 @@
       "clickfix",
       "reckless-rabbit",
       "ruthless-rabbit",
-      "savvy-seahorse"
+      "savvy-seahorse",
+      "organized-crime-enterprise",
+      "corporate-shell-network",
+      "blank-cc-subscription-fraud",
+      "push-notification-abuse",
+      "fake-mobile-apps",
+      "residential-proxy-abuse",
+      "bgp-peering-model",
+      "italian-organized-crime",
+      "eastern-european-organized-crime",
+      "lugano-switzerland",
+      "counterintelligence",
+      "black-hat-usa-2025",
+      "infoblox-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -4638,7 +4686,10 @@
       "DL-0099",
       "DL-0100",
       "DL-0120",
-      "DL-0122"
+      "DL-0122",
+      "DL-0127",
+      "DL-0128",
+      "DL-0129"
     ],
     "related_tps": [
       {
@@ -4650,11 +4701,19 @@
         "relationship": "enables"
       },
       {
+        "id": "TP-0054",
+        "relationship": "enables"
+      },
+      {
         "id": "TP-0060",
         "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0061",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 4
   },
   {
     "id": "TP-0043",
@@ -4847,7 +4906,7 @@
     },
     "detection_rule_ids": [
       "DL-0101",
-      "DL-0123"
+      "DL-0127"
     ],
     "related_tps": [
       {
@@ -5744,7 +5803,15 @@
       "4.5x-profitability",
       "maas",
       "phaas",
-      "recorded-future"
+      "recorded-future",
+      "vextrio",
+      "ad-trafficko",
+      "blank-cc-subscription-fraud",
+      "fake-mobile-apps",
+      "push-notification-abuse",
+      "self-referential-scam",
+      "black-hat-usa-2025",
+      "infoblox-deanonymization"
     ],
     "cfpf_phases": [
       "P1",
@@ -5790,7 +5857,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0128",
+      "DL-0129"
+    ],
     "related_tps": [
       {
         "id": "TP-0041",
@@ -5805,11 +5875,15 @@
         "relationship": "enhances"
       },
       {
+        "id": "TP-0057",
+        "relationship": "variant-of"
+      },
+      {
         "id": "TP-0061",
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 3
+    "evidence_count": 5
   },
   {
     "id": "TP-0055",
@@ -6082,7 +6156,7 @@
     },
     "detection_rule_ids": [
       "DL-0115",
-      "DL-0116"
+      "DL-0126"
     ],
     "related_tps": [
       {
@@ -6399,7 +6473,8 @@
     },
     "detection_rule_ids": [
       "DL-0120",
-      "DL-0122"
+      "DL-0122",
+      "DL-0127"
     ],
     "related_tps": [
       {
@@ -6496,7 +6571,7 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [
-      "DL-0123"
+      "DL-0127"
     ],
     "related_tps": [
       {

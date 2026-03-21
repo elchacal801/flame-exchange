@@ -1,6 +1,6 @@
 {
   "total": 61,
-  "fraudTypes": 91,
+  "fraudTypes": 93,
   "fraudTypeList": [
     "BEC",
     "account-takeover",
@@ -47,6 +47,7 @@
     "fraudulent-claim",
     "geo-routing",
     "ghost-student-fraud",
+    "gift-card-fraud",
     "healthcare-fraud",
     "hosting-provider-complicity",
     "human-trafficking-facilitation",
@@ -76,6 +77,7 @@
     "quishing",
     "rdga-infrastructure",
     "refunding-as-a-service",
+    "returns-fraud",
     "romance-scam",
     "sanctions-evasion-infrastructure",
     "scam-compound-operations",
@@ -695,6 +697,17 @@
       "total_tps": 1
     },
     {
+      "fraud_type": "gift-card-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
       "fraud_type": "healthcare-fraud",
       "phases": {
         "P3": 2,
@@ -1001,6 +1014,17 @@
     {
       "fraud_type": "refunding-as-a-service",
       "phases": {
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
+      },
+      "total_tps": 2
+    },
+    {
+      "fraud_type": "returns-fraud",
+      "phases": {
         "P1": 1,
         "P2": 1,
         "P3": 1,
@@ -1209,5 +1233,5 @@
     },
     "lastUpdated": "2026-03-21"
   },
-  "generatedAt": "2026-03-21T02:35:04.717025+00:00"
+  "generatedAt": "2026-03-21T20:09:28.200352+00:00"
 }

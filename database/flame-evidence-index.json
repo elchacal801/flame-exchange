@@ -100,6 +100,56 @@
     "cfpf_phase_coverage": ""
   },
   {
+    "evidence_id": "EV-TP0039-2026-003",
+    "tp_id": "TP-0039",
+    "title": "Unit 42 UCP-Specific Attack Scenario Analysis",
+    "source": "Unit 42 (Palo Alto Networks), \"Who's Really Shopping? Retail Fraud in the Age of Agentic AI\" (March 20, 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High -- published by Unit 42 (Palo Alto Networks), a Tier-1 threat intelligence organization with documented retail industry experience",
+    "cfpf_phase_coverage": "P1, P2, P3, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0042-2025-001",
+    "tp_id": "TP-0042",
+    "title": "VexTrio Corporate Deanonymization — Black Hat USA 2025",
+    "source": "Renée Burton, Dave Mitchell, Christopher Kim (Infoblox Threat Intelligence), \"No Hoodies Here: Organized Crime in AdTech,\" Black Hat USA 2025, August 6, 2025",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — 10-month deep investigation using entirely public sources; controlled information release validated attribution through adversary response patterns; full deanonymization report released concurrently with Black Hat presentation.",
+    "cfpf_phase_coverage": "P1, P2, P3, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0042-2025-002",
+    "tp_id": "TP-0042",
+    "title": "VexTrio Blank Credit Card Subscription Fraud",
+    "source": "Black Hat USA 2025 presentation; Black Hat World forum references; third-party Russian-language blog (archived pre-scrubbing)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — confirmed through forum posts, Russian-language documentation, and adversary content removal validating attribution.",
+    "cfpf_phase_coverage": "P2, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0042-2025-003",
+    "tp_id": "TP-0042",
+    "title": "VexTrio Fake Mobile App Operations",
+    "source": "Black Hat USA 2025 presentation; Infoblox blog (user-experience testing and video documentation)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High — apps documented through app store analysis and user-experience testing.",
+    "cfpf_phase_coverage": "P2, P3, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0042-2025-004",
+    "tp_id": "TP-0042",
+    "title": "VexTrio Counterintelligence Capabilities",
+    "source": "Black Hat USA 2025 presentation",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — directly observed by Infoblox researchers through controlled information release.",
+    "cfpf_phase_coverage": "Cross-phase (operational resilience)"
+  },
+  {
     "evidence_id": "EV-TP0044-2026-002",
     "tp_id": "TP-0044",
     "title": "INTERPOL/Recorded Future Convergence Intelligence",
@@ -228,6 +278,26 @@
     "domain_count": "",
     "confidence": "High — multi-source from INTERPOL, UNODC, and Recorded Future",
     "cfpf_phase_coverage": "P1 through P5 — full lifecycle FaaS ecosystem"
+  },
+  {
+    "evidence_id": "EV-TP0054-2025-003",
+    "tp_id": "TP-0054",
+    "title": "VexTrio/Ad Trafficko — Blank Credit Card Subscription FaaS",
+    "source": "Renée Burton, Dave Mitchell, Christopher Kim (Infoblox Threat Intelligence), \"No Hoodies Here: Organized Crime in AdTech,\" Black Hat USA 2025, August 6, 2025; Black Hat World forum references; third-party Russian-language affiliate marketing blog (archived pre-scrubbing)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — confirmed through Black Hat World forum posts, Russian-language documentation, and adversary content removal (all blank CC offers scrubbed from Ad Trafficko overnight after Infoblox disclosure, validating attribution). Full deanonymization report released concurrently with Black Hat USA 2025 presentation.",
+    "cfpf_phase_coverage": "P1 (affiliate recruitment via forums), P2 (template distribution to affiliates), P4 (credit card capture and subscription enrollment), P5 (revenue split between operator and affiliates)"
+  },
+  {
+    "evidence_id": "EV-TP0054-2025-004",
+    "tp_id": "TP-0054",
+    "title": "VexTrio Fake Mobile App FaaS — Self-Referential Scam Cycle",
+    "source": "Black Hat USA 2025 presentation; Infoblox blog (user-experience testing and video documentation)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High — apps documented through app store analysis and user-experience testing published on Infoblox blog.",
+    "cfpf_phase_coverage": "P1 (app development), P2 (distribution via app stores and TDS), P3 (push notification abuse for trust manipulation), P4 (subscription enrollment), P5 ($6.99/week recurring revenue)"
   },
   {
     "evidence_id": "EV-TP0055-2026-001",

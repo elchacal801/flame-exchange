@@ -15,6 +15,21 @@
       "type": "sigma",
       "content": "title: AI Agent Connection to Unverified MCP Server\nstatus: experimental\ndescription: Detects an AI commerce agent establishing a connection to an MCP server not present in the approved server allowlist, which may indicate infrastructure compromise or redirection attack.\nlogsource:\n    product: ecommerce\n    service: agent_platform\ndetection:\n    selection:\n        event_type: \"agent_mcp_connection\"\n        mcp_server_verified: false\n    filter:\n        mcp_server_id|exists: true\n    condition: selection and not filter\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1059\n    - flame.ecommerce\n    - flame.agentic_commerce",
       "title": "Sigma -- Agent MCP Server Anomaly Detection (Phase 2)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT\n    cm.mandate_id,\n    cm.agent_session_id,\n    cm.user_id,\n    li.line_item_id,\n    li.product_type,\n    li.product_name,\n    li.recipient_email,\n    li.display_status,\n    li.amount,\n    u.primary_email,\n    u.known_emails\nFROM ucp_cart_mandates cm\nJOIN cart_mandate_line_items li ON cm.mandate_id = li.mandate_id\nJOIN user_profiles u ON cm.user_id = u.user_id\nWHERE li.product_type IN ('digital_gift_card', 'e_gift_card', 'gift_card')\n  AND (\n    li.recipient_email NOT IN (SELECT email FROM user_known_emails WHERE user_id = cm.user_id)\n    OR li.display_status = 'hidden'\n    OR li.added_by = 'agent_auto'\n  )\nORDER BY cm.created_at DESC;",
+      "title": "SQL -- UCP Cart Mandate Gift Card Injection Detection (Phase 3-4)"
+    },
+    {
+      "type": "spl",
+      "content": "index=commerce sourcetype=ucp_returns\n| search return_tracking_id=\"void-*\" OR return_verify_step_skipped=true\n| stats\n    count AS void_returns,\n    dc(order_id) AS unique_orders,\n    dc(user_id) AS unique_users,\n    sum(refund_amount) AS total_refund_amount,\n    values(return_tracking_id) AS tracking_ids\n    BY merchant_id, _time span=1h\n| where void_returns > 10 OR (void_returns > 3 AND unique_users > 2)\n| eval severity=if(void_returns > 100, \"critical\", if(void_returns > 25, \"high\", \"medium\"))\n| table _time, merchant_id, void_returns, unique_orders, unique_users, total_refund_amount, tracking_ids, severity\n| sort - void_returns",
+      "title": "Splunk -- UCP Void Return Mass Execution Detection (Phase 4)"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Indirect Prompt Injection Detected in Agent Browsing Content\nstatus: experimental\ndescription: Detects indicators of indirect prompt injection payloads in web content ingested by UCP shopping agents during browsing, including hidden instructions, invisible HTML elements, and metadata-embedded commands targeting Cart Mandate manipulation or returns flow bypass.\nlogsource:\n    product: ecommerce\n    service: agent_content_scanner\ndetection:\n    selection:\n        event_type: \"agent_content_ingestion\"\n    condition_hidden_instructions:\n        content_contains_hidden_text: true\n        hidden_text_pattern|re: \"(?i)(CartMandate|settlement\\.refund|order\\.return\\.verify|recipient_email|display_status.*hidden)\"\n    condition_invisible_elements:\n        invisible_span_detected: true\n        invisible_content_length|gt: 50\n    condition_metadata_injection:\n        metadata_contains_instructions: true\n    condition: selection and (1 of condition_*)\nlevel: critical\ntags:\n    - cfpf.phase2.initial_access\n    - attack.t1059\n    - flame.ecommerce\n    - flame.agentic_commerce\n    - flame.prompt_injection",
+      "title": "Sigma -- Agent Content Prompt Injection Detection (Phase 2)"
     }
   ]
 }
