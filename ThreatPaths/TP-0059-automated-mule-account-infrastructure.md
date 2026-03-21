@@ -9,7 +9,7 @@ date: 2026-03-20
 author: "FLAME Project"
 source: "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319"
 tlp: WHITE
-infrastructure_generation_method: automated
+infrastructure_generation_method: ai-assisted
 fraud_types:
   - automated-mule-accounts
   - money-laundering
@@ -51,13 +51,13 @@ ucff_domains:
   improve: "Level 3"
 related_tps:
   - id: TP-0017
-    relationship: supports
+    relationship: provides-mules-for
   - id: TP-0049
     relationship: feeds-into
   - id: TP-0054
-    relationship: component-of
+    relationship: enhances
   - id: TP-0058
-    relationship: supports
+    relationship: enables
 regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-INTERPOL-GFFTA

@@ -47,15 +47,15 @@ ucff_domains:
   improve: "Level 3"
 related_tps:
   - id: TP-0042
-    relationship: provides-infrastructure
+    relationship: enables
   - id: TP-0044
     relationship: enables
   - id: TP-0054
     relationship: enables
   - id: TP-0057
-    relationship: provides-infrastructure
+    relationship: enables
   - id: TP-0060
-    relationship: provides-infrastructure
+    relationship: enables
 regulatory_refs:
   - REG-RF-CTA-2026-0319
   - REG-INTERPOL-GFFTA

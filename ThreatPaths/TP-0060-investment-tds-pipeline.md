@@ -9,7 +9,7 @@ date: 2026-03-20
 author: "FLAME Project"
 source: "Recorded Future CTA-2026-0319, Infoblox Keitaro/Binom Analysis 2025, INTERPOL GFFTA 2026"
 tlp: WHITE
-infrastructure_generation_method: automated
+infrastructure_generation_method: tds-routing
 fraud_types:
   - traffic-distribution-system
   - investment-fraud
@@ -54,11 +54,11 @@ ucff_domains:
   improve: "Level 3"
 related_tps:
   - id: TP-0041
-    relationship: uses-infrastructure
+    relationship: shares-infrastructure
   - id: TP-0042
-    relationship: specializes
+    relationship: variant-of
   - id: TP-0017
-    relationship: supports
+    relationship: enhances
   - id: TP-0034
     relationship: enhances
 regulatory_refs:
