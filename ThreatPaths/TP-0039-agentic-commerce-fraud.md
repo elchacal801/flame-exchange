@@ -63,6 +63,7 @@ regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
   - REG-PSD3-SCA
+  - REG-INTERPOL-GFFTA
 tags:
   - agentic-ai
   - ai-agent
@@ -74,6 +75,7 @@ tags:
   - amazon-buy-for-me
   - visa-intelligent-commerce
   - mastercard-agent-pay
+  - interpol-gffta
 ---
 ```
 
@@ -396,8 +398,19 @@ tags:
 
 ---
 
+## Operational Evidence
+
+### EV-TP0039-2026-002: INTERPOL Confirmation of Agentic AI Fraud
+
+- **Source**: INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026)
+- **Key Finding**: INTERPOL confirms that "agentic AI systems autonomously executing entire fraud campaigns" have been observed in the wild, corroborating the hypothesis documented in TP-0039. This is no longer theoretical — agentic AI fraud is operational.
+- **Confidence**: High
+
+---
+
 ## Revision History
 
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-04 | FLAME Project | Initial submission |
+| 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 confirmation of agentic AI fraud as operational (no longer theoretical) |

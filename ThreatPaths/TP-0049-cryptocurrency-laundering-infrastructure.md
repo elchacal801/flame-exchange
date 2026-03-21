@@ -50,6 +50,9 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0047
     relationship: related-to
+regulatory_refs:
+  - REG-INTERPOL-GFFTA
+  - REG-UNODC-EMERGING-THREATS
 tags:
   - cmln
   - cryptocurrency-laundering
@@ -61,6 +64,9 @@ tags:
   - huione-group
   - chainalysis
   - trm-labs
+  - interpol-gffta
+  - unodc
+  - ai-evasion
 ---
 ```
 
@@ -406,6 +412,19 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
 
 ---
 
+## Operational Evidence
+
+### EV-TP0049-2026-003: INTERPOL/UNODC Laundering Intelligence
+
+- **Source**: INTERPOL GFFTA 2026; UNODC — Emerging Threats (September 2025)
+- **Key Findings**:
+  - Illicit proceeds increasingly channeled through cryptocurrency with AI-enabled evasion techniques for laundering detection bypass (UNODC)
+  - Criminal networks collaborating with specialized money laundering groups to professionalize crypto-to-fiat conversion (INTERPOL)
+- **CFPF Phase Coverage**: P5 (AI-enhanced laundering evasion)
+- **Confidence**: High
+
+---
+
 ## Analyst Notes
 
 - **CMLN growth trajectory**: The 7,325x growth differential between CMLN inflows and centralized exchange illicit inflows since 2020 represents a fundamental structural shift in how criminal actors monetize crypto-enabled fraud. This trend is accelerating, not stabilizing, and suggests that AML controls focused primarily on centralized exchange monitoring are increasingly insufficient.
@@ -422,3 +441,4 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
 | Date | Version | Author | Changes |
 |---|---|---|---|
 | 2026-03-05 | 1.0 | FLAME Project | Initial publication based on CrimsonVector Strategic Intelligence Report, Chainalysis, and TRM Labs data |
+| 2026-03-20 | | FLAME Project | Enriched with INTERPOL/UNODC intelligence on AI-enabled laundering evasion and crypto off-ramping professionalization |

@@ -56,6 +56,11 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0049
     relationship: feeds-into
+  - id: TP-0058
+    relationship: shares-infrastructure
+regulatory_refs:
+  - REG-UNODC-EMERGING-THREATS
+  - REG-INTERPOL-GFFTA
 tags:
   - human-trafficking
   - scam-compound
@@ -66,6 +71,9 @@ tags:
   - ofac-sanctions
   - cryptocurrency
   - recruitment-fraud
+  - multilingual-chatbot
+  - sextortion-fallback
+  - unodc
 ---
 ```
 
@@ -481,6 +489,22 @@ LIMIT 100;
 
 ---
 
+## Operational Evidence
+
+### EV-TP0047-2026-003: UNODC/INTERPOL Compound Operations Intelligence
+
+- **Source**: UNODC — Emerging Threats: AI & Automation in Cybercrime (September 2025); INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026)
+- **Scale**: 80 nationalities trafficked by late 2025 (INTERPOL); $18-37B losses in East/SE Asia in 2023; $40B annual scam centre profits (UNODC)
+- **Key Findings**:
+  - Multilingual AI chatbots deployed in scam compounds for automated victim engagement at scale, enabling 24/7 operations across language barriers
+  - Sextortion is now systematically integrated into romance/investment fraud as a scripted fallback — not opportunistic but formalized in compound operating procedures (INTERPOL)
+  - 600% increase in deepfake mentions in criminal Telegram channels (February-June 2024); 10+ deepfake software vendors specifically serving SE Asian cybercrime groups (UNODC)
+  - Geographic expansion beyond SE Asia to Middle East, North Africa, and South America (UNODC)
+- **CFPF Phase Coverage**: P2 (chatbot-enabled initial contact), P3 (deepfake-enhanced trust building), P4 (scripted exploitation with sextortion fallback)
+- **Confidence**: High
+
+---
+
 ## References
 
 ### Case Study 1: Huione Group — The $98 Billion Scam Infrastructure Hub
@@ -514,6 +538,10 @@ OFAC designated Funnull Technology, a content delivery network (CDN) provider th
 - UNODC, *Inflection Point: Global Implications of Scam Centres, Underground Banking and Illicit Online Marketplaces in Southeast Asia*, April 2025
 - INTERPOL, *Crime Trend Update: Human Trafficking-Fueled Scam Centres*, June 2025
 
+- **UNODC — Emerging Threats: AI & Automation in Cybercrime** (September 2025): Documents AI-enhanced cybercrime in SE Asia including multilingual chatbots, 600% deepfake surge, automated mule systems, and scam compound operational patterns. [Link](https://www.unodc.org/)
+
+- **INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition** (March 2026): Documents 80 nationalities trafficked, sextortion as scripted fallback in compound operations, and global scam centre expansion. [Link](https://www.interpol.int/)
+
 ---
 
 ## Analyst Notes
@@ -534,6 +562,8 @@ OFAC designated Funnull Technology, a content delivery network (CDN) provider th
 
 These developments confirm the global metastasis of the scam centre model beyond its Southeast Asian origins.
 
+**Geographic expansion is accelerating**: The UNODC September 2025 report documents scam compound operations expanding beyond their SE Asian base into the Middle East, North Africa, and South America. This geographic diversification indicates that the operational model is being replicated rather than merely relocated, with local criminal organizations adopting the compound-based fraud model pioneered in Myanmar, Cambodia, and Laos.
+
 ---
 
 ## Revision History
@@ -542,3 +572,4 @@ These developments confirm the global metastasis of the scam centre model beyond
 |------|---------|--------|---------|
 | 2026-03-05 | 1.0 | FLAME Project | Initial publication based on CrimsonVector Strategic Intelligence Report, FBI IC3, Chainalysis, OFAC, and DOJ Scam Center Strike Force sources |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — global scam centre expansion, Myanmar crackdown, MENA trafficking nexus |
+| 2026-03-20 | FLAME Project | Enriched with UNODC Sept 2025 and INTERPOL GFFTA 2026 intelligence: multilingual chatbot deployment, sextortion scripted fallback, geographic expansion data, 80 nationalities trafficked, $18-37B loss estimates |

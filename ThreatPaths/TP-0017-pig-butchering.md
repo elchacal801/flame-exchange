@@ -56,11 +56,16 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-SEC-SAR
   - REG-UK-PSR-APP
+  - REG-INTERPOL-GFFTA
+  - REG-UNODC-EMERGING-THREATS
 tags:
   - pig-butchering
   - crypto-scam
   - romance-scam
   - app-fraud
+  - interpol-gffta
+  - unodc
+  - 40b-annual
 ---
 ```
 
@@ -263,6 +268,20 @@ WHERE c.age >= 60
 
 ---
 
+## Operational Evidence
+
+### EV-TP0017-2026-003: INTERPOL/UNODC Scale and Loss Estimates
+
+- **Source**: INTERPOL GFFTA 2026; UNODC — Emerging Threats (September 2025)
+- **Key Findings**:
+  - East and Southeast Asia pig butchering losses estimated at $18-37B for 2023 alone (UNODC)
+  - Annual scam centre profits estimated at $40B across the region (UNODC)
+  - Pig butchering identified as the single largest fraud type by victim financial loss in INTERPOL's assessment
+- **CFPF Phase Coverage**: Full lifecycle (P1-P5) — scale data applies across all phases
+- **Confidence**: Very High — multi-source from international organizations
+
+---
+
 ## References
 
 - FinCEN Advisory on Pig Butchering (FIN-2023-A002). [Link](https://www.fincen.gov/sites/default/files/shared/FinCEN_Advisory_Pig_Butchering_FINAL_508c.pdf)
@@ -281,3 +300,4 @@ WHERE c.age >= 60
 | 2026-02-20 | FLAME Project | Initial creation |
 | 2026-02-28 | FLAME Project | Enriched with RF 2026 TCO intelligence, Underground Ecosystem Context, ghost-tapping variant |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — investment fraud scale, AI dashboard intelligence, sextortion-hybrid convergence |
+| 2026-03-20 | FLAME Project | Enriched with INTERPOL/UNODC loss estimates: $18-37B East/SE Asia losses, $40B annual scam centre profits |

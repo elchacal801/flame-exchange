@@ -6,6 +6,50 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [0.9.0] — 2026-03-20
+
+### Added
+
+- **Phase 7 SIGNAL: Multi-Source Intelligence Integration** — 5 external reports integrated: INTERPOL GFFTA 2026, UNODC Emerging Threats Sept 2025, Flare/IBM X-Force DPRK March 2026, Infoblox TDS/DNS Intelligence, Recorded Future CTA-2026-0319 Malicious Infrastructure Year-in-Review
+- **TP-0057: Deepfake-as-a-Service Marketplace Ecosystem** — DaaS platforms on dark web/Telegram, 600% deepfake surge (UNODC), 10+ vendor ecosystem, voice clones from 10s audio, AI face/voice changers for DPRK interviews
+- **TP-0058: Scam Compound Operational Infrastructure** — Boiler room mechanics, multilingual chatbots, $40B annual profits (UNODC), 80 nationalities trafficked (INTERPOL), scripted sextortion fallback, CRM-driven victim management
+- **TP-0059: Automated Mule Account Infrastructure** — Bot-driven mule creation at scale, GAN liveness bypass, KYC circumvention, account aging simulation, automated transaction splitting
+- **TP-0060: Investment Scam TDS Integrated Pipeline** — Named actors (Reckless Rabbit, Ruthless Rabbit, Savvy Seahorse), Keitaro/Binom TDS abuse, geo-routing evasion (US→eToro), 500K TDS domains/year, CNAME-as-TDS technique
+- **TP-0061: Threat Activity Enabler (TAE) Bulletproof Hosting Infrastructure** — Named TAEs (Virtualine, CrazyRDP, Stark/THE.Hosting, Aeza), aurologic GmbH upstream concentration (70%), sanctions evasion via corporate rebranding, IP prefix transfers
+- **9 new detection rules** (DL-0115 through DL-0123) — DaaS transaction patterns, real-time face/voice changer detection, multilingual chatbot scam patterns, automated mule account velocity, KYC bot circumvention, investment TDS geo-routing evasion, DPRK internal platform connection, Keitaro/Binom TDS abuse, TAE infrastructure rotation
+- **3 new baselines** (BL-0028 through BL-0030) — deepfake service procurement norms, automated account opening velocity norms, investment TDS routing norms
+- **5 new fraud types** in taxonomy: `deepfake-as-a-service`, `ai-face-voice-changer`, `automated-mule-infrastructure`, `chatbot-enabled-fraud`, `investment-tds-pipeline`
+- **1 new infrastructure generation method**: `tds-routing`
+- **6 new regulatory/intelligence references**: REG-INTERPOL-GFFTA, REG-INTERPOL-SHADOW-STORM, REG-INTERPOL-HAECHI, REG-INTERPOL-REDCARD, REG-UNODC-EMERGING-THREATS, REG-RF-CTA-2026-0319
+
+### Changed
+
+- **TP-0034** (DPRK IT Worker Fraud) — Major enrichment: RB Site/NetkeyRegister platforms, Western collaborator recruitment, OConnect/NetKey VPN, BeaverTail/InvisibleFerret malware, PurpleBravo/PurpleDelta infrastructure overlap, 100K+ operatives/$500M year (Flare/IBM, Recorded Future)
+- **TP-0042** (TDS Chain Exploitation) — Added named actors (Reckless/Ruthless Rabbit, Savvy Seahorse), GrayCharlie/TAG-124 TDS actors, ClickFix technique, Keitaro/Binom platforms, 500K domains/year (Infoblox, Recorded Future)
+- **TP-0041** (RDGA Infrastructure) — Added named actor RDGA patterns and wildcard DNS cloaking (Infoblox)
+- **TP-0047** (Human Trafficking-Linked Fraud) — Added multilingual chatbots, sextortion fallback, 80 nationalities, MENA expansion, $18-37B/$40B loss estimates (INTERPOL, UNODC)
+- **TP-0007** (Deepfake Voice Authorization) — Added DaaS ecosystem, 600% surge, 10+ vendors, voice clones from 10s audio (INTERPOL, UNODC)
+- **TP-0039** (Agentic Commerce Fraud) — Added INTERPOL confirmation of autonomous AI campaign execution
+- **TP-0052** (Sextortion-Investment Hybrid) — Added formalized sextortion in compound operating procedures (INTERPOL)
+- **TP-0054** (Fraud-as-a-Service) — Added $442B losses, 4.5x AI profitability, MaaS/PhaaS professionalization, TAG-161 premium tooling, bulletproof hosting enablers (INTERPOL, UNODC, Recorded Future)
+- **TP-0055** (Crypto Fraud–Terror/Narco Nexus) — Added terrorist financing via crypto in Africa (INTERPOL)
+- **TP-0044** (State-Criminal Convergence) — Added TAE infrastructure as convergence mechanism, Stark/Aeza sanctions evasion, aurologic GmbH systemic enabler, Kaopu Cloud shared infra (INTERPOL, Recorded Future)
+- **TP-0049** (Crypto Laundering Infrastructure) — Added AI-enabled laundering detection evasion (INTERPOL, UNODC)
+- **TP-0017** (Pig Butchering) — Added $18-37B E/SE Asia losses, $40B annual compound profits (INTERPOL, UNODC)
+- **REG-OFAC-SDN** — Added `deepfake-as-a-service` and `scam-compound-operations` to relevant fraud types
+- `flame_taxonomy.json` — Added 5 new fraud types + 1 infrastructure method (total: 76 fraud types)
+- `ThreatPaths/INDEX.md` — Updated all coverage tables for 61 TPs, 81 fraud types
+
+### Source Intelligence
+
+- INTERPOL: Global Financial Fraud Threat Assessment, 2nd Edition, March 2026 ($442B global losses, FaaS proliferation, scam compound globalization)
+- UNODC: Emerging Threats — AI & Automation in Cybercrime, September 2025 (600% deepfake surge, $40B compound profits, automated mule systems)
+- Flare/IBM X-Force: Inside the North Korean Infiltrator Threat, March 2026 (RB Site, NetkeyRegister, 100K+ operatives, $500M/year)
+- Infoblox: DNS Intelligence — Keitaro TDS & Investment Scams (Reckless/Ruthless Rabbit, Savvy Seahorse, 500K TDS domains)
+- Recorded Future CTA-2026-0319: 2025 Malicious Infrastructure Year in Review, March 2026 (TAE ecosystem, DPRK malware families, sanctions evasion patterns, as-a-service professionalization)
+
+---
+
 ## [0.8.0] — 2026-03-04
 
 ### Added

@@ -59,6 +59,14 @@ related_tps:
     relationship: enables
   - id: TP-0041
     relationship: shares-infrastructure
+  - id: TP-0061
+    relationship: related-to
+regulatory_refs:
+  - REG-INTERPOL-GFFTA
+  - REG-INTERPOL-HAECHI
+  - REG-INTERPOL-REDCARD
+  - REG-INTERPOL-SHADOW-STORM
+  - REG-RF-CTA-2026-0319
 tags:
   - state-criminal-convergence
   - dprk
@@ -69,6 +77,14 @@ tags:
   - cmln
   - nation-state
   - hybrid-threat
+  - interpol-gffta
+  - recorded-future
+  - virtualine
+  - stark-industries
+  - aeza
+  - aurologic
+  - operation-haechi
+  - operation-redcard
 ---
 ```
 
@@ -512,6 +528,26 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 
 ---
 
+## Operational Evidence
+
+### EV-TP0044-2026-002: INTERPOL/Recorded Future Convergence Intelligence
+
+- **Source**: INTERPOL GFFTA 2026; Recorded Future CTA-2026-0319 (March 2026)
+- **Key Findings — INTERPOL**:
+  - 54% rise in fraud-related INTERPOL Notices and Diffusions (2024-2025)
+  - Operation Shadow Storm: International task force for coordinated financial fraud enforcement
+  - Operation RED CARD 2.0: 651 arrests in Africa targeting investment scams and social engineering
+  - Operation HAECHI VI: 32,835 arrests, $439M in assets recovered across international fraud categories
+- **Key Findings — Recorded Future (TAE Infrastructure as Convergence Mechanism)**:
+  - Stark Industries Solutions (EU sanctioned May 2025, rebranded to THE.Hosting) simultaneously hosted FIN7 operations AND state-sponsored campaigns from Russia, Iran, North Korea, and China — demonstrating infrastructure convergence between criminal and state actors
+  - aurologic GmbH serves as upstream transit for 70% of the highest-risk TAE networks, illustrating how "neutrality interpreted narrowly functions as a mechanism for inaction" in infrastructure stewardship
+  - Sanctions evasion through rapid corporate rebranding: Aeza → Smart Digital Ideas DOO → Hypercore Ltd → NetCrafters OU (all transitions within months); Stark → THE.Hosting + WorkTitans B.V. IP transfers
+  - Kaopu Cloud HK Limited (AS138915) identified as shared hosting infrastructure across both NK state-sponsored operations (PurpleAlpha credential harvesting) and cybercriminal groups
+- **CFPF Phase Coverage**: P1 (infrastructure provisioning), P3 (convergent hosting), P5 (sanctions evasion and rebranding)
+- **Confidence**: Very High — multi-source from law enforcement operations and infrastructure intelligence
+
+---
+
 ## Analyst Notes
 
 - **Attribution confidence caveat**: State-criminal convergence is deliberately designed to confuse attribution. The Gamaredon/Lazarus shared IP could reflect intentional cooperation, shared hosting provider, or a false flag operation. Analysts should assess convergence indicators probabilistically rather than drawing binary attribution conclusions.
@@ -530,3 +566,4 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 |------|---------|--------|---------|
 | 2026-03-05 | 1.0 | FLAME Project | Initial publication based on CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, and Atlantic Council sources |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — Tren de Aragua narco-crypto convergence case |
+| 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 enforcement data (54% Notice rise, Operations Shadow Storm/RED CARD/HAECHI VI) and Recorded Future TAE convergence intelligence (Stark Industries, aurologic, Aeza sanctions evasion patterns) |

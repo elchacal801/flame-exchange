@@ -58,6 +58,7 @@ related_tps:
 regulatory_refs:
   - REG-FINCEN-AML
   - REG-FATF-R16
+  - REG-INTERPOL-GFFTA
 geopolitical_timing: none
 nation_state_nexus: suspected
 tags:
@@ -69,6 +70,8 @@ tags:
   - crypto-mixing
   - cross-border-laundering
   - organized-crime-convergence
+  - interpol-gffta
+  - operation-catalyst
 ---
 ```
 
@@ -316,6 +319,16 @@ ORDER BY t.amount_usd DESC;
 - **CFPF Phase Coverage**: P1, P2, P3, P4, P5
 - **Confidence**: High (83 arrests; 17-country operation; wallet-level evidence)
 
+### EV-TP0055-2026-002: INTERPOL Crypto-Terror Financing Intelligence
+
+- **Source**: INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026)
+- **Key Findings**:
+  - Terrorist financing via crypto-based fraud schemes documented in Africa (INTERPOL)
+  - Criminal network collaboration with specialized money laundering groups creating convergence between fraud proceeds and terrorist financing pipelines
+  - Operation Catalyst: INTERPOL-coordinated enforcement action targeting crypto-fraud-terrorism nexus
+- **CFPF Phase Coverage**: P5 (crypto laundering feeding terrorist financing)
+- **Confidence**: High
+
 ---
 
 ## References
@@ -346,3 +359,4 @@ ORDER BY t.amount_usd DESC;
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-17 | FLAME Project | Initial submission |
+| 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 terrorist financing via crypto in Africa and Operation Catalyst details |
