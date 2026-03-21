@@ -20,6 +20,9 @@ fraud_types:
   - social-engineering
   - account-takeover
   - unauthorized-transaction
+  - gift-card-fraud
+  - returns-fraud
+  - refunding-as-a-service
 cfpf_phases:
   - P1
   - P2
@@ -49,15 +52,19 @@ ucff_domains:
   monitor: "Level 3"
   report: "Level 2"
   improve: "Level 2"
-confidence_score: 55
-source_reliability: C
-info_credibility: 3
+confidence_score: 65
+source_reliability: B
+info_credibility: 2
 related_tps:
   - id: TP-0025
     relationship: related-to
   - id: TP-0029
     relationship: enhances
   - id: TP-0013
+    relationship: related-to
+  - id: TP-0031
+    relationship: related-to
+  - id: TP-0030
     relationship: related-to
 regulatory_refs:
   - REG-CFPB-REGE
@@ -76,6 +83,19 @@ tags:
   - visa-intelligent-commerce
   - mastercard-agent-pay
   - interpol-gffta
+  - universal-commerce-protocol
+  - ucp
+  - agent-payments-protocol
+  - ap2
+  - indirect-prompt-injection
+  - cart-mandate-poisoning
+  - returns-logic-hijacking
+  - organized-retail-crime
+  - know-your-agent
+  - agent-reputation-score
+  - openclaw
+  - gift-card-theft
+  - nrf
 ---
 ```
 
@@ -83,7 +103,7 @@ tags:
 
 ## Summary
 
-Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transactions across the payment ecosystem. Pilot programs such as Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay represent early implementations of this paradigm, creating a novel transaction chain: Consumer provides Intent to AI Agent, which performs Autonomous Merchant Selection, interacts with Merchant Transaction Systems, submits transactions to Payment Infrastructure for Authorization and Settlement by the Card Issuer. Each handoff in this chain introduces attack surfaces that do not exist in traditional human-initiated commerce.
+Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transactions across the payment ecosystem. Pilot programs such as Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay represent early implementations of this paradigm, while Google's Universal Commerce Protocol (UCP) -- unveiled at the NRF Big Show in January 2026 -- establishes an open-source standard for agentic commerce with tokenized payments and verifiable credentials, compatible with the Agent Payments Protocol (AP2). These systems create a novel transaction chain: Consumer provides Intent to AI Agent, which performs Autonomous Merchant Selection, interacts with Merchant Transaction Systems, submits transactions to Payment Infrastructure for Authorization and Settlement by the Card Issuer. Each handoff in this chain introduces attack surfaces that do not exist in traditional human-initiated commerce. According to Bain & Company, agentic AI is expected to handle 15-25% of all e-commerce volume by 2030, while McKinsey estimates agentic commerce could generate $3-5 trillion in global retail revenue by 2030. The World Economic Forum estimates that by 2028, one in four data breaches could result from AI agent exploitation.
 
 The core vulnerability is that user and agent intent becomes a novel attack surface -- vulnerable to the same categories of attacks that circumvent identity authentication, but applied to the delegation of purchasing authority rather than credential theft. Threat actors can compromise or manipulate AI agent context, prompts, or MCP server connections to redirect purchasing intent, inflate prices, route transactions to attacker-controlled merchants, or execute unauthorized purchases at machine speed. In April 2025, threat actor "d0ctrine" published proof-of-concept documentation outlining agentic fraud workflows including agent-automated fraud, mimicry of human interaction patterns, and evasion of behavioral and device-based controls. In November 2025, Anthropic disclosed the first known cyber-espionage campaign orchestrated primarily by an autonomous AI system, coinciding with an attempted fraudulent purchase for the same AI service -- demonstrating convergence between AI-enabled fraud and AI-enabled cyber threats.
 
@@ -122,8 +142,10 @@ The structural parallel to early open banking is significant: as banks lost visi
 | CFPF-P2-001: Agent context/prompt compromise | Actors inject malicious instructions into the AI agent's context window through compromised MCP servers, poisoned product descriptions, manipulated API responses, or adversarial content in merchant pages that the agent processes during comparison shopping. | Unusual agent tool-call patterns; agent accessing unexpected MCP endpoints; agent context containing instructions inconsistent with user's stated purchasing intent |
 | CFPF-P2-002: MCP server or API endpoint compromise | Actors compromise third-party MCP servers or API endpoints that the agent relies on for product data, price comparison, or merchant verification, injecting manipulated data that redirects agent behavior. | MCP server responses containing anomalous instructions or redirect patterns; API endpoint returning manipulated pricing or merchant data; certificate or authentication anomalies on agent data sources |
 | CFPF-P2-003: Social engineering of agent authentication | Actors social-engineer the AI agent into authenticating to attacker-controlled services by presenting convincing but fraudulent merchant interfaces, OAuth flows, or payment processing endpoints that the agent interacts with during autonomous purchasing. | Agent initiating authentication flows with unrecognized service endpoints; agent presenting credentials to domains not in the approved merchant catalog; OAuth redirect chains involving unfamiliar intermediaries |
+| CFPF-P2-004: Indirect prompt injection via deals aggregator sites | Actors create deals aggregator or coupon sites that UCP agents crawl to find discounts. The site contains hidden payloads (e.g., invisible text, hidden HTML elements) that reprogram the agent's memory when ingested during comparison shopping. Because UCP agents are designed to autonomously browse, summarize and interact with merchant sites, they are highly susceptible to indirect prompt injection where the attack is encountered by the agent rather than typed by the user. | Agent accessing known deals aggregator sites with embedded hidden content; agent context window containing instructions inconsistent with browsing task; agent behavioral changes after visiting specific external sites |
+| CFPF-P2-005: UCP returns instruction injection via product page metadata | Actors embed hidden instructions in HTML metadata or invisible `<span>` tags on product listing pages. When a user's agent reads the product page for return instructions, it ingests the malicious command as a high-priority system update, instructing it to skip verification steps in the UCP returns state machine. | Product pages containing hidden text/instructions in metadata or invisible elements; agent processing return instructions from unverified sources; agent context containing system-level override commands from merchant content |
 
-**Data Sources**: Agent execution logs, MCP server audit logs, API gateway traffic analysis, merchant catalog integrity monitoring, OAuth flow logging, agent tool-use telemetry.
+**Data Sources**: Agent execution logs, MCP server audit logs, API gateway traffic analysis, merchant catalog integrity monitoring, OAuth flow logging, agent tool-use telemetry, deals aggregator content scanning, product page metadata analysis.
 
 ---
 
@@ -134,8 +156,10 @@ The structural parallel to early open banking is significant: as banks lost visi
 | CFPF-P3-001: Purchasing intent manipulation | Actors spoof or manipulate the agent's purchasing intent -- redirecting product selection, inflating prices, or substituting merchants -- such that the agent believes it is fulfilling the user's original request while actually executing the attacker's desired transaction. | Agent selecting merchants or products that diverge from user's stated preferences or historical purchasing patterns; agent price verification logic bypassed or returning anomalous results; agent executing purchases at prices significantly above market |
 | CFPF-P3-002: Price verification and comparison logic exploitation | Actors manipulate the agent's price comparison mechanisms by presenting artificially competitive pricing on attacker-controlled merchant sites, then escalating prices after the agent commits to the merchant, or by injecting false price data into comparison APIs. | Agent price comparison results showing attacker-controlled merchants consistently ranking highest; price discrepancies between agent's recorded comparison data and actual merchant pricing; bait-and-switch pricing patterns where final transaction amount exceeds comparison price |
 | CFPF-P3-003: Delegated payment authority exploitation | Actors exploit the scope of delegated payment authority -- where the consumer has authorized the agent to spend up to a certain limit or within certain categories -- by manipulating the agent to make purchases that technically fall within authorized parameters but serve the attacker's purposes. | Agent executing purchases that match authorized categories but diverge from user's actual intent; agent approaching or hitting delegation spending limits through attacker-directed transactions; purchases to merchant categories the user has never previously engaged with |
+| CFPF-P3-004: UCP Cart Mandate gift card injection | Actors target the creation of the UCP Cart Mandate -- the digital contract that defines what is being bought and for whom. After an agent's memory is reprogrammed via indirect prompt injection, the agent appends a hidden line-item (e.g., a digital gift card) to the Cart Mandate JSON-RPC payload, with the recipient email set to an attacker-controlled address and the display status set to hidden. The agent may justify the additional cost as "Tax/Fees" in the user's UI. | Cart Mandate containing gift card line items not present in user's shopping intent; recipient email addresses on digital gift cards not matching user's known email addresses; line items with display_status set to hidden; total price discrepancies attributable to unexplained surcharges |
+| CFPF-P3-005: UCP returns state machine bypass setup | After ingesting hidden instructions from product page metadata, the agent prepares to bypass the UCP returns state machine by storing fraudulent tracking IDs (e.g., "void-000") and instructions to skip the `order.return.verify` step when a return is initiated. | Agent storing return-related instructions from unverified product page sources; agent context containing references to skipping verification steps; pre-staged tracking IDs with known void patterns |
 
-**Data Sources**: Agent transaction logs, price comparison audit trails, merchant catalog monitoring, delegated authority scope tracking, user intent verification systems, agent behavioral analytics.
+**Data Sources**: Agent transaction logs, price comparison audit trails, merchant catalog monitoring, delegated authority scope tracking, user intent verification systems, agent behavioral analytics, Cart Mandate JSON-RPC payload inspection, UCP returns state machine logs.
 
 ---
 
@@ -146,8 +170,10 @@ The structural parallel to early open banking is significant: as banks lost visi
 | CFPF-P4-001: Unauthorized agent-initiated transactions | The compromised or manipulated agent executes transactions using the consumer's legitimate payment credentials -- purchasing products from attacker-controlled merchants, executing purchases at inflated prices, or initiating bulk transactions at machine speed. The transactions are technically "authorized" because the agent has delegated payment authority. | Transactions initiated by agent at velocities exceeding human purchasing patterns; purchases from merchants not in user's historical pattern; agent completing multiple purchases per minute across different merchants; transaction amounts clustering near delegation authority limits |
 | CFPF-P4-002: Attacker-controlled merchant transactions | The agent routes purchases to attacker-controlled merchant accounts, which may offer legitimate-appearing but fraudulent storefronts. The attacker collects payment while delivering nothing, counterfeit goods, or minimal-value items. | Agent selecting merchants with recently created accounts, no prior transaction history, or patterns matching known fraudulent merchant profiles; purchases from merchants in high-risk categories or jurisdictions; merchant accounts receiving agent-initiated transactions from multiple unrelated consumers |
 | CFPF-P4-003: Automated fraud at machine speed | Because AI agents can execute transactions orders of magnitude faster than human shoppers, compromised agents can process large volumes of fraudulent transactions before human review cycles can intervene. A single compromised agent session could execute dozens of purchases in minutes. | Transaction velocity exceeding 10x human baseline for the same commerce flow; multiple simultaneous transactions across different merchants from the same agent session; agent session duration anomalously short relative to the number and complexity of purchases executed |
+| CFPF-P4-004: UCP Cart Mandate checkout with injected gift card | The agent constructs the final JSON-RPC payload for the UCP checkout endpoint with the unauthorized gift card line item included. If the user's UI only shows a Total Price (which the agent justifies as Tax/Fees), the user approves the mandate, and the gift card is sent to the attacker. The real cost extends beyond the stolen amount -- the customer's trust in the retailer is eroded and the retailer bears both the chargeback and the reputational damage. | UCP checkout payloads containing gift card line items with external recipient emails; user approval of Cart Mandates with unexplained surcharges; digital gift card redemption from IP addresses unrelated to the purchasing user; chargeback patterns correlated with agent-initiated gift card purchases |
+| CFPF-P4-005: UCP void return execution | The agent triggers the UCP refund primitive (`settlement.refund.instant()`) without requiring a real shipping scan, using a fraudulent tracking ID (e.g., "void-000") as proof of dispatch and skipping the `order.return.verify` step. At scale, organized crime groups use bot farms to initiate thousands of void returns per hour, potentially liquidating a retailer's cash reserves before human intervention. | Refund requests with tracking IDs matching known void patterns (void-000, void-*); `order.return.verify` step skipped in UCP state machine; high-velocity refund requests from bot-like agent sessions; refund amounts not correlating with legitimate return shipping activity |
 
-**Data Sources**: Payment gateway transaction logs, agent session telemetry, merchant risk scoring systems, transaction velocity monitoring, delegation authority tracking, agent-to-merchant interaction logs.
+**Data Sources**: Payment gateway transaction logs, agent session telemetry, merchant risk scoring systems, transaction velocity monitoring, delegation authority tracking, agent-to-merchant interaction logs, UCP checkout endpoint logs, Cart Mandate payload inspection, UCP refund primitive audit logs, shipping verification systems.
 
 ---
 
@@ -227,24 +253,37 @@ The structural parallel to early open banking is significant: as banks lost visi
 |-------------|------|-------------|--------------|
 | d0ctrine | April 2025 | Published PoC documentation on underground forums outlining agentic fraud workflows: agent-automated fraud execution, mimicry of human interaction patterns, evasion of behavioral/device-based controls | First documented threat actor PoC specifically targeting agentic commerce attack surfaces |
 | Anthropic disclosure | November 2025 | Disclosed first known cyber-espionage campaign orchestrated primarily by autonomous AI system, coinciding with attempted fraudulent purchase for the same AI service | Demonstrates convergence of AI-enabled cyber threats and AI-enabled fraud; validates autonomous AI as both attack tool and attack target |
+| OpenClaw | 2026 | Identification of the "buy-anything skill (v2.0.0)" that could be weaponized by fraudsters to automate purchasing fraud via agentic commerce protocols | Demonstrates emerging tool availability for automated agentic purchasing exploitation |
 
 ### Tool Ecosystem
 
 - Prompt injection frameworks targeting AI agent context windows
+- Indirect prompt injection payloads embedded in deals aggregator sites, coupon pages, and product listings
 - MCP server impersonation and man-in-the-middle tooling
 - Adversarial product description generators designed to manipulate agent comparison shopping logic
+- UCP Cart Mandate payload manipulation tools for injecting hidden line items (gift cards, surcharges)
+- UCP returns state machine exploit scripts for bypassing `order.return.verify` with void tracking IDs
 - Anti-detection tools that mimic human browsing patterns within agent sessions
 - Automated merchant account creation tools for receiving agent-directed payments
 - Agent session replay analysis tools for identifying delegation authority boundaries
+- OpenClaw "buy-anything skill (v2.0.0)" and similar agentic purchasing automation frameworks
+- Bot farm orchestration tools for mass void-return execution against retailer refund endpoints
 
 ### Intelligence Sources
 
 - Recorded Future Annual Payment Fraud Intelligence Report 2025 -- primary source for agentic commerce threat analysis
+- Unit 42 (Palo Alto Networks) -- "Who's Really Shopping? Retail Fraud in the Age of Agentic AI" (March 2026) -- UCP-specific attack scenarios including gift card theft via payload poisoning and returns fraud via logic hijacking
 - d0ctrine PoC documentation (underground forums, April 2025)
 - Anthropic security disclosure (November 2025)
 - Amazon Buy for Me technical documentation
 - Visa Intelligent Commerce architecture analysis
 - Mastercard Agent Pay pilot program specifications
+- Google Universal Commerce Protocol (UCP) specification (January 2026)
+- Google Agent Payments Protocol (AP2) specification (September 2025)
+- Bain & Company -- agentic commerce market sizing study
+- McKinsey & Company -- agentic commerce revenue projections
+- World Economic Forum Annual Meeting 2026 -- AI agent exploitation projections
+- NRF Center for Digital Risk & Innovation -- retailer collaboration on agentic AI adoption and fraud prevention
 
 ---
 
@@ -262,6 +301,12 @@ The structural parallel to early open banking is significant: as banks lost visi
 | P4 | Merchant risk scoring for agent transactions -- enhanced scrutiny for agent-initiated transactions to newly created merchants, merchants in high-risk categories, or merchants receiving agent traffic from multiple unrelated consumers | Detective | Payment Gateway / Marketplace |
 | P5 | Agent session audit logging -- comprehensive logging of agent decision chain (intent received, merchants evaluated, prices compared, transaction executed) to support post-incident investigation | Detective | Agent Platform |
 | P5 | Shared investigation frameworks -- cross-entity protocols for agent transaction dispute resolution involving agent provider, merchant, payment processor, and issuer with defined data sharing and liability allocation | Responsive | Industry Consortium / Regulator |
+| P2 | Agent content sanitization -- strip or neutralize hidden text, invisible HTML elements, and metadata-embedded instructions from pages the agent browses before ingesting content into the agent's context window | Preventive | Agent Platform |
+| P3 | Cart Mandate line-item verification -- require explicit user review of all individual line items in the UCP Cart Mandate before checkout, preventing hidden items from being obscured behind aggregate totals | Preventive | Commerce Platform / Agent Platform |
+| P3 | Gift card recipient validation -- flag Cart Mandates containing digital gift cards with recipient email addresses that do not match the authenticated user's known email addresses | Detective | Commerce Platform |
+| P4 | UCP returns state machine integrity -- enforce mandatory completion of `order.return.verify` step with validated shipping scan before processing any refund via `settlement.refund.instant()`; reject tracking IDs matching known void patterns | Preventive | Commerce Platform / Payment Gateway |
+| P4 | Refund velocity throttling -- enforce per-account and per-merchant rate limits on refund requests to prevent bot farm-driven mass void returns | Detective | Commerce Platform / Payment Gateway |
+| P1 | Know Your Agent (KYA) implementation -- validate agent identity and enforce agent reputation scoring before allowing agent-initiated transactions; reject agents below minimum reputation thresholds | Preventive | Commerce Platform / Agent Platform |
 
 ---
 
@@ -364,6 +409,81 @@ tags:
     - flame.agentic_commerce
 ```
 
+**SQL -- UCP Cart Mandate Gift Card Injection Detection (Phase 3-4)**
+
+```sql
+SELECT
+    cm.mandate_id,
+    cm.agent_session_id,
+    cm.user_id,
+    li.line_item_id,
+    li.product_type,
+    li.product_name,
+    li.recipient_email,
+    li.display_status,
+    li.amount,
+    u.primary_email,
+    u.known_emails
+FROM ucp_cart_mandates cm
+JOIN cart_mandate_line_items li ON cm.mandate_id = li.mandate_id
+JOIN user_profiles u ON cm.user_id = u.user_id
+WHERE li.product_type IN ('digital_gift_card', 'e_gift_card', 'gift_card')
+  AND (
+    li.recipient_email NOT IN (SELECT email FROM user_known_emails WHERE user_id = cm.user_id)
+    OR li.display_status = 'hidden'
+    OR li.added_by = 'agent_auto'
+  )
+ORDER BY cm.created_at DESC;
+```
+
+**Splunk -- UCP Void Return Mass Execution Detection (Phase 4)**
+
+```spl
+index=commerce sourcetype=ucp_returns
+| search return_tracking_id="void-*" OR return_verify_step_skipped=true
+| stats
+    count AS void_returns,
+    dc(order_id) AS unique_orders,
+    dc(user_id) AS unique_users,
+    sum(refund_amount) AS total_refund_amount,
+    values(return_tracking_id) AS tracking_ids
+    BY merchant_id, _time span=1h
+| where void_returns > 10 OR (void_returns > 3 AND unique_users > 2)
+| eval severity=if(void_returns > 100, "critical", if(void_returns > 25, "high", "medium"))
+| table _time, merchant_id, void_returns, unique_orders, unique_users, total_refund_amount, tracking_ids, severity
+| sort - void_returns
+```
+
+**Sigma -- Agent Content Prompt Injection Detection (Phase 2)**
+
+```yaml
+title: Indirect Prompt Injection Detected in Agent Browsing Content
+status: experimental
+description: Detects indicators of indirect prompt injection payloads in web content ingested by UCP shopping agents during browsing, including hidden instructions, invisible HTML elements, and metadata-embedded commands targeting Cart Mandate manipulation or returns flow bypass.
+logsource:
+    product: ecommerce
+    service: agent_content_scanner
+detection:
+    selection:
+        event_type: "agent_content_ingestion"
+    condition_hidden_instructions:
+        content_contains_hidden_text: true
+        hidden_text_pattern|re: "(?i)(CartMandate|settlement\.refund|order\.return\.verify|recipient_email|display_status.*hidden)"
+    condition_invisible_elements:
+        invisible_span_detected: true
+        invisible_content_length|gt: 50
+    condition_metadata_injection:
+        metadata_contains_instructions: true
+    condition: selection and (1 of condition_*)
+level: critical
+tags:
+    - cfpf.phase2.initial_access
+    - attack.t1059
+    - flame.ecommerce
+    - flame.agentic_commerce
+    - flame.prompt_injection
+```
+
 ### Behavioral Analytics
 
 - **Agent intent consistency analysis**: Compare the agent's executed transactions against the user's stated purchasing intent and historical purchasing patterns. Divergence between what the user asked the agent to do and what the agent actually purchased -- different product categories, unexpected merchants, price points outside historical range -- indicates potential intent manipulation.
@@ -394,7 +514,15 @@ tags:
 
 - **Mastercard -- Agent Pay Pilot Documentation**: Architecture documentation for Mastercard's AI agent payment delegation framework. [Link](https://www.mastercard.com/)
 
-- **Related FLAME Threat Paths**: [TP-0025](TP-0025.md) (related -- AI-enabled fraud patterns); [TP-0029: AI Synthetic Identity & Document Forgery](TP-0029-ai-synthetic-identity-document-forgery.md) (enhances -- AI-generated deception techniques applicable to agent manipulation); [TP-0013](TP-0013.md) (related -- credential-based attack patterns applicable to agent authentication).
+- **Unit 42 (Palo Alto Networks) -- "Who's Really Shopping? Retail Fraud in the Age of Agentic AI"** (March 2026): Detailed analysis of UCP-specific attack vectors including gift card theft via Cart Mandate payload poisoning and returns fraud via UCP state machine logic hijacking. Documents indirect prompt injection as the primary attack vector for agentic commerce fraud. Introduces organized retail crime (ORC) context ($700K per $1B in sales) and references emerging defense frameworks including Know Your Agent (KYA) and agent reputation scoring. [Link](https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/)
+
+- **Google -- Universal Commerce Protocol (UCP)** (January 2026): Open-source standard for agentic commerce providing tokenized payments and verifiable credentials for secure agent-to-merchant communication. Unveiled at NRF Big Show.
+
+- **Google -- Agent Payments Protocol (AP2)** (September 2025): Open protocol for securely initiating and transacting agent-led payments across platforms. Compatible with UCP.
+
+- **Palo Alto Networks -- 6 Predictions for the AI Economy: 2026's New Rules of Cybersecurity**: Wendi Whitmore's predictions including Prediction #2 on securing the AI agent, directly applicable to UCP fraud prevention.
+
+- **Related FLAME Threat Paths**: [TP-0025](TP-0025.md) (related -- AI-enabled fraud patterns); [TP-0029: AI Synthetic Identity & Document Forgery](TP-0029-ai-synthetic-identity-document-forgery.md) (enhances -- AI-generated deception techniques applicable to agent manipulation); [TP-0013](TP-0013.md) (related -- credential-based attack patterns applicable to agent authentication); [TP-0031: Refund-as-a-Service](TP-0031-refund-as-a-service-ftid-raas.md) (related -- returns fraud patterns applicable to UCP void returns at scale); [TP-0030: E-Commerce Triangulation Fraud](TP-0030-ecommerce-triangulation-fraud.md) (related -- e-commerce fraud patterns applicable to agent-mediated transactions).
 
 ---
 
@@ -406,6 +534,13 @@ tags:
 - **Key Finding**: INTERPOL confirms that "agentic AI systems autonomously executing entire fraud campaigns" have been observed in the wild, corroborating the hypothesis documented in TP-0039. This is no longer theoretical — agentic AI fraud is operational.
 - **Confidence**: High
 
+### EV-TP0039-2026-003: Unit 42 UCP-Specific Attack Scenario Analysis
+
+- **Source**: Unit 42 (Palo Alto Networks), "Who's Really Shopping? Retail Fraud in the Age of Agentic AI" (March 20, 2026)
+- **Key Finding**: Unit 42 researchers Matt Brady and Christa McHugh documented two concrete UCP-specific attack scenarios using LLM-generated threat modeling: (1) Gift card theft via Cart Mandate payload poisoning, where indirect prompt injection from deals aggregator sites causes the agent to append hidden gift card line items to the UCP checkout JSON-RPC payload with attacker-controlled recipient emails; (2) Returns fraud via logic hijacking, where hidden instructions in product page HTML metadata cause the agent to skip the `order.return.verify` step and trigger `settlement.refund.instant()` with void tracking IDs. The article emphasizes the potential for ORC groups to scale void returns via bot farms, "potentially liquidating a retailer's cash reserves before a human even walks into the office." The article also documents conversations with multiple retail CISOs at the NRF Big Show regarding AI-enabled fraud threats, and references the emergence of the OpenClaw "buy-anything skill (v2.0.0)" as a potential fraud enabler.
+- **CFPF Phase Coverage**: P1, P2, P3, P4, P5
+- **Confidence**: High -- published by Unit 42 (Palo Alto Networks), a Tier-1 threat intelligence organization with documented retail industry experience
+
 ---
 
 ## Revision History
@@ -414,3 +549,4 @@ tags:
 |------|--------|--------|
 | 2026-03-04 | FLAME Project | Initial submission |
 | 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 confirmation of agentic AI fraud as operational (no longer theoretical) |
+| 2026-03-21 | FLAME Project | Major enrichment with Unit 42 UCP-specific attack scenarios (gift card theft via payload poisoning, returns fraud via logic hijacking), Google UCP/AP2 protocol details, indirect prompt injection techniques, new controls (KYA, Cart Mandate verification, returns state machine integrity), ORC context, OpenClaw reference, and 3 new detection rules (DL-0124 through DL-0126) |
