@@ -1,0 +1,152 @@
+title: Single-Code Billing Concentration and Impossible Day Healthcare Fraud
+id: a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d
+status: experimental
+description: 'Detects two high-confidence healthcare billing fraud indicators: (1)
+  Single-code billing concentration — providers billing overwhelmingly one HCPCS/CPT
+  code, where a single code exceeds 80% of total claims. Operation Gold Rush documented
+  a TCO that submitted $10.6 billion in fraudulent claims concentrated on urinary
+  catheters and continuous glucose monitors. Legitimate providers bill across diverse
+  code sets reflecting varied patient needs. (2) Impossible day billing — providers
+  billing more than 24 hours of procedures in a single calendar day, a mathematical
+  impossibility indicating phantom billing or systematic upcoding. Both patterns are
+  documented in DOJ 2025 National Healthcare Fraud Takedown prosecutions and CrimsonVector
+  Security threat analysis. Source: CrimsonVector Security March 2026; DOJ Operation
+  Gold Rush June 2025.
+
+  '
+references:
+- https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement
+date: 2026/03/21
+sigma_compatible: false
+native_query_required: true
+threat_paths:
+- TP-0028
+- TP-0021
+cfpf_phase: P4
+fraud_types:
+- healthcare-fraud
+- phantom-billing
+- upcoding
+logsource:
+  product: claims_processing
+  category: medicare_claims_system
+  service: cms_claims
+detection:
+  selection_single_code:
+    unique_hcpcs_ratio|lt: 0.05
+    total_claims|gte: 500
+  selection_impossible_day:
+    total_procedure_minutes_per_day|gt: 1440
+  condition: selection_single_code or selection_impossible_day
+data_sources:
+  native_fields:
+  - provider_npi
+  - hcpcs_code
+  - claim_date
+  - service_date
+  - estimated_procedure_minutes
+  - billed_amount
+  - beneficiary_id
+  enrichment_required:
+  - field: estimated_procedure_minutes
+    source: CMS HCPCS code time estimates (standard procedure duration mapping)
+  - field: specialty_peer_mean
+    source: CMS provider specialty billing statistics (peer comparison baseline)
+queries:
+  splunk: |-
+    `comment("Splunk SPL for Single-Code Billing Concentration Detection")`
+    `comment("Flags providers where one HCPCS code exceeds 80% of total claims")`
+    index=medicare_claims sourcetype=cms_claims
+    | stats
+        count AS total_claims
+        sum(billed_amount) AS total_billed
+        dc(beneficiary_id) AS unique_beneficiaries
+        dc(hcpcs_code) AS unique_codes
+      by provider_npi
+    | where total_claims >= 500
+    | eval code_diversity=round(unique_codes/total_claims, 4)
+    | where code_diversity < 0.05
+    | join provider_npi [search index=medicare_claims sourcetype=cms_claims
+      | stats count AS code_count by provider_npi, hcpcs_code
+      | eventstats sum(code_count) AS provider_total by provider_npi
+      | eval code_pct=round(code_count/provider_total*100, 1)
+      | where code_pct > 80
+      | fields provider_npi, hcpcs_code, code_pct]
+    | sort -total_billed
+    | eval alert_type="SINGLE_CODE_CONCENTRATION"
+
+    `comment("--- Detection 2: Impossible Day Billing ---")`
+    `comment("Flags providers billing more than 24 hours of procedures per day")`
+    index=medicare_claims sourcetype=cms_claims
+    | lookup hcpcs_time_estimates hcpcs_code OUTPUT estimated_minutes
+    | stats
+        sum(estimated_minutes) AS total_minutes
+        count AS claim_count
+        dc(beneficiary_id) AS patients_per_day
+        sum(billed_amount) AS daily_billed
+      by provider_npi, service_date
+    | where total_minutes > 1440
+    | eval hours_billed=round(total_minutes/60, 1)
+    | eval alert_type="IMPOSSIBLE_DAY"
+    | sort -total_minutes
+  sql: |-
+    -- SQL for Single-Code Billing Concentration Detection
+    WITH provider_code_stats AS (
+      SELECT
+        provider_npi,
+        hcpcs_code,
+        COUNT(*) AS code_claims,
+        SUM(billed_amount) AS code_billed,
+        SUM(COUNT(*)) OVER (PARTITION BY provider_npi) AS total_claims,
+        SUM(SUM(billed_amount)) OVER (PARTITION BY provider_npi) AS total_billed
+      FROM claims
+      WHERE service_date >= CURRENT_DATE - INTERVAL '90 days'
+      GROUP BY provider_npi, hcpcs_code
+    )
+    SELECT
+      provider_npi,
+      hcpcs_code AS dominant_code,
+      code_claims,
+      total_claims,
+      ROUND(code_claims::numeric / total_claims * 100, 1) AS code_pct,
+      total_billed,
+      'SINGLE_CODE_CONCENTRATION' AS alert_type
+    FROM provider_code_stats
+    WHERE total_claims >= 500
+      AND ROUND(code_claims::numeric / total_claims * 100, 1) > 80
+    ORDER BY total_billed DESC;
+
+    -- SQL for Impossible Day Billing Detection
+    SELECT
+      c.provider_npi,
+      p.provider_name,
+      c.service_date,
+      SUM(h.estimated_minutes) AS total_minutes_billed,
+      ROUND(SUM(h.estimated_minutes) / 60.0, 1) AS hours_billed,
+      COUNT(*) AS claim_count,
+      COUNT(DISTINCT c.beneficiary_id) AS patients,
+      SUM(c.billed_amount) AS daily_billed
+    FROM claims c
+    JOIN hcpcs_time_estimates h ON c.hcpcs_code = h.hcpcs_code
+    JOIN providers p ON c.provider_npi = p.provider_npi
+    WHERE c.service_date >= CURRENT_DATE - INTERVAL '90 days'
+    GROUP BY c.provider_npi, p.provider_name, c.service_date
+    HAVING SUM(h.estimated_minutes) > 1440
+    ORDER BY total_minutes_billed DESC;
+falsepositives:
+- Large group practices billing under a single NPI (though this should be identified
+  via provider type in PECOS)
+- DME suppliers legitimately specializing in a narrow product category (e.g., CPAP-only
+  suppliers) — though even specialists typically bill multiple related codes
+level: high
+tags:
+- cfpf.phase4.execution
+- healthcare-fraud
+- single-code-billing
+- impossible-day
+- upcoding
+- phantom-billing
+- hcpcs-anomaly
+- operation-gold-rush
+- TP-0028
+- TP-0021

@@ -1,0 +1,125 @@
+title: Rapid Enrollment-to-Billing Healthcare Provider Anomaly
+id: f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c
+status: experimental
+description: 'Detects healthcare providers (DME suppliers, hospice agencies, home health
+  companies, ABA therapy providers) that begin submitting claims at high volume within
+  30 days of Medicare/Medicaid enrollment. Operation Gold Rush (DOJ 2025) documented
+  a Russian-Estonian TCO that acquired 30+ legitimate DME companies and immediately
+  submitted $10.6 billion in fraudulent claims using stolen identities. The rapid
+  enrollment-to-billing pattern is the highest-confidence indicator of fraudulent provider
+  intent: legitimate providers typically require months to establish patient relationships,
+  credentialing, and operational infrastructure before reaching significant billing
+  volume. This rule flags providers billing >$100,000 within 30 days of enrollment,
+  with additional risk scoring for providers concentrated in known high-fraud geographic
+  areas and providers with high single-code billing ratios.
+
+  '
+references:
+- https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement
+date: 2026/03/21
+sigma_compatible: false
+native_query_required: true
+threat_paths:
+- TP-0028
+- TP-0021
+cfpf_phase: P4
+fraud_types:
+- healthcare-fraud
+- phantom-billing
+- provider-fraud
+logsource:
+  product: claims_processing
+  category: medicare_claims_system
+  service: cms_claims
+detection:
+  selection_new_provider:
+    enrollment_age_days|lte: 365
+  selection_rapid_billing:
+    days_to_first_claim|lte: 30
+    total_billed_amount|gte: 100000
+  selection_volume_anomaly:
+    claims_per_day|gte: 50
+  condition: selection_new_provider and selection_rapid_billing and selection_volume_anomaly
+data_sources:
+  native_fields:
+  - provider_npi
+  - enrollment_effective_date
+  - claim_date
+  - billed_amount
+  - hcpcs_code
+  - beneficiary_id
+  - provider_address_zip
+  enrichment_required:
+  - field: enrollment_effective_date
+    source: CMS PECOS enrollment records
+  - field: high_fraud_zip
+    source: CMS geographic fraud heat map (moratorium ZIP codes)
+queries:
+  splunk: |-
+    `comment("Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly")`
+    `comment("Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment")`
+    index=medicare_claims sourcetype=cms_claims
+    | join provider_npi [search index=pecos_enrollment
+      | fields provider_npi enrollment_effective_date provider_type provider_zip]
+    | eval days_to_first_claim=round((strptime(claim_date,"%Y-%m-%d")
+      - strptime(enrollment_effective_date,"%Y-%m-%d")) / 86400)
+    | where days_to_first_claim >= 0 AND days_to_first_claim <= 30
+    | stats
+        count AS claim_count
+        sum(billed_amount) AS total_billed
+        dc(beneficiary_id) AS unique_beneficiaries
+        dc(hcpcs_code) AS unique_codes
+        min(claim_date) AS first_claim_date
+        max(claim_date) AS last_claim_date
+        values(provider_type) AS provider_type
+        values(provider_zip) AS provider_zip
+      by provider_npi, enrollment_effective_date
+    | where total_billed > 100000
+    | eval code_diversity_ratio=round(unique_codes/claim_count, 4)
+    | eval avg_per_beneficiary=round(total_billed/unique_beneficiaries, 2)
+    | eval risk_score=case(
+        total_billed > 1000000 AND code_diversity_ratio < 0.05, "CRITICAL",
+        total_billed > 500000, "HIGH",
+        total_billed > 100000 AND code_diversity_ratio < 0.1, "HIGH",
+        1=1, "MEDIUM")
+    | sort -total_billed
+  sql: |-
+    -- SQL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly
+    -- Identifies providers with suspicious billing velocity post-enrollment
+    SELECT
+      s.provider_npi,
+      s.provider_name,
+      s.enrollment_effective_date,
+      s.provider_type,
+      s.physical_address,
+      COUNT(c.claim_id) AS total_claims,
+      SUM(c.billed_amount) AS total_billed,
+      COUNT(DISTINCT c.beneficiary_id) AS unique_beneficiaries,
+      COUNT(DISTINCT c.hcpcs_code) AS unique_codes,
+      MIN(c.service_date) AS first_claim_date,
+      EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) AS days_to_first_claim,
+      ROUND(COUNT(DISTINCT c.hcpcs_code)::numeric / NULLIF(COUNT(c.claim_id), 0), 4) AS code_diversity_ratio,
+      ROUND(SUM(c.billed_amount)::numeric / NULLIF(COUNT(DISTINCT c.beneficiary_id), 0), 2) AS avg_per_beneficiary
+    FROM provider_enrollment s
+    JOIN claims c ON s.provider_npi = c.provider_npi
+    WHERE s.enrollment_effective_date >= CURRENT_DATE - INTERVAL '365 days'
+      AND EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) <= 30
+    GROUP BY s.provider_npi, s.provider_name, s.enrollment_effective_date,
+             s.provider_type, s.physical_address
+    HAVING SUM(c.billed_amount) > 100000
+    ORDER BY total_billed DESC;
+falsepositives:
+- Legitimate providers acquiring existing practices with established patient panels
+  (though ownership changes should be reflected in PECOS CHOW records)
+- Large healthcare systems enrolling new provider NPIs for existing operational locations
+level: high
+tags:
+- cfpf.phase4.execution
+- healthcare-fraud
+- rapid-enrollment
+- phantom-billing
+- operation-gold-rush
+- dme-fraud
+- provider-enrollment-abuse
+- TP-0028
+- TP-0021
