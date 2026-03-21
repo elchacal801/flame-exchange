@@ -2220,36 +2220,61 @@
     "category": "ThreatPath",
     "date": "2026-02-20",
     "author": "FLAME Project",
-    "source": "Internal Knowledge Base",
+    "source": "Internal Knowledge Base; CrimsonVector Security March 2026",
     "tlp": "WHITE",
     "summary": "Healthcare Provider Billing Fraud involves legitimate or seemingly legitimate medical providers intentionally submitting false or inflated claims to health insurance networks or government programs (l...",
-    "confidence_score": 82,
+    "confidence_score": 85,
     "source_reliability": "A",
-    "info_credibility": 2,
-    "infrastructure_generation_method": null,
-    "geopolitical_timing": null,
-    "nation_state_nexus": null,
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
     "sectors": [
       "healthcare",
-      "insurance"
+      "insurance",
+      "government"
     ],
     "fraud_types": [
       "healthcare-fraud",
       "phantom-billing",
-      "upcoding"
+      "upcoding",
+      "hospice-fraud",
+      "aba-therapy-fraud",
+      "provider-fraud",
+      "money-mule"
     ],
     "tags": [
       "medicare-fraud",
+      "medicaid-fraud",
       "medical-billing",
       "upcoding",
-      "phantom-billing"
+      "phantom-billing",
+      "hospice-fraud",
+      "aba-therapy-fraud",
+      "armenian-american-ocg",
+      "beneficiary-trafficking",
+      "la-county-hospice",
+      "private-equity-aba",
+      "mso-opacity",
+      "minnesota-fraud-ecosystem",
+      "feeding-our-future",
+      "cms-moratorium",
+      "14.6b-takedown",
+      "kickbacks",
+      "crimsonvector-2026"
     ],
     "cfpf_phases": [
+      "P1",
+      "P2",
       "P3",
       "P4",
       "P5"
     ],
-    "mitre_attack": [],
+    "mitre_attack": [
+      "T1589.001",
+      "T1656",
+      "T1657"
+    ],
     "ft3_tactics": [
       "FTA003",
       "FTA005",
@@ -2270,11 +2295,16 @@
     ],
     "mitre_f3": [],
     "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
       "Trust Abuse",
       "Perform Fraud",
-      "Monetization"
+      "Monetization",
+      "Laundering"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-FINCEN-AML"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -2284,7 +2314,11 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0130",
+      "DL-0131",
+      "DL-0132"
+    ],
     "related_tps": [
       {
         "id": "TP-0010",
@@ -2293,9 +2327,13 @@
       {
         "id": "TP-0028",
         "relationship": "escalates-from"
+      },
+      {
+        "id": "TP-0029",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 3
   },
   {
     "id": "TP-0022",
@@ -2996,12 +3034,12 @@
     "source": "https://oig.hhs.gov/reports-and-publications/featured-topics/dme/",
     "tlp": "WHITE",
     "summary": "Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered t...",
-    "confidence_score": 85,
+    "confidence_score": 90,
     "source_reliability": "A",
-    "info_credibility": 2,
-    "infrastructure_generation_method": null,
-    "geopolitical_timing": null,
-    "nation_state_nexus": null,
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "suspected",
     "sectors": [
       "healthcare",
       "insurance",
@@ -3011,7 +3049,10 @@
       "healthcare-fraud",
       "phantom-billing",
       "provider-fraud",
-      "synthetic-medical-fraud"
+      "synthetic-medical-fraud",
+      "deepfake",
+      "money-mule",
+      "crypto-laundering"
     ],
     "tags": [
       "durable-medical-equipment",
@@ -3022,7 +3063,23 @@
       "beneficiary-data-theft",
       "cms",
       "operation-gold-rush",
-      "transnational"
+      "transnational",
+      "russian-estonian-tco",
+      "ai-deepfake-consent",
+      "cryptocurrency-laundering",
+      "shell-company-infrastructure",
+      "foreign-straw-owners",
+      "encrypted-messaging",
+      "telegram-c2",
+      "banker-conviction",
+      "identity-theft-pipeline",
+      "dark-web-mbi-market",
+      "14.6b-takedown",
+      "324-defendants",
+      "health-care-fraud-data-fusion-center",
+      "pakistani-marketing-orgs",
+      "doj-strike-force",
+      "crimsonvector-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -3035,7 +3092,8 @@
       "T1583.001",
       "T1589.001",
       "T1656",
-      "T1657"
+      "T1657",
+      "T1588.002"
     ],
     "ft3_tactics": [
       "FTA001",
@@ -3059,7 +3117,9 @@
       "Monetization",
       "Laundering"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-FINCEN-AML"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 3",
@@ -3069,7 +3129,11 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0130",
+      "DL-0131",
+      "DL-0132"
+    ],
     "related_tps": [
       {
         "id": "TP-0021",
@@ -3078,9 +3142,17 @@
       {
         "id": "TP-0022",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0029",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0045",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 4
   },
   {
     "id": "TP-0029",

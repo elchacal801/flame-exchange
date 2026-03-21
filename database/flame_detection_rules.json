@@ -8659,5 +8659,267 @@
       "Enterprise MDM tools that manage notification settings",
       "Legitimate notification management apps from established publishers"
     ]
+  },
+  {
+    "id": "f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c",
+    "dl_id": "DL-0130",
+    "title": "Rapid Enrollment-to-Billing Healthcare Provider Anomaly",
+    "status": "experimental",
+    "description": "Detects healthcare providers (DME suppliers, hospice agencies, home health companies, ABA therapy providers) that begin submitting claims at high volume within 30 days of Medicare/Medicaid enrollment. Operation Gold Rush (DOJ 2025) documented a Russian-Estonian TCO that acquired 30+ legitimate DME companies and immediately submitted $10.6 billion in fraudulent claims using stolen identities. The rapid enrollment-to-billing pattern is the highest-confidence indicator of fraudulent provider intent: legitimate providers typically require months to establish patient relationships, credentialing, and operational infrastructure before reaching significant billing volume. This rule flags providers billing >$100,000 within 30 days of enrollment, with additional risk scoring for providers concentrated in known high-fraud geographic areas and providers with high single-code billing ratios.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_new_provider": {
+        "enrollment_age_days|lte": 365
+      },
+      "selection_rapid_billing": {
+        "days_to_first_claim|lte": 30,
+        "total_billed_amount|gte": 100000
+      },
+      "selection_volume_anomaly": {
+        "claims_per_day|gte": 50
+      },
+      "condition": "selection_new_provider and selection_rapid_billing and selection_volume_anomaly"
+    },
+    "logsource": {
+      "product": "claims_processing",
+      "service": "cms_claims"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "provider_npi",
+        "enrollment_effective_date",
+        "claim_date",
+        "billed_amount",
+        "hcpcs_code",
+        "beneficiary_id",
+        "provider_address_zip"
+      ],
+      "enrichment_required": [
+        {
+          "field": "enrollment_effective_date",
+          "source": "CMS PECOS enrollment records"
+        },
+        {
+          "field": "high_fraud_zip",
+          "source": "CMS geographic fraud heat map (moratorium ZIP codes)"
+        }
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\")`\n`comment(\"Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment\")`\nindex=medicare_claims sourcetype=cms_claims\n| join provider_npi [search index=pecos_enrollment\n  | fields provider_npi enrollment_effective_date provider_type provider_zip]\n| eval days_to_first_claim=round((strptime(claim_date,\"%Y-%m-%d\")\n  - strptime(enrollment_effective_date,\"%Y-%m-%d\")) / 86400)\n| where days_to_first_claim >= 0 AND days_to_first_claim <= 30\n| stats\n    count AS claim_count\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n    min(claim_date) AS first_claim_date\n    max(claim_date) AS last_claim_date\n    values(provider_type) AS provider_type\n    values(provider_zip) AS provider_zip\n  by provider_npi, enrollment_effective_date\n| where total_billed > 100000\n| eval code_diversity_ratio=round(unique_codes/claim_count, 4)\n| eval avg_per_beneficiary=round(total_billed/unique_beneficiaries, 2)\n| eval risk_score=case(\n    total_billed > 1000000 AND code_diversity_ratio < 0.05, \"CRITICAL\",\n    total_billed > 500000, \"HIGH\",\n    total_billed > 100000 AND code_diversity_ratio < 0.1, \"HIGH\",\n    1=1, \"MEDIUM\")\n| sort -total_billed",
+      "sql": "-- SQL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\n-- Identifies providers with suspicious billing velocity post-enrollment\nSELECT\n  s.provider_npi,\n  s.provider_name,\n  s.enrollment_effective_date,\n  s.provider_type,\n  s.physical_address,\n  COUNT(c.claim_id) AS total_claims,\n  SUM(c.billed_amount) AS total_billed,\n  COUNT(DISTINCT c.beneficiary_id) AS unique_beneficiaries,\n  COUNT(DISTINCT c.hcpcs_code) AS unique_codes,\n  MIN(c.service_date) AS first_claim_date,\n  EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) AS days_to_first_claim,\n  ROUND(COUNT(DISTINCT c.hcpcs_code)::numeric / NULLIF(COUNT(c.claim_id), 0), 4) AS code_diversity_ratio,\n  ROUND(SUM(c.billed_amount)::numeric / NULLIF(COUNT(DISTINCT c.beneficiary_id), 0), 2) AS avg_per_beneficiary\nFROM provider_enrollment s\nJOIN claims c ON s.provider_npi = c.provider_npi\nWHERE s.enrollment_effective_date >= CURRENT_DATE - INTERVAL '365 days'\n  AND EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) <= 30\nGROUP BY s.provider_npi, s.provider_name, s.enrollment_effective_date,\n         s.provider_type, s.physical_address\nHAVING SUM(c.billed_amount) > 100000\nORDER BY total_billed DESC;"
+    },
+    "references": [
+      "https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement"
+    ],
+    "threat_path_ids": [
+      "TP-0021",
+      "TP-0028"
+    ],
+    "fraud_types": [
+      "healthcare-fraud",
+      "phantom-billing",
+      "provider-fraud"
+    ],
+    "tags": [
+      "TP-0021",
+      "TP-0028",
+      "cfpf.phase4.execution",
+      "dme-fraud",
+      "healthcare-fraud",
+      "operation-gold-rush",
+      "phantom-billing",
+      "provider-enrollment-abuse",
+      "rapid-enrollment"
+    ],
+    "falsepositives": [
+      "Legitimate providers acquiring existing practices with established patient panels (though ownership changes should be reflected in PECOS CHOW records)",
+      "Large healthcare systems enrolling new provider NPIs for existing operational locations"
+    ]
+  },
+  {
+    "id": "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d",
+    "dl_id": "DL-0131",
+    "title": "Single-Code Billing Concentration and Impossible Day Healthcare Fraud",
+    "status": "experimental",
+    "description": "Detects two high-confidence healthcare billing fraud indicators: (1) Single-code billing concentration — providers billing overwhelmingly one HCPCS/CPT code, where a single code exceeds 80% of total claims. Operation Gold Rush documented a TCO that submitted $10.6 billion in fraudulent claims concentrated on urinary catheters and continuous glucose monitors. Legitimate providers bill across diverse code sets reflecting varied patient needs. (2) Impossible day billing — providers billing more than 24 hours of procedures in a single calendar day, a mathematical impossibility indicating phantom billing or systematic upcoding. Both patterns are documented in DOJ 2025 National Healthcare Fraud Takedown prosecutions and CrimsonVector Security threat analysis. Source: CrimsonVector Security March 2026; DOJ Operation Gold Rush June 2025.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_single_code": {
+        "unique_hcpcs_ratio|lt": 0.05,
+        "total_claims|gte": 500
+      },
+      "selection_impossible_day": {
+        "total_procedure_minutes_per_day|gt": 1440
+      },
+      "condition": "selection_single_code or selection_impossible_day"
+    },
+    "logsource": {
+      "product": "claims_processing",
+      "service": "cms_claims"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "provider_npi",
+        "hcpcs_code",
+        "claim_date",
+        "service_date",
+        "estimated_procedure_minutes",
+        "billed_amount",
+        "beneficiary_id"
+      ],
+      "enrichment_required": [
+        {
+          "field": "estimated_procedure_minutes",
+          "source": "CMS HCPCS code time estimates (standard procedure duration mapping)"
+        },
+        {
+          "field": "specialty_peer_mean",
+          "source": "CMS provider specialty billing statistics (peer comparison baseline)"
+        }
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Single-Code Billing Concentration Detection\")`\n`comment(\"Flags providers where one HCPCS code exceeds 80% of total claims\")`\nindex=medicare_claims sourcetype=cms_claims\n| stats\n    count AS total_claims\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n  by provider_npi\n| where total_claims >= 500\n| eval code_diversity=round(unique_codes/total_claims, 4)\n| where code_diversity < 0.05\n| join provider_npi [search index=medicare_claims sourcetype=cms_claims\n  | stats count AS code_count by provider_npi, hcpcs_code\n  | eventstats sum(code_count) AS provider_total by provider_npi\n  | eval code_pct=round(code_count/provider_total*100, 1)\n  | where code_pct > 80\n  | fields provider_npi, hcpcs_code, code_pct]\n| sort -total_billed\n| eval alert_type=\"SINGLE_CODE_CONCENTRATION\"\n\n`comment(\"--- Detection 2: Impossible Day Billing ---\")`\n`comment(\"Flags providers billing more than 24 hours of procedures per day\")`\nindex=medicare_claims sourcetype=cms_claims\n| lookup hcpcs_time_estimates hcpcs_code OUTPUT estimated_minutes\n| stats\n    sum(estimated_minutes) AS total_minutes\n    count AS claim_count\n    dc(beneficiary_id) AS patients_per_day\n    sum(billed_amount) AS daily_billed\n  by provider_npi, service_date\n| where total_minutes > 1440\n| eval hours_billed=round(total_minutes/60, 1)\n| eval alert_type=\"IMPOSSIBLE_DAY\"\n| sort -total_minutes",
+      "sql": "-- SQL for Single-Code Billing Concentration Detection\nWITH provider_code_stats AS (\n  SELECT\n    provider_npi,\n    hcpcs_code,\n    COUNT(*) AS code_claims,\n    SUM(billed_amount) AS code_billed,\n    SUM(COUNT(*)) OVER (PARTITION BY provider_npi) AS total_claims,\n    SUM(SUM(billed_amount)) OVER (PARTITION BY provider_npi) AS total_billed\n  FROM claims\n  WHERE service_date >= CURRENT_DATE - INTERVAL '90 days'\n  GROUP BY provider_npi, hcpcs_code\n)\nSELECT\n  provider_npi,\n  hcpcs_code AS dominant_code,\n  code_claims,\n  total_claims,\n  ROUND(code_claims::numeric / total_claims * 100, 1) AS code_pct,\n  total_billed,\n  'SINGLE_CODE_CONCENTRATION' AS alert_type\nFROM provider_code_stats\nWHERE total_claims >= 500\n  AND ROUND(code_claims::numeric / total_claims * 100, 1) > 80\nORDER BY total_billed DESC;\n\n-- SQL for Impossible Day Billing Detection\nSELECT\n  c.provider_npi,\n  p.provider_name,\n  c.service_date,\n  SUM(h.estimated_minutes) AS total_minutes_billed,\n  ROUND(SUM(h.estimated_minutes) / 60.0, 1) AS hours_billed,\n  COUNT(*) AS claim_count,\n  COUNT(DISTINCT c.beneficiary_id) AS patients,\n  SUM(c.billed_amount) AS daily_billed\nFROM claims c\nJOIN hcpcs_time_estimates h ON c.hcpcs_code = h.hcpcs_code\nJOIN providers p ON c.provider_npi = p.provider_npi\nWHERE c.service_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY c.provider_npi, p.provider_name, c.service_date\nHAVING SUM(h.estimated_minutes) > 1440\nORDER BY total_minutes_billed DESC;"
+    },
+    "references": [
+      "https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement"
+    ],
+    "threat_path_ids": [
+      "TP-0021",
+      "TP-0028"
+    ],
+    "fraud_types": [
+      "healthcare-fraud",
+      "phantom-billing",
+      "upcoding"
+    ],
+    "tags": [
+      "TP-0021",
+      "TP-0028",
+      "cfpf.phase4.execution",
+      "hcpcs-anomaly",
+      "healthcare-fraud",
+      "impossible-day",
+      "operation-gold-rush",
+      "phantom-billing",
+      "single-code-billing",
+      "upcoding"
+    ],
+    "falsepositives": [
+      "Large group practices billing under a single NPI (though this should be identified via provider type in PECOS)",
+      "DME suppliers legitimately specializing in a narrow product category (e.g., CPAP-only suppliers) — though even specialists typically bill multiple related codes"
+    ]
+  },
+  {
+    "id": "b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e",
+    "dl_id": "DL-0132",
+    "title": "Ghost Patient Claims and Geographic Provider Clustering Detection",
+    "status": "experimental",
+    "description": "Detects two healthcare fraud patterns: (1) Ghost patient claims — Medicare/Medicaid claims submitted for deceased, incarcerated, or relocated beneficiaries who could not have received the billed services. Operation Gold Rush exploited over 1 million stolen American identities including elderly and disabled individuals. (2) Geographic provider clustering — ZIP codes with anomalous concentrations of healthcare providers and high average billing per provider, indicating shell company clustering. LA County has 1,923 registered hospice providers (more than 36 states combined), with 7 of 14 entities in one LA plaza having zero CMS data. GAO reports found approximately 22% of practice locations in PECOS were potentially ineligible including UPS Store mailboxes and vacant addresses. Source: CrimsonVector Security March 2026; DOJ 2025 National Healthcare Fraud Takedown; GAO-15-448.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection_ghost_patient": {
+        "beneficiary_status|contains": [
+          "deceased",
+          "incarcerated",
+          "relocated"
+        ],
+        "claim_service_date_after_status_change": true
+      },
+      "selection_geographic_clustering": {
+        "providers_per_zip|gte": 10,
+        "avg_billing_per_provider|gte": 500000,
+        "provider_type|contains": [
+          "hospice",
+          "home_health",
+          "dme",
+          "aba_therapy"
+        ]
+      },
+      "selection_address_anomaly": {
+        "practice_address_type|contains": [
+          "CMRA",
+          "residential",
+          "virtual_office",
+          "UPS_store"
+        ]
+      },
+      "condition": "selection_ghost_patient or (selection_geographic_clustering and selection_address_anomaly)"
+    },
+    "logsource": {
+      "product": "claims_processing",
+      "service": "cms_claims"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "beneficiary_id",
+        "beneficiary_status",
+        "beneficiary_date_of_death",
+        "provider_npi",
+        "provider_address_zip",
+        "practice_address",
+        "claim_service_date",
+        "billed_amount",
+        "provider_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_status",
+          "source": "CMS beneficiary eligibility records (death, incarceration, relocation status)"
+        },
+        {
+          "field": "practice_address_type",
+          "source": "USPS Commercial Mail Receiving Agency database cross-reference"
+        }
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Ghost Patient Claims Detection\")`\n`comment(\"Identifies claims submitted for deceased or incarcerated beneficiaries\")`\nindex=medicare_claims sourcetype=cms_claims\n| join beneficiary_id [search index=beneficiary_eligibility\n  | where beneficiary_status IN (\"deceased\", \"incarcerated\")\n  | fields beneficiary_id beneficiary_status status_effective_date]\n| eval claim_date_epoch=strptime(service_date, \"%Y-%m-%d\")\n| eval status_date_epoch=strptime(status_effective_date, \"%Y-%m-%d\")\n| where claim_date_epoch > status_date_epoch\n| stats\n    count AS ghost_claims\n    sum(billed_amount) AS ghost_billed\n    dc(beneficiary_id) AS ghost_beneficiaries\n    values(beneficiary_status) AS status_types\n  by provider_npi\n| where ghost_claims > 5\n| sort -ghost_billed\n\n`comment(\"--- Detection 2: Geographic Provider Clustering ---\")`\n`comment(\"Identifies ZIP codes with anomalous provider density and billing\")`\nindex=pecos_enrollment sourcetype=cms_enrollment\n| stats\n    dc(provider_npi) AS provider_count\n    values(provider_name) AS providers\n  by provider_zip, provider_type\n| where provider_count >= 10\n| join provider_zip [search index=medicare_claims sourcetype=cms_claims\n  | stats sum(billed_amount) AS total_zip_billed dc(provider_npi) AS billing_providers by provider_zip\n  | eval avg_billing_per_provider=round(total_zip_billed/billing_providers, 2)]\n| where avg_billing_per_provider > 500000\n| eval alert_type=\"GEOGRAPHIC_CLUSTERING\"\n| sort -provider_count",
+      "sql": "-- SQL for Ghost Patient Claims Detection\nSELECT\n  c.provider_npi,\n  p.provider_name,\n  COUNT(*) AS ghost_claims,\n  SUM(c.billed_amount) AS ghost_billed,\n  COUNT(DISTINCT c.beneficiary_id) AS ghost_beneficiaries,\n  b.beneficiary_status\nFROM claims c\nJOIN beneficiary_eligibility b ON c.beneficiary_id = b.beneficiary_id\nJOIN providers p ON c.provider_npi = p.provider_npi\nWHERE b.beneficiary_status IN ('deceased', 'incarcerated')\n  AND c.service_date > b.status_effective_date\n  AND c.service_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY c.provider_npi, p.provider_name, b.beneficiary_status\nHAVING COUNT(*) > 5\nORDER BY ghost_billed DESC;\n\n-- SQL for Geographic Provider Clustering Detection\nSELECT\n  e.provider_zip,\n  e.provider_type,\n  COUNT(DISTINCT e.provider_npi) AS provider_count,\n  COALESCE(SUM(c.billed_amount), 0) AS total_zip_billed,\n  ROUND(COALESCE(SUM(c.billed_amount), 0)::numeric\n    / NULLIF(COUNT(DISTINCT e.provider_npi), 0), 2) AS avg_billing_per_provider,\n  COUNT(DISTINCT CASE WHEN addr.address_type = 'CMRA' THEN e.provider_npi END) AS cmra_addresses,\n  COUNT(DISTINCT CASE WHEN addr.address_type = 'residential' THEN e.provider_npi END) AS residential_addresses\nFROM provider_enrollment e\nLEFT JOIN claims c ON e.provider_npi = c.provider_npi\n  AND c.service_date >= CURRENT_DATE - INTERVAL '365 days'\nLEFT JOIN address_classification addr ON e.physical_address = addr.address\nWHERE e.provider_type IN ('hospice', 'home_health', 'dme', 'aba_therapy')\nGROUP BY e.provider_zip, e.provider_type\nHAVING COUNT(DISTINCT e.provider_npi) >= 10\n   AND ROUND(COALESCE(SUM(c.billed_amount), 0)::numeric\n    / NULLIF(COUNT(DISTINCT e.provider_npi), 0), 2) > 500000\nORDER BY provider_count DESC;"
+    },
+    "references": [
+      "https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement",
+      "https://www.gao.gov/products/gao-15-448"
+    ],
+    "threat_path_ids": [
+      "TP-0021",
+      "TP-0028"
+    ],
+    "fraud_types": [
+      "healthcare-fraud",
+      "hospice-fraud",
+      "phantom-billing",
+      "provider-fraud"
+    ],
+    "tags": [
+      "TP-0021",
+      "TP-0028",
+      "cfpf.phase3.positioning",
+      "cmra-address",
+      "deceased-beneficiary",
+      "geographic-clustering",
+      "ghost-patient",
+      "healthcare-fraud",
+      "hospice-fraud",
+      "la-county",
+      "operation-gold-rush",
+      "shell-company"
+    ],
+    "falsepositives": [
+      "Claims submitted with processing delays where beneficiary status changed after service but before claim adjudication",
+      "Legitimate healthcare clusters in medical districts or hospital complexes",
+      "Large home health agencies serving wide geographic areas from a central office"
+    ]
   }
 ]

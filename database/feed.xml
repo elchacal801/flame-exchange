@@ -310,9 +310,15 @@
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0021</guid>
       <description>Healthcare Provider Billing Fraud involves legitimate or seemingly legitimate medical providers intentionally submitting false or inflated claims to health insurance networks or government programs (l</description>
       <pubDate>Fri, 20 Feb 2026 00:00:00 +0000</pubDate>
+        <category>aba-therapy-fraud</category>
         <category>healthcare-fraud</category>
+        <category>hospice-fraud</category>
+        <category>money-mule</category>
         <category>phantom-billing</category>
+        <category>provider-fraud</category>
         <category>upcoding</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
         <category>CFPF-P3</category>
         <category>CFPF-P4</category>
         <category>CFPF-P5</category>
@@ -416,7 +422,10 @@
       <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0028</guid>
       <description>Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered t</description>
       <pubDate>Mon, 02 Mar 2026 00:00:00 +0000</pubDate>
+        <category>crypto-laundering</category>
+        <category>deepfake</category>
         <category>healthcare-fraud</category>
+        <category>money-mule</category>
         <category>phantom-billing</category>
         <category>provider-fraud</category>
         <category>synthetic-medical-fraud</category>
@@ -2084,6 +2093,37 @@
         <category>push-notification-abuse</category>
         <category>subscription-fraud</category>
         <category>tds-exploitation</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0130] Rapid Enrollment-to-Billing Healthcare Provider Anomaly</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0130</guid>
+      <description>Detects healthcare providers (DME suppliers, hospice agencies, home health companies, ABA therapy providers) that begin submitting claims at high volume within 30 days of Medicare/Medicaid enrollment.</description>
+        <category>healthcare-fraud</category>
+        <category>phantom-billing</category>
+        <category>provider-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0131] Single-Code Billing Concentration and Impossible Day Healthcare Fraud</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0131</guid>
+      <description>Detects two high-confidence healthcare billing fraud indicators: (1) Single-code billing concentration — providers billing overwhelmingly one HCPCS/CPT code, where a single code exceeds 80% of total c</description>
+        <category>healthcare-fraud</category>
+        <category>phantom-billing</category>
+        <category>upcoding</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0132] Ghost Patient Claims and Geographic Provider Clustering Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0132</guid>
+      <description>Detects two healthcare fraud patterns: (1) Ghost patient claims — Medicare/Medicaid claims submitted for deceased, incarcerated, or relocated beneficiaries who could not have received the billed servi</description>
+        <category>healthcare-fraud</category>
+        <category>hospice-fraud</category>
+        <category>phantom-billing</category>
+        <category>provider-fraud</category>
         <category>severity-high</category>
     </item>
   </channel>

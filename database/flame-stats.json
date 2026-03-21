@@ -1,8 +1,9 @@
 {
   "total": 61,
-  "fraudTypes": 93,
+  "fraudTypes": 95,
   "fraudTypeList": [
     "BEC",
+    "aba-therapy-fraud",
     "account-takeover",
     "advance-fee-fraud",
     "ai-accelerated-fraud-infrastructure",
@@ -49,6 +50,7 @@
     "ghost-student-fraud",
     "gift-card-fraud",
     "healthcare-fraud",
+    "hospice-fraud",
     "hosting-provider-complicity",
     "human-trafficking-facilitation",
     "identity-theft",
@@ -117,8 +119,8 @@
     "web3"
   ],
   "phaseCoverage": {
-    "P1": 60,
-    "P2": 58,
+    "P1": 61,
+    "P2": 59,
     "P3": 61,
     "P4": 59,
     "P5": 59
@@ -216,6 +218,17 @@
         "P5": 4
       },
       "total_tps": 4
+    },
+    {
+      "fraud_type": "aba-therapy-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
     },
     {
       "fraud_type": "account-takeover",
@@ -503,13 +516,13 @@
     {
       "fraud_type": "crypto-laundering",
       "phases": {
-        "P1": 7,
-        "P2": 7,
-        "P3": 7,
-        "P4": 7,
-        "P5": 7
+        "P1": 8,
+        "P2": 8,
+        "P3": 8,
+        "P4": 8,
+        "P5": 8
       },
-      "total_tps": 7
+      "total_tps": 8
     },
     {
       "fraud_type": "crypto-laundering-infrastructure",
@@ -536,13 +549,13 @@
     {
       "fraud_type": "deepfake",
       "phases": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 2,
-        "P4": 2,
-        "P5": 2
+        "P1": 3,
+        "P2": 3,
+        "P3": 3,
+        "P4": 3,
+        "P5": 3
       },
-      "total_tps": 2
+      "total_tps": 3
     },
     {
       "fraud_type": "deepfake-as-a-service",
@@ -710,13 +723,24 @@
     {
       "fraud_type": "healthcare-fraud",
       "phases": {
+        "P1": 2,
+        "P2": 2,
         "P3": 2,
         "P4": 2,
-        "P5": 2,
-        "P1": 1,
-        "P2": 1
+        "P5": 2
       },
       "total_tps": 2
+    },
+    {
+      "fraud_type": "hospice-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
     },
     {
       "fraud_type": "hosting-provider-complicity",
@@ -882,13 +906,13 @@
     {
       "fraud_type": "money-mule",
       "phases": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 2,
-        "P4": 2,
-        "P5": 2
+        "P1": 4,
+        "P2": 4,
+        "P3": 4,
+        "P4": 4,
+        "P5": 4
       },
-      "total_tps": 2
+      "total_tps": 4
     },
     {
       "fraud_type": "new-account-fraud",
@@ -937,11 +961,11 @@
     {
       "fraud_type": "phantom-billing",
       "phases": {
+        "P1": 2,
+        "P2": 2,
         "P3": 2,
         "P4": 2,
-        "P5": 2,
-        "P1": 1,
-        "P2": 1
+        "P5": 2
       },
       "total_tps": 2
     },
@@ -970,13 +994,13 @@
     {
       "fraud_type": "provider-fraud",
       "phases": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 2,
-        "P4": 2,
-        "P5": 2
+        "P1": 3,
+        "P2": 3,
+        "P3": 3,
+        "P4": 3,
+        "P5": 3
       },
-      "total_tps": 2
+      "total_tps": 3
     },
     {
       "fraud_type": "purchase-scam",
@@ -1167,6 +1191,8 @@
     {
       "fraud_type": "upcoding",
       "phases": {
+        "P1": 1,
+        "P2": 1,
         "P3": 1,
         "P4": 1,
         "P5": 1
@@ -1233,5 +1259,5 @@
     },
     "lastUpdated": "2026-03-21"
   },
-  "generatedAt": "2026-03-21T20:09:28.200352+00:00"
+  "generatedAt": "2026-03-21T21:23:03.581479+00:00"
 }

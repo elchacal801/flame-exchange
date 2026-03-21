@@ -165,7 +165,7 @@
     "id": "TP-0028",
     "type": "threat_path",
     "title": "DME Phantom Billing (Medicare Fraud)",
-    "text": "Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered to patients. Operation Gold Rush and related DOJ prosecutions have documented $4.45B in fraudulent DME billing, with over 5,800 defendants prosecuted since 2007. The scheme exploits stolen Medicare beneficiary data to create phantom patient lists, registers shell companies as DME suppliers across multiple states, and bills Medicare for expensive equipment (wheelchairs, orthotic braces, CPAP machines) that beneficiaries never ordered or received. The scale of the fraud prompted CMS to impose a 6-month moratorium on new DME supplier enrollment in high-fraud geographic areas.\n\n---"
+    "text": "Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered to patients. The DOJ's June 2025 National Healthcare Fraud Takedown — the largest in history — charged 324 defendants across $14.6 billion in intended losses (more than doubling the previous $6B record), with Operation Gold Rush alone documenting $10.6 billion in fraudulent DME billing by a Russian-Estonian TCO that exploited over 1 million stolen American identities. Over 5,800 defendants have been prosecuted since 2007. The scheme exploits stolen Medicare beneficiary data to create phantom patient lists, registers shell companies as DME suppliers across multiple states, and bills Medicare for expensive equipment (urinary catheters, continuous glucose monitors, CPAP machines) that beneficiaries never ordered or received. AI-generated deepfake consent recordings, cryptocurrency laundering, encrypted messaging (Telegram) for C2, and foreign straw owners now characterize the most sophisticated operations. CMS has imposed enrollment moratoria, the DOJ created a Health Care Fraud Data Fusion Center, and the first-ever banker was convicted for laundering healthcare fraud proceeds (February 2026).\n\n---"
   },
   {
     "id": "TP-0029",
@@ -1126,6 +1126,24 @@
     "type": "detection_rule",
     "title": "Fake Mobile App Residential Proxy and Subscription Scam Detection",
     "text": "Detects indicators of fake mobile applications that function as residential proxies or subscription scams, as documented in the VexTrio fake app operations (Black Hat USA 2025, Infoblox). VexTrio operated fake mobile apps for 7-8 years through Google Play Store, Apple App Store, and third-party forums. Three categories: (1) Fake VPNs that route user traffic through residential proxy networks (making users unwitting proxy nodes) with keyword-scanning capabilities targeting banking and personal information, (2) Fake Android cleaners (device optimization tools), (3) Fake spam/notification protection apps that operate a self-referential scam cycle — after push notification abuse infects the victim browser (100-150 notifications/day), victim is served an ad for a \"spam protection\" app that requests permissions to disable browser notifications, displays fabricated \"blocked\" notification screens, then transitions to $6.99/week subscription after 24 hours. This rule detects network-level and endpoint-level indicators of these app categories.\n"
+  },
+  {
+    "id": "DL-0130",
+    "type": "detection_rule",
+    "title": "Rapid Enrollment-to-Billing Healthcare Provider Anomaly",
+    "text": "Detects healthcare providers (DME suppliers, hospice agencies, home health companies, ABA therapy providers) that begin submitting claims at high volume within 30 days of Medicare/Medicaid enrollment. Operation Gold Rush (DOJ 2025) documented a Russian-Estonian TCO that acquired 30+ legitimate DME companies and immediately submitted $10.6 billion in fraudulent claims using stolen identities. The rapid enrollment-to-billing pattern is the highest-confidence indicator of fraudulent provider intent: legitimate providers typically require months to establish patient relationships, credentialing, and operational infrastructure before reaching significant billing volume. This rule flags providers billing >$100,000 within 30 days of enrollment, with additional risk scoring for providers concentrated in known high-fraud geographic areas and providers with high single-code billing ratios.\n"
+  },
+  {
+    "id": "DL-0131",
+    "type": "detection_rule",
+    "title": "Single-Code Billing Concentration and Impossible Day Healthcare Fraud",
+    "text": "Detects two high-confidence healthcare billing fraud indicators: (1) Single-code billing concentration — providers billing overwhelmingly one HCPCS/CPT code, where a single code exceeds 80% of total claims. Operation Gold Rush documented a TCO that submitted $10.6 billion in fraudulent claims concentrated on urinary catheters and continuous glucose monitors. Legitimate providers bill across diverse code sets reflecting varied patient needs. (2) Impossible day billing — providers billing more than 24 hours of procedures in a single calendar day, a mathematical impossibility indicating phantom billing or systematic upcoding. Both patterns are documented in DOJ 2025 National Healthcare Fraud Takedown prosecutions and CrimsonVector Security threat analysis. Source: CrimsonVector Security March 2026; DOJ Operation Gold Rush June 2025.\n"
+  },
+  {
+    "id": "DL-0132",
+    "type": "detection_rule",
+    "title": "Ghost Patient Claims and Geographic Provider Clustering Detection",
+    "text": "Detects two healthcare fraud patterns: (1) Ghost patient claims — Medicare/Medicaid claims submitted for deceased, incarcerated, or relocated beneficiaries who could not have received the billed services. Operation Gold Rush exploited over 1 million stolen American identities including elderly and disabled individuals. (2) Geographic provider clustering — ZIP codes with anomalous concentrations of healthcare providers and high average billing per provider, indicating shell company clustering. LA County has 1,923 registered hospice providers (more than 36 states combined), with 7 of 14 entities in one LA plaza having zero CMS data. GAO reports found approximately 22% of practice locations in PECOS were potentially ineligible including UPS Store mailboxes and vacant addresses. Source: CrimsonVector Security March 2026; DOJ 2025 National Healthcare Fraud Takedown; GAO-15-448.\n"
   },
   {
     "id": "BASE-001",
