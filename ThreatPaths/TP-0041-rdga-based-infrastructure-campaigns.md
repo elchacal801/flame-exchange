@@ -54,6 +54,10 @@ related_tps:
     relationship: enables
   - id: TP-0043
     relationship: related-to
+  - id: TP-0060
+    relationship: shares-infrastructure
+regulatory_refs:
+  - REG-RF-CTA-2026-0319
 tags:
   - rdga
   - registered-dga
@@ -66,6 +70,9 @@ tags:
   - dns-intelligence
   - bulk-registration
   - nameserver-clustering
+  - reckless-rabbit
+  - ruthless-rabbit
+  - infoblox
 ---
 ```
 
@@ -473,6 +480,17 @@ tags:
 
 - **MITRE ATT&CK — Enterprise Matrix**: Framework mapping for RDGA-related adversary techniques, including T1583.001 (Acquire Infrastructure: Domains), T1568.002 (Dynamic Resolution: Domain Generation Algorithms), T1583.003 (Virtual Private Server). [Link](https://attack.mitre.org/)
 
+### EV-TP0041-2026-002: Infoblox Named RDGA Actor Profiles
+
+- **Source**: Infoblox DNS Intelligence — Keitaro TDS & Investment Scams Report
+- **Named Actors**:
+  - **Reckless Rabbit**: Pre-registers thousands of RDGA domains for investment scam campaigns; uses wildcard DNS and cloaking services for infrastructure resilience; geo-routes US traffic to legitimate financial platforms (eToro) to evade detection
+  - **Ruthless Rabbit**: Similar RDGA registration patterns to Reckless Rabbit; targets investment scam victims with geo-routing evasion
+  - **Savvy Seahorse**: Pioneered the DNS CNAME-as-TDS technique — using CNAME records as a TDS routing mechanism rather than traditional HTTP redirects; distinct from Hazy Hawk's CNAME hijacking approach
+- **Scale**: Actors pre-register thousands of RDGA domains; wildcard DNS configuration enables any subdomain to resolve, multiplying effective infrastructure
+- **CFPF Phase Coverage**: P1 (domain generation and registration), P2 (campaign deployment), P3 (geo-routing and cloaking)
+- **Confidence**: High
+
 - **Related FLAME Threat Paths**: [TP-0042: Traffic Distribution System Chain Exploitation](TP-0042-tds-chain-exploitation.md) (RDGA domains enable TDS infrastructure); [TP-0043: AI-Accelerated Fraud Infrastructure Generation](TP-0043-ai-accelerated-fraud-infrastructure-generation.md) (AI may assist RDGA pattern generation).
 
 ---
@@ -482,3 +500,4 @@ tags:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-05 | FLAME Project | Initial submission — sourced from CrimsonVector Strategic Intelligence Report and Infoblox DNS Intelligence |
+| 2026-03-20 | FLAME Project | Enriched with Infoblox named RDGA actor profiles (Reckless Rabbit, Ruthless Rabbit, Savvy Seahorse) and investment scam infrastructure patterns |

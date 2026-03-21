@@ -1,0 +1,77 @@
+title: Investment TDS Geo-Routing to Legitimate Platform
+id: f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c
+status: experimental
+description: 'Detect Traffic Distribution System (TDS) geo-routing patterns used in investment scam infrastructure: (1) same domain
+  resolving to different IP addresses based on requester geography, (2) US-based visitors redirected to legitimate financial services
+  such as eToro or Coinbase while non-US visitors are routed to newly registered scam domains, (3) CNAME records functioning as TDS
+  routing mechanisms as observed in Savvy Seahorse campaigns. This evasion technique allows scam operators to avoid detection by
+  security researchers and law enforcement in specific jurisdictions.
+
+  '
+date: 2026/03/20
+sigma_compatible: true
+threat_paths:
+- TP-0060
+- TP-0042
+cfpf_phase: P3
+fraud_types:
+- investment-tds-pipeline
+- tds-exploitation
+logsource:
+  product: dns
+  category: dns_analytics
+  service: passive_dns
+detection:
+  selection_geo_variance:
+    domain_ip_geo_variance: true
+    unique_resolution_ips|gte: 3
+    geo_routing_detected: true
+  selection_legitimate_redirect:
+    redirect_target|contains:
+    - etoro.com
+    - coinbase.com
+    - robinhood.com
+    - fidelity.com
+    source_geo: US
+  selection_cname_tds:
+    cname_chain_length|gte: 2
+    cname_target_domain_age_days|lt: 30
+    cname_routing_pattern: true
+  selection_domain_age:
+    domain_registration_age_days|lt: 30
+    non_us_redirect_target: true
+  condition: (selection_geo_variance and selection_legitimate_redirect) or (selection_cname_tds and selection_domain_age)
+data_sources:
+  native_fields:
+  - domain_ip_geo_variance
+  - unique_resolution_ips
+  - geo_routing_detected
+  - redirect_target
+  - source_geo
+  - cname_chain_length
+  - cname_target_domain_age_days
+  - cname_routing_pattern
+  - domain_registration_age_days
+  - non_us_redirect_target
+  enrichment_required:
+  - field: domain_ip_geo_variance
+    source: Passive DNS enrichment (geographic resolution variance analysis)
+  - field: cname_routing_pattern
+    source: DNS analytics enrichment (CNAME chain TDS pattern detection)
+  - field: domain_registration_age_days
+    source: WHOIS enrichment (domain registration age calculation)
+falsepositives:
+- Legitimate CDN geo-routing for content delivery optimization
+- A/B testing by marketing platforms using geographic segmentation
+- Legitimate geo-restricted financial services with regional redirects
+level: medium
+tags:
+- cfpf.phase3.positioning
+- tds
+- geo-routing
+- investment-scam
+- etoro-evasion
+- savvy-seahorse
+- cname-routing
+- TP-0060
+- TP-0042

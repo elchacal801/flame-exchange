@@ -151,3 +151,69 @@ regulations:
       - sanctions-evasion
       - money-laundering
       - wire-fraud
+      - deepfake-as-a-service
+      - scam-compound-operations
+
+  - id: REG-INTERPOL-GFFTA
+    name: "INTERPOL Global Financial Fraud Threat Assessment"
+    jurisdiction: International
+    category: threat-assessment
+    description: "INTERPOL biennial assessment of global financial fraud threats; 2nd edition March 2026 documents $442B global losses, AI-enhanced fraud 4.5x more profitable, FaaS proliferation, scam centre globalization across 80 nationalities"
+    relevant_fraud_types:
+      - fraud-as-a-service
+      - deepfake-fraud
+      - investment-scam
+      - scam-compound-operations
+      - sextortion
+      - social-engineering
+
+  - id: REG-INTERPOL-SHADOW-STORM
+    name: "INTERPOL Operation Shadow Storm"
+    jurisdiction: International
+    category: enforcement
+    description: "International task force for coordinated financial fraud enforcement across multiple jurisdictions"
+    relevant_fraud_types:
+      - fraud-as-a-service
+      - state-criminal-convergence
+
+  - id: REG-INTERPOL-HAECHI
+    name: "INTERPOL Operation HAECHI VI"
+    jurisdiction: International
+    category: enforcement
+    description: "International enforcement operation resulting in 32,835 arrests and $439M in asset recovery across multiple fraud categories"
+    relevant_fraud_types:
+      - wire-fraud
+      - investment-scam
+      - money-mule
+
+  - id: REG-INTERPOL-REDCARD
+    name: "INTERPOL Operation RED CARD 2.0"
+    jurisdiction: Africa
+    category: enforcement
+    description: "Africa-focused fraud enforcement operation resulting in 651 arrests targeting investment scams and social engineering"
+    relevant_fraud_types:
+      - investment-scam
+      - social-engineering
+
+  - id: REG-UNODC-EMERGING-THREATS
+    name: "UNODC Emerging Threats: AI & Automation in Cybercrime"
+    jurisdiction: International
+    category: threat-assessment
+    description: "September 2025 UNODC report documenting AI-enhanced cybercrime including 600% deepfake surge in criminal channels, automated mule systems, multilingual chatbots in scam compounds, and $40B annual scam centre profits in SE Asia"
+    relevant_fraud_types:
+      - deepfake-fraud
+      - scam-compound-operations
+      - money-mule
+      - automated-mule-infrastructure
+      - chatbot-enabled-fraud
+
+  - id: REG-RF-CTA-2026-0319
+    name: "Recorded Future CTA-2026-0319: 2025 Malicious Infrastructure Year in Review"
+    jurisdiction: International
+    category: threat-assessment
+    description: "Recorded Future Insikt Group annual report documenting malicious infrastructure trends including TDS expansion, DPRK IT worker malware families, Threat Activity Enabler bulletproof hosting networks, sanctions evasion through corporate rebranding, and as-a-service ecosystem professionalization"
+    relevant_fraud_types:
+      - tds-exploitation
+      - dprk-it-worker-fraud
+      - fraud-as-a-service
+      - state-criminal-convergence

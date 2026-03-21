@@ -38,7 +38,7 @@ ucff_domains:
   monitor: "Level 2"
   report: "Level 2"
   improve: "Level 3"
-confidence_score: 68
+confidence_score: 75
 source_reliability: C
 info_credibility: 2
 related_tps:
@@ -52,18 +52,26 @@ related_tps:
     relationship: enhances
   - id: TP-0025
     relationship: related-to
+  - id: TP-0057
+    relationship: related-to
 regulatory_refs:
   - REG-DORA
   - REG-FATF-R16
   - REG-FBI-IC3
   - REG-OCC-FRAUD
   - REG-UK-PSR-APP
+  - REG-INTERPOL-GFFTA
+  - REG-UNODC-EMERGING-THREATS
 tags:
   - deepfake-voice
   - CEO-fraud
   - AI-enabled
   - dual-authorization-bypass
   - emerging-threat
+  - daas
+  - 10-second-voice-clone
+  - unodc
+  - interpol-gffta
 ---
 ```
 
@@ -232,6 +240,18 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 
 **INTERPOL 2026 Update**: The INTERPOL GFFTA 2026 confirms that BEC fraud across Asia-Pacific has evolved to include real-time deepfake audio impersonation of CEOs and CFOs during live phone calls, bypassing traditional voice-based verification protocols. This represents an escalation from pre-recorded deepfake audio to interactive, real-time voice synthesis. Fraud-as-a-Service platforms (TP-0054) are now offering deepfake voice generation as a subscription service, lowering the barrier to entry for this attack vector.
 
+### EV-TP0007-2026-002: Multi-Source Deepfake Voice Intelligence
+
+- **Source**: INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026); UNODC — Emerging Threats (September 2025); Group-IB (January 2026)
+- **Key Findings**:
+  - Deepfake voice clones can be generated from as little as 10 seconds of target audio (Group-IB via INTERPOL)
+  - "Deepfake-as-a-service" platforms now available on the dark web, democratizing access to voice cloning capability (INTERPOL)
+  - AI-enabled fraud is 4.5x more profitable than traditional methods (Chainalysis January 2026 via INTERPOL)
+  - 600% increase in deepfake mentions in criminal Telegram channels between February and June 2024 (UNODC)
+  - 10+ deepfake software vendors specifically serving SE Asian cybercrime groups (UNODC)
+- **CFPF Phase Coverage**: P2 (voice clone procurement), P4 (wire transfer authorization via deepfake voice)
+- **Confidence**: High — multi-source corroboration from INTERPOL, UNODC, and Group-IB
+
 ## References
 
 - Wall Street Journal: "Fraudsters Used AI to Mimic CEO's Voice in Unusual Cybercrime Case" (2019). [Link](https://www.wsj.com/articles/fraudsters-use-ai-to-mimic-ceos-voice-in-unusual-cybercrime-case-11567157402)
@@ -242,6 +262,10 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 - World Economic Forum: "Deepfake Identity Verification" (January 2026) — cross-reference with voice synthesis ecosystem and deepfake countermeasures
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents deepfake audio CEO/CFO impersonation during live BEC calls across Asia-Pacific region; notes FaaS platforms now offering deepfake voice generation tools
 
+- **INTERPOL GFFTA 2026**: Documents deepfake voice cloning from 10 seconds of audio, DaaS platforms on dark web, and 4.5x AI fraud profitability multiplier. [Link](https://www.interpol.int/)
+
+- **UNODC — Emerging Threats** (September 2025): Documents 600% deepfake surge and 10+ vendor ecosystem serving SE Asian groups. [Link](https://www.unodc.org/)
+
 ## Revision History
 
 | Date | Author | Change |
@@ -249,3 +273,4 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section, Underground Ecosystem Context, WEF deepfake intelligence |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — Asia-Pacific deepfake BEC intelligence |
+| 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 and UNODC Sept 2025 deepfake intelligence; confidence upgraded from 68 to 75 based on multi-source corroboration |

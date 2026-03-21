@@ -1,0 +1,65 @@
+title: Multilingual Chatbot Scam Pattern Detection
+id: c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f
+status: experimental
+description: 'Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing
+  with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam,
+  investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language,
+  (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of
+  scam compound operations using multilingual AI chatbots to scale social engineering.
+
+  '
+date: 2026/03/20
+sigma_compatible: true
+threat_paths:
+- TP-0058
+- TP-0017
+cfpf_phase: P2
+fraud_types:
+- chatbot-enabled-fraud
+- scam-compound-operations
+- social-engineering
+logsource:
+  product: messaging_platform
+  category: conversation_analytics
+  service: abuse_detection
+detection:
+  selection_timing:
+    response_time_variance_ms|lt: 2000
+    message_count|gte: 10
+  selection_template:
+    conversation_template_match_score|gt: 0.8
+  selection_language_switch:
+    language_switch_count|gte: 1
+    conversation_languages_count|gte: 2
+  selection_duplicate_phrasing:
+    cross_instance_phrase_similarity|gt: 0.9
+    reported_instances|gte: 2
+  condition: selection_timing and (selection_template or selection_language_switch or selection_duplicate_phrasing)
+data_sources:
+  native_fields:
+  - response_time_variance_ms
+  - message_count
+  - conversation_template_match_score
+  - language_switch_count
+  - conversation_languages_count
+  - cross_instance_phrase_similarity
+  - reported_instances
+  enrichment_required:
+  - field: conversation_template_match_score
+    source: NLP enrichment (conversation template matching against known scam scripts)
+  - field: cross_instance_phrase_similarity
+    source: Cross-instance analytics enrichment (phrase similarity scoring across reports)
+falsepositives:
+- Legitimate customer service chatbots with scripted responses
+- Auto-responders and out-of-office message systems
+- Language learning practice conversations
+level: medium
+tags:
+- cfpf.phase2.initial_access
+- chatbot
+- scam-compound
+- scripted-fraud
+- multilingual
+- social-engineering
+- TP-0058
+- TP-0017

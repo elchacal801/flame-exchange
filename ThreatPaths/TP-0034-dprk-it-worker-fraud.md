@@ -7,7 +7,7 @@ title: "DPRK State-Sponsored IT Worker Fraud & Data Extortion"
 category: ThreatPath
 date: 2026-03-03
 author: "FLAME Project"
-source: "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne"
+source: "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)"
 tlp: WHITE
 sector:
   - technology
@@ -67,10 +67,16 @@ related_tps:
     relationship: related-to
   - id: TP-0003
     relationship: shares-infrastructure
+  - id: TP-0045
+    relationship: feeds-into
+  - id: TP-0057
+    relationship: related-to
 regulatory_refs:
   - REG-OFAC-SDN
   - REG-FINCEN-CDD
   - REG-FBI-IC3
+  - REG-UNODC-EMERGING-THREATS
+  - REG-RF-CTA-2026-0319
 tags:
   - dprk
   - north-korea
@@ -84,6 +90,15 @@ tags:
   - code-exfiltration
   - salary-diversion
   - facilitator-network
+  - rb-site
+  - netkeyregister
+  - oconnect-vpn
+  - ip-messenger
+  - western-collaborators
+  - beavertail
+  - invisibleferret
+  - purplebravo
+  - purpledelta
 ---
 ```
 
@@ -101,7 +116,7 @@ The Democratic People's Republic of Korea (DPRK) operates a state-sponsored empl
 
 **Confidence**: Very High — confirmed by multiple independent law enforcement actions (FBI IC3 PSAs January 2025 and July 2025, DOJ enforcement actions January and November 2025), threat intelligence vendors (Google, Microsoft "Jasper Sleet," CrowdStrike, Palo Alto Unit 42, SentinelOne), and international government advisories.
 
-**Estimated Impact**: $50,000 – $300,000 per placement per year (salary extraction); $500K – $5M+ per extortion event (proprietary code/data ransom); aggregate regime revenue estimated in the hundreds of millions annually across the full program. Secondary impacts include sanctions compliance liability for employing entities, intellectual property loss, and credential compromise enabling follow-on cyber operations.
+**Estimated Impact**: $50,000 – $300,000+ per placement per year (salary extraction); $500K – $5M+ per extortion event (proprietary code/data ransom); aggregate regime revenue estimated at $500M/year across 100,000+ operatives in 40+ countries (Flare/IBM X-Force, March 2026), with individual operators earning $300,000+ annually. Secondary impacts include sanctions compliance liability for employing entities, intellectual property loss, and credential compromise enabling follow-on cyber operations.
 
 ---
 
@@ -115,6 +130,8 @@ The Democratic People's Republic of Korea (DPRK) operates a state-sponsored empl
 | CFPF-P1-002: Synthetic credential fabrication | Operators create fabricated resumes, LinkedIn profiles, and GitHub portfolios using stolen identities. AI tools (including ChatGPT) are used to generate interview preparation materials and enhance credential documents. Education credentials typically list non-North American universities (Singapore, Japan, Hong Kong) paired with U.S. addresses. | LinkedIn profiles with limited connection history and recent creation dates; GitHub repositories with unusual commit patterns; resumes combining U.S. addresses with non-North American education |
 | CFPF-P1-003: Proxy infrastructure setup | U.S.-based accomplices host laptops at American residential addresses to create the appearance of domestic work. Operators connect remotely via Astrill VPN and remote desktop tools (AnyDesk, TeamViewer) to these proxy machines. | Laptop farm indicators: multiple active sessions on single residential IP; remote management tool installations on employer-provisioned hardware; Astrill VPN connections |
 | CFPF-P1-004: Target employer reconnaissance | Operators identify companies with remote-first hiring, minimal in-person vetting, and software engineering openings. Technology companies, fintech firms, and crypto exchanges are primary targets. Staffing platforms (Upwork, Fiverr, Toptal) are also used. | N/A (external reconnaissance not directly observable by target companies) |
+| CFPF-P1-005: Internal DPRK management platform coordination | Operators coordinate via internal DPRK platforms named "RB Site" and "NetkeyRegister" which serve as management dashboards for tracking placements, assignments, and revenue across the program. OConnect VPN and NetKey VPN are used for connections back to Pyongyang network infrastructure. IP Messenger is used for internal communications between operators and controllers. (Source: Flare/IBM X-Force, March 2026) | OConnect VPN connection signatures; NetKey VPN traffic patterns; IP Messenger protocol traffic; connections to DPRK network infrastructure from endpoints also connected to corporate VPN |
+| CFPF-P1-006: Western collaborator recruitment | Western collaborators are recruited via LinkedIn and GitHub for identity lending — knowingly providing their legitimate identities for employment applications in exchange for ongoing compensation (percentage of salary). This is distinct from stolen identity procurement: collaborator-enabled placements use genuine identity documents, making them significantly harder to detect through standard identity verification. (Source: Flare/IBM X-Force, March 2026) | LinkedIn/GitHub recruitment messages offering compensation for identity lending; same individual's identity documents associated with multiple concurrent employment relationships; salary payments split between employee account and separate "collaborator" account |
 
 **Data Sources**: Identity verification services, resume screening systems, LinkedIn profile analytics, VPN/proxy detection services, device management logs, background check vendor data.
 
@@ -125,7 +142,7 @@ The Democratic People's Republic of Korea (DPRK) operates a state-sponsored empl
 | Technique | Description | Indicators |
 |-----------|-------------|------------|
 | CFPF-P2-001: Fraudulent job application | Operators submit job applications using stolen identities through company career portals, staffing agencies, and freelance platforms. Resumes are tailored to match job requirements using AI-generated content. Multiple operators may apply to the same company using different stolen identities. | Applications from candidates whose background checks reveal address/identity inconsistencies; multiple applicants sharing device fingerprints or IP infrastructure; resume content that closely mirrors job description language |
-| CFPF-P2-002: Interview performance via AI assistance | Operators perform well in technical interviews using ChatGPT and AI coding assistants for real-time answer generation. Video interviews may use deepfake overlays or are avoided entirely with excuses about camera/connectivity issues. Multiple operators may tag-team interview stages. | Candidates who refuse or repeatedly reschedule video interviews; notable discrepancy between interview performance and subsequent job performance; audio/video artifacts suggesting AI generation; interview answers that read as AI-generated |
+| CFPF-P2-002: Interview performance via AI assistance and face/voice changers | Operators perform well in technical interviews using ChatGPT and AI coding assistants for real-time answer generation. Video interviews may use dedicated AI face changers and AI voice changers providing real-time transformation during live video calls — not just static deepfake overlays but continuous face/voice transformation tools (Flare/IBM X-Force, March 2026). Multiple operators may tag-team interview stages. Candidates also take malicious coding challenges on corporate devices, compromising their employers — particularly IT staff augmentation services (Recorded Future CTA-2026-0319). | Candidates who refuse or repeatedly reschedule video interviews; notable discrepancy between interview performance and subsequent job performance; audio/video artifacts suggesting AI generation or real-time face-changing (virtual camera drivers such as OBS Virtual Camera, DeepFaceLive); spectral anomalies in audio stream indicating voice synthesis; interview answers that read as AI-generated; coding challenge submissions from corporate devices |
 | CFPF-P2-003: Identity verification evasion | Operators circumvent background checks using facilitator-provided identity documents, KYC bypass services ($30-$200 per identity), and biometric spoofing. Drug testing and in-person verification requirements are evaded through U.S.-based facilitators who appear in person. | Background check results that pass basic SSN validation but fail deeper cross-referencing; identity verification documents with metadata suggesting template-based creation; in-person verification conducted by a different individual than the remote worker |
 
 **Data Sources**: ATS (Applicant Tracking System) logs, background check vendor data, video interview platform analytics, HR onboarding systems, device fingerprinting, IP geolocation.
@@ -238,6 +255,8 @@ The Democratic People's Republic of Korea (DPRK) operates a state-sponsored empl
 | Interview Coach | Provides AI-assisted interview preparation and real-time answer support | DPRK, China | Internal DPRK program |
 | Financial Facilitator | Operates bank accounts for salary receipt and cryptocurrency conversion | U.S., China | 10-20% of salary amount |
 | Operational Controller | Manages placement operations, assigns operators to positions, coordinates facilitators | DPRK (Pyongyang, Shenyang) | State-directed |
+| Western Collaborator/Identity Lender | Provides legitimate identity for employment applications; recruited via LinkedIn/GitHub; knowingly participates for compensation | U.S., EU | Ongoing compensation (percentage of salary) |
+| Internal Platform Administrator | Manages RB Site and NetkeyRegister dashboards for tracking placements, assignments, and revenue across the program | DPRK (Pyongyang) | State-directed |
 
 ### Known Cases
 
@@ -248,12 +267,20 @@ The Democratic People's Republic of Korea (DPRK) operates a state-sponsored empl
 
 ### Tool Ecosystem
 
-- Astrill VPN — primary anonymization tool for DPRK operators
+- Astrill VPN — primary anonymization tool for DPRK operators (confirmed by Recorded Future CTA-2026-0319; TAG-163 uses Astrill VPN exit nodes for admin access)
+- OConnect VPN / NetKey VPN — connections to Pyongyang network infrastructure and internal DPRK management platforms (Flare/IBM X-Force, March 2026)
+- IP Messenger — internal communications between operators and controllers (Flare/IBM X-Force)
 - AnyDesk/TeamViewer — remote desktop access to U.S. proxy laptops
 - ChatGPT/AI coding assistants — interview preparation and technical assessment support
+- AI face changers / AI voice changers — real-time face and voice transformation during live video interviews (Flare/IBM X-Force)
+- Google Translate — heavy usage for overcoming language barriers during employment (Flare/IBM X-Force)
 - Deepfake video tools — KYC bypass and video interview evasion
 - Cryptocurrency mixing services — salary laundering through USDT/USDC conversion chains
 - Freelance platform accounts (Upwork, Fiverr, Toptal) — procured or fraudulently created
+- BeaverTail — infostealer/initial access malware used by PurpleBravo in developer-lure campaigns (Recorded Future CTA-2026-0319)
+- InvisibleFerret — RAT with dual HTTP+TCP C2 channels; persistent connection for interactive tasking (Recorded Future)
+- GolangGhost / PylangGhost — Go and Python-based backdoors with RC4-encrypted C2 communications (Recorded Future)
+- OtterCookie / HexEval — additional malware families in the PurpleBravo toolkit (Recorded Future)
 
 ### Intelligence Sources
 
@@ -265,6 +292,8 @@ The Democratic People's Republic of Korea (DPRK) operates a state-sponsored empl
 - CrowdStrike — 304 documented DPRK IT worker incidents
 - Palo Alto Unit 42 — "Global Companies Are Unknowingly Paying North Koreans" (2025)
 - SentinelOne — "DPRK IT Workers: A Network of Active Front Companies" (2025)
+- Flare / IBM X-Force — "Inside the North Korean Infiltrator Threat" (March 2026): Joint research documenting internal DPRK management platforms (RB Site, NetkeyRegister), Western collaborator recruitment via LinkedIn/GitHub, AI face/voice changers for interviews, OConnect/NetKey VPN, and multi-entity operational structure spanning 100,000+ operatives in 40+ countries generating $500M/year
+- Recorded Future CTA-2026-0319 — "2025 Year in Review: Malicious Infrastructure" (March 2026): Documents PurpleBravo/PurpleDelta infrastructure overlap confirming connection between DPRK developer-lure campaigns and IT worker operations; identifies BeaverTail, InvisibleFerret, GolangGhost, PylangGhost, and HexEval malware families; 759 PurpleAlpha credential harvesting domains in 2025; hosting infrastructure on Evoxt Enterprise (AS149440) with Astrill VPN for administration
 
 ---
 
@@ -420,6 +449,35 @@ tags:
 - **TTPs**: Detailed analysis of Astrill VPN usage, AI-assisted interviews, multi-operator patterns, and cryptocurrency laundering chains
 - **Confidence**: Very High
 
+### EV-TP0034-2026-003: Flare/IBM X-Force Internal DPRK Operations
+
+- **Source**: Flare / IBM X-Force — "Inside the North Korean Infiltrator Threat" (March 2026)
+- **Scale**: 100,000+ North Korean operatives deployed across 40+ countries; program generates $500M/year; individual operators earn $300,000+ annually
+- **Key Findings**:
+  - Internal DPRK management platforms "RB Site" and "NetkeyRegister" function as dashboards for tracking placements, assignments, and revenue
+  - Structured multi-role operation spanning recruiters, facilitators, IT workers, and Western collaborators/brokers
+  - Western collaborators knowingly recruited via LinkedIn and GitHub to lend their identities — distinct from stolen identity procurement; collaborators receive ongoing compensation as a percentage of salary
+  - AI face changers and AI voice changers used during live online interviews for real-time transformation — not just pre-generated deepfakes but continuous face/voice modification
+  - OConnect VPN and NetKey VPN used for connections to Pyongyang network infrastructure; IP Messenger for internal communications
+  - Google Translate used heavily to overcome language barriers
+  - Primary motivation is revenue generation; secondary motivation is data theft
+  - Operations span multiple DPRK entities (government, party, front companies)
+- **CFPF Phase Coverage**: P1 (platform coordination, collaborator recruitment), P2 (AI face/voice changers in interviews), P3 (VPN connections to internal platforms), P4-P5 (revenue tracking and extraction)
+- **Confidence**: Very High — primary research with access to internal operational data
+
+### EV-TP0034-2026-004: Recorded Future PurpleBravo/PurpleDelta Infrastructure
+
+- **Source**: Recorded Future CTA-2026-0319 — "2025 Year in Review: Malicious Infrastructure" (March 2026)
+- **Key Findings**:
+  - Infrastructure overlap confirmed between PurpleBravo (DPRK developer-lure campaigns / Contagious Interview) and PurpleDelta (DPRK IT workers), establishing a direct connection between the two operational programs
+  - Malware families deployed: BeaverTail (infostealer/initial access), InvisibleFerret (RAT with dual HTTP+TCP C2), OtterCookie, GolangGhost (Go-based), PylangGhost (Python-based), HexEval (first-stage loader)
+  - PurpleAlpha (credential harvesting): 759 domains and 54 servers identified in 2025; heavy use of free DDNS services (mydomain.korea, MyDNS.jp, FreeDNS)
+  - Hosting infrastructure: Evoxt Enterprise (AS149440), Interserver (AS19318), Kaopu Cloud HK Limited (AS138915), Veesp (AS42532), Vultr (AS20473)
+  - Administration: Astrill VPN exit nodes for remote access; Namecheap for domain registration; Sectigo certificates
+  - Candidates taking malicious coding challenges on corporate devices, compromising their employers — many in IT services and IT staff augmentation
+- **CFPF Phase Coverage**: P1 (infrastructure provisioning), P2 (malware delivery via developer lures), P3-P4 (credential access, data exfiltration via InvisibleFerret)
+- **Confidence**: Very High
+
 ---
 
 ## Analyst Notes
@@ -433,6 +491,10 @@ tags:
 **Remote work normalization is the enabling condition**: The post-pandemic shift to remote-first hiring with fully digital onboarding processes has created the conditions for this threat to scale. Many companies have eliminated in-person identity verification, reduced video interview requirements, and normalized asynchronous communication — all of which facilitate DPRK operator concealment. The mitigation is not to eliminate remote work but to implement proportionate identity verification (biometric liveness, credential verification, device attestation) in remote hiring pipelines.
 
 **Sanctions compliance liability is real and immediate**: Under OFAC regulations, organizations that unknowingly employ DPRK nationals and route salary payments to the regime face potential sanctions liability. The "strict liability" nature of sanctions means that lack of knowledge is not a defense. Organizations should integrate OFAC screening into their hiring and payroll processes and establish clear incident response procedures for DPRK IT worker discovery that include legal counsel and regulatory notification.
+
+**Western collaborators represent a qualitatively different detection challenge**: The Flare/IBM X-Force report reveals that some Western participants are knowing collaborators (identity lenders), not unwitting victims of identity theft. Collaborator-enabled placements are significantly harder to detect because the identity documents are genuine — the person exists, the documents are real, and standard identity verification passes cleanly. Detection must shift from identity verification (which catches stolen identities) to behavioral analysis (which catches identity lending — e.g., the employed "person" behaves differently from their historical baseline, or salary payments are split with a third party).
+
+**PurpleBravo/PurpleDelta infrastructure convergence creates compound risk**: Recorded Future's confirmation that DPRK developer-lure campaigns (PurpleBravo/Contagious Interview) share infrastructure with IT worker operations (PurpleDelta) means that a DPRK IT worker placement may simultaneously serve as an entry point for malware deployment targeting the employer's development environment. The BeaverTail infostealer and InvisibleFerret RAT are not just credential theft tools — they represent active, persistent backdoors that can survive the IT worker's termination.
 
 **Cross-border investigation complexity**: DPRK IT worker operations span multiple jurisdictions (DPRK, China, Russia, Ukraine, U.S., EU). Law enforcement coordination requires FBI, CISA, international partners, and private sector threat intelligence sharing. Organizations should establish pre-incident relationships with FBI field offices and CISA regional coordinators to enable rapid response when DPRK IT workers are identified.
 
@@ -458,7 +520,11 @@ tags:
 
 - **SentinelOne — DPRK IT Workers: A Network of Active Front Companies** (2025): Analysis of front company infrastructure used by DPRK IT workers for freelance platform operations. [Link](https://www.sentinelone.com/blog/)
 
-- **Related FLAME Threat Paths**: [TP-0015: Employment Fraud via Brand Impersonation](TP-0015-employment-fraud-brand-impersonation.md) (civilian employment fraud); [TP-0029: AI Synthetic Identity & Document Forgery](TP-0029-ai-synthetic-identity-document-forgery.md) (AI-enhanced identity fabrication); [TP-0019: Business Identity Theft](TP-0019-business-identity-theft.md) (organizational identity compromise).
+- **Flare / IBM X-Force — Inside the North Korean Infiltrator Threat** (March 2026): Joint research documenting internal DPRK management platforms (RB Site, NetkeyRegister), Western collaborator recruitment, AI face/voice changers, 100,000+ operatives in 40+ countries, $500M/year program revenue.
+
+- **Recorded Future CTA-2026-0319 — 2025 Year in Review: Malicious Infrastructure** (March 2026): Documents PurpleBravo/PurpleDelta infrastructure overlap, DPRK malware families (BeaverTail, InvisibleFerret, GolangGhost, PylangGhost, HexEval), 759 credential harvesting domains, hosting on Evoxt/Kaopu Cloud/Veesp. [Link](https://www.recordedfuture.com/)
+
+- **Related FLAME Threat Paths**: [TP-0015: Employment Fraud via Brand Impersonation](TP-0015-employment-fraud-brand-impersonation.md) (civilian employment fraud); [TP-0029: AI Synthetic Identity & Document Forgery](TP-0029-ai-synthetic-identity-document-forgery.md) (AI-enhanced identity fabrication); [TP-0019: Business Identity Theft](TP-0019-business-identity-theft.md) (organizational identity compromise); [TP-0045: Sanctions Evasion via Fraud Infrastructure](TP-0045-sanctions-evasion-via-fraud-infrastructure.md) (feeds-into); [TP-0057: Deepfake-as-a-Service Marketplace](TP-0057-deepfake-as-a-service-marketplace.md) (AI face/voice changer supply chain).
 
 ---
 
@@ -467,3 +533,4 @@ tags:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-03 | FLAME Project | Initial submission |
+| 2026-03-20 | FLAME Project | Major enrichment: Added Flare/IBM X-Force intelligence (RB Site, NetkeyRegister internal platforms; Western collaborator recruitment; AI face/voice changers; 100K+ operatives, $500M/year scale); Added Recorded Future CTA-2026-0319 intelligence (PurpleBravo/PurpleDelta infrastructure overlap; BeaverTail, InvisibleFerret, GolangGhost malware families; 759 credential harvesting domains; hosting infrastructure patterns). New techniques CFPF-P1-005, CFPF-P1-006 added. New evidence blocks EV-TP0034-2026-003, EV-TP0034-2026-004. |

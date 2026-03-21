@@ -59,10 +59,14 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0042
     relationship: shares-infrastructure
+  - id: TP-0061
+    relationship: related-to
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
   - REG-FINCEN-AML
+  - REG-UNODC-EMERGING-THREATS
+  - REG-RF-CTA-2026-0319
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -75,6 +79,11 @@ tags:
   - bot-testimonials
   - affiliate-fraud
   - democratized-fraud
+  - 442b-global-losses
+  - 4.5x-profitability
+  - maas
+  - phaas
+  - recorded-future
 ---
 ```
 
@@ -321,6 +330,20 @@ ORDER BY shared_domains DESC;
 - **CFPF Phase Coverage**: P1, P2, P5
 - **Confidence**: Medium
 
+### EV-TP0054-2026-002: Multi-Source FaaS Ecosystem Intelligence
+
+- **Source**: INTERPOL GFFTA 2026; UNODC Sept 2025; Recorded Future CTA-2026-0319
+- **Key Findings**:
+  - Global fraud losses reached $442B annually (INTERPOL)
+  - AI-enhanced fraud operations are 4.5x more profitable than traditional methods (Chainalysis via INTERPOL)
+  - Bot-based verification circumvention and stolen/fabricated identity automation enabling industrial-scale fraud infrastructure (UNODC)
+  - MaaS dominates the infostealer ecosystem — 8 of the top 10 infostealers operate under MaaS model; most rooted in Russia-linked cybercriminal ecosystems (Recorded Future)
+  - Phishing-as-a-Service (PhaaS) kits lowering entry barriers with sophisticated tooling — TAG-161 uses $15K/month premium Matanbuchus loader and bespoke phishing email management tools including "Redirect and Email Manager" and "Booking-Mailer V2.2" (Recorded Future)
+  - CastleLoader operates as MaaS despite no public marketplace advertising — multiple independent deployment clusters suggest private distribution model (Recorded Future)
+  - Bulletproof hosting serves as critical FaaS enabler: CrazyRDP (no KYC, seized by Dutch LE November 2025), BEARHOST ecosystem (Recorded Future)
+- **CFPF Phase Coverage**: P1 through P5 — full lifecycle FaaS ecosystem
+- **Confidence**: High — multi-source from INTERPOL, UNODC, and Recorded Future
+
 ---
 
 ## References
@@ -349,3 +372,4 @@ ORDER BY shared_domains DESC;
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-17 | FLAME Project | Initial submission |
+| 2026-03-20 | FLAME Project | Enriched with INTERPOL $442B losses, UNODC bot verification data, Recorded Future MaaS/PhaaS professionalization intelligence, and bulletproof hosting enabler analysis |

@@ -65,6 +65,7 @@ related_tps:
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-FINCEN-AML
+  - REG-INTERPOL-GFFTA
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -76,6 +77,8 @@ tags:
   - crypto-laundering
   - teen-targeting
   - executive-targeting
+  - scripted-fallback
+  - interpol-gffta
 ---
 ```
 
@@ -318,6 +321,13 @@ ORDER BY t.amount DESC;
 - **Confidence**: High (INTERPOL member country reports, scam centre operational intelligence)
 - **Summary**: INTERPOL documents that hybrid investment-sextortion is no longer opportunistic in scam centre operations — it is systematically embedded as a fallback tactic in fraud scripts. This operational integration distinguishes it from standalone sextortion and links the attack chain directly to organized transnational crime infrastructure.
 
+### EV-TP0052-2026-002: INTERPOL Sextortion Scripted Integration
+
+- **Source**: INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition (March 2026)
+- **Key Finding**: Sextortion is now "systematically integrated into romance/investment fraud as a scripted fallback" — not merely opportunistic but formalized in scam compound operating procedures. When an investment fraud script fails to convert a victim, operators activate a sextortion script using compromising material gathered during the relationship-building phase.
+- **CFPF Phase Coverage**: P3-P4 transition (sextortion activated when primary investment scam fails)
+- **Confidence**: High
+
 ---
 
 ## References
@@ -351,3 +361,4 @@ ORDER BY t.amount DESC;
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-17 | FLAME Project | Initial submission |
+| 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 finding that sextortion is systematically scripted as fallback in compound operations |

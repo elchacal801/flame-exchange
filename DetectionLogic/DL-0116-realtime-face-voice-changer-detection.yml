@@ -1,0 +1,95 @@
+title: Real-Time Face/Voice Changer Detection During Video Interview
+id: b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e
+status: experimental
+description: 'Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver
+  interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation
+  or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques
+  are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.
+
+  '
+date: 2026/03/20
+sigma_compatible: false
+native_query_required: true
+threat_paths:
+- TP-0057
+- TP-0034
+cfpf_phase: P2
+fraud_types:
+- deepfake-fraud
+- dprk-it-worker-fraud
+- ai-face-voice-changer
+logsource:
+  product: collaboration
+  category: video_analysis
+  service: video_conferencing
+detection:
+  selection_virtual_camera:
+    camera_driver_name|contains:
+    - OBS Virtual
+    - ManyCam
+    - DeepFace
+    - FaceSwap
+    - Snap Camera
+  selection_audio_anomaly:
+    audio_analysis_score|gt: 0.75
+    audio_formant_anomaly: true
+  selection_lip_sync:
+    lip_sync_delta_ms|gt: 200
+  condition: selection_virtual_camera or selection_audio_anomaly or selection_lip_sync
+data_sources:
+  native_fields:
+  - camera_driver_name
+  - audio_analysis_score
+  - audio_formant_anomaly
+  - lip_sync_delta_ms
+  enrichment_required:
+  - field: audio_analysis_score
+    source: Audio analysis enrichment (spectral anomaly detection scoring)
+  - field: lip_sync_delta_ms
+    source: Video analysis enrichment (lip-to-audio synchronization measurement)
+queries:
+  logscale: |-
+    // LogScale LQL for Real-Time Face/Voice Changer Detection During Video Interview
+    // Repository: flame-collaboration-video-monitoring
+    // Native query required - audio/video analysis cannot be expressed in Sigma
+    camera_driver_name=/OBS Virtual|ManyCam|DeepFace|FaceSwap|Snap Camera/i
+    OR audio_analysis_score>0.75
+    OR lip_sync_delta_ms>200
+    | case {
+        camera_driver_name=/DeepFace|FaceSwap/i | risk_score:=90;
+        camera_driver_name=/OBS Virtual|ManyCam/i | risk_score:=50;
+        audio_analysis_score>0.75 | risk_score:=80;
+        lip_sync_delta_ms>200 | risk_score:=70;
+        * | risk_score:=0;
+      }
+    | risk_score>=50
+    | groupBy([user_id, session_id], function=[count(), collect([camera_driver_name, audio_analysis_score, lip_sync_delta_ms])])
+  splunk: |-
+    `comment("Splunk SPL for Real-Time Face/Voice Changer Detection During Video Interview")`
+    `comment("Native query required - audio/video analysis cannot be expressed in Sigma")`
+    index=flame_collaboration sourcetype=flame:video_conferencing
+    (camera_driver_name="*OBS Virtual*" OR camera_driver_name="*ManyCam*" OR camera_driver_name="*DeepFace*" OR camera_driver_name="*FaceSwap*")
+    OR audio_analysis_score>0.75
+    OR lip_sync_delta_ms>200
+    | eval risk_score=case(
+        camera_driver_name LIKE "%DeepFace%" OR camera_driver_name LIKE "%FaceSwap%", 90,
+        camera_driver_name LIKE "%OBS Virtual%" OR camera_driver_name LIKE "%ManyCam%", 50,
+        audio_analysis_score>0.75, 80,
+        lip_sync_delta_ms>200, 70)
+    | where risk_score>=50
+    | stats count values(camera_driver_name) as cameras values(audio_analysis_score) as audio_scores max(lip_sync_delta_ms) as max_lip_delta by user_id session_id
+falsepositives:
+- Legitimate OBS usage for screen sharing or streaming
+- Virtual background applications using camera driver interception
+- Legitimate audio processing software for noise cancellation
+- Poor network conditions causing audio-video desynchronization
+level: high
+tags:
+- cfpf.phase2.initial_access
+- deepfake
+- face-changer
+- voice-changer
+- dprk
+- flame.dprk
+- TP-0057
+- TP-0034

@@ -1,0 +1,66 @@
+title: DPRK Internal Platform Network Connection Detection
+id: a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d
+status: experimental
+description: 'Detect connections to DPRK-associated internal collaboration platforms OConnect VPN and NetKey VPN, identified by
+  Flare and IBM X-Force as tools used by DPRK IT workers: (1) VPN connections to known OConnect or NetKey IP address ranges,
+  (2) DNS queries resolving OConnect or NetKey domains, (3) VPN protocol signatures matching OConnect or NetKey handshake patterns,
+  particularly from endpoints that are simultaneously connected to corporate VPN infrastructure. Dual-VPN usage is a strong indicator
+  of DPRK IT worker activity on compromised enterprise networks.
+
+  '
+date: 2026/03/20
+sigma_compatible: true
+references:
+- https://flare.io/learn/resources/blog/dprk-it-workers
+- https://securityintelligence.com/x-force/dprk-it-workers-operations
+threat_paths:
+- TP-0034
+cfpf_phase: P3
+fraud_types:
+- dprk-it-worker-fraud
+logsource:
+  product: network
+  category: network_connection
+  service: vpn_monitoring
+detection:
+  selection_vpn_product:
+    vpn_product|contains:
+    - OConnect
+    - NetKey
+  selection_dns:
+    dns_query|contains:
+    - oconnect
+    - netkey
+    - oconnect.net
+    - netkey.io
+  selection_dual_vpn:
+    concurrent_vpn_connections|gte: 2
+    corporate_vpn_active: true
+    external_vpn_detected: true
+  condition: selection_vpn_product or selection_dns or selection_dual_vpn
+data_sources:
+  native_fields:
+  - vpn_product
+  - dns_query
+  - concurrent_vpn_connections
+  - corporate_vpn_active
+  - external_vpn_detected
+  enrichment_required:
+  - field: concurrent_vpn_connections
+    source: Network analytics enrichment (concurrent VPN session detection)
+  - field: external_vpn_detected
+    source: Endpoint telemetry enrichment (non-corporate VPN process detection)
+falsepositives:
+- Legitimate OConnect videoconferencing usage in organizations where it is an approved tool
+- Security researchers analyzing DPRK infrastructure
+level: critical
+tags:
+- cfpf.phase3.positioning
+- dprk
+- oconnect
+- netkey
+- vpn
+- critical
+- flame.dprk
+- dual-vpn
+- TP-0034
