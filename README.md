@@ -1,8 +1,8 @@
 [![Build & Deploy](https://github.com/elchacal801/flame-fraud/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/elchacal801/flame-fraud/actions/workflows/build-and-deploy.yml)
 [![License: MIT](https://img.shields.io/github/license/elchacal801/flame-fraud)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
-[![Threat Paths](https://img.shields.io/badge/threat_paths-50-0078D4)](ThreatPaths/)
-[![Detection Rules](https://img.shields.io/badge/detection_rules-114-2ea44f)](DetectionLogic/)
+[![Threat Paths](https://img.shields.io/badge/threat_paths-61-0078D4)](ThreatPaths/)
+[![Detection Rules](https://img.shields.io/badge/detection_rules-132-2ea44f)](DetectionLogic/)
 [![STIX 2.1](https://img.shields.io/badge/STIX-2.1-6c757d)](docs/STIX-FRAUD-EXTENSION.md)
 [![MCP Server](https://img.shields.io/badge/MCP-server-8A2BE2)](mcp_server/)
 
@@ -20,18 +20,18 @@ FLAME is an open-source, community-driven platform for sharing structured fraud 
 
 | Metric | Count |
 |--------|-------|
-| **Threat Paths** | 50 (TP-0001 -- TP-0050) |
-| **Detection Logic Rules** | 114 (Sigma-based; exported to SPL, EQL, KQL) |
-| **Baselines** | 25 environmental profiling benchmarks |
+| **Threat Paths** | 61 (TP-0001 -- TP-0061) |
+| **Detection Logic Rules** | 132 (Sigma-based; exported to SPL, EQL, KQL) |
+| **Baselines** | 29 environmental profiling benchmarks |
 | **Emulation Playbooks** | 7 adversary simulation scripts |
-| **Fraud Types** | 71 in master taxonomy |
-| **Sectors Covered** | 19 |
+| **Fraud Types** | 95 in master taxonomy |
+| **Sectors Covered** | 17 |
 | **Framework Cross-Mappings** | 6 (CFPF, ATT&CK, Group-IB FM, Stripe FT3, UCFF, MITRE F3) |
-| **Regulatory Requirements** | 15 across 6 jurisdictions |
+| **Regulatory Requirements** | 22 across 7 jurisdictions |
 | **Export Formats** | 7 (STIX, MISP, TAXII, Sigma/SPL, Sigma/EQL, Sigma/KQL, RSS) |
 | **MCP Server Tools** | 7 |
 | **CI/CD Workflows** | 7 |
-| **Test Modules** | 13 (pytest) |
+| **Test Modules** | 12 (pytest) |
 
 ---
 
@@ -43,7 +43,7 @@ Between April 2025 and February 2026, five organizations independently concluded
 |---|:---:|:---:|:---:|:---:|:---:|
 | Open source | Yes | No | Paper only | Abandoned | TBD |
 | Community contributed | Yes | No | No platform | No | TBD |
-| Structured detection logic | 114 rules | Mobile-heavy | No | No | TBD |
+| Structured detection logic | 132 rules | Mobile-heavy | No | No | TBD |
 | Multi-taxonomy mapping | 6 frameworks | Own only | Own only | Own only | TBD |
 | TIP interop (STIX/MISP/TAXII) | Yes | No | No | No | TBD |
 | AI-assisted intake | Yes | No | No | No | No |
@@ -56,10 +56,10 @@ Between April 2025 and February 2026, five organizations independently concluded
 
 | Framework | Status |
 |-----------|--------|
-| FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 50 TPs mapped |
+| FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 61 TPs mapped |
 | MITRE ATT&CK | Supplementary mapping where applicable |
 | Group-IB Fraud Matrix 2.0 | Cross-reference mapping (stage names) |
-| Stripe FT3 | Mapped (44/50 TPs) via `ft3_mapper.py` |
+| Stripe FT3 | Mapped (55/61 TPs) via `ft3_mapper.py` |
 | Group-IB UCFF | Defense-side maturity alignment (7 domains) |
 | MITRE F3 | Placeholder (will map when shipped) |
 
@@ -147,9 +147,9 @@ graph TD
 ## Repository Structure
 
 ```
-ThreatPaths/           50 fraud scheme lifecycle mappings (TP-XXXX.md)
-DetectionLogic/        114 Sigma-based detection rules (DL-XXXX.yml)
-Baselines/             25 environmental profiling benchmarks (BL-XXXX.md)
+ThreatPaths/           61 fraud scheme lifecycle mappings (TP-XXXX.md)
+DetectionLogic/        132 Sigma-based detection rules (DL-XXXX.yml)
+Baselines/             29 environmental profiling benchmarks (BL-XXXX.md)
 EmulationPlaybooks/    7 adversary simulation playbooks (EP-XXXX.json)
 Templates/             Submission templates (TP, DL, BL, EP)
 config/                Regulatory requirements and source configs
@@ -182,7 +182,7 @@ docs/                  Project documentation and specifications
 
 ## Threat Path Collection
 
-FLAME ships with **50 threat paths** covering **71 fraud types** across **19 sectors**.
+FLAME ships with **61 threat paths** covering **95 fraud types** across **17 sectors**.
 
 | ID | Scheme | Key Fraud Types |
 |----|--------|-----------------|
@@ -201,19 +201,20 @@ FLAME ships with **50 threat paths** covering **71 fraud types** across **19 sec
 
 | ID | Scheme | Key Fraud Types |
 |----|--------|-----------------|
-| TP-0041 | RDGA-Based Infrastructure Campaigns | RDGA infrastructure |
-| TP-0042 | TDS Chain Exploitation | TDS exploitation, malvertising, phishing |
-| TP-0043 | AI-Accelerated Fraud Infrastructure Generation | AI infrastructure, phishing, brand impersonation |
-| TP-0044 | State-Criminal Infrastructure Convergence | State-criminal convergence, crypto laundering |
-| TP-0045 | Sanctions Evasion via Fraud Infrastructure | Sanctions evasion, crypto laundering |
-| TP-0046 | Geopolitically-Timed Fraud Campaigns | State-criminal convergence |
-| TP-0047 | Human Trafficking-Linked Fraud Infrastructure | Human trafficking facilitation, scam compounds |
-| TP-0048 | Bulletproof Hosting Migration Patterns | BPH migration, sanctions evasion |
-| TP-0049 | Cryptocurrency Laundering Infrastructure | Crypto laundering infrastructure, CMLN operations |
-| TP-0050 | Calendar/Invite Injection Phishing | Calendar phishing, social engineering |
+| TP-0051 | QR Code Payment Fraud / Quishing | quishing, credential-stuffing, account-takeover |
+| TP-0052 | Sextortion-Investment Hybrid Fraud | sextortion, investment-scam, deepfake |
+| TP-0053 | Vehicle Export Financing Fraud | vehicle-export-fraud, identity-theft, application-fraud |
+| TP-0054 | Fraud-as-a-Service (FaaS) Platforms | fraud-as-a-service, AI infrastructure, phishing |
+| TP-0055 | Crypto Fraud-Terrorism/Narco Financing Nexus | crypto-laundering, investment-scam, state-criminal convergence |
+| TP-0056 | Insurance Claims Fraud (Motor/Medical) | insurance-fraud, fraudulent-claim, identity-theft |
+| TP-0057 | Deepfake-as-a-Service Marketplace Ecosystem | deepfake-as-a-service, deepfake-fraud, AI face/voice changer |
+| TP-0058 | Scam Compound Operational Infrastructure | scam-compound-operations, chatbot-enabled-fraud, social-engineering |
+| TP-0059 | Automated Mule Account Infrastructure | automated-mule-accounts, money-laundering, bot-driven-account-opening |
+| TP-0060 | Investment Fraud TDS Pipeline | traffic-distribution-system, investment-fraud, cloaking |
+| TP-0061 | Threat Actor Enabling Bulletproof Hosting Infrastructure | bulletproof-hosting, fraud-enabling-infrastructure, hosting-provider-complicity |
 
 <details>
-<summary><strong>View TP-0011 through TP-0040</strong></summary>
+<summary><strong>View TP-0011 through TP-0050</strong></summary>
 
 | ID | Scheme | Key Fraud Types |
 |----|--------|-----------------|
@@ -247,6 +248,16 @@ FLAME ships with **50 threat paths** covering **71 fraud types** across **19 sec
 | TP-0038 | Card Testing Infrastructure Abuse | Card testing, identity theft |
 | TP-0039 | Agentic Commerce Fraud | Autonomous AI fraud, unauthorized transaction |
 | TP-0040 | BNPL Multi-Provider Fraud | BNPL fraud, synthetic stacking |
+| TP-0041 | RDGA-Based Infrastructure Campaigns | RDGA infrastructure |
+| TP-0042 | TDS Chain Exploitation | TDS exploitation, malvertising, phishing |
+| TP-0043 | AI-Accelerated Fraud Infrastructure Generation | AI infrastructure, phishing, brand impersonation |
+| TP-0044 | State-Criminal Infrastructure Convergence | State-criminal convergence, crypto laundering |
+| TP-0045 | Sanctions Evasion via Fraud Infrastructure | Sanctions evasion, crypto laundering |
+| TP-0046 | Geopolitically-Timed Fraud Campaigns | State-criminal convergence |
+| TP-0047 | Human Trafficking-Linked Fraud Infrastructure | Human trafficking facilitation, scam compounds |
+| TP-0048 | Bulletproof Hosting Migration Patterns | BPH migration, sanctions evasion |
+| TP-0049 | Cryptocurrency Laundering Infrastructure | Crypto laundering infrastructure, CMLN operations |
+| TP-0050 | Calendar/Invite Injection Phishing | Calendar phishing, social engineering |
 
 </details>
 
@@ -256,13 +267,13 @@ See [ThreatPaths/INDEX.md](ThreatPaths/INDEX.md) for full cross-reference tables
 
 ## Detection Logic
 
-FLAME ships **114 detection rules** as Sigma-compatible YAML, exported to three SIEM query languages:
+FLAME ships **132 detection rules** as Sigma-compatible YAML, exported to three SIEM query languages:
 
 - **Splunk SPL** -- `database/sigma-exports/splunk/`
 - **Elasticsearch EQL** -- `database/sigma-exports/elastic/`
 - **Microsoft Sentinel KQL** -- `database/sigma-exports/sentinel/`
 
-76 rules are pure Sigma (boolean selection logic). 38 rules requiring aggregation or correlation include native query implementations with SIEM-specific guidance in `queries:` blocks (LogScale LQL, Splunk SPL, Elasticsearch).
+86 rules are pure Sigma (boolean selection logic). 46 rules requiring aggregation or correlation include native query implementations with SIEM-specific guidance in `queries:` blocks (LogScale LQL, Splunk SPL, Elasticsearch).
 
 Rules are organized by severity level (`informational`, `low`, `medium`, `high`, `critical`) and linked to specific threat paths via `threat_paths:` frontmatter. Each rule maps to a single CFPF phase.
 
@@ -296,7 +307,7 @@ The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark 
 |---|---|
 | **Attack Flow Diagram** | Horizontal CFPF phase flow (P1--P5) per threat path with MITRE technique cards and detection rule badges |
 | **Ego Neighborhood Graph** | Force-directed 1--2 hop subgraph showing related threat paths with typed relationships |
-| **Global Relationship Graph** | Full-network force layout of all 50 TPs, sector-clustered with 7 color-coded relationship types |
+| **Global Relationship Graph** | Full-network force layout of all 61 TPs, sector-clustered with 7 color-coded relationship types |
 | **UCFF Radar Chart** | 7-axis maturity profile for the UCFF self-assessment |
 | **Coverage Heat Map** | Fraud type x CFPF phase coverage matrix with intensity-based coloring |
 | **Framework Navigator** | Cross-framework coverage grid (CFPF, MITRE, Group-IB, FT3) with SVG and ATT&CK Navigator JSON export |
@@ -337,7 +348,7 @@ The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark 
 
 ### MISP Galaxy & Feed
 
-A subscribable MISP galaxy with **50 cluster entries** cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`. Point your MISP instance feed URL to `database/misp-feed/manifest.json` on the GitHub Pages site.
+A subscribable MISP galaxy with **61 cluster entries** cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`. Point your MISP instance feed URL to `database/misp-feed/manifest.json` on the GitHub Pages site.
 
 ### TAXII 2.1 Endpoints
 
@@ -351,7 +362,7 @@ Compatible with MISP, OpenCTI, ThreatConnect, and other TIPs. Configure your TIP
 
 ### Sigma Detection Packs
 
-114 detection rules exported to **Splunk SPL**, **Elasticsearch EQL**, and **Microsoft Sentinel KQL** via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance. Per-TP packs available in `database/sigma-exports/packs/`.
+132 detection rules exported to **Splunk SPL**, **Elasticsearch EQL**, and **Microsoft Sentinel KQL** via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance. Per-TP packs available in `database/sigma-exports/packs/`.
 
 ### RSS Feed
 
@@ -374,7 +385,7 @@ GET /taxonomy.json                  Master taxonomy
 
 ### Regulatory Compliance
 
-**15 regulations** across **6 jurisdictions** (EU, UK, US, Singapore, Australia, International) mapped to relevant threat paths via `regulatory_refs` frontmatter. Includes PSD3 SCA, UK PSR APP, FinCEN AML/BSA, FATF R16, MAS SRF, FFIEC Auth, DORA, and more.
+**22 regulations** across **7 jurisdictions** (EU, UK, US, Singapore, Australia, Africa, International) mapped to relevant threat paths via `regulatory_refs` frontmatter. Includes PSD3 SCA, UK PSR APP, FinCEN AML/BSA, FATF R16, MAS SRF, FFIEC Auth, DORA, and more.
 
 **Automated regulatory intelligence** fetched 2x daily from 6 government sources:
 
@@ -529,7 +540,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines, frontmatter requirem
 
 ## Testing
 
-FLAME includes 13 pytest test modules covering the full pipeline:
+FLAME includes 12 pytest test modules covering the full pipeline:
 
 ```bash
 pytest tests/ -v
@@ -554,7 +565,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 ## Documentation
 
 - [STIX Fraud Extension](docs/STIX-FRAUD-EXTENSION.md) -- Custom SDO specification (4 SDOs, 5 relationship types)
-- [Taxonomy Reference](docs/TAXONOMY.md) -- 71 fraud types, 19 sectors, CFPF phases, cross-framework mappings
+- [Taxonomy Reference](docs/TAXONOMY.md) -- 95 fraud types, 17 sectors, CFPF phases, cross-framework mappings
 - [Competitive Landscape](docs/COMPETITIVE-LANDSCAPE.md) -- How FLAME relates to Group-IB, MITRE, Stripe, FS-ISAC
 - [Changelog](CHANGELOG.md) -- Release history (v0.1.0 through v0.8.0)
 - [Contributing Guide](CONTRIBUTING.md) -- Submission guidelines and quality standards
