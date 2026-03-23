@@ -127,18 +127,15 @@ graph LR
 
 ```mermaid
 graph TD
-    PR["Pull Request"] --> VAL["validate-pr.yml"]
-    VAL -->|Merge| BUILD["build-and-deploy.yml"]
-    BUILD --> PAGES["GitHub Pages"]
-
-    ISSUE["Intel Submission Issue"] --> AI["ai-intake.yml"]
-    AI --> GEN["generate_threat_path.yml"]
+    PR[Pull Request] --> VAL[validate-pr.yml]
+    VAL -- Merge --> BUILD[build-and-deploy.yml]
+    BUILD --> PAGES[GitHub Pages]
+    ISSUE[Intel Submission Issue] --> AI[ai-intake.yml]
+    AI --> GEN[generate_threat_path.yml]
     GEN --> PR
-
-    CRON["Cron 2x Daily"] --> REG["fetch-regulatory.yml"]
-    REG --> DBUP["update-database.yml"]
-
-    LABEL["Label: submitted"] --> PEER["peer-review.yml"]
+    CRON[Cron 2x Daily] --> REG[fetch-regulatory.yml]
+    REG --> DBUP[update-database.yml]
+    LABEL[Label: submitted] --> PEER[peer-review.yml]
     PEER --> PR
 ```
 
@@ -147,9 +144,9 @@ graph TD
 ## Repository Structure
 
 ```
-ThreatPaths/           61 fraud scheme lifecycle mappings (TP-XXXX.md)
-DetectionLogic/        132 Sigma-based detection rules (DL-XXXX.yml)
-Baselines/             29 environmental profiling benchmarks (BL-XXXX.md)
+ThreatPaths/           67 fraud scheme lifecycle mappings (TP-XXXX.md)
+DetectionLogic/        143 Sigma-based detection rules (DL-XXXX.yml)
+Baselines/             33 environmental profiling benchmarks (BL-XXXX.md)
 EmulationPlaybooks/    7 adversary simulation playbooks (EP-XXXX.json)
 Templates/             Submission templates (TP, DL, BL, EP)
 config/                Regulatory requirements and source configs
@@ -182,7 +179,7 @@ docs/                  Project documentation and specifications
 
 ## Threat Path Collection
 
-FLAME ships with **61 threat paths** covering **95 fraud types** across **17 sectors**.
+FLAME ships with **67 threat paths** covering **100 fraud types** across **19 sectors**.
 
 | ID | Scheme | Key Fraud Types |
 |----|--------|-----------------|
@@ -212,6 +209,12 @@ FLAME ships with **61 threat paths** covering **95 fraud types** across **17 sec
 | TP-0059 | Automated Mule Account Infrastructure | automated-mule-accounts, money-laundering, bot-driven-account-opening |
 | TP-0060 | Investment Fraud TDS Pipeline | traffic-distribution-system, investment-fraud, cloaking |
 | TP-0061 | Threat Actor Enabling Bulletproof Hosting Infrastructure | bulletproof-hosting, fraud-enabling-infrastructure, hosting-provider-complicity |
+| TP-0062 | Recovery Fraud -- Double-Dip Re-victimization | recovery-fraud, impersonation, advance-fee-fraud |
+| TP-0063 | Organized Counterfeit Goods and Non-Delivery Fraud Networks | purchase-scam, auction-fraud, brand-impersonation |
+| TP-0064 | Long-Firm and Organized Business Credit Fraud | long-firm-fraud, bust-out, application-fraud |
+| TP-0065 | Organized Mass-Marketing Fraud Infrastructure | robodialling-fraud, vishing, social-engineering |
+| TP-0066 | Crash-for-Cash and Organized Insurance Fraud Rings | crash-for-cash, insurance-fraud, collusion |
+| TP-0067 | AiTM Phishing Kit Infrastructure and Session Token Hijacking | aitm-phishing, account-takeover, fraud-as-a-service |
 
 <details>
 <summary><strong>View TP-0011 through TP-0050</strong></summary>
@@ -267,13 +270,13 @@ See [ThreatPaths/INDEX.md](ThreatPaths/INDEX.md) for full cross-reference tables
 
 ## Detection Logic
 
-FLAME ships **132 detection rules** as Sigma-compatible YAML, exported to three SIEM query languages:
+FLAME ships **143 detection rules** as Sigma-compatible YAML, exported to three SIEM query languages:
 
 - **Splunk SPL** -- `database/sigma-exports/splunk/`
 - **Elasticsearch EQL** -- `database/sigma-exports/elastic/`
 - **Microsoft Sentinel KQL** -- `database/sigma-exports/sentinel/`
 
-86 rules are pure Sigma (boolean selection logic). 46 rules requiring aggregation or correlation include native query implementations with SIEM-specific guidance in `queries:` blocks (LogScale LQL, Splunk SPL, Elasticsearch).
+93 rules are pure Sigma (boolean selection logic). 50 rules requiring aggregation or correlation include native query implementations with SIEM-specific guidance in `queries:` blocks (LogScale LQL, Splunk SPL, Elasticsearch).
 
 Rules are organized by severity level (`informational`, `low`, `medium`, `high`, `critical`) and linked to specific threat paths via `threat_paths:` frontmatter. Each rule maps to a single CFPF phase.
 
@@ -307,7 +310,7 @@ The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark 
 |---|---|
 | **Attack Flow Diagram** | Horizontal CFPF phase flow (P1--P5) per threat path with MITRE technique cards and detection rule badges |
 | **Ego Neighborhood Graph** | Force-directed 1--2 hop subgraph showing related threat paths with typed relationships |
-| **Global Relationship Graph** | Full-network force layout of all 61 TPs, sector-clustered with 7 color-coded relationship types |
+| **Global Relationship Graph** | Full-network force layout of all 67 TPs, sector-clustered with 7 color-coded relationship types |
 | **UCFF Radar Chart** | 7-axis maturity profile for the UCFF self-assessment |
 | **Coverage Heat Map** | Fraud type x CFPF phase coverage matrix with intensity-based coloring |
 | **Framework Navigator** | Cross-framework coverage grid (CFPF, MITRE, Group-IB, FT3) with SVG and ATT&CK Navigator JSON export |
@@ -348,7 +351,7 @@ The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark 
 
 ### MISP Galaxy & Feed
 
-A subscribable MISP galaxy with **61 cluster entries** cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`. Point your MISP instance feed URL to `database/misp-feed/manifest.json` on the GitHub Pages site.
+A subscribable MISP galaxy with **67 cluster entries** cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`. Point your MISP instance feed URL to `database/misp-feed/manifest.json` on the GitHub Pages site.
 
 ### TAXII 2.1 Endpoints
 
@@ -362,7 +365,7 @@ Compatible with MISP, OpenCTI, ThreatConnect, and other TIPs. Configure your TIP
 
 ### Sigma Detection Packs
 
-132 detection rules exported to **Splunk SPL**, **Elasticsearch EQL**, and **Microsoft Sentinel KQL** via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance. Per-TP packs available in `database/sigma-exports/packs/`.
+143 detection rules exported to **Splunk SPL**, **Elasticsearch EQL**, and **Microsoft Sentinel KQL** via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance. Per-TP packs available in `database/sigma-exports/packs/`.
 
 ### RSS Feed
 
@@ -385,7 +388,7 @@ GET /taxonomy.json                  Master taxonomy
 
 ### Regulatory Compliance
 
-**22 regulations** across **7 jurisdictions** (EU, UK, US, Singapore, Australia, Africa, International) mapped to relevant threat paths via `regulatory_refs` frontmatter. Includes PSD3 SCA, UK PSR APP, FinCEN AML/BSA, FATF R16, MAS SRF, FFIEC Auth, DORA, and more.
+**27 regulations** across **7 jurisdictions** (EU, UK, US, Singapore, Australia, Africa, International) mapped to relevant threat paths via `regulatory_refs` frontmatter. Includes PSD3 SCA, UK PSR APP, FinCEN AML/BSA, FATF R16, MAS SRF, FFIEC Auth, DORA, UNODC Organized Fraud, STIX-FCI, MITRE F3, EBA Fraud Taxonomy v5.0, and more.
 
 **Automated regulatory intelligence** fetched 2x daily from 6 government sources:
 
@@ -565,7 +568,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 ## Documentation
 
 - [STIX Fraud Extension](docs/STIX-FRAUD-EXTENSION.md) -- Custom SDO specification (4 SDOs, 5 relationship types)
-- [Taxonomy Reference](docs/TAXONOMY.md) -- 95 fraud types, 17 sectors, CFPF phases, cross-framework mappings
+- [Taxonomy Reference](docs/TAXONOMY.md) -- 100 fraud types, 19 sectors, CFPF phases, cross-framework mappings
 - [Competitive Landscape](docs/COMPETITIVE-LANDSCAPE.md) -- How FLAME relates to Group-IB, MITRE, Stripe, FS-ISAC
 - [Changelog](CHANGELOG.md) -- Release history (v0.1.0 through v0.8.0)
 - [Contributing Guide](CONTRIBUTING.md) -- Submission guidelines and quality standards
