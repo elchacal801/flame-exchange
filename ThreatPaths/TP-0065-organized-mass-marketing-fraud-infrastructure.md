@@ -309,7 +309,7 @@ level: medium
 
 ---
 
-## Case Studies & References
+## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter IV, Mass-marketing
 - Europol, "Action against criminal website that offered 'spoofing' services to fraudsters: 142 arrests", 24 November 2022 (iSpoof)

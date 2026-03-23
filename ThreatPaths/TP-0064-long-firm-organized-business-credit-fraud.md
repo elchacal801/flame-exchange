@@ -275,7 +275,7 @@ ORDER BY month DESC;
 
 ---
 
-## Case Studies & References
+## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Fraud Against Businesses or Organizations
 - UK Serious Fraud Office, "Serious Fraud Office secures three convictions in $500 million trade finance fraud", 2 February 2023

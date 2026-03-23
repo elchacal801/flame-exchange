@@ -292,7 +292,7 @@ ORDER BY t.transaction_date DESC;
 
 ---
 
-## Case Studies & References
+## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Consumer Investment Fraud section on recovery fraud
 - FBI IC3, "2023 Internet Crime Report" — recovery fraud statistics and victim patterns

@@ -328,7 +328,7 @@ level: high
 
 ---
 
-## Case Studies & References
+## References
 
 - Sekoia.io, "Tycoon 2FA phishing kit: dissecting an AiTM campaign" (2025) — kit infrastructure analysis
 - Canadian Centre for Cyber Security — FIDO2 effectiveness against AiTM (93.9% block rate)

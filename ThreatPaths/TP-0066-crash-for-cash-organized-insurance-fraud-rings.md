@@ -261,7 +261,7 @@ ORDER BY shared_accident_count DESC;
 
 ---
 
-## Case Studies & References
+## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Fraud Against Businesses or Organizations
 - UK Insurance Fraud Bureau — crash-for-cash ring intelligence and disruption operations

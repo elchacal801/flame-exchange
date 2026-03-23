@@ -271,7 +271,7 @@ index=disputes sourcetype=chargeback_events reason_code IN ("non_delivery", "not
 
 ---
 
-## Case Studies & References
+## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Consumer Products and Services Fraud
 - United States of America v. Andre-Catalin Stoica et al. (SHERLOC) — Romania-based online auction fraud ring
