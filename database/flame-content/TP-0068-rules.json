@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0068",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- SQL: Gift card merge anomaly detection\n-- Multiple cards merged into single card in short timeframe\nSELECT\n    destination_card,\n    COUNT(DISTINCT source_card) AS source_card_count,\n    SUM(transfer_amount) AS total_transferred,\n    MIN(transfer_time) AS first_transfer,\n    MAX(transfer_time) AS last_transfer,\n    DATEDIFF(minute, MIN(transfer_time), MAX(transfer_time)) AS window_minutes\nFROM gift_card_transfers\nWHERE transfer_time >= DATEADD(day, -7, GETDATE())\nGROUP BY destination_card\nHAVING COUNT(DISTINCT source_card) >= 3\n   AND DATEDIFF(minute, MIN(transfer_time), MAX(transfer_time)) < 60\nORDER BY source_card_count DESC",
+      "title": "TP-0068 detection rule (sql)"
+    }
+  ]
+}
