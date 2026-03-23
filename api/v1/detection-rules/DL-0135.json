@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-23T00:08:06.036263+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "6c8d2e5f-4a1b-3f9e-d7a6-8b2c5e9f1d03",
+    "dl_id": "DL-0135",
+    "title": "Long-Firm Credit Buildup Pattern — Steady Low Utilization Followed by Rapid Spike",
+    "status": "experimental",
+    "description": "Detects commercial accounts following a long-firm fraud pattern: steady low-value credit utilization for 6-12 months (building creditworthiness) followed by rapid escalation in credit utilization (the \"burst\"). Long-firm fraud involves organized criminal groups establishing businesses, building credit relationships, then exploiting that trust to defraud supply chain partners and trade finance banks. The artificially smooth buildup period followed by a discontinuous spike is the hallmark behavioral indicator.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "account_type": "commercial"
+      },
+      "timeframe": "12m",
+      "condition": "trailing_6m_avg_utilization < 35% AND current_month_utilization > 80% AND prev_month_utilization < 50%\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "commercial_credit"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "account_type",
+        "credit_utilization_pct",
+        "credit_limit",
+        "transaction_date",
+        "monthly_payment_amount"
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Long-Firm Credit Buildup Pattern\")`\n`comment(\"Detects steady low utilization followed by rapid credit spike\")`\nindex=flame_banking sourcetype=flame:commercial_credit account_type=\"commercial\"\n| bin _time span=1mon\n| stats avg(credit_utilization_pct) AS avg_util,\n        max(credit_utilization_pct) AS max_util\n  BY account_id, _time\n| streamstats avg(avg_util) AS trailing_6m_avg,\n              current=false window=6\n  BY account_id\n| streamstats latest(avg_util) AS prev_month_util,\n              current=false window=1\n  BY account_id\n| where trailing_6m_avg < 35 AND avg_util > 80 AND prev_month_util < 50\n| sort - avg_util",
+      "sql": "-- SQL for Long-Firm Credit Buildup Pattern\nWITH monthly_util AS (\n    SELECT\n        account_id,\n        DATE_TRUNC('month', transaction_date) AS month,\n        AVG(credit_utilization_pct) AS avg_util\n    FROM commercial_credit_accounts\n    WHERE account_type = 'commercial'\n    GROUP BY account_id, DATE_TRUNC('month', transaction_date)\n),\ntrend AS (\n    SELECT\n        account_id,\n        month,\n        avg_util,\n        LAG(avg_util, 1) OVER (PARTITION BY account_id ORDER BY month) AS prev_month_util,\n        AVG(avg_util) OVER (\n            PARTITION BY account_id ORDER BY month\n            ROWS BETWEEN 6 PRECEDING AND 1 PRECEDING\n        ) AS trailing_6m_avg\n    FROM monthly_util\n)\nSELECT account_id, month, avg_util, trailing_6m_avg, prev_month_util\nFROM trend\nWHERE trailing_6m_avg < 35\n  AND avg_util > 80\n  AND prev_month_util < 50\nORDER BY month DESC"
+    },
+    "references": [
+      "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter II, Fraud Against Businesses",
+      "UK SFO, Serious Fraud Office secures three convictions in $500 million trade finance fraud, 2 February 2023"
+    ],
+    "threat_path_ids": [
+      "TP-0064"
+    ],
+    "fraud_types": [
+      "application-fraud",
+      "bust-out",
+      "loan-fraud",
+      "long-firm-fraud"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.commercial-credit",
+      "flame.long-firm",
+      "flame.unodc"
+    ],
+    "falsepositives": [
+      "Seasonal businesses with legitimate cyclical credit utilization spikes",
+      "Businesses undergoing genuine rapid growth requiring increased credit",
+      "One-time large purchase on established credit facility"
+    ]
+  }
+}

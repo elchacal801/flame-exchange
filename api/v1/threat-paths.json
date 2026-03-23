@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-22T04:09:01.217007+00:00",
-    "total": 61
+    "generated_at": "2026-03-23T00:08:04.764575+00:00",
+    "total": 67
   },
   "data": [
     {
@@ -186,7 +186,9 @@
         "vendor-impersonation",
         "accounts-payable",
         "email-compromise",
-        "high-value"
+        "high-value",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -235,7 +237,8 @@
       "regulatory_refs": [
         "REG-FATF-R16",
         "REG-FBI-IC3",
-        "REG-OCC-FRAUD"
+        "REG-OCC-FRAUD",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -256,7 +259,9 @@
         "DL-0039",
         "DL-0040",
         "DL-0041",
-        "DL-0043"
+        "DL-0043",
+        "DL-0137",
+        "DL-0138"
       ],
       "related_tps": [
         {
@@ -272,7 +277,7 @@
           "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 2
     },
     {
       "id": "TP-0003",
@@ -303,7 +308,9 @@
         "bust-out",
         "thin-file",
         "long-game",
-        "organized-crime"
+        "organized-crime",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -343,7 +350,8 @@
         "Monetization"
       ],
       "regulatory_refs": [
-        "REG-FINCEN-CDD"
+        "REG-FINCEN-CDD",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -373,7 +381,7 @@
           "relationship": "variant-of"
         }
       ],
-      "evidence_count": 2
+      "evidence_count": 4
     },
     {
       "id": "TP-0004",
@@ -724,7 +732,7 @@
       "source": "Wall Street Journal (2019 UK energy firm case) / Regula AI deepfake fraud surveys",
       "tlp": "WHITE",
       "summary": "Actors use AI-generated voice deepfakes to impersonate executives, clients, or authorized signers during phone-based wire transfer authorization. The first publicly documented case (2019) involved a UK energy firm's CEO impersonated via deepfake voice, resulting in a $243,000 transfer. As voice cloning technology becomes more accessible and convincing, this threat path is accelerating. It specifically targets institutions that rely on voice-based dual authorization as a fraud control — turning a security measure into an attack vector.",
-      "confidence_score": 68,
+      "confidence_score": 75,
       "source_reliability": "C",
       "info_credibility": 2,
       "infrastructure_generation_method": null,
@@ -745,7 +753,12 @@
         "CEO-fraud",
         "AI-enabled",
         "dual-authorization-bypass",
-        "emerging-threat"
+        "emerging-threat",
+        "daas",
+        "10-second-voice-clone",
+        "unodc",
+        "interpol-gffta",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -795,7 +808,10 @@
         "REG-FATF-R16",
         "REG-FBI-IC3",
         "REG-OCC-FRAUD",
-        "REG-UK-PSR-APP"
+        "REG-UK-PSR-APP",
+        "REG-INTERPOL-GFFTA",
+        "REG-UNODC-EMERGING-THREATS",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -831,9 +847,13 @@
         {
           "id": "TP-0025",
           "relationship": "related-to"
+        },
+        {
+          "id": "TP-0057",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 2
     },
     {
       "id": "TP-0008",
@@ -946,7 +966,8 @@
         "DL-0046",
         "DL-0047",
         "DL-0048",
-        "DL-0049"
+        "DL-0049",
+        "DL-0141"
       ],
       "related_tps": [
         {
@@ -966,7 +987,7 @@
           "relationship": "enables"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 1
     },
     {
       "id": "TP-0009",
@@ -1176,7 +1197,9 @@
         "mule-recruitment",
         "crypto-investment-scam",
         "elder-fraud",
-        "human-trafficking"
+        "human-trafficking",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -1223,7 +1246,8 @@
       "regulatory_refs": [
         "REG-AU-SPF",
         "REG-EU-AMLD6",
-        "REG-FINCEN-AML"
+        "REG-FINCEN-AML",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -1241,7 +1265,8 @@
         "DL-0039",
         "DL-0041",
         "DL-0042",
-        "DL-0043"
+        "DL-0043",
+        "DL-0140"
       ],
       "related_tps": [
         {
@@ -1265,7 +1290,7 @@
           "relationship": "escalates-from"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 1
     },
     {
       "id": "TP-0012",
@@ -1298,7 +1323,9 @@
         "bank-impersonation",
         "remote-access",
         "screen-sharing",
-        "elder-fraud"
+        "elder-fraud",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -1349,7 +1376,8 @@
         "REG-MAS-SRF",
         "REG-OCC-FRAUD",
         "REG-PSD3-SCA",
-        "REG-UK-PSR-APP"
+        "REG-UK-PSR-APP",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 2",
@@ -1381,7 +1409,7 @@
           "relationship": "related-to"
         }
       ],
-      "evidence_count": 1
+      "evidence_count": 2
     },
     {
       "id": "TP-0013",
@@ -1645,7 +1673,9 @@
         "advance-fee",
         "pii-harvesting",
         "disposable-email",
-        "healthcare-staffing"
+        "healthcare-staffing",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -1690,7 +1720,8 @@
       ],
       "regulatory_refs": [
         "REG-FINCEN-CDD",
-        "REG-UK-PSR-APP"
+        "REG-UK-PSR-APP",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 2",
@@ -1701,7 +1732,9 @@
         "report": "Level 2",
         "improve": "Level 2"
       },
-      "detection_rule_ids": [],
+      "detection_rule_ids": [
+        "DL-0143"
+      ],
       "related_tps": [
         {
           "id": "TP-0004",
@@ -1712,7 +1745,7 @@
           "relationship": "related-to"
         }
       ],
-      "evidence_count": 1
+      "evidence_count": 3
     },
     {
       "id": "TP-0016",
@@ -1833,7 +1866,11 @@
         "pig-butchering",
         "crypto-scam",
         "romance-scam",
-        "app-fraud"
+        "app-fraud",
+        "interpol-gffta",
+        "unodc",
+        "unodc-organized-fraud-2024",
+        "40b-annual"
       ],
       "cfpf_phases": [
         "P1",
@@ -1880,7 +1917,10 @@
         "REG-FCA-APP",
         "REG-MAS-SRF",
         "REG-SEC-SAR",
-        "REG-UK-PSR-APP"
+        "REG-UK-PSR-APP",
+        "REG-INTERPOL-GFFTA",
+        "REG-UNODC-EMERGING-THREATS",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -1891,7 +1931,10 @@
         "report": "Level 3",
         "improve": "Level 3"
       },
-      "detection_rule_ids": [],
+      "detection_rule_ids": [
+        "DL-0117",
+        "DL-0142"
+      ],
       "related_tps": [
         {
           "id": "TP-0026",
@@ -1902,7 +1945,7 @@
           "relationship": "shares-infrastructure"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 3
     },
     {
       "id": "TP-0018",
@@ -2209,36 +2252,61 @@
       "category": "ThreatPath",
       "date": "2026-02-20",
       "author": "FLAME Project",
-      "source": "Internal Knowledge Base",
+      "source": "Internal Knowledge Base; CrimsonVector Security March 2026",
       "tlp": "WHITE",
       "summary": "Healthcare Provider Billing Fraud involves legitimate or seemingly legitimate medical providers intentionally submitting false or inflated claims to health insurance networks or government programs (like Medicare/Medicaid) for financial gain. This typically takes the form of \"phantom billing\" (billing for services never rendered), \"upcoding\" (billing for a more expensive service than provided), or \"unbundling\" (billing stages of a procedure separately to increase total payout).\n\n---",
-      "confidence_score": 82,
+      "confidence_score": 85,
       "source_reliability": "A",
-      "info_credibility": 2,
-      "infrastructure_generation_method": null,
-      "geopolitical_timing": null,
-      "nation_state_nexus": null,
+      "info_credibility": 1,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
       "sectors": [
         "healthcare",
-        "insurance"
+        "insurance",
+        "government"
       ],
       "fraud_types": [
         "healthcare-fraud",
         "phantom-billing",
-        "upcoding"
+        "upcoding",
+        "hospice-fraud",
+        "aba-therapy-fraud",
+        "provider-fraud",
+        "money-mule"
       ],
       "tags": [
         "medicare-fraud",
+        "medicaid-fraud",
         "medical-billing",
         "upcoding",
-        "phantom-billing"
+        "phantom-billing",
+        "hospice-fraud",
+        "aba-therapy-fraud",
+        "armenian-american-ocg",
+        "beneficiary-trafficking",
+        "la-county-hospice",
+        "private-equity-aba",
+        "mso-opacity",
+        "minnesota-fraud-ecosystem",
+        "feeding-our-future",
+        "cms-moratorium",
+        "14.6b-takedown",
+        "kickbacks",
+        "crimsonvector-2026"
       ],
       "cfpf_phases": [
+        "P1",
+        "P2",
         "P3",
         "P4",
         "P5"
       ],
-      "mitre_attack": [],
+      "mitre_attack": [
+        "T1589.001",
+        "T1656",
+        "T1657"
+      ],
       "ft3_tactics": [
         "FTA003",
         "FTA005",
@@ -2259,11 +2327,16 @@
       ],
       "mitre_f3": [],
       "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
         "Trust Abuse",
         "Perform Fraud",
-        "Monetization"
+        "Monetization",
+        "Laundering"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-FINCEN-AML"
+      ],
       "ucff_domains": {
         "commit": "Level 3",
         "assess": "Level 3",
@@ -2273,7 +2346,11 @@
         "report": "Level 4",
         "improve": "Level 3"
       },
-      "detection_rule_ids": [],
+      "detection_rule_ids": [
+        "DL-0130",
+        "DL-0131",
+        "DL-0132"
+      ],
       "related_tps": [
         {
           "id": "TP-0010",
@@ -2282,9 +2359,13 @@
         {
           "id": "TP-0028",
           "relationship": "escalates-from"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 3
     },
     {
       "id": "TP-0022",
@@ -2656,7 +2737,9 @@
         "scam-compounds",
         "pig-butchering",
         "ai-chatbot",
-        "cross-border"
+        "cross-border",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -2709,7 +2792,8 @@
         "REG-DORA",
         "REG-FCA-APP",
         "REG-MAS-SRF",
-        "REG-UK-PSR-APP"
+        "REG-UK-PSR-APP",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 2",
@@ -2720,7 +2804,10 @@
         "report": "Level 3",
         "improve": "Level 4"
       },
-      "detection_rule_ids": [],
+      "detection_rule_ids": [
+        "DL-0139",
+        "DL-0140"
+      ],
       "related_tps": [
         {
           "id": "TP-0007",
@@ -2735,7 +2822,7 @@
           "relationship": "shares-infrastructure"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 2
     },
     {
       "id": "TP-0026",
@@ -2894,7 +2981,9 @@
         "power-of-attorney-abuse",
         "caregiver-fraud",
         "money-mule",
-        "high-value"
+        "high-value",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -2948,7 +3037,8 @@
         "REG-MAS-SRF",
         "REG-OCC-FRAUD",
         "REG-PSD3-SCA",
-        "REG-UK-PSR-APP"
+        "REG-UK-PSR-APP",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -2974,7 +3064,7 @@
           "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 1
     },
     {
       "id": "TP-0028",
@@ -2984,13 +3074,13 @@
       "author": "FLAME Project",
       "source": "https://oig.hhs.gov/reports-and-publications/featured-topics/dme/",
       "tlp": "WHITE",
-      "summary": "Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered to patients. Operation Gold Rush and related DOJ prosecutions have documented $4.45B in fraudulent DME billing, with over 5,800 defendants prosecuted since 2007. The scheme exploits stolen Medicare beneficiary data to create phantom patient lists, registers shell companies as DME suppliers across multiple states, and bills Medicare for expensive equipment (wheelchairs, orthotic braces, CPAP machines) that beneficiaries never ordered or received. The scale of the fraud prompted CMS to impose a 6-month moratorium on new DME supplier enrollment in high-fraud geographic areas.\n\n---",
-      "confidence_score": 85,
+      "summary": "Organized fraud networks establish fraudulent Durable Medical Equipment (DME) supplier companies, obtain Medicare provider enrollment, and submit claims for medical equipment that is never delivered to patients. The DOJ's June 2025 National Healthcare Fraud Takedown — the largest in history — charged 324 defendants across $14.6 billion in intended losses (more than doubling the previous $6B record), with Operation Gold Rush alone documenting $10.6 billion in fraudulent DME billing by a Russian-Estonian TCO that exploited over 1 million stolen American identities. Over 5,800 defendants have been prosecuted since 2007. The scheme exploits stolen Medicare beneficiary data to create phantom patient lists, registers shell companies as DME suppliers across multiple states, and bills Medicare for expensive equipment (urinary catheters, continuous glucose monitors, CPAP machines) that beneficiaries never ordered or received. AI-generated deepfake consent recordings, cryptocurrency laundering, encrypted messaging (Telegram) for C2, and foreign straw owners now characterize the most sophisticated operations. CMS has imposed enrollment moratoria, the DOJ created a Health Care Fraud Data Fusion Center, and the first-ever banker was convicted for laundering healthcare fraud proceeds (February 2026).\n\n---",
+      "confidence_score": 90,
       "source_reliability": "A",
-      "info_credibility": 2,
-      "infrastructure_generation_method": null,
-      "geopolitical_timing": null,
-      "nation_state_nexus": null,
+      "info_credibility": 1,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "suspected",
       "sectors": [
         "healthcare",
         "insurance",
@@ -3000,7 +3090,10 @@
         "healthcare-fraud",
         "phantom-billing",
         "provider-fraud",
-        "synthetic-medical-fraud"
+        "synthetic-medical-fraud",
+        "deepfake",
+        "money-mule",
+        "crypto-laundering"
       ],
       "tags": [
         "durable-medical-equipment",
@@ -3011,7 +3104,23 @@
         "beneficiary-data-theft",
         "cms",
         "operation-gold-rush",
-        "transnational"
+        "transnational",
+        "russian-estonian-tco",
+        "ai-deepfake-consent",
+        "cryptocurrency-laundering",
+        "shell-company-infrastructure",
+        "foreign-straw-owners",
+        "encrypted-messaging",
+        "telegram-c2",
+        "banker-conviction",
+        "identity-theft-pipeline",
+        "dark-web-mbi-market",
+        "14.6b-takedown",
+        "324-defendants",
+        "health-care-fraud-data-fusion-center",
+        "pakistani-marketing-orgs",
+        "doj-strike-force",
+        "crimsonvector-2026"
       ],
       "cfpf_phases": [
         "P1",
@@ -3024,7 +3133,8 @@
         "T1583.001",
         "T1589.001",
         "T1656",
-        "T1657"
+        "T1657",
+        "T1588.002"
       ],
       "ft3_tactics": [
         "FTA001",
@@ -3048,7 +3158,9 @@
         "Monetization",
         "Laundering"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-FINCEN-AML"
+      ],
       "ucff_domains": {
         "commit": "Level 3",
         "assess": "Level 3",
@@ -3058,7 +3170,11 @@
         "report": "Level 3",
         "improve": "Level 3"
       },
-      "detection_rule_ids": [],
+      "detection_rule_ids": [
+        "DL-0130",
+        "DL-0131",
+        "DL-0132"
+      ],
       "related_tps": [
         {
           "id": "TP-0021",
@@ -3067,9 +3183,17 @@
         {
           "id": "TP-0022",
           "relationship": "related-to"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0045",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 4
     },
     {
       "id": "TP-0029",
@@ -3375,7 +3499,8 @@
         "DL-0062",
         "DL-0063",
         "DL-0065",
-        "DL-0066"
+        "DL-0066",
+        "DL-0125"
       ],
       "related_tps": [
         {
@@ -3606,7 +3731,7 @@
       "category": "ThreatPath",
       "date": "2026-03-03",
       "author": "FLAME Project",
-      "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne",
+      "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)",
       "tlp": "WHITE",
       "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use stolen or synthetic American identities to fraudulently obtain remote employment at Western technology companies. The program generates revenue for the North Korean regime in violation of international sanctions, while simultaneously creating insider threat vectors for credential theft, source code exfiltration, and post-termination data extortion. The DOJ has documented 136+ compromised U.S. companies with $2.2M+ in direct salary revenue from a single case, while CrowdStrike has observed 304 incidents. The threat has escalated since mid-2024 from pure salary extraction to active data exfiltration and ransom demands, representing a convergence of state-sponsored espionage, employment fraud, and cyber extortion. The operation relies on organized facilitator networks spanning the U.S. and Ukraine that provide stolen identities, proxy laptop hosting at U.S. addresses, and financial laundering infrastructure.\n\n---",
       "confidence_score": 85,
@@ -3641,7 +3766,16 @@
         "identity-theft",
         "code-exfiltration",
         "salary-diversion",
-        "facilitator-network"
+        "facilitator-network",
+        "rb-site",
+        "netkeyregister",
+        "oconnect-vpn",
+        "ip-messenger",
+        "western-collaborators",
+        "beavertail",
+        "invisibleferret",
+        "purplebravo",
+        "purpledelta"
       ],
       "cfpf_phases": [
         "P1",
@@ -3692,7 +3826,9 @@
       "regulatory_refs": [
         "REG-OFAC-SDN",
         "REG-FINCEN-CDD",
-        "REG-FBI-IC3"
+        "REG-FBI-IC3",
+        "REG-UNODC-EMERGING-THREATS",
+        "REG-RF-CTA-2026-0319"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -3710,7 +3846,10 @@
         "DL-0071",
         "DL-0072",
         "DL-0073",
-        "DL-0074"
+        "DL-0074",
+        "DL-0119",
+        "DL-0121",
+        "DL-0126"
       ],
       "related_tps": [
         {
@@ -3728,9 +3867,17 @@
         {
           "id": "TP-0029",
           "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0045",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0057",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 2
+      "evidence_count": 4
     },
     {
       "id": "TP-0035",
@@ -4177,10 +4324,10 @@
       "author": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
       "source": "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025",
       "tlp": "WHITE",
-      "summary": "Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transactions across the payment ecosystem. Pilot programs such as Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay represent early implementations of this paradigm, creating a novel transaction chain: Consumer provides Intent to AI Agent, which performs Autonomous Merchant Selection, interacts with Merchant Transaction Systems, submits transactions to Payment Infrastructure for Authorization and Settlement by the Card Issuer. Each handoff in this chain introduces attack surfaces that do not exist in traditional human-initiated commerce.\n\nThe core vulnerability is that user and agent intent becomes a novel attack surface -- vulnerable to the same categories of attacks that circumvent identity authentication, but applied to the delegation of purchasing authority rather than credential theft. Threat actors can compromise or manipulate AI agent context, prompts, or MCP server connections to redirect purchasing intent, inflate prices, route transactions to attacker-controlled merchants, or execute unauthorized purchases at machine speed. In April 2025, threat actor \"d0ctrine\" published proof-of-concept documentation outlining agentic fraud workflows including agent-automated fraud, mimicry of human interaction patterns, and evasion of behavioral and device-based controls. In November 2025, Anthropic disclosed the first known cyber-espionage campaign orchestrated primarily by an autonomous AI system, coinciding with an attempted fraudulent purchase for the same AI service -- demonstrating convergence between AI-enabled fraud and AI-enabled cyber threats.\n\nThe structural parallel to early open banking is significant: as banks lost visibility into customer activity through third-party payment initiators, they experienced degraded controls for identity verification, online interaction monitoring, and bot detection. Agentic commerce replicates this pattern at greater scale -- opaque agent behavior hides intent, device context, and interaction patterns from downstream payment processors and issuers. Without improved control visibility and shared investigation workflows, the ecosystem faces expanded fraud investigation scope (distinguishing third-party fraud, first-party misuse, and agentic abuse) and liability ambiguity that increases operational costs even when liability is contractually clear.\n\n---",
-      "confidence_score": 55,
-      "source_reliability": "C",
-      "info_credibility": 3,
+      "summary": "Agentic commerce fraud exploits the emerging paradigm of AI agent-mediated purchasing, where autonomous AI systems act on behalf of consumers to select merchants, negotiate prices, and execute transactions across the payment ecosystem. Pilot programs such as Amazon Buy for Me, Visa Intelligent Commerce, and Mastercard Agent Pay represent early implementations of this paradigm, while Google's Universal Commerce Protocol (UCP) -- unveiled at the NRF Big Show in January 2026 -- establishes an open-source standard for agentic commerce with tokenized payments and verifiable credentials, compatible with the Agent Payments Protocol (AP2). These systems create a novel transaction chain: Consumer provides Intent to AI Agent, which performs Autonomous Merchant Selection, interacts with Merchant Transaction Systems, submits transactions to Payment Infrastructure for Authorization and Settlement by the Card Issuer. Each handoff in this chain introduces attack surfaces that do not exist in traditional human-initiated commerce. According to Bain & Company, agentic AI is expected to handle 15-25% of all e-commerce volume by 2030, while McKinsey estimates agentic commerce could generate $3-5 trillion in global retail revenue by 2030. The World Economic Forum estimates that by 2028, one in four data breaches could result from AI agent exploitation.\n\nThe core vulnerability is that user and agent intent becomes a novel attack surface -- vulnerable to the same categories of attacks that circumvent identity authentication, but applied to the delegation of purchasing authority rather than credential theft. Threat actors can compromise or manipulate AI agent context, prompts, or MCP server connections to redirect purchasing intent, inflate prices, route transactions to attacker-controlled merchants, or execute unauthorized purchases at machine speed. In April 2025, threat actor \"d0ctrine\" published proof-of-concept documentation outlining agentic fraud workflows including agent-automated fraud, mimicry of human interaction patterns, and evasion of behavioral and device-based controls. In November 2025, Anthropic disclosed the first known cyber-espionage campaign orchestrated primarily by an autonomous AI system, coinciding with an attempted fraudulent purchase for the same AI service -- demonstrating convergence between AI-enabled fraud and AI-enabled cyber threats.\n\nThe structural parallel to early open banking is significant: as banks lost visibility into customer activity through third-party payment initiators, they experienced degraded controls for identity verification, online interaction monitoring, and bot detection. Agentic commerce replicates this pattern at greater scale -- opaque agent behavior hides intent, device context, and interaction patterns from downstream payment processors and issuers. Without improved control visibility and shared investigation workflows, the ecosystem faces expanded fraud investigation scope (distinguishing third-party fraud, first-party misuse, and agentic abuse) and liability ambiguity that increases operational costs even when liability is contractually clear.\n\n---",
+      "confidence_score": 65,
+      "source_reliability": "B",
+      "info_credibility": 2,
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
@@ -4195,7 +4342,10 @@
         "autonomous-ai-fraud",
         "social-engineering",
         "account-takeover",
-        "unauthorized-transaction"
+        "unauthorized-transaction",
+        "gift-card-fraud",
+        "returns-fraud",
+        "refunding-as-a-service"
       ],
       "tags": [
         "agentic-ai",
@@ -4207,7 +4357,21 @@
         "open-banking-parallel",
         "amazon-buy-for-me",
         "visa-intelligent-commerce",
-        "mastercard-agent-pay"
+        "mastercard-agent-pay",
+        "interpol-gffta",
+        "universal-commerce-protocol",
+        "ucp",
+        "agent-payments-protocol",
+        "ap2",
+        "indirect-prompt-injection",
+        "cart-mandate-poisoning",
+        "returns-logic-hijacking",
+        "organized-retail-crime",
+        "know-your-agent",
+        "agent-reputation-score",
+        "openclaw",
+        "gift-card-theft",
+        "nrf"
       ],
       "cfpf_phases": [
         "P1",
@@ -4248,7 +4412,8 @@
       "regulatory_refs": [
         "REG-CFPB-REGE",
         "REG-DORA",
-        "REG-PSD3-SCA"
+        "REG-PSD3-SCA",
+        "REG-INTERPOL-GFFTA"
       ],
       "ucff_domains": {
         "commit": "Level 2",
@@ -4261,7 +4426,10 @@
       },
       "detection_rule_ids": [
         "DL-0085",
-        "DL-0086"
+        "DL-0086",
+        "DL-0124",
+        "DL-0125",
+        "DL-0126"
       ],
       "related_tps": [
         {
@@ -4275,9 +4443,17 @@
         {
           "id": "TP-0029",
           "relationship": "enhances"
+        },
+        {
+          "id": "TP-0030",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0031",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 2
     },
     {
       "id": "TP-0040",
@@ -4436,7 +4612,10 @@
         "zone-file-analysis",
         "dns-intelligence",
         "bulk-registration",
-        "nameserver-clustering"
+        "nameserver-clustering",
+        "reckless-rabbit",
+        "ruthless-rabbit",
+        "infoblox"
       ],
       "cfpf_phases": [
         "P1",
@@ -4467,7 +4646,9 @@
         "Perform Fraud",
         "Monetization"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-RF-CTA-2026-0319"
+      ],
       "ucff_domains": {
         "commit": "Level 3",
         "assess": "Level 4",
@@ -4492,6 +4673,10 @@
         {
           "id": "TP-0043",
           "relationship": "related-to"
+        },
+        {
+          "id": "TP-0060",
+          "relationship": "shares-infrastructure"
         }
       ],
       "evidence_count": 0
@@ -4505,12 +4690,12 @@
       "source": "https://www.infoblox.com/threat-intel/threat-reports/",
       "tlp": "WHITE",
       "summary": "Traffic Distribution Systems (TDS) represent a critical infrastructure layer in the modern cybercrime ecosystem, functioning as the routing fabric that connects victim traffic to downstream fraud campaigns. A TDS is a server-side platform that receives inbound web traffic and routes it through multi-hop redirect chains to destination landing pages based on configurable rules — geolocation, device type, browser fingerprint, referrer header, time-of-day, and bot detection heuristics. TDS operators do not typically execute the end-stage fraud themselves; they serve as infrastructure-as-a-service providers for affiliate cybercrime groups running phishing, malvertising, exploit kit, tech support scam, and credential harvesting campaigns.\n\nThe scale of TDS operations is staggering. VexTrio, the largest known TDS operator, controls over 70,000 domains and serves as the traffic routing backbone for more than 60 affiliate cybercrime groups. In June 2025, Infoblox shared approximately 100,000 VexTrio-associated domain names with Spamhaus for blocklist integration — a figure that represents only a fraction of VexTrio's total infrastructure given its use of Registered Domain Generation Algorithms (RDGAs) to continuously replenish its domain pool. Across all observed TDS operations, Infoblox identified nearly 500,000 TDS-associated domains within a single 12-month observation period. Separately, 82% of customer environments monitored by Infoblox contacted at least one domain tied to malicious advertising technology (adtech) infrastructure — indicating that TDS exposure is not an edge case but a near-universal condition for enterprise networks.\n\nA particularly dangerous TDS-adjacent technique is exemplified by the Hazy Hawk actor, which hijacks abandoned cloud resources through DNS misconfigurations. Hazy Hawk systematically identifies DNS CNAME records pointing to decommissioned cloud services (Azure, AWS, Cloudflare CDN, GitHub Pages) and registers new resources at those endpoints, inheriting the DNS resolution and — critically — the domain reputation of the original resource owner. Hazy Hawk has compromised resources belonging to the CDC, multiple Fortune 500 companies, and government entities, leveraging their trusted domain reputations to inject traffic into TDS chains that would otherwise be blocked by reputation-based security controls.\n\nThe architectural significance of TDS for the fraud ecosystem cannot be overstated: TDS infrastructure converts raw web traffic — whether sourced from malvertising, SEO poisoning, compromised legitimate sites, or DNS hijacks — into targeted, filtered, and cloaked traffic streams delivered to affiliate landing pages. Disrupting TDS infrastructure disrupts dozens of downstream fraud campaigns simultaneously, making TDS a high-leverage detection and interdiction target.\n\n---",
-      "confidence_score": 85,
-      "source_reliability": "B",
+      "confidence_score": 90,
+      "source_reliability": "A",
       "info_credibility": 2,
       "infrastructure_generation_method": null,
-      "geopolitical_timing": null,
-      "nation_state_nexus": null,
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
       "sectors": [
         "cross-sector",
         "banking",
@@ -4526,13 +4711,41 @@
         "tds",
         "traffic-distribution-system",
         "vextrio",
+        "vextrio-deanonymization",
+        "adspro-technology",
+        "los-pollos-hermanos",
+        "ad-trafficko",
+        "taco-loco",
+        "olock-code",
+        "tekk",
         "hazy-hawk",
         "malvertising",
         "redirect-chain",
         "cloaking",
         "affiliate-fraud",
         "dns-hijack",
-        "seo-poisoning"
+        "seo-poisoning",
+        "keitaro",
+        "binom",
+        "graycharlie",
+        "tag-124",
+        "clickfix",
+        "reckless-rabbit",
+        "ruthless-rabbit",
+        "savvy-seahorse",
+        "organized-crime-enterprise",
+        "corporate-shell-network",
+        "blank-cc-subscription-fraud",
+        "push-notification-abuse",
+        "fake-mobile-apps",
+        "residential-proxy-abuse",
+        "bgp-peering-model",
+        "italian-organized-crime",
+        "eastern-european-organized-crime",
+        "lugano-switzerland",
+        "counterintelligence",
+        "black-hat-usa-2025",
+        "infoblox-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -4566,7 +4779,10 @@
         "Perform Fraud",
         "Monetization"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-RF-CTA-2026-0319"
+      ],
       "ucff_domains": {
         "commit": "Level 3",
         "assess": "Level 4",
@@ -4581,7 +4797,12 @@
         "DL-0096",
         "DL-0097",
         "DL-0099",
-        "DL-0100"
+        "DL-0100",
+        "DL-0120",
+        "DL-0122",
+        "DL-0127",
+        "DL-0128",
+        "DL-0129"
       ],
       "related_tps": [
         {
@@ -4591,9 +4812,21 @@
         {
           "id": "TP-0043",
           "relationship": "enables"
+        },
+        {
+          "id": "TP-0054",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0060",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0061",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 4
     },
     {
       "id": "TP-0043",
@@ -4679,7 +4912,8 @@
       "detection_rule_ids": [
         "DL-0098",
         "DL-0099",
-        "DL-0100"
+        "DL-0100",
+        "DL-0139"
       ],
       "related_tps": [
         {
@@ -4695,7 +4929,7 @@
           "relationship": "enables"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 1
     },
     {
       "id": "TP-0044",
@@ -4731,7 +4965,17 @@
         "qilin-ransomware",
         "cmln",
         "nation-state",
-        "hybrid-threat"
+        "hybrid-threat",
+        "interpol-gffta",
+        "recorded-future",
+        "virtualine",
+        "stark-industries",
+        "aeza",
+        "aurologic",
+        "operation-haechi",
+        "operation-redcard",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -4760,7 +5004,14 @@
         "Monetization",
         "Laundering"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-INTERPOL-HAECHI",
+        "REG-INTERPOL-REDCARD",
+        "REG-INTERPOL-SHADOW-STORM",
+        "REG-RF-CTA-2026-0319",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
+      ],
       "ucff_domains": {
         "commit": "Level 3",
         "assess": "Level 4",
@@ -4771,7 +5022,8 @@
         "improve": "Level 3"
       },
       "detection_rule_ids": [
-        "DL-0101"
+        "DL-0101",
+        "DL-0127"
       ],
       "related_tps": [
         {
@@ -4781,9 +5033,13 @@
         {
           "id": "TP-0045",
           "relationship": "enables"
+        },
+        {
+          "id": "TP-0061",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 2
     },
     {
       "id": "TP-0045",
@@ -4999,7 +5255,11 @@
         "karen-national-army",
         "ofac-sanctions",
         "cryptocurrency",
-        "recruitment-fraud"
+        "recruitment-fraud",
+        "multilingual-chatbot",
+        "sextortion-fallback",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -5025,7 +5285,11 @@
         "Monetization",
         "Laundering"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-UNODC-EMERGING-THREATS",
+        "REG-INTERPOL-GFFTA",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
+      ],
       "ucff_domains": {
         "commit": "Level 4",
         "assess": "Level 4",
@@ -5051,9 +5315,13 @@
         {
           "id": "TP-0049",
           "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0058",
+          "relationship": "shares-infrastructure"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 2
     },
     {
       "id": "TP-0048",
@@ -5175,7 +5443,11 @@
         "cross-chain-bridge",
         "huione-group",
         "chainalysis",
-        "trm-labs"
+        "trm-labs",
+        "interpol-gffta",
+        "unodc",
+        "unodc-organized-fraud-2024",
+        "ai-evasion"
       ],
       "cfpf_phases": [
         "P1",
@@ -5196,7 +5468,11 @@
         "Monetization",
         "Laundering"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-UNODC-EMERGING-THREATS",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
+      ],
       "ucff_domains": {
         "commit": "Level 4",
         "assess": "Level 4",
@@ -5208,7 +5484,8 @@
       },
       "detection_rule_ids": [
         "DL-0113",
-        "DL-0114"
+        "DL-0114",
+        "DL-0142"
       ],
       "related_tps": [
         {
@@ -5224,7 +5501,7 @@
           "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 3
     },
     {
       "id": "TP-0050",
@@ -5446,7 +5723,9 @@
         "hybrid-fraud",
         "crypto-laundering",
         "teen-targeting",
-        "executive-targeting"
+        "executive-targeting",
+        "scripted-fallback",
+        "interpol-gffta"
       ],
       "cfpf_phases": [
         "P1",
@@ -5479,7 +5758,8 @@
       ],
       "regulatory_refs": [
         "REG-CFPB-REGE",
-        "REG-FINCEN-AML"
+        "REG-FINCEN-AML",
+        "REG-INTERPOL-GFFTA"
       ],
       "ucff_domains": {
         "commit": "Level 2",
@@ -5509,7 +5789,7 @@
           "relationship": "enhances"
         }
       ],
-      "evidence_count": 3
+      "evidence_count": 4
     },
     {
       "id": "TP-0053",
@@ -5640,7 +5920,22 @@
         "deepfake-tools",
         "bot-testimonials",
         "affiliate-fraud",
-        "democratized-fraud"
+        "democratized-fraud",
+        "442b-global-losses",
+        "4.5x-profitability",
+        "maas",
+        "phaas",
+        "recorded-future",
+        "vextrio",
+        "ad-trafficko",
+        "blank-cc-subscription-fraud",
+        "fake-mobile-apps",
+        "push-notification-abuse",
+        "self-referential-scam",
+        "black-hat-usa-2025",
+        "infoblox-deanonymization",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -5673,7 +5968,10 @@
       "regulatory_refs": [
         "REG-CFPB-REGE",
         "REG-DORA",
-        "REG-FINCEN-AML"
+        "REG-FINCEN-AML",
+        "REG-UNODC-EMERGING-THREATS",
+        "REG-RF-CTA-2026-0319",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -5684,7 +5982,10 @@
         "report": "Level 2",
         "improve": "Level 3"
       },
-      "detection_rule_ids": [],
+      "detection_rule_ids": [
+        "DL-0128",
+        "DL-0129"
+      ],
       "related_tps": [
         {
           "id": "TP-0041",
@@ -5697,9 +5998,17 @@
         {
           "id": "TP-0043",
           "relationship": "enhances"
+        },
+        {
+          "id": "TP-0057",
+          "relationship": "variant-of"
+        },
+        {
+          "id": "TP-0061",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 2
+      "evidence_count": 7
     },
     {
       "id": "TP-0055",
@@ -5735,7 +6044,11 @@
         "tren-de-aragua",
         "crypto-mixing",
         "cross-border-laundering",
-        "organized-crime-convergence"
+        "organized-crime-convergence",
+        "interpol-gffta",
+        "operation-catalyst",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -5764,7 +6077,9 @@
       ],
       "regulatory_refs": [
         "REG-FINCEN-AML",
-        "REG-FATF-R16"
+        "REG-FATF-R16",
+        "REG-INTERPOL-GFFTA",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -5790,7 +6105,7 @@
           "relationship": "shares-infrastructure"
         }
       ],
-      "evidence_count": 2
+      "evidence_count": 4
     },
     {
       "id": "TP-0056",
@@ -5993,7 +6308,7 @@
           "relationship": "enhances"
         }
       ],
-      "evidence_count": 3
+      "evidence_count": 4
     },
     {
       "id": "TP-0058",
@@ -6035,7 +6350,9 @@
         "sextortion-fallback",
         "crm-systems",
         "40b-annual-profits",
-        "80-nationalities"
+        "80-nationalities",
+        "unodc",
+        "unodc-organized-fraud-2024"
       ],
       "cfpf_phases": [
         "P1",
@@ -6066,7 +6383,8 @@
       "regulatory_refs": [
         "REG-INTERPOL-GFFTA",
         "REG-UNODC-EMERGING-THREATS",
-        "REG-INTERPOL-HAECHI"
+        "REG-INTERPOL-HAECHI",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -6098,7 +6416,7 @@
           "relationship": "enhances"
         }
       ],
-      "evidence_count": 2
+      "evidence_count": 3
     },
     {
       "id": "TP-0059",
@@ -6136,6 +6454,7 @@
         "emulator-farm",
         "liveness-bypass",
         "unodc",
+        "unodc-organized-fraud-2024",
         "mule-herding",
         "velocity-anomaly"
       ],
@@ -6167,7 +6486,8 @@
       "regulatory_refs": [
         "REG-UNODC-EMERGING-THREATS",
         "REG-INTERPOL-GFFTA",
-        "REG-RF-CTA-2026-0319"
+        "REG-RF-CTA-2026-0319",
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -6200,7 +6520,7 @@
           "relationship": "enables"
         }
       ],
-      "evidence_count": 3
+      "evidence_count": 4
     },
     {
       "id": "TP-0060",
@@ -6409,6 +6729,592 @@
         }
       ],
       "evidence_count": 2
+    },
+    {
+      "id": "TP-0062",
+      "title": "Recovery Fraud — Double-Dip Re-victimization",
+      "category": "ThreatPath",
+      "date": "2026-03-22",
+      "author": "FLAME Project",
+      "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+      "tlp": "WHITE",
+      "summary": "Recovery fraud is an organized crime model in which victims of prior fraud (investment scams, romance fraud, pig butchering) are systematically re-contacted by actors posing as asset recovery agents, lawyers, law enforcement officials, or government bodies who claim they can recover the victim's lost funds — for an upfront fee. The UNODC identifies this as a distinct organized fraud operation with separate infrastructure from the initial fraud, targeting an identifiable victim population using traded \"lead lists\" of prior fraud complainants. Recovery fraud exploits the emotional vulnerability and financial desperation of already-defrauded individuals, often resulting in substantial secondary losses.\n\n**Distinction from upstream TPs**: TP-0011 (Romance Scam) and TP-0017 (Pig Butchering) document the initial fraud schemes. TP-0062 documents the distinct second-stage organized crime operation that re-targets those same victims through entirely separate infrastructure and impersonation narratives.",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "cross-sector",
+        "banking",
+        "investment"
+      ],
+      "fraud_types": [
+        "recovery-fraud",
+        "impersonation",
+        "advance-fee-fraud",
+        "social-engineering"
+      ],
+      "tags": [
+        "unodc",
+        "unodc-organized-fraud-2024",
+        "recovery-fraud",
+        "double-victimization",
+        "lead-list",
+        "victim-database",
+        "advance-fee",
+        "organized-crime-group"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1589.001",
+        "T1566.002",
+        "T1656"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT007.009",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-FINCEN-AML",
+        "REG-FBI-IC3"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0133",
+        "DL-0140"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0011",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0017",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0027",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0065",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0063",
+      "title": "Organized Counterfeit Goods and Non-Delivery Fraud Networks",
+      "category": "ThreatPath",
+      "date": "2026-03-22",
+      "author": "FLAME Project",
+      "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+      "tlp": "WHITE",
+      "summary": "Organized criminal groups operate networks of fraudulent e-commerce websites, fake sellers on legitimate auction platforms, and counterfeit goods supply chains to defraud consumers at scale. The UNODC documents this as the most prevalent fraud category by volume, with OCGs running multi-site operations backed by dedicated money laundering infrastructure, recruited money mules, and counterfeit supply chains linked to traditional organized crime. Distinct from individual purchase scams, the organized dimension involves supply chain structures mimicking legitimate businesses, coordinated use of stolen identities for seller accounts, cross-border money laundering, and the deliberate exploitation of legitimate platform trust mechanisms.\n\n**Distinction from TP-0036/TP-0030**: TP-0036 (Purchase Scam Merchant Networks) covers individual scam merchant tactics. TP-0030 (E-Commerce Triangulation) covers triangulation fraud. TP-0063 documents the organized crime infrastructure behind multi-site consumer fraud networks — the OCG structures, the supply chains, and the money laundering operations that UNODC identifies as organized criminal groups under UNTOC.",
+      "confidence_score": 75,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "retail",
+        "payments",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "purchase-scam",
+        "auction-fraud",
+        "brand-impersonation",
+        "identity-theft",
+        "money-mule"
+      ],
+      "tags": [
+        "unodc",
+        "unodc-organized-fraud-2024",
+        "counterfeit-goods",
+        "non-delivery",
+        "fake-website-network",
+        "auction-fraud",
+        "organized-retail-crime",
+        "organized-crime-group"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1566.002",
+        "T1059"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT006.001",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "regulatory_refs": [
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0030",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0035",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0036",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0059",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0064",
+      "title": "Long-Firm and Organized Business Credit Fraud",
+      "category": "ThreatPath",
+      "date": "2026-03-22",
+      "author": "FLAME Project",
+      "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+      "tlp": "WHITE",
+      "summary": "Long-firm fraud and organized financial statement fraud involve OCGs establishing or acquiring legitimate businesses, building creditworthiness over months or years, then exploiting that trust to defraud supply chain partners, trade finance banks, or investors. The UNODC identifies this as a distinct organized crime category where criminals build companies specifically for the purpose of large-scale credit fraud, often facilitated by professional enablers (accountants, lawyers, mortgage brokers, real estate appraisers). Distinguished from credit card bust-outs by the scale, duration, and corporate structure involved — UNODC case studies document single operations defrauding 20+ banks across multiple countries for $500M+.\n\n**Distinction from TP-0003/TP-0019**: TP-0003 (Synthetic Identity Bust-Out) covers synthetic identity-driven credit card bust-outs. TP-0019 (Business Identity Theft) covers theft of existing business identities. TP-0064 documents the UNODC long-firm model: building a real business with real credit history, then exploiting that earned trust for organized large-scale fraud.",
+      "confidence_score": 70,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "cross-sector",
+        "trade"
+      ],
+      "fraud_types": [
+        "long-firm-fraud",
+        "bust-out",
+        "application-fraud",
+        "loan-fraud",
+        "invoice-fraud",
+        "documentary-fraud"
+      ],
+      "tags": [
+        "unodc",
+        "unodc-organized-fraud-2024",
+        "long-firm-fraud",
+        "financial-statement-fraud",
+        "supply-chain-credit",
+        "professional-enabler",
+        "organized-crime-group",
+        "trade-finance-fraud"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1589.002",
+        "T1656",
+        "T1585.001"
+      ],
+      "ft3_tactics": [
+        "FTA003",
+        "FT008.002",
+        "FT028"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Perform Fraud",
+        "Monetization",
+        "Laundering"
+      ],
+      "regulatory_refs": [
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-FINCEN-CDD",
+        "REG-OCC-FRAUD"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0135"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0019",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0020",
+          "relationship": "enhances"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0065",
+      "title": "Organized Mass-Marketing Fraud Infrastructure (Boiler Rooms & Lead Lists)",
+      "category": "ThreatPath",
+      "date": "2026-03-22",
+      "author": "FLAME Project",
+      "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+      "tlp": "WHITE",
+      "summary": "Organized mass-marketing fraud infrastructure encompasses the boiler room operations, lead list ecosystems, robodialling infrastructure, and SIM farm devices that serve as the shared demand-generation engine feeding multiple downstream fraud types. The UNODC identifies mass-marketing as a cross-cutting facilitator of organized fraud, documenting call center operations (boiler rooms) that employ salaried agents, use \"lead lists\" of targeted victims (including \"suckers lists\" of previously defrauded individuals), and leverage telecommunications infrastructure (SIM farms, VoIP spoofing, robodialling) for high-volume victim contact. This infrastructure operates as a discrete business layer — separate from the fraud execution itself — and may serve multiple fraud types simultaneously (investment scams, impersonation, recovery fraud, tech support fraud).\n\n**Distinction from TP-0058**: TP-0058 (Scam Compound Operations) covers the physical compound model in South-East Asia where trafficked individuals perpetrate fraud. TP-0065 documents the broader mass-marketing infrastructure layer that UNODC identifies as a cross-cutting facilitator across all regions — including virtual boiler rooms, offshore call centers, and the lead list/robodialling ecosystem that enables organized fraud at scale.",
+      "confidence_score": 78,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "cross-sector",
+        "banking",
+        "investment",
+        "telecommunications"
+      ],
+      "fraud_types": [
+        "social-engineering",
+        "impersonation",
+        "vishing",
+        "robodialling-fraud",
+        "advance-fee-fraud",
+        "investment-scam",
+        "fraud-as-a-service"
+      ],
+      "tags": [
+        "unodc",
+        "unodc-organized-fraud-2024",
+        "boiler-room",
+        "lead-list",
+        "robodialling",
+        "mass-marketing-fraud",
+        "sim-farm",
+        "telemarketing-fraud",
+        "crime-as-a-service",
+        "organized-crime-group"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1589.001",
+        "T1566.003",
+        "T1656",
+        "T1583.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT007.009",
+        "FT016",
+        "FT031"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-FINCEN-AML",
+        "REG-INTERPOL-GFFTA"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0134",
+        "DL-0140"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0012",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0054",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0058",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0062",
+          "relationship": "enables"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0066",
+      "title": "Crash-for-Cash and Organized Insurance Fraud Rings",
+      "category": "ThreatPath",
+      "date": "2026-03-22",
+      "author": "FLAME Project",
+      "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+      "tlp": "WHITE",
+      "summary": "Crash-for-cash fraud involves organized criminal groups that systematically stage or cause vehicle accidents to generate fraudulent insurance claims. The UNODC identifies this as a distinct organized crime activity under fraud against businesses/organizations, where OCGs recruit designated drivers, participants who claim injuries, and corrupt professional enablers (medical practitioners, lawyers, repair shops) to submit coordinated fraudulent claims. In more serious cases, OCGs deliberately cause accidents involving innocent members of the public to increase claim legitimacy. The organized dimension includes recruitment networks, shared medical/legal professionals across multiple staged incidents, and systematic claim submission infrastructure.\n\n**Distinction from TP-0056**: TP-0056 (Insurance Claims Fraud) covers individual fraudulent claims including document forgery and exaggerated claims. TP-0066 documents the organized ring dimension: coordinated multi-participant staged incidents, shared professional enabler networks, and OCG structures managing multiple fraudulent accident campaigns.",
+      "confidence_score": 72,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "insurance",
+        "healthcare"
+      ],
+      "fraud_types": [
+        "crash-for-cash",
+        "insurance-fraud",
+        "fraudulent-claim",
+        "collusion",
+        "documentary-fraud"
+      ],
+      "tags": [
+        "unodc",
+        "unodc-organized-fraud-2024",
+        "crash-for-cash",
+        "staged-accident",
+        "organized-insurance-ring",
+        "professional-enabler",
+        "organized-crime-group"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656",
+        "T1589.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Trust Abuse",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-UNODC-ORGANIZED-FRAUD-2024"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0136"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0010",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0056",
+          "relationship": "enhances"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0067",
+      "title": "AiTM Phishing Kit Infrastructure and Session Token Hijacking",
+      "category": "ThreatPath",
+      "date": "2026-03-22",
+      "author": "FLAME Project",
+      "source": "Organized fraud detection in 2026: a technical landscape report",
+      "tlp": "WHITE",
+      "summary": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim sessions through attacker-controlled infrastructure in real time. The attacker captures both credentials and session tokens/cookies as the victim authenticates with the legitimate service. Sekoia.io identified 11 major AiTM phishing kits active in early 2025, with Tycoon 2FA as the most prevalent (1,200+ domains, targeting 500K+ organizations monthly). Credential phishing attacks surged 703% in H2 2024. These kits operate as Phishing-as-a-Service (PhaaS) marketplaces, lowering the barrier to sophisticated MFA-bypass attacks. FIDO2/phishing-resistant MFA blocks 93.9% of AiTM campaigns, making it the primary defensive recommendation.\n\n**Distinction from TP-0054**: TP-0054 (FaaS Ecosystem) covers the broader fraud-as-a-service model. TP-0067 focuses specifically on the AiTM phishing kit infrastructure — the reverse proxy technology, session token capture mechanics, and PhaaS distribution model that enables downstream BEC, account takeover, and wire fraud.",
+      "confidence_score": 82,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "cross-sector",
+        "banking",
+        "fintech",
+        "technology"
+      ],
+      "fraud_types": [
+        "aitm-phishing",
+        "phishing",
+        "account-takeover",
+        "credential-stuffing",
+        "fraud-as-a-service"
+      ],
+      "tags": [
+        "aitm-phishing",
+        "tycoon-2fa",
+        "evilginx",
+        "session-token-replay",
+        "phaas",
+        "fido2",
+        "mfa-bypass",
+        "phishing-kit",
+        "credential-phishing"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1557",
+        "T1539",
+        "T1566.002",
+        "T1114.003",
+        "T1583.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT007.009",
+        "FT011.001"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Credential Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-STIX-FCI"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "detection_rule_ids": [
+        "DL-0137",
+        "DL-0138"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0001",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0002",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0054",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 1
     }
   ]
 }

@@ -207,6 +207,75 @@ regulations:
       - automated-mule-infrastructure
       - chatbot-enabled-fraud
 
+  - id: REG-UNODC-ORGANIZED-FRAUD-2024
+    name: "UNODC Organized Fraud Issue Paper"
+    jurisdiction: International
+    category: typology
+    description: "2024 UNODC issue paper presenting 7-category organized fraud typology (consumer products/services, employment, investment, impersonation, identity, relationship/trust, business/organization fraud), UNTOC Convention linkages, cross-cutting facilitators (mass-marketing, identity theft, money laundering, enabling technology), crime-as-a-service model, 4P response framework (Prevent-Pursue-Protect-Promote), ~25 case studies covering organized crime dimensions across all global regions"
+    relevant_fraud_types:
+      - romance-scam
+      - investment-scam
+      - impersonation
+      - employment-fraud
+      - purchase-scam
+      - identity-theft
+      - BEC
+      - money-mule
+      - fraud-as-a-service
+      - social-engineering
+      - deepfake-fraud
+      - recovery-fraud
+      - long-firm-fraud
+      - crash-for-cash
+      - auction-fraud
+
+  - id: REG-STIX-FCI
+    name: "OASIS STIX Financial Crime Intelligence Extension"
+    jurisdiction: International
+    category: standard
+    description: "World's first open standard for exchanging financial crime intelligence (Njordium Cyber Group, August 2025). Covers AML attributes (suspicious transactions, risk assessments), KYC/KYB intelligence (UBO identification, profile inconsistencies), corruption and fraud indicators, and entity relationship data (beneficial ownership, PEP status, sanctions matches). Uses STIX 2.1 native extension-definition mechanism."
+    relevant_fraud_types:
+      - money-laundering
+      - identity-theft
+      - sanctions-evasion-infrastructure
+      - BEC
+      - fraud-as-a-service
+
+  - id: REG-MITRE-F3
+    name: "MITRE F3 (Fight Financial Fraud)"
+    jurisdiction: International
+    category: taxonomy
+    description: "MITRE Center for Threat-Informed Defense framework announced May 2025, aiming to create the ATT&CK equivalent for financial fraud. Develops fraud-specific TTPs derived from FS-ISAC CFPF, NRF Retail Fraud Taxonomy, and Verizon DBIR. Models social engineering, money laundering, and cash-out activities."
+    relevant_fraud_types:
+      - social-engineering
+      - money-mule
+      - account-takeover
+      - phishing
+      - wire-fraud
+
+  - id: REG-EBA-FT-V5
+    name: "EBA Fraud Taxonomy v5.0"
+    jurisdiction: EU
+    category: taxonomy
+    description: "European Banking Authority Fraud Taxonomy v5.0 (effective January 2025). Separates contact method ('how') from modus operandi ('what') — described as revolutionary by pilot adopters across 15 European countries. Standardizes fraud classification for reporting and analytics."
+    relevant_fraud_types:
+      - authorized-push-payment
+      - account-takeover
+      - phishing
+      - social-engineering
+      - impersonation
+
+  - id: REG-FRAUD-KILL-CHAIN-V2
+    name: "Fraud Kill Chain White Paper V2"
+    jurisdiction: International
+    category: taxonomy
+    description: "Fraud Kill Chain V2 presented at RSA Conference April 2025. Operational fraud fusion model gaining traction in fraud departments. Maps fraud attack lifecycle phases complementary to FS-ISAC CFPF and MITRE F3."
+    relevant_fraud_types:
+      - social-engineering
+      - account-takeover
+      - wire-fraud
+      - money-mule
+
   - id: REG-RF-CTA-2026-0319
     name: "Recorded Future CTA-2026-0319: 2025 Malicious Infrastructure Year in Review"
     jurisdiction: International

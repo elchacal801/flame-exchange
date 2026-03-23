@@ -471,6 +471,23 @@ tags:
 
 ---
 
+## Operational Evidence
+
+### EV-TP0043-2026-002: 2026 Technical Landscape — AI Content Detection Benchmarks
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: Detection of AI-generated fraud content has matured significantly. Fine-tuned BERT models achieve F1 scores of 0.99 for phishing email classification (trained on 181,781 labeled emails, deployed via Splunk DSDL). RoBERTa exceeds 0.985 across all metrics. Stylometric analysis using XGBoost with 60 features (imperative verb count, clause density, first-person pronoun usage) detects GPT-4o-generated phishing with 96% accuracy and 99% AUC. DetectGPT achieves ~0.95 AUROC via zero-shot statistical signatures. RAG-based real-time fraud detection (arXiv:2501.15290) checks live conversations against dynamically updated bank policies, solving the retraining problem. FLAG framework (2025) combines LLM text understanding with GNN relational learning.
+
+---
+
+## Case Studies & References
+
+- "Organized fraud detection in 2026: a technical landscape report" — LLMs and transformer models section
+
+---
+
 ## References
 
 - **KnowBe4 — Phishing Threat Trends Report 2025**: Primary source for AI-generated content prevalence in phishing emails (82.6%). [Link](https://www.knowbe4.com/phishing-threat-trends)

@@ -67,6 +67,7 @@ regulatory_refs:
   - REG-FCA-APP
   - REG-MAS-SRF
   - REG-UK-PSR-APP
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - genai
   - deepfake
@@ -78,6 +79,8 @@ tags:
   - pig-butchering
   - ai-chatbot
   - cross-border
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -399,6 +402,22 @@ ORDER BY t.total_amount_30d DESC;
 
 ---
 
+## Operational Evidence
+
+### EV-TP0025-2026-002: UNODC AI-Enhanced Romance and Investment Fraud Convergence
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC documents the convergence of romance fraud with AI-enabled capabilities and cryptocurrency investment fraud ("crypto-confidence investment fraud"). Key findings: (1) offenders establish intimate relationships then exploit trust to lure victims into fraudulent investment schemes; (2) this convergence widens the prospective pool to younger age groups; (3) introduces victims to unfamiliar crypto markets where fund tracing is difficult; (4) AI tools including voice clones and deepfakes enhance the impersonation and grooming phases. UNODC positions this convergence as a key emerging organized crime trend.
+
+### EV-TP0025-2026-003: 2026 Technical Landscape — AI Phishing Effectiveness and Cialdini Persuasion Scoring
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: LLM-generated phishing emails achieve 43–81% click-through rates versus 18–69% for traditional methods. For psychological manipulation scoring — directly applicable to romance fraud and social engineering detection — research quantifying Cialdini's six principles of persuasion (Reciprocity, Consistency, Social Proof, Authority, Liking, Scarcity) as numerical features improves phishing detection F1 by 2.62% when combined with BERT/SBERT embeddings. Most discriminative NLP features: urgency markers, authority indicators, sentiment manipulation, imperative verb frequency, financial trigger words, and semantic inconsistency. A context-aware system using Neural Chat 7B with LoRA achieves >97% accuracy predicting fraudulent intent within three conversational turns.
+
 ## References
 
 - **FTC Consumer Sentinel Network (2024)**: Reports average romance scam victim loss of $64,000 per incident, with romance fraud as one of the highest per-incident loss categories.
@@ -414,6 +433,10 @@ ORDER BY t.total_amount_30d DESC;
 - **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional investigation methodology applicable to romance fraud kill chain analysis. [Link](https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf)
 
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents Fraud-as-a-Service platforms powered by generative AI and LLMs enabling widespread adoption of cybercrime; platforms provide automated phishing websites, fake payment gateways, and bot-generated fake testimonials
+
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Crypto-confidence Investment Fraud; Chapter IV, Enabling Technology
+
+- "Organized fraud detection in 2026: a technical landscape report" — LLMs and transformer models section
 
 ---
 

@@ -54,6 +54,7 @@ regulatory_refs:
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
   - REG-UK-PSR-APP
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - authorized-push-payment
   - APP-fraud
@@ -62,6 +63,8 @@ tags:
   - remote-access
   - screen-sharing
   - elder-fraud
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -164,6 +167,13 @@ AND c.call_end >= t.timestamp;
 - **Confidence**: Medium
 - **Summary**: Mobile app sideloading infrastructure hosted on Alibaba Cloud enables distribution of malicious applications outside App Store and Google Play review processes. DeployGate and Diawi are legitimate beta testing platforms, but these impersonation domains facilitate delivery of fraudulent apps used in tech support scams (P2 initial access via fake "security" or "banking" apps) and remote access establishment (P3 positioning). This infrastructure is adjacent to the core TP-0012 attack chain — actors can direct victims to sideload fake bank/support apps instead of using commercial remote access tools.
 
+### EV-TP0012-2026-002: UNODC Organized Impersonation Fraud and Mass-Marketing Infrastructure
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC Category 4 (Fraud by Impersonation) provides systematic typology: impersonation of public officials (police, tax authority, immigration), legitimate services (tech support, debt collection), and friends/family (including AI voice cloning). Documents that impersonation fraud operates through organized call centers (boiler rooms) — not ad hoc individuals — with salaried agents following scripts, using robodialling and caller ID spoofing infrastructure. Key case study: India-based technical support scam operated as vibrant underground economy with discrete sub-businesses for call operations, money laundering, and website development, coordinated via mainstream social media.
+
 ## Analyst Notes
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $1.46B in tech support scam losses, confirming it as one of the highest-loss fraud categories. Elderly victims (60+) are disproportionately impacted, contributing to $4.9B in total IC3-reported losses across all categories in 2024. Tech support and bank impersonation scams exploit the authority trust dynamic, making them particularly effective against older demographics who are more likely to respond to unsolicited phone calls.
@@ -172,6 +182,7 @@ AND c.call_end >= t.timestamp;
 
 ## References
 
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Fraud by Impersonation; Chapter IV, Mass-marketing
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - FBI IC3: Tech Support Fraud PSAs. [Link](https://www.ic3.gov/PSA/2023/PSA231019)
 - UK Payment Systems Regulator: APP Fraud Data (annual). [Link](https://www.psr.org.uk/)

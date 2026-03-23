@@ -1,0 +1,107 @@
+title: Post-Compromise Inbox Rule Manipulation — Rule Creation After New-IP Authentication
+id: 9c3f7a1e-2d5b-4e8c-f6a9-8b1d3c7e2f05
+status: experimental
+description: >
+  Detects inbox rule creation or modification within 24 hours of a sign-in from a
+  previously unseen IP address. AiTM phishing kit operators create inbox rules within
+  minutes of session hijack to redirect payment notifications, delete security alerts,
+  and intercept colleague communications. Rules forwarding to external domains or
+  deleting emails matching specific sender/subject patterns are high-confidence indicators
+  of post-compromise activity.
+sigma_compatible: true
+native_query_required: false
+references:
+  - "Organized fraud detection in 2026: a technical landscape report — BEC and AiTM phishing"
+  - "Microsoft Threat Intelligence — AiTM detection and mitigation guidance"
+threat_paths:
+  - TP-0067
+  - TP-0002
+cfpf_phase: P3
+fraud_types:
+  - aitm-phishing
+  - BEC
+  - account-takeover
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection:
+    Operation:
+      - New-InboxRule
+      - Set-InboxRule
+      - Enable-InboxRule
+  filter_internal:
+    ClientIP|cidr:
+      - 10.0.0.0/8
+      - 172.16.0.0/12
+      - 192.168.0.0/16
+  timeframe: 24h
+  condition: selection and not filter_internal
+fields:
+  - UserId
+  - ClientIP
+  - Operation
+  - Parameters
+queries:
+  kql: |-
+    // Microsoft Sentinel KQL: Inbox rule manipulation after new-IP authentication
+    let new_ip_signins = SigninLogs
+    | where TimeGenerated > ago(48h)
+    | where ResultType == 0
+    | summarize FirstSeen=min(TimeGenerated) by UserPrincipalName, IPAddress
+    | where FirstSeen > ago(24h);
+    OfficeActivity
+    | where TimeGenerated > ago(24h)
+    | where Operation in ("New-InboxRule", "Set-InboxRule", "Enable-InboxRule")
+    | join kind=inner new_ip_signins on $left.UserId == $right.UserPrincipalName
+    | where TimeGenerated > FirstSeen
+    | project TimeGenerated, UserId, Operation, Parameters, ClientIP, IPAddress
+
+  splunk: |-
+    `comment("Splunk SPL for Post-Compromise Inbox Rule Manipulation")`
+    index=o365 sourcetype="o365:management:activity"
+      Operation IN ("New-InboxRule", "Set-InboxRule", "Enable-InboxRule")
+    | eval rule_time=_time
+    | join UserId [
+      search index=azure sourcetype="azure:aad:signin" ResultType=0
+      | stats earliest(_time) AS first_seen BY UserPrincipalName, IPAddress
+      | where first_seen > relative_time(now(), "-24h")
+      | rename UserPrincipalName AS UserId
+    ]
+    | where rule_time > first_seen
+    | table _time, UserId, Operation, Parameters, ClientIP
+
+  sigma: |-
+    title: Post-Compromise Inbox Rule Manipulation
+    status: experimental
+    logsource:
+        product: m365
+        service: exchange
+    detection:
+        selection:
+            Operation:
+                - New-InboxRule
+                - Set-InboxRule
+                - Enable-InboxRule
+        filter_internal:
+            ClientIP|cidr:
+                - 10.0.0.0/8
+                - 172.16.0.0/12
+                - 192.168.0.0/16
+        condition: selection and not filter_internal
+    fields:
+        - UserId
+        - ClientIP
+        - Parameters
+    level: high
+
+falsepositives:
+  - Users creating legitimate inbox rules from new locations (travel, new office)
+  - IT administrators configuring inbox rules remotely
+  - Automated rule creation by legitimate email management tools
+level: high
+tags:
+  - attack.t1114.003
+  - cfpf.phase3.positioning
+  - flame.aitm
+  - flame.bec

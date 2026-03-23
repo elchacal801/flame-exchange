@@ -302,6 +302,13 @@ ORDER BY c.call_timestamp DESC;
 - **CFPF Phase Coverage**: P2, P4
 - **Confidence**: Medium
 
+### EV-TP0057-2026-004: 2026 Technical Landscape — Digital Document Forgery Statistics
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: Digital document forgery surpassed physical counterfeits for the first time in 2024, comprising 57% of all document fraud — a 244% increase from 2023. AI-generated utility bills, invoices, and bank statements make up 70% of document fraud attempts. These are generated pixel-by-pixel using autoregressive models, not edited versions of real documents, requiring entirely new detection approaches. This represents a fundamental shift in document fraud methodology that impacts KYC/KYB verification across all financial services.
+
 ---
 
 ## References
@@ -310,6 +317,8 @@ ORDER BY c.call_timestamp DESC;
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — DaaS marketplace proliferation, AI-enhanced fraud 4.5x more profitable
 - Flare/IBM X-Force, *Inside the North Korean Infiltrator Threat*, March 2026 — DPRK AI face/voice changers for interview impersonation
 - Group-IB, *Weaponised AI Is Powering the Fifth Wave of Cybercrime*, January 2026 — 10-second voice clone capability, dark web DaaS marketplace assessment
+
+- "Organized fraud detection in 2026: a technical landscape report" — Deepfake fraud section (digital document forgery)
 
 ---
 

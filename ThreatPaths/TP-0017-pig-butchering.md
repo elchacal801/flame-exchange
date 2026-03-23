@@ -58,6 +58,7 @@ regulatory_refs:
   - REG-UK-PSR-APP
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - pig-butchering
   - crypto-scam
@@ -65,6 +66,7 @@ tags:
   - app-fraud
   - interpol-gffta
   - unodc
+  - unodc-organized-fraud-2024
   - 40b-annual
 ---
 ```
@@ -280,16 +282,33 @@ WHERE c.age >= 60
 - **CFPF Phase Coverage**: Full lifecycle (P1-P5) — scale data applies across all phases
 - **Confidence**: Very High — multi-source from international organizations
 
+### EV-TP0017-2026-003: UNODC Organized Investment Fraud Typology
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC Category 3 (Consumer Investment Fraud) documents organized investment fraud including fraudulent cryptocurrency platforms, exit scams/rug pulls, and Ponzi/pyramid operating models. Key findings: investment fraud victims experience the largest losses compared to other fraud types; OCGs cultivate a veneer of legitimacy with formal organizational structures, division of labor, and designated personnel; recovery fraud operators subsequently re-target investment fraud victims (see TP-0062).
+
+### EV-TP0017-2026-004: 2026 Technical Landscape — Pig Butchering Scale and Rug Pull Detection
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: FBI IC3 reports $6.57B in US investment scam losses in 2024. Documented scam lifecycle: wrong-number contact initiation → weeks-to-months trust building → introduction to fake crypto platform → small initial investment → escalation with artificial gains → "slaughter" (withdrawals blocked). Detection indicators include scripted conversation patterns (from seized scam compound training manuals), migration from dating apps to WhatsApp/Telegram, and DeFi smart contract approval exploitation. Sophos X-Ops documents as-a-service scam kit models on dark web. Crypto rug pulls constitute 68% of all crypto scams in 2025 (350+ cases 2024). Detection methods: Uniswap trading/liquidity feature engineering, EVM bytecode balance-flow heuristics, OSINT signals precede on-chain anomalies by days/weeks.
+
 ---
 
 ## References
 
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Consumer Investment Fraud
 - FinCEN Advisory on Pig Butchering (FIN-2023-A002). [Link](https://www.fincen.gov/sites/default/files/shared/FinCEN_Advisory_Pig_Butchering_FINAL_508c.pdf)
 - FBI IC3 2023-2024 Cryptocurrency Fraud Reports. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - Recorded Future: "2026 State of Security" (CTA-2026-0212) — SE Asian TCO fraud operations, marketplace resilience, AI tool evolution. [Link](https://www.recordedfuture.com/research/)
 - FBI IC3 2024 Internet Crime Report — investment fraud and crypto loss figures. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — reports investment fraud as the most financially damaging fraud type globally; documents hybrid investment-sextortion schemes using deepfakes; notes AI-generated dashboards showing fabricated returns
 - FBI Internet Crime Complaint Center (IC3), *2024 Internet Crime Report*, April 2025 — USD 5.6 billion in investment fraud losses reported in the United States alone (2023)
+
+- "Organized fraud detection in 2026: a technical landscape report" — Specific fraud category detection: Pig butchering; Crypto rug pulls
 
 ---
 

@@ -53,6 +53,7 @@ related_tps:
 regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - cmln
   - cryptocurrency-laundering
@@ -66,6 +67,7 @@ tags:
   - trm-labs
   - interpol-gffta
   - unodc
+  - unodc-organized-fraud-2024
   - ai-evasion
 ---
 ```
@@ -409,6 +411,8 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
 11. FLAME Project. "DL-0113: On-Chain CMLN Detection Logic." FLAME Detection Library, 2026 — internal reference
 12. FLAME Project. "DL-0114: DNS/Hosting CMLN Infrastructure Detection Logic." FLAME Detection Library, 2026 — internal reference
 13. FLAME Project. "BL-0027: Cryptocurrency Transaction Velocity Baseline." FLAME Baseline Library, 2026 — internal reference
+14. UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter IV, Money-laundering (cryptocurrency subsection)
+15. "Organized fraud detection in 2026: a technical landscape report" — Specific fraud category detection: Cryptocurrency rug pulls
 
 ---
 
@@ -422,6 +426,20 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
   - Criminal networks collaborating with specialized money laundering groups to professionalize crypto-to-fiat conversion (INTERPOL)
 - **CFPF Phase Coverage**: P5 (AI-enhanced laundering evasion)
 - **Confidence**: High
+
+### EV-TP0049-2026-002: UNODC Cryptocurrency Money Laundering in Organized Fraud
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC documents cryptocurrencies as increasingly used to launder proceeds of serious and organized crime, with fraud being one of the most common predicate offences. Methods include transferring cryptocurrency across different blockchain networks to obscure the trail before cashing out. Key case study: Romania-based auction fraud ring used bitcoin to transfer stolen funds from US-based money mules to principals in Romania via a complicit Bulgarian cryptocurrency exchange operator. UNODC also documents a Nigerian romance fraud operation where perpetrators sold cryptocurrency to a co-offender in China who made payments into front company accounts.
+
+### EV-TP0049-2026-003: 2026 Technical Landscape — Rug Pull Detection Methods
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: Cryptocurrency rug pulls constituted 68% of all crypto scams in 2025, with 350+ documented cases in 2024. Academic detection methods include: Uniswap trading/liquidity feature engineering with gradient boosting (Mazorra et al., 2022), EVM bytecode balance-flow heuristics (Yu & Lee, 2025), and temporal graph learning via TokenScout (Wu et al., 2024). ChainAware achieves 68% detection rate across Ethereum, BSC, Polygon, and Solana. Critical finding: OSINT signals (social media sentiment shifts, Telegram channel activity drops) precede on-chain anomalies by days or weeks — suggesting social monitoring should be prioritized for early warning. RPHunter combines semantic risk code graphs from bytecode with token-flow behavior graphs from transaction traces.
 
 ---
 

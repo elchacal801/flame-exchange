@@ -62,6 +62,7 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-INTERPOL-GFFTA
   - REG-RF-CTA-2026-0319
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -73,6 +74,7 @@ tags:
   - emulator-farm
   - liveness-bypass
   - unodc
+  - unodc-organized-fraud-2024
   - mule-herding
   - velocity-anomaly
 ---
@@ -301,6 +303,13 @@ ORDER BY total_amount DESC;
 - **CFPF Phase Coverage**: P4, P5
 - **Confidence**: High
 
+### EV-TP0059-2026-002: UNODC Money Laundering Facilitator Typology
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC identifies money laundering as one of four cross-cutting facilitators of organized fraud. Documents the full spectrum of ML methods used by OCGs: wire transfers, money mules (recruited from financially vulnerable populations including students), shell companies, real estate purchases, currency exchange bureaux, casinos, front companies, underground banking (hawala), trade-based money laundering, and cryptocurrency chain-hopping. Key finding: professional enablers (solicitors, accountants, financial advisers, bank managers) play critical facilitating roles. UNODC case study: virtual currency exchange in Costa Rica alleged to have facilitated $6B in laundering with minimal user identification.
+
 ---
 
 ## References
@@ -308,6 +317,7 @@ ORDER BY total_amount DESC;
 - UNODC, *Emerging Threats: AI & Automation in Cybercrime*, September 2025 — Bot-driven mule account systems, compound-integrated automation
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — Mule network scale, Operation HAECHI VI intelligence
 - Recorded Future, *CTA-2026-0319: Criminal Exploitation of Fraud-Enabling Infrastructure*, March 2026 — KYC bypass toolkits, synthetic identity generation tools
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter IV, Money-laundering
 
 ---
 

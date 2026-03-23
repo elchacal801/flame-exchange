@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-23T00:08:06.045001+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "7a4e2c9f-8b1d-3f6a-e5c7-4d2b1a8f3e06",
+    "dl_id": "DL-0137",
+    "title": "AiTM Session Token Replay Detection — User-Agent and IP Mismatch Post-MFA",
+    "status": "experimental",
+    "description": "Detects potential Adversary-in-the-Middle (AiTM) session token replay by identifying User-Agent string or IP address mismatches between MFA completion events and subsequent session access events. AiTM phishing kits capture session tokens during MFA relay, then replay them from attacker infrastructure with different User-Agent/IP characteristics. Sekoia.io identified 11 major AiTM kits (Tycoon 2FA most prevalent: 1,200+ domains, 500K+ organizations/month). FIDO2 blocks 93.9% of AiTM campaigns.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection_mfa": {
+        "AuthenticationRequirement": "multiFactorAuthentication",
+        "ResultType": 0
+      },
+      "timeframe": "4h",
+      "condition": "session access from IP != MFA authentication IP OR session User-Agent != MFA User-Agent\n"
+    },
+    "logsource": {
+      "product": "azure",
+      "service": "signinlogs"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "UserPrincipalName",
+        "IPAddress",
+        "UserAgent",
+        "AppId",
+        "AuthenticationRequirement",
+        "ResultType",
+        "TimeGenerated"
+      ]
+    },
+    "queries": {
+      "kql": "// Microsoft Sentinel KQL: Detect AiTM session token replay\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n| where AccessTime > MFATime and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
+      "splunk": "`comment(\"Splunk SPL for AiTM Session Token Replay Detection\")`\nindex=azure sourcetype=\"azure:aad:signin\" AuthenticationRequirement=\"multiFactorAuthentication\" ResultType=0\n| rename IPAddress AS MFA_IP, UserAgent AS MFA_UserAgent\n| join UserPrincipalName [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n  | rename IPAddress AS Access_IP, UserAgent AS Access_UserAgent\n]\n| where Access_IP != MFA_IP OR Access_UserAgent != MFA_UserAgent\n| table UserPrincipalName, _time, MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent"
+    },
+    "references": [
+      "Organized fraud detection in 2026: a technical landscape report — BEC and AiTM phishing",
+      "Sekoia.io, Tycoon 2FA phishing kit analysis (2025)",
+      "Canadian Centre for Cyber Security — FIDO2 AiTM effectiveness (93.9%)"
+    ],
+    "threat_path_ids": [
+      "TP-0002",
+      "TP-0067"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "aitm-phishing",
+      "phishing"
+    ],
+    "tags": [
+      "attack.t1539",
+      "attack.t1557",
+      "cfpf.phase3.positioning",
+      "flame.aitm"
+    ],
+    "falsepositives": [
+      "Users switching between VPN and direct connection during authentication",
+      "Mobile users with carrier IP changes between MFA and access",
+      "Users authenticating via one device and accessing via another (legitimate SSO patterns)"
+    ]
+  }
+}

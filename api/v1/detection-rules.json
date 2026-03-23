@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-17T05:26:54.539985+00:00",
-    "total": 114
+    "generated_at": "2026-03-23T00:08:05.423294+00:00",
+    "total": 141
   },
   "data": [
     {
@@ -7520,6 +7520,2121 @@
       "falsepositives": [
         "Legitimate DeFi users with complex multi-protocol strategies",
         "Institutional rebalancing across multiple venues"
+      ]
+    },
+    {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "dl_id": "DL-0115",
+      "title": "DaaS Platform Transaction Pattern",
+      "status": "experimental",
+      "description": "Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.\n",
+      "cfpf_phase": "P1",
+      "level": "medium",
+      "detection": {
+        "selection_recurring": {
+          "payment_type": "recurring",
+          "recurring_payment_amount|gte": 100,
+          "recurring_payment_amount|lte": 1000,
+          "recurring_payment_currency": "USD",
+          "recurring_payment_interval": "monthly",
+          "destination_wallet_flag|contains": [
+            "deepfake_service",
+            "daas_provider"
+          ]
+        },
+        "selection_onetime": {
+          "payment_type": "one-time",
+          "transaction_amount|gte": 50,
+          "transaction_amount|lte": 500,
+          "destination_wallet_flag|contains": [
+            "deepfake_service",
+            "daas_provider"
+          ]
+        },
+        "condition": "selection_recurring or selection_onetime"
+      },
+      "logsource": {
+        "product": "crypto",
+        "service": "blockchain_analytics"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "payment_type",
+          "recurring_payment_amount",
+          "recurring_payment_currency",
+          "recurring_payment_interval",
+          "transaction_amount",
+          "destination_wallet_flag"
+        ],
+        "enrichment_required": [
+          {
+            "field": "destination_wallet_flag",
+            "source": "Threat intelligence enrichment (known DaaS provider wallet attribution)"
+          }
+        ]
+      },
+      "threat_path_ids": [
+        "TP-0057"
+      ],
+      "fraud_types": [
+        "deepfake-as-a-service",
+        "fraud-as-a-service"
+      ],
+      "tags": [
+        "TP-0057",
+        "cfpf.phase1.recon",
+        "daas",
+        "deepfake",
+        "fraud-as-a-service",
+        "subscription-pattern"
+      ],
+      "falsepositives": [
+        "Legitimate AI SaaS subscriptions paid in cryptocurrency",
+        "NFT art purchases from digital artists",
+        "Legitimate face-swap or avatar generation services for entertainment"
+      ]
+    },
+    {
+      "id": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+      "dl_id": "DL-0117",
+      "title": "Multilingual Chatbot Scam Pattern Detection",
+      "status": "experimental",
+      "description": "Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection_timing": {
+          "response_time_variance_ms|lt": 2000,
+          "message_count|gte": 10
+        },
+        "selection_template": {
+          "conversation_template_match_score|gt": 0.8
+        },
+        "selection_language_switch": {
+          "language_switch_count|gte": 1,
+          "conversation_languages_count|gte": 2
+        },
+        "selection_duplicate_phrasing": {
+          "cross_instance_phrase_similarity|gt": 0.9,
+          "reported_instances|gte": 2
+        },
+        "condition": "selection_timing and (selection_template or selection_language_switch or selection_duplicate_phrasing)"
+      },
+      "logsource": {
+        "product": "messaging_platform",
+        "service": "abuse_detection"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "response_time_variance_ms",
+          "message_count",
+          "conversation_template_match_score",
+          "language_switch_count",
+          "conversation_languages_count",
+          "cross_instance_phrase_similarity",
+          "reported_instances"
+        ],
+        "enrichment_required": [
+          {
+            "field": "conversation_template_match_score",
+            "source": "NLP enrichment (conversation template matching against known scam scripts)"
+          },
+          {
+            "field": "cross_instance_phrase_similarity",
+            "source": "Cross-instance analytics enrichment (phrase similarity scoring across reports)"
+          }
+        ]
+      },
+      "threat_path_ids": [
+        "TP-0017",
+        "TP-0058"
+      ],
+      "fraud_types": [
+        "chatbot-enabled-fraud",
+        "scam-compound-operations",
+        "social-engineering"
+      ],
+      "tags": [
+        "TP-0017",
+        "TP-0058",
+        "cfpf.phase2.initial_access",
+        "chatbot",
+        "multilingual",
+        "scam-compound",
+        "scripted-fraud",
+        "social-engineering"
+      ],
+      "falsepositives": [
+        "Legitimate customer service chatbots with scripted responses",
+        "Auto-responders and out-of-office message systems",
+        "Language learning practice conversations"
+      ]
+    },
+    {
+      "id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a",
+      "dl_id": "DL-0118",
+      "title": "Automated Mule Account Creation Velocity",
+      "status": "experimental",
+      "description": "Detect automated account opening patterns indicative of mule account infrastructure buildout: (1) multiple applications originating from the same device fingerprint or IP address within a 24-hour window, (2) KYC document metadata anomalies such as identical creation timestamps or template-based formatting, (3) application completion in under 2 minutes suggesting automation, (4) absence of mouse movement or scroll events with rapid sequential field completion indicating bot-driven form filling.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_speed": {
+          "application_duration_seconds|lt": 120
+        },
+        "selection_velocity": {
+          "device_applications_24h|gt": 3
+        },
+        "selection_bot": {
+          "mouse_events_count": 0,
+          "scroll_events_count": 0,
+          "field_completion_rate_ms|lt": 500
+        },
+        "selection_document": {
+          "kyc_document_metadata_anomaly": true
+        },
+        "condition": "selection_speed or selection_velocity or (selection_bot and selection_document)"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "account_onboarding"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "application_duration_seconds",
+          "device_applications_24h",
+          "mouse_events_count",
+          "scroll_events_count",
+          "field_completion_rate_ms",
+          "kyc_document_metadata_anomaly"
+        ],
+        "enrichment_required": [
+          {
+            "field": "device_applications_24h",
+            "source": "Device intelligence enrichment (application count per device fingerprint in 24h)"
+          },
+          {
+            "field": "kyc_document_metadata_anomaly",
+            "source": "Document analysis enrichment (metadata consistency and template detection)"
+          }
+        ]
+      },
+      "queries": {
+        "logscale": "// LogScale LQL for Automated Mule Account Creation Velocity\n// Repository: flame-banking-account-onboarding\n// Aggregation that cannot be expressed in Sigma\napplication_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0\n| groupBy([device_fingerprint, ip_address], function=[\n    count(as=app_count),\n    countDistinct(applicant_id, as=unique_applicants),\n    collect(applicant_id),\n    avg(application_duration_seconds, as=avg_duration),\n    min(application_duration_seconds, as=min_duration),\n    sum(mouse_events_count, as=total_mouse_events)\n  ])\n| app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| case {\n    app_count>10 | risk_level:=\"critical\";\n    app_count>5 | risk_level:=\"high\";\n    app_count>3 | risk_level:=\"medium\";\n  }",
+        "splunk": "`comment(\"Splunk SPL for Automated Mule Account Creation Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n(application_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0)\n| stats count as app_count dc(applicant_id) as unique_applicants values(applicant_id) as applicants\n  avg(application_duration_seconds) as avg_duration min(application_duration_seconds) as min_duration\n  sum(mouse_events_count) as total_mouse_events by device_fingerprint ip_address\n| where app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| eval risk_level=case(app_count>10, \"critical\", app_count>5, \"high\", app_count>3, \"medium\")"
+      },
+      "threat_path_ids": [
+        "TP-0059"
+      ],
+      "fraud_types": [
+        "application-fraud",
+        "automated-mule-infrastructure",
+        "new-account-fraud"
+      ],
+      "tags": [
+        "TP-0059",
+        "automation",
+        "bot-detection",
+        "cfpf.phase2.initial_access",
+        "mule-account",
+        "velocity"
+      ],
+      "falsepositives": [
+        "Legitimate batch account opening by businesses or payroll providers",
+        "Accessibility tools that bypass standard mouse interaction",
+        "Corporate onboarding processes using automated form-filling"
+      ]
+    },
+    {
+      "id": "e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b",
+      "dl_id": "DL-0119",
+      "title": "KYC Verification Bot Circumvention Detection",
+      "status": "experimental",
+      "description": "Detect automated circumvention of KYC identity verification processes: (1) liveness check submissions exhibiting synthetic face indicators such as GAN artifacts or uniform skin texture, (2) document photo lighting conditions inconsistent with selfie environment suggesting pre-captured or generated images, (3) multiple verification attempts from geographically dispersed IP addresses using the same identity documents, (4) session duration and interaction patterns matching known automation tooling.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_synthetic": {
+          "liveness_synthetic_score|gt": 0.7
+        },
+        "selection_lighting": {
+          "document_lighting_mismatch": true,
+          "selfie_lighting_mismatch": true
+        },
+        "selection_multi_ip": {
+          "identity_multi_ip_count|gt": 2,
+          "ip_geo_dispersion_km|gt": 500
+        },
+        "selection_automation": {
+          "session_interaction_pattern": "automated",
+          "verification_attempt_count|gte": 3
+        },
+        "condition": "selection_synthetic or selection_lighting or selection_multi_ip or selection_automation"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "kyc_verification"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "liveness_synthetic_score",
+          "document_lighting_mismatch",
+          "selfie_lighting_mismatch",
+          "identity_multi_ip_count",
+          "ip_geo_dispersion_km",
+          "session_interaction_pattern",
+          "verification_attempt_count"
+        ],
+        "enrichment_required": [
+          {
+            "field": "liveness_synthetic_score",
+            "source": "Biometric analysis enrichment (GAN artifact and synthetic face detection scoring)"
+          },
+          {
+            "field": "ip_geo_dispersion_km",
+            "source": "Geolocation enrichment (IP geographic dispersion calculation)"
+          },
+          {
+            "field": "document_lighting_mismatch",
+            "source": "Document analysis enrichment (lighting environment consistency check)"
+          }
+        ]
+      },
+      "threat_path_ids": [
+        "TP-0034",
+        "TP-0059"
+      ],
+      "fraud_types": [
+        "application-fraud",
+        "new-account-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "TP-0034",
+        "TP-0059",
+        "bot-circumvention",
+        "cfpf.phase2.initial_access",
+        "gan-detection",
+        "kyc-bypass",
+        "synthetic-face"
+      ],
+      "falsepositives": [
+        "Poor camera quality producing artifacts similar to GAN indicators",
+        "Unusual lighting conditions during legitimate verification",
+        "Users re-attempting verification from different networks (mobile vs wifi)"
+      ]
+    },
+    {
+      "id": "f6a7b8c9-d0e1-4f2a-3b4c-5d6e7f8a9b0c",
+      "dl_id": "DL-0120",
+      "title": "Investment TDS Geo-Routing to Legitimate Platform",
+      "status": "experimental",
+      "description": "Detect Traffic Distribution System (TDS) geo-routing patterns used in investment scam infrastructure: (1) same domain resolving to different IP addresses based on requester geography, (2) US-based visitors redirected to legitimate financial services such as eToro or Coinbase while non-US visitors are routed to newly registered scam domains, (3) CNAME records functioning as TDS routing mechanisms as observed in Savvy Seahorse campaigns. This evasion technique allows scam operators to avoid detection by security researchers and law enforcement in specific jurisdictions.\n",
+      "cfpf_phase": "P3",
+      "level": "medium",
+      "detection": {
+        "selection_geo_variance": {
+          "domain_ip_geo_variance": true,
+          "unique_resolution_ips|gte": 3,
+          "geo_routing_detected": true
+        },
+        "selection_legitimate_redirect": {
+          "redirect_target|contains": [
+            "etoro.com",
+            "coinbase.com",
+            "robinhood.com",
+            "fidelity.com"
+          ],
+          "source_geo": "US"
+        },
+        "selection_cname_tds": {
+          "cname_chain_length|gte": 2,
+          "cname_target_domain_age_days|lt": 30,
+          "cname_routing_pattern": true
+        },
+        "selection_domain_age": {
+          "domain_registration_age_days|lt": 30,
+          "non_us_redirect_target": true
+        },
+        "condition": "(selection_geo_variance and selection_legitimate_redirect) or (selection_cname_tds and selection_domain_age)"
+      },
+      "logsource": {
+        "product": "dns",
+        "service": "passive_dns"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "domain_ip_geo_variance",
+          "unique_resolution_ips",
+          "geo_routing_detected",
+          "redirect_target",
+          "source_geo",
+          "cname_chain_length",
+          "cname_target_domain_age_days",
+          "cname_routing_pattern",
+          "domain_registration_age_days",
+          "non_us_redirect_target"
+        ],
+        "enrichment_required": [
+          {
+            "field": "domain_ip_geo_variance",
+            "source": "Passive DNS enrichment (geographic resolution variance analysis)"
+          },
+          {
+            "field": "cname_routing_pattern",
+            "source": "DNS analytics enrichment (CNAME chain TDS pattern detection)"
+          },
+          {
+            "field": "domain_registration_age_days",
+            "source": "WHOIS enrichment (domain registration age calculation)"
+          }
+        ]
+      },
+      "threat_path_ids": [
+        "TP-0042",
+        "TP-0060"
+      ],
+      "fraud_types": [
+        "investment-tds-pipeline",
+        "tds-exploitation"
+      ],
+      "tags": [
+        "TP-0042",
+        "TP-0060",
+        "cfpf.phase3.positioning",
+        "cname-routing",
+        "etoro-evasion",
+        "geo-routing",
+        "investment-scam",
+        "savvy-seahorse",
+        "tds"
+      ],
+      "falsepositives": [
+        "Legitimate CDN geo-routing for content delivery optimization",
+        "A/B testing by marketing platforms using geographic segmentation",
+        "Legitimate geo-restricted financial services with regional redirects"
+      ]
+    },
+    {
+      "id": "a7b8c9d0-e1f2-4a3b-4c5d-6e7f8a9b0c1d",
+      "dl_id": "DL-0121",
+      "title": "DPRK Internal Platform Network Connection Detection",
+      "status": "experimental",
+      "description": "Detect connections to DPRK-associated internal collaboration platforms OConnect VPN and NetKey VPN, identified by Flare and IBM X-Force as tools used by DPRK IT workers: (1) VPN connections to known OConnect or NetKey IP address ranges, (2) DNS queries resolving OConnect or NetKey domains, (3) VPN protocol signatures matching OConnect or NetKey handshake patterns, particularly from endpoints that are simultaneously connected to corporate VPN infrastructure. Dual-VPN usage is a strong indicator of DPRK IT worker activity on compromised enterprise networks.\n",
+      "cfpf_phase": "P3",
+      "level": "critical",
+      "detection": {
+        "selection_vpn_product": {
+          "vpn_product|contains": [
+            "OConnect",
+            "NetKey"
+          ]
+        },
+        "selection_dns": {
+          "dns_query|contains": [
+            "oconnect",
+            "netkey",
+            "oconnect.net",
+            "netkey.io"
+          ]
+        },
+        "selection_dual_vpn": {
+          "concurrent_vpn_connections|gte": 2,
+          "corporate_vpn_active": true,
+          "external_vpn_detected": true
+        },
+        "condition": "selection_vpn_product or selection_dns or selection_dual_vpn"
+      },
+      "logsource": {
+        "product": "network",
+        "service": "vpn_monitoring"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "vpn_product",
+          "dns_query",
+          "concurrent_vpn_connections",
+          "corporate_vpn_active",
+          "external_vpn_detected"
+        ],
+        "enrichment_required": [
+          {
+            "field": "concurrent_vpn_connections",
+            "source": "Network analytics enrichment (concurrent VPN session detection)"
+          },
+          {
+            "field": "external_vpn_detected",
+            "source": "Endpoint telemetry enrichment (non-corporate VPN process detection)"
+          }
+        ]
+      },
+      "references": [
+        "https://flare.io/learn/resources/blog/dprk-it-workers",
+        "https://securityintelligence.com/x-force/dprk-it-workers-operations"
+      ],
+      "threat_path_ids": [
+        "TP-0034"
+      ],
+      "fraud_types": [
+        "dprk-it-worker-fraud"
+      ],
+      "tags": [
+        "TP-0034",
+        "cfpf.phase3.positioning",
+        "critical",
+        "dprk",
+        "dual-vpn",
+        "flame.dprk",
+        "netkey",
+        "oconnect",
+        "vpn"
+      ],
+      "falsepositives": [
+        "Legitimate OConnect videoconferencing usage in organizations where it is an approved tool",
+        "Security researchers analyzing DPRK infrastructure"
+      ]
+    },
+    {
+      "id": "b8c9d0e1-f2a3-4b4c-5d6e-7f8a9b0c1d2e",
+      "dl_id": "DL-0122",
+      "title": "Keitaro/Binom TDS Abuse Infrastructure Detection",
+      "status": "experimental",
+      "description": "Detect abuse of legitimate Traffic Distribution Systems Keitaro and Binom for fraud infrastructure: (1) HTTP redirect chains containing Keitaro tracking parameters such as click_id, campaign_id, and characteristic Keitaro URL path structures, (2) domains resolving to IP addresses associated with Keitaro or Binom hosting infrastructure, (3) redirect chain behavior patterns matching cloaking and visitor fingerprinting techniques used to evade security researchers while directing victims to investment scam landing pages.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection_keitaro_params": {
+          "url_query|contains": [
+            "click_id=",
+            "campaign_id=",
+            "keitaro",
+            "/go/"
+          ],
+          "url_path|contains": [
+            "/tracker/",
+            "/click/",
+            "/go/"
+          ]
+        },
+        "selection_binom_params": {
+          "url_query|contains": [
+            "binom",
+            "cnv_id="
+          ],
+          "url_path|contains": [
+            "/click.php",
+            "/conversion.php"
+          ]
+        },
+        "selection_redirect_chain": {
+          "redirect_chain_length|gte": 3,
+          "redirect_chain_tds_fingerprint": true,
+          "final_destination_domain_age_days|lt": 30
+        },
+        "condition": "(selection_keitaro_params or selection_binom_params) and selection_redirect_chain"
+      },
+      "logsource": {
+        "product": "web_proxy",
+        "service": "http_log"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "url_query",
+          "url_path",
+          "redirect_chain_length",
+          "redirect_chain_tds_fingerprint",
+          "final_destination_domain_age_days"
+        ],
+        "enrichment_required": [
+          {
+            "field": "redirect_chain_tds_fingerprint",
+            "source": "Web proxy enrichment (TDS redirect pattern fingerprinting)"
+          },
+          {
+            "field": "final_destination_domain_age_days",
+            "source": "WHOIS enrichment (domain registration age for final redirect destination)"
+          }
+        ]
+      },
+      "queries": {
+        "logscale": "// LogScale LQL for Keitaro/Binom TDS Abuse Infrastructure Detection\n// Repository: flame-proxy-http-log\n// HTTP redirect chain analysis for TDS abuse patterns\n(url_query=/click_id=|campaign_id=|keitaro|binom|cnv_id=/)\nOR (url_path=/\\/tracker\\/|\\/click\\/|\\/go\\/|\\/click\\.php/)\n| selfJoinFilter(session_id, where=[{url_query=/keitaro/ OR url_path=/\\/tracker\\//} {url_query=/binom/ OR url_path=/\\/click\\.php/}])\n| groupBy([session_id, src_ip], function=[\n    count(as=redirect_count),\n    collect([url, final_destination])\n  ])\n| redirect_count>=3",
+        "splunk": "`comment(\"Splunk SPL for Keitaro/Binom TDS Abuse Infrastructure Detection\")`\n`comment(\"HTTP redirect chain analysis for TDS abuse patterns\")`\nindex=flame_proxy sourcetype=flame:http_log\n(url_query=\"*click_id=*\" OR url_query=\"*campaign_id=*\" OR url_query=\"*keitaro*\" OR url_query=\"*binom*\" OR url_query=\"*cnv_id=*\")\nOR (url_path=\"*/tracker/*\" OR url_path=\"*/click/*\" OR url_path=\"*/go/*\" OR url_path=\"*/click.php*\")\n| transaction session_id maxspan=30s\n| where eventcount>=3\n| eval redirect_chain=mvjoin(url, \" -> \")\n| eval has_keitaro=if(like(url_query, \"%keitaro%\") OR like(url_path, \"%/tracker/%\"), 1, 0)\n| eval has_binom=if(like(url_query, \"%binom%\") OR like(url_path, \"%/click.php%\"), 1, 0)\n| where has_keitaro=1 OR has_binom=1\n| stats count values(redirect_chain) as chains values(final_destination) as destinations by src_ip session_id"
+      },
+      "threat_path_ids": [
+        "TP-0042",
+        "TP-0060"
+      ],
+      "fraud_types": [
+        "investment-tds-pipeline",
+        "tds-exploitation"
+      ],
+      "tags": [
+        "TP-0042",
+        "TP-0060",
+        "binom",
+        "cfpf.phase2.initial_access",
+        "cloaking",
+        "investment-scam",
+        "keitaro",
+        "redirect-chain",
+        "tds"
+      ],
+      "falsepositives": [
+        "Legitimate digital marketing campaigns using Keitaro or Binom for affiliate analytics",
+        "Performance marketing redirect chains for authorized advertising"
+      ]
+    },
+    {
+      "id": "f1a2b3c4-d5e6-4f7a-8b9c-0d1e2f3a4b5c",
+      "dl_id": "DL-0124",
+      "title": "UCP Cart Mandate Gift Card Injection via Indirect Prompt Injection",
+      "status": "experimental",
+      "description": "Detects unauthorized gift card line items appended to UCP Cart Mandate payloads by AI shopping agents whose context has been compromised via indirect prompt injection. Threat actors create deals aggregator or coupon sites containing hidden payloads that reprogram the agent's memory during browsing. The agent then appends a hidden digital gift card line item to the Cart Mandate JSON-RPC payload with the recipient email set to an attacker-controlled address and display_status set to hidden. The additional cost may be disguised as Tax/Fees in the user's UI. This rule targets Phase 3-4 (Positioning/Execution) of the attack, detecting the presence of gift card items with suspicious recipient addresses or hidden display status in checkout payloads.\n",
+      "cfpf_phase": "P3",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "event_type": "cart_mandate_submission",
+          "initiated_by": "ai_agent"
+        },
+        "condition_hidden_gift_card": {
+          "line_item_type|contains": [
+            "gift_card",
+            "e_gift_card",
+            "digital_gift_card"
+          ],
+          "display_status": "hidden"
+        },
+        "condition_external_recipient": {
+          "line_item_type|contains": [
+            "gift_card",
+            "e_gift_card",
+            "digital_gift_card"
+          ],
+          "recipient_email_matches_user": false
+        },
+        "condition_agent_added": {
+          "line_item_type|contains": [
+            "gift_card",
+            "e_gift_card",
+            "digital_gift_card"
+          ],
+          "line_item_added_by": "agent_auto",
+          "user_intent_contains_gift_card": false
+        },
+        "condition": "selection and (1 of condition_*)"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "ucp_checkout"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "event_type",
+          "initiated_by",
+          "line_item_type",
+          "display_status",
+          "recipient_email_matches_user",
+          "line_item_added_by",
+          "user_intent_contains_gift_card"
+        ],
+        "enrichment_required": [
+          {
+            "field": "recipient_email_matches_user",
+            "source": "User profile enrichment (compare gift card recipient email against user's known email addresses)"
+          },
+          {
+            "field": "user_intent_contains_gift_card",
+            "source": "Intent analysis enrichment (parse user's original shopping intent for gift card purchase requests)"
+          }
+        ]
+      },
+      "references": [
+        "https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/"
+      ],
+      "threat_path_ids": [
+        "TP-0039"
+      ],
+      "fraud_types": [
+        "autonomous-ai-fraud",
+        "gift-card-fraud",
+        "unauthorized-transaction"
+      ],
+      "tags": [
+        "attack.t1059",
+        "attack.t1657",
+        "cfpf.phase3.positioning",
+        "cfpf.phase4.execution",
+        "flame.agentic_commerce",
+        "flame.ecommerce",
+        "flame.gift_card_fraud",
+        "flame.prompt_injection",
+        "flame.ucp"
+      ],
+      "falsepositives": [
+        "User explicitly requesting gift card purchases for others via agent",
+        "Corporate bulk gift card purchasing through automated procurement agents",
+        "Legitimate promotional gift card bundles included by merchants"
+      ]
+    },
+    {
+      "id": "a7b8c9d0-e1f2-4a3b-5c6d-7e8f9a0b1c2d",
+      "dl_id": "DL-0125",
+      "title": "UCP Returns Logic Hijacking — Void Return and Verify Step Bypass",
+      "status": "experimental",
+      "description": "Detects exploitation of the UCP returns state machine where AI agents skip the order.return.verify step and trigger settlement.refund.instant() using fraudulent tracking IDs (e.g., void-000). Threat actors embed hidden instructions in product page HTML metadata or invisible span tags that are ingested by the agent when it reads return instructions. The agent then processes the malicious command as a high-priority system update, bypassing return verification and issuing refunds without valid shipping confirmation. At scale, organized crime groups deploy bot farms to initiate thousands of void returns per hour, potentially liquidating a retailer's cash reserves. This rule targets Phase 4 (Execution) by detecting refund primitives triggered without proper verification, void tracking IDs, and anomalous refund velocity.\n",
+      "cfpf_phase": "P4",
+      "level": "critical",
+      "detection": {
+        "selection_void_tracking": {
+          "return_tracking_id|startswith": "void-"
+        },
+        "selection_verify_skip": {
+          "return_verify_step_completed": false,
+          "refund_method": "settlement.refund.instant"
+        },
+        "selection_no_shipping_scan": {
+          "shipping_scan_validated": false,
+          "refund_issued": true
+        },
+        "aggregation_velocity": {
+          "count|gte": 10,
+          "groupby": "merchant_id",
+          "timeframe": "1h"
+        },
+        "condition": "selection_void_tracking or selection_verify_skip or (selection_no_shipping_scan and aggregation_velocity)"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "ucp_returns"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "return_tracking_id",
+          "return_verify_step_completed",
+          "refund_method",
+          "shipping_scan_validated",
+          "refund_issued"
+        ],
+        "enrichment_required": [
+          {
+            "field": "shipping_scan_validated",
+            "source": "Shipping carrier enrichment (validate tracking ID against carrier API for actual shipment confirmation)"
+          },
+          {
+            "field": "return_verify_step_completed",
+            "source": "UCP state machine enrichment (verify order.return.verify step completion status)"
+          }
+        ]
+      },
+      "references": [
+        "https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/"
+      ],
+      "threat_path_ids": [
+        "TP-0031",
+        "TP-0039"
+      ],
+      "fraud_types": [
+        "autonomous-ai-fraud",
+        "refunding-as-a-service",
+        "returns-fraud",
+        "unauthorized-transaction"
+      ],
+      "tags": [
+        "attack.t1059",
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.agentic_commerce",
+        "flame.ecommerce",
+        "flame.organized_retail_crime",
+        "flame.returns_fraud",
+        "flame.ucp"
+      ],
+      "falsepositives": [
+        "Merchant-initiated refunds that bypass standard return flow (e.g., customer service overrides)",
+        "Digital product returns where physical shipping verification is not applicable",
+        "Promotional no-return-required refund policies"
+      ]
+    },
+    {
+      "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "dl_id": "DL-0126",
+      "title": "Indirect Prompt Injection in UCP Agent Browsing Content",
+      "status": "experimental",
+      "description": "Detects indicators of indirect prompt injection payloads in web content encountered by UCP shopping agents during autonomous browsing. Because UCP agents are designed to autonomously browse, summarize and interact with merchant sites, they are highly susceptible to indirect prompt injection where the attack is not typed by the user but encountered by the agent while performing a task. Threat actors embed hidden payloads in deals aggregator sites, coupon pages, product listings, and merchant pages using techniques including invisible text, hidden HTML span tags, metadata-embedded instructions, and CSS-hidden content. These payloads target the agent's context window to reprogram behavior — appending hidden Cart Mandate line items, bypassing return verification steps, or redirecting transactions. This rule targets Phase 2 (Initial Access) by scanning agent-ingested content for prompt injection indicators before they can compromise agent behavior.\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "event_type": "agent_content_ingestion"
+        },
+        "condition_hidden_cart_mandate": {
+          "content_contains_hidden_text": true,
+          "hidden_text_pattern|re": "(?i)(\\$?CartMandate|cart_mandate|line.?item|recipient.?email|display.?status.*hidden)"
+        },
+        "condition_refund_injection": {
+          "content_contains_hidden_text": true,
+          "hidden_text_pattern|re": "(?i)(settlement\\.refund|order\\.return\\.verify|refund\\.instant|void-\\d+|skip.*verify)"
+        },
+        "condition_invisible_elements": {
+          "invisible_span_detected": true,
+          "invisible_content_length|gt": 50,
+          "invisible_content_contains_instructions": true
+        },
+        "condition_metadata_injection": {
+          "metadata_contains_instructions": true,
+          "metadata_instruction_pattern|re": "(?i)(system:|action:|observation:)"
+        },
+        "condition": "selection and (1 of condition_*)"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "agent_content_scanner"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "event_type",
+          "content_contains_hidden_text",
+          "hidden_text_pattern",
+          "invisible_span_detected",
+          "invisible_content_length",
+          "invisible_content_contains_instructions",
+          "metadata_contains_instructions",
+          "metadata_instruction_pattern"
+        ],
+        "enrichment_required": [
+          {
+            "field": "content_contains_hidden_text",
+            "source": "Content analysis enrichment (DOM parsing for CSS-hidden elements, zero-size text, invisible spans)"
+          },
+          {
+            "field": "metadata_contains_instructions",
+            "source": "Content analysis enrichment (HTML metadata extraction and instruction pattern detection)"
+          },
+          {
+            "field": "invisible_content_contains_instructions",
+            "source": "NLP enrichment (classify invisible content as containing actionable agent instructions)"
+          }
+        ]
+      },
+      "references": [
+        "https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/"
+      ],
+      "threat_path_ids": [
+        "TP-0034",
+        "TP-0039",
+        "TP-0057"
+      ],
+      "fraud_types": [
+        "ai-face-voice-changer",
+        "autonomous-ai-fraud",
+        "deepfake-fraud",
+        "dprk-it-worker-fraud",
+        "social-engineering"
+      ],
+      "tags": [
+        "TP-0034",
+        "TP-0057",
+        "attack.t1059",
+        "cfpf.phase2.initial_access",
+        "cfpf.phase2.initial_access",
+        "deepfake",
+        "dprk",
+        "face-changer",
+        "flame.agentic_commerce",
+        "flame.dprk",
+        "flame.ecommerce",
+        "flame.prompt_injection",
+        "flame.ucp",
+        "voice-changer"
+      ],
+      "falsepositives": [
+        "Legitimate SEO metadata containing keyword patterns matching injection signatures",
+        "Accessibility-related hidden text (screen reader content) with instruction-like language",
+        "Web development frameworks using hidden elements for state management"
+      ]
+    },
+    {
+      "id": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
+      "dl_id": "DL-0127",
+      "title": "TDS URL Parameter Fingerprint Tracking Across Rotating Domains",
+      "status": "experimental",
+      "description": "Detects consistent URL query parameter patterns (TDS software behavioral signatures) appearing across multiple rotating domains, indicating a single TDS operator managing infrastructure through domain rotation. TDS operators require consistent parameter schemas to route traffic between affiliates, track conversions, and attribute payouts — these parameters are the TDS internal API contract visible in redirect URLs even when domain names rotate. The VexTrio TDS was tracked for years via its distinctive ?u=&o= query parameter format before corporate attribution was achieved (Black Hat USA 2025, Infoblox). This rule identifies recurring parameter fingerprints across newly registered or rapidly rotating domains as indicators of TDS infrastructure managed by a single operator.\n",
+      "cfpf_phase": "P3",
+      "level": "medium",
+      "detection": {
+        "selection_parameter_patterns": {
+          "url_query|re": [
+            "\\?u=[^&]*&o=[^&]*",
+            "\\?aff_id=[^&]*&click_id=[^&]*",
+            "\\?subid=[^&]*&source=[^&]*&clickid=[^&]*",
+            "\\?pid=[^&]*&offer_id=[^&]*"
+          ]
+        },
+        "selection_domain_characteristics": {
+          "dest_domain_age_days|lt": 90
+        },
+        "selection_redirect_context": {
+          "http_status|contains": [
+            "302",
+            "301",
+            "307"
+          ]
+        },
+        "condition": "selection_parameter_patterns and selection_domain_characteristics and selection_redirect_context"
+      },
+      "logsource": {
+        "product": "web_proxy",
+        "service": "http_log"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "url_query",
+          "dest_domain",
+          "dest_domain_age_days",
+          "http_status",
+          "src_ip",
+          "session_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "dest_domain_age_days",
+            "source": "WHOIS enrichment (domain registration age)"
+          }
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for TDS URL Parameter Fingerprint Tracking\")`\n`comment(\"Identifies consistent TDS parameter patterns across rotating domains\")`\nindex=flame_proxy sourcetype=flame:http_log http_status IN (301, 302, 307)\n(url_query=\"*?u=*&o=*\" OR url_query=\"*aff_id=*&click_id=*\" OR url_query=\"*subid=*&source=*&clickid=*\" OR url_query=\"*pid=*&offer_id=*\")\n| rex field=url_query \"(?<param_pattern>[a-z_]+=)[^&]*(&[a-z_]+=)[^&]*\"\n| eval param_fingerprint=param_pattern\n| lookup domain_age_feed dest_domain OUTPUT domain_age_days\n| where domain_age_days < 90 OR isnull(domain_age_days)\n| stats dc(dest_domain) AS unique_domains\n        values(dest_domain) AS domains\n        dc(src_ip) AS unique_visitors\n        count AS total_hits\n        earliest(_time) AS first_seen\n        latest(_time) AS last_seen\n    by param_fingerprint\n| where unique_domains >= 3\n| sort -unique_domains",
+        "logscale": "// LogScale LQL for TDS URL Parameter Fingerprint Tracking\n// Repository: flame-proxy-http-log\nhttp_status=/30[127]/\n| url_query=/\\?(u=[^&]*&o=|aff_id=[^&]*&click_id=|subid=[^&]*&source=[^&]*&clickid=|pid=[^&]*&offer_id=)/\n| regex(\"(?<param_fingerprint>[a-z_]+=)[^&]*(&[a-z_]+=)\", field=url_query)\n| groupBy([param_fingerprint], function=[\n    count(as=total_hits),\n    collectDistinct(dest_domain, as=unique_domains),\n    collectDistinct(src_ip, as=unique_visitors)\n  ])\n| length(unique_domains) >= 3"
+      },
+      "references": [
+        "https://blackhat.com/us-25/briefings/schedule/#no-hoodies-here-organized-crime-in-adtech-46001",
+        "https://www.infoblox.com/threat-intel/"
+      ],
+      "threat_path_ids": [
+        "TP-0042",
+        "TP-0044",
+        "TP-0060",
+        "TP-0061"
+      ],
+      "fraud_types": [
+        "affiliate-fraud",
+        "bph-migration",
+        "malvertising",
+        "sanctions-evasion-infrastructure",
+        "state-criminal-convergence",
+        "tds-exploitation"
+      ],
+      "tags": [
+        "TP-0042",
+        "TP-0044",
+        "TP-0060",
+        "TP-0061",
+        "aeza",
+        "affiliate-tracking",
+        "behavioral-fingerprint",
+        "bgp",
+        "bulletproof-hosting",
+        "cfpf.phase1.recon",
+        "cfpf.phase3.positioning",
+        "domain-rotation",
+        "ip-rotation",
+        "ripe-abuse",
+        "sanctions-evasion",
+        "tae",
+        "tds",
+        "url-parameter-fingerprint",
+        "vextrio"
+      ],
+      "falsepositives": [
+        "Legitimate affiliate marketing campaigns using consistent tracking parameters across multiple publisher domains",
+        "A/B testing platforms rotating domains for conversion optimization",
+        "Advertising analytics platforms with standardized URL parameter schemas"
+      ]
+    },
+    {
+      "id": "d0e1f2a3-b4c5-4d6e-7f8a-9b0c1d2e3f4a",
+      "dl_id": "DL-0128",
+      "title": "Blank Credit Card Subscription Fraud Pattern Detection",
+      "status": "experimental",
+      "description": "Detects patterns consistent with blank credit card subscription fraud as operated by VexTrio/Ad Trafficko and similar affiliate fraud platforms. In this scheme, affiliates deploy customizable credit card capture templates offering low-cost items (\"Free iPhone, $1.99 shipping\" or \"Walmart gift card, $0.99 shipping\"). Victims enter card details believing they are paying a nominal fee; the platform charges a higher amount ($9.99 typical) and enrolls them in recurring subscriptions generating ongoing charges. Affiliate payouts reach $120 per successful lead. This rule targets the transaction monitoring layer to identify: (1) initial nominal-amount card-not-present charges from newly registered or unknown merchants followed by recurring charges at higher amounts, (2) merchant descriptor patterns consistent with subscription enrollment services, (3) high chargeback ratios from merchants exhibiting these patterns. Source: Black Hat USA 2025 (Infoblox VexTrio deanonymization).\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_initial_charge": {
+          "transaction_type": "CNP",
+          "amount|lte": 2.99,
+          "merchant_category_code|contains": [
+            "5999",
+            "5968",
+            "5969",
+            "4816"
+          ]
+        },
+        "selection_followup_subscription": {
+          "transaction_type": "recurring",
+          "amount|gte": 6.99,
+          "same_card_hash": true,
+          "same_merchant_group": true,
+          "days_after_initial|lte": 7
+        },
+        "selection_merchant_risk": {
+          "merchant_registration_age_days|lt": 180,
+          "merchant_chargeback_ratio|gte": 0.05
+        },
+        "condition": "selection_initial_charge and (selection_followup_subscription or selection_merchant_risk)"
+      },
+      "logsource": {
+        "product": "transaction_monitoring",
+        "service": "payment_processor"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "transaction_type",
+          "amount",
+          "merchant_category_code",
+          "merchant_descriptor",
+          "card_hash",
+          "merchant_id",
+          "merchant_registration_age_days",
+          "merchant_chargeback_ratio"
+        ],
+        "enrichment_required": [
+          {
+            "field": "merchant_registration_age_days",
+            "source": "Merchant onboarding records (merchant account age)"
+          },
+          {
+            "field": "merchant_chargeback_ratio",
+            "source": "Payment processor chargeback analytics"
+          }
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Blank CC Subscription Fraud Pattern Detection\")`\n`comment(\"Identifies nominal-charge-to-recurring-subscription patterns (Ad Trafficko model)\")`\nindex=flame_txn sourcetype=flame:card_transactions transaction_type=CNP\n| eval is_nominal=(if(amount<=2.99, 1, 0))\n| eval is_recurring_followup=(if(transaction_type=\"recurring\" AND amount>=6.99, 1, 0))\n| stats\n    sum(is_nominal) AS nominal_charges\n    sum(is_recurring_followup) AS recurring_charges\n    dc(card_hash) AS unique_cards\n    avg(amount) AS avg_amount\n    max(amount) AS max_amount\n    values(merchant_descriptor) AS descriptors\n    latest(merchant_chargeback_ratio) AS chargeback_ratio\n  by merchant_id\n| where nominal_charges > 10 AND recurring_charges > 5\n| eval conversion_ratio=round(recurring_charges/nominal_charges, 2)\n| where conversion_ratio > 0.3 OR chargeback_ratio > 0.05\n| sort -recurring_charges",
+        "sql": "-- SQL for Blank CC Subscription Fraud Pattern Detection\n-- Identifies merchants exhibiting nominal-to-recurring subscription fraud patterns\nWITH initial_charges AS (\n  SELECT card_hash, merchant_id, merchant_descriptor, amount,\n         transaction_date, transaction_id\n  FROM card_transactions\n  WHERE transaction_type = 'CNP'\n    AND amount <= 2.99\n    AND transaction_date >= CURRENT_DATE - INTERVAL '30 days'\n),\nfollowup_subscriptions AS (\n  SELECT card_hash, merchant_id, amount,\n         transaction_date, transaction_type\n  FROM card_transactions\n  WHERE transaction_type = 'recurring'\n    AND amount >= 6.99\n    AND transaction_date >= CURRENT_DATE - INTERVAL '30 days'\n)\nSELECT\n  ic.merchant_id,\n  ic.merchant_descriptor,\n  COUNT(DISTINCT ic.transaction_id) AS nominal_charge_count,\n  COUNT(DISTINCT fs.card_hash) AS cards_enrolled_recurring,\n  AVG(fs.amount) AS avg_recurring_amount,\n  m.chargeback_ratio,\n  m.registration_date\nFROM initial_charges ic\nJOIN followup_subscriptions fs\n  ON ic.card_hash = fs.card_hash\n  AND ic.merchant_id = fs.merchant_id\n  AND fs.transaction_date BETWEEN ic.transaction_date AND ic.transaction_date + INTERVAL '7 days'\nJOIN merchant_profiles m ON ic.merchant_id = m.merchant_id\nGROUP BY ic.merchant_id, ic.merchant_descriptor, m.chargeback_ratio, m.registration_date\nHAVING COUNT(DISTINCT ic.transaction_id) > 10\n   AND COUNT(DISTINCT fs.card_hash) > 5\nORDER BY cards_enrolled_recurring DESC;"
+      },
+      "references": [
+        "https://blackhat.com/us-25/briefings/schedule/#no-hoodies-here-organized-crime-in-adtech-46001"
+      ],
+      "threat_path_ids": [
+        "TP-0042",
+        "TP-0054"
+      ],
+      "fraud_types": [
+        "fraud-as-a-service",
+        "subscription-fraud",
+        "tds-exploitation"
+      ],
+      "tags": [
+        "TP-0042",
+        "TP-0054",
+        "ad-trafficko",
+        "affiliate-fraud",
+        "blank-cc-submit",
+        "cfpf.phase4.execution",
+        "chargeback-anomaly",
+        "recurring-charge",
+        "subscription-fraud",
+        "vextrio"
+      ],
+      "falsepositives": [
+        "Legitimate free trial offers that convert to paid subscriptions (though legitimate merchants typically have lower chargeback ratios)",
+        "Promotional shipping offers from established e-commerce merchants",
+        "Subscription box services with nominal initial trial charges"
+      ]
+    },
+    {
+      "id": "e1f2a3b4-c5d6-4e7f-8a9b-0c1d2e3f4a5b",
+      "dl_id": "DL-0129",
+      "title": "Fake Mobile App Residential Proxy and Subscription Scam Detection",
+      "status": "experimental",
+      "description": "Detects indicators of fake mobile applications that function as residential proxies or subscription scams, as documented in the VexTrio fake app operations (Black Hat USA 2025, Infoblox). VexTrio operated fake mobile apps for 7-8 years through Google Play Store, Apple App Store, and third-party forums. Three categories: (1) Fake VPNs that route user traffic through residential proxy networks (making users unwitting proxy nodes) with keyword-scanning capabilities targeting banking and personal information, (2) Fake Android cleaners (device optimization tools), (3) Fake spam/notification protection apps that operate a self-referential scam cycle — after push notification abuse infects the victim browser (100-150 notifications/day), victim is served an ad for a \"spam protection\" app that requests permissions to disable browser notifications, displays fabricated \"blocked\" notification screens, then transitions to $6.99/week subscription after 24 hours. This rule detects network-level and endpoint-level indicators of these app categories.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_proxy_behavior": {
+          "app_category|contains": [
+            "VPN",
+            "cleaner",
+            "optimizer",
+            "spam-blocker",
+            "notification-protector"
+          ],
+          "network_traffic_pattern": "residential_proxy",
+          "outbound_connections_to_unknown_ips|gte": 50,
+          "inbound_proxy_connections": true
+        },
+        "selection_keyword_scanning": {
+          "app_permission|contains": [
+            "READ_SMS",
+            "READ_CONTACTS",
+            "ACCESSIBILITY_SERVICE"
+          ],
+          "data_exfil_pattern": [
+            "banking_keyword_match",
+            "credential_harvest"
+          ]
+        },
+        "selection_subscription_scam": {
+          "push_notification_permission_change": "disable",
+          "in_app_purchase_amount|gte": 6.99,
+          "in_app_purchase_frequency": "weekly",
+          "time_from_install_to_purchase_hours|lte": 48
+        },
+        "selection_notification_abuse_precursor": {
+          "browser_push_notification_rate_per_day|gte": 50,
+          "notification_source_domain_age_days|lt": 30
+        },
+        "condition": "selection_proxy_behavior or selection_keyword_scanning or (selection_notification_abuse_precursor and selection_subscription_scam)"
+      },
+      "logsource": {
+        "product": "endpoint",
+        "service": "mobile_device_management"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "app_name",
+          "app_category",
+          "app_permissions",
+          "network_traffic_pattern",
+          "push_notification_rate",
+          "in_app_purchase_amount",
+          "in_app_purchase_frequency"
+        ],
+        "enrichment_required": [
+          {
+            "field": "network_traffic_pattern",
+            "source": "Network traffic analysis (proxy behavior detection via traffic flow analysis)"
+          },
+          {
+            "field": "notification_source_domain_age_days",
+            "source": "WHOIS enrichment for push notification source domains"
+          }
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Fake Mobile App Residential Proxy and Subscription Scam Detection\")`\n`comment(\"Detects VexTrio-pattern fake apps: residential proxy abuse and notification-to-subscription scam cycle\")`\n\n`comment(\"--- Detection 1: Fake VPN acting as residential proxy ---\")`\nindex=flame_endpoint sourcetype=flame:mobile_mdm app_category IN (\"VPN\", \"cleaner\", \"optimizer\", \"spam-blocker\")\n| stats\n    dc(dest_ip) AS unique_dest_ips\n    sum(bytes_out) AS total_bytes_out\n    sum(bytes_in) AS total_bytes_in\n    dc(src_port) AS unique_src_ports\n    values(app_name) AS app_names\n  by device_id, app_id\n| eval proxy_ratio=round(total_bytes_in/total_bytes_out, 2)\n| where unique_dest_ips > 50 AND proxy_ratio > 2\n| eval risk=\"residential_proxy_behavior\"\n\n`comment(\"--- Detection 2: Push notification abuse to subscription scam cycle ---\")`\nindex=flame_endpoint sourcetype=flame:mobile_mdm\n| eval has_notification_spike=(if(push_notification_count_24h >= 50, 1, 0))\n| eval has_app_install=(if(isnotnull(new_app_install) AND app_category IN (\"spam-blocker\", \"notification-protector\", \"cleaner\"), 1, 0))\n| eval has_subscription=(if(in_app_purchase_amount >= 6.99 AND in_app_purchase_type=\"subscription\", 1, 0))\n| transaction device_id maxspan=72h\n| where has_notification_spike=1 AND has_app_install=1 AND has_subscription=1\n| eval risk=\"notification_to_subscription_scam_cycle\"",
+        "sql": "-- SQL for Fake Mobile App Residential Proxy Detection\n-- Identifies apps with proxy-like traffic patterns (high inbound/outbound ratio, many destinations)\nSELECT\n  d.device_id,\n  a.app_name,\n  a.app_publisher,\n  a.app_category,\n  COUNT(DISTINCT nc.dest_ip) AS unique_destinations,\n  SUM(nc.bytes_out) AS total_bytes_out,\n  SUM(nc.bytes_in) AS total_bytes_in,\n  ROUND(SUM(nc.bytes_in)::numeric / NULLIF(SUM(nc.bytes_out), 0), 2) AS proxy_ratio,\n  a.install_date,\n  a.requested_permissions\nFROM device_inventory d\nJOIN installed_apps a ON d.device_id = a.device_id\nJOIN network_connections nc ON d.device_id = nc.device_id AND a.app_id = nc.app_id\nWHERE a.app_category IN ('VPN', 'cleaner', 'optimizer', 'spam-blocker', 'notification-protector')\n  AND nc.connection_date >= CURRENT_DATE - INTERVAL '7 days'\nGROUP BY d.device_id, a.app_name, a.app_publisher, a.app_category,\n         a.install_date, a.requested_permissions\nHAVING COUNT(DISTINCT nc.dest_ip) > 50\n   AND ROUND(SUM(nc.bytes_in)::numeric / NULLIF(SUM(nc.bytes_out), 0), 2) > 2.0\nORDER BY unique_destinations DESC;"
+      },
+      "references": [
+        "https://blackhat.com/us-25/briefings/schedule/#no-hoodies-here-organized-crime-in-adtech-46001",
+        "https://www.infoblox.com/threat-intel/"
+      ],
+      "threat_path_ids": [
+        "TP-0042",
+        "TP-0054"
+      ],
+      "fraud_types": [
+        "push-notification-abuse",
+        "subscription-fraud",
+        "tds-exploitation"
+      ],
+      "tags": [
+        "TP-0042",
+        "TP-0054",
+        "cfpf.phase4.execution",
+        "fake-mobile-app",
+        "keyword-scanning",
+        "push-notification-abuse",
+        "residential-proxy",
+        "self-referential-scam",
+        "subscription-scam",
+        "vextrio"
+      ],
+      "falsepositives": [
+        "Legitimate VPN applications with high connection counts (though legitimate VPNs typically connect to known VPN provider infrastructure, not diverse residential IPs)",
+        "Enterprise MDM tools that manage notification settings",
+        "Legitimate notification management apps from established publishers"
+      ]
+    },
+    {
+      "id": "f2a3b4c5-d6e7-4f8a-9b0c-1d2e3f4a5b6c",
+      "dl_id": "DL-0130",
+      "title": "Rapid Enrollment-to-Billing Healthcare Provider Anomaly",
+      "status": "experimental",
+      "description": "Detects healthcare providers (DME suppliers, hospice agencies, home health companies, ABA therapy providers) that begin submitting claims at high volume within 30 days of Medicare/Medicaid enrollment. Operation Gold Rush (DOJ 2025) documented a Russian-Estonian TCO that acquired 30+ legitimate DME companies and immediately submitted $10.6 billion in fraudulent claims using stolen identities. The rapid enrollment-to-billing pattern is the highest-confidence indicator of fraudulent provider intent: legitimate providers typically require months to establish patient relationships, credentialing, and operational infrastructure before reaching significant billing volume. This rule flags providers billing >$100,000 within 30 days of enrollment, with additional risk scoring for providers concentrated in known high-fraud geographic areas and providers with high single-code billing ratios.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_new_provider": {
+          "enrollment_age_days|lte": 365
+        },
+        "selection_rapid_billing": {
+          "days_to_first_claim|lte": 30,
+          "total_billed_amount|gte": 100000
+        },
+        "selection_volume_anomaly": {
+          "claims_per_day|gte": 50
+        },
+        "condition": "selection_new_provider and selection_rapid_billing and selection_volume_anomaly"
+      },
+      "logsource": {
+        "product": "claims_processing",
+        "service": "cms_claims"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "provider_npi",
+          "enrollment_effective_date",
+          "claim_date",
+          "billed_amount",
+          "hcpcs_code",
+          "beneficiary_id",
+          "provider_address_zip"
+        ],
+        "enrichment_required": [
+          {
+            "field": "enrollment_effective_date",
+            "source": "CMS PECOS enrollment records"
+          },
+          {
+            "field": "high_fraud_zip",
+            "source": "CMS geographic fraud heat map (moratorium ZIP codes)"
+          }
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\")`\n`comment(\"Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment\")`\nindex=medicare_claims sourcetype=cms_claims\n| join provider_npi [search index=pecos_enrollment\n  | fields provider_npi enrollment_effective_date provider_type provider_zip]\n| eval days_to_first_claim=round((strptime(claim_date,\"%Y-%m-%d\")\n  - strptime(enrollment_effective_date,\"%Y-%m-%d\")) / 86400)\n| where days_to_first_claim >= 0 AND days_to_first_claim <= 30\n| stats\n    count AS claim_count\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n    min(claim_date) AS first_claim_date\n    max(claim_date) AS last_claim_date\n    values(provider_type) AS provider_type\n    values(provider_zip) AS provider_zip\n  by provider_npi, enrollment_effective_date\n| where total_billed > 100000\n| eval code_diversity_ratio=round(unique_codes/claim_count, 4)\n| eval avg_per_beneficiary=round(total_billed/unique_beneficiaries, 2)\n| eval risk_score=case(\n    total_billed > 1000000 AND code_diversity_ratio < 0.05, \"CRITICAL\",\n    total_billed > 500000, \"HIGH\",\n    total_billed > 100000 AND code_diversity_ratio < 0.1, \"HIGH\",\n    1=1, \"MEDIUM\")\n| sort -total_billed",
+        "sql": "-- SQL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\n-- Identifies providers with suspicious billing velocity post-enrollment\nSELECT\n  s.provider_npi,\n  s.provider_name,\n  s.enrollment_effective_date,\n  s.provider_type,\n  s.physical_address,\n  COUNT(c.claim_id) AS total_claims,\n  SUM(c.billed_amount) AS total_billed,\n  COUNT(DISTINCT c.beneficiary_id) AS unique_beneficiaries,\n  COUNT(DISTINCT c.hcpcs_code) AS unique_codes,\n  MIN(c.service_date) AS first_claim_date,\n  EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) AS days_to_first_claim,\n  ROUND(COUNT(DISTINCT c.hcpcs_code)::numeric / NULLIF(COUNT(c.claim_id), 0), 4) AS code_diversity_ratio,\n  ROUND(SUM(c.billed_amount)::numeric / NULLIF(COUNT(DISTINCT c.beneficiary_id), 0), 2) AS avg_per_beneficiary\nFROM provider_enrollment s\nJOIN claims c ON s.provider_npi = c.provider_npi\nWHERE s.enrollment_effective_date >= CURRENT_DATE - INTERVAL '365 days'\n  AND EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) <= 30\nGROUP BY s.provider_npi, s.provider_name, s.enrollment_effective_date,\n         s.provider_type, s.physical_address\nHAVING SUM(c.billed_amount) > 100000\nORDER BY total_billed DESC;"
+      },
+      "references": [
+        "https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement"
+      ],
+      "threat_path_ids": [
+        "TP-0021",
+        "TP-0028"
+      ],
+      "fraud_types": [
+        "healthcare-fraud",
+        "phantom-billing",
+        "provider-fraud"
+      ],
+      "tags": [
+        "TP-0021",
+        "TP-0028",
+        "cfpf.phase4.execution",
+        "dme-fraud",
+        "healthcare-fraud",
+        "operation-gold-rush",
+        "phantom-billing",
+        "provider-enrollment-abuse",
+        "rapid-enrollment"
+      ],
+      "falsepositives": [
+        "Legitimate providers acquiring existing practices with established patient panels (though ownership changes should be reflected in PECOS CHOW records)",
+        "Large healthcare systems enrolling new provider NPIs for existing operational locations"
+      ]
+    },
+    {
+      "id": "a3b4c5d6-e7f8-4a9b-0c1d-2e3f4a5b6c7d",
+      "dl_id": "DL-0131",
+      "title": "Single-Code Billing Concentration and Impossible Day Healthcare Fraud",
+      "status": "experimental",
+      "description": "Detects two high-confidence healthcare billing fraud indicators: (1) Single-code billing concentration — providers billing overwhelmingly one HCPCS/CPT code, where a single code exceeds 80% of total claims. Operation Gold Rush documented a TCO that submitted $10.6 billion in fraudulent claims concentrated on urinary catheters and continuous glucose monitors. Legitimate providers bill across diverse code sets reflecting varied patient needs. (2) Impossible day billing — providers billing more than 24 hours of procedures in a single calendar day, a mathematical impossibility indicating phantom billing or systematic upcoding. Both patterns are documented in DOJ 2025 National Healthcare Fraud Takedown prosecutions and CrimsonVector Security threat analysis. Source: CrimsonVector Security March 2026; DOJ Operation Gold Rush June 2025.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_single_code": {
+          "unique_hcpcs_ratio|lt": 0.05,
+          "total_claims|gte": 500
+        },
+        "selection_impossible_day": {
+          "total_procedure_minutes_per_day|gt": 1440
+        },
+        "condition": "selection_single_code or selection_impossible_day"
+      },
+      "logsource": {
+        "product": "claims_processing",
+        "service": "cms_claims"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "provider_npi",
+          "hcpcs_code",
+          "claim_date",
+          "service_date",
+          "estimated_procedure_minutes",
+          "billed_amount",
+          "beneficiary_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "estimated_procedure_minutes",
+            "source": "CMS HCPCS code time estimates (standard procedure duration mapping)"
+          },
+          {
+            "field": "specialty_peer_mean",
+            "source": "CMS provider specialty billing statistics (peer comparison baseline)"
+          }
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Single-Code Billing Concentration Detection\")`\n`comment(\"Flags providers where one HCPCS code exceeds 80% of total claims\")`\nindex=medicare_claims sourcetype=cms_claims\n| stats\n    count AS total_claims\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n  by provider_npi\n| where total_claims >= 500\n| eval code_diversity=round(unique_codes/total_claims, 4)\n| where code_diversity < 0.05\n| join provider_npi [search index=medicare_claims sourcetype=cms_claims\n  | stats count AS code_count by provider_npi, hcpcs_code\n  | eventstats sum(code_count) AS provider_total by provider_npi\n  | eval code_pct=round(code_count/provider_total*100, 1)\n  | where code_pct > 80\n  | fields provider_npi, hcpcs_code, code_pct]\n| sort -total_billed\n| eval alert_type=\"SINGLE_CODE_CONCENTRATION\"\n\n`comment(\"--- Detection 2: Impossible Day Billing ---\")`\n`comment(\"Flags providers billing more than 24 hours of procedures per day\")`\nindex=medicare_claims sourcetype=cms_claims\n| lookup hcpcs_time_estimates hcpcs_code OUTPUT estimated_minutes\n| stats\n    sum(estimated_minutes) AS total_minutes\n    count AS claim_count\n    dc(beneficiary_id) AS patients_per_day\n    sum(billed_amount) AS daily_billed\n  by provider_npi, service_date\n| where total_minutes > 1440\n| eval hours_billed=round(total_minutes/60, 1)\n| eval alert_type=\"IMPOSSIBLE_DAY\"\n| sort -total_minutes",
+        "sql": "-- SQL for Single-Code Billing Concentration Detection\nWITH provider_code_stats AS (\n  SELECT\n    provider_npi,\n    hcpcs_code,\n    COUNT(*) AS code_claims,\n    SUM(billed_amount) AS code_billed,\n    SUM(COUNT(*)) OVER (PARTITION BY provider_npi) AS total_claims,\n    SUM(SUM(billed_amount)) OVER (PARTITION BY provider_npi) AS total_billed\n  FROM claims\n  WHERE service_date >= CURRENT_DATE - INTERVAL '90 days'\n  GROUP BY provider_npi, hcpcs_code\n)\nSELECT\n  provider_npi,\n  hcpcs_code AS dominant_code,\n  code_claims,\n  total_claims,\n  ROUND(code_claims::numeric / total_claims * 100, 1) AS code_pct,\n  total_billed,\n  'SINGLE_CODE_CONCENTRATION' AS alert_type\nFROM provider_code_stats\nWHERE total_claims >= 500\n  AND ROUND(code_claims::numeric / total_claims * 100, 1) > 80\nORDER BY total_billed DESC;\n\n-- SQL for Impossible Day Billing Detection\nSELECT\n  c.provider_npi,\n  p.provider_name,\n  c.service_date,\n  SUM(h.estimated_minutes) AS total_minutes_billed,\n  ROUND(SUM(h.estimated_minutes) / 60.0, 1) AS hours_billed,\n  COUNT(*) AS claim_count,\n  COUNT(DISTINCT c.beneficiary_id) AS patients,\n  SUM(c.billed_amount) AS daily_billed\nFROM claims c\nJOIN hcpcs_time_estimates h ON c.hcpcs_code = h.hcpcs_code\nJOIN providers p ON c.provider_npi = p.provider_npi\nWHERE c.service_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY c.provider_npi, p.provider_name, c.service_date\nHAVING SUM(h.estimated_minutes) > 1440\nORDER BY total_minutes_billed DESC;"
+      },
+      "references": [
+        "https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement"
+      ],
+      "threat_path_ids": [
+        "TP-0021",
+        "TP-0028"
+      ],
+      "fraud_types": [
+        "healthcare-fraud",
+        "phantom-billing",
+        "upcoding"
+      ],
+      "tags": [
+        "TP-0021",
+        "TP-0028",
+        "cfpf.phase4.execution",
+        "hcpcs-anomaly",
+        "healthcare-fraud",
+        "impossible-day",
+        "operation-gold-rush",
+        "phantom-billing",
+        "single-code-billing",
+        "upcoding"
+      ],
+      "falsepositives": [
+        "Large group practices billing under a single NPI (though this should be identified via provider type in PECOS)",
+        "DME suppliers legitimately specializing in a narrow product category (e.g., CPAP-only suppliers) — though even specialists typically bill multiple related codes"
+      ]
+    },
+    {
+      "id": "b4c5d6e7-f8a9-4b0c-1d2e-3f4a5b6c7d8e",
+      "dl_id": "DL-0132",
+      "title": "Ghost Patient Claims and Geographic Provider Clustering Detection",
+      "status": "experimental",
+      "description": "Detects two healthcare fraud patterns: (1) Ghost patient claims — Medicare/Medicaid claims submitted for deceased, incarcerated, or relocated beneficiaries who could not have received the billed services. Operation Gold Rush exploited over 1 million stolen American identities including elderly and disabled individuals. (2) Geographic provider clustering — ZIP codes with anomalous concentrations of healthcare providers and high average billing per provider, indicating shell company clustering. LA County has 1,923 registered hospice providers (more than 36 states combined), with 7 of 14 entities in one LA plaza having zero CMS data. GAO reports found approximately 22% of practice locations in PECOS were potentially ineligible including UPS Store mailboxes and vacant addresses. Source: CrimsonVector Security March 2026; DOJ 2025 National Healthcare Fraud Takedown; GAO-15-448.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection_ghost_patient": {
+          "beneficiary_status|contains": [
+            "deceased",
+            "incarcerated",
+            "relocated"
+          ],
+          "claim_service_date_after_status_change": true
+        },
+        "selection_geographic_clustering": {
+          "providers_per_zip|gte": 10,
+          "avg_billing_per_provider|gte": 500000,
+          "provider_type|contains": [
+            "hospice",
+            "home_health",
+            "dme",
+            "aba_therapy"
+          ]
+        },
+        "selection_address_anomaly": {
+          "practice_address_type|contains": [
+            "CMRA",
+            "residential",
+            "virtual_office",
+            "UPS_store"
+          ]
+        },
+        "condition": "selection_ghost_patient or (selection_geographic_clustering and selection_address_anomaly)"
+      },
+      "logsource": {
+        "product": "claims_processing",
+        "service": "cms_claims"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "beneficiary_id",
+          "beneficiary_status",
+          "beneficiary_date_of_death",
+          "provider_npi",
+          "provider_address_zip",
+          "practice_address",
+          "claim_service_date",
+          "billed_amount",
+          "provider_type"
+        ],
+        "enrichment_required": [
+          {
+            "field": "beneficiary_status",
+            "source": "CMS beneficiary eligibility records (death, incarceration, relocation status)"
+          },
+          {
+            "field": "practice_address_type",
+            "source": "USPS Commercial Mail Receiving Agency database cross-reference"
+          }
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Ghost Patient Claims Detection\")`\n`comment(\"Identifies claims submitted for deceased or incarcerated beneficiaries\")`\nindex=medicare_claims sourcetype=cms_claims\n| join beneficiary_id [search index=beneficiary_eligibility\n  | where beneficiary_status IN (\"deceased\", \"incarcerated\")\n  | fields beneficiary_id beneficiary_status status_effective_date]\n| eval claim_date_epoch=strptime(service_date, \"%Y-%m-%d\")\n| eval status_date_epoch=strptime(status_effective_date, \"%Y-%m-%d\")\n| where claim_date_epoch > status_date_epoch\n| stats\n    count AS ghost_claims\n    sum(billed_amount) AS ghost_billed\n    dc(beneficiary_id) AS ghost_beneficiaries\n    values(beneficiary_status) AS status_types\n  by provider_npi\n| where ghost_claims > 5\n| sort -ghost_billed\n\n`comment(\"--- Detection 2: Geographic Provider Clustering ---\")`\n`comment(\"Identifies ZIP codes with anomalous provider density and billing\")`\nindex=pecos_enrollment sourcetype=cms_enrollment\n| stats\n    dc(provider_npi) AS provider_count\n    values(provider_name) AS providers\n  by provider_zip, provider_type\n| where provider_count >= 10\n| join provider_zip [search index=medicare_claims sourcetype=cms_claims\n  | stats sum(billed_amount) AS total_zip_billed dc(provider_npi) AS billing_providers by provider_zip\n  | eval avg_billing_per_provider=round(total_zip_billed/billing_providers, 2)]\n| where avg_billing_per_provider > 500000\n| eval alert_type=\"GEOGRAPHIC_CLUSTERING\"\n| sort -provider_count",
+        "sql": "-- SQL for Ghost Patient Claims Detection\nSELECT\n  c.provider_npi,\n  p.provider_name,\n  COUNT(*) AS ghost_claims,\n  SUM(c.billed_amount) AS ghost_billed,\n  COUNT(DISTINCT c.beneficiary_id) AS ghost_beneficiaries,\n  b.beneficiary_status\nFROM claims c\nJOIN beneficiary_eligibility b ON c.beneficiary_id = b.beneficiary_id\nJOIN providers p ON c.provider_npi = p.provider_npi\nWHERE b.beneficiary_status IN ('deceased', 'incarcerated')\n  AND c.service_date > b.status_effective_date\n  AND c.service_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY c.provider_npi, p.provider_name, b.beneficiary_status\nHAVING COUNT(*) > 5\nORDER BY ghost_billed DESC;\n\n-- SQL for Geographic Provider Clustering Detection\nSELECT\n  e.provider_zip,\n  e.provider_type,\n  COUNT(DISTINCT e.provider_npi) AS provider_count,\n  COALESCE(SUM(c.billed_amount), 0) AS total_zip_billed,\n  ROUND(COALESCE(SUM(c.billed_amount), 0)::numeric\n    / NULLIF(COUNT(DISTINCT e.provider_npi), 0), 2) AS avg_billing_per_provider,\n  COUNT(DISTINCT CASE WHEN addr.address_type = 'CMRA' THEN e.provider_npi END) AS cmra_addresses,\n  COUNT(DISTINCT CASE WHEN addr.address_type = 'residential' THEN e.provider_npi END) AS residential_addresses\nFROM provider_enrollment e\nLEFT JOIN claims c ON e.provider_npi = c.provider_npi\n  AND c.service_date >= CURRENT_DATE - INTERVAL '365 days'\nLEFT JOIN address_classification addr ON e.physical_address = addr.address\nWHERE e.provider_type IN ('hospice', 'home_health', 'dme', 'aba_therapy')\nGROUP BY e.provider_zip, e.provider_type\nHAVING COUNT(DISTINCT e.provider_npi) >= 10\n   AND ROUND(COALESCE(SUM(c.billed_amount), 0)::numeric\n    / NULLIF(COUNT(DISTINCT e.provider_npi), 0), 2) > 500000\nORDER BY provider_count DESC;"
+      },
+      "references": [
+        "https://www.justice.gov/criminal/criminal-fraud/health-care-fraud-enforcement",
+        "https://www.gao.gov/products/gao-15-448"
+      ],
+      "threat_path_ids": [
+        "TP-0021",
+        "TP-0028"
+      ],
+      "fraud_types": [
+        "healthcare-fraud",
+        "hospice-fraud",
+        "phantom-billing",
+        "provider-fraud"
+      ],
+      "tags": [
+        "TP-0021",
+        "TP-0028",
+        "cfpf.phase3.positioning",
+        "cmra-address",
+        "deceased-beneficiary",
+        "geographic-clustering",
+        "ghost-patient",
+        "healthcare-fraud",
+        "hospice-fraud",
+        "la-county",
+        "operation-gold-rush",
+        "shell-company"
+      ],
+      "falsepositives": [
+        "Claims submitted with processing delays where beneficiary status changed after service but before claim adjudication",
+        "Legitimate healthcare clusters in medical districts or hospital complexes",
+        "Large home health agencies serving wide geographic areas from a central office"
+      ]
+    },
+    {
+      "id": "8f2c1d4e-9a3b-4f7e-b5c8-2d6e3f8a1b09",
+      "dl_id": "DL-0133",
+      "title": "Recovery Fraud Contact Pattern — Payments from Recent Fraud Victims to Unfamiliar Recipients",
+      "status": "experimental",
+      "description": "Detects potential recovery fraud by identifying payments from customers who filed fraud complaints within the preceding 90 days to previously unseen recipient accounts. Recovery fraud operators re-contact prior fraud victims posing as recovery agents, lawyers, or government officials, extracting additional fees for purported fund recovery. This rule correlates complaint records with subsequent outbound payment activity to flag secondary victimization.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_payment": {
+          "transaction_type": [
+            "WIRE_OUT",
+            "ACH_OUT",
+            "CRYPTO_TRANSFER"
+          ]
+        },
+        "timeframe": "90d",
+        "condition": "selection_payment"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "transaction_type",
+          "customer_id",
+          "recipient_account",
+          "amount",
+          "transaction_date"
+        ],
+        "cross_reference": [
+          "fraud_complaints.customer_id",
+          "fraud_complaints.complaint_date",
+          "fraud_complaints.original_loss_amount"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Recovery Fraud Contact Pattern\")`\n`comment(\"Cross-references fraud complaints with subsequent outbound payments to new recipients\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n  amount > 500\n| join customer_id [\n  search index=flame_fraud sourcetype=flame:complaints\n  | where complaint_date >= relative_time(now(), \"-90d\")\n  | fields customer_id, complaint_date, original_loss_amount, fraud_type\n]\n| search NOT [\n  search index=flame_banking sourcetype=flame:transaction_monitoring\n    transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n    transaction_date < complaint_date\n  | dedup recipient_account, customer_id\n  | fields recipient_account, customer_id\n]\n| stats count AS payment_count, sum(amount) AS total_amount,\n        values(recipient_account) AS recipients\n  BY customer_id, fraud_type, original_loss_amount\n| where payment_count >= 1",
+        "logscale": "// LogScale LQL for Recovery Fraud Contact Pattern\n// Cross-references fraud complaints with subsequent outbound payments\ntransaction_type IN [\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\"]\n| amount > 500\n| match(file=\"flame_fraud_complaints_90d.csv\", field=customer_id, include=[complaint_date, original_loss_amount, fraud_type])\n| groupBy(customer_id, function=[count(as=payment_count), sum(amount, as=total_amount), collect(recipient_account)])\n| payment_count >= 1",
+        "sql": "-- SQL for Recovery Fraud Contact Pattern\nSELECT\n    t.customer_id,\n    t.transaction_date,\n    t.amount,\n    t.recipient_account,\n    c.complaint_date,\n    c.original_loss_amount,\n    c.fraud_type AS original_fraud_type\nFROM transactions t\nJOIN fraud_complaints c ON t.customer_id = c.customer_id\nWHERE c.complaint_date >= DATEADD(day, -90, t.transaction_date)\n  AND t.recipient_account NOT IN (\n    SELECT DISTINCT recipient_account\n    FROM transactions\n    WHERE customer_id = t.customer_id\n      AND transaction_date < c.complaint_date\n  )\n  AND t.amount > 500\nORDER BY t.transaction_date DESC"
+      },
+      "references": [
+        "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter II, Consumer Investment Fraud",
+        "https://www.ic3.gov/AnnualReport/Reports/2023_IC3Report.pdf"
+      ],
+      "threat_path_ids": [
+        "TP-0062"
+      ],
+      "fraud_types": [
+        "advance-fee-fraud",
+        "impersonation",
+        "recovery-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.recovery-fraud",
+        "flame.unodc"
+      ],
+      "falsepositives": [
+        "Legitimate payments to attorneys or recovery services hired by the victim",
+        "Insurance reimbursement-related outbound payments",
+        "Victim making normal payments to new vendors unrelated to fraud"
+      ]
+    },
+    {
+      "id": "3e7a9c2f-1b5d-4a8e-c6f2-9d4b8e1a3c07",
+      "dl_id": "DL-0134",
+      "title": "Mass-Marketing Fraud Burst Calling Pattern — SIM Farm and Robodialling Detection",
+      "status": "experimental",
+      "description": "Detects burst patterns from potential SIM farm or robodialling infrastructure targeting customer phone numbers. Mass-marketing fraud infrastructure uses sequential phone numbers, short call durations (most calls rejected), and high-volume outbound calling to reach victims at scale. This rule identifies inbound calling patterns characteristic of organized boiler room operations, including sequential source number prefixes, short call duration clustering, and geographic origin mismatch between caller ID display and actual call routing.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "call_direction": "inbound"
+        },
+        "timeframe": "1h",
+        "condition": "selection | count(distinct destination_number) by source_number_prefix > 50 AND selection | avg(call_duration) by source_number_prefix < 30"
+      },
+      "logsource": {
+        "product": "telecom",
+        "service": "cdr"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "source_number",
+          "destination_number",
+          "call_direction",
+          "call_duration",
+          "caller_id_verification_status",
+          "call_origin_geography"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Mass-Marketing Burst Calling Pattern\")`\n`comment(\"Detects SIM farm / robodialling burst patterns\")`\nindex=flame_telecom sourcetype=flame:cdr call_direction=\"inbound\"\n| eval source_prefix=substr(source_number, 1, 7)\n| bin _time span=1h\n| stats dc(destination_number) AS unique_targets,\n        avg(call_duration) AS avg_duration,\n        count AS total_calls,\n        values(caller_id_verification_status) AS attestation\n  BY source_prefix, _time\n| where unique_targets > 50 AND avg_duration < 30\n| sort - unique_targets",
+        "logscale": "// LogScale LQL for Mass-Marketing Burst Calling Pattern\ncall_direction=\"inbound\"\n| source_prefix := substring(source_number, start=0, end=7)\n| bucket(field=@timestamp, span=1h)\n| groupBy([source_prefix, @timestamp], function=[\n    count(as=total_calls),\n    count(field=destination_number, distinct=true, as=unique_targets),\n    avg(call_duration, as=avg_duration),\n    collect(caller_id_verification_status)\n  ])\n| unique_targets > 50 AND avg_duration < 30",
+        "sigma": "title: Mass-Marketing Fraud Burst Calling Pattern\nstatus: experimental\nlogsource:\n    product: telecom\n    service: cdr\ndetection:\n    selection:\n        call_direction: inbound\n        call_duration|lt: 30\n    timeframe: 1h\n    condition: selection | count(distinct destination_number) by source_number_prefix > 50\nfields:\n    - source_number\n    - destination_number\n    - call_duration\n    - caller_id_verification_status\nlevel: medium"
+      },
+      "references": [
+        "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter IV, Mass-marketing",
+        "Europol, Action against criminal website that offered spoofing services to fraudsters, 24 November 2022 (iSpoof)"
+      ],
+      "threat_path_ids": [
+        "TP-0065"
+      ],
+      "fraud_types": [
+        "impersonation",
+        "robodialling-fraud",
+        "social-engineering",
+        "vishing"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.mass-marketing",
+        "flame.sim-farm",
+        "flame.unodc"
+      ],
+      "falsepositives": [
+        "Legitimate telemarketing campaigns from licensed call centers",
+        "Automated notification systems (bank alerts, appointment reminders)",
+        "Political campaign robodialling during election periods"
+      ]
+    },
+    {
+      "id": "6c8d2e5f-4a1b-3f9e-d7a6-8b2c5e9f1d03",
+      "dl_id": "DL-0135",
+      "title": "Long-Firm Credit Buildup Pattern — Steady Low Utilization Followed by Rapid Spike",
+      "status": "experimental",
+      "description": "Detects commercial accounts following a long-firm fraud pattern: steady low-value credit utilization for 6-12 months (building creditworthiness) followed by rapid escalation in credit utilization (the \"burst\"). Long-firm fraud involves organized criminal groups establishing businesses, building credit relationships, then exploiting that trust to defraud supply chain partners and trade finance banks. The artificially smooth buildup period followed by a discontinuous spike is the hallmark behavioral indicator.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_type": "commercial"
+        },
+        "timeframe": "12m",
+        "condition": "trailing_6m_avg_utilization < 35% AND current_month_utilization > 80% AND prev_month_utilization < 50%\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "commercial_credit"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "account_type",
+          "credit_utilization_pct",
+          "credit_limit",
+          "transaction_date",
+          "monthly_payment_amount"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Long-Firm Credit Buildup Pattern\")`\n`comment(\"Detects steady low utilization followed by rapid credit spike\")`\nindex=flame_banking sourcetype=flame:commercial_credit account_type=\"commercial\"\n| bin _time span=1mon\n| stats avg(credit_utilization_pct) AS avg_util,\n        max(credit_utilization_pct) AS max_util\n  BY account_id, _time\n| streamstats avg(avg_util) AS trailing_6m_avg,\n              current=false window=6\n  BY account_id\n| streamstats latest(avg_util) AS prev_month_util,\n              current=false window=1\n  BY account_id\n| where trailing_6m_avg < 35 AND avg_util > 80 AND prev_month_util < 50\n| sort - avg_util",
+        "sql": "-- SQL for Long-Firm Credit Buildup Pattern\nWITH monthly_util AS (\n    SELECT\n        account_id,\n        DATE_TRUNC('month', transaction_date) AS month,\n        AVG(credit_utilization_pct) AS avg_util\n    FROM commercial_credit_accounts\n    WHERE account_type = 'commercial'\n    GROUP BY account_id, DATE_TRUNC('month', transaction_date)\n),\ntrend AS (\n    SELECT\n        account_id,\n        month,\n        avg_util,\n        LAG(avg_util, 1) OVER (PARTITION BY account_id ORDER BY month) AS prev_month_util,\n        AVG(avg_util) OVER (\n            PARTITION BY account_id ORDER BY month\n            ROWS BETWEEN 6 PRECEDING AND 1 PRECEDING\n        ) AS trailing_6m_avg\n    FROM monthly_util\n)\nSELECT account_id, month, avg_util, trailing_6m_avg, prev_month_util\nFROM trend\nWHERE trailing_6m_avg < 35\n  AND avg_util > 80\n  AND prev_month_util < 50\nORDER BY month DESC"
+      },
+      "references": [
+        "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter II, Fraud Against Businesses",
+        "UK SFO, Serious Fraud Office secures three convictions in $500 million trade finance fraud, 2 February 2023"
+      ],
+      "threat_path_ids": [
+        "TP-0064"
+      ],
+      "fraud_types": [
+        "application-fraud",
+        "bust-out",
+        "loan-fraud",
+        "long-firm-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.commercial-credit",
+        "flame.long-firm",
+        "flame.unodc"
+      ],
+      "falsepositives": [
+        "Seasonal businesses with legitimate cyclical credit utilization spikes",
+        "Businesses undergoing genuine rapid growth requiring increased credit",
+        "One-time large purchase on established credit facility"
+      ]
+    },
+    {
+      "id": "2a5f8b3c-7d1e-4c6a-e9b4-1f3a7c5d2e08",
+      "dl_id": "DL-0136",
+      "title": "Staged Accident Claim Correlation — Shared Professional Enabler Network Detection",
+      "status": "experimental",
+      "description": "Detects potential organized crash-for-cash insurance fraud rings by identifying claims from multiple ostensibly unrelated accidents that share common professional enablers (same medical provider, legal representative, or repair shop). Organized insurance fraud rings rely on networks of corrupt professionals who process claims across multiple staged incidents. The shared professional enabler network is the most durable and detectable element of the ring, as replacing trusted corrupt professionals is harder than recruiting new participants.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "claim_type": "vehicle_accident"
+        },
+        "timeframe": "365d",
+        "condition": "count(distinct accident_id) by shared_provider >= 3\n"
+      },
+      "logsource": {
+        "product": "insurance",
+        "service": "claims_management"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "claim_id",
+          "accident_id",
+          "claim_date",
+          "medical_provider",
+          "legal_representative",
+          "repair_shop",
+          "claimant_name",
+          "claimant_address",
+          "claim_amount"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Staged Accident Claim Correlation\")`\n`comment(\"Identifies claims sharing professional enablers across unrelated accidents\")`\nindex=flame_insurance sourcetype=flame:claims claim_type=\"vehicle_accident\"\n| eval claim_date_epoch=strptime(claim_date, \"%Y-%m-%d\")\n| where claim_date_epoch > relative_time(now(), \"-365d\")\n| stats dc(accident_id) AS accident_count,\n        dc(claim_id) AS claim_count,\n        values(accident_id) AS accidents,\n        sum(claim_amount) AS total_claimed\n  BY medical_provider\n| where accident_count >= 3\n| rename medical_provider AS shared_provider\n| eval provider_type=\"medical\"\n| append [\n  search index=flame_insurance sourcetype=flame:claims claim_type=\"vehicle_accident\"\n  | where strptime(claim_date, \"%Y-%m-%d\") > relative_time(now(), \"-365d\")\n  | stats dc(accident_id) AS accident_count,\n          dc(claim_id) AS claim_count,\n          values(accident_id) AS accidents,\n          sum(claim_amount) AS total_claimed\n    BY legal_representative\n  | where accident_count >= 3\n  | rename legal_representative AS shared_provider\n  | eval provider_type=\"legal\"\n]\n| append [\n  search index=flame_insurance sourcetype=flame:claims claim_type=\"vehicle_accident\"\n  | where strptime(claim_date, \"%Y-%m-%d\") > relative_time(now(), \"-365d\")\n  | stats dc(accident_id) AS accident_count,\n          dc(claim_id) AS claim_count,\n          values(accident_id) AS accidents,\n          sum(claim_amount) AS total_claimed\n    BY repair_shop\n  | where accident_count >= 3\n  | rename repair_shop AS shared_provider\n  | eval provider_type=\"repair\"\n]\n| sort - accident_count",
+        "sql": "-- SQL for Staged Accident Claim Correlation\n-- Identifies shared professional enablers across unrelated accidents\nSELECT\n    'medical' AS provider_type,\n    a.medical_provider AS shared_provider,\n    COUNT(DISTINCT a.accident_id) AS accident_count,\n    COUNT(DISTINCT a.claim_id) AS claim_count,\n    SUM(a.claim_amount) AS total_claimed\nFROM insurance_claims a\nWHERE a.claim_type = 'vehicle_accident'\n  AND a.claim_date >= DATEADD(year, -1, GETDATE())\n  AND a.medical_provider IS NOT NULL\nGROUP BY a.medical_provider\nHAVING COUNT(DISTINCT a.accident_id) >= 3\n\nUNION ALL\n\nSELECT\n    'legal' AS provider_type,\n    a.legal_representative AS shared_provider,\n    COUNT(DISTINCT a.accident_id) AS accident_count,\n    COUNT(DISTINCT a.claim_id) AS claim_count,\n    SUM(a.claim_amount) AS total_claimed\nFROM insurance_claims a\nWHERE a.claim_type = 'vehicle_accident'\n  AND a.claim_date >= DATEADD(year, -1, GETDATE())\n  AND a.legal_representative IS NOT NULL\nGROUP BY a.legal_representative\nHAVING COUNT(DISTINCT a.accident_id) >= 3\n\nUNION ALL\n\nSELECT\n    'repair' AS provider_type,\n    a.repair_shop AS shared_provider,\n    COUNT(DISTINCT a.accident_id) AS accident_count,\n    COUNT(DISTINCT a.claim_id) AS claim_count,\n    SUM(a.claim_amount) AS total_claimed\nFROM insurance_claims a\nWHERE a.claim_type = 'vehicle_accident'\n  AND a.claim_date >= DATEADD(year, -1, GETDATE())\n  AND a.repair_shop IS NOT NULL\nGROUP BY a.repair_shop\nHAVING COUNT(DISTINCT a.accident_id) >= 3\n\nORDER BY accident_count DESC"
+      },
+      "references": [
+        "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter II, Crash-for-Cash Fraud",
+        "UK Insurance Fraud Bureau — crash-for-cash ring intelligence"
+      ],
+      "threat_path_ids": [
+        "TP-0066"
+      ],
+      "fraud_types": [
+        "collusion",
+        "crash-for-cash",
+        "fraudulent-claim",
+        "insurance-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.crash-for-cash",
+        "flame.insurance-ring",
+        "flame.unodc"
+      ],
+      "falsepositives": [
+        "Legitimate high-volume medical providers or repair shops in areas with high accident rates",
+        "Law firms specializing in personal injury claims handling multiple genuine cases",
+        "Preferred provider networks directed by insurance companies"
+      ]
+    },
+    {
+      "id": "7a4e2c9f-8b1d-3f6a-e5c7-4d2b1a8f3e06",
+      "dl_id": "DL-0137",
+      "title": "AiTM Session Token Replay Detection — User-Agent and IP Mismatch Post-MFA",
+      "status": "experimental",
+      "description": "Detects potential Adversary-in-the-Middle (AiTM) session token replay by identifying User-Agent string or IP address mismatches between MFA completion events and subsequent session access events. AiTM phishing kits capture session tokens during MFA relay, then replay them from attacker infrastructure with different User-Agent/IP characteristics. Sekoia.io identified 11 major AiTM kits (Tycoon 2FA most prevalent: 1,200+ domains, 500K+ organizations/month). FIDO2 blocks 93.9% of AiTM campaigns.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection_mfa": {
+          "AuthenticationRequirement": "multiFactorAuthentication",
+          "ResultType": 0
+        },
+        "timeframe": "4h",
+        "condition": "session access from IP != MFA authentication IP OR session User-Agent != MFA User-Agent\n"
+      },
+      "logsource": {
+        "product": "azure",
+        "service": "signinlogs"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "UserPrincipalName",
+          "IPAddress",
+          "UserAgent",
+          "AppId",
+          "AuthenticationRequirement",
+          "ResultType",
+          "TimeGenerated"
+        ]
+      },
+      "queries": {
+        "kql": "// Microsoft Sentinel KQL: Detect AiTM session token replay\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n| where AccessTime > MFATime and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
+        "splunk": "`comment(\"Splunk SPL for AiTM Session Token Replay Detection\")`\nindex=azure sourcetype=\"azure:aad:signin\" AuthenticationRequirement=\"multiFactorAuthentication\" ResultType=0\n| rename IPAddress AS MFA_IP, UserAgent AS MFA_UserAgent\n| join UserPrincipalName [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n  | rename IPAddress AS Access_IP, UserAgent AS Access_UserAgent\n]\n| where Access_IP != MFA_IP OR Access_UserAgent != MFA_UserAgent\n| table UserPrincipalName, _time, MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent"
+      },
+      "references": [
+        "Organized fraud detection in 2026: a technical landscape report — BEC and AiTM phishing",
+        "Sekoia.io, Tycoon 2FA phishing kit analysis (2025)",
+        "Canadian Centre for Cyber Security — FIDO2 AiTM effectiveness (93.9%)"
+      ],
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0067"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "aitm-phishing",
+        "phishing"
+      ],
+      "tags": [
+        "attack.t1539",
+        "attack.t1557",
+        "cfpf.phase3.positioning",
+        "flame.aitm"
+      ],
+      "falsepositives": [
+        "Users switching between VPN and direct connection during authentication",
+        "Mobile users with carrier IP changes between MFA and access",
+        "Users authenticating via one device and accessing via another (legitimate SSO patterns)"
+      ]
+    },
+    {
+      "id": "9c3f7a1e-2d5b-4e8c-f6a9-8b1d3c7e2f05",
+      "dl_id": "DL-0138",
+      "title": "Post-Compromise Inbox Rule Manipulation — Rule Creation After New-IP Authentication",
+      "status": "experimental",
+      "description": "Detects inbox rule creation or modification within 24 hours of a sign-in from a previously unseen IP address. AiTM phishing kit operators create inbox rules within minutes of session hijack to redirect payment notifications, delete security alerts, and intercept colleague communications. Rules forwarding to external domains or deleting emails matching specific sender/subject patterns are high-confidence indicators of post-compromise activity.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "Operation": [
+            "New-InboxRule",
+            "Set-InboxRule",
+            "Enable-InboxRule"
+          ]
+        },
+        "filter_internal": {
+          "ClientIP|cidr": [
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16"
+          ]
+        },
+        "timeframe": "24h",
+        "condition": "selection and not filter_internal"
+      },
+      "logsource": {
+        "product": "m365",
+        "service": "exchange"
+      },
+      "sigma_compatible": true,
+      "queries": {
+        "kql": "// Microsoft Sentinel KQL: Inbox rule manipulation after new-IP authentication\nlet new_ip_signins = SigninLogs\n| where TimeGenerated > ago(48h)\n| where ResultType == 0\n| summarize FirstSeen=min(TimeGenerated) by UserPrincipalName, IPAddress\n| where FirstSeen > ago(24h);\nOfficeActivity\n| where TimeGenerated > ago(24h)\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| join kind=inner new_ip_signins on $left.UserId == $right.UserPrincipalName\n| where TimeGenerated > FirstSeen\n| project TimeGenerated, UserId, Operation, Parameters, ClientIP, IPAddress",
+        "splunk": "`comment(\"Splunk SPL for Post-Compromise Inbox Rule Manipulation\")`\nindex=o365 sourcetype=\"o365:management:activity\"\n  Operation IN (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| eval rule_time=_time\n| join UserId [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n  | stats earliest(_time) AS first_seen BY UserPrincipalName, IPAddress\n  | where first_seen > relative_time(now(), \"-24h\")\n  | rename UserPrincipalName AS UserId\n]\n| where rule_time > first_seen\n| table _time, UserId, Operation, Parameters, ClientIP",
+        "sigma": "title: Post-Compromise Inbox Rule Manipulation\nstatus: experimental\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection:\n        Operation:\n            - New-InboxRule\n            - Set-InboxRule\n            - Enable-InboxRule\n    filter_internal:\n        ClientIP|cidr:\n            - 10.0.0.0/8\n            - 172.16.0.0/12\n            - 192.168.0.0/16\n    condition: selection and not filter_internal\nfields:\n    - UserId\n    - ClientIP\n    - Parameters\nlevel: high"
+      },
+      "references": [
+        "Organized fraud detection in 2026: a technical landscape report — BEC and AiTM phishing",
+        "Microsoft Threat Intelligence — AiTM detection and mitigation guidance"
+      ],
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0067"
+      ],
+      "fraud_types": [
+        "BEC",
+        "account-takeover",
+        "aitm-phishing"
+      ],
+      "tags": [
+        "attack.t1114.003",
+        "cfpf.phase3.positioning",
+        "flame.aitm",
+        "flame.bec"
+      ],
+      "falsepositives": [
+        "Users creating legitimate inbox rules from new locations (travel, new office)",
+        "IT administrators configuring inbox rules remotely",
+        "Automated rule creation by legitimate email management tools"
+      ]
+    },
+    {
+      "id": "4b8e1d6f-3a2c-5f7e-a9d4-7c1b5e3a2d08",
+      "dl_id": "DL-0139",
+      "title": "AI-Generated Phishing Content Stylometric Detection",
+      "status": "experimental",
+      "description": "Detects AI-generated phishing content using stylometric features. Research shows XGBoost with 60 stylometric features detects GPT-4o-generated phishing with 96% accuracy and 99% AUC. Key features: imperative verb count, clause density, first-person pronoun usage, urgency markers, authority indicators, sentiment manipulation, financial trigger words, and semantic inconsistency. DetectGPT achieves ~0.95 AUROC via zero-shot statistical signatures. This rule defines the feature extraction pipeline and scoring thresholds for deployment in email security and fraud communication analysis systems.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "content_type": "email"
+        },
+        "condition": "stylometric_score > 0.75 (composite of 60 features) AND (urgency_marker_count > 3 OR authority_indicator_count > 2) AND imperative_verb_ratio > 0.15\n"
+      },
+      "logsource": {
+        "product": "email_security",
+        "service": "content_analysis"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "message_id",
+          "sender",
+          "recipient",
+          "subject",
+          "body_text"
+        ],
+        "derived_fields": [
+          "imperative_verb_count",
+          "clause_density",
+          "first_person_pronoun_ratio",
+          "urgency_marker_count",
+          "authority_indicator_count",
+          "sentiment_manipulation_score",
+          "financial_trigger_word_count",
+          "semantic_inconsistency_score",
+          "vocabulary_diversity_index",
+          "sentence_length_variance"
+        ]
+      },
+      "queries": {
+        "python": "# Python pseudocode for stylometric feature extraction pipeline\n# Deploy via Splunk DSDL or standalone NLP service\n\nimport spacy\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nimport xgboost as xgb\n\nURGENCY_MARKERS = ['immediately', 'urgent', 'act now', 'deadline',\n                   'expires', 'limited time', 'final notice', 'asap']\nAUTHORITY_INDICATORS = ['official', 'authorized', 'compliance',\n                       'government', 'legal', 'regulatory', 'mandatory']\nFINANCIAL_TRIGGERS = ['payment', 'transfer', 'invoice', 'account',\n                     'balance', 'wire', 'refund', 'settlement']\n\ndef extract_stylometric_features(text):\n    doc = nlp(text)\n    features = {\n        'imperative_verb_ratio': count_imperative_verbs(doc) / len(doc),\n        'clause_density': count_clauses(doc) / count_sentences(doc),\n        'first_person_ratio': count_first_person(doc) / len(doc),\n        'urgency_count': sum(1 for m in URGENCY_MARKERS if m in text.lower()),\n        'authority_count': sum(1 for m in AUTHORITY_INDICATORS if m in text.lower()),\n        'financial_trigger_count': sum(1 for t in FINANCIAL_TRIGGERS if t in text.lower()),\n        'sentence_length_variance': np.var([len(s) for s in doc.sents]),\n        'vocabulary_diversity': len(set(t.lemma_ for t in doc)) / len(doc),\n        # ... 52 additional features\n    }\n    return features\n\n# Score with pre-trained XGBoost model (96% accuracy, 99% AUC on GPT-4o)\n# model = xgb.Booster(); model.load_model('stylometric_phishing_v1.json')",
+        "splunk": "`comment(\"Splunk SPL for AI-Generated Content Scoring\")`\n`comment(\"Requires Splunk DSDL with NLP model deployed\")`\nindex=email sourcetype=email:content\n| apply stylometric_phishing_model\n| where stylometric_score > 0.75\n| where urgency_marker_count > 3 OR authority_indicator_count > 2\n| table _time, sender, recipient, subject, stylometric_score,\n        imperative_verb_ratio, urgency_marker_count, authority_indicator_count"
+      },
+      "references": [
+        "Organized fraud detection in 2026: a technical landscape report — LLMs and transformer models",
+        "Fine-tuned BERT phishing detection: F1=0.99 on 181,781 emails via Splunk DSDL"
+      ],
+      "threat_path_ids": [
+        "TP-0025",
+        "TP-0043"
+      ],
+      "fraud_types": [
+        "ai-accelerated-fraud-infrastructure",
+        "phishing",
+        "social-engineering"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.ai-detection",
+        "flame.nlp",
+        "flame.stylometric"
+      ],
+      "falsepositives": [
+        "Legitimate marketing emails with urgency language",
+        "Automated compliance notifications with authority language",
+        "Translated emails with unusual stylometric patterns"
+      ]
+    },
+    {
+      "id": "5d9a3c7e-1b4f-6e2a-c8d5-2f7a4b1e9c03",
+      "dl_id": "DL-0140",
+      "title": "Cialdini Persuasion Principle Scoring in Fraud Communications",
+      "status": "experimental",
+      "description": "Scores inbound communications (email, SMS, chat) for Cialdini's six principles of persuasion: Reciprocity, Consistency, Social Proof, Authority, Liking, and Scarcity. Research shows combining these features with BERT/SBERT embeddings improves phishing detection F1 by 2.62%. Communications exhibiting 3+ principles above threshold are flagged as high-probability social engineering. Directly applicable to romance fraud, investment scam, impersonation, and recovery fraud detection where psychological manipulation is the primary attack vector.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "content_type": [
+            "email",
+            "sms",
+            "chat"
+          ]
+        },
+        "condition": "cialdini_principles_detected >= 3 AND max_principle_score > 0.7\n"
+      },
+      "logsource": {
+        "product": "communication_analysis",
+        "service": "nlp_scoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "message_id",
+          "channel",
+          "sender",
+          "recipient",
+          "body_text"
+        ],
+        "derived_fields": [
+          "reciprocity_score",
+          "consistency_score",
+          "social_proof_score",
+          "authority_score",
+          "liking_score",
+          "scarcity_score",
+          "cialdini_principles_detected",
+          "max_principle_score"
+        ]
+      },
+      "queries": {
+        "python": "# Cialdini Persuasion Principle Scoring Pipeline\n# Each principle scored 0.0-1.0 based on linguistic markers\n\nPRINCIPLE_MARKERS = {\n    'reciprocity': ['gift', 'free', 'bonus', 'reward', 'complimentary',\n                    'as a thank you', 'in return'],\n    'consistency': ['you previously agreed', 'as you committed',\n                   'continuing your', 'as always', 'you already'],\n    'social_proof': ['everyone is', 'thousands of people', 'most popular',\n                    'trending', 'others like you', 'community'],\n    'authority': ['official notice', 'government', 'compliance required',\n                 'legal obligation', 'regulatory', 'certified', 'verified'],\n    'liking': ['dear friend', 'I care about you', 'we have so much in common',\n              'I trust you', 'you are special', 'between us'],\n    'scarcity': ['limited time', 'only X left', 'expires today',\n                'final chance', 'act now', 'once in a lifetime', 'exclusive']\n}\n\ndef score_cialdini_principles(text):\n    scores = {}\n    for principle, markers in PRINCIPLE_MARKERS.items():\n        # Marker count + SBERT semantic similarity to principle exemplars\n        marker_hits = sum(1 for m in markers if m.lower() in text.lower())\n        semantic_sim = sbert_similarity(text, principle_exemplars[principle])\n        scores[principle] = min(1.0, (marker_hits * 0.2) + (semantic_sim * 0.6))\n\n    detected = sum(1 for s in scores.values() if s > 0.5)\n    return scores, detected",
+        "splunk": "`comment(\"Splunk SPL for Cialdini Persuasion Scoring\")`\n`comment(\"Requires NLP scoring service via DSDL or API\")`\nindex=communications sourcetype=fraud:communications\n| apply cialdini_scoring_model\n| where cialdini_principles_detected >= 3\n| where max_principle_score > 0.7\n| table _time, channel, sender, recipient,\n        reciprocity_score, consistency_score, social_proof_score,\n        authority_score, liking_score, scarcity_score,\n        cialdini_principles_detected"
+      },
+      "references": [
+        "Organized fraud detection in 2026: a technical landscape report — LLMs and transformer models",
+        "Cialdini's six principles of persuasion as numerical features for phishing detection"
+      ],
+      "threat_path_ids": [
+        "TP-0011",
+        "TP-0025",
+        "TP-0062",
+        "TP-0065"
+      ],
+      "fraud_types": [
+        "impersonation",
+        "investment-scam",
+        "romance-scam",
+        "social-engineering"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.cialdini",
+        "flame.nlp",
+        "flame.social-engineering"
+      ],
+      "falsepositives": [
+        "Legitimate marketing using persuasion techniques",
+        "Fundraising and charity communications",
+        "Sales communications with urgency and social proof"
+      ]
+    },
+    {
+      "id": "1e6b8a3d-4c2f-7e9a-b5d8-3f1a6c9e2b07",
+      "dl_id": "DL-0141",
+      "title": "SIM Swap Network-Level API Detection — Pre-MFA SIM Change Verification",
+      "status": "experimental",
+      "description": "Detects potential SIM swap attacks by querying network-level APIs before MFA code delivery. SIM swap fraud surged 1,055% in the UK (3,000 cases in 2024). Three network-level APIs provide the most effective detection: SIM Swap Check (has the SIM been changed recently?), Number Verification (is the number still assigned to the expected device?), and Call Forwarding Signal (is call forwarding active?). Correlating positive signals from these APIs with subsequent MFA authentication attempts provides high-confidence SIM swap detection.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "api_type": [
+            "sim_swap_check",
+            "number_verification",
+            "call_forwarding_signal"
+          ]
+        },
+        "condition": "sim_swap_check.recently_swapped == true OR number_verification.device_mismatch == true OR call_forwarding_signal.forwarding_active == true\n"
+      },
+      "logsource": {
+        "product": "telecom",
+        "service": "number_intelligence"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "phone_number",
+          "sim_swap_check_result",
+          "sim_swap_timestamp",
+          "number_verification_result",
+          "device_match_status",
+          "call_forwarding_status",
+          "forwarding_destination"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for SIM Swap Network-Level API Detection\")`\n`comment(\"Correlates SIM change signals with MFA authentication attempts\")`\nindex=flame_telecom sourcetype=flame:number_intelligence\n| eval sim_risk = case(\n    sim_swap_recently == \"true\", \"HIGH\",\n    device_mismatch == \"true\", \"HIGH\",\n    call_forwarding_active == \"true\", \"MEDIUM\",\n    1=1, \"LOW\"\n  )\n| where sim_risk IN (\"HIGH\", \"MEDIUM\")\n| join phone_number [\n  search index=flame_banking sourcetype=flame:mfa_events\n  | where mfa_channel = \"SMS\"\n  | where _time > relative_time(now(), \"-1h\")\n]\n| table _time, phone_number, customer_id, sim_risk,\n        sim_swap_recently, sim_swap_timestamp,\n        device_mismatch, call_forwarding_active,\n        mfa_result",
+        "sql": "-- SQL: Correlate SIM swap signals with MFA authentication\nSELECT\n    n.phone_number,\n    n.check_timestamp,\n    n.sim_swap_recently,\n    n.sim_swap_date,\n    n.device_mismatch,\n    n.call_forwarding_active,\n    m.mfa_event_time,\n    m.mfa_result,\n    m.customer_id,\n    CASE\n        WHEN n.sim_swap_recently = TRUE THEN 'HIGH'\n        WHEN n.device_mismatch = TRUE THEN 'HIGH'\n        WHEN n.call_forwarding_active = TRUE THEN 'MEDIUM'\n    END AS risk_level\nFROM number_intelligence_checks n\nJOIN mfa_events m ON n.phone_number = m.phone_number\nWHERE m.mfa_channel = 'SMS'\n  AND m.mfa_event_time BETWEEN n.check_timestamp\n      AND DATEADD(hour, 1, n.check_timestamp)\n  AND (n.sim_swap_recently = TRUE\n       OR n.device_mismatch = TRUE\n       OR n.call_forwarding_active = TRUE)\nORDER BY n.check_timestamp DESC"
+      },
+      "references": [
+        "Organized fraud detection in 2026: a technical landscape report — SIM swap detection"
+      ],
+      "threat_path_ids": [
+        "TP-0008"
+      ],
+      "fraud_types": [
+        "account-takeover"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.mfa-bypass",
+        "flame.sim-swap"
+      ],
+      "falsepositives": [
+        "Legitimate SIM replacements (lost/damaged phone)",
+        "Carrier-initiated SIM migrations (network upgrades)",
+        "Users activating call forwarding for legitimate reasons"
+      ]
+    },
+    {
+      "id": "8f2a5d7c-6e1b-3a4f-d9c8-5b3e7a2f1d04",
+      "dl_id": "DL-0142",
+      "title": "Crypto Token Rug Pull Early Warning — On-Chain and OSINT Indicators",
+      "status": "experimental",
+      "description": "Detects cryptocurrency rug pull / exit scam indicators using on-chain and OSINT signals. Rug pulls constituted 68% of all crypto scams in 2025 (350+ cases 2024). On-chain indicators: Uniswap liquidity removal >80% in single transaction, token holder concentration (top 5 holders >60%), contract functions with hidden mint/pause/ blacklist capabilities. OSINT indicators: social media silence after promotion burst, developer wallet activity cessation, Telegram/Discord channel deletion. Critical finding: OSINT signals precede on-chain anomalies by days or weeks.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_onchain": {
+          "event_type": [
+            "liquidity_removal",
+            "token_transfer",
+            "contract_interaction"
+          ]
+        },
+        "condition": "liquidity_removal_pct > 80 in single tx OR top5_holder_concentration > 0.60 OR contract_has_hidden_functions == true\n"
+      },
+      "logsource": {
+        "product": "blockchain",
+        "service": "defi_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "token_address",
+          "liquidity_pool_address",
+          "liquidity_removal_amount",
+          "liquidity_removal_pct",
+          "holder_distribution",
+          "contract_bytecode_flags"
+        ],
+        "osint_fields": [
+          "social_media_activity_score",
+          "telegram_channel_status",
+          "developer_wallet_last_activity"
+        ]
+      },
+      "queries": {
+        "python": "# Rug Pull Early Warning — Multi-signal Detection Pipeline\n\n# On-chain signals (via blockchain node or analytics API)\ndef check_onchain_signals(token_address):\n    signals = {}\n\n    # 1. Liquidity concentration\n    pool = get_uniswap_pool(token_address)\n    top5_pct = sum(get_top_holders(token_address, n=5)) / total_supply\n    signals['holder_concentration'] = top5_pct > 0.60\n\n    # 2. Contract risk analysis (EVM bytecode heuristics)\n    bytecode = get_contract_bytecode(token_address)\n    signals['hidden_mint'] = has_mint_function(bytecode)\n    signals['hidden_pause'] = has_pause_function(bytecode)\n    signals['hidden_blacklist'] = has_blacklist_function(bytecode)\n    signals['no_renounced_ownership'] = not ownership_renounced(token_address)\n\n    # 3. Liquidity lock status\n    signals['liquidity_unlocked'] = not liquidity_locked(pool)\n\n    return signals\n\n# OSINT signals (precede on-chain by days/weeks)\ndef check_osint_signals(project_name):\n    signals = {}\n\n    # Social media activity drop\n    recent_posts = get_social_activity(project_name, days=7)\n    baseline_posts = get_social_activity(project_name, days=30)\n    signals['social_silence'] = (len(recent_posts) / max(len(baseline_posts)/4, 1)) < 0.2\n\n    # Telegram/Discord channel status\n    signals['channel_deleted'] = not channel_exists(project_name)\n\n    # Developer wallet activity\n    dev_wallet = get_deployer_wallet(token_address)\n    signals['dev_inactive'] = days_since_last_tx(dev_wallet) > 14\n\n    return signals",
+        "splunk": "`comment(\"Splunk SPL for Crypto Rug Pull On-Chain Indicators\")`\nindex=blockchain sourcetype=defi:events\n| eval risk_score = case(\n    liquidity_removal_pct > 80, 10,\n    top5_holder_pct > 0.60, 7,\n    has_hidden_mint = \"true\", 8,\n    has_hidden_pause = \"true\", 6,\n    liquidity_unlocked = \"true\", 5,\n    1=1, 0\n  )\n| where risk_score >= 7\n| table _time, token_address, token_name, risk_score,\n        liquidity_removal_pct, top5_holder_pct,\n        has_hidden_mint, has_hidden_pause, liquidity_unlocked"
+      },
+      "references": [
+        "Organized fraud detection in 2026: a technical landscape report — Crypto rug pulls",
+        "Mazorra et al., 2022 — Uniswap trading/liquidity feature engineering",
+        "Yu & Lee, 2025 — EVM bytecode balance-flow heuristics",
+        "Wu et al., 2024 — TokenScout temporal graph learning"
+      ],
+      "threat_path_ids": [
+        "TP-0017",
+        "TP-0049"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "investment-scam",
+        "rug-pull"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.defi",
+        "flame.osint",
+        "flame.rug-pull"
+      ],
+      "falsepositives": [
+        "Legitimate liquidity rebalancing by project teams",
+        "Token migrations requiring liquidity withdrawal",
+        "Early-stage tokens with naturally concentrated holdings"
+      ]
+    },
+    {
+      "id": "2c7e4a9b-5d1f-8e3a-b6c2-9f4d1a7e5b03",
+      "dl_id": "DL-0143",
+      "title": "Employment Fraud Metadata Feature Detection",
+      "status": "experimental",
+      "description": "Detects fraudulent job postings using metadata features from the EMSCAD benchmark (18,000 samples). Key finding: when both telecommuting and company logo flags equal zero, there is a 92% probability of fraud. Geographic concentration patterns (e.g., Bakersfield 15:1 fake-to-real ratio) provide additional signal. DistilBERT+SMOTE models achieve strong results; DNNs reach ~98% accuracy. This rule implements the high-confidence metadata feature checks that require no NLP processing.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "posting_type": "job_listing"
+        },
+        "condition": "(telecommuting == 0 AND has_company_logo == 0) OR (fraud_geographic_score > 0.8) OR (salary_experience_ratio > 3.0 AND has_company_logo == 0)\n"
+      },
+      "logsource": {
+        "product": "job_platform",
+        "service": "posting_analysis"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "posting_id",
+          "company_name",
+          "job_title",
+          "location",
+          "telecommuting_flag",
+          "has_company_logo",
+          "has_company_profile",
+          "salary_range",
+          "required_experience",
+          "posting_date"
+        ]
+      },
+      "queries": {
+        "sql": "-- SQL: Employment fraud metadata feature detection\n-- Primary signal: telecommuting=0 AND company_logo=0 → 92% fraud probability\nSELECT\n    posting_id,\n    company_name,\n    job_title,\n    location,\n    salary_range,\n    CASE\n        WHEN telecommuting_flag = 0 AND has_company_logo = 0 THEN 'HIGH'\n        WHEN has_company_logo = 0 AND has_company_profile = 0 THEN 'HIGH'\n        WHEN location IN (SELECT city FROM fraud_concentration_cities\n                          WHERE fake_to_real_ratio > 10) THEN 'MEDIUM'\n        WHEN salary_range / NULLIF(required_experience_years, 0) > 3.0\n             AND has_company_logo = 0 THEN 'MEDIUM'\n        ELSE 'LOW'\n    END AS fraud_risk_level,\n    CASE\n        WHEN telecommuting_flag = 0 AND has_company_logo = 0 THEN 0.92\n        WHEN has_company_logo = 0 AND has_company_profile = 0 THEN 0.85\n        ELSE 0.50\n    END AS fraud_probability\nFROM job_postings\nWHERE posting_date >= DATEADD(day, -7, GETDATE())\n  AND (\n    (telecommuting_flag = 0 AND has_company_logo = 0)\n    OR (has_company_logo = 0 AND has_company_profile = 0)\n    OR location IN (SELECT city FROM fraud_concentration_cities\n                    WHERE fake_to_real_ratio > 10)\n  )\nORDER BY fraud_probability DESC",
+        "splunk": "`comment(\"Splunk SPL for Employment Fraud Metadata Feature Detection\")`\nindex=job_platforms sourcetype=job:postings\n| eval fraud_risk = case(\n    telecommuting_flag=0 AND has_company_logo=0, \"HIGH_92pct\",\n    has_company_logo=0 AND has_company_profile=0, \"HIGH_85pct\",\n    1=1, \"REVIEW\"\n  )\n| where fraud_risk IN (\"HIGH_92pct\", \"HIGH_85pct\")\n| table _time, posting_id, company_name, job_title, location,\n        salary_range, fraud_risk, telecommuting_flag,\n        has_company_logo, has_company_profile"
+      },
+      "references": [
+        "Organized fraud detection in 2026: a technical landscape report — Employment fraud detection",
+        "EMSCAD benchmark (18,000 employment fraud samples)"
+      ],
+      "threat_path_ids": [
+        "TP-0015"
+      ],
+      "fraud_types": [
+        "employment-fraud",
+        "social-engineering"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.employment-fraud",
+        "flame.metadata-detection"
+      ],
+      "falsepositives": [
+        "Small businesses or startups without established branding (no logo)",
+        "Legitimate remote work listings that don't flag telecommuting",
+        "Job postings in geographically concentrated industries"
       ]
     }
   ]

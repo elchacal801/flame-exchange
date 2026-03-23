@@ -193,6 +193,15 @@ Flag SIM changes where:
   - Multiple SIM changes across different customers by same representative
 ```
 
+## Operational Evidence
+
+### EV-TP0008-2026-001: 2026 Technical Landscape — SIM Swap Surge and Network-Level API Detection
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: SIM swap fraud surged 1,055% in the UK with 3,000 cases in 2024. Network-level APIs provide the most effective detection: SIM Swap Check (has SIM changed recently?), Number Verification (is number still assigned to expected device?), Call Forwarding Signal (is call forwarding active?). These APIs enable real-time verification before MFA code delivery, preventing the core SIM swap attack vector. Detection should correlate SIM change events with subsequent MFA authentication attempts.
+
 ## Analyst Notes
 
 **OTP Interception Beyond SIM Swap (2024-2025)**: The Recorded Future Annual Payment Fraud Intelligence Report 2025 documented the cementing of OTP interception as a popular technique for circumventing authentication, extending well beyond SIM swap. TransUnion's 2025 report identified OTPs as the most common form of secondary authentication globally, making OTP interception a high-value capability for threat actors. Key OTP interception techniques that have matured alongside SIM swap include: (1) **OTP bot services** — automated call-back bots on Telegram that call victims and socially engineer them into entering their OTP, which is then relayed to the attacker in real time; (2) **Phishing kits with real-time OTP relay** — frameworks such as EvilginX (which saw a sharp increase in dark web references throughout 2024) that intercept OTPs during phishing sessions by proxying the victim's session to the legitimate service; (3) **Mobile malware with OTP interception** — Android RATs such as "xl-hook Android Banking Bot RAT" (offered by "churk" on XSS Forum, April 2025) and MaaS platforms like "PhantomOS" (offered by "Zero Compile" on XSS Forum, May 2025) that intercept OTPs via Android accessibility services or notification listeners; (4) **SS7/Diameter protocol exploitation** — interception of SMS-based OTPs via telecom signaling vulnerabilities, increasingly offered as-a-service on dark web forums. These techniques are particularly critical as enablers for digital wallet fraud (TP-0037), where intercepted OTPs are used to provision stolen cards into Apple Pay, Google Pay, or Samsung Pay for downstream contactless fraud.
@@ -205,6 +214,8 @@ SIM swap attacks represent a critical intersection of telecommunications and fin
 - DOJ: "Eight Individuals Charged in SIM Swap Conspiracy" (various indictments)
 - Chainalysis: Crypto Crime Report (annual). [Link](https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/)
 - T-Mobile, AT&T carrier SIM swap prevention documentation
+
+- "Organized fraud detection in 2026: a technical landscape report" — Specific fraud category detection: Synthetic identity fraud (SIM swap subsection)
 
 ## Revision History
 

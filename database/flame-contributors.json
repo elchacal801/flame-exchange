@@ -2,11 +2,11 @@
   "contributors": [
     {
       "name": "FLAME Project",
-      "threat_paths": 45,
-      "detection_rules": 51,
+      "threat_paths": 51,
+      "detection_rules": 62,
       "baselines": 22,
       "emulation_playbooks": 7,
-      "total": 125
+      "total": 142
     },
     {
       "name": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
@@ -135,7 +135,39 @@
       "baselines": 1,
       "emulation_playbooks": 0,
       "total": 1
+    },
+    {
+      "name": "FLAME Project (sourced from UNODC Organized Fraud Issue Paper 2024, FBI IC3)",
+      "threat_paths": 0,
+      "detection_rules": 0,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 1
+    },
+    {
+      "name": "FLAME Project (sourced from UNODC Organized Fraud Issue Paper 2024, UK SFO prosecutions)",
+      "threat_paths": 0,
+      "detection_rules": 0,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 1
+    },
+    {
+      "name": "FLAME Project (sourced from 2026 Technical Landscape Report, Stylometric Research)",
+      "threat_paths": 0,
+      "detection_rules": 0,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 1
+    },
+    {
+      "name": "FLAME Project (sourced from 2026 Technical Landscape Report, Mazorra et al. 2022, Yu & Lee 2025)",
+      "threat_paths": 0,
+      "detection_rules": 0,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 1
     }
   ],
-  "generated_at": "2026-03-21T21:23:04.683928+00:00"
+  "generated_at": "2026-03-23T00:08:06.149158+00:00"
 }

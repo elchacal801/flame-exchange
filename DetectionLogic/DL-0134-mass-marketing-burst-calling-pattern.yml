@@ -1,0 +1,97 @@
+title: Mass-Marketing Fraud Burst Calling Pattern — SIM Farm and Robodialling Detection
+id: 3e7a9c2f-1b5d-4a8e-c6f2-9d4b8e1a3c07
+status: experimental
+description: >
+  Detects burst patterns from potential SIM farm or robodialling infrastructure targeting customer
+  phone numbers. Mass-marketing fraud infrastructure uses sequential phone numbers, short call
+  durations (most calls rejected), and high-volume outbound calling to reach victims at scale.
+  This rule identifies inbound calling patterns characteristic of organized boiler room operations,
+  including sequential source number prefixes, short call duration clustering, and geographic
+  origin mismatch between caller ID display and actual call routing.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter IV, Mass-marketing"
+  - "Europol, Action against criminal website that offered spoofing services to fraudsters, 24 November 2022 (iSpoof)"
+threat_paths:
+  - TP-0065
+cfpf_phase: P2
+fraud_types:
+  - robodialling-fraud
+  - vishing
+  - social-engineering
+  - impersonation
+logsource:
+  product: telecom
+  service: cdr
+detection:
+  selection:
+    call_direction: inbound
+  timeframe: 1h
+  condition: selection | count(distinct destination_number) by source_number_prefix > 50
+    AND selection | avg(call_duration) by source_number_prefix < 30
+data_sources:
+  native_fields:
+    - source_number
+    - destination_number
+    - call_direction
+    - call_duration
+    - caller_id_verification_status
+    - call_origin_geography
+queries:
+  splunk: |-
+    `comment("Splunk SPL for Mass-Marketing Burst Calling Pattern")`
+    `comment("Detects SIM farm / robodialling burst patterns")`
+    index=flame_telecom sourcetype=flame:cdr call_direction="inbound"
+    | eval source_prefix=substr(source_number, 1, 7)
+    | bin _time span=1h
+    | stats dc(destination_number) AS unique_targets,
+            avg(call_duration) AS avg_duration,
+            count AS total_calls,
+            values(caller_id_verification_status) AS attestation
+      BY source_prefix, _time
+    | where unique_targets > 50 AND avg_duration < 30
+    | sort - unique_targets
+
+  logscale: |-
+    // LogScale LQL for Mass-Marketing Burst Calling Pattern
+    call_direction="inbound"
+    | source_prefix := substring(source_number, start=0, end=7)
+    | bucket(field=@timestamp, span=1h)
+    | groupBy([source_prefix, @timestamp], function=[
+        count(as=total_calls),
+        count(field=destination_number, distinct=true, as=unique_targets),
+        avg(call_duration, as=avg_duration),
+        collect(caller_id_verification_status)
+      ])
+    | unique_targets > 50 AND avg_duration < 30
+
+  sigma: |-
+    title: Mass-Marketing Fraud Burst Calling Pattern
+    status: experimental
+    logsource:
+        product: telecom
+        service: cdr
+    detection:
+        selection:
+            call_direction: inbound
+            call_duration|lt: 30
+        timeframe: 1h
+        condition: selection | count(distinct destination_number) by source_number_prefix > 50
+    fields:
+        - source_number
+        - destination_number
+        - call_duration
+        - caller_id_verification_status
+    level: medium
+
+falsepositives:
+  - Legitimate telemarketing campaigns from licensed call centers
+  - Automated notification systems (bank alerts, appointment reminders)
+  - Political campaign robodialling during election periods
+level: medium
+tags:
+  - cfpf.phase2.initial_access
+  - flame.unodc
+  - flame.mass-marketing
+  - flame.sim-farm

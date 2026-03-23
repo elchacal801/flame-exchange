@@ -1,0 +1,99 @@
+title: Employment Fraud Metadata Feature Detection
+id: 2c7e4a9b-5d1f-8e3a-b6c2-9f4d1a7e5b03
+status: experimental
+description: >
+  Detects fraudulent job postings using metadata features from the EMSCAD benchmark
+  (18,000 samples). Key finding: when both telecommuting and company logo flags equal
+  zero, there is a 92% probability of fraud. Geographic concentration patterns (e.g.,
+  Bakersfield 15:1 fake-to-real ratio) provide additional signal. DistilBERT+SMOTE
+  models achieve strong results; DNNs reach ~98% accuracy. This rule implements the
+  high-confidence metadata feature checks that require no NLP processing.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "Organized fraud detection in 2026: a technical landscape report — Employment fraud detection"
+  - "EMSCAD benchmark (18,000 employment fraud samples)"
+threat_paths:
+  - TP-0015
+cfpf_phase: P2
+fraud_types:
+  - employment-fraud
+  - social-engineering
+logsource:
+  product: job_platform
+  service: posting_analysis
+detection:
+  selection:
+    posting_type: job_listing
+  condition: >
+    (telecommuting == 0 AND has_company_logo == 0)
+    OR (fraud_geographic_score > 0.8)
+    OR (salary_experience_ratio > 3.0 AND has_company_logo == 0)
+data_sources:
+  native_fields:
+    - posting_id
+    - company_name
+    - job_title
+    - location
+    - telecommuting_flag
+    - has_company_logo
+    - has_company_profile
+    - salary_range
+    - required_experience
+    - posting_date
+queries:
+  sql: |-
+    -- SQL: Employment fraud metadata feature detection
+    -- Primary signal: telecommuting=0 AND company_logo=0 → 92% fraud probability
+    SELECT
+        posting_id,
+        company_name,
+        job_title,
+        location,
+        salary_range,
+        CASE
+            WHEN telecommuting_flag = 0 AND has_company_logo = 0 THEN 'HIGH'
+            WHEN has_company_logo = 0 AND has_company_profile = 0 THEN 'HIGH'
+            WHEN location IN (SELECT city FROM fraud_concentration_cities
+                              WHERE fake_to_real_ratio > 10) THEN 'MEDIUM'
+            WHEN salary_range / NULLIF(required_experience_years, 0) > 3.0
+                 AND has_company_logo = 0 THEN 'MEDIUM'
+            ELSE 'LOW'
+        END AS fraud_risk_level,
+        CASE
+            WHEN telecommuting_flag = 0 AND has_company_logo = 0 THEN 0.92
+            WHEN has_company_logo = 0 AND has_company_profile = 0 THEN 0.85
+            ELSE 0.50
+        END AS fraud_probability
+    FROM job_postings
+    WHERE posting_date >= DATEADD(day, -7, GETDATE())
+      AND (
+        (telecommuting_flag = 0 AND has_company_logo = 0)
+        OR (has_company_logo = 0 AND has_company_profile = 0)
+        OR location IN (SELECT city FROM fraud_concentration_cities
+                        WHERE fake_to_real_ratio > 10)
+      )
+    ORDER BY fraud_probability DESC
+
+  splunk: |-
+    `comment("Splunk SPL for Employment Fraud Metadata Feature Detection")`
+    index=job_platforms sourcetype=job:postings
+    | eval fraud_risk = case(
+        telecommuting_flag=0 AND has_company_logo=0, "HIGH_92pct",
+        has_company_logo=0 AND has_company_profile=0, "HIGH_85pct",
+        1=1, "REVIEW"
+      )
+    | where fraud_risk IN ("HIGH_92pct", "HIGH_85pct")
+    | table _time, posting_id, company_name, job_title, location,
+            salary_range, fraud_risk, telecommuting_flag,
+            has_company_logo, has_company_profile
+
+falsepositives:
+  - Small businesses or startups without established branding (no logo)
+  - Legitimate remote work listings that don't flag telecommuting
+  - Job postings in geographically concentrated industries
+level: high
+tags:
+  - cfpf.phase2.initial_access
+  - flame.employment-fraud
+  - flame.metadata-detection

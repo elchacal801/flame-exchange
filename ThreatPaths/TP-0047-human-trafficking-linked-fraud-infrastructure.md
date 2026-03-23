@@ -61,6 +61,7 @@ related_tps:
 regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-INTERPOL-GFFTA
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - human-trafficking
   - scam-compound
@@ -74,6 +75,7 @@ tags:
   - multilingual-chatbot
   - sextortion-fallback
   - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -503,6 +505,13 @@ LIMIT 100;
 - **CFPF Phase Coverage**: P2 (chatbot-enabled initial contact), P3 (deepfake-enhanced trust building), P4 (scripted exploitation with sextortion fallback)
 - **Confidence**: High
 
+### EV-TP0047-2026-003: UNODC UNTOC Convention Framework for Trafficking-Fraud Nexus
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC 2024 issue paper provides the formal UNTOC Convention framework for understanding the trafficking-fraud nexus. Documents "so-called scam compounds operated by poly-criminal groups in South-East Asia, which have industrialized processes for perpetrating certain types of fraud, in part by trafficking victims who are tricked or coerced into perpetrating fraud." UNODC also notes the regional cooperation roadmap between China, ASEAN, and UNODC for coordinated criminal investigations into trafficking and scam operations. Key finding: fraud profits from compound operations may fund other serious criminal activities including terrorism financing.
+
 ---
 
 ## References
@@ -541,6 +550,8 @@ OFAC designated Funnull Technology, a content delivery network (CDN) provider th
 - **UNODC — Emerging Threats: AI & Automation in Cybercrime** (September 2025): Documents AI-enhanced cybercrime in SE Asia including multilingual chatbots, 600% deepfake surge, automated mule systems, and scam compound operational patterns. [Link](https://www.unodc.org/)
 
 - **INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition** (March 2026): Documents 80 nationalities trafficked, sextortion as scripted fallback in compound operations, and global scam centre expansion. [Link](https://www.interpol.int/)
+
+- **UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024)** — Chapter I, Organized Criminal Groups; UNODC Regional Office for SE Asia, "ASEAN-China regional cooperation roadmap", 2023. [Link](https://www.unodc.org/)
 
 ---
 

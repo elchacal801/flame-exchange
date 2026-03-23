@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-23T00:08:06.053292+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "4b8e1d6f-3a2c-5f7e-a9d4-7c1b5e3a2d08",
+    "dl_id": "DL-0139",
+    "title": "AI-Generated Phishing Content Stylometric Detection",
+    "status": "experimental",
+    "description": "Detects AI-generated phishing content using stylometric features. Research shows XGBoost with 60 stylometric features detects GPT-4o-generated phishing with 96% accuracy and 99% AUC. Key features: imperative verb count, clause density, first-person pronoun usage, urgency markers, authority indicators, sentiment manipulation, financial trigger words, and semantic inconsistency. DetectGPT achieves ~0.95 AUROC via zero-shot statistical signatures. This rule defines the feature extraction pipeline and scoring thresholds for deployment in email security and fraud communication analysis systems.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "content_type": "email"
+      },
+      "condition": "stylometric_score > 0.75 (composite of 60 features) AND (urgency_marker_count > 3 OR authority_indicator_count > 2) AND imperative_verb_ratio > 0.15\n"
+    },
+    "logsource": {
+      "product": "email_security",
+      "service": "content_analysis"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "message_id",
+        "sender",
+        "recipient",
+        "subject",
+        "body_text"
+      ],
+      "derived_fields": [
+        "imperative_verb_count",
+        "clause_density",
+        "first_person_pronoun_ratio",
+        "urgency_marker_count",
+        "authority_indicator_count",
+        "sentiment_manipulation_score",
+        "financial_trigger_word_count",
+        "semantic_inconsistency_score",
+        "vocabulary_diversity_index",
+        "sentence_length_variance"
+      ]
+    },
+    "queries": {
+      "python": "# Python pseudocode for stylometric feature extraction pipeline\n# Deploy via Splunk DSDL or standalone NLP service\n\nimport spacy\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nimport xgboost as xgb\n\nURGENCY_MARKERS = ['immediately', 'urgent', 'act now', 'deadline',\n                   'expires', 'limited time', 'final notice', 'asap']\nAUTHORITY_INDICATORS = ['official', 'authorized', 'compliance',\n                       'government', 'legal', 'regulatory', 'mandatory']\nFINANCIAL_TRIGGERS = ['payment', 'transfer', 'invoice', 'account',\n                     'balance', 'wire', 'refund', 'settlement']\n\ndef extract_stylometric_features(text):\n    doc = nlp(text)\n    features = {\n        'imperative_verb_ratio': count_imperative_verbs(doc) / len(doc),\n        'clause_density': count_clauses(doc) / count_sentences(doc),\n        'first_person_ratio': count_first_person(doc) / len(doc),\n        'urgency_count': sum(1 for m in URGENCY_MARKERS if m in text.lower()),\n        'authority_count': sum(1 for m in AUTHORITY_INDICATORS if m in text.lower()),\n        'financial_trigger_count': sum(1 for t in FINANCIAL_TRIGGERS if t in text.lower()),\n        'sentence_length_variance': np.var([len(s) for s in doc.sents]),\n        'vocabulary_diversity': len(set(t.lemma_ for t in doc)) / len(doc),\n        # ... 52 additional features\n    }\n    return features\n\n# Score with pre-trained XGBoost model (96% accuracy, 99% AUC on GPT-4o)\n# model = xgb.Booster(); model.load_model('stylometric_phishing_v1.json')",
+      "splunk": "`comment(\"Splunk SPL for AI-Generated Content Scoring\")`\n`comment(\"Requires Splunk DSDL with NLP model deployed\")`\nindex=email sourcetype=email:content\n| apply stylometric_phishing_model\n| where stylometric_score > 0.75\n| where urgency_marker_count > 3 OR authority_indicator_count > 2\n| table _time, sender, recipient, subject, stylometric_score,\n        imperative_verb_ratio, urgency_marker_count, authority_indicator_count"
+    },
+    "references": [
+      "Organized fraud detection in 2026: a technical landscape report — LLMs and transformer models",
+      "Fine-tuned BERT phishing detection: F1=0.99 on 181,781 emails via Splunk DSDL"
+    ],
+    "threat_path_ids": [
+      "TP-0025",
+      "TP-0043"
+    ],
+    "fraud_types": [
+      "ai-accelerated-fraud-infrastructure",
+      "phishing",
+      "social-engineering"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.ai-detection",
+      "flame.nlp",
+      "flame.stylometric"
+    ],
+    "falsepositives": [
+      "Legitimate marketing emails with urgency language",
+      "Automated compliance notifications with authority language",
+      "Translated emails with unusual stylometric patterns"
+    ]
+  }
+}

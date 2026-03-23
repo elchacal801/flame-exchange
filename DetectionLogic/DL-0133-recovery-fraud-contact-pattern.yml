@@ -1,0 +1,107 @@
+title: Recovery Fraud Contact Pattern — Payments from Recent Fraud Victims to Unfamiliar Recipients
+id: 8f2c1d4e-9a3b-4f7e-b5c8-2d6e3f8a1b09
+status: experimental
+description: >
+  Detects potential recovery fraud by identifying payments from customers who filed fraud complaints
+  within the preceding 90 days to previously unseen recipient accounts. Recovery fraud operators
+  re-contact prior fraud victims posing as recovery agents, lawyers, or government officials,
+  extracting additional fees for purported fund recovery. This rule correlates complaint records
+  with subsequent outbound payment activity to flag secondary victimization.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter II, Consumer Investment Fraud"
+  - https://www.ic3.gov/AnnualReport/Reports/2023_IC3Report.pdf
+threat_paths:
+  - TP-0062
+cfpf_phase: P4
+fraud_types:
+  - recovery-fraud
+  - advance-fee-fraud
+  - impersonation
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection_payment:
+    transaction_type:
+      - WIRE_OUT
+      - ACH_OUT
+      - CRYPTO_TRANSFER
+  timeframe: 90d
+  condition: selection_payment
+data_sources:
+  native_fields:
+    - transaction_type
+    - customer_id
+    - recipient_account
+    - amount
+    - transaction_date
+  cross_reference:
+    - fraud_complaints.customer_id
+    - fraud_complaints.complaint_date
+    - fraud_complaints.original_loss_amount
+queries:
+  splunk: |-
+    `comment("Splunk SPL for Recovery Fraud Contact Pattern")`
+    `comment("Cross-references fraud complaints with subsequent outbound payments to new recipients")`
+    index=flame_banking sourcetype=flame:transaction_monitoring
+      transaction_type IN ("WIRE_OUT", "ACH_OUT", "CRYPTO_TRANSFER")
+      amount > 500
+    | join customer_id [
+      search index=flame_fraud sourcetype=flame:complaints
+      | where complaint_date >= relative_time(now(), "-90d")
+      | fields customer_id, complaint_date, original_loss_amount, fraud_type
+    ]
+    | search NOT [
+      search index=flame_banking sourcetype=flame:transaction_monitoring
+        transaction_type IN ("WIRE_OUT", "ACH_OUT", "CRYPTO_TRANSFER")
+        transaction_date < complaint_date
+      | dedup recipient_account, customer_id
+      | fields recipient_account, customer_id
+    ]
+    | stats count AS payment_count, sum(amount) AS total_amount,
+            values(recipient_account) AS recipients
+      BY customer_id, fraud_type, original_loss_amount
+    | where payment_count >= 1
+
+  logscale: |-
+    // LogScale LQL for Recovery Fraud Contact Pattern
+    // Cross-references fraud complaints with subsequent outbound payments
+    transaction_type IN ["WIRE_OUT", "ACH_OUT", "CRYPTO_TRANSFER"]
+    | amount > 500
+    | match(file="flame_fraud_complaints_90d.csv", field=customer_id, include=[complaint_date, original_loss_amount, fraud_type])
+    | groupBy(customer_id, function=[count(as=payment_count), sum(amount, as=total_amount), collect(recipient_account)])
+    | payment_count >= 1
+
+  sql: |-
+    -- SQL for Recovery Fraud Contact Pattern
+    SELECT
+        t.customer_id,
+        t.transaction_date,
+        t.amount,
+        t.recipient_account,
+        c.complaint_date,
+        c.original_loss_amount,
+        c.fraud_type AS original_fraud_type
+    FROM transactions t
+    JOIN fraud_complaints c ON t.customer_id = c.customer_id
+    WHERE c.complaint_date >= DATEADD(day, -90, t.transaction_date)
+      AND t.recipient_account NOT IN (
+        SELECT DISTINCT recipient_account
+        FROM transactions
+        WHERE customer_id = t.customer_id
+          AND transaction_date < c.complaint_date
+      )
+      AND t.amount > 500
+    ORDER BY t.transaction_date DESC
+
+falsepositives:
+  - Legitimate payments to attorneys or recovery services hired by the victim
+  - Insurance reimbursement-related outbound payments
+  - Victim making normal payments to new vendors unrelated to fraud
+level: high
+tags:
+  - cfpf.phase4.execution
+  - flame.unodc
+  - flame.recovery-fraud

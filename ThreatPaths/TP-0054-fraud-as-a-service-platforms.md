@@ -69,6 +69,7 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-UNODC-EMERGING-THREATS
   - REG-RF-CTA-2026-0319
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -94,6 +95,8 @@ tags:
   - self-referential-scam
   - black-hat-usa-2025
   - infoblox-deanonymization
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -356,6 +359,20 @@ ORDER BY shared_domains DESC;
 
 ---
 
+### EV-TP0054-2026-002: UNODC Crime-as-a-Service Model and Enabling Technology
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC documents the crime-as-a-service model as a defining feature of organized cyberfraud: "cybercriminal entrepreneurs can profit from supplying technical tools, resources and services to fraudsters." Key products include stolen personal data, phishing/spamming services, money-laundering services, account hacking, and botnets. UNODC case study: Genesis Market provided bots with "browser fingerprints" to mimic victim behavior and bypass anti-fraud — 80M credentials from 2M people. iSpoof supplied caller ID spoofing to 59,000 users for €3.7M. UNODC notes AI/generative AI (FraudGPT, voice clones, deepfakes) will further lower barriers to entry for organized fraud.
+
+### EV-TP0054-2026-003: 2026 Technical Landscape — AiTM PhaaS Kit Proliferation
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: Sekoia.io identified 11 major AiTM phishing kits active in early 2025, with Tycoon 2FA the most prevalent (1,200+ domains, targeting 500K+ organizations monthly). These kits operate as Phishing-as-a-Service (PhaaS) with subscription pricing, customer support, and template updates — extending the FaaS model to MFA-bypass credential theft. Credential phishing attacks rose 703% in H2 2024. Canadian Cyber Centre data shows FIDO2/phishing-resistant MFA blocks 93.9% of AiTM campaigns. See TP-0067 for detailed AiTM phishing kit threat path.
+
 ### EV-TP0054-2025-003: VexTrio/Ad Trafficko — Blank Credit Card Subscription FaaS
 
 - **Source**: Renée Burton, Dave Mitchell, Christopher Kim (Infoblox Threat Intelligence), "No Hoodies Here: Organized Crime in AdTech," Black Hat USA 2025, August 6, 2025; Black Hat World forum references; third-party Russian-language affiliate marketing blog (archived pre-scrubbing)
@@ -381,6 +398,9 @@ ORDER BY shared_domains DESC;
 - Chainalysis, *Record $17 Billion Estimated Stolen in Crypto Scams and Fraud in 2025 as Impersonation Tactics and AI Enablement Surge*, January 2026 — AI-enabled fraud estimated 4.5x more profitable than non-enhanced tactics
 - Group-IB, *Weaponised AI Is Powering the Fifth Wave of Cybercrime*, January 2026 — deepfake audio capability accessible via dark web marketplaces using 10 seconds of audio
 - Anthropic, *Threat Intelligence Report: August 2025* — agentic AI capability for autonomous fraud campaign execution
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter III, Crime-as-a-Service; Chapter IV, Enabling Technology
+
+- "Organized fraud detection in 2026: a technical landscape report" — BEC and AiTM phishing section
 
 ---
 

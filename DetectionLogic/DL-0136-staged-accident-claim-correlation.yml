@@ -1,0 +1,142 @@
+title: Staged Accident Claim Correlation — Shared Professional Enabler Network Detection
+id: 2a5f8b3c-7d1e-4c6a-e9b4-1f3a7c5d2e08
+status: experimental
+description: >
+  Detects potential organized crash-for-cash insurance fraud rings by identifying claims from
+  multiple ostensibly unrelated accidents that share common professional enablers (same medical
+  provider, legal representative, or repair shop). Organized insurance fraud rings rely on
+  networks of corrupt professionals who process claims across multiple staged incidents. The
+  shared professional enabler network is the most durable and detectable element of the ring,
+  as replacing trusted corrupt professionals is harder than recruiting new participants.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter II, Crash-for-Cash Fraud"
+  - "UK Insurance Fraud Bureau — crash-for-cash ring intelligence"
+threat_paths:
+  - TP-0066
+cfpf_phase: P4
+fraud_types:
+  - crash-for-cash
+  - insurance-fraud
+  - fraudulent-claim
+  - collusion
+logsource:
+  product: insurance
+  service: claims_management
+detection:
+  selection:
+    claim_type: vehicle_accident
+  timeframe: 365d
+  condition: >
+    count(distinct accident_id) by shared_provider >= 3
+data_sources:
+  native_fields:
+    - claim_id
+    - accident_id
+    - claim_date
+    - medical_provider
+    - legal_representative
+    - repair_shop
+    - claimant_name
+    - claimant_address
+    - claim_amount
+queries:
+  splunk: |-
+    `comment("Splunk SPL for Staged Accident Claim Correlation")`
+    `comment("Identifies claims sharing professional enablers across unrelated accidents")`
+    index=flame_insurance sourcetype=flame:claims claim_type="vehicle_accident"
+    | eval claim_date_epoch=strptime(claim_date, "%Y-%m-%d")
+    | where claim_date_epoch > relative_time(now(), "-365d")
+    | stats dc(accident_id) AS accident_count,
+            dc(claim_id) AS claim_count,
+            values(accident_id) AS accidents,
+            sum(claim_amount) AS total_claimed
+      BY medical_provider
+    | where accident_count >= 3
+    | rename medical_provider AS shared_provider
+    | eval provider_type="medical"
+    | append [
+      search index=flame_insurance sourcetype=flame:claims claim_type="vehicle_accident"
+      | where strptime(claim_date, "%Y-%m-%d") > relative_time(now(), "-365d")
+      | stats dc(accident_id) AS accident_count,
+              dc(claim_id) AS claim_count,
+              values(accident_id) AS accidents,
+              sum(claim_amount) AS total_claimed
+        BY legal_representative
+      | where accident_count >= 3
+      | rename legal_representative AS shared_provider
+      | eval provider_type="legal"
+    ]
+    | append [
+      search index=flame_insurance sourcetype=flame:claims claim_type="vehicle_accident"
+      | where strptime(claim_date, "%Y-%m-%d") > relative_time(now(), "-365d")
+      | stats dc(accident_id) AS accident_count,
+              dc(claim_id) AS claim_count,
+              values(accident_id) AS accidents,
+              sum(claim_amount) AS total_claimed
+        BY repair_shop
+      | where accident_count >= 3
+      | rename repair_shop AS shared_provider
+      | eval provider_type="repair"
+    ]
+    | sort - accident_count
+
+  sql: |-
+    -- SQL for Staged Accident Claim Correlation
+    -- Identifies shared professional enablers across unrelated accidents
+    SELECT
+        'medical' AS provider_type,
+        a.medical_provider AS shared_provider,
+        COUNT(DISTINCT a.accident_id) AS accident_count,
+        COUNT(DISTINCT a.claim_id) AS claim_count,
+        SUM(a.claim_amount) AS total_claimed
+    FROM insurance_claims a
+    WHERE a.claim_type = 'vehicle_accident'
+      AND a.claim_date >= DATEADD(year, -1, GETDATE())
+      AND a.medical_provider IS NOT NULL
+    GROUP BY a.medical_provider
+    HAVING COUNT(DISTINCT a.accident_id) >= 3
+
+    UNION ALL
+
+    SELECT
+        'legal' AS provider_type,
+        a.legal_representative AS shared_provider,
+        COUNT(DISTINCT a.accident_id) AS accident_count,
+        COUNT(DISTINCT a.claim_id) AS claim_count,
+        SUM(a.claim_amount) AS total_claimed
+    FROM insurance_claims a
+    WHERE a.claim_type = 'vehicle_accident'
+      AND a.claim_date >= DATEADD(year, -1, GETDATE())
+      AND a.legal_representative IS NOT NULL
+    GROUP BY a.legal_representative
+    HAVING COUNT(DISTINCT a.accident_id) >= 3
+
+    UNION ALL
+
+    SELECT
+        'repair' AS provider_type,
+        a.repair_shop AS shared_provider,
+        COUNT(DISTINCT a.accident_id) AS accident_count,
+        COUNT(DISTINCT a.claim_id) AS claim_count,
+        SUM(a.claim_amount) AS total_claimed
+    FROM insurance_claims a
+    WHERE a.claim_type = 'vehicle_accident'
+      AND a.claim_date >= DATEADD(year, -1, GETDATE())
+      AND a.repair_shop IS NOT NULL
+    GROUP BY a.repair_shop
+    HAVING COUNT(DISTINCT a.accident_id) >= 3
+
+    ORDER BY accident_count DESC
+
+falsepositives:
+  - Legitimate high-volume medical providers or repair shops in areas with high accident rates
+  - Law firms specializing in personal injury claims handling multiple genuine cases
+  - Preferred provider networks directed by insurance companies
+level: high
+tags:
+  - cfpf.phase4.execution
+  - flame.unodc
+  - flame.crash-for-cash
+  - flame.insurance-ring

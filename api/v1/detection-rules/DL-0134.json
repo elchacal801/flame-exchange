@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-23T00:08:06.031768+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "3e7a9c2f-1b5d-4a8e-c6f2-9d4b8e1a3c07",
+    "dl_id": "DL-0134",
+    "title": "Mass-Marketing Fraud Burst Calling Pattern — SIM Farm and Robodialling Detection",
+    "status": "experimental",
+    "description": "Detects burst patterns from potential SIM farm or robodialling infrastructure targeting customer phone numbers. Mass-marketing fraud infrastructure uses sequential phone numbers, short call durations (most calls rejected), and high-volume outbound calling to reach victims at scale. This rule identifies inbound calling patterns characteristic of organized boiler room operations, including sequential source number prefixes, short call duration clustering, and geographic origin mismatch between caller ID display and actual call routing.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "call_direction": "inbound"
+      },
+      "timeframe": "1h",
+      "condition": "selection | count(distinct destination_number) by source_number_prefix > 50 AND selection | avg(call_duration) by source_number_prefix < 30"
+    },
+    "logsource": {
+      "product": "telecom",
+      "service": "cdr"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "source_number",
+        "destination_number",
+        "call_direction",
+        "call_duration",
+        "caller_id_verification_status",
+        "call_origin_geography"
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Mass-Marketing Burst Calling Pattern\")`\n`comment(\"Detects SIM farm / robodialling burst patterns\")`\nindex=flame_telecom sourcetype=flame:cdr call_direction=\"inbound\"\n| eval source_prefix=substr(source_number, 1, 7)\n| bin _time span=1h\n| stats dc(destination_number) AS unique_targets,\n        avg(call_duration) AS avg_duration,\n        count AS total_calls,\n        values(caller_id_verification_status) AS attestation\n  BY source_prefix, _time\n| where unique_targets > 50 AND avg_duration < 30\n| sort - unique_targets",
+      "logscale": "// LogScale LQL for Mass-Marketing Burst Calling Pattern\ncall_direction=\"inbound\"\n| source_prefix := substring(source_number, start=0, end=7)\n| bucket(field=@timestamp, span=1h)\n| groupBy([source_prefix, @timestamp], function=[\n    count(as=total_calls),\n    count(field=destination_number, distinct=true, as=unique_targets),\n    avg(call_duration, as=avg_duration),\n    collect(caller_id_verification_status)\n  ])\n| unique_targets > 50 AND avg_duration < 30",
+      "sigma": "title: Mass-Marketing Fraud Burst Calling Pattern\nstatus: experimental\nlogsource:\n    product: telecom\n    service: cdr\ndetection:\n    selection:\n        call_direction: inbound\n        call_duration|lt: 30\n    timeframe: 1h\n    condition: selection | count(distinct destination_number) by source_number_prefix > 50\nfields:\n    - source_number\n    - destination_number\n    - call_duration\n    - caller_id_verification_status\nlevel: medium"
+    },
+    "references": [
+      "UNODC, Organized Fraud — Issue Paper (Vienna, 2024) — Chapter IV, Mass-marketing",
+      "Europol, Action against criminal website that offered spoofing services to fraudsters, 24 November 2022 (iSpoof)"
+    ],
+    "threat_path_ids": [
+      "TP-0065"
+    ],
+    "fraud_types": [
+      "impersonation",
+      "robodialling-fraud",
+      "social-engineering",
+      "vishing"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.mass-marketing",
+      "flame.sim-farm",
+      "flame.unodc"
+    ],
+    "falsepositives": [
+      "Legitimate telemarketing campaigns from licensed call centers",
+      "Automated notification systems (bank alerts, appointment reminders)",
+      "Political campaign robodialling during election periods"
+    ]
+  }
+}

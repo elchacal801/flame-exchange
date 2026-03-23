@@ -51,11 +51,14 @@ regulatory_refs:
   - REG-FATF-R16
   - REG-FBI-IC3
   - REG-OCC-FRAUD
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - vendor-impersonation
   - accounts-payable
   - email-compromise
   - high-value
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -156,6 +159,22 @@ OfficeActivity
 | project TimeGenerated, UserId, Parameters, ClientIP
 ```
 
+## Operational Evidence
+
+### EV-TP0002-2026-002: UNODC Organized BEC Fraud Typology
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC identifies BEC as one of the most prevalent forms of organized fraud globally under Category 7 (Fraud Against Businesses). Documents OCG use of social engineering to infiltrate communication systems and persuade personnel to make unauthorized transfers. Key case studies: (1) US business lost $1M to BEC impersonating a business partner requesting payment to alternative account "for tax reasons" (Nigerian FIU source); (2) CFO phished via fake ICT login page, credentials used to send wire transfer requests and fake invoices — $11M loss. UNODC positions BEC as organized crime, not individual hacking.
+
+### EV-TP0002-2026-003: 2026 Technical Landscape — AiTM as Primary BEC Enabler
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: AiTM phishing has become the primary initial access vector for BEC. Sekoia.io documents 11 major AiTM kits enabling session token hijacking that bypasses MFA, with compromised sessions used to initiate wire fraud. Detection relies on Entra ID authentication log anomalies: User-Agent/Application ID inconsistencies between MFA completion and subsequent access, inbox rule creation post-compromise, sign-in IP pattern correlation, session token replay from unusual geolocations, and MFA method manipulation. FIDO2/phishing-resistant MFA blocks 93.9% of AiTM campaigns — the strongest quantified BEC prevention measure. See TP-0067 for AiTM infrastructure details.
+
 ## Analyst Notes
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $2.8B in BEC losses, making it the second-highest loss category after investment fraud. Total reported internet crime losses reached $16.6B in 2024, up 33% from 2023's $12.5B. BEC remains among the most financially damaging cybercrime categories despite a slight decline from 2023's $2.9B figure, reflecting improved corporate awareness alongside persistent attacker adaptation.
@@ -165,6 +184,11 @@ OfficeActivity
 - FBI IC3: \"2024 Internet Crime Report\" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - FinCEN Advisory FIN-2019-A005: \"Advisory on Business Email Compromise.\" [Link](https://www.fincen.gov/sites/default/files/advisory/2019-07-16/FinCEN%20BEC%20Advisory%20508%20FINAL.pdf)
 - Abnormal Security: Annual BEC Trends Report. [Link](https://abnormalsecurity.com/resources/state-of-email-security)
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Business Email Compromise Fraud
+
+## Case Studies & References
+
+- "Organized fraud detection in 2026: a technical landscape report" — BEC and AiTM phishing section
 
 ## Revision History
 

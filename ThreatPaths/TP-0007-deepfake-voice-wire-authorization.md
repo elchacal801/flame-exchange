@@ -62,6 +62,7 @@ regulatory_refs:
   - REG-UK-PSR-APP
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - deepfake-voice
   - CEO-fraud
@@ -72,6 +73,7 @@ tags:
   - 10-second-voice-clone
   - unodc
   - interpol-gffta
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -234,6 +236,22 @@ AND NOT EXISTS (
 - Monitor for pattern of "test calls" to treasury/finance staff in weeks before a fraudulent authorization attempt — actors often probe processes before executing
 - Flag wire requests that deviate from the executive's normal authorization patterns (different amounts, different beneficiaries, different times of day)
 
+## Operational Evidence
+
+### EV-TP0007-2026-003: UNODC AI and Generative AI in Organized Fraud
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC identifies AI and generative AI as key enabling technology for organized fraud. Documents two capability dimensions: (a) amplifying reach and volume of offending, and (b) refining existing social engineering methods. Specific applications: voice clones and deepfakes for impersonation, FraudGPT-style tools for targeted content generation, and AI for evading detection. Key finding: "greater availability of AI technology and AI-enabled cybertools in underground criminal markets will lower the barriers to entry for engaging in organized fraud." UNODC also documents emerging use of generative AI to clone friends/relatives' voices for impersonation fraud.
+
+### EV-TP0007-2026-004: 2026 Technical Landscape — Deepfake Detection Benchmarks
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: Voice deepfake attempts now occur every 5 minutes, with voice deepfakes surging 680% in 2024. Voice cloning requires only 20–30 seconds of target audio. Human detection rate for high-quality video deepfakes is just 24.5%. Arup Hong Kong incident: $25M stolen via deepfake video conference with 4 fake participants. Detection technology: Pindrop Pulse achieves 99% detection for known deepfake engines, >90% for zero-day engines, <1% FPR, requiring only 2 seconds of audio (trained on 350+ TTS systems, tested against 20M samples). Reality Defender deployed with tier-one banks. Fraud losses from generative AI projected $12.3B (2024) → $40B (2027).
+
 ## Analyst Notes
 
 This threat path is evolving rapidly. In 2019, deepfake voice was novel and expensive. By 2025-2026, real-time voice cloning is available through commercial APIs for under $50/month. The Arup case (2024) demonstrated a multi-person deepfake video call — the entire authorization meeting was synthetic. Controls that rely on "call them back to verify" are necessary but may not be sufficient as voice cloning improves. Organizations should move toward out-of-band verification methods that don't rely on voice.
@@ -265,6 +283,10 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 - **INTERPOL GFFTA 2026**: Documents deepfake voice cloning from 10 seconds of audio, DaaS platforms on dark web, and 4.5x AI fraud profitability multiplier. [Link](https://www.interpol.int/)
 
 - **UNODC — Emerging Threats** (September 2025): Documents 600% deepfake surge and 10+ vendor ecosystem serving SE Asian groups. [Link](https://www.unodc.org/)
+
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter IV, Enabling Technology
+
+- "Organized fraud detection in 2026: a technical landscape report" — Deepfake fraud section
 
 ## Revision History
 

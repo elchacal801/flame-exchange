@@ -1,8 +1,8 @@
 [![Build & Deploy](https://github.com/elchacal801/flame-fraud/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/elchacal801/flame-fraud/actions/workflows/build-and-deploy.yml)
 [![License: MIT](https://img.shields.io/github/license/elchacal801/flame-fraud)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
-[![Threat Paths](https://img.shields.io/badge/threat_paths-61-0078D4)](ThreatPaths/)
-[![Detection Rules](https://img.shields.io/badge/detection_rules-132-2ea44f)](DetectionLogic/)
+[![Threat Paths](https://img.shields.io/badge/threat_paths-67-0078D4)](ThreatPaths/)
+[![Detection Rules](https://img.shields.io/badge/detection_rules-143-2ea44f)](DetectionLogic/)
 [![STIX 2.1](https://img.shields.io/badge/STIX-2.1-6c757d)](docs/STIX-FRAUD-EXTENSION.md)
 [![MCP Server](https://img.shields.io/badge/MCP-server-8A2BE2)](mcp_server/)
 
@@ -20,14 +20,14 @@ FLAME is an open-source, community-driven platform for sharing structured fraud 
 
 | Metric | Count |
 |--------|-------|
-| **Threat Paths** | 61 (TP-0001 -- TP-0061) |
-| **Detection Logic Rules** | 132 (Sigma-based; exported to SPL, EQL, KQL) |
-| **Baselines** | 29 environmental profiling benchmarks |
+| **Threat Paths** | 67 (TP-0001 -- TP-0067) |
+| **Detection Logic Rules** | 143 (Sigma-based; exported to SPL, EQL, KQL) |
+| **Baselines** | 33 environmental profiling benchmarks |
 | **Emulation Playbooks** | 7 adversary simulation scripts |
-| **Fraud Types** | 95 in master taxonomy |
-| **Sectors Covered** | 17 |
+| **Fraud Types** | 100 in master taxonomy |
+| **Sectors Covered** | 19 |
 | **Framework Cross-Mappings** | 6 (CFPF, ATT&CK, Group-IB FM, Stripe FT3, UCFF, MITRE F3) |
-| **Regulatory Requirements** | 22 across 7 jurisdictions |
+| **Regulatory Requirements** | 27 across 7 jurisdictions |
 | **Export Formats** | 7 (STIX, MISP, TAXII, Sigma/SPL, Sigma/EQL, Sigma/KQL, RSS) |
 | **MCP Server Tools** | 7 |
 | **CI/CD Workflows** | 7 |
@@ -43,7 +43,7 @@ Between April 2025 and February 2026, five organizations independently concluded
 |---|:---:|:---:|:---:|:---:|:---:|
 | Open source | Yes | No | Paper only | Abandoned | TBD |
 | Community contributed | Yes | No | No platform | No | TBD |
-| Structured detection logic | 132 rules | Mobile-heavy | No | No | TBD |
+| Structured detection logic | 143 rules | Mobile-heavy | No | No | TBD |
 | Multi-taxonomy mapping | 6 frameworks | Own only | Own only | Own only | TBD |
 | TIP interop (STIX/MISP/TAXII) | Yes | No | No | No | TBD |
 | AI-assisted intake | Yes | No | No | No | No |
@@ -56,10 +56,10 @@ Between April 2025 and February 2026, five organizations independently concluded
 
 | Framework | Status |
 |-----------|--------|
-| FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 61 TPs mapped |
+| FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 67 TPs mapped |
 | MITRE ATT&CK | Supplementary mapping where applicable |
 | Group-IB Fraud Matrix 2.0 | Cross-reference mapping (stage names) |
-| Stripe FT3 | Mapped (55/61 TPs) via `ft3_mapper.py` |
+| Stripe FT3 | Mapped (61/67 TPs) via `ft3_mapper.py` |
 | Group-IB UCFF | Defense-side maturity alignment (7 domains) |
 | MITRE F3 | Placeholder (will map when shipped) |
 

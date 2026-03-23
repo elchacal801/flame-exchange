@@ -59,6 +59,7 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-FATF-R16
   - REG-INTERPOL-GFFTA
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 geopolitical_timing: none
 nation_state_nexus: suspected
 tags:
@@ -72,6 +73,8 @@ tags:
   - organized-crime-convergence
   - interpol-gffta
   - operation-catalyst
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -329,6 +332,13 @@ ORDER BY t.amount_usd DESC;
 - **CFPF Phase Coverage**: P5 (crypto laundering feeding terrorist financing)
 - **Confidence**: High
 
+### EV-TP0055-2026-002: UNODC Organized Crime Group Definition and Fraud-Terrorism Nexus
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC provides the formal UNTOC Convention definition of organized criminal groups (art. 2(a): structured group of 3+ persons, existing for a period of time, acting in concert for financial benefit) and its application to fraud. Key finding on fraud-terrorism nexus: "In some instances, the profits from fraud can be used by the organized criminal groups to fund other serious criminal activities. There are some examples in which fraud features in the nexus between organized crime and terrorism, whereby fraud provides the means to finance the activities of terrorist organizations." UNODC also documents the serious crime threshold (maximum deprivation of liberty ≥4 years) and its variability across jurisdictions.
+
 ---
 
 ## References
@@ -339,6 +349,7 @@ ORDER BY t.amount_usd DESC;
 - FATF Recommendation 16 (Wire Transfer Rule) — applicable to cross-border crypto transfers in narco-terror financing context
 - FinCEN, *Advisory on Illicit Activity Involving Convertible Virtual Currency*, May 2019 — foundational guidance on crypto AML obligations
 - OFAC, *Sanctions Compliance Guidance for the Virtual Currency Industry*, October 2021 — SDN screening obligations for crypto platforms
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter I, Organized Criminal Groups; Serious Crime
 
 ---
 

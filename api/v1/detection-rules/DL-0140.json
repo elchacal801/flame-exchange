@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-23T00:08:06.057759+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "5d9a3c7e-1b4f-6e2a-c8d5-2f7a4b1e9c03",
+    "dl_id": "DL-0140",
+    "title": "Cialdini Persuasion Principle Scoring in Fraud Communications",
+    "status": "experimental",
+    "description": "Scores inbound communications (email, SMS, chat) for Cialdini's six principles of persuasion: Reciprocity, Consistency, Social Proof, Authority, Liking, and Scarcity. Research shows combining these features with BERT/SBERT embeddings improves phishing detection F1 by 2.62%. Communications exhibiting 3+ principles above threshold are flagged as high-probability social engineering. Directly applicable to romance fraud, investment scam, impersonation, and recovery fraud detection where psychological manipulation is the primary attack vector.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "content_type": [
+          "email",
+          "sms",
+          "chat"
+        ]
+      },
+      "condition": "cialdini_principles_detected >= 3 AND max_principle_score > 0.7\n"
+    },
+    "logsource": {
+      "product": "communication_analysis",
+      "service": "nlp_scoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "message_id",
+        "channel",
+        "sender",
+        "recipient",
+        "body_text"
+      ],
+      "derived_fields": [
+        "reciprocity_score",
+        "consistency_score",
+        "social_proof_score",
+        "authority_score",
+        "liking_score",
+        "scarcity_score",
+        "cialdini_principles_detected",
+        "max_principle_score"
+      ]
+    },
+    "queries": {
+      "python": "# Cialdini Persuasion Principle Scoring Pipeline\n# Each principle scored 0.0-1.0 based on linguistic markers\n\nPRINCIPLE_MARKERS = {\n    'reciprocity': ['gift', 'free', 'bonus', 'reward', 'complimentary',\n                    'as a thank you', 'in return'],\n    'consistency': ['you previously agreed', 'as you committed',\n                   'continuing your', 'as always', 'you already'],\n    'social_proof': ['everyone is', 'thousands of people', 'most popular',\n                    'trending', 'others like you', 'community'],\n    'authority': ['official notice', 'government', 'compliance required',\n                 'legal obligation', 'regulatory', 'certified', 'verified'],\n    'liking': ['dear friend', 'I care about you', 'we have so much in common',\n              'I trust you', 'you are special', 'between us'],\n    'scarcity': ['limited time', 'only X left', 'expires today',\n                'final chance', 'act now', 'once in a lifetime', 'exclusive']\n}\n\ndef score_cialdini_principles(text):\n    scores = {}\n    for principle, markers in PRINCIPLE_MARKERS.items():\n        # Marker count + SBERT semantic similarity to principle exemplars\n        marker_hits = sum(1 for m in markers if m.lower() in text.lower())\n        semantic_sim = sbert_similarity(text, principle_exemplars[principle])\n        scores[principle] = min(1.0, (marker_hits * 0.2) + (semantic_sim * 0.6))\n\n    detected = sum(1 for s in scores.values() if s > 0.5)\n    return scores, detected",
+      "splunk": "`comment(\"Splunk SPL for Cialdini Persuasion Scoring\")`\n`comment(\"Requires NLP scoring service via DSDL or API\")`\nindex=communications sourcetype=fraud:communications\n| apply cialdini_scoring_model\n| where cialdini_principles_detected >= 3\n| where max_principle_score > 0.7\n| table _time, channel, sender, recipient,\n        reciprocity_score, consistency_score, social_proof_score,\n        authority_score, liking_score, scarcity_score,\n        cialdini_principles_detected"
+    },
+    "references": [
+      "Organized fraud detection in 2026: a technical landscape report — LLMs and transformer models",
+      "Cialdini's six principles of persuasion as numerical features for phishing detection"
+    ],
+    "threat_path_ids": [
+      "TP-0011",
+      "TP-0025",
+      "TP-0062",
+      "TP-0065"
+    ],
+    "fraud_types": [
+      "impersonation",
+      "investment-scam",
+      "romance-scam",
+      "social-engineering"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.cialdini",
+      "flame.nlp",
+      "flame.social-engineering"
+    ],
+    "falsepositives": [
+      "Legitimate marketing using persuasion techniques",
+      "Fundraising and charity communications",
+      "Sales communications with urgency and social proof"
+    ]
+  }
+}

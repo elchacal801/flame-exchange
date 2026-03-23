@@ -53,6 +53,7 @@ regulatory_refs:
   - REG-AU-SPF
   - REG-EU-AMLD6
   - REG-FINCEN-AML
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - pig-butchering
   - social-engineering
@@ -60,6 +61,8 @@ tags:
   - crypto-investment-scam
   - elder-fraud
   - human-trafficking
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -264,8 +267,18 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 
 **INTERPOL 2026 Update — MENA and European Patterns**: INTERPOL reports that in the MENA region, investment fraud victims are being coerced into acting as money mules, allowing their bank accounts to serve as transit hubs for funds stolen from other victims. This represents a convergence of investment fraud and mule recruitment that differs from the traditional romance-to-mule pipeline. In Europe, INTERPOL documents re-victimization patterns where initial fraud victims are subsequently recruited as mules through fraudsters posing as "recovery agents" or law enforcement — a secondary exploitation cycle that extends the mule pipeline beyond the romance vector.
 
+## Operational Evidence
+
+### EV-TP0011-2026-003: UNODC Organized Romance Fraud Typology
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC documents a 7-stage romance fraud model: (1) victim desire for partner, (2) ideal profile presentation, (3) grooming, (4) the sting, (5) continuation, (6) sexual abuse, (7) retargeting. UNODC identifies romance fraud as OCG-operated (not individual scammers) with regional concentrations in West Africa. Documents convergence with cryptocurrency investment fraud ("crypto-confidence") where romance relationships are exploited to lure victims into fraudulent investment schemes.
+
 ## References
 
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Relationship and Trust Fraud
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - FinCEN Advisory FIN-2020-A008: "Advisory on Imposter Scams and Money Mule Schemes". [Link](https://www.fincen.gov/sites/default/files/advisory/2020-07-30/Advisory-Imposter-Scams-508.pdf)
 - INTERPOL: Operation First Light (scam compound raids). [Link](https://www.interpol.int/en/News-and-Events/News/2024/INTERPOL-led-operation-targets-online-scam-networks)

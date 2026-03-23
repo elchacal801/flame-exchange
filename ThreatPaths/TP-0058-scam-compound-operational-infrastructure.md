@@ -66,6 +66,7 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
   - REG-INTERPOL-HAECHI
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 geopolitical_timing: none
 nation_state_nexus: suspected
 tags:
@@ -79,6 +80,8 @@ tags:
   - crm-systems
   - 40b-annual-profits
   - 80-nationalities
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -301,6 +304,13 @@ index=transactions sourcetype=wire_transfer
 - **CFPF Phase Coverage**: P1, P3, P4
 - **Confidence**: High
 
+### EV-TP0058-2026-002: UNODC UNTOC Convention Analysis of Scam Compound OCGs
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC provides formal UNTOC Convention analysis of scam compounds as qualifying organized criminal groups under art. 2(a): structured groups of 3+ persons, existing for a period of time, acting in concert to commit serious crimes for financial benefit. UNODC documents the serious crime threshold (4+ years imprisonment) applicable to compound operations. Key finding: poly-criminal groups in South-East Asia have "industrialized processes for perpetrating certain types of fraud, in part by trafficking victims who are tricked or coerced into perpetrating fraud." UNODC notes that fraud profits from compounds may fund other serious criminal activities including terrorism financing.
+
 ---
 
 ## References
@@ -308,6 +318,7 @@ index=transactions sourcetype=wire_transfer
 - UNODC, *Emerging Threats: AI & Automation in Cybercrime*, September 2025 — $40B annual compound profits, AI chatbot deployment, operational automation
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — 80 nationalities, MENA expansion, Operation HAECHI VI (32,835 arrests, $439M recovered), sextortion formalization
 - INTERPOL, *Operation HAECHI VI Results*, 2025 — Largest coordinated enforcement action against compound fraud networks
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter I, Organized Criminal Groups; Chapter II, Cross-cutting references to scam compounds
 
 ---
 

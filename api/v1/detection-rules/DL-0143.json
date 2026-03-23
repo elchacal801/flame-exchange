@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-23T00:08:06.069980+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "2c7e4a9b-5d1f-8e3a-b6c2-9f4d1a7e5b03",
+    "dl_id": "DL-0143",
+    "title": "Employment Fraud Metadata Feature Detection",
+    "status": "experimental",
+    "description": "Detects fraudulent job postings using metadata features from the EMSCAD benchmark (18,000 samples). Key finding: when both telecommuting and company logo flags equal zero, there is a 92% probability of fraud. Geographic concentration patterns (e.g., Bakersfield 15:1 fake-to-real ratio) provide additional signal. DistilBERT+SMOTE models achieve strong results; DNNs reach ~98% accuracy. This rule implements the high-confidence metadata feature checks that require no NLP processing.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "posting_type": "job_listing"
+      },
+      "condition": "(telecommuting == 0 AND has_company_logo == 0) OR (fraud_geographic_score > 0.8) OR (salary_experience_ratio > 3.0 AND has_company_logo == 0)\n"
+    },
+    "logsource": {
+      "product": "job_platform",
+      "service": "posting_analysis"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "posting_id",
+        "company_name",
+        "job_title",
+        "location",
+        "telecommuting_flag",
+        "has_company_logo",
+        "has_company_profile",
+        "salary_range",
+        "required_experience",
+        "posting_date"
+      ]
+    },
+    "queries": {
+      "sql": "-- SQL: Employment fraud metadata feature detection\n-- Primary signal: telecommuting=0 AND company_logo=0 → 92% fraud probability\nSELECT\n    posting_id,\n    company_name,\n    job_title,\n    location,\n    salary_range,\n    CASE\n        WHEN telecommuting_flag = 0 AND has_company_logo = 0 THEN 'HIGH'\n        WHEN has_company_logo = 0 AND has_company_profile = 0 THEN 'HIGH'\n        WHEN location IN (SELECT city FROM fraud_concentration_cities\n                          WHERE fake_to_real_ratio > 10) THEN 'MEDIUM'\n        WHEN salary_range / NULLIF(required_experience_years, 0) > 3.0\n             AND has_company_logo = 0 THEN 'MEDIUM'\n        ELSE 'LOW'\n    END AS fraud_risk_level,\n    CASE\n        WHEN telecommuting_flag = 0 AND has_company_logo = 0 THEN 0.92\n        WHEN has_company_logo = 0 AND has_company_profile = 0 THEN 0.85\n        ELSE 0.50\n    END AS fraud_probability\nFROM job_postings\nWHERE posting_date >= DATEADD(day, -7, GETDATE())\n  AND (\n    (telecommuting_flag = 0 AND has_company_logo = 0)\n    OR (has_company_logo = 0 AND has_company_profile = 0)\n    OR location IN (SELECT city FROM fraud_concentration_cities\n                    WHERE fake_to_real_ratio > 10)\n  )\nORDER BY fraud_probability DESC",
+      "splunk": "`comment(\"Splunk SPL for Employment Fraud Metadata Feature Detection\")`\nindex=job_platforms sourcetype=job:postings\n| eval fraud_risk = case(\n    telecommuting_flag=0 AND has_company_logo=0, \"HIGH_92pct\",\n    has_company_logo=0 AND has_company_profile=0, \"HIGH_85pct\",\n    1=1, \"REVIEW\"\n  )\n| where fraud_risk IN (\"HIGH_92pct\", \"HIGH_85pct\")\n| table _time, posting_id, company_name, job_title, location,\n        salary_range, fraud_risk, telecommuting_flag,\n        has_company_logo, has_company_profile"
+    },
+    "references": [
+      "Organized fraud detection in 2026: a technical landscape report — Employment fraud detection",
+      "EMSCAD benchmark (18,000 employment fraud samples)"
+    ],
+    "threat_path_ids": [
+      "TP-0015"
+    ],
+    "fraud_types": [
+      "employment-fraud",
+      "social-engineering"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.employment-fraud",
+      "flame.metadata-detection"
+    ],
+    "falsepositives": [
+      "Small businesses or startups without established branding (no logo)",
+      "Legitimate remote work listings that don't flag telecommuting",
+      "Job postings in geographically concentrated industries"
+    ]
+  }
+}

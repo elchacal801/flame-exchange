@@ -47,6 +47,7 @@ related_tps:
 regulatory_refs:
   - REG-FINCEN-CDD
   - REG-UK-PSR-APP
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - employment-fraud
   - brand-impersonation
@@ -55,6 +56,8 @@ tags:
   - pii-harvesting
   - disposable-email
   - healthcare-staffing
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -170,16 +173,35 @@ Flag job postings where:
 - **Confidence**: High
 - **Summary**: Multi-cluster employment fraud infrastructure impersonating Right at Home, a legitimate healthcare staffing agency. The rightathometx.com domain creates a convincing regional brand presence while @newjobrequire.com provides shared email infrastructure across multiple impersonation campaigns. Distribution across three hosting providers (GoDaddy, OVH US, Hostinger) provides resilience against takedowns. The pattern — brand impersonation domain on one provider, email infrastructure on another, with budget shared hosting throughout — is consistent with organized employment fraud operations targeting healthcare job seekers.
 
+### EV-TP0015-2026-002: UNODC Organized Employment Fraud Typology
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC Category 2 (Employment Fraud) documents organized mass-marketing of fake or misleading employment opportunities, including: upfront payment extraction (for equipment, training, credit checks); pyramid schemes disguised as business opportunities; and deliberate recruitment of victims as money mules or couriers. Key finding: economic uncertainty and high unemployment are a breeding ground for employment fraud — the absence of legitimate opportunities leads to more desperate and risky decision-making. UNODC documents that victims' personal data collected during fraudulent applications enables secondary identity fraud targeting.
+
+### EV-TP0015-2026-003: 2026 Technical Landscape — Employment Fraud Detection Benchmarks
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: The EMSCAD benchmark (18,000 samples) provides standardized evaluation for employment fraud detection. DistilBERT-based models with SMOTE achieve strong results; DNNs reach ~98% accuracy. Key metadata features prove surprisingly discriminative: when both telecommuting and company logo flags equal zero, there is a 92% probability of fraud. Geographic patterns also emerge, with cities like Bakersfield showing extreme concentration (15:1 fake-to-real ratio). These metadata features provide high-confidence, low-complexity detection signals that complement NLP-based content analysis.
+
 ## Analyst Notes
 
 Employment fraud has surged alongside the normalization of remote work, as job seekers are increasingly accustomed to fully digital hiring processes — making it easier for threat actors to impersonate legitimate employers without in-person interaction. The FTC reported that job scam losses exceeded $500M in 2023, with the median individual loss around $2,000 from advance-fee payments for fake equipment, training, or background checks. A notable variant involves "task scams" where victims are recruited for fake online work (product reviews, data entry) and asked to deposit their own funds as "working capital." Brand impersonation is particularly effective against large employers with distributed hiring — the victim assumes a local recruiter is legitimate because the parent brand is well-known. Companies should proactively monitor for fraudulent job postings using their brand and maintain a prominent careers-page warning about known scam patterns.
 
 ## References
 
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Employment Fraud
 - FBI IC3: Internet Crime Report 2023 — Employment/Business Fraud. [Link](https://www.ic3.gov/AnnualReport/Reports/2023_IC3Report.pdf)
 - FTC: Job Scams Report (2024). [Link](https://www.ftc.gov/news-events/data-visualizations/data-spotlight/2024/08/job-scams)
 - Better Business Bureau: Employment Scam Tracker
 - Right at Home: Official careers page (for brand impersonation comparison)
+
+## Case Studies & References
+
+- "Organized fraud detection in 2026: a technical landscape report" — Specific fraud category detection: Employment fraud
 
 ## Revision History
 

@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-23T00:08:06.065770+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "8f2a5d7c-6e1b-3a4f-d9c8-5b3e7a2f1d04",
+    "dl_id": "DL-0142",
+    "title": "Crypto Token Rug Pull Early Warning — On-Chain and OSINT Indicators",
+    "status": "experimental",
+    "description": "Detects cryptocurrency rug pull / exit scam indicators using on-chain and OSINT signals. Rug pulls constituted 68% of all crypto scams in 2025 (350+ cases 2024). On-chain indicators: Uniswap liquidity removal >80% in single transaction, token holder concentration (top 5 holders >60%), contract functions with hidden mint/pause/ blacklist capabilities. OSINT indicators: social media silence after promotion burst, developer wallet activity cessation, Telegram/Discord channel deletion. Critical finding: OSINT signals precede on-chain anomalies by days or weeks.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_onchain": {
+        "event_type": [
+          "liquidity_removal",
+          "token_transfer",
+          "contract_interaction"
+        ]
+      },
+      "condition": "liquidity_removal_pct > 80 in single tx OR top5_holder_concentration > 0.60 OR contract_has_hidden_functions == true\n"
+    },
+    "logsource": {
+      "product": "blockchain",
+      "service": "defi_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "token_address",
+        "liquidity_pool_address",
+        "liquidity_removal_amount",
+        "liquidity_removal_pct",
+        "holder_distribution",
+        "contract_bytecode_flags"
+      ],
+      "osint_fields": [
+        "social_media_activity_score",
+        "telegram_channel_status",
+        "developer_wallet_last_activity"
+      ]
+    },
+    "queries": {
+      "python": "# Rug Pull Early Warning — Multi-signal Detection Pipeline\n\n# On-chain signals (via blockchain node or analytics API)\ndef check_onchain_signals(token_address):\n    signals = {}\n\n    # 1. Liquidity concentration\n    pool = get_uniswap_pool(token_address)\n    top5_pct = sum(get_top_holders(token_address, n=5)) / total_supply\n    signals['holder_concentration'] = top5_pct > 0.60\n\n    # 2. Contract risk analysis (EVM bytecode heuristics)\n    bytecode = get_contract_bytecode(token_address)\n    signals['hidden_mint'] = has_mint_function(bytecode)\n    signals['hidden_pause'] = has_pause_function(bytecode)\n    signals['hidden_blacklist'] = has_blacklist_function(bytecode)\n    signals['no_renounced_ownership'] = not ownership_renounced(token_address)\n\n    # 3. Liquidity lock status\n    signals['liquidity_unlocked'] = not liquidity_locked(pool)\n\n    return signals\n\n# OSINT signals (precede on-chain by days/weeks)\ndef check_osint_signals(project_name):\n    signals = {}\n\n    # Social media activity drop\n    recent_posts = get_social_activity(project_name, days=7)\n    baseline_posts = get_social_activity(project_name, days=30)\n    signals['social_silence'] = (len(recent_posts) / max(len(baseline_posts)/4, 1)) < 0.2\n\n    # Telegram/Discord channel status\n    signals['channel_deleted'] = not channel_exists(project_name)\n\n    # Developer wallet activity\n    dev_wallet = get_deployer_wallet(token_address)\n    signals['dev_inactive'] = days_since_last_tx(dev_wallet) > 14\n\n    return signals",
+      "splunk": "`comment(\"Splunk SPL for Crypto Rug Pull On-Chain Indicators\")`\nindex=blockchain sourcetype=defi:events\n| eval risk_score = case(\n    liquidity_removal_pct > 80, 10,\n    top5_holder_pct > 0.60, 7,\n    has_hidden_mint = \"true\", 8,\n    has_hidden_pause = \"true\", 6,\n    liquidity_unlocked = \"true\", 5,\n    1=1, 0\n  )\n| where risk_score >= 7\n| table _time, token_address, token_name, risk_score,\n        liquidity_removal_pct, top5_holder_pct,\n        has_hidden_mint, has_hidden_pause, liquidity_unlocked"
+    },
+    "references": [
+      "Organized fraud detection in 2026: a technical landscape report — Crypto rug pulls",
+      "Mazorra et al., 2022 — Uniswap trading/liquidity feature engineering",
+      "Yu & Lee, 2025 — EVM bytecode balance-flow heuristics",
+      "Wu et al., 2024 — TokenScout temporal graph learning"
+    ],
+    "threat_path_ids": [
+      "TP-0017",
+      "TP-0049"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "investment-scam",
+      "rug-pull"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.defi",
+      "flame.osint",
+      "flame.rug-pull"
+    ],
+    "falsepositives": [
+      "Legitimate liquidity rebalancing by project teams",
+      "Token migrations requiring liquidity withdrawal",
+      "Early-stage tokens with naturally concentrated holdings"
+    ]
+  }
+}

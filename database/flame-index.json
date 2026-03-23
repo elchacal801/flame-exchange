@@ -180,7 +180,9 @@
       "vendor-impersonation",
       "accounts-payable",
       "email-compromise",
-      "high-value"
+      "high-value",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -229,7 +231,8 @@
     "regulatory_refs": [
       "REG-FATF-R16",
       "REG-FBI-IC3",
-      "REG-OCC-FRAUD"
+      "REG-OCC-FRAUD",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -250,7 +253,9 @@
       "DL-0039",
       "DL-0040",
       "DL-0041",
-      "DL-0043"
+      "DL-0043",
+      "DL-0137",
+      "DL-0138"
     ],
     "related_tps": [
       {
@@ -266,7 +271,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 2
   },
   {
     "id": "TP-0003",
@@ -297,7 +302,9 @@
       "bust-out",
       "thin-file",
       "long-game",
-      "organized-crime"
+      "organized-crime",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -337,7 +344,8 @@
       "Monetization"
     ],
     "regulatory_refs": [
-      "REG-FINCEN-CDD"
+      "REG-FINCEN-CDD",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -367,7 +375,7 @@
         "relationship": "variant-of"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 4
   },
   {
     "id": "TP-0004",
@@ -743,7 +751,8 @@
       "daas",
       "10-second-voice-clone",
       "unodc",
-      "interpol-gffta"
+      "interpol-gffta",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -795,7 +804,8 @@
       "REG-OCC-FRAUD",
       "REG-UK-PSR-APP",
       "REG-INTERPOL-GFFTA",
-      "REG-UNODC-EMERGING-THREATS"
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -837,7 +847,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 2
   },
   {
     "id": "TP-0008",
@@ -950,7 +960,8 @@
       "DL-0046",
       "DL-0047",
       "DL-0048",
-      "DL-0049"
+      "DL-0049",
+      "DL-0141"
     ],
     "related_tps": [
       {
@@ -970,7 +981,7 @@
         "relationship": "enables"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0009",
@@ -1180,7 +1191,9 @@
       "mule-recruitment",
       "crypto-investment-scam",
       "elder-fraud",
-      "human-trafficking"
+      "human-trafficking",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -1227,7 +1240,8 @@
     "regulatory_refs": [
       "REG-AU-SPF",
       "REG-EU-AMLD6",
-      "REG-FINCEN-AML"
+      "REG-FINCEN-AML",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -1245,7 +1259,8 @@
       "DL-0039",
       "DL-0041",
       "DL-0042",
-      "DL-0043"
+      "DL-0043",
+      "DL-0140"
     ],
     "related_tps": [
       {
@@ -1269,7 +1284,7 @@
         "relationship": "escalates-from"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0012",
@@ -1302,7 +1317,9 @@
       "bank-impersonation",
       "remote-access",
       "screen-sharing",
-      "elder-fraud"
+      "elder-fraud",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -1353,7 +1370,8 @@
       "REG-MAS-SRF",
       "REG-OCC-FRAUD",
       "REG-PSD3-SCA",
-      "REG-UK-PSR-APP"
+      "REG-UK-PSR-APP",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 2",
@@ -1385,7 +1403,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 1
+    "evidence_count": 2
   },
   {
     "id": "TP-0013",
@@ -1649,7 +1667,9 @@
       "advance-fee",
       "pii-harvesting",
       "disposable-email",
-      "healthcare-staffing"
+      "healthcare-staffing",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -1694,7 +1714,8 @@
     ],
     "regulatory_refs": [
       "REG-FINCEN-CDD",
-      "REG-UK-PSR-APP"
+      "REG-UK-PSR-APP",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 2",
@@ -1705,7 +1726,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0143"
+    ],
     "related_tps": [
       {
         "id": "TP-0004",
@@ -1716,7 +1739,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 1
+    "evidence_count": 3
   },
   {
     "id": "TP-0016",
@@ -1840,6 +1863,7 @@
       "app-fraud",
       "interpol-gffta",
       "unodc",
+      "unodc-organized-fraud-2024",
       "40b-annual"
     ],
     "cfpf_phases": [
@@ -1889,7 +1913,8 @@
       "REG-SEC-SAR",
       "REG-UK-PSR-APP",
       "REG-INTERPOL-GFFTA",
-      "REG-UNODC-EMERGING-THREATS"
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -1901,7 +1926,8 @@
       "improve": "Level 3"
     },
     "detection_rule_ids": [
-      "DL-0117"
+      "DL-0117",
+      "DL-0142"
     ],
     "related_tps": [
       {
@@ -1913,7 +1939,7 @@
         "relationship": "shares-infrastructure"
       }
     ],
-    "evidence_count": 1
+    "evidence_count": 3
   },
   {
     "id": "TP-0018",
@@ -2705,7 +2731,9 @@
       "scam-compounds",
       "pig-butchering",
       "ai-chatbot",
-      "cross-border"
+      "cross-border",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -2758,7 +2786,8 @@
       "REG-DORA",
       "REG-FCA-APP",
       "REG-MAS-SRF",
-      "REG-UK-PSR-APP"
+      "REG-UK-PSR-APP",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 2",
@@ -2769,7 +2798,10 @@
       "report": "Level 3",
       "improve": "Level 4"
     },
-    "detection_rule_ids": [],
+    "detection_rule_ids": [
+      "DL-0139",
+      "DL-0140"
+    ],
     "related_tps": [
       {
         "id": "TP-0007",
@@ -2784,7 +2816,7 @@
         "relationship": "shares-infrastructure"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 2
   },
   {
     "id": "TP-0026",
@@ -2943,7 +2975,9 @@
       "power-of-attorney-abuse",
       "caregiver-fraud",
       "money-mule",
-      "high-value"
+      "high-value",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -2997,7 +3031,8 @@
       "REG-MAS-SRF",
       "REG-OCC-FRAUD",
       "REG-PSD3-SCA",
-      "REG-UK-PSR-APP"
+      "REG-UK-PSR-APP",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -3023,7 +3058,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0028",
@@ -4871,7 +4906,8 @@
     "detection_rule_ids": [
       "DL-0098",
       "DL-0099",
-      "DL-0100"
+      "DL-0100",
+      "DL-0139"
     ],
     "related_tps": [
       {
@@ -4887,7 +4923,7 @@
         "relationship": "enables"
       }
     ],
-    "evidence_count": 0
+    "evidence_count": 1
   },
   {
     "id": "TP-0044",
@@ -4931,7 +4967,9 @@
       "aeza",
       "aurologic",
       "operation-haechi",
-      "operation-redcard"
+      "operation-redcard",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -4965,7 +5003,8 @@
       "REG-INTERPOL-HAECHI",
       "REG-INTERPOL-REDCARD",
       "REG-INTERPOL-SHADOW-STORM",
-      "REG-RF-CTA-2026-0319"
+      "REG-RF-CTA-2026-0319",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -4994,7 +5033,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 1
+    "evidence_count": 2
   },
   {
     "id": "TP-0045",
@@ -5213,7 +5252,8 @@
       "recruitment-fraud",
       "multilingual-chatbot",
       "sextortion-fallback",
-      "unodc"
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -5241,7 +5281,8 @@
     ],
     "regulatory_refs": [
       "REG-UNODC-EMERGING-THREATS",
-      "REG-INTERPOL-GFFTA"
+      "REG-INTERPOL-GFFTA",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 4",
@@ -5274,7 +5315,7 @@
         "relationship": "shares-infrastructure"
       }
     ],
-    "evidence_count": 1
+    "evidence_count": 2
   },
   {
     "id": "TP-0048",
@@ -5399,6 +5440,7 @@
       "trm-labs",
       "interpol-gffta",
       "unodc",
+      "unodc-organized-fraud-2024",
       "ai-evasion"
     ],
     "cfpf_phases": [
@@ -5422,7 +5464,8 @@
     ],
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
-      "REG-UNODC-EMERGING-THREATS"
+      "REG-UNODC-EMERGING-THREATS",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 4",
@@ -5435,7 +5478,8 @@
     },
     "detection_rule_ids": [
       "DL-0113",
-      "DL-0114"
+      "DL-0114",
+      "DL-0142"
     ],
     "related_tps": [
       {
@@ -5451,7 +5495,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 1
+    "evidence_count": 3
   },
   {
     "id": "TP-0050",
@@ -5883,7 +5927,9 @@
       "push-notification-abuse",
       "self-referential-scam",
       "black-hat-usa-2025",
-      "infoblox-deanonymization"
+      "infoblox-deanonymization",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -5918,7 +5964,8 @@
       "REG-DORA",
       "REG-FINCEN-AML",
       "REG-UNODC-EMERGING-THREATS",
-      "REG-RF-CTA-2026-0319"
+      "REG-RF-CTA-2026-0319",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -5955,7 +6002,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 5
+    "evidence_count": 7
   },
   {
     "id": "TP-0055",
@@ -5993,7 +6040,9 @@
       "cross-border-laundering",
       "organized-crime-convergence",
       "interpol-gffta",
-      "operation-catalyst"
+      "operation-catalyst",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -6023,7 +6072,8 @@
     "regulatory_refs": [
       "REG-FINCEN-AML",
       "REG-FATF-R16",
-      "REG-INTERPOL-GFFTA"
+      "REG-INTERPOL-GFFTA",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6049,7 +6099,7 @@
         "relationship": "shares-infrastructure"
       }
     ],
-    "evidence_count": 3
+    "evidence_count": 4
   },
   {
     "id": "TP-0056",
@@ -6252,7 +6302,7 @@
         "relationship": "enhances"
       }
     ],
-    "evidence_count": 3
+    "evidence_count": 4
   },
   {
     "id": "TP-0058",
@@ -6294,7 +6344,9 @@
       "sextortion-fallback",
       "crm-systems",
       "40b-annual-profits",
-      "80-nationalities"
+      "80-nationalities",
+      "unodc",
+      "unodc-organized-fraud-2024"
     ],
     "cfpf_phases": [
       "P1",
@@ -6325,7 +6377,8 @@
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-EMERGING-THREATS",
-      "REG-INTERPOL-HAECHI"
+      "REG-INTERPOL-HAECHI",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6357,7 +6410,7 @@
         "relationship": "enhances"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 3
   },
   {
     "id": "TP-0059",
@@ -6395,6 +6448,7 @@
       "emulator-farm",
       "liveness-bypass",
       "unodc",
+      "unodc-organized-fraud-2024",
       "mule-herding",
       "velocity-anomaly"
     ],
@@ -6426,7 +6480,8 @@
     "regulatory_refs": [
       "REG-UNODC-EMERGING-THREATS",
       "REG-INTERPOL-GFFTA",
-      "REG-RF-CTA-2026-0319"
+      "REG-RF-CTA-2026-0319",
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6459,7 +6514,7 @@
         "relationship": "enables"
       }
     ],
-    "evidence_count": 3
+    "evidence_count": 4
   },
   {
     "id": "TP-0060",
@@ -6668,5 +6723,591 @@
       }
     ],
     "evidence_count": 2
+  },
+  {
+    "id": "TP-0062",
+    "title": "Recovery Fraud — Double-Dip Re-victimization",
+    "category": "ThreatPath",
+    "date": "2026-03-22",
+    "author": "FLAME Project",
+    "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+    "tlp": "WHITE",
+    "summary": "Recovery fraud is an organized crime model in which victims of prior fraud (investment scams, romance fraud, pig butchering) are systematically re-contacted by actors posing as asset recovery agents, ...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "investment"
+    ],
+    "fraud_types": [
+      "recovery-fraud",
+      "impersonation",
+      "advance-fee-fraud",
+      "social-engineering"
+    ],
+    "tags": [
+      "unodc",
+      "unodc-organized-fraud-2024",
+      "recovery-fraud",
+      "double-victimization",
+      "lead-list",
+      "victim-database",
+      "advance-fee",
+      "organized-crime-group"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1589.001",
+      "T1566.002",
+      "T1656"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.009",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-FINCEN-AML",
+      "REG-FBI-IC3"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0133",
+      "DL-0140"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0011",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0017",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0027",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0065",
+        "relationship": "shares-infrastructure"
+      }
+    ],
+    "evidence_count": 1
+  },
+  {
+    "id": "TP-0063",
+    "title": "Organized Counterfeit Goods and Non-Delivery Fraud Networks",
+    "category": "ThreatPath",
+    "date": "2026-03-22",
+    "author": "FLAME Project",
+    "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+    "tlp": "WHITE",
+    "summary": "Organized criminal groups operate networks of fraudulent e-commerce websites, fake sellers on legitimate auction platforms, and counterfeit goods supply chains to defraud consumers at scale. The UNODC...",
+    "confidence_score": 75,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "retail",
+      "payments",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "purchase-scam",
+      "auction-fraud",
+      "brand-impersonation",
+      "identity-theft",
+      "money-mule"
+    ],
+    "tags": [
+      "unodc",
+      "unodc-organized-fraud-2024",
+      "counterfeit-goods",
+      "non-delivery",
+      "fake-website-network",
+      "auction-fraud",
+      "organized-retail-crime",
+      "organized-crime-group"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1566.002",
+      "T1059"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT006.001",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "detection_rule_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0030",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0035",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0036",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0059",
+        "relationship": "shares-infrastructure"
+      }
+    ],
+    "evidence_count": 1
+  },
+  {
+    "id": "TP-0064",
+    "title": "Long-Firm and Organized Business Credit Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-22",
+    "author": "FLAME Project",
+    "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+    "tlp": "WHITE",
+    "summary": "Long-firm fraud and organized financial statement fraud involve OCGs establishing or acquiring legitimate businesses, building creditworthiness over months or years, then exploiting that trust to defr...",
+    "confidence_score": 70,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector",
+      "trade"
+    ],
+    "fraud_types": [
+      "long-firm-fraud",
+      "bust-out",
+      "application-fraud",
+      "loan-fraud",
+      "invoice-fraud",
+      "documentary-fraud"
+    ],
+    "tags": [
+      "unodc",
+      "unodc-organized-fraud-2024",
+      "long-firm-fraud",
+      "financial-statement-fraud",
+      "supply-chain-credit",
+      "professional-enabler",
+      "organized-crime-group",
+      "trade-finance-fraud"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1589.002",
+      "T1656",
+      "T1585.001"
+    ],
+    "ft3_tactics": [
+      "FTA003",
+      "FT008.002",
+      "FT028"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "Perform Fraud",
+      "Monetization",
+      "Laundering"
+    ],
+    "regulatory_refs": [
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-FINCEN-CDD",
+      "REG-OCC-FRAUD"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0135"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0019",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0020",
+        "relationship": "enhances"
+      }
+    ],
+    "evidence_count": 1
+  },
+  {
+    "id": "TP-0065",
+    "title": "Organized Mass-Marketing Fraud Infrastructure (Boiler Rooms & Lead Lists)",
+    "category": "ThreatPath",
+    "date": "2026-03-22",
+    "author": "FLAME Project",
+    "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+    "tlp": "WHITE",
+    "summary": "Organized mass-marketing fraud infrastructure encompasses the boiler room operations, lead list ecosystems, robodialling infrastructure, and SIM farm devices that serve as the shared demand-generation...",
+    "confidence_score": 78,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "investment",
+      "telecommunications"
+    ],
+    "fraud_types": [
+      "social-engineering",
+      "impersonation",
+      "vishing",
+      "robodialling-fraud",
+      "advance-fee-fraud",
+      "investment-scam",
+      "fraud-as-a-service"
+    ],
+    "tags": [
+      "unodc",
+      "unodc-organized-fraud-2024",
+      "boiler-room",
+      "lead-list",
+      "robodialling",
+      "mass-marketing-fraud",
+      "sim-farm",
+      "telemarketing-fraud",
+      "crime-as-a-service",
+      "organized-crime-group"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1589.001",
+      "T1566.003",
+      "T1656",
+      "T1583.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.009",
+      "FT016",
+      "FT031"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "End-user Interaction",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-FINCEN-AML",
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0134",
+      "DL-0140"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0054",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0058",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0062",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 1
+  },
+  {
+    "id": "TP-0066",
+    "title": "Crash-for-Cash and Organized Insurance Fraud Rings",
+    "category": "ThreatPath",
+    "date": "2026-03-22",
+    "author": "FLAME Project",
+    "source": "UNODC Organized Fraud Issue Paper (Vienna, 2024)",
+    "tlp": "WHITE",
+    "summary": "Crash-for-cash fraud involves organized criminal groups that systematically stage or cause vehicle accidents to generate fraudulent insurance claims. The UNODC identifies this as a distinct organized ...",
+    "confidence_score": 72,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "insurance",
+      "healthcare"
+    ],
+    "fraud_types": [
+      "crash-for-cash",
+      "insurance-fraud",
+      "fraudulent-claim",
+      "collusion",
+      "documentary-fraud"
+    ],
+    "tags": [
+      "unodc",
+      "unodc-organized-fraud-2024",
+      "crash-for-cash",
+      "staged-accident",
+      "organized-insurance-ring",
+      "professional-enabler",
+      "organized-crime-group"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1589.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT016"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Trust Abuse",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-UNODC-ORGANIZED-FRAUD-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0136"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0010",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0056",
+        "relationship": "enhances"
+      }
+    ],
+    "evidence_count": 1
+  },
+  {
+    "id": "TP-0067",
+    "title": "AiTM Phishing Kit Infrastructure and Session Token Hijacking",
+    "category": "ThreatPath",
+    "date": "2026-03-22",
+    "author": "FLAME Project",
+    "source": "Organized fraud detection in 2026: a technical landscape report",
+    "tlp": "WHITE",
+    "summary": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim se...",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "fintech",
+      "technology"
+    ],
+    "fraud_types": [
+      "aitm-phishing",
+      "phishing",
+      "account-takeover",
+      "credential-stuffing",
+      "fraud-as-a-service"
+    ],
+    "tags": [
+      "aitm-phishing",
+      "tycoon-2fa",
+      "evilginx",
+      "session-token-replay",
+      "phaas",
+      "fido2",
+      "mfa-bypass",
+      "phishing-kit",
+      "credential-phishing"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1557",
+      "T1539",
+      "T1566.002",
+      "T1114.003",
+      "T1583.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.009",
+      "FT011.001"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Credential Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-STIX-FCI"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "detection_rule_ids": [
+      "DL-0137",
+      "DL-0138"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0001",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0002",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0054",
+        "relationship": "shares-infrastructure"
+      }
+    ],
+    "evidence_count": 1
   }
 ]

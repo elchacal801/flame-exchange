@@ -366,6 +366,42 @@
     "text": "Bulletproof hosting (BPH) providers and abuse-resistant infrastructure services that enable fraud operations by providing hosting that resists takedown requests, law enforcement cooperation, and abuse complaints. Recorded Future identifies specific providers — Virtualine, Stark Industries, AEZA, Aurologic — as Threat Actor Enabling (TAE) entities operating from jurisdictions with weak enforcement. INTERPOL Operation Shadow Storm targeted fraud-enabling infrastructure providers. These TAE entities provide the foundational hosting layer for TDS infrastructure, fake investment platforms, DaaS platforms, mule account management systems, and FaaS marketplaces — making them a critical enabling dependency across multiple fraud threat paths.\n\n**Distinction from TP-0044**: TP-0044 covers the broader state-criminal infrastructure convergence pattern; TP-0061 focuses specifically on the commercial bulletproof hosting providers that sell abuse-resistant infrastructure to fraud operators as a business model."
   },
   {
+    "id": "TP-0062",
+    "type": "threat_path",
+    "title": "Recovery Fraud — Double-Dip Re-victimization",
+    "text": "Recovery fraud is an organized crime model in which victims of prior fraud (investment scams, romance fraud, pig butchering) are systematically re-contacted by actors posing as asset recovery agents, lawyers, law enforcement officials, or government bodies who claim they can recover the victim's lost funds — for an upfront fee. The UNODC identifies this as a distinct organized fraud operation with separate infrastructure from the initial fraud, targeting an identifiable victim population using traded \"lead lists\" of prior fraud complainants. Recovery fraud exploits the emotional vulnerability and financial desperation of already-defrauded individuals, often resulting in substantial secondary losses.\n\n**Distinction from upstream TPs**: TP-0011 (Romance Scam) and TP-0017 (Pig Butchering) document the initial fraud schemes. TP-0062 documents the distinct second-stage organized crime operation that re-targets those same victims through entirely separate infrastructure and impersonation narratives."
+  },
+  {
+    "id": "TP-0063",
+    "type": "threat_path",
+    "title": "Organized Counterfeit Goods and Non-Delivery Fraud Networks",
+    "text": "Organized criminal groups operate networks of fraudulent e-commerce websites, fake sellers on legitimate auction platforms, and counterfeit goods supply chains to defraud consumers at scale. The UNODC documents this as the most prevalent fraud category by volume, with OCGs running multi-site operations backed by dedicated money laundering infrastructure, recruited money mules, and counterfeit supply chains linked to traditional organized crime. Distinct from individual purchase scams, the organized dimension involves supply chain structures mimicking legitimate businesses, coordinated use of stolen identities for seller accounts, cross-border money laundering, and the deliberate exploitation of legitimate platform trust mechanisms.\n\n**Distinction from TP-0036/TP-0030**: TP-0036 (Purchase Scam Merchant Networks) covers individual scam merchant tactics. TP-0030 (E-Commerce Triangulation) covers triangulation fraud. TP-0063 documents the organized crime infrastructure behind multi-site consumer fraud networks — the OCG structures, the supply chains, and the money laundering operations that UNODC identifies as organized criminal groups under UNTOC."
+  },
+  {
+    "id": "TP-0064",
+    "type": "threat_path",
+    "title": "Long-Firm and Organized Business Credit Fraud",
+    "text": "Long-firm fraud and organized financial statement fraud involve OCGs establishing or acquiring legitimate businesses, building creditworthiness over months or years, then exploiting that trust to defraud supply chain partners, trade finance banks, or investors. The UNODC identifies this as a distinct organized crime category where criminals build companies specifically for the purpose of large-scale credit fraud, often facilitated by professional enablers (accountants, lawyers, mortgage brokers, real estate appraisers). Distinguished from credit card bust-outs by the scale, duration, and corporate structure involved — UNODC case studies document single operations defrauding 20+ banks across multiple countries for $500M+.\n\n**Distinction from TP-0003/TP-0019**: TP-0003 (Synthetic Identity Bust-Out) covers synthetic identity-driven credit card bust-outs. TP-0019 (Business Identity Theft) covers theft of existing business identities. TP-0064 documents the UNODC long-firm model: building a real business with real credit history, then exploiting that earned trust for organized large-scale fraud."
+  },
+  {
+    "id": "TP-0065",
+    "type": "threat_path",
+    "title": "Organized Mass-Marketing Fraud Infrastructure (Boiler Rooms & Lead Lists)",
+    "text": "Organized mass-marketing fraud infrastructure encompasses the boiler room operations, lead list ecosystems, robodialling infrastructure, and SIM farm devices that serve as the shared demand-generation engine feeding multiple downstream fraud types. The UNODC identifies mass-marketing as a cross-cutting facilitator of organized fraud, documenting call center operations (boiler rooms) that employ salaried agents, use \"lead lists\" of targeted victims (including \"suckers lists\" of previously defrauded individuals), and leverage telecommunications infrastructure (SIM farms, VoIP spoofing, robodialling) for high-volume victim contact. This infrastructure operates as a discrete business layer — separate from the fraud execution itself — and may serve multiple fraud types simultaneously (investment scams, impersonation, recovery fraud, tech support fraud).\n\n**Distinction from TP-0058**: TP-0058 (Scam Compound Operations) covers the physical compound model in South-East Asia where trafficked individuals perpetrate fraud. TP-0065 documents the broader mass-marketing infrastructure layer that UNODC identifies as a cross-cutting facilitator across all regions — including virtual boiler rooms, offshore call centers, and the lead list/robodialling ecosystem that enables organized fraud at scale."
+  },
+  {
+    "id": "TP-0066",
+    "type": "threat_path",
+    "title": "Crash-for-Cash and Organized Insurance Fraud Rings",
+    "text": "Crash-for-cash fraud involves organized criminal groups that systematically stage or cause vehicle accidents to generate fraudulent insurance claims. The UNODC identifies this as a distinct organized crime activity under fraud against businesses/organizations, where OCGs recruit designated drivers, participants who claim injuries, and corrupt professional enablers (medical practitioners, lawyers, repair shops) to submit coordinated fraudulent claims. In more serious cases, OCGs deliberately cause accidents involving innocent members of the public to increase claim legitimacy. The organized dimension includes recruitment networks, shared medical/legal professionals across multiple staged incidents, and systematic claim submission infrastructure.\n\n**Distinction from TP-0056**: TP-0056 (Insurance Claims Fraud) covers individual fraudulent claims including document forgery and exaggerated claims. TP-0066 documents the organized ring dimension: coordinated multi-participant staged incidents, shared professional enabler networks, and OCG structures managing multiple fraudulent accident campaigns."
+  },
+  {
+    "id": "TP-0067",
+    "type": "threat_path",
+    "title": "AiTM Phishing Kit Infrastructure and Session Token Hijacking",
+    "text": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim sessions through attacker-controlled infrastructure in real time. The attacker captures both credentials and session tokens/cookies as the victim authenticates with the legitimate service. Sekoia.io identified 11 major AiTM phishing kits active in early 2025, with Tycoon 2FA as the most prevalent (1,200+ domains, targeting 500K+ organizations monthly). Credential phishing attacks surged 703% in H2 2024. These kits operate as Phishing-as-a-Service (PhaaS) marketplaces, lowering the barrier to sophisticated MFA-bypass attacks. FIDO2/phishing-resistant MFA blocks 93.9% of AiTM campaigns, making it the primary defensive recommendation.\n\n**Distinction from TP-0054**: TP-0054 (FaaS Ecosystem) covers the broader fraud-as-a-service model. TP-0067 focuses specifically on the AiTM phishing kit infrastructure — the reverse proxy technology, session token capture mechanics, and PhaaS distribution model that enables downstream BEC, account takeover, and wire fraud."
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -1146,6 +1182,72 @@
     "text": "Detects two healthcare fraud patterns: (1) Ghost patient claims — Medicare/Medicaid claims submitted for deceased, incarcerated, or relocated beneficiaries who could not have received the billed services. Operation Gold Rush exploited over 1 million stolen American identities including elderly and disabled individuals. (2) Geographic provider clustering — ZIP codes with anomalous concentrations of healthcare providers and high average billing per provider, indicating shell company clustering. LA County has 1,923 registered hospice providers (more than 36 states combined), with 7 of 14 entities in one LA plaza having zero CMS data. GAO reports found approximately 22% of practice locations in PECOS were potentially ineligible including UPS Store mailboxes and vacant addresses. Source: CrimsonVector Security March 2026; DOJ 2025 National Healthcare Fraud Takedown; GAO-15-448.\n"
   },
   {
+    "id": "DL-0133",
+    "type": "detection_rule",
+    "title": "Recovery Fraud Contact Pattern — Payments from Recent Fraud Victims to Unfamiliar Recipients",
+    "text": "Detects potential recovery fraud by identifying payments from customers who filed fraud complaints within the preceding 90 days to previously unseen recipient accounts. Recovery fraud operators re-contact prior fraud victims posing as recovery agents, lawyers, or government officials, extracting additional fees for purported fund recovery. This rule correlates complaint records with subsequent outbound payment activity to flag secondary victimization.\n"
+  },
+  {
+    "id": "DL-0134",
+    "type": "detection_rule",
+    "title": "Mass-Marketing Fraud Burst Calling Pattern — SIM Farm and Robodialling Detection",
+    "text": "Detects burst patterns from potential SIM farm or robodialling infrastructure targeting customer phone numbers. Mass-marketing fraud infrastructure uses sequential phone numbers, short call durations (most calls rejected), and high-volume outbound calling to reach victims at scale. This rule identifies inbound calling patterns characteristic of organized boiler room operations, including sequential source number prefixes, short call duration clustering, and geographic origin mismatch between caller ID display and actual call routing.\n"
+  },
+  {
+    "id": "DL-0135",
+    "type": "detection_rule",
+    "title": "Long-Firm Credit Buildup Pattern — Steady Low Utilization Followed by Rapid Spike",
+    "text": "Detects commercial accounts following a long-firm fraud pattern: steady low-value credit utilization for 6-12 months (building creditworthiness) followed by rapid escalation in credit utilization (the \"burst\"). Long-firm fraud involves organized criminal groups establishing businesses, building credit relationships, then exploiting that trust to defraud supply chain partners and trade finance banks. The artificially smooth buildup period followed by a discontinuous spike is the hallmark behavioral indicator.\n"
+  },
+  {
+    "id": "DL-0136",
+    "type": "detection_rule",
+    "title": "Staged Accident Claim Correlation — Shared Professional Enabler Network Detection",
+    "text": "Detects potential organized crash-for-cash insurance fraud rings by identifying claims from multiple ostensibly unrelated accidents that share common professional enablers (same medical provider, legal representative, or repair shop). Organized insurance fraud rings rely on networks of corrupt professionals who process claims across multiple staged incidents. The shared professional enabler network is the most durable and detectable element of the ring, as replacing trusted corrupt professionals is harder than recruiting new participants.\n"
+  },
+  {
+    "id": "DL-0137",
+    "type": "detection_rule",
+    "title": "AiTM Session Token Replay Detection — User-Agent and IP Mismatch Post-MFA",
+    "text": "Detects potential Adversary-in-the-Middle (AiTM) session token replay by identifying User-Agent string or IP address mismatches between MFA completion events and subsequent session access events. AiTM phishing kits capture session tokens during MFA relay, then replay them from attacker infrastructure with different User-Agent/IP characteristics. Sekoia.io identified 11 major AiTM kits (Tycoon 2FA most prevalent: 1,200+ domains, 500K+ organizations/month). FIDO2 blocks 93.9% of AiTM campaigns.\n"
+  },
+  {
+    "id": "DL-0138",
+    "type": "detection_rule",
+    "title": "Post-Compromise Inbox Rule Manipulation — Rule Creation After New-IP Authentication",
+    "text": "Detects inbox rule creation or modification within 24 hours of a sign-in from a previously unseen IP address. AiTM phishing kit operators create inbox rules within minutes of session hijack to redirect payment notifications, delete security alerts, and intercept colleague communications. Rules forwarding to external domains or deleting emails matching specific sender/subject patterns are high-confidence indicators of post-compromise activity.\n"
+  },
+  {
+    "id": "DL-0139",
+    "type": "detection_rule",
+    "title": "AI-Generated Phishing Content Stylometric Detection",
+    "text": "Detects AI-generated phishing content using stylometric features. Research shows XGBoost with 60 stylometric features detects GPT-4o-generated phishing with 96% accuracy and 99% AUC. Key features: imperative verb count, clause density, first-person pronoun usage, urgency markers, authority indicators, sentiment manipulation, financial trigger words, and semantic inconsistency. DetectGPT achieves ~0.95 AUROC via zero-shot statistical signatures. This rule defines the feature extraction pipeline and scoring thresholds for deployment in email security and fraud communication analysis systems.\n"
+  },
+  {
+    "id": "DL-0140",
+    "type": "detection_rule",
+    "title": "Cialdini Persuasion Principle Scoring in Fraud Communications",
+    "text": "Scores inbound communications (email, SMS, chat) for Cialdini's six principles of persuasion: Reciprocity, Consistency, Social Proof, Authority, Liking, and Scarcity. Research shows combining these features with BERT/SBERT embeddings improves phishing detection F1 by 2.62%. Communications exhibiting 3+ principles above threshold are flagged as high-probability social engineering. Directly applicable to romance fraud, investment scam, impersonation, and recovery fraud detection where psychological manipulation is the primary attack vector.\n"
+  },
+  {
+    "id": "DL-0141",
+    "type": "detection_rule",
+    "title": "SIM Swap Network-Level API Detection — Pre-MFA SIM Change Verification",
+    "text": "Detects potential SIM swap attacks by querying network-level APIs before MFA code delivery. SIM swap fraud surged 1,055% in the UK (3,000 cases in 2024). Three network-level APIs provide the most effective detection: SIM Swap Check (has the SIM been changed recently?), Number Verification (is the number still assigned to the expected device?), and Call Forwarding Signal (is call forwarding active?). Correlating positive signals from these APIs with subsequent MFA authentication attempts provides high-confidence SIM swap detection.\n"
+  },
+  {
+    "id": "DL-0142",
+    "type": "detection_rule",
+    "title": "Crypto Token Rug Pull Early Warning — On-Chain and OSINT Indicators",
+    "text": "Detects cryptocurrency rug pull / exit scam indicators using on-chain and OSINT signals. Rug pulls constituted 68% of all crypto scams in 2025 (350+ cases 2024). On-chain indicators: Uniswap liquidity removal >80% in single transaction, token holder concentration (top 5 holders >60%), contract functions with hidden mint/pause/ blacklist capabilities. OSINT indicators: social media silence after promotion burst, developer wallet activity cessation, Telegram/Discord channel deletion. Critical finding: OSINT signals precede on-chain anomalies by days or weeks.\n"
+  },
+  {
+    "id": "DL-0143",
+    "type": "detection_rule",
+    "title": "Employment Fraud Metadata Feature Detection",
+    "text": "Detects fraudulent job postings using metadata features from the EMSCAD benchmark (18,000 samples). Key finding: when both telecommuting and company logo flags equal zero, there is a 92% probability of fraud. Geographic concentration patterns (e.g., Bakersfield 15:1 fake-to-real ratio) provide additional signal. DistilBERT+SMOTE models achieve strong results; DNNs reach ~98% accuracy. This rule implements the high-confidence metadata feature checks that require no NLP processing.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",
@@ -1318,5 +1420,29 @@
     "type": "baseline",
     "title": "Investment Platform TDS Routing Norms",
     "text": "This baseline defines normal and anomalous patterns for legitimate investment platform referral chain behavior, geographic routing patterns, and Registered Domain Generation Algorithm (RDGA) domain registration volumes. It establishes norms for referral chain depth, domain age of referral sources, DNS TTL configurations, RDGA domain volumes per registrant, and geo-routing content consistency. These baselines are derived from Infoblox DNS Intelligence and Recorded Future threat intelligence. Organizations should calibrate detection thresholds against these norms to identify Traffic Distribution System (TDS) infrastructure used to route victims to fraudulent investment platforms while evading detection by routing analyst and crawler traffic to legitimate platforms. This baseline supports detection logic DL-0120 and DL-0122."
+  },
+  {
+    "id": "BL-0031",
+    "type": "baseline",
+    "title": "Recovery Fraud Victim Contact Norms",
+    "text": "This baseline defines normal and anomalous contact and payment patterns for customers who have filed fraud complaints. It establishes norms for legitimate post-complaint contact (callbacks from investigators, victim support outreach) versus anomalous contact patterns indicative of recovery fraud targeting. Recovery fraud operators re-contact prior fraud victims posing as recovery agents, lawyers, or government officials, exploiting the victim's emotional vulnerability and financial desperation. Organizations should calibrate DL-0133 detection thresholds against these norms to distinguish legitimate recovery-related contact from organized recovery fraud. This baseline is derived from UNODC organized fraud typology and FBI IC3 recovery fraud reporting."
+  },
+  {
+    "id": "BL-0032",
+    "type": "baseline",
+    "title": "Commercial Credit Utilization Lifecycle Norms",
+    "text": "This baseline defines normal and anomalous credit utilization lifecycle patterns for commercial accounts. It establishes norms for credit utilization progression, payment behavior variance, credit limit increase request frequency, and trade finance drawdown patterns. Long-firm fraud involves organized criminal groups building creditworthiness over 6–24 months before exploiting that trust in a rapid credit burst. The artificially smooth buildup period followed by a discontinuous utilization spike is the hallmark behavioral indicator. Organizations should calibrate DL-0135 detection thresholds against these norms. This baseline is derived from UNODC organized fraud typology, UK Serious Fraud Office prosecution data, and commercial credit industry benchmarks."
+  },
+  {
+    "id": "BL-0033",
+    "type": "baseline",
+    "title": "AI-Generated vs Human-Written Fraud Content Norms",
+    "text": "This baseline defines normal stylometric profiles for human-written versus AI-generated fraud content, enabling detection of AI-authored phishing emails, romance scam messages, and social engineering communications. Research demonstrates XGBoost with 60 stylometric features detects GPT-4o-generated phishing at 96% accuracy and 99% AUC. Fine-tuned BERT achieves F1=0.99 on 181,781 phishing emails. DetectGPT achieves ~0.95 AUROC via zero-shot statistical signatures. These baselines calibrate DL-0139 (stylometric detection) thresholds. AI-generated phishing achieves 43–81% click-through rates versus 18–69% for traditional methods, making detection critical."
+  },
+  {
+    "id": "BL-0034",
+    "type": "baseline",
+    "title": "Crypto Token Liquidity Lifecycle Norms",
+    "text": "This baseline defines normal and anomalous patterns for cryptocurrency token liquidity lifecycles on decentralized exchanges (DEXs). Rug pulls constituted 68% of all crypto scams in 2025 (350+ documented cases in 2024). Detection methods include Uniswap trading/liquidity feature engineering (Mazorra et al., 2022), EVM bytecode balance-flow heuristics (Yu & Lee, 2025), and temporal graph learning (TokenScout, Wu et al., 2024). ChainAware achieves 68% detection across Ethereum, BSC, Polygon, and Solana. Critical finding: OSINT signals precede on-chain anomalies by days or weeks. These baselines calibrate DL-0142 (rug pull early warning) detection thresholds."
   }
 ]

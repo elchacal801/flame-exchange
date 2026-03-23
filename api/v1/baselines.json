@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-17T05:26:54.976283+00:00",
-    "total": 26
+    "generated_at": "2026-03-23T00:08:06.101929+00:00",
+    "total": 33
   },
   "data": [
     {
@@ -898,6 +898,311 @@
       "ucff_domains": {},
       "detection_rule_ids": [],
       "related_tps": [
+        {
+          "id": "TP-0049",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0028",
+      "title": "Deepfake Service Procurement Activity Norms",
+      "category": "Baseline",
+      "date": "2026-03-20",
+      "author": "FLAME Project (sourced from UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines normal and anomalous activity levels for deepfake service marketplace activity, video conferencing artifact detection, and underground channel activity levels. It establishes norms for deepfake-as-a-service (DaaS) vendor proliferation, virtual camera driver usage in legitimate versus fraudulent contexts, and voice synthesis detection thresholds. These baselines are derived from the UNODC Emerging Threats report (September 2025), INTERPOL Global Financial Fraud Threat Assessment 2026, and Recorded Future threat intelligence. Organizations should calibrate detection thresholds against these norms to distinguish legitimate use of video and audio processing tools from deepfake-enabled fraud operations. This baseline supports detection logic DL-0115 and DL-0116.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "deepfake",
+        "daas",
+        "procurement-norms",
+        "telegram-channels",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0034",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0057",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0029",
+      "title": "Automated Account Opening Velocity Norms",
+      "category": "Baseline",
+      "date": "2026-03-20",
+      "author": "FLAME Project (sourced from UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines normal and anomalous patterns for legitimate versus automated account opening activity, KYC verification timing, and per-device application rates. It establishes behavioral norms for application completion speed, document submission timing, device-level velocity, liveness check performance, and human interaction indicators during the onboarding process. These baselines are derived from the UNODC Emerging Threats report (September 2025) and INTERPOL Global Financial Fraud Threat Assessment 2026. Organizations should calibrate detection thresholds against these norms to identify bot-driven mule account creation and distinguish it from legitimate customer onboarding. This baseline supports detection logic DL-0118 and DL-0119.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "mule-account",
+        "bot-detection",
+        "velocity-norms",
+        "kyc",
+        "account-onboarding",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0059",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0030",
+      "title": "Investment Platform TDS Routing Norms",
+      "category": "Baseline",
+      "date": "2026-03-20",
+      "author": "FLAME Project (sourced from Infoblox DNS Intelligence, Recorded Future CTA-2026-0319)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines normal and anomalous patterns for legitimate investment platform referral chain behavior, geographic routing patterns, and Registered Domain Generation Algorithm (RDGA) domain registration volumes. It establishes norms for referral chain depth, domain age of referral sources, DNS TTL configurations, RDGA domain volumes per registrant, and geo-routing content consistency. These baselines are derived from Infoblox DNS Intelligence and Recorded Future threat intelligence. Organizations should calibrate detection thresholds against these norms to identify Traffic Distribution System (TDS) infrastructure used to route victims to fraudulent investment platforms while evading detection by routing analyst and crawler traffic to legitimate platforms. This baseline supports detection logic DL-0120 and DL-0122.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "tds",
+        "investment-scam",
+        "geo-routing",
+        "rdga",
+        "referral-chain",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0042",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0060",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0031",
+      "title": "Recovery Fraud Victim Contact Norms",
+      "category": "Baseline",
+      "date": "2026-03-22",
+      "author": "FLAME Project (sourced from UNODC Organized Fraud Issue Paper 2024, FBI IC3)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines normal and anomalous contact and payment patterns for customers who have filed fraud complaints. It establishes norms for legitimate post-complaint contact (callbacks from investigators, victim support outreach) versus anomalous contact patterns indicative of recovery fraud targeting. Recovery fraud operators re-contact prior fraud victims posing as recovery agents, lawyers, or government officials, exploiting the victim's emotional vulnerability and financial desperation. Organizations should calibrate DL-0133 detection thresholds against these norms to distinguish legitimate recovery-related contact from organized recovery fraud. This baseline is derived from UNODC organized fraud typology and FBI IC3 recovery fraud reporting.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "recovery-fraud",
+        "victim-contact",
+        "complaint-monitoring",
+        "double-victimization",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0011",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0017",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0062",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0032",
+      "title": "Commercial Credit Utilization Lifecycle Norms",
+      "category": "Baseline",
+      "date": "2026-03-22",
+      "author": "FLAME Project (sourced from UNODC Organized Fraud Issue Paper 2024, UK SFO prosecutions)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines normal and anomalous credit utilization lifecycle patterns for commercial accounts. It establishes norms for credit utilization progression, payment behavior variance, credit limit increase request frequency, and trade finance drawdown patterns. Long-firm fraud involves organized criminal groups building creditworthiness over 6–24 months before exploiting that trust in a rapid credit burst. The artificially smooth buildup period followed by a discontinuous utilization spike is the hallmark behavioral indicator. Organizations should calibrate DL-0135 detection thresholds against these norms. This baseline is derived from UNODC organized fraud typology, UK Serious Fraud Office prosecution data, and commercial credit industry benchmarks.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "long-firm-fraud",
+        "commercial-credit",
+        "credit-utilization",
+        "bust-out",
+        "trade-finance",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0064",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0033",
+      "title": "AI-Generated vs Human-Written Fraud Content Norms",
+      "category": "Baseline",
+      "date": "2026-03-22",
+      "author": "FLAME Project (sourced from 2026 Technical Landscape Report, Stylometric Research)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines normal stylometric profiles for human-written versus AI-generated fraud content, enabling detection of AI-authored phishing emails, romance scam messages, and social engineering communications. Research demonstrates XGBoost with 60 stylometric features detects GPT-4o-generated phishing at 96% accuracy and 99% AUC. Fine-tuned BERT achieves F1=0.99 on 181,781 phishing emails. DetectGPT achieves ~0.95 AUROC via zero-shot statistical signatures. These baselines calibrate DL-0139 (stylometric detection) thresholds. AI-generated phishing achieves 43–81% click-through rates versus 18–69% for traditional methods, making detection critical.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "ai-generated-content",
+        "stylometric-detection",
+        "nlp",
+        "phishing-detection",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0025",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0043",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0034",
+      "title": "Crypto Token Liquidity Lifecycle Norms",
+      "category": "Baseline",
+      "date": "2026-03-22",
+      "author": "FLAME Project (sourced from 2026 Technical Landscape Report, Mazorra et al. 2022, Yu & Lee 2025)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines normal and anomalous patterns for cryptocurrency token liquidity lifecycles on decentralized exchanges (DEXs). Rug pulls constituted 68% of all crypto scams in 2025 (350+ documented cases in 2024). Detection methods include Uniswap trading/liquidity feature engineering (Mazorra et al., 2022), EVM bytecode balance-flow heuristics (Yu & Lee, 2025), and temporal graph learning (TokenScout, Wu et al., 2024). ChainAware achieves 68% detection across Ethereum, BSC, Polygon, and Solana. Critical finding: OSINT signals precede on-chain anomalies by days or weeks. These baselines calibrate DL-0142 (rug pull early warning) detection thresholds.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "rug-pull",
+        "crypto",
+        "defi",
+        "liquidity",
+        "token-lifecycle",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0017",
+          "relationship": "related-to"
+        },
         {
           "id": "TP-0049",
           "relationship": "related-to"

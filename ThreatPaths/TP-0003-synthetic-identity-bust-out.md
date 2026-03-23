@@ -48,12 +48,15 @@ related_tps:
     relationship: variant-of
 regulatory_refs:
   - REG-FINCEN-CDD
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - credit-building
   - bust-out
   - thin-file
   - long-game
   - organized-crime
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -225,6 +228,20 @@ ORDER BY util_change_30d DESC;
 - **Confidence**: Medium
 - **Summary**: Co-location of file sharing, cryptocurrency, and financial services impersonation domains on a single GTHost IP suggests bust-out monetization infrastructure. The btc.glass cryptocurrency interface maps to P5 crypto conversion, while bridgecredit.org impersonates legitimate lending services relevant to P4 loan application fraud. The file sharing service (fex.plus) may facilitate document exchange for fraudulent applications.
 
+### EV-TP0003-2026-002: UNODC Organized Identity Fraud and Synthetic Identity
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC Category 5 (Identity Fraud) documents the organized crime dimension of identity fraud including application fraud with synthetic identities combining real and fabricated identifiers. Key finding: the association between organized crime and mortgage/application fraud has long been recognized and is commonly facilitated by professional enablers (mortgage brokers, real estate appraisers, accountants, solicitors, escrow agents). UNODC documents a "booming underground economy in which cybercriminals sell stolen financial credentials" that enables synthetic identity construction.
+
+### EV-TP0003-2026-003: 2026 Technical Landscape — Synthetic Identity Loss Data and Detection Signals
+
+- **Source**: Organized fraud detection in 2026: a technical landscape report
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: Synthetic identity fraud hit all-time high at $3.3B losses across credit products by end of 2024, representing 29% of all identity fraud (60% YoY increase). Key detection signals: VoIP numbers with short tenure, recently created email addresses appearing in breach dumps, emulator/GPU mismatches in device fingerprinting, SSN-state mismatches, and thin credit file age. SIM swap fraud surged 1,055% in the UK with 3,000 cases in 2024; network-level APIs (SIM Swap Check, Number Verification, Call Forwarding Signal) provide most effective detection.
+
 ## Analyst Notes
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) recorded over 108,000 identity theft complaints, underscoring the scale of PII compromise that feeds synthetic identity creation. While IC3 does not break out synthetic identity fraud as a standalone category, the identity theft complaint volume represents the upstream fuel for synthetic identity bust-out schemes. Total IC3-reported losses reached $16.6B in 2024, with identity theft enabling multiple downstream fraud categories.
@@ -243,6 +260,9 @@ Thin-file exploitation is a growing concern: digitally fluent young people and n
 - Socure: Synthetic Identity Fraud Report
 - ACFE: "The Growing Threat of Synthetic Identity Fraud"
 - **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Synthetic identity loss projections, GenAI involvement statistics, thin-file exploitation patterns, digital wallet vector analysis.
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Identity Fraud
+
+- "Organized fraud detection in 2026: a technical landscape report" — Specific fraud category detection: Synthetic identity fraud
 
 ## Revision History
 

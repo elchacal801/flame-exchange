@@ -67,6 +67,7 @@ regulatory_refs:
   - REG-INTERPOL-REDCARD
   - REG-INTERPOL-SHADOW-STORM
   - REG-RF-CTA-2026-0319
+  - REG-UNODC-ORGANIZED-FRAUD-2024
 tags:
   - state-criminal-convergence
   - dprk
@@ -85,6 +86,8 @@ tags:
   - aurologic
   - operation-haechi
   - operation-redcard
+  - unodc
+  - unodc-organized-fraud-2024
 ---
 ```
 
@@ -525,6 +528,7 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 - FBI/CISA. "Advisory on DPRK IT Worker Infiltration." 2025. [Link](https://www.cisa.gov/topics/cyber-threats-and-advisories)
 - OFAC. "Sanctions Designations: DPRK-Linked Cryptocurrency Wallets." 2024-2025. [Link](https://ofac.treasury.gov/)
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents arrest of suspect linked to Tren de Aragua in connection with USD 150 million cryptocurrency fraud scheme used to launder proceeds from drug trafficking and extortion across Chile, Colombia, Venezuela and the Iberian Peninsula; highlights convergence of financial fraud and organized crime in South America
+- UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter I, Organized Criminal Groups; Chapter III, Regional fraud concentrations
 
 ---
 
@@ -545,6 +549,13 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
   - Kaopu Cloud HK Limited (AS138915) identified as shared hosting infrastructure across both NK state-sponsored operations (PurpleAlpha credential harvesting) and cybercriminal groups
 - **CFPF Phase Coverage**: P1 (infrastructure provisioning), P3 (convergent hosting), P5 (sanctions evasion and rebranding)
 - **Confidence**: Very High — multi-source from law enforcement operations and infrastructure intelligence
+
+### EV-TP0044-2026-002: UNODC Regional OCG Structures and State-Criminal Convergence
+
+- **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: UNODC documents diverse organized criminal group structures across regions, noting that "the emergence of organized crime in different regions reflects the contingent relationships between different global settings, the capacity of would-be fraudsters to identify and act on criminal opportunities and the controls put in place by the State or others to prevent these crimes." Key findings: (1) organized criminal groups in some regions offer "protection and security to insulate local fraud offenders from the threat of local law enforcement"; (2) regional concentrations documented — romance fraud from West Africa, lottery fraud from Jamaica, cybercrime from Eastern Europe, scam compounds in South-East Asia; (3) some OCGs leverage corruption to "challenge or undermine the authority and systems of the State and legitimate sectors."
 
 ---
 
