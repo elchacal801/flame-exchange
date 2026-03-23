@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0064",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- Detect long-firm credit buildup pattern: steady low utilization\n-- followed by rapid spike in credit usage\nWITH monthly_util AS (\n    SELECT\n        account_id,\n        DATE_TRUNC('month', transaction_date) AS month,\n        AVG(credit_utilization_pct) AS avg_util,\n        MAX(credit_utilization_pct) AS max_util\n    FROM commercial_credit_accounts\n    GROUP BY account_id, DATE_TRUNC('month', transaction_date)\n),\ntrend AS (\n    SELECT\n        account_id,\n        month,\n        avg_util,\n        LAG(avg_util, 1) OVER (PARTITION BY account_id ORDER BY month) AS prev_month_util,\n        AVG(avg_util) OVER (PARTITION BY account_id ORDER BY month ROWS BETWEEN 6 PRECEDING AND 1 PRECEDING) AS trailing_6m_avg\n    FROM monthly_util\n)\nSELECT account_id, month, avg_util, trailing_6m_avg\nFROM trend\nWHERE trailing_6m_avg < 35\n  AND avg_util > 80\n  AND prev_month_util < 50\nORDER BY month DESC;",
+      "title": "Queries / Rules"
+    }
+  ]
+}

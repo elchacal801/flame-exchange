@@ -802,5 +802,41 @@
     "content": "index=dns sourcetype=passive_dns\n| stats dc(answer) AS unique_ips values(answer) AS ip_list earliest(_time) AS first_seen latest(_time) AS last_seen by query\n| eval days_active=round((last_seen-first_seen)/86400, 1)\n| where unique_ips > 3 AND days_active < 30\n| mvexpand ip_list\n| lookup tae_ip_ranges ip_list OUTPUT tae_provider\n| where isnotnull(tae_provider)\n| stats count dc(query) AS domains values(tae_provider) AS providers by ip_list\n| sort -domains",
     "title": "Infrastructure Rotation Detection (Splunk SPL)",
     "tp_id": "TP-0061"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect potential recovery fraud contact: payments from customers\n-- who filed fraud complaints in preceding 90 days to new unfamiliar recipients\nSELECT\n    t.customer_id,\n    t.transaction_date,\n    t.amount,\n    t.recipient_account,\n    c.complaint_date,\n    c.original_loss_amount,\n    c.fraud_type AS original_fraud_type\nFROM transactions t\nJOIN fraud_complaints c ON t.customer_id = c.customer_id\nWHERE c.complaint_date >= DATEADD(day, -90, t.transaction_date)\n  AND t.recipient_account NOT IN (\n    SELECT DISTINCT recipient_account\n    FROM transactions\n    WHERE customer_id = t.customer_id\n      AND transaction_date < c.complaint_date\n  )\n  AND t.amount > 500\nORDER BY t.transaction_date DESC;",
+    "title": "Queries / Rules",
+    "tp_id": "TP-0062"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect long-firm credit buildup pattern: steady low utilization\n-- followed by rapid spike in credit usage\nWITH monthly_util AS (\n    SELECT\n        account_id,\n        DATE_TRUNC('month', transaction_date) AS month,\n        AVG(credit_utilization_pct) AS avg_util,\n        MAX(credit_utilization_pct) AS max_util\n    FROM commercial_credit_accounts\n    GROUP BY account_id, DATE_TRUNC('month', transaction_date)\n),\ntrend AS (\n    SELECT\n        account_id,\n        month,\n        avg_util,\n        LAG(avg_util, 1) OVER (PARTITION BY account_id ORDER BY month) AS prev_month_util,\n        AVG(avg_util) OVER (PARTITION BY account_id ORDER BY month ROWS BETWEEN 6 PRECEDING AND 1 PRECEDING) AS trailing_6m_avg\n    FROM monthly_util\n)\nSELECT account_id, month, avg_util, trailing_6m_avg\nFROM trend\nWHERE trailing_6m_avg < 35\n  AND avg_util > 80\n  AND prev_month_util < 50\nORDER BY month DESC;",
+    "title": "Queries / Rules",
+    "tp_id": "TP-0064"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Mass-Marketing Fraud Burst Calling Pattern\nstatus: experimental\ndescription: Detects burst patterns from potential SIM farm or robodialling infrastructure\nlogsource:\n    product: telecom\n    service: cdr\ndetection:\n    selection:\n        call_direction: inbound\n        call_duration|lt: 30\n    timeframe: 1h\n    condition: selection | count(source_number) by destination_number > 3\n        AND selection | count(distinct destination_number) by source_number_prefix > 50\nfields:\n    - source_number\n    - destination_number\n    - call_duration\n    - caller_id_verification_status\nlevel: medium",
+    "title": "Queries / Rules",
+    "tp_id": "TP-0065"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect potential organized insurance fraud ring:\n-- Claims sharing medical provider, legal representative, or repair shop\n-- across multiple ostensibly unrelated accidents\nSELECT\n    a.claim_id,\n    a.accident_id,\n    a.medical_provider,\n    a.legal_representative,\n    a.repair_shop,\n    COUNT(DISTINCT b.accident_id) AS shared_accident_count,\n    COUNT(DISTINCT b.claim_id) AS related_claims\nFROM insurance_claims a\nJOIN insurance_claims b\n    ON (a.medical_provider = b.medical_provider\n        OR a.legal_representative = b.legal_representative\n        OR a.repair_shop = b.repair_shop)\n    AND a.accident_id != b.accident_id\n    AND b.claim_date >= DATEADD(year, -1, GETDATE())\nWHERE a.claim_date >= DATEADD(year, -1, GETDATE())\nGROUP BY a.claim_id, a.accident_id, a.medical_provider,\n         a.legal_representative, a.repair_shop\nHAVING COUNT(DISTINCT b.accident_id) >= 3\nORDER BY shared_accident_count DESC;",
+    "title": "Queries / Rules",
+    "tp_id": "TP-0066"
+  },
+  {
+    "type": "kql",
+    "content": "-- Microsoft Sentinel KQL: Detect AiTM session token replay\n-- User-Agent or IP mismatch between MFA completion and subsequent access\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n| where AccessTime > MFATime and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
+    "title": "Queries / Rules",
+    "tp_id": "TP-0067"
+  },
+  {
+    "type": "sigma",
+    "content": "title: Post-Authentication Inbox Rule Creation from New IP\nstatus: experimental\ndescription: Detects inbox rule creation within 24h of sign-in from previously unseen IP\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection_rule:\n        Operation:\n            - New-InboxRule\n            - Set-InboxRule\n            - Enable-InboxRule\n    filter_known:\n        ClientIP|cidr:\n            - 10.0.0.0/8\n            - 172.16.0.0/12\n            - 192.168.0.0/16\n    timeframe: 24h\n    condition: selection_rule and not filter_known\nfields:\n    - UserId\n    - ClientIP\n    - Parameters\nlevel: high",
+    "title": "TP-0067 detection rule (sigma)",
+    "tp_id": "TP-0067"
   }
 ]

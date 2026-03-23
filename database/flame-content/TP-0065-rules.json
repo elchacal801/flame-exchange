@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0065",
+  "rules": [
+    {
+      "type": "sigma",
+      "content": "title: Mass-Marketing Fraud Burst Calling Pattern\nstatus: experimental\ndescription: Detects burst patterns from potential SIM farm or robodialling infrastructure\nlogsource:\n    product: telecom\n    service: cdr\ndetection:\n    selection:\n        call_direction: inbound\n        call_duration|lt: 30\n    timeframe: 1h\n    condition: selection | count(source_number) by destination_number > 3\n        AND selection | count(distinct destination_number) by source_number_prefix > 50\nfields:\n    - source_number\n    - destination_number\n    - call_duration\n    - caller_id_verification_status\nlevel: medium",
+      "title": "Queries / Rules"
+    }
+  ]
+}

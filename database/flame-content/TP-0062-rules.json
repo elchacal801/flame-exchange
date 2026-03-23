@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0062",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- Detect potential recovery fraud contact: payments from customers\n-- who filed fraud complaints in preceding 90 days to new unfamiliar recipients\nSELECT\n    t.customer_id,\n    t.transaction_date,\n    t.amount,\n    t.recipient_account,\n    c.complaint_date,\n    c.original_loss_amount,\n    c.fraud_type AS original_fraud_type\nFROM transactions t\nJOIN fraud_complaints c ON t.customer_id = c.customer_id\nWHERE c.complaint_date >= DATEADD(day, -90, t.transaction_date)\n  AND t.recipient_account NOT IN (\n    SELECT DISTINCT recipient_account\n    FROM transactions\n    WHERE customer_id = t.customer_id\n      AND transaction_date < c.complaint_date\n  )\n  AND t.amount > 500\nORDER BY t.transaction_date DESC;",
+      "title": "Queries / Rules"
+    }
+  ]
+}

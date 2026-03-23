@@ -1,0 +1,15 @@
+{
+  "tp_id": "TP-0067",
+  "rules": [
+    {
+      "type": "kql",
+      "content": "-- Microsoft Sentinel KQL: Detect AiTM session token replay\n-- User-Agent or IP mismatch between MFA completion and subsequent access\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n| where AccessTime > MFATime and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
+      "title": "Queries / Rules"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Post-Authentication Inbox Rule Creation from New IP\nstatus: experimental\ndescription: Detects inbox rule creation within 24h of sign-in from previously unseen IP\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection_rule:\n        Operation:\n            - New-InboxRule\n            - Set-InboxRule\n            - Enable-InboxRule\n    filter_known:\n        ClientIP|cidr:\n            - 10.0.0.0/8\n            - 172.16.0.0/12\n            - 192.168.0.0/16\n    timeframe: 24h\n    condition: selection_rule and not filter_known\nfields:\n    - UserId\n    - ClientIP\n    - Parameters\nlevel: high",
+      "title": "TP-0067 detection rule (sigma)"
+    }
+  ]
+}

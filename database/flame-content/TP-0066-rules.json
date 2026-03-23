@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0066",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- Detect potential organized insurance fraud ring:\n-- Claims sharing medical provider, legal representative, or repair shop\n-- across multiple ostensibly unrelated accidents\nSELECT\n    a.claim_id,\n    a.accident_id,\n    a.medical_provider,\n    a.legal_representative,\n    a.repair_shop,\n    COUNT(DISTINCT b.accident_id) AS shared_accident_count,\n    COUNT(DISTINCT b.claim_id) AS related_claims\nFROM insurance_claims a\nJOIN insurance_claims b\n    ON (a.medical_provider = b.medical_provider\n        OR a.legal_representative = b.legal_representative\n        OR a.repair_shop = b.repair_shop)\n    AND a.accident_id != b.accident_id\n    AND b.claim_date >= DATEADD(year, -1, GETDATE())\nWHERE a.claim_date >= DATEADD(year, -1, GETDATE())\nGROUP BY a.claim_id, a.accident_id, a.medical_provider,\n         a.legal_representative, a.repair_shop\nHAVING COUNT(DISTINCT b.accident_id) >= 3\nORDER BY shared_accident_count DESC;",
+      "title": "Queries / Rules"
+    }
+  ]
+}
