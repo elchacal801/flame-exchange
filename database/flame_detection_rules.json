@@ -9630,5 +9630,123 @@
       "Legitimate remote work listings that don't flag telecommuting",
       "Job postings in geographically concentrated industries"
     ]
+  },
+  {
+    "id": "4c1e9a7b-2d5f-8e3a-b6c4-3f7d1a5e2b09",
+    "dl_id": "DL-0144",
+    "title": "Gift Card Balance Probing Velocity Detection",
+    "status": "experimental",
+    "description": "Detects automated gift card balance probing by monitoring balance check endpoints for high-velocity requests. NRF RFT FT1103 documents that fraudsters abuse legitimate balance check functions (web app, phone IVR) to identify funded cards from brute-forced or purchased card number lists. Detection signals include request velocity per IP/device, VoIP source numbers, off-hours timing, and device fingerprint anomalies. Gift card balance probing is a precursor to gift card redemption fraud, card merging, and resale monetization.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "endpoint_type": "balance_check"
+      },
+      "timeframe": "1h",
+      "condition": "count(distinct card_number) by source_ip > 20 OR count(requests) by source_ip > 50\n"
+    },
+    "logsource": {
+      "product": "retail",
+      "service": "gift_card_api"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "card_number",
+        "source_ip",
+        "user_agent",
+        "device_fingerprint",
+        "request_timestamp",
+        "phone_number",
+        "response_status"
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Gift Card Balance Probing Velocity Detection\")`\n`comment(\"NRF FT1103: Monitor balance check endpoints for automated probing\")`\nindex=retail sourcetype=giftcard:balance_check\n| bin _time span=1h\n| stats count AS check_count,\n        dc(card_number) AS unique_cards,\n        dc(user_agent) AS unique_agents,\n        values(device_fingerprint) AS devices\n  BY source_ip, _time\n| where check_count > 50 OR unique_cards > 20\n| eval risk = case(\n    check_count > 200 AND unique_cards > 100, \"CRITICAL\",\n    check_count > 100 OR unique_cards > 50, \"HIGH\",\n    check_count > 50 OR unique_cards > 20, \"MEDIUM\"\n  )\n| sort - check_count",
+      "sql": "-- SQL: Gift card balance probing velocity detection\nSELECT\n    source_ip,\n    COUNT(*) AS check_count,\n    COUNT(DISTINCT card_number) AS unique_cards,\n    COUNT(DISTINCT user_agent) AS unique_agents,\n    MIN(request_timestamp) AS first_check,\n    MAX(request_timestamp) AS last_check\nFROM gift_card_balance_checks\nWHERE request_timestamp >= DATEADD(hour, -1, GETDATE())\nGROUP BY source_ip\nHAVING COUNT(*) > 50 OR COUNT(DISTINCT card_number) > 20\nORDER BY check_count DESC"
+    },
+    "references": [
+      "NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1103 Check Gift Card Balance",
+      "NRF FD1006 Velocity Attributes, FD1004 Time Based Attributes, FD1005 Device Attributes"
+    ],
+    "threat_path_ids": [
+      "TP-0068"
+    ],
+    "fraud_types": [
+      "gift-card-fraud"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.gift-card",
+      "flame.nrf-rft"
+    ],
+    "falsepositives": [
+      "Legitimate customer service tools checking multiple cards",
+      "Corporate gift card management platforms",
+      "Batch balance verification during audit periods"
+    ]
+  },
+  {
+    "id": "7e3a5c9d-1b4f-6e2a-c8d7-5f2b8a4e1c03",
+    "dl_id": "DL-0145",
+    "title": "Gift Card Merge and Transfer Anomaly Detection",
+    "status": "experimental",
+    "description": "Detects suspicious gift card merge and transfer activity indicating value consolidation from multiple illicit sources. NRF RFT FT1202 documents that fraudsters transfer value from multiple illicitly obtained gift cards to a single legitimate card — e.g., 20 cards with $5 merged into one $255 card. This consolidation is a key Control phase technique enabling subsequent monetization. Detection signals include merge velocity, source card count, and correlation with recent suspicious balance check activity.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "transaction_type": [
+          "merge",
+          "transfer",
+          "consolidate"
+        ]
+      },
+      "timeframe": "1h",
+      "condition": "count(distinct source_card) by destination_card >= 3 AND timeframe < 60 minutes\n"
+    },
+    "logsource": {
+      "product": "retail",
+      "service": "gift_card_transactions"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "source_card",
+        "destination_card",
+        "transfer_amount",
+        "transfer_timestamp",
+        "source_ip",
+        "customer_id"
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Gift Card Merge and Transfer Anomaly Detection\")`\n`comment(\"NRF FT1202: Monitor for suspicious multi-card merges\")`\nindex=retail sourcetype=giftcard:transactions\n  transaction_type IN (\"merge\", \"transfer\", \"consolidate\")\n| stats count AS merge_count,\n        dc(source_card) AS source_card_count,\n        sum(transfer_amount) AS total_transferred,\n        min(_time) AS first_merge,\n        max(_time) AS last_merge,\n        values(source_ip) AS source_ips\n  BY destination_card\n| eval window_minutes = round((last_merge - first_merge) / 60, 1)\n| where source_card_count >= 3 AND window_minutes < 60\n| sort - source_card_count",
+      "sql": "-- SQL: Gift card merge anomaly detection\nSELECT\n    destination_card,\n    COUNT(DISTINCT source_card) AS source_card_count,\n    SUM(transfer_amount) AS total_transferred,\n    MIN(transfer_timestamp) AS first_merge,\n    MAX(transfer_timestamp) AS last_merge,\n    DATEDIFF(minute, MIN(transfer_timestamp), MAX(transfer_timestamp)) AS window_minutes\nFROM gift_card_transfers\nWHERE transfer_timestamp >= DATEADD(day, -7, GETDATE())\n  AND transaction_type IN ('merge', 'transfer', 'consolidate')\nGROUP BY destination_card\nHAVING COUNT(DISTINCT source_card) >= 3\n   AND DATEDIFF(minute, MIN(transfer_timestamp), MAX(transfer_timestamp)) < 60\nORDER BY source_card_count DESC"
+    },
+    "references": [
+      "NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1202 Gift Card Merge",
+      "NRF FD1006 Velocity Attributes, FD1010 Transaction Data"
+    ],
+    "threat_path_ids": [
+      "TP-0068"
+    ],
+    "fraud_types": [
+      "gift-card-fraud",
+      "gift-card-tampering"
+    ],
+    "tags": [
+      "cfpf.phase3.positioning",
+      "flame.gift-card",
+      "flame.nrf-rft"
+    ],
+    "falsepositives": [
+      "Corporate gift card consolidation during employee reward program administration",
+      "Legitimate customer merging multiple small-value gift cards received as gifts",
+      "Gift card balance cleanup during promotional campaigns"
+    ]
   }
 ]

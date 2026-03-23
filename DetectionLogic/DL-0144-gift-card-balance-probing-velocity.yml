@@ -1,0 +1,83 @@
+title: Gift Card Balance Probing Velocity Detection
+id: 4c1e9a7b-2d5f-8e3a-b6c4-3f7d1a5e2b09
+status: experimental
+description: >
+  Detects automated gift card balance probing by monitoring balance check endpoints
+  for high-velocity requests. NRF RFT FT1103 documents that fraudsters abuse
+  legitimate balance check functions (web app, phone IVR) to identify funded cards
+  from brute-forced or purchased card number lists. Detection signals include request
+  velocity per IP/device, VoIP source numbers, off-hours timing, and device
+  fingerprint anomalies. Gift card balance probing is a precursor to gift card
+  redemption fraud, card merging, and resale monetization.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1103 Check Gift Card Balance"
+  - "NRF FD1006 Velocity Attributes, FD1004 Time Based Attributes, FD1005 Device Attributes"
+threat_paths:
+  - TP-0068
+cfpf_phase: P2
+fraud_types:
+  - gift-card-fraud
+logsource:
+  product: retail
+  service: gift_card_api
+detection:
+  selection:
+    endpoint_type: balance_check
+  timeframe: 1h
+  condition: >
+    count(distinct card_number) by source_ip > 20
+    OR count(requests) by source_ip > 50
+data_sources:
+  native_fields:
+    - card_number
+    - source_ip
+    - user_agent
+    - device_fingerprint
+    - request_timestamp
+    - phone_number
+    - response_status
+queries:
+  splunk: |-
+    `comment("Splunk SPL for Gift Card Balance Probing Velocity Detection")`
+    `comment("NRF FT1103: Monitor balance check endpoints for automated probing")`
+    index=retail sourcetype=giftcard:balance_check
+    | bin _time span=1h
+    | stats count AS check_count,
+            dc(card_number) AS unique_cards,
+            dc(user_agent) AS unique_agents,
+            values(device_fingerprint) AS devices
+      BY source_ip, _time
+    | where check_count > 50 OR unique_cards > 20
+    | eval risk = case(
+        check_count > 200 AND unique_cards > 100, "CRITICAL",
+        check_count > 100 OR unique_cards > 50, "HIGH",
+        check_count > 50 OR unique_cards > 20, "MEDIUM"
+      )
+    | sort - check_count
+
+  sql: |-
+    -- SQL: Gift card balance probing velocity detection
+    SELECT
+        source_ip,
+        COUNT(*) AS check_count,
+        COUNT(DISTINCT card_number) AS unique_cards,
+        COUNT(DISTINCT user_agent) AS unique_agents,
+        MIN(request_timestamp) AS first_check,
+        MAX(request_timestamp) AS last_check
+    FROM gift_card_balance_checks
+    WHERE request_timestamp >= DATEADD(hour, -1, GETDATE())
+    GROUP BY source_ip
+    HAVING COUNT(*) > 50 OR COUNT(DISTINCT card_number) > 20
+    ORDER BY check_count DESC
+
+falsepositives:
+  - Legitimate customer service tools checking multiple cards
+  - Corporate gift card management platforms
+  - Batch balance verification during audit periods
+level: high
+tags:
+  - cfpf.phase2.initial_access
+  - flame.gift-card
+  - flame.nrf-rft

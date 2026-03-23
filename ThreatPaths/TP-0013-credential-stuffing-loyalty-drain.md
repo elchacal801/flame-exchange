@@ -10,9 +10,10 @@ author: "FLAME Project"
 source: "Akamai State of the Internet reports / industry reporting"
 tlp: WHITE
 sector:
-  - fintech
   - banking
   - cross-sector
+  - fintech
+  - retail
 fraud_types:
   - credential-stuffing
   - account-takeover
@@ -46,6 +47,7 @@ regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
   - REG-FFIEC-AUTH
+  - REG-NRF-RFT-V1
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
 tags:
@@ -55,6 +57,7 @@ tags:
   - stored-value
   - automated-attack
   - credential-reuse
+  - nrf-rft
 ---
 ```
 
@@ -203,12 +206,24 @@ Flag sessions where:
 
 Credential stuffing remains one of the highest-volume attack patterns in financial services, with Akamai reporting billions of monthly credential stuffing attempts against financial institutions globally. The economics are compelling for attackers: combo lists (email/password pairs from breaches) cost $5-$50 per million credentials on underground markets, and typical hit rates of 0.1-2% yield thousands of compromised accounts per campaign. Loyalty and rewards programs are disproportionately targeted because they are perceived as lower-security than banking applications — many lack MFA, have weaker rate limiting, and victims are slower to notice point depletion. The monetization pathway through gift card conversion provides near-instant, irreversible value extraction. Bot mitigation platforms (e.g., Akamai Bot Manager, F5 Shape) are effective at the perimeter but must be complemented by behavioral analytics to catch low-and-slow attacks that evade rate-based detection. Financial institutions should monitor for credential reuse across their own properties and consider participating in cross-industry credential breach notification services.
 
+## Operational Evidence
+
+### EV-TP0013-2026-001: NRF Retail Fraud Taxonomy — Credential Stuffing and Loyalty Abuse Techniques
+
+- **Source**: NRF Retail Fraud Taxonomy v1.0 (November 2024)
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: NRF RFT documents credential stuffing (FT1105) as a primary Initial Access technique for Account Takeover: fraudsters use web automation tools with "combolists" and site-specific "configs" sold in underground communities. Valid Accounts (FT1104) documents how compromised accounts provide access to loyalty points and linked gift cards. Loyalty Points Abuse (FT1205) documents the conversion of compromised loyalty points into gift cards the fraudster controls. NRF RFT detection sources include velocity attributes (login attempt surges), behavioral attributes (repeated post-login patterns indicating automation), and device attributes (fingerprint anomalies).
+
+---
+
 ## References
 - Akamai: State of the Internet — Credential Stuffing Reports
 - Shape Security (F5): Credential Spill Report
 - Loyalty Security Alliance: Points Fraud Prevention
 - OWASP: Credential Stuffing Prevention Cheat Sheet. [Link](https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html)
 - Group-IB Fraud Intelligence: "Credentials Stuffing using BAS" scheme report (BAS tooling analysis, technique-level Fraud Matrix mapping)
+- NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1105 Credential Stuffing, FT1104 Valid Accounts, FT1205 Loyalty Points Abuse
 
 ## Revision History
 | Date | Author | Change |

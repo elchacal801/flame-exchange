@@ -1,12 +1,12 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-23T00:30:06.116803+00:00",
+    "generated_at": "2026-03-23T02:05:38.030079+00:00",
     "total": 1
   },
   "data": {
-    "total": 67,
-    "fraudTypes": 101,
+    "total": 68,
+    "fraudTypes": 103,
     "fraudTypeList": [
       "BEC",
       "aba-therapy-fraud",
@@ -58,6 +58,7 @@
       "geo-routing",
       "ghost-student-fraud",
       "gift-card-fraud",
+      "gift-card-tampering",
       "healthcare-fraud",
       "hospice-fraud",
       "hosting-provider-complicity",
@@ -73,6 +74,7 @@
       "kyc-circumvention",
       "loan-fraud",
       "long-firm-fraud",
+      "loyalty-point-fraud",
       "malvertising",
       "malware",
       "money-laundering",
@@ -132,11 +134,11 @@
       "web3"
     ],
     "phaseCoverage": {
-      "P1": 67,
-      "P2": 65,
-      "P3": 67,
-      "P4": 65,
-      "P5": 65
+      "P1": 68,
+      "P2": 66,
+      "P3": 68,
+      "P4": 66,
+      "P5": 66
     },
     "topTags": [
       {
@@ -180,6 +182,14 @@
         "count": 4
       },
       {
+        "tag": "nrf-rft",
+        "count": 4
+      },
+      {
+        "tag": "organized-retail-crime",
+        "count": 4
+      },
+      {
         "tag": "synthetic-identity",
         "count": 4
       },
@@ -208,15 +218,7 @@
         "count": 3
       },
       {
-        "tag": "organized-retail-crime",
-        "count": 3
-      },
-      {
         "tag": "reckless-rabbit",
-        "count": 3
-      },
-      {
-        "tag": "recorded-future",
         "count": 3
       }
     ],
@@ -759,6 +761,17 @@
       {
         "fraud_type": "gift-card-fraud",
         "phases": {
+          "P1": 2,
+          "P2": 2,
+          "P3": 2,
+          "P4": 2,
+          "P5": 2
+        },
+        "total_tps": 2
+      },
+      {
+        "fraud_type": "gift-card-tampering",
+        "phases": {
           "P1": 1,
           "P2": 1,
           "P3": 1,
@@ -919,6 +932,17 @@
       },
       {
         "fraud_type": "long-firm-fraud",
+        "phases": {
+          "P1": 1,
+          "P2": 1,
+          "P3": 1,
+          "P4": 1,
+          "P5": 1
+        },
+        "total_tps": 1
+      },
+      {
+        "fraud_type": "loyalty-point-fraud",
         "phases": {
           "P1": 1,
           "P2": 1,
@@ -1184,13 +1208,13 @@
       {
         "fraud_type": "social-engineering",
         "phases": {
-          "P1": 13,
-          "P2": 13,
-          "P3": 13,
-          "P4": 13,
-          "P5": 13
+          "P1": 14,
+          "P2": 14,
+          "P3": 14,
+          "P4": 14,
+          "P5": 14
         },
-        "total_tps": 13
+        "total_tps": 14
       },
       {
         "fraud_type": "state-criminal-convergence",
@@ -1339,6 +1363,6 @@
       },
       "lastUpdated": "2026-03-23"
     },
-    "generatedAt": "2026-03-23T00:30:04.626664+00:00"
+    "generatedAt": "2026-03-23T02:05:36.472766+00:00"
   }
 }

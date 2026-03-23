@@ -60,6 +60,7 @@ related_tps:
   - id: TP-0059
     relationship: shares-infrastructure
 regulatory_refs:
+  - REG-NRF-RFT-V1
   - REG-UNODC-ORGANIZED-FRAUD-2024
 geopolitical_timing: none
 nation_state_nexus: none
@@ -72,6 +73,7 @@ tags:
   - auction-fraud
   - organized-retail-crime
   - organized-crime-group
+  - nrf-rft
 ---
 ```
 
@@ -269,6 +271,13 @@ index=disputes sourcetype=chargeback_events reason_code IN ("non_delivery", "not
 - **Confidence**: High
 - **Summary**: UNODC documents consumer products and services fraud as the highest-volume organized fraud category. The organized crime dimension is critical: OCGs adopt formal business structures (supply chains, call centers, payment processing) to both scale operations and deceive platform/payment provider due diligence. The cross-border nature — site operators in one country, mule networks in another, OCG principals in a third — makes this inherently transnational organized crime under UNTOC.
 
+### EV-TP0063-2026-002: NRF Retail Fraud Taxonomy — Resale and Organized Retail Crime
+
+- **Source**: NRF Retail Fraud Taxonomy v1.0 (November 2024)
+- **CFPF Phase Coverage**: P4–P5
+- **Confidence**: High
+- **Summary**: NRF RFT documents Resale (FT1301) and Drop Shipping (FT1301.1) as Monetization techniques where illicitly obtained goods and gift cards are sold on third-party platforms. The Unwitting Buyer sub-technique (FT1301.2) documents how end buyers unknowingly purchase stolen goods. NRF RFT references FinCEN's advisory on "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)" — confirming the organized crime dimension that aligns with UNODC organized fraud framing already in this TP. Detection source FD1011 (Market Resale Data) recommends monitoring third-party platforms for serialized items and gift cards.
+
 ---
 
 ## References
@@ -278,6 +287,7 @@ index=disputes sourcetype=chargeback_events reason_code IN ("non_delivery", "not
 - Munich District Court, Judgment, 7 June 2017 (SHERLOC) — fake online shops with mule networks
 - United States of America v. Bogdan Nicolescu et al. (SHERLOC) — malware-injected auction fraud
 - INTERPOL, "Global Financial Fraud Threat Assessment, 2nd Edition" (March 2026) — e-commerce fraud trends
+- NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1301 Resale, FT1301.1 Drop Shipping, FD1011 Market Resale Data
 
 ---
 

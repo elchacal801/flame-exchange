@@ -2,11 +2,11 @@
   "contributors": [
     {
       "name": "FLAME Project",
-      "threat_paths": 51,
-      "detection_rules": 62,
+      "threat_paths": 52,
+      "detection_rules": 64,
       "baselines": 22,
       "emulation_playbooks": 7,
-      "total": 142
+      "total": 145
     },
     {
       "name": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
@@ -167,7 +167,15 @@
       "baselines": 1,
       "emulation_playbooks": 0,
       "total": 1
+    },
+    {
+      "name": "FLAME Project (sourced from NRF Retail Fraud Taxonomy v1.0)",
+      "threat_paths": 0,
+      "detection_rules": 0,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 1
     }
   ],
-  "generated_at": "2026-03-23T00:30:54.786519+00:00"
+  "generated_at": "2026-03-23T02:05:38.084282+00:00"
 }

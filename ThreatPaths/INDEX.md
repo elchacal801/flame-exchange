@@ -1,6 +1,6 @@
 # FLAME Threat Path Index
 
-> 67 threat paths covering 101 fraud types across 18 sectors
+> 68 threat paths covering 103 fraud types across 18 sectors
 > Framework-agnostic: mapped to CFPF phases with cross-references to FT3, ATT&CK, and Group-IB Fraud Matrix
 
 ## Coverage Summary
@@ -19,7 +19,7 @@
 | TP-0010 | Disability Insurance Fraud via Fabricated Medical Documentation | fraudulent-claim, disability-fraud, provider-fraud | Insurance | P1-P5 |
 | TP-0011 | Romance Scam to Money Mule Recruitment Pipeline | romance-scam, money-mule | Cross-sector | P1-P5 |
 | TP-0012 | Authorized Push Payment Fraud — Tech Support / Bank Impersonation | vishing, impersonation, account-takeover | Banking, Credit-union | P1-P5 |
-| TP-0013 | Credential Stuffing to Loyalty Point / Gift Card Account Drain | credential-stuffing, account-takeover | Fintech, Banking, Cross-sector | P1-P5 |
+| TP-0013 | Credential Stuffing to Loyalty Point / Gift Card Account Drain | credential-stuffing, account-takeover | Banking, Cross-sector, Fintech, Retail | P1-P5 |
 | TP-0014 | Insider-Enabled Account Fraud at Financial Institution | insider-threat, collusion, account-takeover, data-theft | Banking, Credit-union, Insurance | P1-P5 |
 | TP-0015 | Employment Fraud via Brand Impersonation | impersonation, advance-fee-fraud, identity-theft | Healthcare, Staffing, Employment | P1-P5 |
 | TP-0016 | First-Party Fraud (Bust-Out) | first-party-fraud, bust-out | Banking, Credit-union | P1, P3, P4, P5 |
@@ -74,6 +74,7 @@
 | TP-0065 | Organized Mass-Marketing Fraud Infrastructure (Boiler Rooms & Lead Lists) | social-engineering, impersonation, vishing, robodialling-fraud, advance-fee-fraud, investment-scam, fraud-as-a-service | Cross-sector, Banking, Investment, Telecommunications | P1-P5 |
 | TP-0066 | Crash-for-Cash and Organized Insurance Fraud Rings | crash-for-cash, insurance-fraud, fraudulent-claim, collusion, documentary-fraud | Insurance, Healthcare | P1-P5 |
 | TP-0067 | AiTM Phishing Kit Infrastructure and Session Token Hijacking | aitm-phishing, phishing, account-takeover, credential-stuffing, fraud-as-a-service | Cross-sector, Banking, Fintech, Technology | P1-P5 |
+| TP-0068 | Gift Card Fraud Lifecycle — Generation, Tampering, and Monetization | gift-card-fraud, gift-card-tampering, loyalty-point-fraud, social-engineering | Retail, Payments | P1-P5 |
 
 ## Coverage by Fraud Type
 
@@ -128,7 +129,8 @@
 | Fraudulent Claim | TP-0010, TP-0056, TP-0066 |
 | Geo Routing | TP-0060 |
 | Ghost Student Fraud | TP-0033 |
-| Gift Card Fraud | TP-0039 |
+| Gift Card Fraud | TP-0039, TP-0068 |
+| Gift Card Tampering | TP-0068 |
 | Healthcare Fraud | TP-0021, TP-0028 |
 | Hospice Fraud | TP-0021 |
 | Hosting Provider Complicity | TP-0061 |
@@ -144,6 +146,7 @@
 | Kyc Circumvention | TP-0059 |
 | Loan Fraud | TP-0019, TP-0053, TP-0064 |
 | Long Firm Fraud | TP-0064 |
+| Loyalty Point Fraud | TP-0068 |
 | Malvertising | TP-0001, TP-0042 |
 | Malware | TP-0023, TP-0035, TP-0044 |
 | Money Laundering | TP-0059 |
@@ -167,7 +170,7 @@
 | Sanctions Evasion Infrastructure | TP-0045, TP-0048 |
 | Scam Compound Operations | TP-0047, TP-0058 |
 | Sextortion | TP-0052, TP-0058 |
-| Social Engineering | TP-0017, TP-0025, TP-0027, TP-0036, TP-0037, TP-0039, TP-0040, TP-0050, TP-0051, TP-0052, TP-0058, TP-0062, TP-0065 |
+| Social Engineering | TP-0017, TP-0025, TP-0027, TP-0036, TP-0037, TP-0039, TP-0040, TP-0050, TP-0051, TP-0052, TP-0058, TP-0062, TP-0065, TP-0068 |
 | State Criminal Convergence | TP-0044, TP-0046, TP-0055 |
 | Synthetic Identity | TP-0003, TP-0018, TP-0022, TP-0029, TP-0033 |
 | Synthetic Medical Fraud | TP-0028 |
@@ -196,8 +199,8 @@
 | Healthcare | TP-0015, TP-0021, TP-0028, TP-0034, TP-0056, TP-0066 |
 | Insurance | TP-0005, TP-0010, TP-0014, TP-0021, TP-0028, TP-0056, TP-0060, TP-0066 |
 | Investment | TP-0019, TP-0026, TP-0041, TP-0052, TP-0058, TP-0060, TP-0062, TP-0065 |
-| Payments | TP-0024, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0043, TP-0046, TP-0051, TP-0054, TP-0059, TP-0063 |
-| Retail | TP-0030, TP-0031, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0051, TP-0063 |
+| Payments | TP-0024, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0043, TP-0046, TP-0051, TP-0054, TP-0059, TP-0063, TP-0068 |
+| Retail | TP-0013, TP-0030, TP-0031, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0051, TP-0063, TP-0068 |
 | Staffing | TP-0015, TP-0057 |
 | Technology | TP-0034, TP-0039, TP-0054, TP-0057, TP-0061, TP-0067 |
 | Telecommunications | TP-0061, TP-0065 |
@@ -208,12 +211,12 @@
 
 | Framework | Mapping Status | Notes |
 |-----------|---------------|-------|
-| FS-ISAC CFPF | All 67 TPs mapped | Primary organizational structure |
-| MITRE ATT&CK | 62 of 67 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
-| Stripe FT3 | Mapped (61/67) | MIT-licensed JSON vendored in data/ft3/ |
+| FS-ISAC CFPF | All 68 TPs mapped | Primary organizational structure |
+| MITRE ATT&CK | 63 of 68 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
+| Stripe FT3 | Mapped (62/68) | MIT-licensed JSON vendored in data/ft3/ |
 | MITRE F3 | Awaiting release | Will map when F3 ships |
-| Group-IB Fraud Matrix | 67 of 67 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
-| Group-IB UCFF | 67 of 67 TPs aligned | 7-domain lifecycle maturity assessment |
+| Group-IB Fraud Matrix | 68 of 68 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
+| Group-IB UCFF | 68 of 68 TPs aligned | 7-domain lifecycle maturity assessment |
 
 ## Cross-Threat Path Connections
 

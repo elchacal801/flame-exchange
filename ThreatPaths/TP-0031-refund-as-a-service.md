@@ -50,7 +50,8 @@ related_tps:
     relationship: related-to
   - id: TP-0030
     relationship: shares-infrastructure
-regulatory_refs: []
+regulatory_refs:
+  - REG-NRF-RFT-V1
 tags:
   - refund-fraud
   - FTID
@@ -61,6 +62,7 @@ tags:
   - social-engineering
   - organized-fraud
   - telegram
+  - nrf-rft
 ---
 ```
 
@@ -340,6 +342,17 @@ index=customer_service sourcetype=refund_claims
 
 ---
 
+## Operational Evidence
+
+### EV-TP0031-2026-001: NRF Retail Fraud Taxonomy — Checkout and Return Fraud Techniques
+
+- **Source**: NRF Retail Fraud Taxonomy v1.0 (November 2024)
+- **CFPF Phase Coverage**: P4–P5
+- **Confidence**: High
+- **Summary**: NRF RFT documents Checkout techniques (FT1303) covering POS, guest services, and online channels used to convert illicit resources into liquid funds. Mitigations include restocking fees (FM1009) and delayed reimbursement (FM1010). NRF and expanded partners are developing v2.0 specifically to address return and refund fraud — validating FLAME's early coverage of refund-as-a-service as a distinct threat path. The NRF RFT is one of three foundational inputs to MITRE F3, which will also model cash-out and monetization activities.
+
+---
+
 ## References
 
 - **NRF 2024 National Retail Security Survey**: Industry-wide return fraud loss estimates; documents the $103B annual return fraud figure and rising trend in organized refund abuse. [Link](https://nrf.com/research/national-retail-security-survey)
@@ -349,6 +362,8 @@ index=customer_service sourcetype=refund_claims
 - **FBI IC3 — Organized Retail Crime Reporting**: Federal law enforcement perspective on the intersection of online refund fraud and organized retail crime networks.
 
 - **Related FLAME Threat Paths**: [TP-0016: First-Party Fraud](TP-0016-first-party-fraud.md) (foundational first-party fraud patterns); [TP-0030: E-Commerce Triangulation Fraud] (e-commerce fraud ecosystem overlap).
+
+- NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1303 Checkout techniques; v2.0 in development adding return/refund fraud
 
 ---
 

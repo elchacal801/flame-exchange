@@ -1,0 +1,86 @@
+title: Gift Card Merge and Transfer Anomaly Detection
+id: 7e3a5c9d-1b4f-6e2a-c8d7-5f2b8a4e1c03
+status: experimental
+description: >
+  Detects suspicious gift card merge and transfer activity indicating value
+  consolidation from multiple illicit sources. NRF RFT FT1202 documents that
+  fraudsters transfer value from multiple illicitly obtained gift cards to a
+  single legitimate card — e.g., 20 cards with $5 merged into one $255 card.
+  This consolidation is a key Control phase technique enabling subsequent
+  monetization. Detection signals include merge velocity, source card count,
+  and correlation with recent suspicious balance check activity.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1202 Gift Card Merge"
+  - "NRF FD1006 Velocity Attributes, FD1010 Transaction Data"
+threat_paths:
+  - TP-0068
+cfpf_phase: P3
+fraud_types:
+  - gift-card-fraud
+  - gift-card-tampering
+logsource:
+  product: retail
+  service: gift_card_transactions
+detection:
+  selection:
+    transaction_type:
+      - merge
+      - transfer
+      - consolidate
+  timeframe: 1h
+  condition: >
+    count(distinct source_card) by destination_card >= 3
+    AND timeframe < 60 minutes
+data_sources:
+  native_fields:
+    - source_card
+    - destination_card
+    - transfer_amount
+    - transfer_timestamp
+    - source_ip
+    - customer_id
+queries:
+  splunk: |-
+    `comment("Splunk SPL for Gift Card Merge and Transfer Anomaly Detection")`
+    `comment("NRF FT1202: Monitor for suspicious multi-card merges")`
+    index=retail sourcetype=giftcard:transactions
+      transaction_type IN ("merge", "transfer", "consolidate")
+    | stats count AS merge_count,
+            dc(source_card) AS source_card_count,
+            sum(transfer_amount) AS total_transferred,
+            min(_time) AS first_merge,
+            max(_time) AS last_merge,
+            values(source_ip) AS source_ips
+      BY destination_card
+    | eval window_minutes = round((last_merge - first_merge) / 60, 1)
+    | where source_card_count >= 3 AND window_minutes < 60
+    | sort - source_card_count
+
+  sql: |-
+    -- SQL: Gift card merge anomaly detection
+    SELECT
+        destination_card,
+        COUNT(DISTINCT source_card) AS source_card_count,
+        SUM(transfer_amount) AS total_transferred,
+        MIN(transfer_timestamp) AS first_merge,
+        MAX(transfer_timestamp) AS last_merge,
+        DATEDIFF(minute, MIN(transfer_timestamp), MAX(transfer_timestamp)) AS window_minutes
+    FROM gift_card_transfers
+    WHERE transfer_timestamp >= DATEADD(day, -7, GETDATE())
+      AND transaction_type IN ('merge', 'transfer', 'consolidate')
+    GROUP BY destination_card
+    HAVING COUNT(DISTINCT source_card) >= 3
+       AND DATEDIFF(minute, MIN(transfer_timestamp), MAX(transfer_timestamp)) < 60
+    ORDER BY source_card_count DESC
+
+falsepositives:
+  - Corporate gift card consolidation during employee reward program administration
+  - Legitimate customer merging multiple small-value gift cards received as gifts
+  - Gift card balance cleanup during promotional campaigns
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - flame.gift-card
+  - flame.nrf-rft

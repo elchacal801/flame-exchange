@@ -402,6 +402,12 @@
     "text": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim sessions through attacker-controlled infrastructure in real time. The attacker captures both credentials and session tokens/cookies as the victim authenticates with the legitimate service. Sekoia.io identified 11 major AiTM phishing kits active in early 2025, with Tycoon 2FA as the most prevalent (1,200+ domains, targeting 500K+ organizations monthly). Credential phishing attacks surged 703% in H2 2024. These kits operate as Phishing-as-a-Service (PhaaS) marketplaces, lowering the barrier to sophisticated MFA-bypass attacks. FIDO2/phishing-resistant MFA blocks 93.9% of AiTM campaigns, making it the primary defensive recommendation.\n\n**Distinction from TP-0054**: TP-0054 (FaaS Ecosystem) covers the broader fraud-as-a-service model. TP-0067 focuses specifically on the AiTM phishing kit infrastructure — the reverse proxy technology, session token capture mechanics, and PhaaS distribution model that enables downstream BEC, account takeover, and wire fraud."
   },
   {
+    "id": "TP-0068",
+    "type": "threat_path",
+    "title": "Gift Card Fraud Lifecycle — Generation, Tampering, and Monetization",
+    "text": "Gift card fraud encompasses a comprehensive attack lifecycle documented by the NRF Retail Fraud Taxonomy: brute-force number generation or purchase of stolen card numbers, automated balance probing to identify funded cards, physical tampering of unactivated cards in retail locations, card merging to consolidate illicit value, gift card extortion (impersonating government officials to coerce victims into purchasing cards), and monetization via resale platforms and drop shipping. This threat path is distinct from account takeover paths to gift card theft (TP-0013) — it covers the full gift card-centric fraud chain where the card itself is the primary target, not the account. The NRF documents this as a primary scheme involving organized theft groups (OTGs) operating at scale.\n\n**Distinction from TP-0013**: TP-0013 covers credential stuffing to loyalty/gift card account drain (the ATO path). TP-0068 covers the NRF RFT's gift card fraud lifecycle where the card is targeted directly through generation, tampering, balance probing, and extortion — without necessarily requiring account compromise."
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -1248,6 +1254,18 @@
     "text": "Detects fraudulent job postings using metadata features from the EMSCAD benchmark (18,000 samples). Key finding: when both telecommuting and company logo flags equal zero, there is a 92% probability of fraud. Geographic concentration patterns (e.g., Bakersfield 15:1 fake-to-real ratio) provide additional signal. DistilBERT+SMOTE models achieve strong results; DNNs reach ~98% accuracy. This rule implements the high-confidence metadata feature checks that require no NLP processing.\n"
   },
   {
+    "id": "DL-0144",
+    "type": "detection_rule",
+    "title": "Gift Card Balance Probing Velocity Detection",
+    "text": "Detects automated gift card balance probing by monitoring balance check endpoints for high-velocity requests. NRF RFT FT1103 documents that fraudsters abuse legitimate balance check functions (web app, phone IVR) to identify funded cards from brute-forced or purchased card number lists. Detection signals include request velocity per IP/device, VoIP source numbers, off-hours timing, and device fingerprint anomalies. Gift card balance probing is a precursor to gift card redemption fraud, card merging, and resale monetization.\n"
+  },
+  {
+    "id": "DL-0145",
+    "type": "detection_rule",
+    "title": "Gift Card Merge and Transfer Anomaly Detection",
+    "text": "Detects suspicious gift card merge and transfer activity indicating value consolidation from multiple illicit sources. NRF RFT FT1202 documents that fraudsters transfer value from multiple illicitly obtained gift cards to a single legitimate card — e.g., 20 cards with $5 merged into one $255 card. This consolidation is a key Control phase technique enabling subsequent monetization. Detection signals include merge velocity, source card count, and correlation with recent suspicious balance check activity.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",
@@ -1444,5 +1462,11 @@
     "type": "baseline",
     "title": "Crypto Token Liquidity Lifecycle Norms",
     "text": "This baseline defines normal and anomalous patterns for cryptocurrency token liquidity lifecycles on decentralized exchanges (DEXs). Rug pulls constituted 68% of all crypto scams in 2025 (350+ documented cases in 2024). Detection methods include Uniswap trading/liquidity feature engineering (Mazorra et al., 2022), EVM bytecode balance-flow heuristics (Yu & Lee, 2025), and temporal graph learning (TokenScout, Wu et al., 2024). ChainAware achieves 68% detection across Ethereum, BSC, Polygon, and Solana. Critical finding: OSINT signals precede on-chain anomalies by days or weeks. These baselines calibrate DL-0142 (rug pull early warning) detection thresholds."
+  },
+  {
+    "id": "BL-0035",
+    "type": "baseline",
+    "title": "Gift Card Transaction Velocity and Pattern Norms",
+    "text": "This baseline defines normal and anomalous patterns for gift card transaction activity including balance checks, merges/transfers, activation-to-redemption timing, and resale platform listings. The NRF Retail Fraud Taxonomy v1.0 documents gift card fraud as a primary scheme with 24 techniques across the full lifecycle. These baselines calibrate DL-0144 (balance probing) and DL-0145 (merge anomaly) detection thresholds. Key insight: the physical-to-digital bridge in gift card tampering creates a unique timing anomaly — tampered cards are redeemed within minutes of activation by a different device/IP than the purchaser."
   }
 ]

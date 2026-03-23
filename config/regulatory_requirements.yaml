@@ -276,6 +276,20 @@ regulations:
       - wire-fraud
       - money-mule
 
+  - id: REG-NRF-RFT-V1
+    name: "NRF Retail Fraud Taxonomy v1.0"
+    jurisdiction: US
+    category: taxonomy
+    description: "NRF/RH-ISAC/Target/Chertoff Group collaborative taxonomy (November 2024). 24 techniques (FT1001-FT1303.3) across 4-tactic lifecycle (Pre-Compromise, Initial Access, Control, Monetization), 20 mitigations, 11 detection sources. Covers Gift Card Fraud and Account Takeover schemes. One of three foundational inputs to MITRE F3 framework. V2.0 in development adding return/refund fraud."
+    relevant_fraud_types:
+      - gift-card-fraud
+      - loyalty-point-fraud
+      - account-takeover
+      - credential-stuffing
+      - returns-fraud
+      - refunding-as-a-service
+      - purchase-scam
+
   - id: REG-RF-CTA-2026-0319
     name: "Recorded Future CTA-2026-0319: 2025 Malicious Infrastructure Year in Review"
     jurisdiction: International

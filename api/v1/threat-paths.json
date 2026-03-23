@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-23T00:30:04.716872+00:00",
-    "total": 67
+    "generated_at": "2026-03-23T02:05:36.588375+00:00",
+    "total": 68
   },
   "data": [
     {
@@ -1427,9 +1427,10 @@
       "geopolitical_timing": null,
       "nation_state_nexus": null,
       "sectors": [
-        "fintech",
         "banking",
-        "cross-sector"
+        "cross-sector",
+        "fintech",
+        "retail"
       ],
       "fraud_types": [
         "credential-stuffing",
@@ -1441,7 +1442,8 @@
         "gift-card",
         "stored-value",
         "automated-attack",
-        "credential-reuse"
+        "credential-reuse",
+        "nrf-rft"
       ],
       "cfpf_phases": [
         "P1",
@@ -1489,6 +1491,7 @@
         "REG-CFPB-REGE",
         "REG-DORA",
         "REG-FFIEC-AUTH",
+        "REG-NRF-RFT-V1",
         "REG-OCC-FRAUD",
         "REG-PSD3-SCA"
       ],
@@ -1524,7 +1527,7 @@
           "relationship": "enables"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 1
     },
     {
       "id": "TP-0014",
@@ -3447,7 +3450,8 @@
         "return-abuse",
         "social-engineering",
         "organized-fraud",
-        "telegram"
+        "telegram",
+        "nrf-rft"
       ],
       "cfpf_phases": [
         "P1",
@@ -3485,7 +3489,9 @@
         "Perform Fraud",
         "Monetization"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-NRF-RFT-V1"
+      ],
       "ucff_domains": {
         "commit": "Level 2",
         "assess": "Level 3",
@@ -3512,7 +3518,7 @@
           "relationship": "shares-infrastructure"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 1
     },
     {
       "id": "TP-0032",
@@ -6864,7 +6870,8 @@
         "fake-website-network",
         "auction-fraud",
         "organized-retail-crime",
-        "organized-crime-group"
+        "organized-crime-group",
+        "nrf-rft"
       ],
       "cfpf_phases": [
         "P1",
@@ -6893,6 +6900,7 @@
         "Laundering"
       ],
       "regulatory_refs": [
+        "REG-NRF-RFT-V1",
         "REG-UNODC-ORGANIZED-FRAUD-2024"
       ],
       "ucff_domains": {
@@ -6923,7 +6931,7 @@
           "relationship": "shares-infrastructure"
         }
       ],
-      "evidence_count": 1
+      "evidence_count": 2
     },
     {
       "id": "TP-0064",
@@ -7311,6 +7319,97 @@
         },
         {
           "id": "TP-0054",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 1
+    },
+    {
+      "id": "TP-0068",
+      "title": "Gift Card Fraud Lifecycle — Generation, Tampering, and Monetization",
+      "category": "ThreatPath",
+      "date": "2026-03-22",
+      "author": "FLAME Project",
+      "source": "NRF Retail Fraud Taxonomy v1.0 (November 2024)",
+      "tlp": "WHITE",
+      "summary": "Gift card fraud encompasses a comprehensive attack lifecycle documented by the NRF Retail Fraud Taxonomy: brute-force number generation or purchase of stolen card numbers, automated balance probing to identify funded cards, physical tampering of unactivated cards in retail locations, card merging to consolidate illicit value, gift card extortion (impersonating government officials to coerce victims into purchasing cards), and monetization via resale platforms and drop shipping. This threat path is distinct from account takeover paths to gift card theft (TP-0013) — it covers the full gift card-centric fraud chain where the card itself is the primary target, not the account. The NRF documents this as a primary scheme involving organized theft groups (OTGs) operating at scale.\n\n**Distinction from TP-0013**: TP-0013 covers credential stuffing to loyalty/gift card account drain (the ATO path). TP-0068 covers the NRF RFT's gift card fraud lifecycle where the card is targeted directly through generation, tampering, balance probing, and extortion — without necessarily requiring account compromise.",
+      "confidence_score": 78,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "retail",
+        "payments"
+      ],
+      "fraud_types": [
+        "gift-card-fraud",
+        "gift-card-tampering",
+        "loyalty-point-fraud",
+        "social-engineering"
+      ],
+      "tags": [
+        "nrf-rft",
+        "gift-card",
+        "organized-retail-crime",
+        "balance-probing",
+        "card-tampering",
+        "resale",
+        "drop-shipping",
+        "otg"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1589.001",
+        "T1110",
+        "T1656"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT016"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-NRF-RFT-V1"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0144",
+        "DL-0145"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0013",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0031",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0063",
           "relationship": "shares-infrastructure"
         }
       ],

@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-23T00:30:06.116117+00:00",
-    "total": 101
+    "generated_at": "2026-03-23T02:05:38.028952+00:00",
+    "total": 103
   },
   "data": [
     {
@@ -543,6 +543,17 @@
     {
       "fraud_type": "gift-card-fraud",
       "phases": {
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
+      },
+      "total_tps": 2
+    },
+    {
+      "fraud_type": "gift-card-tampering",
+      "phases": {
         "P1": 1,
         "P2": 1,
         "P3": 1,
@@ -703,6 +714,17 @@
     },
     {
       "fraud_type": "long-firm-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
+      "fraud_type": "loyalty-point-fraud",
       "phases": {
         "P1": 1,
         "P2": 1,
@@ -968,13 +990,13 @@
     {
       "fraud_type": "social-engineering",
       "phases": {
-        "P1": 13,
-        "P2": 13,
-        "P3": 13,
-        "P4": 13,
-        "P5": 13
+        "P1": 14,
+        "P2": 14,
+        "P3": 14,
+        "P4": 14,
+        "P5": 14
       },
-      "total_tps": 13
+      "total_tps": 14
     },
     {
       "fraud_type": "state-criminal-convergence",

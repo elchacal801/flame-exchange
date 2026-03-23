@@ -1052,6 +1052,22 @@
         <category>CFPF-P5</category>
     </item>
     <item>
+      <title>[TP-0068] Gift Card Fraud Lifecycle — Generation, Tampering, and Monetization</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0068</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0068</guid>
+      <description>Gift card fraud encompasses a comprehensive attack lifecycle documented by the NRF Retail Fraud Taxonomy: brute-force number generation or purchase of stolen card numbers, automated balance probing to</description>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
+        <category>gift-card-fraud</category>
+        <category>gift-card-tampering</category>
+        <category>loyalty-point-fraud</category>
+        <category>social-engineering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
       <link>https://elchacal801.github.io/flame-fraud</link>
       <guid isPermaLink="false">flame-dl-DL-0001</guid>
@@ -2339,6 +2355,23 @@
       <description>Detects fraudulent job postings using metadata features from the EMSCAD benchmark (18,000 samples). Key finding: when both telecommuting and company logo flags equal zero, there is a 92% probability o</description>
         <category>employment-fraud</category>
         <category>social-engineering</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0144] Gift Card Balance Probing Velocity Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0144</guid>
+      <description>Detects automated gift card balance probing by monitoring balance check endpoints for high-velocity requests. NRF RFT FT1103 documents that fraudsters abuse legitimate balance check functions (web app</description>
+        <category>gift-card-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0145] Gift Card Merge and Transfer Anomaly Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0145</guid>
+      <description>Detects suspicious gift card merge and transfer activity indicating value consolidation from multiple illicit sources. NRF RFT FT1202 documents that fraudsters transfer value from multiple illicitly o</description>
+        <category>gift-card-fraud</category>
+        <category>gift-card-tampering</category>
         <category>severity-high</category>
     </item>
   </channel>

@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-23T00:30:06.114366+00:00",
-    "total": 33
+    "generated_at": "2026-03-23T02:05:38.026156+00:00",
+    "total": 34
   },
   "data": [
     {
@@ -1205,6 +1205,50 @@
         },
         {
           "id": "TP-0049",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0035",
+      "title": "Gift Card Transaction Velocity and Pattern Norms",
+      "category": "Baseline",
+      "date": "2026-03-22",
+      "author": "FLAME Project (sourced from NRF Retail Fraud Taxonomy v1.0)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines normal and anomalous patterns for gift card transaction activity including balance checks, merges/transfers, activation-to-redemption timing, and resale platform listings. The NRF Retail Fraud Taxonomy v1.0 documents gift card fraud as a primary scheme with 24 techniques across the full lifecycle. These baselines calibrate DL-0144 (balance probing) and DL-0145 (merge anomaly) detection thresholds. Key insight: the physical-to-digital bridge in gift card tampering creates a unique timing anomaly — tampered cards are redeemed within minutes of activation by a different device/IP than the purchaser.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "gift-card",
+        "retail",
+        "balance-probing",
+        "card-tampering",
+        "nrf-rft",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0013",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0068",
           "relationship": "related-to"
         }
       ]
