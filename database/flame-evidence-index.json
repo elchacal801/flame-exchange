@@ -220,6 +220,16 @@
     "cfpf_phase_coverage": "P1 through P5"
   },
   {
+    "evidence_id": "EV-TP0023-2026-001",
+    "tp_id": "TP-0023",
+    "title": "2025 H2 Mobile Banking Trojan Evolution",
+    "source": "Thales Group CTI, \"Threat Landscape Report 2025 H2\" — Finance sector analysis",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
     "evidence_id": "EV-TP0025-2026-002",
     "tp_id": "TP-0025",
     "title": "UNODC AI-Enhanced Romance and Investment Fraud Convergence",
@@ -900,6 +910,36 @@
     "cfpf_phase_coverage": "P1–P5"
   },
   {
+    "evidence_id": "EV-TP0067-2026-002",
+    "tp_id": "TP-0067",
+    "title": "Tycoon 2FA Takedown and Scale",
+    "source": "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026); Microsoft DCU; Europol",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-003",
+    "tp_id": "TP-0067",
+    "title": "EvilProxy C-Suite Targeting",
+    "source": "Proofpoint (2023); phishing kit intelligence reference",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2–P4"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-004",
+    "tp_id": "TP-0067",
+    "title": "FIDO2 Proven Effectiveness",
+    "source": "Google, Cloudflare, Microsoft, NIST SP 800-63-4",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2"
+  },
+  {
     "evidence_id": "EV-TP0068-2026-001",
     "tp_id": "TP-0068",
     "title": "NRF Retail Fraud Taxonomy v1.0 Gift Card Fraud Scheme",
@@ -908,5 +948,25 @@
     "domain_count": "",
     "confidence": "High",
     "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0069-2026-001",
+    "tp_id": "TP-0069",
+    "title": "Smishing Triad Ecosystem Scale",
+    "source": "Resecurity (August 2023 — initial identification); Netcraft domain tracking; FBI IC3 2024 complaint data",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0069-2026-002",
+    "tp_id": "TP-0069",
+    "title": "Darcula/Magic Cat Platform Analysis",
+    "source": "PRODAFT (LARVA-246 tracking); NRK/Mnemonic investigative reporting; Google RICO lawsuit (November 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P3"
   }
 ]

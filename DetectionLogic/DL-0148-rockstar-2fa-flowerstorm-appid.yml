@@ -1,0 +1,73 @@
+title: Rockstar 2FA / FlowerStorm Application ID and User-Agent Detection
+id: 3c6d9e2b-7a4f-1b5c-d8e3-9f2a6b4c7d01
+status: experimental
+description: >
+  Detects sign-ins associated with the Rockstar 2FA and FlowerStorm AiTM
+  phishing kits (Storm-1575 lineage) by matching the hardcoded Office365
+  Application ID and User-Agent string used by these kits. Rockstar 2FA and
+  its successor FlowerStorm use the Office365 Application ID
+  72782ba9-4490-4f03-8d82-562370ea3566 combined with the hardcoded User-Agent
+  string containing "WebView/3.0" — a high-fidelity detection signature with
+  very low false positive rate. FlowerStorm surged within ~10 days of Rockstar
+  2FA's infrastructure collapse in November 2024.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "Trustwave, Rockstar 2FA analysis (November 2024)"
+  - "Sophos, FlowerStorm analysis — 190 IOCs"
+  - "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
+threat_paths:
+  - TP-0067
+cfpf_phase: P2
+fraud_types:
+  - aitm-phishing
+  - account-takeover
+logsource:
+  product: azure
+  service: entra_id_signin
+detection:
+  selection_appid:
+    AppId: "72782ba9-4490-4f03-8d82-562370ea3566"
+  selection_useragent:
+    UserAgent|contains: "WebView/3.0"
+  condition: selection_appid AND selection_useragent
+data_sources:
+  native_fields:
+    - AppId
+    - UserAgent
+    - UserPrincipalName
+    - IPAddress
+    - ResultType
+    - RiskLevelDuringSignIn
+    - Location
+queries:
+  kql: |-
+    // KQL: Rockstar 2FA / FlowerStorm Detection
+    // Matches hardcoded AppId and WebView/3.0 User-Agent
+    SigninLogs
+    | where TimeGenerated > ago(7d)
+    | where AppId == "72782ba9-4490-4f03-8d82-562370ea3566"
+    | where UserAgent contains "WebView/3.0"
+    | project TimeGenerated, UserPrincipalName, IPAddress, UserAgent,
+              AppId, ResultType, RiskLevelDuringSignIn,
+              Location, ConditionalAccessStatus
+
+  splunk: |-
+    `comment("Splunk SPL for Rockstar 2FA / FlowerStorm Detection")`
+    `comment("High-fidelity match on hardcoded AppId + WebView/3.0 User-Agent")`
+    index=azure sourcetype=azure:aad:signin
+      AppId="72782ba9-4490-4f03-8d82-562370ea3566"
+      UserAgent="*WebView/3.0*"
+    | table _time, UserPrincipalName, IPAddress, UserAgent,
+            AppId, ResultType, RiskLevelDuringSignIn, Location
+
+falsepositives:
+  - Very low — this specific Application ID and User-Agent combination is not
+    used by legitimate Microsoft client applications
+level: critical
+tags:
+  - cfpf.phase2.initial_access
+  - flame.aitm
+  - flame.rockstar-2fa
+  - flame.flowerstorm
+  - flame.storm-1575

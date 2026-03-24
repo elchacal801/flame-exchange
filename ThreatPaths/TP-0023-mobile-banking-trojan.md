@@ -7,7 +7,7 @@ title: "Mobile Banking Trojan / Overlay Attack"
 category: ThreatPath
 date: 2026-02-20
 author: "FLAME Project"
-source: "Internal Knowledge Base"
+source: "Internal Knowledge Base; Thales Threat Landscape Report 2025 H2 — Finance sector mobile malware analysis"
 tlp: WHITE
 sector:
   - banking
@@ -52,6 +52,8 @@ related_tps:
     relationship: related-to
   - id: TP-0008
     relationship: shares-infrastructure
+  - id: TP-0069
+    relationship: related-to
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
@@ -186,6 +188,17 @@ tags:
 
 The mobile banking trojan ecosystem is dominated by a handful of malware-as-a-service (MaaS) families that are continuously evolving. As of 2025-2026, the most active families include Octo (v2), Vultur, Anatsa (TeaBot), and Hook — each offering builder kits on underground forums for $3,000-$7,000/month. The Automated Transfer System (ATS) capability represents a paradigm shift in mobile fraud: because the fraudulent transaction originates from the victim's own device using their established session, traditional server-side fraud detection (IP reputation, device fingerprinting, geolocation) is entirely bypassed. ThreatFabric's 2024 Mobile Threat Landscape report documented over 100 banking apps targeted by overlay attacks, with European and Latin American banks most heavily targeted. Google's Play Protect and the restricted accessibility service policies introduced in Android 13+ have raised the bar for malware distribution, pushing actors toward sideloading via smishing and third-party app stores. Financial institutions should prioritize Runtime Application Self-Protection (RASP) integration, behavioral biometrics for ATS detection, and migration away from SMS-based MFA to push notification or FIDO2 authentication.
 
+The Thales Threat Landscape Report 2025 H2 identified four additional mobile banking trojans active in the financial sector during the second half of 2025:
+
+| Trojan | Key Capabilities | Distribution | Notable Technique |
+|--------|-----------------|--------------|-------------------|
+| Hook v3 | 107 remote commands, ransomware overlays, screen capture | Phishing, GitHub | Expanded remote command set enables full device control beyond banking fraud |
+| ToxicPanda | Banking overlays, credential harvesting via Accessibility Services | App stores, smishing | Leverages legitimate app store distribution to bypass sideloading defenses |
+| Astaroth | Browser-stored credential theft, session token harvesting | Fake apps, cloud services | Uses GitHub for resilient C2 infrastructure and steganography for payload delivery |
+| Coyote | Automated fraudulent transfers via Microsoft UI Automation API | Smishing, fake apps | Abuses Windows UI Automation framework — a novel technique that bypasses traditional ATS behavioral detection |
+
+Hook v3 and ToxicPanda follow the established overlay/Accessibility Services model, while Astaroth and Coyote represent capability evolution: Astaroth's GitHub-based C2 improves resilience against takedowns, and Coyote's abuse of the Microsoft UI Automation API is a novel technique that may evade behavioral biometrics tuned for traditional ATS navigation patterns.
+
 ---
 
 ## References
@@ -196,6 +209,18 @@ The mobile banking trojan ecosystem is dominated by a handful of malware-as-a-se
 - Google: Android Security & Privacy Year in Review — Play Protect statistics and accessibility service policy changes.
 - OWASP Mobile Security: "Mobile Application Security Verification Standard (MASVS)" — RASP and anti-tampering requirements. [Link](https://mas.owasp.org/MASVS/)
 - Europol: Internet Organised Crime Threat Assessment (IOCTA) — mobile malware as a service trends. [Link](https://www.europol.europa.eu/publications-events/main-reports/internet-organised-crime-threat-assessment-iocta)
+- Thales Group CTI, "Threat Landscape Report 2025 H2" — Finance sector mobile malware analysis (Hook v3, ToxicPanda, Astaroth, Coyote)
+
+---
+
+## Operational Evidence
+
+### EV-TP0023-2026-001: 2025 H2 Mobile Banking Trojan Evolution
+
+- **Source**: Thales Group CTI, "Threat Landscape Report 2025 H2" — Finance sector analysis
+- **Key Findings**: Four new mobile banking trojan families identified as active threats in H2 2025: Hook v3 (107 remote commands, ransomware overlays), ToxicPanda (Accessibility Services abuse via legitimate app stores), Astaroth (GitHub-based resilient C2 with steganography), and Coyote (Microsoft UI Automation API abuse for automated fraudulent transfers). Coyote's UI Automation technique represents a novel evasion of traditional ATS behavioral detection. The finance sector recorded 533 ransomware attacks in 2025, with mobile malware serving as a distinct but parallel initial access vector.
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
 
 ---
 
@@ -205,3 +230,4 @@ The mobile banking trojan ecosystem is dominated by a handful of malware-as-a-se
 |------|--------|--------|
 | 2026-02-20 | FLAME Project | Initial creation |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Analyst Notes, enriched References |
+| 2026-03-23 | FLAME Project | Enrichment: added Hook v3, ToxicPanda, Astaroth, Coyote from Thales 2025 H2 report; added TP-0069 relationship; added operational evidence |

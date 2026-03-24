@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-23T02:05:37.301963+00:00",
-    "total": 143
+    "generated_at": "2026-03-24T02:13:59.214688+00:00",
+    "total": 148
   },
   "data": [
     {
@@ -9753,6 +9753,338 @@
         "Corporate gift card consolidation during employee reward program administration",
         "Legitimate customer merging multiple small-value gift cards received as gifts",
         "Gift card balance cleanup during promotional campaigns"
+      ]
+    },
+    {
+      "id": "9a4b2e7d-3f1c-8d5a-b6e2-4c7a1d9f3e08",
+      "dl_id": "DL-0146",
+      "title": "AiTM Session Token Replay — Same SessionId from Multiple IPs",
+      "status": "experimental",
+      "description": "Detects potential AiTM session token replay by identifying the same Entra ID SessionId appearing from multiple IP addresses within a short time window. In an AiTM attack, the phishing proxy IP and the attacker's actual replay IP both appear on the same session. This is the single strongest AiTM detection signal in Microsoft Entra ID sign-in logs. Additional confidence comes from the error code sequence 50074 (MFA required) → 50140 (Keep Me Signed In) → 0 (success) in rapid succession with medium or high risk level.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "ResultType": 0
+        },
+        "condition": "count(distinct IPAddress) by SessionId >= 2 AND timeframe < 4 hours\n"
+      },
+      "logsource": {
+        "product": "azure",
+        "service": "entra_id_signin"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "SessionId",
+          "IPAddress",
+          "UserPrincipalName",
+          "UserAgent",
+          "AppId",
+          "ResultType",
+          "RiskLevelDuringSignIn",
+          "AuthenticationRequirement"
+        ]
+      },
+      "queries": {
+        "kql": "// KQL: AiTM Session Token Replay Detection\n// Detects same SessionId used from multiple IPs (proxy + attacker)\nlet timeWindow = 4h;\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    IPCount = dcount(IPAddress),\n    IPs = make_set(IPAddress),\n    UserAgents = make_set(UserAgent),\n    AppIds = make_set(AppId),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated),\n    RiskLevels = make_set(RiskLevelDuringSignIn)\n  by SessionId, UserPrincipalName\n| where IPCount >= 2\n| where datetime_diff('hour', MaxTime, MinTime) <= 4\n| project UserPrincipalName, SessionId, IPCount, IPs, UserAgents,\n          AppIds, MinTime, MaxTime, RiskLevels",
+        "splunk": "`comment(\"Splunk SPL for AiTM Session Token Replay Detection\")`\n`comment(\"Same SessionId from multiple IPs indicates token replay\")`\nindex=azure sourcetype=azure:aad:signin ResultType=0\n| stats dc(IPAddress) AS ip_count,\n        values(IPAddress) AS ips,\n        values(UserAgent) AS user_agents,\n        values(AppId) AS app_ids,\n        min(_time) AS first_seen,\n        max(_time) AS last_seen,\n        values(RiskLevelDuringSignIn) AS risk_levels\n  BY SessionId, UserPrincipalName\n| where ip_count >= 2\n| eval window_hours = round((last_seen - first_seen) / 3600, 2)\n| where window_hours <= 4\n| sort - ip_count"
+      },
+      "references": [
+        "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)",
+        "Microsoft Sentinel PossibleAiTMPhishingAttemptAgainstAAD.yaml analytic rule",
+        "reprise99 Identity-PotentialAiTM.kql"
+      ],
+      "threat_path_ids": [
+        "TP-0067"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "aitm-phishing"
+      ],
+      "tags": [
+        "cfpf.phase3.positioning",
+        "flame.aitm",
+        "flame.mfa-bypass",
+        "flame.session-replay"
+      ],
+      "falsepositives": [
+        "Users connecting through VPN that changes IP mid-session",
+        "Load-balanced corporate proxies presenting different egress IPs",
+        "Mobile users transitioning between WiFi and cellular networks"
+      ]
+    },
+    {
+      "id": "2b5c8f1a-6d3e-9a4b-c7f2-8e1d5a3b6c09",
+      "dl_id": "DL-0147",
+      "title": "Sneaky 2FA Impossible Device Shift — User-Agent Mismatch per Auth Step",
+      "status": "experimental",
+      "description": "Detects the \"impossible device shift\" signature characteristic of Sneaky 2FA and related AiTM phishing kits. Sneaky 2FA uses different hardcoded User-Agent strings per authentication step — Safari on iOS for the Login:login step and Edge on Windows for the Login:resume step. This pattern is detectable via correlation of mismatched User-Agents within the same correlation ID within 10 minutes. This detection also catches Dadsec (missing User-Agent), Tycoon 2FA (rare User-Agent values), and W3LL OV6 (inconsistent UAs).\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "AuthenticationStepResultType": 0
+        },
+        "condition": "count(distinct UserAgent) by CorrelationId >= 2 AND timeframe < 10 minutes\n"
+      },
+      "logsource": {
+        "product": "azure",
+        "service": "entra_id_signin"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "CorrelationId",
+          "UserAgent",
+          "UserPrincipalName",
+          "IPAddress",
+          "AuthenticationStepResultType",
+          "AuthenticationDetails"
+        ]
+      },
+      "queries": {
+        "kql": "// KQL: Sneaky 2FA Impossible Device Shift Detection\n// Correlates mismatched User-Agents within same authentication flow\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UserAgents = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n// High confidence: Safari/iOS + Edge/Windows combination\n| where UserAgents has \"Safari\" and UserAgents has \"Edge\"\n    or UserAgents has \"iPhone\" and UserAgents has \"Windows\"\n| project UserPrincipalName, CorrelationId, UACount, UserAgents,\n          IPs, MinTime, MaxTime",
+        "splunk": "`comment(\"Splunk SPL for Sneaky 2FA Impossible Device Shift\")`\n`comment(\"Detects User-Agent mismatch within same auth correlation ID\")`\nindex=azure sourcetype=azure:aad:signin ResultType=0\n| stats dc(UserAgent) AS ua_count,\n        values(UserAgent) AS user_agents,\n        values(IPAddress) AS ips,\n        min(_time) AS first_event,\n        max(_time) AS last_event\n  BY CorrelationId, UserPrincipalName\n| where ua_count >= 2\n| eval window_minutes = round((last_event - first_event) / 60, 1)\n| where window_minutes <= 10\n| search (user_agents=\"*Safari*\" AND user_agents=\"*Edge*\")\n    OR (user_agents=\"*iPhone*\" AND user_agents=\"*Windows*\")\n| sort - ua_count"
+      },
+      "references": [
+        "Sekoia TDR, Sneaky 2FA analysis (December 2024)",
+        "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
+      ],
+      "threat_path_ids": [
+        "TP-0067"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "aitm-phishing"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.aitm",
+        "flame.sneaky-2fa",
+        "flame.user-agent-anomaly"
+      ],
+      "falsepositives": [
+        "Extremely rare in legitimate authentication — different User-Agents within the same correlation ID should not occur in normal browser authentication"
+      ]
+    },
+    {
+      "id": "3c6d9e2b-7a4f-1b5c-d8e3-9f2a6b4c7d01",
+      "dl_id": "DL-0148",
+      "title": "Rockstar 2FA / FlowerStorm Application ID and User-Agent Detection",
+      "status": "experimental",
+      "description": "Detects sign-ins associated with the Rockstar 2FA and FlowerStorm AiTM phishing kits (Storm-1575 lineage) by matching the hardcoded Office365 Application ID and User-Agent string used by these kits. Rockstar 2FA and its successor FlowerStorm use the Office365 Application ID 72782ba9-4490-4f03-8d82-562370ea3566 combined with the hardcoded User-Agent string containing \"WebView/3.0\" — a high-fidelity detection signature with very low false positive rate. FlowerStorm surged within ~10 days of Rockstar 2FA's infrastructure collapse in November 2024.\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection_appid": {
+          "AppId": "72782ba9-4490-4f03-8d82-562370ea3566"
+        },
+        "selection_useragent": {
+          "UserAgent|contains": "WebView/3.0"
+        },
+        "condition": "selection_appid AND selection_useragent"
+      },
+      "logsource": {
+        "product": "azure",
+        "service": "entra_id_signin"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "AppId",
+          "UserAgent",
+          "UserPrincipalName",
+          "IPAddress",
+          "ResultType",
+          "RiskLevelDuringSignIn",
+          "Location"
+        ]
+      },
+      "queries": {
+        "kql": "// KQL: Rockstar 2FA / FlowerStorm Detection\n// Matches hardcoded AppId and WebView/3.0 User-Agent\nSigninLogs\n| where TimeGenerated > ago(7d)\n| where AppId == \"72782ba9-4490-4f03-8d82-562370ea3566\"\n| where UserAgent contains \"WebView/3.0\"\n| project TimeGenerated, UserPrincipalName, IPAddress, UserAgent,\n          AppId, ResultType, RiskLevelDuringSignIn,\n          Location, ConditionalAccessStatus",
+        "splunk": "`comment(\"Splunk SPL for Rockstar 2FA / FlowerStorm Detection\")`\n`comment(\"High-fidelity match on hardcoded AppId + WebView/3.0 User-Agent\")`\nindex=azure sourcetype=azure:aad:signin\n  AppId=\"72782ba9-4490-4f03-8d82-562370ea3566\"\n  UserAgent=\"*WebView/3.0*\"\n| table _time, UserPrincipalName, IPAddress, UserAgent,\n        AppId, ResultType, RiskLevelDuringSignIn, Location"
+      },
+      "references": [
+        "Trustwave, Rockstar 2FA analysis (November 2024)",
+        "Sophos, FlowerStorm analysis — 190 IOCs",
+        "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
+      ],
+      "threat_path_ids": [
+        "TP-0067"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "aitm-phishing"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.aitm",
+        "flame.flowerstorm",
+        "flame.rockstar-2fa",
+        "flame.storm-1575"
+      ],
+      "falsepositives": [
+        "Very low — this specific Application ID and User-Agent combination is not used by legitimate Microsoft client applications"
+      ]
+    },
+    {
+      "id": "4d7e1f3c-8b5a-2c6d-e9f4-1a3b7c5d8e02",
+      "dl_id": "DL-0149",
+      "title": "Smishing Triad Domain Pattern and iMessage/RCS Delivery Detection",
+      "status": "experimental",
+      "description": "Detects indicators of Smishing Triad phishing infrastructure including Darcula/Magic Cat domain patterns and Chenlun kit fingerprints. The Smishing Triad ecosystem has generated 194,000+ malicious domains targeting users in 121+ countries, compromising 884,000+ credit cards. Darcula domains follow a \"com-\" prefix pattern. Chenlun kits are fingerprinted by the presence of ResourceRedConfig.js and /ResourceConfig/urlConfig.json files. Detection also covers toll-scam lure patterns (E-ZPass, SunPass, FasTrak, I-Pass) commonly used in smishing campaigns.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_darcula_domain": {
+          "url|re": "^https?://com-[a-z0-9]+"
+        },
+        "selection_chenlun_resource": {
+          "url|contains": [
+            "ResourceRedConfig.js",
+            "/ResourceConfig/urlConfig.json"
+          ]
+        },
+        "selection_toll_lure": {
+          "url|contains": [
+            "ezpass",
+            "sunpass",
+            "fastrak",
+            "ipass",
+            "toll",
+            "parking-notice"
+          ]
+        },
+        "condition": "selection_darcula_domain OR selection_chenlun_resource OR selection_toll_lure"
+      },
+      "logsource": {
+        "product": "web_proxy",
+        "service": "url_filtering"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "url",
+          "domain",
+          "referrer",
+          "user_agent",
+          "source_ip",
+          "destination_ip",
+          "tls_sni",
+          "domain_age_days"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Smishing Triad Domain Pattern Detection\")`\n`comment(\"Matches Darcula com- prefix, Chenlun kit files, and toll-scam lures\")`\nindex=web sourcetype=proxy:access\n| eval smishing_indicator = case(\n    match(url, \"^https?://com-[a-z0-9]+\"), \"darcula_domain_pattern\",\n    match(url, \"ResourceRedConfig\\.js\"), \"chenlun_kit_fingerprint\",\n    match(url, \"/ResourceConfig/urlConfig\\.json\"), \"chenlun_kit_fingerprint\",\n    match(url, \"(?i)(ezpass|sunpass|fastrak|ipass|toll-|parking-notice)\"), \"toll_scam_lure\",\n    1=1, null()\n  )\n| where isnotnull(smishing_indicator)\n| lookup domain_age_lookup domain OUTPUT domain_age_days\n| where domain_age_days < 30 OR isnull(domain_age_days)\n| stats count BY smishing_indicator, domain, source_ip, url\n| sort - count",
+        "sql": "-- SQL: Smishing Triad domain pattern detection\n-- Correlates proxy logs with domain intelligence\nSELECT\n    p.access_time,\n    p.source_ip,\n    p.url,\n    p.domain,\n    d.registration_date,\n    DATEDIFF(day, d.registration_date, GETDATE()) AS domain_age_days,\n    CASE\n        WHEN p.domain LIKE 'com-%' THEN 'darcula_domain_pattern'\n        WHEN p.url LIKE '%ResourceRedConfig.js%' THEN 'chenlun_kit_fingerprint'\n        WHEN p.url LIKE '%/ResourceConfig/urlConfig.json%' THEN 'chenlun_kit_fingerprint'\n        WHEN p.url LIKE '%ezpass%' OR p.url LIKE '%sunpass%'\n            OR p.url LIKE '%fastrak%' OR p.url LIKE '%ipass%' THEN 'toll_scam_lure'\n    END AS indicator_type\nFROM proxy_access_logs p\nLEFT JOIN domain_intelligence d ON p.domain = d.domain\nWHERE (p.domain LIKE 'com-%'\n       OR p.url LIKE '%ResourceRedConfig.js%'\n       OR p.url LIKE '%/ResourceConfig/urlConfig.json%'\n       OR p.url LIKE '%ezpass%' OR p.url LIKE '%sunpass%'\n       OR p.url LIKE '%fastrak%' OR p.url LIKE '%ipass%')\n  AND p.access_time >= DATEADD(day, -7, GETDATE())\nORDER BY p.access_time DESC"
+      },
+      "references": [
+        "Resecurity, Smishing Triad analysis (August 2023)",
+        "Netcraft, Darcula/Magic Cat documentation (March 2024)",
+        "PRODAFT, LARVA-246 tracking",
+        "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
+      ],
+      "threat_path_ids": [
+        "TP-0069"
+      ],
+      "fraud_types": [
+        "card-not-present-fraud",
+        "phishing",
+        "smishing"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.chenlun",
+        "flame.darcula",
+        "flame.smishing",
+        "flame.smishing-triad",
+        "flame.toll-scam"
+      ],
+      "falsepositives": [
+        "Legitimate domains beginning with \"com-\" (uncommon but possible)",
+        "Legitimate toll payment services (filter by known-good domains)",
+        "Security researchers analyzing smishing infrastructure"
+      ]
+    },
+    {
+      "id": "5e8f2a4d-9c6b-3d7e-f1a5-2b4c8d6e9f03",
+      "dl_id": "DL-0150",
+      "title": "Post-AiTM Inbox Rule Manipulation — New Rules from Risky Sign-In",
+      "status": "experimental",
+      "description": "Detects inbox rule creation or modification in Exchange Online following a sign-in flagged with medium or high risk, or following authentication from a previously unseen IP address. Post-AiTM inbox rule manipulation is a characteristic Phase 3 (Positioning) technique: within minutes of session hijack, attackers create inbox rules to redirect or delete security alerts, payment notifications, and colleague communications. This detection correlates Exchange Online Unified Audit Log operations (New-InboxRule, Set-InboxRule, Set-Mailbox forwarding) with Entra ID risky sign-in events.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection_inbox_rule": {
+          "Operation": [
+            "New-InboxRule",
+            "Set-InboxRule",
+            "Enable-InboxRule",
+            "Set-Mailbox"
+          ]
+        },
+        "selection_suspicious_params": {
+          "Parameters|contains": [
+            "ForwardTo",
+            "ForwardAsAttachmentTo",
+            "RedirectTo",
+            "DeleteMessage",
+            "MarkAsRead",
+            "MoveToFolder"
+          ]
+        },
+        "timeframe": "24h",
+        "condition": "selection_inbox_rule AND selection_suspicious_params"
+      },
+      "logsource": {
+        "product": "m365",
+        "service": "exchange"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "Operation",
+          "UserId",
+          "ClientIP",
+          "Parameters",
+          "CreationTime",
+          "ResultStatus"
+        ]
+      },
+      "queries": {
+        "kql": "// KQL: Post-AiTM Inbox Rule Manipulation Detection\n// Correlates risky sign-ins with subsequent inbox rule changes\nlet risky_signins = SigninLogs\n| where TimeGenerated > ago(24h)\n| where RiskLevelDuringSignIn in (\"medium\", \"high\")\n    or RiskLevelAggregated in (\"medium\", \"high\")\n| where ResultType == 0\n| project SignInTime = TimeGenerated, UserPrincipalName, SignInIP = IPAddress,\n          RiskLevel = RiskLevelDuringSignIn;\nlet inbox_changes = OfficeActivity\n| where TimeGenerated > ago(24h)\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\",\n                             \"DeleteMessage\", \"MarkAsRead\")\n| project RuleTime = TimeGenerated, UserId, ClientIP, Operation, Parameters;\nrisky_signins\n| join kind=inner inbox_changes\n    on $left.UserPrincipalName == $right.UserId\n| where RuleTime between (SignInTime .. (SignInTime + 24h))\n| project UserPrincipalName, SignInTime, SignInIP, RiskLevel,\n          RuleTime, Operation, Parameters, ClientIP",
+        "splunk": "`comment(\"Splunk SPL for Post-AiTM Inbox Rule Manipulation\")`\n`comment(\"Correlates risky sign-ins with inbox rule creation within 24h\")`\nindex=o365 sourcetype=o365:management:activity\n  Operation IN (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| search Parameters=\"*ForwardTo*\" OR Parameters=\"*RedirectTo*\"\n    OR Parameters=\"*DeleteMessage*\" OR Parameters=\"*MarkAsRead*\"\n    OR Parameters=\"*ForwardAsAttachmentTo*\"\n| join UserId [\n  search index=azure sourcetype=azure:aad:signin\n    ResultType=0\n    (RiskLevelDuringSignIn=\"medium\" OR RiskLevelDuringSignIn=\"high\"\n     OR RiskLevelAggregated=\"medium\" OR RiskLevelAggregated=\"high\")\n  | rename UserPrincipalName AS UserId, _time AS signin_time\n]\n| eval hours_after_signin = round((_time - signin_time) / 3600, 1)\n| where hours_after_signin >= 0 AND hours_after_signin <= 24\n| table _time, UserId, signin_time, hours_after_signin,\n        ClientIP, Operation, Parameters, RiskLevelDuringSignIn"
+      },
+      "references": [
+        "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)",
+        "Microsoft, AiTM phishing attacks: detection and mitigation guidance",
+        "Bert-JanP, PotentialAiTMPhishing.md hunting query"
+      ],
+      "threat_path_ids": [
+        "TP-0067"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "aitm-phishing",
+        "business-email-compromise"
+      ],
+      "tags": [
+        "cfpf.phase3.positioning",
+        "flame.aitm",
+        "flame.bec",
+        "flame.inbox-rule",
+        "flame.post-compromise"
+      ],
+      "falsepositives": [
+        "Legitimate inbox rule creation by users shortly after a sign-in flagged as risky due to VPN or travel",
+        "IT administrators creating mail flow rules from new IP addresses",
+        "Automated email management tools creating rules on behalf of users"
       ]
     }
   ]

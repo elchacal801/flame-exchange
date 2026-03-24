@@ -408,6 +408,12 @@
     "text": "Gift card fraud encompasses a comprehensive attack lifecycle documented by the NRF Retail Fraud Taxonomy: brute-force number generation or purchase of stolen card numbers, automated balance probing to identify funded cards, physical tampering of unactivated cards in retail locations, card merging to consolidate illicit value, gift card extortion (impersonating government officials to coerce victims into purchasing cards), and monetization via resale platforms and drop shipping. This threat path is distinct from account takeover paths to gift card theft (TP-0013) — it covers the full gift card-centric fraud chain where the card itself is the primary target, not the account. The NRF documents this as a primary scheme involving organized theft groups (OTGs) operating at scale.\n\n**Distinction from TP-0013**: TP-0013 covers credential stuffing to loyalty/gift card account drain (the ATO path). TP-0068 covers the NRF RFT's gift card fraud lifecycle where the card is targeted directly through generation, tampering, balance probing, and extortion — without necessarily requiring account compromise."
   },
   {
+    "id": "TP-0069",
+    "type": "threat_path",
+    "title": "Smishing PhaaS Ecosystem — Darcula, Smishing Triad, and Mass-Messaging Credential Harvest",
+    "text": "The Smishing PhaaS Ecosystem is a loosely federated Chinese-speaking cybercrime network — collectively known as the Smishing Triad — that operates industrialized smishing infrastructure at unprecedented scale: 194,000+ malicious domains registered since January 2024, 884,000+ credit cards compromised in a seven-month period, and victims in 121+ countries. The ecosystem centers on three major Phishing-as-a-Service (PhaaS) platforms — Darcula (tracked as LARVA-246), Lucid (operated by XinXin Group / LARVA-242), and Lighthouse (developed by Wang Duo Yu / LARVA-241) — supported by independent kit developers (Chenlun), bulk SMS enablers (Oak Tel/Carrie SMS), and dedicated smishing message platforms (Panda Shop, StupidFISH). What distinguishes this threat path from traditional SMS phishing is the exploitation of Apple iMessage and Android RCS to bypass carrier-level SMS filtering, real-time character-by-character credential streaming via Magic Cat, and the integration of GenAI-powered phishing form generation (darcula-suite 3.0). FBI IC3 received 59,271 toll-scam complaints in 2024 alone, reflecting the scale of the toll/road fee lure campaign impersonating E-ZPass, SunPass, FasTrak, and I-Pass across 8+ U.S. states.\n\n**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure focused on session token hijacking and MFA bypass via reverse proxy. TP-0069 covers the smishing delivery ecosystem — the SMS/iMessage/RCS-based credential harvest pipeline, the PhaaS platforms that power it, and the supporting bulk messaging and kit development infrastructure specific to mobile messaging channels."
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -1264,6 +1270,36 @@
     "type": "detection_rule",
     "title": "Gift Card Merge and Transfer Anomaly Detection",
     "text": "Detects suspicious gift card merge and transfer activity indicating value consolidation from multiple illicit sources. NRF RFT FT1202 documents that fraudsters transfer value from multiple illicitly obtained gift cards to a single legitimate card — e.g., 20 cards with $5 merged into one $255 card. This consolidation is a key Control phase technique enabling subsequent monetization. Detection signals include merge velocity, source card count, and correlation with recent suspicious balance check activity.\n"
+  },
+  {
+    "id": "DL-0146",
+    "type": "detection_rule",
+    "title": "AiTM Session Token Replay — Same SessionId from Multiple IPs",
+    "text": "Detects potential AiTM session token replay by identifying the same Entra ID SessionId appearing from multiple IP addresses within a short time window. In an AiTM attack, the phishing proxy IP and the attacker's actual replay IP both appear on the same session. This is the single strongest AiTM detection signal in Microsoft Entra ID sign-in logs. Additional confidence comes from the error code sequence 50074 (MFA required) → 50140 (Keep Me Signed In) → 0 (success) in rapid succession with medium or high risk level.\n"
+  },
+  {
+    "id": "DL-0147",
+    "type": "detection_rule",
+    "title": "Sneaky 2FA Impossible Device Shift — User-Agent Mismatch per Auth Step",
+    "text": "Detects the \"impossible device shift\" signature characteristic of Sneaky 2FA and related AiTM phishing kits. Sneaky 2FA uses different hardcoded User-Agent strings per authentication step — Safari on iOS for the Login:login step and Edge on Windows for the Login:resume step. This pattern is detectable via correlation of mismatched User-Agents within the same correlation ID within 10 minutes. This detection also catches Dadsec (missing User-Agent), Tycoon 2FA (rare User-Agent values), and W3LL OV6 (inconsistent UAs).\n"
+  },
+  {
+    "id": "DL-0148",
+    "type": "detection_rule",
+    "title": "Rockstar 2FA / FlowerStorm Application ID and User-Agent Detection",
+    "text": "Detects sign-ins associated with the Rockstar 2FA and FlowerStorm AiTM phishing kits (Storm-1575 lineage) by matching the hardcoded Office365 Application ID and User-Agent string used by these kits. Rockstar 2FA and its successor FlowerStorm use the Office365 Application ID 72782ba9-4490-4f03-8d82-562370ea3566 combined with the hardcoded User-Agent string containing \"WebView/3.0\" — a high-fidelity detection signature with very low false positive rate. FlowerStorm surged within ~10 days of Rockstar 2FA's infrastructure collapse in November 2024.\n"
+  },
+  {
+    "id": "DL-0149",
+    "type": "detection_rule",
+    "title": "Smishing Triad Domain Pattern and iMessage/RCS Delivery Detection",
+    "text": "Detects indicators of Smishing Triad phishing infrastructure including Darcula/Magic Cat domain patterns and Chenlun kit fingerprints. The Smishing Triad ecosystem has generated 194,000+ malicious domains targeting users in 121+ countries, compromising 884,000+ credit cards. Darcula domains follow a \"com-\" prefix pattern. Chenlun kits are fingerprinted by the presence of ResourceRedConfig.js and /ResourceConfig/urlConfig.json files. Detection also covers toll-scam lure patterns (E-ZPass, SunPass, FasTrak, I-Pass) commonly used in smishing campaigns.\n"
+  },
+  {
+    "id": "DL-0150",
+    "type": "detection_rule",
+    "title": "Post-AiTM Inbox Rule Manipulation — New Rules from Risky Sign-In",
+    "text": "Detects inbox rule creation or modification in Exchange Online following a sign-in flagged with medium or high risk, or following authentication from a previously unseen IP address. Post-AiTM inbox rule manipulation is a characteristic Phase 3 (Positioning) technique: within minutes of session hijack, attackers create inbox rules to redirect or delete security alerts, payment notifications, and colleague communications. This detection correlates Exchange Online Unified Audit Log operations (New-InboxRule, Set-InboxRule, Set-Mailbox forwarding) with Entra ID risky sign-in events.\n"
   },
   {
     "id": "BASE-001",

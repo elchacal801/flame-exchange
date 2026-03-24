@@ -7,7 +7,7 @@ title: "AiTM Phishing Kit Infrastructure and Session Token Hijacking"
 category: ThreatPath
 date: 2026-03-22
 author: "FLAME Project"
-source: "Organized fraud detection in 2026: a technical landscape report"
+source: "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
 tlp: WHITE
 infrastructure_generation_method: manual
 fraud_types:
@@ -36,6 +36,13 @@ mitre_attack:
   - T1566.002  # Phishing: Spearphishing Link
   - T1114.003  # Email Collection: Email Forwarding Rule
   - T1583.001  # Acquire Infrastructure: Domains
+  - T1111      # Multi-Factor Authentication Interception
+  - T1098.005  # Account Manipulation: Device Registration
+  - T1528      # Steal Application Access Token
+  - T1185      # Browser Session Hijacking
+  - T1550.004  # Use Alternate Authentication Material: Web Session Cookie
+  - T1078.004  # Valid Accounts: Cloud Accounts
+  - T1027      # Obfuscated Files or Information
 ft3_tactics: ["FTA001", "FT007.009", "FT011.001"]
 mitre_f3: []
 groupib_stages:
@@ -61,6 +68,8 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0001
     relationship: related-to
+  - id: TP-0069
+    relationship: related-to
 regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-STIX-FCI
@@ -76,6 +85,18 @@ tags:
   - mfa-bypass
   - phishing-kit
   - credential-phishing
+  - sneaky-2fa
+  - mamba-2fa
+  - evilproxy
+  - flowerstorm
+  - rockstar-2fa
+  - nakedpages
+  - w3ll-panel
+  - greatness
+  - caffeine
+  - sessionshark
+  - darcula
+  - smishing-triad
 ---
 ```
 
@@ -165,10 +186,18 @@ Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evol
 - FT011.001: Credential theft
 
 **MITRE ATT&CK:**
-- T1557: Adversary-in-the-Middle — core AiTM technique
-- T1539: Steal Web Session Cookie — session token capture
-- T1566.002: Spearphishing Link — phishing delivery
-- T1114.003: Email Forwarding Rule — post-compromise persistence
+- T1557: Adversary-in-the-Middle — core AiTM reverse proxy/relay technique
+- T1539: Steal Web Session Cookie — session token capture (primary objective)
+- T1566.001/.002: Phishing via Attachment/Link — initial delivery
+- T1111: Multi-Factor Authentication Interception — real-time MFA relay
+- T1550.004: Use Alternate Authentication Material: Web Session Cookie — token replay
+- T1098.005: Account Manipulation: Device Registration — post-compromise MFA addition
+- T1528: Steal Application Access Token — OAuth abuse
+- T1078.004: Valid Accounts: Cloud Accounts — replayed sessions
+- T1114: Email Collection — post-compromise data access
+- T1185: Browser Session Hijacking — session manipulation
+- T1534: Internal Spearphishing — BEC lateral movement
+- T1027: Obfuscated Files or Information — JavaScript/HTML obfuscation in kits
 - T1583.001: Acquire Infrastructure: Domains — phishing domain registration
 
 **Group-IB Fraud Matrix:**
@@ -203,17 +232,42 @@ Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evol
 | Template designer | Login page templates mimicking specific identity providers | Medium | $50–$500 per template |
 | Session token buyer | Purchasers of captured session tokens for downstream fraud | High | $10–$500 per active session depending on target organization |
 
-### Tool Ecosystem
-- Evilginx3: open-source AiTM framework with modular "phishlets" for different identity providers
-- Tycoon 2FA: commercial PhaaS platform with Telegram-based distribution
-- W3LL Panel: sophisticated BEC-focused AiTM kit with built-in email collection
-- Modlishka: open-source reverse proxy for credential interception
-- GoPhish: legitimate phishing simulation tool repurposed for AiTM campaigns
+### Tool Ecosystem — Active AiTM Kits (2025–2026)
+
+| Kit | Architecture | Key Signature | Price | Status |
+|-----|-------------|---------------|-------|--------|
+| Evilginx 3.x / Pro | Go reverse proxy with YAML phishlets | `X-Evilginx` header (community); 8-char alpha lure paths; rickroll redirect; `/s/<64hex>.js` canary | Open-source (Pro: paid) | Active — used by Scattered Spider, Star Blizzard, Void Blizzard, Storm-0485 |
+| Tycoon 2FA | Synchronous relay (not true proxy) | Cloudflare Turnstile + "browser checks" text; admin panel stats categories; CYFIRMA YARA `Tycoon_2FA_Phishing_Indicators` | $120/10 days, $350/month | **Taken down March 4, 2026** — Europol-led, 330 domains seized |
+| EvilProxy (Moloch) | Docker-based reverse proxy via TOR portal | "lmo." subdomain pattern; nginx reverse proxy; supports PyPI/npmjs (supply chain) | $150/10 days to $400/month | Active — ~280 servers, 150–250 customers |
+| Rockstar 2FA → FlowerStorm | Storm-1575 lineage (Dadsec → Phoenix) | App ID `72782ba9-4490-4f03-8d82-562370ea3566`; hardcoded WebView/3.0 User-Agent; car-themed → botanical-themed HTML titles; `next.php` backend | ~$200/2 weeks, $350/month | Active — FlowerStorm surged within 10 days of Rockstar collapse |
+| NakedPages | True Node.js reverse proxy (`nkp.app`) | Up to 9 sequential redirects via `href.li`; `.buzz` TLD long-name domains; Cloudflare Workers abuse; 120-country geofencing | $1,000 upfront | Active — ~220 servers, consistently top 5 |
+| W3LL Panel OV6 | AiTM kit + 16 BEC tools | Anti-bot → Wikipedia redirect; Punycode email obfuscation; CONTOOL M365 monitoring | $500/3 months + $150/month | Active — 500+ threat actors, no arrests |
+| Sneaky 2FA | PhaaS via Telegram bot (`@SneakyLog_bot`) | **Impossible device shift**: Safari/iOS for login → Edge/Windows for resume; food-content initial page ("Gourmet Delights"); base64 favicon SHA256 `5d91563b...`; empty HTML tags between characters | $200/month | Active — W3LL OV6 code reuse detected |
+| Mamba 2FA | Socket.IO WebSocket relay | Socket.IO events: `new-session`, `password_command`, `otp_command`; URL pattern `/{m,n,o}/?{Base64}`; NO Cloudflare Turnstile; IPRoyal proxy masking | $250/month | Active — link domains rotate weekly |
+| Greatness | M365-exclusive with Autograb | `/admin/js/mj.php` URI; `httpd.grt` config; blurred Excel + spinner lure; auto-steals victim logo/background | $120/month | Active — deploys on compromised WordPress |
+| Caffeine | Open-registration PhaaS (no vetting) | Self-service web portal; Chinese/Russian templates; WordPress deployment via license tokens | $250–$850/month | Active |
+| SessionShark | "Educational" proxy-based AiTM | Telegram bot exfiltration; custom HTTP headers to bypass threat intel feeds; dynamic content alteration for scanners | Unknown | Active (primarily advertised) |
+| Modlishka | Go single-domain transparent proxy | `/SayHello2Modlishka` panel; "id" tracking cookie; "ident" URL parameter | Open-source | Active — pen-test/red-team primary use |
+| Muraena + NecroBrowser | Go proxy + Node.js/Puppeteer post-exploitation | TOML config; `/instrument` API endpoint; automated SSH key injection, inbox rule manipulation across headless Chromium instances | Open-source | Active — pioneered automated session exploitation |
 
 ### Intelligence Sources
 - Sekoia.io, "Tycoon 2FA phishing kit analysis" (2025) — kit infrastructure and domain tracking
 - Canadian Cyber Centre — FIDO2 effectiveness data (93.9% AiTM block rate)
 - Microsoft Threat Intelligence — Entra ID AiTM detection patterns
+
+---
+
+## Law Enforcement Actions
+
+| Date | Operation | Target | Outcome |
+|------|-----------|--------|---------|
+| November 2023 | Royal Malaysian Police + FBI + AFP | BulletProofLink / AnthraxBP | 8 arrests, ~$213K crypto seized; operator Adrian Bin Katong identified |
+| August 2023 | INTERPOL | 16shop | 3 arrests (Indonesia, Japan); 21-year-old admin; 70K users, 150K+ domains |
+| April 2024 | UK Metropolitan Police + Europol + 19 countries | LabHost | 37 arrests including developer Zak Coyne (8.5 years); 207 servers; 480K cards, 1M+ passwords stolen |
+| November 2024 | Infrastructure collapse | Rockstar 2FA | Platform went offline; FlowerStorm absorbed customers within ~10 days |
+| March 4, 2026 | Europol + Microsoft DCU + 11 partners | Tycoon 2FA (Storm-1747 / Saad Fridi) | 330 domains seized across 6 countries; phishing volume had dropped 57.6% pre-operation; defendant named in SDNY civil complaint |
+
+Despite these victories, impact is consistently temporary — displaced customers migrate to successor platforms within days. The underlying economic incentives ($120–$1,500/month subscriptions) and low barriers to entry guarantee rapid successor proliferation.
 
 ---
 
@@ -228,6 +282,10 @@ Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evol
 | P3 | Alert on inbox rule creation within 24h of new-IP authentication | Detective | SOC/Fraud |
 | P4 | Conditional Access policies requiring compliant devices for sensitive applications | Preventive | IT Security |
 | P5 | Wire transfer verification for payments initiated from sessions with identity anomalies | Preventive | Fraud/Payments |
+| P2 | Deploy Continuous Access Evaluation (CAE) with Strict Location Enforcement — rejects stolen tokens replayed from outside trusted networks | Preventive | IT Security |
+| P3 | Enable Token Protection (Primary Refresh Token binding) — cryptographically ties tokens to device | Preventive | IT Security |
+| P3 | Require compliant/Intune-managed devices via Conditional Access for sensitive applications | Preventive | IT Security |
+| P2 | Browser-based real-time AiTM detection (e.g., Push Security) analyzing page behavioral attributes during authentication | Detective | IT Security |
 
 ---
 
@@ -308,6 +366,40 @@ level: high
 - MFA method enrollment from device/location inconsistent with user's established pattern
 - Bulk email access or forwarding rule creation following new authentication
 
+### Kit-Specific Detection Fingerprints
+
+Each AiTM kit leaves distinctive artifacts enabling targeted detection:
+
+| Kit | Network/Log Signature | Detection Method |
+|-----|----------------------|-----------------|
+| Evilginx (community) | `X-Evilginx` HTTP header; Go TLS JA3 fingerprint distinct from real browsers | HTTP header inspection; JA3/JA4 TLS fingerprinting |
+| Evilginx (all) | 8-char alphabetic lure paths; rickroll redirect for unauthorized visitors; `/s/<64hex>.js` canary (content-length=0) | URL pattern matching; redirect behavior analysis |
+| Tycoon 2FA | Cloudflare Turnstile with "this page is running browser checks to ensure your security" text | Page content inspection; CYFIRMA YARA rule `Tycoon_2FA_Phishing_Indicators` |
+| Sneaky 2FA | **Impossible device shift**: different User-Agent per auth step (Safari/iOS for `Login:login`, Edge/Windows for `Login:resume`) | Sigma correlation rule: mismatched UAs within same correlation ID within 10 minutes |
+| Mamba 2FA | Socket.IO WebSocket events (`new-session`, `password_command`, `otp_command`); URL pattern `/{m,n,o}/?{Base64}` | WebSocket traffic analysis; URL pattern matching |
+| Rockstar 2FA / FlowerStorm | Office365 App ID `72782ba9-4490-4f03-8d82-562370ea3566`; hardcoded User-Agent `Mozilla/5.0 (Windows NT 10.0; Win64; x64; WebView/3.0)...` | Entra ID sign-in log filtering on AppId + UserAgent |
+| Greatness | URI path `/admin/js/mj.php`; config file `httpd.grt`; blurred Excel + spinner before redirect | WAF/proxy URI pattern detection |
+| NakedPages | `nkp.app` binary; `href.li` referrer stripping; `.buzz` TLD with long descriptive names | Domain intelligence; referrer chain analysis |
+| Darcula | `registry[.]magic-cat[.]world` container registry; `com-` domain prefix pattern; React client-side rendering | Domain pattern matching; infrastructure fingerprinting |
+| Chenlun | `ResourceRedConfig.js` and `/ResourceConfig/urlConfig.json` files | Web content analysis |
+
+### Microsoft Entra ID Log-Based Detection
+
+The strongest AiTM detection signals in Entra ID:
+
+1. **Same SessionId from multiple IPs** — the phishing proxy IP and the attacker's replay IP appear on the same session
+2. **Error code sequence**: 50074 (MFA required) → 50140 (Keep Me Signed In) → 0 (success) in rapid succession with medium/high risk
+3. **OfficeHome application ID** (`4765445b-32c6-49b0-83e6-1d93765276ca`) commonly appears in token replay
+4. **AnomalousToken risk detection** in Entra ID Identity Protection (Risky Sign-ins blade)
+5. **Post-compromise UAL indicators**: Exchange Online operations `New-InboxRule`, `Set-InboxRule`, `Set-Mailbox` (forwarding), new MFA device registration from suspicious IPs
+
+**Published detection resources:**
+- Microsoft Sentinel: `PossibleAiTMPhishingAttemptAgainstAAD.yaml` analytic rule
+- reprise99: `Identity-PotentialAiTM.kql` (error code + risk level correlation)
+- Bert-JanP: `PotentialAiTMPhishing.md` hunting query
+- Splunk: `O365 Concurrent Sessions From Different IPs` (detection ID: 58e034de)
+- PhishingKit-Yara-Rules repo (github.com/t4d/PhishingKit-Yara-Rules): 850+ YARA rules covering 300+ brands
+
 ### Cross-Team Correlation
 
 - **Identity Security + Fraud**: Session anomalies correlated with subsequent wire transfer requests
@@ -326,6 +418,27 @@ level: high
 - **Confidence**: High
 - **Summary**: AiTM phishing kits have industrialized MFA-bypass attacks through a PhaaS model. The technical landscape report documents this as the most significant credential theft evolution, enabling downstream BEC and wire fraud at scale. The 703% surge in credential phishing reflects the accessibility of these kits to non-technical operators. FIDO2 deployment remains the highest-confidence mitigation, blocking 93.9% of AiTM attempts.
 
+### EV-TP0067-2026-002: Tycoon 2FA Takedown and Scale
+
+- **Source**: Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026); Microsoft DCU; Europol
+- **Key Findings**: Tycoon 2FA was responsible for 62% of all phishing blocked by Microsoft, generating ~30 million phishing emails per month targeting 500,000+ organizations. Over its lifetime it operated ~24,000 domains with ~2,000 subscribers, producing 64,000+ confirmed phishing incidents. Operator tracked as Storm-1747 (Saad Tycoon Group); named defendant Saad Fridi of Pakistan. Bitcoin wallet `19NReVFKJsYYCCFLq1uNKYrUqQE2bB4Jwx` accumulated $250,000+ since August 2023. Europol-led takedown on March 4, 2026 seized 330 domains across 6 countries with 11 private-sector partners.
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+
+### EV-TP0067-2026-003: EvilProxy C-Suite Targeting
+
+- **Source**: Proofpoint (2023); phishing kit intelligence reference
+- **Key Findings**: March–June 2023 EvilProxy campaign sent 120,000 phishing emails to hundreds of organizations. 39% of compromised users were C-level executives (17% CFOs, 9% CEOs). Campaign exploited YouTube and SlickDeals open redirectors. A July 2023 campaign exploited an indeed.com open redirect specifically targeting U.S. C-suite executives. EvilProxy supports PyPI and npmjs targeting, enabling software supply chain attacks.
+- **CFPF Phase Coverage**: P2–P4
+- **Confidence**: High
+
+### EV-TP0067-2026-004: FIDO2 Proven Effectiveness
+
+- **Source**: Google, Cloudflare, Microsoft, NIST SP 800-63-4
+- **Key Findings**: Google experienced zero successful phishing attacks against 85,000+ employees after FIDO2 deployment. Cloudflare blocked the 0ktapus campaign (August 2022) — employees with FIDO2 keys were protected even after clicking phishing links and entering credentials. Microsoft reports 92% of employee accounts protected with phishing-resistant MFA. NIST SP 800-63-4 (finalized July 2025) requires AAL2 to offer a phishing-resistant option; AAL3 requires non-exportable private keys.
+- **CFPF Phase Coverage**: P2
+- **Confidence**: High
+
 ---
 
 ## References
@@ -335,6 +448,15 @@ level: high
 - Microsoft Threat Intelligence, "AiTM phishing attacks: detection and mitigation guidance" — Entra ID detection patterns
 - "Organized fraud detection in 2026: a technical landscape report" — BEC and AiTM phishing section
 - INTERPOL, "Global Financial Fraud Threat Assessment, 2nd Edition" (March 2026) — credential phishing trends
+- "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference" (2026) — comprehensive kit catalog and detection engineering
+- Europol, "Tycoon 2FA PhaaS takedown" (March 4, 2026) — 330 domains seized, Storm-1747 attribution
+- Proofpoint, "EvilProxy C-suite targeting campaign" (2023) — 120K emails, 39% C-level compromise rate
+- NIST SP 800-63-4 (July 2025) — AAL2/AAL3 phishing-resistant MFA requirements
+- Google, "Security Keys: Practical Cryptographic Second Factors for the Modern Web" — zero phishing after FIDO2
+- Cloudflare, "The mechanics of a sophisticated phishing scam" (August 2022) — 0ktapus campaign blocked by FIDO2
+- Group-IB, "W3LL DONE" (September 2023) — W3LL Store and Panel OV6 analysis
+- Sekoia TDR, "Sneaky 2FA" (December 2024) — impossible device shift detection
+- Sekoia TDR, "Mamba 2FA" (May 2024) — Socket.IO relay analysis
 
 ---
 
@@ -348,6 +470,12 @@ The PhaaS model means AiTM capability is no longer limited to sophisticated thre
 
 FIDO2 deployment should be the primary recommendation for any organization assessing this threat path. The 93.9% block rate is the strongest quantified mitigation in the fraud detection literature.
 
+The March 2026 Tycoon 2FA takedown is the most significant law enforcement action against the PhaaS ecosystem to date, but historical precedent (BulletProofLink, LabHost, Rockstar 2FA) shows displaced customers migrate to successor platforms within days. Organizations should use the post-takedown window to accelerate FIDO2 deployment rather than assume diminished threat.
+
+Post-authentication token protection is emerging as the critical second layer. FIDO2 prevents credential theft but does not eliminate token replay if sessions are established through other means. The complete defensive stack requires FIDO2 + Continuous Access Evaluation (CAE) + Token Protection + compliant device requirements + risk-based Conditional Access policies.
+
+Detection engineering should leverage kit-specific fingerprints: the impossible device shift (Sneaky 2FA), hardcoded application IDs (Rockstar 2FA/FlowerStorm), Socket.IO WebSocket events (Mamba 2FA), and URI patterns (Greatness) provide high-fidelity, low-false-positive detection signals that complement behavioral analytics.
+
 ---
 
 ## Revision History
@@ -355,3 +483,4 @@ FIDO2 deployment should be the primary recommendation for any organization asses
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-22 | FLAME Project | Initial submission — sourced from technical landscape report (2026) |
+| 2026-03-23 | FLAME Project | Major enrichment: added 13 kit profiles, Tycoon 2FA takedown, kit-specific detection fingerprints, Entra ID log detection, expanded MITRE ATT&CK (12 techniques), law enforcement timeline, 3 new operational evidence entries, CAE/Token Protection controls — sourced from phishing kit intelligence reference |

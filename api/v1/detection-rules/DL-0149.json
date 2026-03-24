@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-24T02:13:59.897103+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "4d7e1f3c-8b5a-2c6d-e9f4-1a3b7c5d8e02",
+    "dl_id": "DL-0149",
+    "title": "Smishing Triad Domain Pattern and iMessage/RCS Delivery Detection",
+    "status": "experimental",
+    "description": "Detects indicators of Smishing Triad phishing infrastructure including Darcula/Magic Cat domain patterns and Chenlun kit fingerprints. The Smishing Triad ecosystem has generated 194,000+ malicious domains targeting users in 121+ countries, compromising 884,000+ credit cards. Darcula domains follow a \"com-\" prefix pattern. Chenlun kits are fingerprinted by the presence of ResourceRedConfig.js and /ResourceConfig/urlConfig.json files. Detection also covers toll-scam lure patterns (E-ZPass, SunPass, FasTrak, I-Pass) commonly used in smishing campaigns.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection_darcula_domain": {
+        "url|re": "^https?://com-[a-z0-9]+"
+      },
+      "selection_chenlun_resource": {
+        "url|contains": [
+          "ResourceRedConfig.js",
+          "/ResourceConfig/urlConfig.json"
+        ]
+      },
+      "selection_toll_lure": {
+        "url|contains": [
+          "ezpass",
+          "sunpass",
+          "fastrak",
+          "ipass",
+          "toll",
+          "parking-notice"
+        ]
+      },
+      "condition": "selection_darcula_domain OR selection_chenlun_resource OR selection_toll_lure"
+    },
+    "logsource": {
+      "product": "web_proxy",
+      "service": "url_filtering"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "url",
+        "domain",
+        "referrer",
+        "user_agent",
+        "source_ip",
+        "destination_ip",
+        "tls_sni",
+        "domain_age_days"
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Smishing Triad Domain Pattern Detection\")`\n`comment(\"Matches Darcula com- prefix, Chenlun kit files, and toll-scam lures\")`\nindex=web sourcetype=proxy:access\n| eval smishing_indicator = case(\n    match(url, \"^https?://com-[a-z0-9]+\"), \"darcula_domain_pattern\",\n    match(url, \"ResourceRedConfig\\.js\"), \"chenlun_kit_fingerprint\",\n    match(url, \"/ResourceConfig/urlConfig\\.json\"), \"chenlun_kit_fingerprint\",\n    match(url, \"(?i)(ezpass|sunpass|fastrak|ipass|toll-|parking-notice)\"), \"toll_scam_lure\",\n    1=1, null()\n  )\n| where isnotnull(smishing_indicator)\n| lookup domain_age_lookup domain OUTPUT domain_age_days\n| where domain_age_days < 30 OR isnull(domain_age_days)\n| stats count BY smishing_indicator, domain, source_ip, url\n| sort - count",
+      "sql": "-- SQL: Smishing Triad domain pattern detection\n-- Correlates proxy logs with domain intelligence\nSELECT\n    p.access_time,\n    p.source_ip,\n    p.url,\n    p.domain,\n    d.registration_date,\n    DATEDIFF(day, d.registration_date, GETDATE()) AS domain_age_days,\n    CASE\n        WHEN p.domain LIKE 'com-%' THEN 'darcula_domain_pattern'\n        WHEN p.url LIKE '%ResourceRedConfig.js%' THEN 'chenlun_kit_fingerprint'\n        WHEN p.url LIKE '%/ResourceConfig/urlConfig.json%' THEN 'chenlun_kit_fingerprint'\n        WHEN p.url LIKE '%ezpass%' OR p.url LIKE '%sunpass%'\n            OR p.url LIKE '%fastrak%' OR p.url LIKE '%ipass%' THEN 'toll_scam_lure'\n    END AS indicator_type\nFROM proxy_access_logs p\nLEFT JOIN domain_intelligence d ON p.domain = d.domain\nWHERE (p.domain LIKE 'com-%'\n       OR p.url LIKE '%ResourceRedConfig.js%'\n       OR p.url LIKE '%/ResourceConfig/urlConfig.json%'\n       OR p.url LIKE '%ezpass%' OR p.url LIKE '%sunpass%'\n       OR p.url LIKE '%fastrak%' OR p.url LIKE '%ipass%')\n  AND p.access_time >= DATEADD(day, -7, GETDATE())\nORDER BY p.access_time DESC"
+    },
+    "references": [
+      "Resecurity, Smishing Triad analysis (August 2023)",
+      "Netcraft, Darcula/Magic Cat documentation (March 2024)",
+      "PRODAFT, LARVA-246 tracking",
+      "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
+    ],
+    "threat_path_ids": [
+      "TP-0069"
+    ],
+    "fraud_types": [
+      "card-not-present-fraud",
+      "phishing",
+      "smishing"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.chenlun",
+      "flame.darcula",
+      "flame.smishing",
+      "flame.smishing-triad",
+      "flame.toll-scam"
+    ],
+    "falsepositives": [
+      "Legitimate domains beginning with \"com-\" (uncommon but possible)",
+      "Legitimate toll payment services (filter by known-good domains)",
+      "Security researchers analyzing smishing infrastructure"
+    ]
+  }
+}

@@ -1,12 +1,12 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-23T02:05:38.030079+00:00",
+    "generated_at": "2026-03-24T02:13:59.933387+00:00",
     "total": 1
   },
   "data": {
-    "total": 68,
-    "fraudTypes": 103,
+    "total": 69,
+    "fraudTypes": 105,
     "fraudTypeList": [
       "BEC",
       "aba-therapy-fraud",
@@ -31,6 +31,7 @@
       "business-email-compromise",
       "bust-out",
       "calendar-phishing",
+      "card-not-present-fraud",
       "card-testing",
       "chatbot-enabled-fraud",
       "check-fraud",
@@ -98,6 +99,7 @@
       "sanctions-evasion-infrastructure",
       "scam-compound-operations",
       "sextortion",
+      "smishing",
       "social-engineering",
       "state-criminal-convergence",
       "synthetic-identity",
@@ -112,7 +114,7 @@
       "vishing",
       "wire-fraud"
     ],
-    "sectors": 18,
+    "sectors": 19,
     "sectorList": [
       "banking",
       "credit-union",
@@ -131,14 +133,15 @@
       "technology",
       "telecommunications",
       "trade",
+      "transportation",
       "web3"
     ],
     "phaseCoverage": {
-      "P1": 68,
-      "P2": 66,
-      "P3": 68,
-      "P4": 66,
-      "P5": 66
+      "P1": 69,
+      "P2": 67,
+      "P3": 69,
+      "P4": 67,
+      "P5": 67
     },
     "topTags": [
       {
@@ -218,7 +221,7 @@
         "count": 3
       },
       {
-        "tag": "reckless-rabbit",
+        "tag": "phaas",
         "count": 3
       }
     ],
@@ -475,6 +478,17 @@
         "total_tps": 1
       },
       {
+        "fraud_type": "card-not-present-fraud",
+        "phases": {
+          "P1": 1,
+          "P2": 1,
+          "P3": 1,
+          "P4": 1,
+          "P5": 1
+        },
+        "total_tps": 1
+      },
+      {
         "fraud_type": "card-testing",
         "phases": {
           "P1": 1,
@@ -708,13 +722,13 @@
       {
         "fraud_type": "fraud-as-a-service",
         "phases": {
-          "P1": 4,
-          "P2": 4,
-          "P3": 4,
-          "P4": 4,
-          "P5": 4
+          "P1": 5,
+          "P2": 5,
+          "P3": 5,
+          "P4": 5,
+          "P5": 5
         },
-        "total_tps": 4
+        "total_tps": 5
       },
       {
         "fraud_type": "fraud-enabling-infrastructure",
@@ -825,13 +839,13 @@
       {
         "fraud_type": "identity-theft",
         "phases": {
-          "P1": 12,
-          "P2": 11,
-          "P3": 12,
-          "P4": 11,
-          "P5": 11
+          "P1": 13,
+          "P2": 12,
+          "P3": 13,
+          "P4": 12,
+          "P5": 12
         },
-        "total_tps": 12
+        "total_tps": 13
       },
       {
         "fraud_type": "impersonation",
@@ -1054,13 +1068,13 @@
       {
         "fraud_type": "phishing",
         "phases": {
-          "P1": 7,
-          "P2": 7,
-          "P3": 7,
-          "P4": 7,
-          "P5": 7
+          "P1": 8,
+          "P2": 8,
+          "P3": 8,
+          "P4": 8,
+          "P5": 8
         },
-        "total_tps": 7
+        "total_tps": 8
       },
       {
         "fraud_type": "premium-diversion",
@@ -1204,6 +1218,17 @@
           "P5": 2
         },
         "total_tps": 2
+      },
+      {
+        "fraud_type": "smishing",
+        "phases": {
+          "P1": 1,
+          "P2": 1,
+          "P3": 1,
+          "P4": 1,
+          "P5": 1
+        },
+        "total_tps": 1
       },
       {
         "fraud_type": "social-engineering",
@@ -1361,8 +1386,8 @@
         "ofac": 18704,
         "sec": 100
       },
-      "lastUpdated": "2026-03-23"
+      "lastUpdated": "2026-03-24"
     },
-    "generatedAt": "2026-03-23T02:05:36.472766+00:00"
+    "generatedAt": "2026-03-24T02:13:58.387972+00:00"
   }
 }

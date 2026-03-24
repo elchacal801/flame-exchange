@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-24T02:13:59.888732+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "2b5c8f1a-6d3e-9a4b-c7f2-8e1d5a3b6c09",
+    "dl_id": "DL-0147",
+    "title": "Sneaky 2FA Impossible Device Shift — User-Agent Mismatch per Auth Step",
+    "status": "experimental",
+    "description": "Detects the \"impossible device shift\" signature characteristic of Sneaky 2FA and related AiTM phishing kits. Sneaky 2FA uses different hardcoded User-Agent strings per authentication step — Safari on iOS for the Login:login step and Edge on Windows for the Login:resume step. This pattern is detectable via correlation of mismatched User-Agents within the same correlation ID within 10 minutes. This detection also catches Dadsec (missing User-Agent), Tycoon 2FA (rare User-Agent values), and W3LL OV6 (inconsistent UAs).\n",
+    "cfpf_phase": "P2",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "AuthenticationStepResultType": 0
+      },
+      "condition": "count(distinct UserAgent) by CorrelationId >= 2 AND timeframe < 10 minutes\n"
+    },
+    "logsource": {
+      "product": "azure",
+      "service": "entra_id_signin"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "CorrelationId",
+        "UserAgent",
+        "UserPrincipalName",
+        "IPAddress",
+        "AuthenticationStepResultType",
+        "AuthenticationDetails"
+      ]
+    },
+    "queries": {
+      "kql": "// KQL: Sneaky 2FA Impossible Device Shift Detection\n// Correlates mismatched User-Agents within same authentication flow\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UserAgents = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n// High confidence: Safari/iOS + Edge/Windows combination\n| where UserAgents has \"Safari\" and UserAgents has \"Edge\"\n    or UserAgents has \"iPhone\" and UserAgents has \"Windows\"\n| project UserPrincipalName, CorrelationId, UACount, UserAgents,\n          IPs, MinTime, MaxTime",
+      "splunk": "`comment(\"Splunk SPL for Sneaky 2FA Impossible Device Shift\")`\n`comment(\"Detects User-Agent mismatch within same auth correlation ID\")`\nindex=azure sourcetype=azure:aad:signin ResultType=0\n| stats dc(UserAgent) AS ua_count,\n        values(UserAgent) AS user_agents,\n        values(IPAddress) AS ips,\n        min(_time) AS first_event,\n        max(_time) AS last_event\n  BY CorrelationId, UserPrincipalName\n| where ua_count >= 2\n| eval window_minutes = round((last_event - first_event) / 60, 1)\n| where window_minutes <= 10\n| search (user_agents=\"*Safari*\" AND user_agents=\"*Edge*\")\n    OR (user_agents=\"*iPhone*\" AND user_agents=\"*Windows*\")\n| sort - ua_count"
+    },
+    "references": [
+      "Sekoia TDR, Sneaky 2FA analysis (December 2024)",
+      "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
+    ],
+    "threat_path_ids": [
+      "TP-0067"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "aitm-phishing"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.aitm",
+      "flame.sneaky-2fa",
+      "flame.user-agent-anomaly"
+    ],
+    "falsepositives": [
+      "Extremely rare in legitimate authentication — different User-Agents within the same correlation ID should not occur in normal browser authentication"
+    ]
+  }
+}

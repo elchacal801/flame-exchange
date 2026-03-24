@@ -1068,6 +1068,23 @@
         <category>CFPF-P5</category>
     </item>
     <item>
+      <title>[TP-0069] Smishing PhaaS Ecosystem — Darcula, Smishing Triad, and Mass-Messaging Credential Harvest</title>
+      <link>https://elchacal801.github.io/flame-fraud/#detail/TP-0069</link>
+      <guid isPermaLink="true">https://elchacal801.github.io/flame-fraud/#detail/TP-0069</guid>
+      <description>The Smishing PhaaS Ecosystem is a loosely federated Chinese-speaking cybercrime network — collectively known as the Smishing Triad — that operates industrialized smishing infrastructure at unprecedent</description>
+      <pubDate>Mon, 23 Mar 2026 00:00:00 +0000</pubDate>
+        <category>card-not-present-fraud</category>
+        <category>fraud-as-a-service</category>
+        <category>identity-theft</category>
+        <category>phishing</category>
+        <category>smishing</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+    </item>
+    <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
       <link>https://elchacal801.github.io/flame-fraud</link>
       <guid isPermaLink="false">flame-dl-DL-0001</guid>
@@ -2372,6 +2389,53 @@
       <description>Detects suspicious gift card merge and transfer activity indicating value consolidation from multiple illicit sources. NRF RFT FT1202 documents that fraudsters transfer value from multiple illicitly o</description>
         <category>gift-card-fraud</category>
         <category>gift-card-tampering</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0146] AiTM Session Token Replay — Same SessionId from Multiple IPs</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0146</guid>
+      <description>Detects potential AiTM session token replay by identifying the same Entra ID SessionId appearing from multiple IP addresses within a short time window. In an AiTM attack, the phishing proxy IP and the</description>
+        <category>account-takeover</category>
+        <category>aitm-phishing</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0147] Sneaky 2FA Impossible Device Shift — User-Agent Mismatch per Auth Step</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0147</guid>
+      <description>Detects the &quot;impossible device shift&quot; signature characteristic of Sneaky 2FA and related AiTM phishing kits. Sneaky 2FA uses different hardcoded User-Agent strings per authentication step — Safari on </description>
+        <category>account-takeover</category>
+        <category>aitm-phishing</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0148] Rockstar 2FA / FlowerStorm Application ID and User-Agent Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0148</guid>
+      <description>Detects sign-ins associated with the Rockstar 2FA and FlowerStorm AiTM phishing kits (Storm-1575 lineage) by matching the hardcoded Office365 Application ID and User-Agent string used by these kits. R</description>
+        <category>account-takeover</category>
+        <category>aitm-phishing</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0149] Smishing Triad Domain Pattern and iMessage/RCS Delivery Detection</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0149</guid>
+      <description>Detects indicators of Smishing Triad phishing infrastructure including Darcula/Magic Cat domain patterns and Chenlun kit fingerprints. The Smishing Triad ecosystem has generated 194,000+ malicious dom</description>
+        <category>card-not-present-fraud</category>
+        <category>phishing</category>
+        <category>smishing</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0150] Post-AiTM Inbox Rule Manipulation — New Rules from Risky Sign-In</title>
+      <link>https://elchacal801.github.io/flame-fraud</link>
+      <guid isPermaLink="false">flame-dl-DL-0150</guid>
+      <description>Detects inbox rule creation or modification in Exchange Online following a sign-in flagged with medium or high risk, or following authentication from a previously unseen IP address. Post-AiTM inbox ru</description>
+        <category>account-takeover</category>
+        <category>aitm-phishing</category>
+        <category>business-email-compromise</category>
         <category>severity-high</category>
     </item>
   </channel>

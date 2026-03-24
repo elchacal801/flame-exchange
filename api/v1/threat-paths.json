@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-23T02:05:36.588375+00:00",
-    "total": 68
+    "generated_at": "2026-03-24T02:13:58.490082+00:00",
+    "total": 69
   },
   "data": [
     {
@@ -2476,7 +2476,7 @@
       "category": "ThreatPath",
       "date": "2026-02-20",
       "author": "FLAME Project",
-      "source": "Internal Knowledge Base",
+      "source": "Internal Knowledge Base; Thales Threat Landscape Report 2025 H2 — Finance sector mobile malware analysis",
       "tlp": "WHITE",
       "summary": "Mobile Banking Trojans (primarily targeting Android environments) are sophisticated malware variants that deceive users into granting extensive device \"Accessibility\" permissions. Once installed, the malware monitors the foreground applications. When the user launches a targeted banking app, the malware draws a pixel-perfect \"overlay\" (a fake login screen) on top of the legitimate app. It captures the user's credentials and SMS MFA tokens, sending them to the threat actor, or uses an Automated Transfer System (ATS) to initiate fraudulent transactions invisibly on the victim's device.\n\n---",
       "confidence_score": 72,
@@ -2575,9 +2575,13 @@
         {
           "id": "TP-0008",
           "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0069",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 0
+      "evidence_count": 1
     },
     {
       "id": "TP-0024",
@@ -7229,7 +7233,7 @@
       "category": "ThreatPath",
       "date": "2026-03-22",
       "author": "FLAME Project",
-      "source": "Organized fraud detection in 2026: a technical landscape report",
+      "source": "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)",
       "tlp": "WHITE",
       "summary": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim sessions through attacker-controlled infrastructure in real time. The attacker captures both credentials and session tokens/cookies as the victim authenticates with the legitimate service. Sekoia.io identified 11 major AiTM phishing kits active in early 2025, with Tycoon 2FA as the most prevalent (1,200+ domains, targeting 500K+ organizations monthly). Credential phishing attacks surged 703% in H2 2024. These kits operate as Phishing-as-a-Service (PhaaS) marketplaces, lowering the barrier to sophisticated MFA-bypass attacks. FIDO2/phishing-resistant MFA blocks 93.9% of AiTM campaigns, making it the primary defensive recommendation.\n\n**Distinction from TP-0054**: TP-0054 (FaaS Ecosystem) covers the broader fraud-as-a-service model. TP-0067 focuses specifically on the AiTM phishing kit infrastructure — the reverse proxy technology, session token capture mechanics, and PhaaS distribution model that enables downstream BEC, account takeover, and wire fraud.",
       "confidence_score": 82,
@@ -7260,7 +7264,19 @@
         "fido2",
         "mfa-bypass",
         "phishing-kit",
-        "credential-phishing"
+        "credential-phishing",
+        "sneaky-2fa",
+        "mamba-2fa",
+        "evilproxy",
+        "flowerstorm",
+        "rockstar-2fa",
+        "nakedpages",
+        "w3ll-panel",
+        "greatness",
+        "caffeine",
+        "sessionshark",
+        "darcula",
+        "smishing-triad"
       ],
       "cfpf_phases": [
         "P1",
@@ -7274,7 +7290,14 @@
         "T1539",
         "T1566.002",
         "T1114.003",
-        "T1583.001"
+        "T1583.001",
+        "T1111",
+        "T1098.005",
+        "T1528",
+        "T1185",
+        "T1550.004",
+        "T1078.004",
+        "T1027"
       ],
       "ft3_tactics": [
         "FTA001",
@@ -7306,7 +7329,11 @@
       },
       "detection_rule_ids": [
         "DL-0137",
-        "DL-0138"
+        "DL-0138",
+        "DL-0146",
+        "DL-0147",
+        "DL-0148",
+        "DL-0150"
       ],
       "related_tps": [
         {
@@ -7320,9 +7347,13 @@
         {
           "id": "TP-0054",
           "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0069",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 1
+      "evidence_count": 4
     },
     {
       "id": "TP-0068",
@@ -7414,6 +7445,114 @@
         }
       ],
       "evidence_count": 1
+    },
+    {
+      "id": "TP-0069",
+      "title": "Smishing PhaaS Ecosystem — Darcula, Smishing Triad, and Mass-Messaging Credential Harvest",
+      "category": "ThreatPath",
+      "date": "2026-03-23",
+      "author": "FLAME Project",
+      "source": "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)",
+      "tlp": "WHITE",
+      "summary": "The Smishing PhaaS Ecosystem is a loosely federated Chinese-speaking cybercrime network — collectively known as the Smishing Triad — that operates industrialized smishing infrastructure at unprecedented scale: 194,000+ malicious domains registered since January 2024, 884,000+ credit cards compromised in a seven-month period, and victims in 121+ countries. The ecosystem centers on three major Phishing-as-a-Service (PhaaS) platforms — Darcula (tracked as LARVA-246), Lucid (operated by XinXin Group / LARVA-242), and Lighthouse (developed by Wang Duo Yu / LARVA-241) — supported by independent kit developers (Chenlun), bulk SMS enablers (Oak Tel/Carrie SMS), and dedicated smishing message platforms (Panda Shop, StupidFISH). What distinguishes this threat path from traditional SMS phishing is the exploitation of Apple iMessage and Android RCS to bypass carrier-level SMS filtering, real-time character-by-character credential streaming via Magic Cat, and the integration of GenAI-powered phishing form generation (darcula-suite 3.0). FBI IC3 received 59,271 toll-scam complaints in 2024 alone, reflecting the scale of the toll/road fee lure campaign impersonating E-ZPass, SunPass, FasTrak, and I-Pass across 8+ U.S. states.\n\n**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure focused on session token hijacking and MFA bypass via reverse proxy. TP-0069 covers the smishing delivery ecosystem — the SMS/iMessage/RCS-based credential harvest pipeline, the PhaaS platforms that power it, and the supporting bulk messaging and kit development infrastructure specific to mobile messaging channels.",
+      "confidence_score": 80,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "cross-sector",
+        "banking",
+        "retail",
+        "payments",
+        "government",
+        "transportation"
+      ],
+      "fraud_types": [
+        "smishing",
+        "phishing",
+        "card-not-present-fraud",
+        "identity-theft",
+        "fraud-as-a-service"
+      ],
+      "tags": [
+        "smishing",
+        "darcula",
+        "magic-cat",
+        "smishing-triad",
+        "lucid",
+        "lighthouse",
+        "chenlun",
+        "panda-shop",
+        "imessage-exploitation",
+        "rcs-phishing",
+        "phaas",
+        "toll-scam",
+        "card-not-present"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.002",
+        "T1598",
+        "T1583.001",
+        "T1583.003",
+        "T1656",
+        "T1539"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FT007.009",
+        "FT011.001",
+        "FT016.001"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Credential Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-CFPB-REGE"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "detection_rule_ids": [
+        "DL-0149"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0008",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0023",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0067",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 2
     }
   ]
 }

@@ -1,6 +1,6 @@
 # FLAME Threat Path Index
 
-> 68 threat paths covering 103 fraud types across 18 sectors
+> 69 threat paths covering 105 fraud types across 19 sectors
 > Framework-agnostic: mapped to CFPF phases with cross-references to FT3, ATT&CK, and Group-IB Fraud Matrix
 
 ## Coverage Summary
@@ -75,6 +75,7 @@
 | TP-0066 | Crash-for-Cash and Organized Insurance Fraud Rings | crash-for-cash, insurance-fraud, fraudulent-claim, collusion, documentary-fraud | Insurance, Healthcare | P1-P5 |
 | TP-0067 | AiTM Phishing Kit Infrastructure and Session Token Hijacking | aitm-phishing, phishing, account-takeover, credential-stuffing, fraud-as-a-service | Cross-sector, Banking, Fintech, Technology | P1-P5 |
 | TP-0068 | Gift Card Fraud Lifecycle — Generation, Tampering, and Monetization | gift-card-fraud, gift-card-tampering, loyalty-point-fraud, social-engineering | Retail, Payments | P1-P5 |
+| TP-0069 | Smishing PhaaS Ecosystem — Darcula, Smishing Triad, and Mass-Messaging Credential Harvest | smishing, phishing, card-not-present-fraud, identity-theft, fraud-as-a-service | Cross-sector, Banking, Retail, Payments, Government, Transportation | P1-P5 |
 
 ## Coverage by Fraud Type
 
@@ -103,6 +104,7 @@
 | Business Email Compromise | TP-0019, TP-0020 |
 | Bust Out | TP-0016, TP-0064 |
 | Calendar Phishing | TP-0050 |
+| Card Not Present Fraud | TP-0069 |
 | Card Testing | TP-0038 |
 | Chatbot Enabled Fraud | TP-0058 |
 | Check Fraud | TP-0009 |
@@ -124,7 +126,7 @@
 | E Skimmer | TP-0035 |
 | Employment Fraud | TP-0034 |
 | First Party Fraud | TP-0016, TP-0030, TP-0031, TP-0036, TP-0040 |
-| Fraud As A Service | TP-0054, TP-0057, TP-0065, TP-0067 |
+| Fraud As A Service | TP-0054, TP-0057, TP-0065, TP-0067, TP-0069 |
 | Fraud Enabling Infrastructure | TP-0061 |
 | Fraudulent Claim | TP-0010, TP-0056, TP-0066 |
 | Geo Routing | TP-0060 |
@@ -135,7 +137,7 @@
 | Hospice Fraud | TP-0021 |
 | Hosting Provider Complicity | TP-0061 |
 | Human Trafficking Facilitation | TP-0047, TP-0058 |
-| Identity Theft | TP-0015, TP-0018, TP-0019, TP-0022, TP-0030, TP-0034, TP-0035, TP-0038, TP-0040, TP-0053, TP-0056, TP-0063 |
+| Identity Theft | TP-0015, TP-0018, TP-0019, TP-0022, TP-0030, TP-0034, TP-0035, TP-0038, TP-0040, TP-0053, TP-0056, TP-0063, TP-0069 |
 | Impersonation | TP-0006, TP-0007, TP-0012, TP-0015, TP-0057, TP-0062, TP-0065 |
 | Infrastructure Rotation | TP-0061 |
 | Insider Threat | TP-0014 |
@@ -156,7 +158,7 @@
 | Payment Diversion | TP-0002, TP-0006, TP-0024, TP-0030 |
 | Payroll Diversion | TP-0004 |
 | Phantom Billing | TP-0021, TP-0028 |
-| Phishing | TP-0004, TP-0005, TP-0032, TP-0042, TP-0043, TP-0054, TP-0067 |
+| Phishing | TP-0004, TP-0005, TP-0032, TP-0042, TP-0043, TP-0054, TP-0067, TP-0069 |
 | Premium Diversion | TP-0005 |
 | Provider Fraud | TP-0010, TP-0021, TP-0028 |
 | Purchase Scam | TP-0036, TP-0063 |
@@ -170,6 +172,7 @@
 | Sanctions Evasion Infrastructure | TP-0045, TP-0048 |
 | Scam Compound Operations | TP-0047, TP-0058 |
 | Sextortion | TP-0052, TP-0058 |
+| Smishing | TP-0069 |
 | Social Engineering | TP-0017, TP-0025, TP-0027, TP-0036, TP-0037, TP-0039, TP-0040, TP-0050, TP-0051, TP-0052, TP-0058, TP-0062, TP-0065, TP-0068 |
 | State Criminal Convergence | TP-0044, TP-0046, TP-0055 |
 | Synthetic Identity | TP-0003, TP-0018, TP-0022, TP-0029, TP-0033 |
@@ -188,35 +191,36 @@
 
 | Sector | Threat Paths |
 |--------|-------------|
-| Banking | TP-0001, TP-0002, TP-0003, TP-0006, TP-0007, TP-0008, TP-0009, TP-0012, TP-0013, TP-0014, TP-0016, TP-0017, TP-0018, TP-0019, TP-0020, TP-0022, TP-0023, TP-0024, TP-0025, TP-0026, TP-0027, TP-0029, TP-0034, TP-0036, TP-0037, TP-0040, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0056, TP-0057, TP-0058, TP-0059, TP-0060, TP-0062, TP-0064, TP-0065, TP-0067 |
+| Banking | TP-0001, TP-0002, TP-0003, TP-0006, TP-0007, TP-0008, TP-0009, TP-0012, TP-0013, TP-0014, TP-0016, TP-0017, TP-0018, TP-0019, TP-0020, TP-0022, TP-0023, TP-0024, TP-0025, TP-0026, TP-0027, TP-0029, TP-0034, TP-0036, TP-0037, TP-0040, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0056, TP-0057, TP-0058, TP-0059, TP-0060, TP-0062, TP-0064, TP-0065, TP-0067, TP-0069 |
 | Credit Union | TP-0009, TP-0012, TP-0014, TP-0016, TP-0018 |
-| Cross Sector | TP-0002, TP-0004, TP-0006, TP-0007, TP-0011, TP-0013, TP-0017, TP-0020, TP-0025, TP-0027, TP-0039, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0048, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0057, TP-0058, TP-0061, TP-0062, TP-0063, TP-0064, TP-0065, TP-0067 |
+| Cross Sector | TP-0002, TP-0004, TP-0006, TP-0007, TP-0011, TP-0013, TP-0017, TP-0020, TP-0025, TP-0027, TP-0039, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0048, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0057, TP-0058, TP-0061, TP-0062, TP-0063, TP-0064, TP-0065, TP-0067, TP-0069 |
 | Crypto | TP-0008, TP-0017, TP-0023, TP-0026, TP-0032, TP-0034, TP-0041, TP-0043, TP-0044, TP-0045, TP-0047, TP-0049, TP-0052, TP-0054, TP-0055, TP-0058, TP-0059, TP-0060 |
 | Education | TP-0033 |
 | Employment | TP-0015, TP-0034, TP-0057 |
 | Fintech | TP-0003, TP-0008, TP-0013, TP-0018, TP-0023, TP-0024, TP-0029, TP-0035, TP-0037, TP-0038, TP-0039, TP-0040, TP-0059, TP-0067 |
-| Government | TP-0021, TP-0022, TP-0028, TP-0033, TP-0034, TP-0056 |
+| Government | TP-0021, TP-0022, TP-0028, TP-0033, TP-0034, TP-0056, TP-0069 |
 | Healthcare | TP-0015, TP-0021, TP-0028, TP-0034, TP-0056, TP-0066 |
 | Insurance | TP-0005, TP-0010, TP-0014, TP-0021, TP-0028, TP-0056, TP-0060, TP-0066 |
 | Investment | TP-0019, TP-0026, TP-0041, TP-0052, TP-0058, TP-0060, TP-0062, TP-0065 |
-| Payments | TP-0024, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0043, TP-0046, TP-0051, TP-0054, TP-0059, TP-0063, TP-0068 |
-| Retail | TP-0013, TP-0030, TP-0031, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0051, TP-0063, TP-0068 |
+| Payments | TP-0024, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0043, TP-0046, TP-0051, TP-0054, TP-0059, TP-0063, TP-0068, TP-0069 |
+| Retail | TP-0013, TP-0030, TP-0031, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0051, TP-0063, TP-0068, TP-0069 |
 | Staffing | TP-0015, TP-0057 |
 | Technology | TP-0034, TP-0039, TP-0054, TP-0057, TP-0061, TP-0067 |
 | Telecommunications | TP-0061, TP-0065 |
 | Trade | TP-0064 |
+| Transportation | TP-0069 |
 | Web3 | TP-0032 |
 
 ## Framework Coverage Status
 
 | Framework | Mapping Status | Notes |
 |-----------|---------------|-------|
-| FS-ISAC CFPF | All 68 TPs mapped | Primary organizational structure |
-| MITRE ATT&CK | 63 of 68 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
-| Stripe FT3 | Mapped (62/68) | MIT-licensed JSON vendored in data/ft3/ |
+| FS-ISAC CFPF | All 69 TPs mapped | Primary organizational structure |
+| MITRE ATT&CK | 64 of 69 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
+| Stripe FT3 | Mapped (63/69) | MIT-licensed JSON vendored in data/ft3/ |
 | MITRE F3 | Awaiting release | Will map when F3 ships |
-| Group-IB Fraud Matrix | 68 of 68 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
-| Group-IB UCFF | 68 of 68 TPs aligned | 7-domain lifecycle maturity assessment |
+| Group-IB Fraud Matrix | 69 of 69 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
+| Group-IB UCFF | 69 of 69 TPs aligned | 7-domain lifecycle maturity assessment |
 
 ## Cross-Threat Path Connections
 
