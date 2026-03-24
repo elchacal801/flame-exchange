@@ -5,11 +5,6 @@
       "type": "sql",
       "content": "-- SQL: Card-not-present fraud correlated with smishing complaint timestamps\n-- Identifies cards used for CNP transactions within 24 hours of a smishing report\n-- for the same phone number or customer\nSELECT\n    sc.customer_id,\n    sc.phone_number,\n    sc.complaint_timestamp,\n    sc.lure_type,\n    ct.card_number_hash,\n    ct.transaction_id,\n    ct.transaction_timestamp,\n    ct.merchant_name,\n    ct.transaction_amount,\n    ct.device_fingerprint,\n    ct.ip_address,\n    DATEDIFF(hour, sc.complaint_timestamp, ct.transaction_timestamp) AS hours_after_complaint\nFROM smishing_complaints sc\nINNER JOIN card_transactions ct\n    ON sc.customer_id = ct.customer_id\nWHERE ct.transaction_type = 'CNP'\n  AND ct.transaction_timestamp > sc.complaint_timestamp\n  AND ct.transaction_timestamp <= DATEADD(hour, 24, sc.complaint_timestamp)\n  AND ct.transaction_timestamp >= DATEADD(day, -30, GETDATE())\n  AND ct.fraud_score >= 50\nORDER BY sc.customer_id, ct.transaction_timestamp",
       "title": "TP-0069 detection rule (sql)"
-    },
-    {
-      "type": "splunk",
-      "content": "-- Splunk SPL: Toll-scam smishing pattern detection\n-- Correlates inbound smishing complaints with subsequent CNP transactions on the same customer's cards\nindex=fraud sourcetype=smishing_complaints\n| rename customer_id AS smish_customer, _time AS complaint_time\n| join type=inner smish_customer\n    [search index=transactions sourcetype=card_transactions\n     transaction_type=\"CNP\"\n     | rename customer_id AS smish_customer, _time AS txn_time]\n| where txn_time > complaint_time AND txn_time < complaint_time + 86400\n| stats count AS cnp_after_smishing,\n        sum(transaction_amount) AS total_fraud_amount,\n        dc(merchant_id) AS distinct_merchants,\n        values(merchant_name) AS merchants\n  BY smish_customer, complaint_time\n| where cnp_after_smishing >= 1\n| sort - total_fraud_amount",
-      "title": "TP-0069 detection rule (splunk)"
     }
   ]
 }
