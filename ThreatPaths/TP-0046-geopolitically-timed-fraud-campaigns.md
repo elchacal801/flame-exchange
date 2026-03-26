@@ -53,6 +53,8 @@ related_tps:
     relationship: related-to
   - id: TP-0045
     relationship: related-to
+regulatory_refs:
+  - REG-WCI-2024
 tags:
   - geopolitical-timing
   - election-cycle
@@ -65,6 +67,7 @@ tags:
   - financial-sector-targeting
   - l7-dns-attacks
   - politically-motivated
+  - wci-geographic-attribution
 ---
 ```
 
@@ -75,6 +78,8 @@ tags:
 Geopolitically-timed fraud campaigns represent a structurally distinct threat category in which financially-motivated and ideologically-motivated threat actors deliberately synchronize attack operations with elections, military conflicts, sanctions announcements, and other geopolitical inflection points. Research from Finance Derivative 2026 validates that hacktivist attacks on banks and payment providers are carefully timed to elections and geopolitical events, exploiting the operational distraction, heightened public anxiety, and degraded institutional response capacity that accompany political crises. This synchronization is not opportunistic -- it reflects deliberate pre-positioning of infrastructure, coordinated target selection based on political alignment, and campaign activation triggers tied to specific geopolitical milestones.
 
 The financial sector bears a disproportionate share of this activity. According to Radware's 2024 threat analysis, financial services absorbed 44% of total Layer 7 DNS attack activity, with a 393% year-over-year growth in DDoS volume per financial organization. In Q1 2025 alone, over 550 claimed DDoS attacks from politically motivated groups targeted U.S. financial institutions. Pro-Russian groups such as NoName057(16) and Killnet successors systematically target financial institutions in countries with pro-Ukrainian foreign policy positions, while pro-Palestinian groups direct operations against Western and Gulf financial sectors. Orange Cyberdefense has warned that hacktivism is extending beyond traditional IT targets toward cyber-physical risk in ICS/OT environments, raising the stakes for critical financial infrastructure.
+
+The geographic origin of attack-focused cybercrime operations is corroborated by the World Cybercrime Index (Bruce et al., PLoS ONE 2024): Russia dominates the attacks/extortion category (WCI 81.34/100), followed by Ukraine (50.76), North Korea (25.33), and Iran (10.00) — precisely the nations whose state-aligned hacktivist proxies (NoName057, Killnet successors) and state-sponsored attack groups drive geopolitically-timed campaigns against Western financial infrastructure. The WCI's finding that cybercrime hubs specialize in particular categories reinforces why geopolitically-timed attacks originate disproportionately from these jurisdictions. Note: WCI data was collected in 2021.
 
 The convergence of state-aligned hacktivist operations with financially-motivated fraud creates a compounding threat. DDoS campaigns degrade monitoring and verification systems, creating windows of opportunity for credential harvesting, account takeover, and unauthorized transactions. Election-timed domain registration spikes indicate pre-positioning of phishing infrastructure weeks before anticipated political events. Sanctions-announcement correlations reveal infrastructure migration patterns triggered by OFAC and EU sanctions designations. This threat path documents the full lifecycle of geopolitically-timed fraud campaigns and proposes detection approaches anchored to geopolitical event calendars rather than purely technical indicators.
 
@@ -104,6 +109,10 @@ The following statistics are drawn from the CrimsonVector Strategic Intelligence
 | Election-cycle domain registration spike (pre-election window) | 30-60 days | Finance Derivative 2026 | 2026 |
 | Financial sector DDoS attack duration increase | 4.5x longer vs other sectors | Radware | 2024 |
 | Hacktivist groups claiming financial sector targeting | 15+ distinct groups | CrimsonVector synthesis | 2025 |
+| WCI Attacks/Extortion — Russia | 81.34/100 (#1 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Attacks/Extortion — Ukraine | 50.76/100 (#2 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Attacks/Extortion — North Korea | 25.33/100 (#4 in attacks) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Attacks/Extortion — Iran | 10.00/100 | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 
 ---
 

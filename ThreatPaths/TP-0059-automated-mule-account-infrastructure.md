@@ -63,6 +63,7 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-RF-CTA-2026-0319
   - REG-UNODC-ORGANIZED-FRAUD-2024
+  - REG-WCI-2024
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -77,6 +78,7 @@ tags:
   - unodc-organized-fraud-2024
   - mule-herding
   - velocity-anomaly
+  - wci-geographic-attribution
 ---
 ```
 
@@ -85,6 +87,8 @@ tags:
 Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account systems integrated into scam compound laundering operations. Recorded Future identifies automated KYC circumvention toolkits on dark web marketplaces that combine synthetic identity documents, liveness check bypass tools, and device emulators to open accounts across multiple financial institutions simultaneously. INTERPOL reports mule networks comprising thousands of accounts per operation, enabling rapid layering of fraud proceeds across jurisdictions.
 
 **Distinction from TP-0049**: TP-0049 covers the downstream cryptocurrency laundering techniques; TP-0059 covers the upstream automated infrastructure that creates and manages the mule accounts used as the first layer of laundering.
+
+The geographic distribution of money mule networks aligns with WCI (Bruce et al., PLoS ONE 2024) cash-out/money laundering scores: the US (26.63/100) and UK (21.63) rank as the top Western cash-out jurisdictions, reflecting their role as primary mule account destinations rather than fraud production hubs. Note: WCI data was collected in 2021.
 
 ## Threat Path Hypothesis
 

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-24T02:13:58.490082+00:00",
+    "generated_at": "2026-03-26T00:43:14.314138+00:00",
     "total": 69
   },
   "data": [
@@ -1199,7 +1199,8 @@
         "elder-fraud",
         "human-trafficking",
         "unodc",
-        "unodc-organized-fraud-2024"
+        "unodc-organized-fraud-2024",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -1247,7 +1248,8 @@
         "REG-AU-SPF",
         "REG-EU-AMLD6",
         "REG-FINCEN-AML",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -1873,7 +1875,8 @@
         "interpol-gffta",
         "unodc",
         "unodc-organized-fraud-2024",
-        "40b-annual"
+        "40b-annual",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -1923,7 +1926,8 @@
         "REG-UK-PSR-APP",
         "REG-INTERPOL-GFFTA",
         "REG-UNODC-EMERGING-THREATS",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -3743,7 +3747,7 @@
       "author": "FLAME Project",
       "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)",
       "tlp": "WHITE",
-      "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use stolen or synthetic American identities to fraudulently obtain remote employment at Western technology companies. The program generates revenue for the North Korean regime in violation of international sanctions, while simultaneously creating insider threat vectors for credential theft, source code exfiltration, and post-termination data extortion. The DOJ has documented 136+ compromised U.S. companies with $2.2M+ in direct salary revenue from a single case, while CrowdStrike has observed 304 incidents. The threat has escalated since mid-2024 from pure salary extraction to active data exfiltration and ransom demands, representing a convergence of state-sponsored espionage, employment fraud, and cyber extortion. The operation relies on organized facilitator networks spanning the U.S. and Ukraine that provide stolen identities, proxy laptop hosting at U.S. addresses, and financial laundering infrastructure.\n\n---",
+      "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use stolen or synthetic American identities to fraudulently obtain remote employment at Western technology companies. The program generates revenue for the North Korean regime in violation of international sanctions, while simultaneously creating insider threat vectors for credential theft, source code exfiltration, and post-termination data extortion. The DOJ has documented 136+ compromised U.S. companies with $2.2M+ in direct salary revenue from a single case, while CrowdStrike has observed 304 incidents. The threat has escalated since mid-2024 from pure salary extraction to active data exfiltration and ransom demands, representing a convergence of state-sponsored espionage, employment fraud, and cyber extortion. The operation relies on organized facilitator networks spanning the U.S. and Ukraine that provide stolen identities, proxy laptop hosting at U.S. addresses, and financial laundering infrastructure.\n\nThe World Cybercrime Index (Bruce et al., PLoS ONE 2024) provides independent academic corroboration: North Korea ranks #7 globally (WCI 10.61/100) with a pronounced attacks/extortion specialization (25.33 — 2.4x its overall score), while scoring minimally on scams (2.17) and cash-out (3.88). This asymmetric profile reflects a state-directed cybercrime apparatus focused on high-impact attacks rather than the broad-spectrum fraud production seen in other top-ranked countries. Note: WCI data was collected in 2021, before the IT worker fraud campaign reached its current documented scale.\n\n---",
       "confidence_score": 85,
       "source_reliability": "A",
       "info_credibility": 1,
@@ -3782,6 +3786,7 @@
         "oconnect-vpn",
         "ip-messenger",
         "western-collaborators",
+        "wci-geographic-attribution",
         "beavertail",
         "invisibleferret",
         "purplebravo",
@@ -3838,7 +3843,8 @@
         "REG-FINCEN-CDD",
         "REG-FBI-IC3",
         "REG-UNODC-EMERGING-THREATS",
-        "REG-RF-CTA-2026-0319"
+        "REG-RF-CTA-2026-0319",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -4949,7 +4955,7 @@
       "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, Atlantic Council)",
       "source": "https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/",
       "tlp": "WHITE",
-      "summary": "State-sponsored threat actors and criminal cyber organizations are converging into hybrid operational structures that share infrastructure, tooling, and monetization networks. This convergence represents a structural shift in the threat landscape: the traditional analytical boundary between nation-state espionage/sabotage and financially-motivated cybercrime is dissolving. The implications for fraud and financial crime defense are profound — organizations now face adversaries that combine state-level intelligence capabilities, zero-day exploit arsenals, and diplomatic cover with criminal operational tradecraft, ransomware-as-a-service platforms, and established money laundering networks.\n\nThe evidence for this convergence is drawn from multiple independent, high-confidence sources. In March 2025, Microsoft Threat Intelligence documented Moonstone Sleet (a DPRK-attributed threat actor) deploying Qilin ransomware — a Russian-origin Ransomware-as-a-Service platform — marking the first publicly confirmed instance of a state-sponsored actor operationally partnering with a criminal ransomware ecosystem. In July 2025, Gen Digital's threat research team identified a single IP address that hosted Gamaredon (Russian FSB-linked) command-and-control infrastructure and, four days later, hosted obfuscated Lazarus Group (DPRK) malware — demonstrating direct infrastructure sharing between Russian and North Korean state-aligned threat actors. The Atlantic Council's \"Hidden Enablers\" report mapped four distinct pathways through which DPRK operatives exploit third-country financial and corporate infrastructure to circumvent sanctions, sustain revenue generation, and launder proceeds. Chinese Money Laundering Networks (CMLNs) serve as the primary off-ramp mechanism for DPRK cryptocurrency heist proceeds, providing fiat conversion services through established underground financial channels.\n\nThe Korean Leaks campaign of September-October 2025 further demonstrated the scale and sophistication of this convergence: a coordinated operation targeting 25 South Korean financial institutions in a single month, combining credential harvesting, insider data exfiltration, and cryptocurrency theft techniques drawn from both state espionage and criminal fraud playbooks. This campaign illustrated how state-criminal convergence enables operations that neither party could execute independently — state actors gain access to criminal monetization infrastructure, while criminal networks gain access to state-grade targeting and exploitation capabilities.\n\nThis threat path documents the mechanisms by which state and criminal actors converge across each phase of the fraud lifecycle, with particular emphasis on shared infrastructure, cross-group tool adoption, and converged monetization pathways. The central analytical finding is that traditional threat models that segregate \"nation-state\" and \"criminal\" threats into separate risk categories are structurally inadequate for detecting and responding to hybrid operations. Detection and defense strategies must account for adversaries that operate simultaneously across both threat categories, combining capabilities from each.\n\n---",
+      "summary": "State-sponsored threat actors and criminal cyber organizations are converging into hybrid operational structures that share infrastructure, tooling, and monetization networks. This convergence represents a structural shift in the threat landscape: the traditional analytical boundary between nation-state espionage/sabotage and financially-motivated cybercrime is dissolving. The implications for fraud and financial crime defense are profound — organizations now face adversaries that combine state-level intelligence capabilities, zero-day exploit arsenals, and diplomatic cover with criminal operational tradecraft, ransomware-as-a-service platforms, and established money laundering networks.\n\nThe evidence for this convergence is drawn from multiple independent, high-confidence sources. In March 2025, Microsoft Threat Intelligence documented Moonstone Sleet (a DPRK-attributed threat actor) deploying Qilin ransomware — a Russian-origin Ransomware-as-a-Service platform — marking the first publicly confirmed instance of a state-sponsored actor operationally partnering with a criminal ransomware ecosystem. In July 2025, Gen Digital's threat research team identified a single IP address that hosted Gamaredon (Russian FSB-linked) command-and-control infrastructure and, four days later, hosted obfuscated Lazarus Group (DPRK) malware — demonstrating direct infrastructure sharing between Russian and North Korean state-aligned threat actors. The Atlantic Council's \"Hidden Enablers\" report mapped four distinct pathways through which DPRK operatives exploit third-country financial and corporate infrastructure to circumvent sanctions, sustain revenue generation, and launder proceeds. Chinese Money Laundering Networks (CMLNs) serve as the primary off-ramp mechanism for DPRK cryptocurrency heist proceeds, providing fiat conversion services through established underground financial channels.\n\nThe Korean Leaks campaign of September-October 2025 further demonstrated the scale and sophistication of this convergence: a coordinated operation targeting 25 South Korean financial institutions in a single month, combining credential harvesting, insider data exfiltration, and cryptocurrency theft techniques drawn from both state espionage and criminal fraud playbooks. This campaign illustrated how state-criminal convergence enables operations that neither party could execute independently — state actors gain access to criminal monetization infrastructure, while criminal networks gain access to state-grade targeting and exploitation capabilities.\n\nThe geographic concentration of cybercrime production is empirically validated by the World Cybercrime Index (Bruce et al., PLoS ONE 2024), a peer-reviewed expert survey of 92 cybercrime professionals. Russia ranks #1 globally (WCI 58.39/100) with dominant scores in technical products/services (82.17) and attacks/extortion (81.34), confirming its role as the primary source of criminal tooling adopted by state-aligned actors. North Korea ranks #7 overall but #4 in attacks/extortion (25.33), reflecting its pronounced specialization in state-sponsored attack operations. China ranks #3 (27.86) with strength in technical products (40.22) and data theft (34.89). This geographic specialization pattern — where countries produce distinct types of cybercrime rather than all types equally — reinforces the convergence thesis: state actors in attack-specialized hubs partner with criminal actors in technical-production hubs to achieve capabilities neither possesses independently. Note: WCI data was collected in 2021 and predates the SE Asian scam compound expansion.\n\nThis threat path documents the mechanisms by which state and criminal actors converge across each phase of the fraud lifecycle, with particular emphasis on shared infrastructure, cross-group tool adoption, and converged monetization pathways. The central analytical finding is that traditional threat models that segregate \"nation-state\" and \"criminal\" threats into separate risk categories are structurally inadequate for detecting and responding to hybrid operations. Detection and defense strategies must account for adversaries that operate simultaneously across both threat categories, combining capabilities from each.\n\n---",
       "confidence_score": 78,
       "source_reliability": "B",
       "info_credibility": 2,
@@ -4985,7 +4991,8 @@
         "operation-haechi",
         "operation-redcard",
         "unodc",
-        "unodc-organized-fraud-2024"
+        "unodc-organized-fraud-2024",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -5020,7 +5027,8 @@
         "REG-INTERPOL-REDCARD",
         "REG-INTERPOL-SHADOW-STORM",
         "REG-RF-CTA-2026-0319",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -5059,7 +5067,7 @@
       "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs, OFAC)",
       "source": "https://www.chainalysis.com/blog/crypto-crime-midyear-2025/",
       "tlp": "WHITE",
-      "summary": "Sanctions evasion has evolved from a compliance challenge into a distinct infrastructure threat path, driven by the convergence of bulletproof hosting (BPH), purpose-built stablecoins, and rapid entity rebranding. State-aligned and state-tolerated actors are deploying fraud infrastructure specifically designed to circumvent OFAC, EU, and coordinated international sanctions regimes. The scale is unprecedented: the A7A5 ruble-backed stablecoin processed $93.3 billion in less than one year, with $39 billion directly linked to sanctions evasion activity (Chainalysis/TRM Labs 2026). Huione Group accumulated $98 billion in total crypto inflows, with $4 billion confirmed illicit — including $37 million traced to DPRK cyber heist proceeds — and launched the USDH stablecoin explicitly designed to be \"unfreezable\" by law enforcement. Funnull Technology operated 332,000+ DGA-generated domains across 548 CNAMEs and purchased Polyfill.io to execute supply chain attacks before being designated by OFAC in May 2025.\n\nA defining characteristic of this threat path is the sanctions evasion infrastructure lifecycle: a predictable four-stage pattern in which sanctioned entities rapidly migrate operations, rebrand under new corporate identities, and re-establish infrastructure in permissive jurisdictions. The Garantex-to-Grinex rebranding (OFAC sanctioned November 2025) and the Aeza-to-Smart Digital/Datavice migration (OFAC sanctioned July 2025) demonstrate that sanctions announcements do not terminate criminal infrastructure — they trigger a pre-planned migration and rebranding sequence that reconstitutes operational capability within days to weeks. This lifecycle creates a distinct detection opportunity: the migration itself generates observable infrastructure signals (BGP re-advertisement, ASN changes, DNS migration, domain re-registration) that can be correlated with sanctions announcement timelines.\n\nThe nation-state nexus is confirmed. Russian-language BPH providers, Chinese-linked infrastructure networks, and DPRK cyber operations intersect through shared infrastructure, stablecoin rails, and hosting services that are explicitly designed to resist Western law enforcement action. This threat path documents how sanctions evasion infrastructure enables downstream fraud operations — from crypto laundering and ransomware payment processing to investment scam hosting and credential harvesting campaign infrastructure — and maps the controls required to detect and disrupt the infrastructure lifecycle.\n\n---",
+      "summary": "Sanctions evasion has evolved from a compliance challenge into a distinct infrastructure threat path, driven by the convergence of bulletproof hosting (BPH), purpose-built stablecoins, and rapid entity rebranding. State-aligned and state-tolerated actors are deploying fraud infrastructure specifically designed to circumvent OFAC, EU, and coordinated international sanctions regimes. The scale is unprecedented: the A7A5 ruble-backed stablecoin processed $93.3 billion in less than one year, with $39 billion directly linked to sanctions evasion activity (Chainalysis/TRM Labs 2026). Huione Group accumulated $98 billion in total crypto inflows, with $4 billion confirmed illicit — including $37 million traced to DPRK cyber heist proceeds — and launched the USDH stablecoin explicitly designed to be \"unfreezable\" by law enforcement. Funnull Technology operated 332,000+ DGA-generated domains across 548 CNAMEs and purchased Polyfill.io to execute supply chain attacks before being designated by OFAC in May 2025.\n\nA defining characteristic of this threat path is the sanctions evasion infrastructure lifecycle: a predictable four-stage pattern in which sanctioned entities rapidly migrate operations, rebrand under new corporate identities, and re-establish infrastructure in permissive jurisdictions. The Garantex-to-Grinex rebranding (OFAC sanctioned November 2025) and the Aeza-to-Smart Digital/Datavice migration (OFAC sanctioned July 2025) demonstrate that sanctions announcements do not terminate criminal infrastructure — they trigger a pre-planned migration and rebranding sequence that reconstitutes operational capability within days to weeks. This lifecycle creates a distinct detection opportunity: the migration itself generates observable infrastructure signals (BGP re-advertisement, ASN changes, DNS migration, domain re-registration) that can be correlated with sanctions announcement timelines.\n\nThe geographic overlap between top cybercrime-producing nations and sanctioned jurisdictions is empirically validated by the World Cybercrime Index (Bruce et al., PLoS ONE 2024): four of the top 15 cybercrime-producing countries — Russia (#1, WCI 58.39), North Korea (#7, 10.61), Iran (#11, 4.78), and Belarus (#12, 3.87) — are subject to comprehensive OFAC/EU sanctions regimes, confirming that sanctions evasion infrastructure and cybercrime production are structurally intertwined rather than coincidental. Note: WCI data was collected in 2021.\n\nThe nation-state nexus is confirmed. Russian-language BPH providers, Chinese-linked infrastructure networks, and DPRK cyber operations intersect through shared infrastructure, stablecoin rails, and hosting services that are explicitly designed to resist Western law enforcement action. This threat path documents how sanctions evasion infrastructure enables downstream fraud operations — from crypto laundering and ransomware payment processing to investment scam hosting and credential harvesting campaign infrastructure — and maps the controls required to detect and disrupt the infrastructure lifecycle.\n\n---",
       "confidence_score": 85,
       "source_reliability": "A",
       "info_credibility": 1,
@@ -5086,7 +5094,8 @@
         "aeza",
         "bph-rebranding",
         "crypto-laundering",
-        "infrastructure-migration"
+        "infrastructure-migration",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -5113,7 +5122,9 @@
         "Monetization",
         "Laundering"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-WCI-2024"
+      ],
       "ucff_domains": {
         "commit": "Level 4",
         "assess": "Level 4",
@@ -5153,7 +5164,7 @@
       "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Finance Derivative 2026, Radware, Orange Cyberdefense)",
       "source": "https://www.radware.com/threat-analysis/",
       "tlp": "WHITE",
-      "summary": "Geopolitically-timed fraud campaigns represent a structurally distinct threat category in which financially-motivated and ideologically-motivated threat actors deliberately synchronize attack operations with elections, military conflicts, sanctions announcements, and other geopolitical inflection points. Research from Finance Derivative 2026 validates that hacktivist attacks on banks and payment providers are carefully timed to elections and geopolitical events, exploiting the operational distraction, heightened public anxiety, and degraded institutional response capacity that accompany political crises. This synchronization is not opportunistic -- it reflects deliberate pre-positioning of infrastructure, coordinated target selection based on political alignment, and campaign activation triggers tied to specific geopolitical milestones.\n\nThe financial sector bears a disproportionate share of this activity. According to Radware's 2024 threat analysis, financial services absorbed 44% of total Layer 7 DNS attack activity, with a 393% year-over-year growth in DDoS volume per financial organization. In Q1 2025 alone, over 550 claimed DDoS attacks from politically motivated groups targeted U.S. financial institutions. Pro-Russian groups such as NoName057(16) and Killnet successors systematically target financial institutions in countries with pro-Ukrainian foreign policy positions, while pro-Palestinian groups direct operations against Western and Gulf financial sectors. Orange Cyberdefense has warned that hacktivism is extending beyond traditional IT targets toward cyber-physical risk in ICS/OT environments, raising the stakes for critical financial infrastructure.\n\nThe convergence of state-aligned hacktivist operations with financially-motivated fraud creates a compounding threat. DDoS campaigns degrade monitoring and verification systems, creating windows of opportunity for credential harvesting, account takeover, and unauthorized transactions. Election-timed domain registration spikes indicate pre-positioning of phishing infrastructure weeks before anticipated political events. Sanctions-announcement correlations reveal infrastructure migration patterns triggered by OFAC and EU sanctions designations. This threat path documents the full lifecycle of geopolitically-timed fraud campaigns and proposes detection approaches anchored to geopolitical event calendars rather than purely technical indicators.\n\n---",
+      "summary": "Geopolitically-timed fraud campaigns represent a structurally distinct threat category in which financially-motivated and ideologically-motivated threat actors deliberately synchronize attack operations with elections, military conflicts, sanctions announcements, and other geopolitical inflection points. Research from Finance Derivative 2026 validates that hacktivist attacks on banks and payment providers are carefully timed to elections and geopolitical events, exploiting the operational distraction, heightened public anxiety, and degraded institutional response capacity that accompany political crises. This synchronization is not opportunistic -- it reflects deliberate pre-positioning of infrastructure, coordinated target selection based on political alignment, and campaign activation triggers tied to specific geopolitical milestones.\n\nThe financial sector bears a disproportionate share of this activity. According to Radware's 2024 threat analysis, financial services absorbed 44% of total Layer 7 DNS attack activity, with a 393% year-over-year growth in DDoS volume per financial organization. In Q1 2025 alone, over 550 claimed DDoS attacks from politically motivated groups targeted U.S. financial institutions. Pro-Russian groups such as NoName057(16) and Killnet successors systematically target financial institutions in countries with pro-Ukrainian foreign policy positions, while pro-Palestinian groups direct operations against Western and Gulf financial sectors. Orange Cyberdefense has warned that hacktivism is extending beyond traditional IT targets toward cyber-physical risk in ICS/OT environments, raising the stakes for critical financial infrastructure.\n\nThe geographic origin of attack-focused cybercrime operations is corroborated by the World Cybercrime Index (Bruce et al., PLoS ONE 2024): Russia dominates the attacks/extortion category (WCI 81.34/100), followed by Ukraine (50.76), North Korea (25.33), and Iran (10.00) — precisely the nations whose state-aligned hacktivist proxies (NoName057, Killnet successors) and state-sponsored attack groups drive geopolitically-timed campaigns against Western financial infrastructure. The WCI's finding that cybercrime hubs specialize in particular categories reinforces why geopolitically-timed attacks originate disproportionately from these jurisdictions. Note: WCI data was collected in 2021.\n\nThe convergence of state-aligned hacktivist operations with financially-motivated fraud creates a compounding threat. DDoS campaigns degrade monitoring and verification systems, creating windows of opportunity for credential harvesting, account takeover, and unauthorized transactions. Election-timed domain registration spikes indicate pre-positioning of phishing infrastructure weeks before anticipated political events. Sanctions-announcement correlations reveal infrastructure migration patterns triggered by OFAC and EU sanctions designations. This threat path documents the full lifecycle of geopolitically-timed fraud campaigns and proposes detection approaches anchored to geopolitical event calendars rather than purely technical indicators.\n\n---",
       "confidence_score": 75,
       "source_reliability": "B",
       "info_credibility": 2,
@@ -5179,7 +5190,8 @@
         "pro-palestinian",
         "financial-sector-targeting",
         "l7-dns-attacks",
-        "politically-motivated"
+        "politically-motivated",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -5204,7 +5216,9 @@
         "End-user Interaction",
         "Perform Fraud"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-WCI-2024"
+      ],
       "ucff_domains": {
         "commit": "Level 3",
         "assess": "Level 4",
@@ -5269,7 +5283,8 @@
         "multilingual-chatbot",
         "sextortion-fallback",
         "unodc",
-        "unodc-organized-fraud-2024"
+        "unodc-organized-fraud-2024",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -5298,7 +5313,8 @@
       "regulatory_refs": [
         "REG-UNODC-EMERGING-THREATS",
         "REG-INTERPOL-GFFTA",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 4",
@@ -5341,7 +5357,7 @@
       "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, OFAC, CISA)",
       "source": "https://www.cisa.gov/topics/cyber-threats-and-advisories",
       "tlp": "WHITE",
-      "summary": "Bulletproof hosting (BPH) providers represent one of the most critical enablers of modern cybercrime and fraud infrastructure. Unlike legitimate hosting services that comply with abuse reports and law enforcement requests, BPH operators explicitly guarantee service continuity for criminal clients — ignoring takedown notices, hosting phishing kits, malware command-and-control infrastructure, ransomware leak sites, and fraud marketplaces. CISA has noted a \"marked increase\" in BPH use against critical infrastructure across all sectors, reflecting a maturation of the BPH ecosystem from ad hoc service provision to industrialized criminal infrastructure-as-a-service.\n\nThis threat path documents the migration patterns that BPH providers follow when subjected to law enforcement disruption, OFAC sanctions, or coordinated takedown actions. Analysis of three major BPH operations — Funnull Technology (332,000+ domains, 548 CNAMEs, OFAC designated May 2025), Aeza Group rebranding to Smart Digital/Datavice (OFAC sanctioned July 2025), and Media Land (OFAC sanctioned November 2025) — reveals a consistent five-stage lifecycle: Operation, Detection/Sanctions, Migration, Rebranding, and Resumption. The lifecycle completes in as few as 7-14 days, meaning sanctions announcements do not terminate BPH services but instead trigger pre-planned migration sequences that reconstitute criminal hosting capability under new identities.\n\nA particularly concerning evolution is the shift toward cloud provider abuse, where BPH operators purchase legitimate cloud IP ranges in bulk from major providers and resell them to criminal clients. This technique blends malicious traffic with legitimate cloud workloads, making network-level detection significantly harder and rendering IP-based blocklists ineffective. The convergence of BPH migration patterns with cloud abuse creates a compounding detection challenge that requires infrastructure-behavioral analysis rather than static indicator matching.\n\n---",
+      "summary": "Bulletproof hosting (BPH) providers represent one of the most critical enablers of modern cybercrime and fraud infrastructure. Unlike legitimate hosting services that comply with abuse reports and law enforcement requests, BPH operators explicitly guarantee service continuity for criminal clients — ignoring takedown notices, hosting phishing kits, malware command-and-control infrastructure, ransomware leak sites, and fraud marketplaces. CISA has noted a \"marked increase\" in BPH use against critical infrastructure across all sectors, reflecting a maturation of the BPH ecosystem from ad hoc service provision to industrialized criminal infrastructure-as-a-service.\n\nThis threat path documents the migration patterns that BPH providers follow when subjected to law enforcement disruption, OFAC sanctions, or coordinated takedown actions. Analysis of three major BPH operations — Funnull Technology (332,000+ domains, 548 CNAMEs, OFAC designated May 2025), Aeza Group rebranding to Smart Digital/Datavice (OFAC sanctioned July 2025), and Media Land (OFAC sanctioned November 2025) — reveals a consistent five-stage lifecycle: Operation, Detection/Sanctions, Migration, Rebranding, and Resumption. The lifecycle completes in as few as 7-14 days, meaning sanctions announcements do not terminate BPH services but instead trigger pre-planned migration sequences that reconstitute criminal hosting capability under new identities.\n\nA particularly concerning evolution is the shift toward cloud provider abuse, where BPH operators purchase legitimate cloud IP ranges in bulk from major providers and resell them to criminal clients. This technique blends malicious traffic with legitimate cloud workloads, making network-level detection significantly harder and rendering IP-based blocklists ineffective. The convergence of BPH migration patterns with cloud abuse creates a compounding detection challenge that requires infrastructure-behavioral analysis rather than static indicator matching.\n\nThe geographic concentration of BPH infrastructure in Russia, Ukraine, Belarus, and Moldova is consistent with the World Cybercrime Index (Bruce et al., PLoS ONE 2024), which ranks these countries as the top producers of technical cybercrime products/services (Russia 82.17/100, Ukraine 52.97, Belarus 11.92, Moldova 6.70). Notably, Belarus and Moldova score disproportionately high on technical products relative to their overall WCI scores (3.1x and 2.6x respectively), indicating specialization in infrastructure provision — the precise activity pattern underlying BPH operations. Note: WCI data was collected in 2021 and measures cybercrime production (where operators reside), not infrastructure hosting location.\n\n---",
       "confidence_score": 82,
       "source_reliability": "A",
       "info_credibility": 2,
@@ -5365,7 +5381,8 @@
         "cloud-abuse",
         "bgp-analysis",
         "cname-clustering",
-        "infrastructure-lifecycle"
+        "infrastructure-lifecycle",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -5388,7 +5405,10 @@
         "Defence Evasion",
         "Perform Fraud"
       ],
-      "regulatory_refs": [],
+      "regulatory_refs": [
+        "REG-WCI-2024",
+        "REG-RF-CTA-2026-0319"
+      ],
       "ucff_domains": {
         "commit": "Level 3",
         "assess": "Level 4",
@@ -5427,7 +5447,7 @@
       "author": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs)",
       "source": "https://www.chainalysis.com/blog/crypto-crime-midyear-2025/",
       "tlp": "WHITE",
-      "summary": "Cryptocurrency Money Laundering Networks (CMLNs) have emerged as the dominant infrastructure layer enabling the monetization of virtually every category of crypto-enabled fraud and cybercrime. In 2025, CMLNs processed $16.1 billion across 1,799+ active wallets, averaging approximately $44 million per day (Chainalysis 2026). CMLNs now represent approximately 20% of all known illicit cryptocurrency laundering over the past five years, making them the single most consequential infrastructure component in the crypto-crime ecosystem. Critically, CMLN inflows have grown 7,325x faster than illicit inflows to centralized exchanges since 2020 -- a structural shift indicating that professional laundering networks have almost entirely displaced direct exchange-based cash-out as the preferred monetization pathway.\n\nThe CMLN ecosystem is composed of six distinct service types, each with specialized operational characteristics: running point brokers, money mules, OTC services, \"Black U\" services, gambling platforms, and money movement services. These service types operate as a layered, modular infrastructure -- threat actors can chain multiple CMLN services together to create complex laundering paths that frustrate blockchain analytics and law enforcement tracing. The \"Black U\" service category is particularly notable: a single Black U operation processed $1 billion in just 236 days with an average transaction processing time of 1.6 minutes, demonstrating industrial-scale, near-real-time laundering capability.\n\nTRM Labs reports that Chinese-language escrow and underground banking volume exceeded $103 billion in adjusted crypto volume in 2025, indicating that CMLNs are deeply embedded in transnational organized crime networks operating at a scale that rivals legitimate financial infrastructure. CMLNs launder over 10% of funds stolen in pig butchering scams, establishing a direct operational link between upstream social engineering fraud and downstream crypto laundering infrastructure. The DPRK laundering cycle -- a structured 45-day process moving from distancing through integration to off-ramping -- demonstrates that nation-state actors have adopted CMLN infrastructure as a core component of their financial operations.\n\nThis threat path documents the CMLN service taxonomy, maps the laundering lifecycle across CFPF phases, and identifies both on-chain and infrastructure-layer detection approaches that can be operationalized to disrupt CMLN operations at scale.\n\n---",
+      "summary": "Cryptocurrency Money Laundering Networks (CMLNs) have emerged as the dominant infrastructure layer enabling the monetization of virtually every category of crypto-enabled fraud and cybercrime. In 2025, CMLNs processed $16.1 billion across 1,799+ active wallets, averaging approximately $44 million per day (Chainalysis 2026). CMLNs now represent approximately 20% of all known illicit cryptocurrency laundering over the past five years, making them the single most consequential infrastructure component in the crypto-crime ecosystem. Critically, CMLN inflows have grown 7,325x faster than illicit inflows to centralized exchanges since 2020 -- a structural shift indicating that professional laundering networks have almost entirely displaced direct exchange-based cash-out as the preferred monetization pathway.\n\nThe CMLN ecosystem is composed of six distinct service types, each with specialized operational characteristics: running point brokers, money mules, OTC services, \"Black U\" services, gambling platforms, and money movement services. These service types operate as a layered, modular infrastructure -- threat actors can chain multiple CMLN services together to create complex laundering paths that frustrate blockchain analytics and law enforcement tracing. The \"Black U\" service category is particularly notable: a single Black U operation processed $1 billion in just 236 days with an average transaction processing time of 1.6 minutes, demonstrating industrial-scale, near-real-time laundering capability.\n\nTRM Labs reports that Chinese-language escrow and underground banking volume exceeded $103 billion in adjusted crypto volume in 2025, indicating that CMLNs are deeply embedded in transnational organized crime networks operating at a scale that rivals legitimate financial infrastructure. CMLNs launder over 10% of funds stolen in pig butchering scams, establishing a direct operational link between upstream social engineering fraud and downstream crypto laundering infrastructure. The DPRK laundering cycle -- a structured 45-day process moving from distancing through integration to off-ramping -- demonstrates that nation-state actors have adopted CMLN infrastructure as a core component of their financial operations.\n\nThis threat path documents the CMLN service taxonomy, maps the laundering lifecycle across CFPF phases, and identifies both on-chain and infrastructure-layer detection approaches that can be operationalized to disrupt CMLN operations at scale.\n\nThe World Cybercrime Index (Bruce et al., PLoS ONE 2024) reveals that cash-out/money laundering activity concentrates in major financial centers: the US (WCI 26.63), UK (21.63), and China (24.13) rank alongside Russia (41.56) as top cash-out jurisdictions — confirming that cryptocurrency laundering infrastructure is located where regulated financial on/off-ramps exist, not solely where fraud originates. Note: WCI data was collected in 2021.\n\n---",
       "confidence_score": 85,
       "source_reliability": "A",
       "info_credibility": 1,
@@ -5457,7 +5477,8 @@
         "interpol-gffta",
         "unodc",
         "unodc-organized-fraud-2024",
-        "ai-evasion"
+        "ai-evasion",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -5481,7 +5502,8 @@
       "regulatory_refs": [
         "REG-INTERPOL-GFFTA",
         "REG-UNODC-EMERGING-THREATS",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 4",
@@ -5901,7 +5923,7 @@
       "author": "FLAME Project",
       "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
       "tlp": "WHITE",
-      "summary": "GenAI-powered \"Fraud-as-a-Service\" (FaaS) platforms that provide subscription-based access to professional-grade fraud toolkits. INTERPOL's Global Financial Fraud Threat Assessment 2026 documents the rapid proliferation of these platforms across Asia-Pacific, Africa, and Europe, noting that they have \"enabled widespread adoption of cybercrime\" by providing ready-made tools including automated phishing websites, fake payment gateways, deepfake generation tools, and bot-generated fake testimonials that mimic legitimate business communications. Low-skill actors can now launch sophisticated BEC and phishing campaigns with minimal effort. The FaaS model operates on an affiliate structure where proceeds are split between platform operators and campaign operators. Criminal peer-to-peer marketplaces provide end-to-end criminal infrastructure including phishing tools, fake trading platforms, AI-powered chatbots for victim grooming, and integrated money laundering services.\n\n**Distinction from TP-0043**: TP-0043 covers AI-accelerated *generation* of fraud infrastructure (the technical capability layer); TP-0054 covers the *marketplace/subscription model* that packages, commercializes, and democratizes access to these capabilities for non-technical actors.",
+      "summary": "GenAI-powered \"Fraud-as-a-Service\" (FaaS) platforms that provide subscription-based access to professional-grade fraud toolkits. INTERPOL's Global Financial Fraud Threat Assessment 2026 documents the rapid proliferation of these platforms across Asia-Pacific, Africa, and Europe, noting that they have \"enabled widespread adoption of cybercrime\" by providing ready-made tools including automated phishing websites, fake payment gateways, deepfake generation tools, and bot-generated fake testimonials that mimic legitimate business communications. Low-skill actors can now launch sophisticated BEC and phishing campaigns with minimal effort. The FaaS model operates on an affiliate structure where proceeds are split between platform operators and campaign operators. Criminal peer-to-peer marketplaces provide end-to-end criminal infrastructure including phishing tools, fake trading platforms, AI-powered chatbots for victim grooming, and integrated money laundering services.\n\n**Distinction from TP-0043**: TP-0043 covers AI-accelerated *generation* of fraud infrastructure (the technical capability layer); TP-0054 covers the *marketplace/subscription model* that packages, commercializes, and democratizes access to these capabilities for non-technical actors.\n\nThe geographic concentration of FaaS tooling production is corroborated by the World Cybercrime Index (Bruce et al., PLoS ONE 2024): Russia (82.17/100), Ukraine (52.97), and China (40.22) dominate the technical products/services category, aligning with observed FaaS marketplace origin patterns. Note: WCI data was collected in 2021.",
       "confidence_score": 75,
       "source_reliability": "B",
       "info_credibility": 2,
@@ -5945,7 +5967,8 @@
         "black-hat-usa-2025",
         "infoblox-deanonymization",
         "unodc",
-        "unodc-organized-fraud-2024"
+        "unodc-organized-fraud-2024",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -5981,7 +6004,8 @@
         "REG-FINCEN-AML",
         "REG-UNODC-EMERGING-THREATS",
         "REG-RF-CTA-2026-0319",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -6028,7 +6052,7 @@
       "author": "FLAME Project",
       "source": "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
       "tlp": "WHITE",
-      "summary": "Criminal syndicates traditionally linked to drug trafficking, arms trafficking, and organized violence are establishing cryptocurrency Ponzi and investment schemes to launder illicit proceeds and fund further criminal operations. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two distinct but related manifestations of this nexus: (1) in South America, the arrest of a suspect with alleged links to Tren de Aragua in connection with a USD 150 million cryptocurrency fraud scheme used to launder drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula; and (2) in Africa, Operation Catalyst uncovered a massive crypto-based Ponzi scheme affecting more than 100,000 victims across at least 17 countries — with investigations finding several large-valued wallets potentially linked to terrorism financing in Central Africa.\n\nThis represents a structural convergence: financial fraud is no longer ancillary to organized crime but has become a primary revenue stream for narco-terror organizations. The crypto medium enables proceeds to flow across borders before investigators can intervene, and the Ponzi/investment scheme wrapper provides both victim recruitment at scale and a veneer of legitimacy.",
+      "summary": "Criminal syndicates traditionally linked to drug trafficking, arms trafficking, and organized violence are establishing cryptocurrency Ponzi and investment schemes to launder illicit proceeds and fund further criminal operations. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two distinct but related manifestations of this nexus: (1) in South America, the arrest of a suspect with alleged links to Tren de Aragua in connection with a USD 150 million cryptocurrency fraud scheme used to launder drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula; and (2) in Africa, Operation Catalyst uncovered a massive crypto-based Ponzi scheme affecting more than 100,000 victims across at least 17 countries — with investigations finding several large-valued wallets potentially linked to terrorism financing in Central Africa.\n\nThis represents a structural convergence: financial fraud is no longer ancillary to organized crime but has become a primary revenue stream for narco-terror organizations. The crypto medium enables proceeds to flow across borders before investigators can intervene, and the Ponzi/investment scheme wrapper provides both victim recruitment at scale and a veneer of legitimacy.\n\nNotably, traditional narcotics-producing and terrorism-financing jurisdictions (Colombia, Mexico, Afghanistan, Syria) are absent from the World Cybercrime Index top 15 (Bruce et al., PLoS ONE 2024), reinforcing this TP's thesis that cryptocurrency serves as the convergence mechanism between geographically separate cybercrime hubs and traditional organized crime networks — rather than traditional crime organizations developing indigenous cyber capabilities. Note: WCI data was collected in 2021.",
       "confidence_score": 78,
       "source_reliability": "B",
       "info_credibility": 2,
@@ -6058,7 +6082,8 @@
         "interpol-gffta",
         "operation-catalyst",
         "unodc",
-        "unodc-organized-fraud-2024"
+        "unodc-organized-fraud-2024",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -6089,7 +6114,8 @@
         "REG-FINCEN-AML",
         "REG-FATF-R16",
         "REG-INTERPOL-GFFTA",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -6249,7 +6275,8 @@
         "telegram-daas",
         "600pct-deepfake-surge",
         "10-second-voice-clone",
-        "dark-web-marketplace"
+        "dark-web-marketplace",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -6281,7 +6308,8 @@
       "regulatory_refs": [
         "REG-INTERPOL-GFFTA",
         "REG-UNODC-EMERGING-THREATS",
-        "REG-DORA"
+        "REG-DORA",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -6328,7 +6356,7 @@
       "author": "FLAME Project",
       "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026",
       "tlp": "WHITE",
-      "summary": "Operational fraud mechanics inside industrialized scam compounds. UNODC documents $40B annual profits from scam compound operations, with multilingual AI chatbots deployed for automated victim engagement and bot-driven operational scaling. INTERPOL reports 80 nationalities trafficked into compound operations, with geographic expansion from Southeast Asia into MENA and Africa. Compounds operate as industrial fraud factories with professional management hierarchies, performance metrics, shift-based operations, CRM systems tracking victim \"portfolios,\" and scripted sextortion fallback playbooks when investment scam conversion stalls.\n\n**Distinction from TP-0047**: TP-0047 covers the human trafficking and physical infrastructure nexus enabling compound existence; TP-0058 covers the operational fraud mechanics, management structures, and technology stack deployed inside compounds to execute fraud at scale.",
+      "summary": "Operational fraud mechanics inside industrialized scam compounds. UNODC documents $40B annual profits from scam compound operations, with multilingual AI chatbots deployed for automated victim engagement and bot-driven operational scaling. INTERPOL reports 80 nationalities trafficked into compound operations, with geographic expansion from Southeast Asia into MENA and Africa. Compounds operate as industrial fraud factories with professional management hierarchies, performance metrics, shift-based operations, CRM systems tracking victim \"portfolios,\" and scripted sextortion fallback playbooks when investment scam conversion stalls.\n\n**Distinction from TP-0047**: TP-0047 covers the human trafficking and physical infrastructure nexus enabling compound existence; TP-0058 covers the operational fraud mechanics, management structures, and technology stack deployed inside compounds to execute fraud at scale.\n\nThe World Cybercrime Index (Bruce et al., PLoS ONE 2024) provides partial geographic context: China ranks #3 globally (WCI 27.86) with significant cash-out/money laundering scores (24.13), supporting the documented role of Chinese Money Laundering Networks (CMLNs) in scam compound monetization. However, WCI data was collected in 2021, predating the explosive growth of SE Asian scam compounds (2022+) — Cambodia, Myanmar, and Laos are absent from WCI rankings despite being primary operational bases by 2025-2026.",
       "confidence_score": 78,
       "source_reliability": "A",
       "info_credibility": 2,
@@ -6362,7 +6390,8 @@
         "40b-annual-profits",
         "80-nationalities",
         "unodc",
-        "unodc-organized-fraud-2024"
+        "unodc-organized-fraud-2024",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -6394,7 +6423,8 @@
         "REG-INTERPOL-GFFTA",
         "REG-UNODC-EMERGING-THREATS",
         "REG-INTERPOL-HAECHI",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -6436,7 +6466,7 @@
       "author": "FLAME Project",
       "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319",
       "tlp": "WHITE",
-      "summary": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account systems integrated into scam compound laundering operations. Recorded Future identifies automated KYC circumvention toolkits on dark web marketplaces that combine synthetic identity documents, liveness check bypass tools, and device emulators to open accounts across multiple financial institutions simultaneously. INTERPOL reports mule networks comprising thousands of accounts per operation, enabling rapid layering of fraud proceeds across jurisdictions.\n\n**Distinction from TP-0049**: TP-0049 covers the downstream cryptocurrency laundering techniques; TP-0059 covers the upstream automated infrastructure that creates and manages the mule accounts used as the first layer of laundering.",
+      "summary": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account systems integrated into scam compound laundering operations. Recorded Future identifies automated KYC circumvention toolkits on dark web marketplaces that combine synthetic identity documents, liveness check bypass tools, and device emulators to open accounts across multiple financial institutions simultaneously. INTERPOL reports mule networks comprising thousands of accounts per operation, enabling rapid layering of fraud proceeds across jurisdictions.\n\n**Distinction from TP-0049**: TP-0049 covers the downstream cryptocurrency laundering techniques; TP-0059 covers the upstream automated infrastructure that creates and manages the mule accounts used as the first layer of laundering.\n\nThe geographic distribution of money mule networks aligns with WCI (Bruce et al., PLoS ONE 2024) cash-out/money laundering scores: the US (26.63/100) and UK (21.63) rank as the top Western cash-out jurisdictions, reflecting their role as primary mule account destinations rather than fraud production hubs. Note: WCI data was collected in 2021.",
       "confidence_score": 75,
       "source_reliability": "A",
       "info_credibility": 2,
@@ -6466,7 +6496,8 @@
         "unodc",
         "unodc-organized-fraud-2024",
         "mule-herding",
-        "velocity-anomaly"
+        "velocity-anomaly",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -6497,7 +6528,8 @@
         "REG-UNODC-EMERGING-THREATS",
         "REG-INTERPOL-GFFTA",
         "REG-RF-CTA-2026-0319",
-        "REG-UNODC-ORGANIZED-FRAUD-2024"
+        "REG-UNODC-ORGANIZED-FRAUD-2024",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -7074,7 +7106,8 @@
         "sim-farm",
         "telemarketing-fraud",
         "crime-as-a-service",
-        "organized-crime-group"
+        "organized-crime-group",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -7107,7 +7140,8 @@
       "regulatory_refs": [
         "REG-UNODC-ORGANIZED-FRAUD-2024",
         "REG-FINCEN-AML",
-        "REG-INTERPOL-GFFTA"
+        "REG-INTERPOL-GFFTA",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -7276,7 +7310,8 @@
         "caffeine",
         "sessionshark",
         "darcula",
-        "smishing-triad"
+        "smishing-triad",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -7316,7 +7351,8 @@
       ],
       "regulatory_refs": [
         "REG-INTERPOL-GFFTA",
-        "REG-STIX-FCI"
+        "REG-STIX-FCI",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -7489,7 +7525,8 @@
         "rcs-phishing",
         "phaas",
         "toll-scam",
-        "card-not-present"
+        "card-not-present",
+        "wci-geographic-attribution"
       ],
       "cfpf_phases": [
         "P1",
@@ -7524,7 +7561,8 @@
       ],
       "regulatory_refs": [
         "REG-INTERPOL-GFFTA",
-        "REG-CFPB-REGE"
+        "REG-CFPB-REGE",
+        "REG-WCI-2024"
       ],
       "ucff_domains": {
         "commit": "Level 2",

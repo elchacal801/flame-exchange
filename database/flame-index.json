@@ -1193,7 +1193,8 @@
       "elder-fraud",
       "human-trafficking",
       "unodc",
-      "unodc-organized-fraud-2024"
+      "unodc-organized-fraud-2024",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -1241,7 +1242,8 @@
       "REG-AU-SPF",
       "REG-EU-AMLD6",
       "REG-FINCEN-AML",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -1867,7 +1869,8 @@
       "interpol-gffta",
       "unodc",
       "unodc-organized-fraud-2024",
-      "40b-annual"
+      "40b-annual",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -1917,7 +1920,8 @@
       "REG-UK-PSR-APP",
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-EMERGING-THREATS",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -3776,6 +3780,7 @@
       "oconnect-vpn",
       "ip-messenger",
       "western-collaborators",
+      "wci-geographic-attribution",
       "beavertail",
       "invisibleferret",
       "purplebravo",
@@ -3832,7 +3837,8 @@
       "REG-FINCEN-CDD",
       "REG-FBI-IC3",
       "REG-UNODC-EMERGING-THREATS",
-      "REG-RF-CTA-2026-0319"
+      "REG-RF-CTA-2026-0319",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -4979,7 +4985,8 @@
       "operation-haechi",
       "operation-redcard",
       "unodc",
-      "unodc-organized-fraud-2024"
+      "unodc-organized-fraud-2024",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -5014,7 +5021,8 @@
       "REG-INTERPOL-REDCARD",
       "REG-INTERPOL-SHADOW-STORM",
       "REG-RF-CTA-2026-0319",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -5080,7 +5088,8 @@
       "aeza",
       "bph-rebranding",
       "crypto-laundering",
-      "infrastructure-migration"
+      "infrastructure-migration",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -5107,7 +5116,9 @@
       "Monetization",
       "Laundering"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-WCI-2024"
+    ],
     "ucff_domains": {
       "commit": "Level 4",
       "assess": "Level 4",
@@ -5173,7 +5184,8 @@
       "pro-palestinian",
       "financial-sector-targeting",
       "l7-dns-attacks",
-      "politically-motivated"
+      "politically-motivated",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -5198,7 +5210,9 @@
       "End-user Interaction",
       "Perform Fraud"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-WCI-2024"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 4",
@@ -5263,7 +5277,8 @@
       "multilingual-chatbot",
       "sextortion-fallback",
       "unodc",
-      "unodc-organized-fraud-2024"
+      "unodc-organized-fraud-2024",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -5292,7 +5307,8 @@
     "regulatory_refs": [
       "REG-UNODC-EMERGING-THREATS",
       "REG-INTERPOL-GFFTA",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 4",
@@ -5359,7 +5375,8 @@
       "cloud-abuse",
       "bgp-analysis",
       "cname-clustering",
-      "infrastructure-lifecycle"
+      "infrastructure-lifecycle",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -5382,7 +5399,10 @@
       "Defence Evasion",
       "Perform Fraud"
     ],
-    "regulatory_refs": [],
+    "regulatory_refs": [
+      "REG-WCI-2024",
+      "REG-RF-CTA-2026-0319"
+    ],
     "ucff_domains": {
       "commit": "Level 3",
       "assess": "Level 4",
@@ -5451,7 +5471,8 @@
       "interpol-gffta",
       "unodc",
       "unodc-organized-fraud-2024",
-      "ai-evasion"
+      "ai-evasion",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -5475,7 +5496,8 @@
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-EMERGING-THREATS",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 4",
@@ -5939,7 +5961,8 @@
       "black-hat-usa-2025",
       "infoblox-deanonymization",
       "unodc",
-      "unodc-organized-fraud-2024"
+      "unodc-organized-fraud-2024",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -5975,7 +5998,8 @@
       "REG-FINCEN-AML",
       "REG-UNODC-EMERGING-THREATS",
       "REG-RF-CTA-2026-0319",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6052,7 +6076,8 @@
       "interpol-gffta",
       "operation-catalyst",
       "unodc",
-      "unodc-organized-fraud-2024"
+      "unodc-organized-fraud-2024",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -6083,7 +6108,8 @@
       "REG-FINCEN-AML",
       "REG-FATF-R16",
       "REG-INTERPOL-GFFTA",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6243,7 +6269,8 @@
       "telegram-daas",
       "600pct-deepfake-surge",
       "10-second-voice-clone",
-      "dark-web-marketplace"
+      "dark-web-marketplace",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -6275,7 +6302,8 @@
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-EMERGING-THREATS",
-      "REG-DORA"
+      "REG-DORA",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6356,7 +6384,8 @@
       "40b-annual-profits",
       "80-nationalities",
       "unodc",
-      "unodc-organized-fraud-2024"
+      "unodc-organized-fraud-2024",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -6388,7 +6417,8 @@
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-EMERGING-THREATS",
       "REG-INTERPOL-HAECHI",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6460,7 +6490,8 @@
       "unodc",
       "unodc-organized-fraud-2024",
       "mule-herding",
-      "velocity-anomaly"
+      "velocity-anomaly",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -6491,7 +6522,8 @@
       "REG-UNODC-EMERGING-THREATS",
       "REG-INTERPOL-GFFTA",
       "REG-RF-CTA-2026-0319",
-      "REG-UNODC-ORGANIZED-FRAUD-2024"
+      "REG-UNODC-ORGANIZED-FRAUD-2024",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -7068,7 +7100,8 @@
       "sim-farm",
       "telemarketing-fraud",
       "crime-as-a-service",
-      "organized-crime-group"
+      "organized-crime-group",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -7101,7 +7134,8 @@
     "regulatory_refs": [
       "REG-UNODC-ORGANIZED-FRAUD-2024",
       "REG-FINCEN-AML",
-      "REG-INTERPOL-GFFTA"
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -7270,7 +7304,8 @@
       "caffeine",
       "sessionshark",
       "darcula",
-      "smishing-triad"
+      "smishing-triad",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -7310,7 +7345,8 @@
     ],
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
-      "REG-STIX-FCI"
+      "REG-STIX-FCI",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -7483,7 +7519,8 @@
       "rcs-phishing",
       "phaas",
       "toll-scam",
-      "card-not-present"
+      "card-not-present",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -7518,7 +7555,8 @@
     ],
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
-      "REG-CFPB-REGE"
+      "REG-CFPB-REGE",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 2",

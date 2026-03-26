@@ -67,6 +67,7 @@ regulatory_refs:
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-FINCEN-AML
   - REG-INTERPOL-GFFTA
+  - REG-WCI-2024
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -80,6 +81,7 @@ tags:
   - telemarketing-fraud
   - crime-as-a-service
   - organized-crime-group
+  - wci-geographic-attribution
 ---
 ```
 

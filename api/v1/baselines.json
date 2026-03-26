@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-24T02:13:59.929947+00:00",
-    "total": 34
+    "generated_at": "2026-03-26T00:43:15.829489+00:00",
+    "total": 35
   },
   "data": [
     {
@@ -1249,6 +1249,65 @@
         },
         {
           "id": "TP-0068",
+          "relationship": "related-to"
+        }
+      ]
+    },
+    {
+      "id": "BL-0036",
+      "title": "Cybercrime Geographic Origin Risk Norms",
+      "category": "Baseline",
+      "date": "2026-03-25",
+      "author": "FLAME Project (sourced from World Cybercrime Index, Bruce et al. 2024, PLoS ONE)",
+      "source": "",
+      "tlp": "WHITE",
+      "summary": "This baseline defines geographic cybercrime production risk tiers derived from the World Cybercrime Index (WCI), a peer-reviewed expert survey of 92 cybercrime intelligence/investigation professionals covering 97 countries across 5 cybercrime categories (Bruce et al., PLoS ONE 2024, DOI: 10.1371/journal.pone.0297312). The WCI establishes the first standardized geographic attribution framework for where cybercrime offenders are primarily based — as opposed to where attacks originate or infrastructure is hosted. These baselines support geographic risk scoring in transaction monitoring, infrastructure origin assessment, and cross-border fraud pattern detection across multiple FLAME threat paths.\n\n**Critical caveats:**\n- WCI survey data was collected March–October 2021. The SE Asian scam compound explosion (2022+) post-dates this data — Cambodia, Myanmar, and Laos are absent from WCI rankings despite being major operational bases by 2025–2026. Supplement with current intelligence for SE Asian geographic risk.\n- WCI measures cybercrime **production** (where offenders reside), not infrastructure hosting or attack transit. A country's WCI score does not indicate where attacks are launched from or where malicious infrastructure is hosted.\n- WCI is based on expert perception from 92 professionals, not measured incident rates. Expert pool skewed towards Europe and North America; South America and Africa are under-represented.\n- US (#4) and UK (#8) rankings reflect their roles as major financial centers with significant cash-out/money laundering activity, not as traditional cybercrime production hubs.",
+      "confidence_score": null,
+      "source_reliability": null,
+      "info_credibility": null,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "sectors": [],
+      "fraud_types": [],
+      "tags": [
+        "geographic-risk",
+        "wci-geographic-attribution",
+        "country-risk",
+        "transaction-monitoring",
+        "baseline"
+      ],
+      "cfpf_phases": [],
+      "mitre_attack": [],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [],
+      "regulatory_refs": [],
+      "ucff_domains": {},
+      "detection_rule_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0044",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0045",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0046",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0048",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0049",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0054",
           "relationship": "related-to"
         }
       ]

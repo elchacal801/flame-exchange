@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-24T02:13:58.654429+00:00",
+    "generated_at": "2026-03-26T00:43:14.476342+00:00",
     "total": 1
   },
   "data": {
@@ -48,7 +48,8 @@
       "rcs-phishing",
       "phaas",
       "toll-scam",
-      "card-not-present"
+      "card-not-present",
+      "wci-geographic-attribution"
     ],
     "cfpf_phases": [
       "P1",
@@ -83,7 +84,8 @@
     ],
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
-      "REG-CFPB-REGE"
+      "REG-CFPB-REGE",
+      "REG-WCI-2024"
     ],
     "ucff_domains": {
       "commit": "Level 2",

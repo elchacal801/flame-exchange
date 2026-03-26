@@ -50,6 +50,9 @@ related_tps:
     relationship: enables
   - id: TP-0042
     relationship: enables
+regulatory_refs:
+  - REG-WCI-2024
+  - REG-RF-CTA-2026-0319
 tags:
   - bulletproof-hosting
   - bph-migration
@@ -61,6 +64,7 @@ tags:
   - bgp-analysis
   - cname-clustering
   - infrastructure-lifecycle
+  - wci-geographic-attribution
 ---
 ```
 
@@ -74,6 +78,8 @@ This threat path documents the migration patterns that BPH providers follow when
 
 A particularly concerning evolution is the shift toward cloud provider abuse, where BPH operators purchase legitimate cloud IP ranges in bulk from major providers and resell them to criminal clients. This technique blends malicious traffic with legitimate cloud workloads, making network-level detection significantly harder and rendering IP-based blocklists ineffective. The convergence of BPH migration patterns with cloud abuse creates a compounding detection challenge that requires infrastructure-behavioral analysis rather than static indicator matching.
 
+The geographic concentration of BPH infrastructure in Russia, Ukraine, Belarus, and Moldova is consistent with the World Cybercrime Index (Bruce et al., PLoS ONE 2024), which ranks these countries as the top producers of technical cybercrime products/services (Russia 82.17/100, Ukraine 52.97, Belarus 11.92, Moldova 6.70). Notably, Belarus and Moldova score disproportionately high on technical products relative to their overall WCI scores (3.1x and 2.6x respectively), indicating specialization in infrastructure provision — the precise activity pattern underlying BPH operations. Note: WCI data was collected in 2021 and measures cybercrime production (where operators reside), not infrastructure hosting location.
+
 ---
 
 ## Threat Path Hypothesis
@@ -81,6 +87,20 @@ A particularly concerning evolution is the shift toward cloud provider abuse, wh
 **If** a bulletproof hosting provider faces law enforcement action, OFAC designation, or coordinated takedown pressure, **then** the operator will execute a pre-planned migration sequence — relocating infrastructure to new autonomous systems, rebranding under new corporate entities, and resuming criminal services within days to weeks — because BPH operators maintain contingency infrastructure, pre-registered shell companies, and established relationships with upstream providers in permissive jurisdictions that enable rapid reconstitution of services.
 
 **Corollary hypothesis:** The migration event itself generates observable infrastructure signals (BGP re-advertisement patterns, DNS migration artifacts, CNAME clustering changes, ASN ownership transfers, and domain re-registration bursts) that provide a detection window — typically 48-72 hours — during which the migrating infrastructure is most vulnerable to identification and disruption.
+
+---
+
+## Quantitative Evidence
+
+| Statistic | Value | Source | Year |
+|-----------|-------|--------|------|
+| Funnull Technology DGA domains | 332,000+ | Infoblox / OFAC | 2025 |
+| Funnull CNAME infrastructure | 548 CNAMEs | Infoblox | 2025 |
+| BPH migration reconstitution time | 7-14 days | FLAME case study synthesis | 2026 |
+| WCI Technical Products/Services — Russia | 82.17/100 (#1 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Technical Products/Services — Ukraine | 52.97/100 (#2 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Technical Products/Services — Belarus | 11.92/100 (3.1x its overall score) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Technical Products/Services — Moldova | 6.70/100 (2.6x its overall score) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 
 ---
 

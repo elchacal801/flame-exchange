@@ -54,6 +54,7 @@ regulatory_refs:
   - REG-EU-AMLD6
   - REG-FINCEN-AML
   - REG-UNODC-ORGANIZED-FRAUD-2024
+  - REG-WCI-2024
 tags:
   - pig-butchering
   - social-engineering
@@ -63,6 +64,7 @@ tags:
   - human-trafficking
   - unodc
   - unodc-organized-fraud-2024
+  - wci-geographic-attribution
 ---
 ```
 

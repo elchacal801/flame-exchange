@@ -22,12 +22,12 @@ FLAME is an open-source, community-driven platform for sharing structured fraud 
 |--------|-------|
 | **Threat Paths** | 69 (TP-0001 -- TP-0069) |
 | **Detection Logic Rules** | 150 (Sigma-based; exported to SPL, EQL, KQL) |
-| **Baselines** | 34 environmental profiling benchmarks |
+| **Baselines** | 35 environmental profiling benchmarks |
 | **Emulation Playbooks** | 7 adversary simulation scripts |
 | **Fraud Types** | 101 in master taxonomy |
 | **Sectors Covered** | 19 |
 | **Framework Cross-Mappings** | 6 (CFPF, ATT&CK, Group-IB FM, Stripe FT3, UCFF, MITRE F3) |
-| **Regulatory Requirements** | 28 across 7 jurisdictions |
+| **Regulatory Requirements** | 29 across 7 jurisdictions |
 | **Export Formats** | 7 (STIX, MISP, TAXII, Sigma/SPL, Sigma/EQL, Sigma/KQL, RSS) |
 | **MCP Server Tools** | 7 |
 | **CI/CD Workflows** | 7 |
@@ -390,7 +390,7 @@ GET /taxonomy.json                  Master taxonomy
 
 ### Regulatory Compliance
 
-**28 regulations** across **7 jurisdictions** (EU, UK, US, Singapore, Australia, Africa, International) mapped to relevant threat paths via `regulatory_refs` frontmatter. Includes PSD3 SCA, UK PSR APP, FinCEN AML/BSA, FATF R16, MAS SRF, FFIEC Auth, DORA, UNODC Organized Fraud, STIX-FCI, MITRE F3, EBA Fraud Taxonomy v5.0, NRF Retail Fraud Taxonomy, and more.
+**29 regulations** across **7 jurisdictions** (EU, UK, US, Singapore, Australia, Africa, International) mapped to relevant threat paths via `regulatory_refs` frontmatter. Includes PSD3 SCA, UK PSR APP, FinCEN AML/BSA, FATF R16, MAS SRF, FFIEC Auth, DORA, UNODC Organized Fraud, STIX-FCI, MITRE F3, EBA Fraud Taxonomy v5.0, NRF Retail Fraud Taxonomy, World Cybercrime Index, and more.
 
 **Automated regulatory intelligence** fetched 2x daily from 6 government sources:
 
@@ -596,6 +596,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 - **OASIS** -- STIX 2.1 and TAXII 2.1 specifications
 - **Recorded Future** -- Source intelligence for payment fraud threat paths (TP-0035 -- TP-0039)
 - **LexisNexis Risk Solutions** -- Global State of Fraud 2026 intelligence (TP-0040 and enhancements)
+- **World Cybercrime Index** -- Bruce et al. (2024) PLoS ONE geographic cybercrime attribution data (BL-0036 and geopolitical TP enrichments)
 
 ## License
 

@@ -59,6 +59,7 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
   - REG-UNODC-ORGANIZED-FRAUD-2024
+  - REG-WCI-2024
 tags:
   - pig-butchering
   - crypto-scam
@@ -68,6 +69,7 @@ tags:
   - unodc
   - unodc-organized-fraud-2024
   - 40b-annual
+  - wci-geographic-attribution
 ---
 ```
 

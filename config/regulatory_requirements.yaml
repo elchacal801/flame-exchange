@@ -300,3 +300,21 @@ regulations:
       - dprk-it-worker-fraud
       - fraud-as-a-service
       - state-criminal-convergence
+
+  - id: REG-WCI-2024
+    name: "World Cybercrime Index (WCI) — Oxford/UNSW Expert Survey"
+    jurisdiction: International
+    category: threat-assessment
+    description: "Peer-reviewed expert survey (92 cybercrime intelligence/investigation professionals, 97 countries) establishing the first standardized geographic attribution framework for cybercrime production across 5 categories: technical products/services, attacks/extortion, data/identity theft, scams, cashing out/money laundering. Bruce et al. (2024) PLoS ONE 19(4): e0297312. DOI: 10.1371/journal.pone.0297312. Survey data collected March-October 2021."
+    relevant_fraud_types:
+      - state-criminal-convergence
+      - fraud-as-a-service
+      - money-laundering
+      - social-engineering
+      - investment-scam
+      - romance-scam
+      - dprk-it-worker-fraud
+      - crypto-laundering
+      - scam-compound-operations
+      - sanctions-evasion-infrastructure
+      - bph-migration

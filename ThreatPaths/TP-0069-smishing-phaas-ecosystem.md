@@ -66,6 +66,7 @@ related_tps:
 regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-CFPB-REGE
+  - REG-WCI-2024
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -82,6 +83,7 @@ tags:
   - phaas
   - toll-scam
   - card-not-present
+  - wci-geographic-attribution
 ---
 ```
 

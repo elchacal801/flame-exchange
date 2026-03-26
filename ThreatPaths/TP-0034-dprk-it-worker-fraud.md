@@ -77,6 +77,7 @@ regulatory_refs:
   - REG-FBI-IC3
   - REG-UNODC-EMERGING-THREATS
   - REG-RF-CTA-2026-0319
+  - REG-WCI-2024
 tags:
   - dprk
   - north-korea
@@ -95,6 +96,7 @@ tags:
   - oconnect-vpn
   - ip-messenger
   - western-collaborators
+  - wci-geographic-attribution
   - beavertail
   - invisibleferret
   - purplebravo
@@ -107,6 +109,22 @@ tags:
 ## Summary
 
 The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use stolen or synthetic American identities to fraudulently obtain remote employment at Western technology companies. The program generates revenue for the North Korean regime in violation of international sanctions, while simultaneously creating insider threat vectors for credential theft, source code exfiltration, and post-termination data extortion. The DOJ has documented 136+ compromised U.S. companies with $2.2M+ in direct salary revenue from a single case, while CrowdStrike has observed 304 incidents. The threat has escalated since mid-2024 from pure salary extraction to active data exfiltration and ransom demands, representing a convergence of state-sponsored espionage, employment fraud, and cyber extortion. The operation relies on organized facilitator networks spanning the U.S. and Ukraine that provide stolen identities, proxy laptop hosting at U.S. addresses, and financial laundering infrastructure.
+
+The World Cybercrime Index (Bruce et al., PLoS ONE 2024) provides independent academic corroboration: North Korea ranks #7 globally (WCI 10.61/100) with a pronounced attacks/extortion specialization (25.33 — 2.4x its overall score), while scoring minimally on scams (2.17) and cash-out (3.88). This asymmetric profile reflects a state-directed cybercrime apparatus focused on high-impact attacks rather than the broad-spectrum fraud production seen in other top-ranked countries. Note: WCI data was collected in 2021, before the IT worker fraud campaign reached its current documented scale.
+
+---
+
+## Quantitative Evidence
+
+| Statistic | Value | Source | Year |
+|-----------|-------|--------|------|
+| DPRK active IT worker infiltration operations | 100,000+ operatives | Flare/IBM X-Force | 2026 |
+| DPRK annual regime revenue from IT workers | $500M+ across 40+ countries | FBI / CISA advisory | 2025 |
+| US companies confirmed infiltrated | 136+ | DOJ enforcement actions | 2025 |
+| WCI Overall Score — North Korea (cybercrime production) | 10.61/100 (#7 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Attacks/Extortion — North Korea | 25.33/100 (pronounced specialization) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Scams — North Korea | 2.17/100 (minimal) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Technical Products — North Korea | 8.66/100 | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 
 ---
 

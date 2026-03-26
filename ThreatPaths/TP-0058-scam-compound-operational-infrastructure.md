@@ -67,6 +67,7 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-INTERPOL-HAECHI
   - REG-UNODC-ORGANIZED-FRAUD-2024
+  - REG-WCI-2024
 geopolitical_timing: none
 nation_state_nexus: suspected
 tags:
@@ -82,6 +83,7 @@ tags:
   - 80-nationalities
   - unodc
   - unodc-organized-fraud-2024
+  - wci-geographic-attribution
 ---
 ```
 
@@ -90,6 +92,8 @@ tags:
 Operational fraud mechanics inside industrialized scam compounds. UNODC documents $40B annual profits from scam compound operations, with multilingual AI chatbots deployed for automated victim engagement and bot-driven operational scaling. INTERPOL reports 80 nationalities trafficked into compound operations, with geographic expansion from Southeast Asia into MENA and Africa. Compounds operate as industrial fraud factories with professional management hierarchies, performance metrics, shift-based operations, CRM systems tracking victim "portfolios," and scripted sextortion fallback playbooks when investment scam conversion stalls.
 
 **Distinction from TP-0047**: TP-0047 covers the human trafficking and physical infrastructure nexus enabling compound existence; TP-0058 covers the operational fraud mechanics, management structures, and technology stack deployed inside compounds to execute fraud at scale.
+
+The World Cybercrime Index (Bruce et al., PLoS ONE 2024) provides partial geographic context: China ranks #3 globally (WCI 27.86) with significant cash-out/money laundering scores (24.13), supporting the documented role of Chinese Money Laundering Networks (CMLNs) in scam compound monetization. However, WCI data was collected in 2021, predating the explosive growth of SE Asian scam compounds (2022+) — Cambodia, Myanmar, and Laos are absent from WCI rankings despite being primary operational bases by 2025-2026.
 
 ## Threat Path Hypothesis
 

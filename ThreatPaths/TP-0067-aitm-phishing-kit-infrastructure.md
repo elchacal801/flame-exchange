@@ -73,6 +73,7 @@ related_tps:
 regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-STIX-FCI
+  - REG-WCI-2024
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -97,6 +98,7 @@ tags:
   - sessionshark
   - darcula
   - smishing-triad
+  - wci-geographic-attribution
 ---
 ```
 

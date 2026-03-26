@@ -60,6 +60,7 @@ regulatory_refs:
   - REG-FATF-R16
   - REG-INTERPOL-GFFTA
   - REG-UNODC-ORGANIZED-FRAUD-2024
+  - REG-WCI-2024
 geopolitical_timing: none
 nation_state_nexus: suspected
 tags:
@@ -75,6 +76,7 @@ tags:
   - operation-catalyst
   - unodc
   - unodc-organized-fraud-2024
+  - wci-geographic-attribution
 ---
 ```
 
@@ -83,6 +85,8 @@ tags:
 Criminal syndicates traditionally linked to drug trafficking, arms trafficking, and organized violence are establishing cryptocurrency Ponzi and investment schemes to launder illicit proceeds and fund further criminal operations. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two distinct but related manifestations of this nexus: (1) in South America, the arrest of a suspect with alleged links to Tren de Aragua in connection with a USD 150 million cryptocurrency fraud scheme used to launder drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula; and (2) in Africa, Operation Catalyst uncovered a massive crypto-based Ponzi scheme affecting more than 100,000 victims across at least 17 countries — with investigations finding several large-valued wallets potentially linked to terrorism financing in Central Africa.
 
 This represents a structural convergence: financial fraud is no longer ancillary to organized crime but has become a primary revenue stream for narco-terror organizations. The crypto medium enables proceeds to flow across borders before investigators can intervene, and the Ponzi/investment scheme wrapper provides both victim recruitment at scale and a veneer of legitimacy.
+
+Notably, traditional narcotics-producing and terrorism-financing jurisdictions (Colombia, Mexico, Afghanistan, Syria) are absent from the World Cybercrime Index top 15 (Bruce et al., PLoS ONE 2024), reinforcing this TP's thesis that cryptocurrency serves as the convergence mechanism between geographically separate cybercrime hubs and traditional organized crime networks — rather than traditional crime organizations developing indigenous cyber capabilities. Note: WCI data was collected in 2021.
 
 ## Threat Path Hypothesis
 

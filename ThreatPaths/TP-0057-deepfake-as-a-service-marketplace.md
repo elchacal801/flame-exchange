@@ -68,6 +68,7 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
   - REG-DORA
+  - REG-WCI-2024
 geopolitical_timing: none
 nation_state_nexus: hybrid
 tags:
@@ -81,6 +82,7 @@ tags:
   - 600pct-deepfake-surge
   - 10-second-voice-clone
   - dark-web-marketplace
+  - wci-geographic-attribution
 ---
 ```
 

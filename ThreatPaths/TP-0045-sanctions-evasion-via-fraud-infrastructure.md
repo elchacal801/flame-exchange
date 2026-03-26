@@ -70,6 +70,9 @@ tags:
   - bph-rebranding
   - crypto-laundering
   - infrastructure-migration
+  - wci-geographic-attribution
+regulatory_refs:
+  - REG-WCI-2024
 ---
 ```
 
@@ -80,6 +83,8 @@ tags:
 Sanctions evasion has evolved from a compliance challenge into a distinct infrastructure threat path, driven by the convergence of bulletproof hosting (BPH), purpose-built stablecoins, and rapid entity rebranding. State-aligned and state-tolerated actors are deploying fraud infrastructure specifically designed to circumvent OFAC, EU, and coordinated international sanctions regimes. The scale is unprecedented: the A7A5 ruble-backed stablecoin processed $93.3 billion in less than one year, with $39 billion directly linked to sanctions evasion activity (Chainalysis/TRM Labs 2026). Huione Group accumulated $98 billion in total crypto inflows, with $4 billion confirmed illicit — including $37 million traced to DPRK cyber heist proceeds — and launched the USDH stablecoin explicitly designed to be "unfreezable" by law enforcement. Funnull Technology operated 332,000+ DGA-generated domains across 548 CNAMEs and purchased Polyfill.io to execute supply chain attacks before being designated by OFAC in May 2025.
 
 A defining characteristic of this threat path is the sanctions evasion infrastructure lifecycle: a predictable four-stage pattern in which sanctioned entities rapidly migrate operations, rebrand under new corporate identities, and re-establish infrastructure in permissive jurisdictions. The Garantex-to-Grinex rebranding (OFAC sanctioned November 2025) and the Aeza-to-Smart Digital/Datavice migration (OFAC sanctioned July 2025) demonstrate that sanctions announcements do not terminate criminal infrastructure — they trigger a pre-planned migration and rebranding sequence that reconstitutes operational capability within days to weeks. This lifecycle creates a distinct detection opportunity: the migration itself generates observable infrastructure signals (BGP re-advertisement, ASN changes, DNS migration, domain re-registration) that can be correlated with sanctions announcement timelines.
+
+The geographic overlap between top cybercrime-producing nations and sanctioned jurisdictions is empirically validated by the World Cybercrime Index (Bruce et al., PLoS ONE 2024): four of the top 15 cybercrime-producing countries — Russia (#1, WCI 58.39), North Korea (#7, 10.61), Iran (#11, 4.78), and Belarus (#12, 3.87) — are subject to comprehensive OFAC/EU sanctions regimes, confirming that sanctions evasion infrastructure and cybercrime production are structurally intertwined rather than coincidental. Note: WCI data was collected in 2021.
 
 The nation-state nexus is confirmed. Russian-language BPH providers, Chinese-linked infrastructure networks, and DPRK cyber operations intersect through shared infrastructure, stablecoin rails, and hosting services that are explicitly designed to resist Western law enforcement action. This threat path documents how sanctions evasion infrastructure enables downstream fraud operations — from crypto laundering and ransomware payment processing to investment scam hosting and credential harvesting campaign infrastructure — and maps the controls required to detect and disrupt the infrastructure lifecycle.
 
@@ -109,6 +114,11 @@ The nation-state nexus is confirmed. Russian-language BPH providers, Chinese-lin
 | Funnull OFAC designation date | May 2025 | OFAC SDN List | 2025 |
 | Aeza/Smart Digital OFAC designation date | July 2025 | OFAC SDN List | 2025 |
 | Garantex/Grinex OFAC designation date | November 2025 | OFAC SDN List | 2025 |
+| WCI Overall Score — Russia (cybercrime production) | 58.39/100 (#1 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Overall Score — China (cybercrime production) | 27.86/100 (#3 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Cash-out/Money Laundering — China | 24.13/100 | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Technical Products — Belarus | 11.92/100 (3.1x its overall score of 3.87) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI-ranked countries also subject to OFAC/EU sanctions | Russia (#1), North Korea (#7), Iran (#11), Belarus (#12) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 
 ---
 

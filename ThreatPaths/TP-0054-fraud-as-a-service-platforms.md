@@ -70,6 +70,7 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-RF-CTA-2026-0319
   - REG-UNODC-ORGANIZED-FRAUD-2024
+  - REG-WCI-2024
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -97,6 +98,7 @@ tags:
   - infoblox-deanonymization
   - unodc
   - unodc-organized-fraud-2024
+  - wci-geographic-attribution
 ---
 ```
 
@@ -105,6 +107,18 @@ tags:
 GenAI-powered "Fraud-as-a-Service" (FaaS) platforms that provide subscription-based access to professional-grade fraud toolkits. INTERPOL's Global Financial Fraud Threat Assessment 2026 documents the rapid proliferation of these platforms across Asia-Pacific, Africa, and Europe, noting that they have "enabled widespread adoption of cybercrime" by providing ready-made tools including automated phishing websites, fake payment gateways, deepfake generation tools, and bot-generated fake testimonials that mimic legitimate business communications. Low-skill actors can now launch sophisticated BEC and phishing campaigns with minimal effort. The FaaS model operates on an affiliate structure where proceeds are split between platform operators and campaign operators. Criminal peer-to-peer marketplaces provide end-to-end criminal infrastructure including phishing tools, fake trading platforms, AI-powered chatbots for victim grooming, and integrated money laundering services.
 
 **Distinction from TP-0043**: TP-0043 covers AI-accelerated *generation* of fraud infrastructure (the technical capability layer); TP-0054 covers the *marketplace/subscription model* that packages, commercializes, and democratizes access to these capabilities for non-technical actors.
+
+The geographic concentration of FaaS tooling production is corroborated by the World Cybercrime Index (Bruce et al., PLoS ONE 2024): Russia (82.17/100), Ukraine (52.97), and China (40.22) dominate the technical products/services category, aligning with observed FaaS marketplace origin patterns. Note: WCI data was collected in 2021.
+
+## Quantitative Evidence
+
+| Statistic | Value | Source | Year |
+|-----------|-------|--------|------|
+| Global fraud losses attributed to FaaS ecosystem | $442B | INTERPOL GFFTA 2nd Edition | 2026 |
+| AI-accelerated fraud profitability multiplier | 4.5x | UNODC Emerging Threats | 2025 |
+| WCI Technical Products/Services — Russia | 82.17/100 (#1 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Technical Products/Services — Ukraine | 52.97/100 (#2 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Technical Products/Services — China | 40.22/100 (#3 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 
 ## Threat Path Hypothesis
 

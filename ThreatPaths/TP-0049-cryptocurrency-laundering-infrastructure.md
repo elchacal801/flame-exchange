@@ -54,6 +54,7 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
   - REG-UNODC-ORGANIZED-FRAUD-2024
+  - REG-WCI-2024
 tags:
   - cmln
   - cryptocurrency-laundering
@@ -69,6 +70,7 @@ tags:
   - unodc
   - unodc-organized-fraud-2024
   - ai-evasion
+  - wci-geographic-attribution
 ---
 ```
 
@@ -83,6 +85,8 @@ The CMLN ecosystem is composed of six distinct service types, each with speciali
 TRM Labs reports that Chinese-language escrow and underground banking volume exceeded $103 billion in adjusted crypto volume in 2025, indicating that CMLNs are deeply embedded in transnational organized crime networks operating at a scale that rivals legitimate financial infrastructure. CMLNs launder over 10% of funds stolen in pig butchering scams, establishing a direct operational link between upstream social engineering fraud and downstream crypto laundering infrastructure. The DPRK laundering cycle -- a structured 45-day process moving from distancing through integration to off-ramping -- demonstrates that nation-state actors have adopted CMLN infrastructure as a core component of their financial operations.
 
 This threat path documents the CMLN service taxonomy, maps the laundering lifecycle across CFPF phases, and identifies both on-chain and infrastructure-layer detection approaches that can be operationalized to disrupt CMLN operations at scale.
+
+The World Cybercrime Index (Bruce et al., PLoS ONE 2024) reveals that cash-out/money laundering activity concentrates in major financial centers: the US (WCI 26.63), UK (21.63), and China (24.13) rank alongside Russia (41.56) as top cash-out jurisdictions — confirming that cryptocurrency laundering infrastructure is located where regulated financial on/off-ramps exist, not solely where fraud originates. Note: WCI data was collected in 2021.
 
 ---
 
@@ -113,6 +117,10 @@ This threat path documents the CMLN service taxonomy, maps the laundering lifecy
 | DPRK distancing phase | 1-5 days | Chainalysis | 2025 |
 | DPRK integration phase | 5-14 days | Chainalysis | 2025 |
 | DPRK off-ramping phase | 20-45 days | Chainalysis | 2025 |
+| WCI Cash-out/Money Laundering — United States | 26.63/100 (#1 in cash-out) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Cash-out/Money Laundering — United Kingdom | 21.63/100 (#2 in cash-out) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Cash-out/Money Laundering — Russia | 41.56/100 (#1 overall in cash-out) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Cash-out/Money Laundering — China | 24.13/100 (#3 in cash-out) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 
 ---
 

@@ -62,6 +62,7 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-INTERPOL-GFFTA
   - REG-UNODC-ORGANIZED-FRAUD-2024
+  - REG-WCI-2024
 tags:
   - human-trafficking
   - scam-compound
@@ -76,6 +77,7 @@ tags:
   - sextortion-fallback
   - unodc
   - unodc-organized-fraud-2024
+  - wci-geographic-attribution
 ---
 ```
 
@@ -121,6 +123,9 @@ The following data points are drawn from the CrimsonVector Strategic Intelligenc
 | Huione Group confirmed illicit inflows | $4 billion+ | Chainalysis | 2024-2025 |
 | U.S. Scam Center Strike Force seizures (first 3 months) | $578 million | DOJ / Strike Force | 2025 |
 | OFAC Prince Group-related designations | 146 targets | OFAC | 2025 |
+| WCI Cash-out/Money Laundering — China | 24.13/100 (#3 in cash-out) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Scams — Nigeria | 52.17/100 (#1 in scams globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| WCI Scams — India | 12.75/100 (#2 in scams) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 
 ---
 
