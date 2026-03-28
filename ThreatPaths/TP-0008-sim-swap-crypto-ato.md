@@ -158,6 +158,20 @@ SIM swap services are actively advertised on Telegram channels, dark web forums,
 | P4 | Exchange: withdrawal address whitelisting with time-lock on additions | Preventive |
 | P5 | Blockchain analytics: flag transactions to known mixer/tumbler addresses | Detective |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive mandate to eliminate SMS-based MFA for high-value accounts; investment in hardware security key programs and carrier-level SIM swap detection APIs |
+| ASSESS | Level 3 (Established) | Risk assessment of authentication methods across all customer-facing platforms; identification of high-value account holders relying on SMS MFA; evaluation of carrier API integration for SIM swap detection |
+| PLAN | Level 3 (Established) | Incident response playbook for SIM swap-initiated ATO including carrier coordination and blockchain tracing; withdrawal hold policies for accounts showing SIM change indicators |
+| ACT | Level 4 (Advanced) | Real-time SIM swap detection via carrier network APIs (SIM Swap Check, Number Verification); mandatory withdrawal holds when account recovery contacts change within 24-48 hours of new device login; withdrawal address whitelisting with time-locked additions; blockchain analytics integration for mixer/tumbler detection |
+| MONITOR | Level 3 (Established) | Correlation of SIM change events with subsequent MFA authentication attempts and withdrawal requests; monitoring for new device logins followed by contact info changes and maximum withdrawal activity |
+| REPORT | Level 3 (Established) | SAR filing with SIM swap and crypto laundering indicators; coordination with carrier fraud teams and law enforcement for active SIM swap investigations; blockchain intelligence sharing with exchanges |
+| IMPROVE | Level 3 (Established) | Post-incident review incorporating carrier-side SIM change data; tracking of emerging OTP interception techniques (OTP bots, AiTM kits, eSIM hijacking) to update authentication controls |
+
 ## Detection Approaches
 
 **Exchange-Side — SIM Swap Indicator Correlation**

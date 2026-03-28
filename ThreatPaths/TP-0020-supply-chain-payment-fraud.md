@@ -162,6 +162,20 @@ Supply Chain Payment Fraud (a variant of Vendor Impersonation / BEC) involves th
 
 ---
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive sponsorship of vendor payment security program; investment in ERP audit integration and out-of-band verification infrastructure for B2B payments |
+| ASSESS | Level 3 (Established) | Risk assessment of vendor payment processes across all business units; evaluation of vendor master data change controls and approval workflows; mapping of high-value supply chain relationships most vulnerable to BEC-style interception |
+| PLAN | Level 3 (Established) | Detection strategy integrating email security (inbox rule monitoring), ERP vendor master change alerts, and outbound payment anomaly detection; defined vendor banking detail change verification procedures |
+| ACT | Level 3 (Established) | Mandatory out-of-band verification for all vendor banking detail changes using historical contact information; automated ERP alerts on vendor master data modifications; outbound wire monitoring comparing beneficiary accounts against historical payee profiles |
+| MONITOR | Level 3 (Established) | Continuous monitoring for first-time beneficiary accounts on high-value B2B wire transfers; M365/Google Workspace inbox rule creation surveillance for invoice-related keywords; vendor payment pattern analysis flagging deviations from historical amounts and frequencies |
+| REPORT | Level 2 (Developing) | Incident reporting workflows for suspected vendor impersonation; coordination with vendor's security team for email compromise investigation; law enforcement notification for fund recovery within critical time windows |
+| IMPROVE | Level 3 (Established) | Post-incident review incorporating vendor communication chain reconstruction; periodic testing of out-of-band verification procedures; updating vendor risk tiers based on email security posture assessments |
+
 ## Detection Approaches
 
 ### Queries / Rules

@@ -165,6 +165,20 @@ Healthcare Provider Billing Fraud involves legitimate or seemingly legitimate me
 
 ---
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive commitment to healthcare fraud prevention with dedicated SIU (Special Investigations Unit) funding; organizational mandate for pre-payment and post-payment claims auditing |
+| ASSESS | Level 3 (Established) | Risk assessment of provider network for phantom billing, upcoding, and unbundling exposure; evaluation of provider credentialing gaps including site verification deficiencies; analysis of CPT code utilization patterns by specialty and geography for baseline establishment |
+| PLAN | Level 3 (Established) | Detection strategy combining statistical claims analytics, provider network graph analysis, and patient journey modeling; defined protocols for "impossible day" logic, peer group outlier detection, and beneficiary trafficking pattern identification |
+| ACT | Level 4 (Advanced) | Pre-payment claims auditing with automated "impossible day" and CPT code anomaly detection; provider credentialing enhanced with mandatory site visits for new DME suppliers and clinics; AI-driven claims analytics correlating billing patterns with provider network relationships and MSO/PE ownership structures |
+| MONITOR | Level 4 (Advanced) | Continuous monitoring of claims submissions for statistical outliers by provider specialty and geography; real-time tracking of beneficiary enrollment patterns to detect trafficking across providers; surveillance of provider banking for rapid fund sweeps following Medicare/Medicaid deposits |
+| REPORT | Level 4 (Advanced) | SAR filing for healthcare providers with anomalous financial activity; coordination with HHS-OIG Medicare Fraud Strike Force and DOJ Health Care Fraud Unit; Explanation of Benefits (EOB) verification programs enabling patient-reported fraud detection |
+| IMPROVE | Level 3 (Established) | Post-takedown analysis incorporating lessons from DOJ prosecutions and CMS enforcement actions; recalibration of peer group outlier thresholds based on emerging fraud patterns (hospice, ABA therapy); integration of new fraud typologies from CrimsonVector and similar intelligence sources |
+
 ## Detection Approaches
 
 ### Queries / Rules

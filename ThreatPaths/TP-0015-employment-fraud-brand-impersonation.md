@@ -134,6 +134,20 @@ Actors impersonate legitimate employers — particularly in healthcare staffing,
 | P4 | Payment processor flags for "equipment fee" patterns from employment contexts | Detective |
 | P5 | Identity monitoring for applicants who submitted PII to unverified employers | Responsive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Organizational acknowledgment of brand impersonation risk to job seekers; allocation of resources for domain monitoring and takedown coordination |
+| ASSESS | Level 2 (Developing) | Assessment of brand exposure on job boards and staffing platforms; identification of high-risk brand assets (company names, career page URLs, HR email domains) vulnerable to impersonation |
+| PLAN | Level 2 (Developing) | Brand protection plan covering lookalike domain detection, job board monitoring, and coordinated takedown procedures with registrars and hosting providers |
+| ACT | Level 3 (Established) | Automated lookalike domain monitoring for employer brand variations; job board scanning for unauthorized postings using company branding; applicant-facing warnings on official careers pages about known scam patterns |
+| MONITOR | Level 2 (Developing) | Ongoing surveillance of newly registered domains matching employer name patterns; periodic review of job board postings for fraudulent listings; monitoring of disposable email infrastructure used in HR impersonation |
+| REPORT | Level 2 (Developing) | Reporting workflows for victim complaints and brand abuse incidents; coordination with FBI IC3 and FTC for employment fraud reporting; notification procedures for affected job applicants |
+| IMPROVE | Level 2 (Developing) | Feedback loop from takedown actions and victim reports to refine domain monitoring keywords and job board scanning rules; periodic update of applicant education materials based on emerging scam variants |
+
 ## Detection Approaches
 
 ### Domain-Based Detection

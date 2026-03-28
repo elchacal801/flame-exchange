@@ -207,6 +207,20 @@ Romance scam operations are heavily discussed in West African cybercrime communi
 | P4 | Gift card purchase velocity monitoring at retail POS | Detective |
 | P5 | FinCEN SAR filing with romance scam/mule indicators for cross-referencing | Responsive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive sponsorship for mule detection programs spanning transaction monitoring, customer education, and law enforcement coordination; dedicated resources for elder fraud prevention |
+| ASSESS | Level 3 (Established) | Risk assessment of customer base for mule recruitment vulnerability including demographic profiling, account behavior baselines, and exposure to romance scam vectors; assessment of mule typologies (complicit, recruited, exploited) |
+| PLAN | Level 3 (Established) | Mule detection strategy incorporating behavioral analytics, device telemetry, and cross-institution data sharing; customer intervention protocols for suspected mule accounts balancing fraud prevention with victim sensitivity |
+| ACT | Level 3 (Established) | Transaction monitoring rules detecting receive-and-forward patterns to unrelated parties; behavioral biometric analysis for credential handoff detection; device telemetry fusion (IP geolocation, SIM country, GPS, behavioral shifts) for layered mule operations |
+| MONITOR | Level 3 (Established) | Continuous monitoring for mule account indicators — multiple unrelated inbound sources followed by rapid outbound transfers to international wires, crypto, or P2P; gift card purchase velocity monitoring; tracking of account age vs. transaction risk escalation patterns |
+| REPORT | Level 3 (Established) | SAR filing with romance scam and mule recruitment indicators for FinCEN cross-referencing; coordination with law enforcement on scam compound investigations; referrals to INTERPOL for cross-border mule networks |
+| IMPROVE | Level 3 (Established) | Post-case review of mule detection gaps incorporating Group-IB mule evolution intelligence; updating detection rules for emerging mule techniques (physical device muling, victim-to-victim handoff); Gen Z recruitment trend monitoring to adjust customer education |
+
 ## Detection Approaches
 
 **Mule Account Behavioral Pattern**

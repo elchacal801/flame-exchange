@@ -155,6 +155,20 @@ Mobile Banking Trojans (primarily targeting Android environments) are sophistica
 
 ---
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive commitment to mobile channel security investment including RASP integration, behavioral biometrics, and MFA modernization beyond SMS OTP |
+| ASSESS | Level 4 (Advanced) | Threat assessment of mobile banking app attack surface covering overlay attacks, ATS capabilities, and Accessibility Services abuse; evaluation of current authentication methods (SMS OTP) against credential interception by banking trojans; vendor assessment of MaaS ecosystem targeting the institution's app |
+| PLAN | Level 3 (Established) | Detection strategy integrating mobile app telemetry (navigation velocity, screen state anomalies) with server-side transaction monitoring; migration roadmap from SMS-based MFA to FIDO2/WebAuthn or push notification authentication |
+| ACT | Level 4 (Advanced) | RASP deployment within the mobile banking app to detect overlays, sideloaded apps, and active screen-readers at runtime; mobile behavioral biometrics analyzing swipe pressure, navigation speed, and device orientation to distinguish human interaction from ATS bot behavior; FIDO2/WebAuthn authentication replacing SMS OTP |
+| MONITOR | Level 3 (Established) | Continuous monitoring of mobile session telemetry for impossible navigation speeds, screen brightness anomalies, and Accessibility Service activation during banking sessions; real-time correlation of device posture signals with transaction risk scoring |
+| REPORT | Level 2 (Developing) | Incident reporting for confirmed mobile malware-facilitated ATO including malware family attribution; customer notification procedures for compromised devices; coordination with mobile threat intelligence providers for C2 infrastructure takedown |
+| IMPROVE | Level 4 (Advanced) | Continuous integration of new malware family TTPs (overlay patterns, ATS navigation signatures) into RASP and behavioral biometric detection models; post-incident device forensics feeding back into app hardening priorities; tracking of MaaS ecosystem evolution to anticipate new evasion techniques |
+
 ## Detection Approaches
 
 ### Queries / Rules

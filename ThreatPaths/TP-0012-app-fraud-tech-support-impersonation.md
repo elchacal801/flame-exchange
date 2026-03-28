@@ -140,6 +140,20 @@ Actors contact victims impersonating bank fraud departments, tech support (Micro
 | P4 | Branch intervention: train tellers to recognize APP fraud indicators (elderly customer, large wire, on phone during transaction, visibly stressed) | Preventive |
 | P5 | UK PSR mandatory reimbursement (shifts liability, incentivizes bank prevention investment) | Responsive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Management recognition of APP fraud as a distinct loss category requiring investment in real-time transaction intervention and customer education targeting vulnerable demographics |
+| ASSESS | Level 3 (Established) | Risk assessment of customer base for APP fraud susceptibility including age demographics, transaction patterns, and exposure to impersonation vectors; evaluation of Confirmation of Payee capabilities and cooling-off period thresholds |
+| PLAN | Level 2 (Developing) | Defined intervention procedures for suspected APP fraud in-progress (branch teller protocols, call center scripts, in-app warnings); incident response plan incorporating UK PSR mandatory reimbursement obligations where applicable |
+| ACT | Level 3 (Established) | Real-time transaction risk scoring correlating active phone calls with new-beneficiary transfers; in-app warnings triggered during transactions ("Are you being asked to make this transfer by someone on the phone?"); branch staff training to recognize APP fraud indicators; mandatory cooling-off periods for first-time large transfers to new beneficiaries |
+| MONITOR | Level 3 (Established) | Monitoring for transfers to new beneficiaries during active phone calls; alerting on elderly customers making uncharacteristic large transfers; tracking of spoofed caller ID patterns via STIR/SHAKEN data; remote access tool installation detection correlated with banking sessions |
+| REPORT | Level 3 (Established) | SAR filing with APP fraud and impersonation indicators; reporting to carrier fraud teams on spoofed number patterns; internal escalation from frontline staff to fraud team for suspected in-progress APP scams |
+| IMPROVE | Level 3 (Established) | Post-incident analysis of APP fraud cases to refine real-time intervention triggers; review of customer warning effectiveness and branch intervention success rates; tracking of evolving impersonation vectors (physical collection, grandparent scams, AI voice cloning) |
+
 ## Detection Approaches
 
 **Real-Time Transaction Risk Scoring**

@@ -141,6 +141,20 @@ Threat actors compromise or spoof vendor email accounts, then impersonate the ve
 | P4 | AP process: flag invoices where beneficiary bank differs from previous payments to same vendor | Detective |
 | P5 | Wire recall procedures within 24-72 hour window | Responsive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive sponsorship for email security and wire transfer verification programs; funded BEC awareness training for AP staff |
+| ASSESS | Level 3 (Established) | Formal risk assessment of vendor payment workflows including email-based invoice processing; identification of high-risk vendor relationships |
+| PLAN | Level 3 (Established) | Documented procedures for out-of-band verification of banking detail changes; incident response playbook for BEC wire fraud with recall timelines |
+| ACT | Level 3 (Established) | DMARC/DKIM/SPF enforcement on all corporate domains; AP process controls requiring dual authorization for beneficiary bank changes; email forwarding rule monitoring in M365/Google Workspace |
+| MONITOR | Level 3 (Established) | Continuous monitoring of invoice payment routing changes; email forwarding rule alerting; lookalike domain monitoring via CT logs and domain intelligence |
+| REPORT | Level 2 (Developing) | SAR filing procedures for BEC incidents; internal escalation from AP to fraud/security team when suspicious invoice changes are detected |
+| IMPROVE | Level 3 (Established) | Post-incident review of BEC attempts including root cause analysis of email compromise vector; regular updates to vendor verification procedures based on emerging evasion techniques |
+
 ## Detection Approaches
 
 **Splunk — Invoice Banking Detail Change Detection**

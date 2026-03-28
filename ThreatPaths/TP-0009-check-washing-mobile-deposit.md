@@ -123,6 +123,20 @@ Actors steal checks from USPS mailboxes (using stolen arrow keys or by fishing m
 | P4 | Duplicate deposit detection across institutions (consortium-level data sharing) | Detective |
 | P5 | Extended hold on mobile deposits to new accounts above threshold | Preventive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Management acknowledgment of check fraud as a growing loss category; budget for check image analytics and mobile deposit fraud controls |
+| ASSESS | Level 2 (Developing) | Risk assessment of mobile deposit channel including new account deposit thresholds, device fingerprinting gaps, and geographic exposure to USPS mail theft corridors |
+| PLAN | Level 2 (Developing) | Defined hold policies for mobile deposits to new accounts; coordination plan with USPS OIG and law enforcement for mail theft-linked check fraud clusters |
+| ACT | Level 3 (Established) | AI-based check image analytics detecting ink inconsistencies, font anomalies, and washing artifacts; device fingerprinting linking deposits across multiple accounts; Positive Pay enrollment for business customers; extended holds on mobile deposits exceeding thresholds to new accounts |
+| MONITOR | Level 3 (Established) | Real-time monitoring of mobile deposit patterns — high-value deposits to new accounts, same device fingerprint across multiple accounts, duplicate check detection across institutions via consortium data sharing |
+| REPORT | Level 3 (Established) | SAR filing with check fraud indicators including USPS mail theft correlation; participation in industry check fraud data-sharing consortiums; reporting to USPS Inspection Service for mail theft patterns |
+| IMPROVE | Level 2 (Developing) | Post-incident analysis of check washing techniques to update image analytics models; recalibration of geographic risk thresholds based on deurbanization trends and Midwest shift patterns |
+
 ## Detection Approaches
 
 **SQL — Suspicious Mobile Deposit Patterns**
