@@ -2,34 +2,9 @@
   "tp_id": "TP-0005",
   "rules": [
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Rapid Contact Information Change\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| stats count as event_count by account_id\n| where event_count >= 3",
-      "title": "DL-0020: Rapid Contact Information Change (SPLUNK)",
-      "source_rule": "DL-0020"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for MFA Method Switch Before High-Value Transaction\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_mfa_change | near selection_high_value_txn by account_id\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n| transaction account_id maxspan=4h\n| where eventcount >= 2",
-      "title": "DL-0021: MFA Method Switch Before High-Value Transaction (SPLUNK)",
-      "source_rule": "DL-0021"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Alert Threshold Modification\nstatus: experimental\ndescription: Detects when a user modifies their own transaction alert thresholds or disables notifications via online banking or mobile app. Attackers raise alert thresholds or suppress notifications to prevent th\nlogsource:\n    product: banking\n    service: core_banking\ndetection:\n    selection_threshold_raise:\n        event_type: \"ALERT_SETTINGS_CHANGE\"\n        action:\n            - \"threshold_increase\"\n            - \"notification_disable\"\n            - \"alert_suppress\"\n    selection_channel:\n        channel:\n            - \"online_banking\"\n            - \"mobile_app\"\n            - \"api\"\n    condition: selection_threshold_raise and selection_channel\nlevel: medium",
-      "title": "DL-0023: Alert Threshold Modification (Sigma)",
-      "source_rule": "DL-0023"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Power of Attorney or Authorized Signer Change\nstatus: experimental\ndescription: Detects changes to power of attorney designations or authorized signers on commercial and business accounts. Fraudsters may socially engineer or forge POA documents to gain control of business account\nlogsource:\n    product: banking\n    service: core_banking\ndetection:\n    selection:\n        event_type:\n            - \"POA_ADD\"\n            - \"POA_MODIFY\"\n            - \"AUTHORIZED_SIGNER_ADD\"\n            - \"AUTHORIZED_SIGNER_MODIFY\"\n        account_type:\n            - \"commercial\"\n            - \"business\"\n            - \"corporate\"\n            - \"trust\"\n    selection_high_value:\n        account_balance|gte: 50000\n    condition: selection and selection_high_value\nlevel: high",
-      "title": "DL-0025: Power of Attorney or Authorized Signer Change (Sigma)",
-      "source_rule": "DL-0025"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Account Type Conversion Anomaly\nstatus: experimental\ndescription: Detects suspicious account type conversions such as savings-to-checking or personal-to-business. These conversions can unlock higher transaction limits, wire capabilities, or ACH origination, which at\nlogsource:\n    product: banking\n    service: core_banking\ndetection:\n    selection:\n        event_type: \"ACCOUNT_TYPE_CONVERSION\"\n        conversion_type:\n            - \"savings_to_checking\"\n            - \"personal_to_business\"\n            - \"basic_to_premium\"\n    selection_recent_credential_change:\n        days_since_last_credential_change|lte: 7\n    condition: selection and selection_recent_credential_change\nlevel: medium",
-      "title": "DL-0026: Account Type Conversion Anomaly (Sigma)",
-      "source_rule": "DL-0026"
+      "type": "sql",
+      "content": "SELECT agent_id, agency_name, \n       old_routing_number, new_routing_number,\n       change_timestamp, session_ip, device_fingerprint\nFROM agent_payment_changes\nWHERE change_timestamp >= CURRENT_DATE - INTERVAL '30 days'\n  AND old_routing_number != new_routing_number\n  AND session_ip NOT IN (SELECT known_ip FROM agent_known_locations WHERE agent_id = agent_payment_changes.agent_id)\nORDER BY change_timestamp DESC;",
+      "title": "SQL — Agent Portal Payment Routing Anomaly"
     }
   ]
 }

@@ -2,28 +2,9 @@
   "tp_id": "TP-0004",
   "rules": [
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Beneficiary Change Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct beneficiary_id) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:core_banking (event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 3",
-      "title": "DL-0019: Beneficiary Change Velocity Anomaly (SPLUNK)",
-      "source_rule": "DL-0019"
-    },
-    {
       "type": "sigma",
-      "content": "title: Dormant Account Reactivation\nstatus: experimental\ndescription: Detects accounts with no transactional activity for 90 or more days that suddenly initiate financial transactions. Dormant accounts are frequently targeted by attackers because they are less likely to\nlogsource:\n    product: banking\n    service: core_banking\ndetection:\n    selection_reactivation:\n        event_type:\n            - \"WIRE_INITIATION\"\n            - \"ACH_DEBIT\"\n            - \"ACH_CREDIT\"\n            - \"INTERNAL_TRANSFER\"\n        account_dormancy_days|gte: 90\n    filter_scheduled:\n        transaction_type: \"RECURRING_SCHEDULED\"\n    condition: selection_reactivation and not filter_scheduled\nlevel: high",
-      "title": "DL-0022: Dormant Account Reactivation (Sigma)",
-      "source_rule": "DL-0022"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Wire Beneficiary Name Mismatch\nstatus: experimental\ndescription: Detects when the wire beneficiary name provided by the originator does not match the account holder name at the receiving institution. Name mismatches on wire transfers are a strong indicator of payme\nlogsource:\n    product: banking\n    service: wire_system\ndetection:\n    selection:\n        event_type: \"WIRE_INITIATION\"\n        beneficiary_name_match: false\n        transaction_amount|gte: 1000\n    filter_known_dba:\n        beneficiary_account_type: \"DBA\"\n    condition: selection and not filter_known_dba\nlevel: high",
-      "title": "DL-0024: Wire Beneficiary Name Mismatch (Sigma)",
-      "source_rule": "DL-0024"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Power of Attorney or Authorized Signer Change\nstatus: experimental\ndescription: Detects changes to power of attorney designations or authorized signers on commercial and business accounts. Fraudsters may socially engineer or forge POA documents to gain control of business account\nlogsource:\n    product: banking\n    service: core_banking\ndetection:\n    selection:\n        event_type:\n            - \"POA_ADD\"\n            - \"POA_MODIFY\"\n            - \"AUTHORIZED_SIGNER_ADD\"\n            - \"AUTHORIZED_SIGNER_MODIFY\"\n        account_type:\n            - \"commercial\"\n            - \"business\"\n            - \"corporate\"\n            - \"trust\"\n    selection_high_value:\n        account_balance|gte: 50000\n    condition: selection and selection_high_value\nlevel: high",
-      "title": "DL-0025: Power of Attorney or Authorized Signer Change (Sigma)",
-      "source_rule": "DL-0025"
+      "content": "title: HR Portal - Bulk Direct Deposit Modifications\nstatus: experimental\ndescription: Multiple employees modifying direct deposit within short window from unusual IPs\nlogsource:\n    product: hr_portal\n    service: audit\ndetection:\n    selection:\n        action: \"modify_direct_deposit\"\n    timeframe: 72h\n    condition: selection | count(distinct employee_id) by source_ip > 3\nlevel: critical\ntags:\n    - cfpf.phase3.positioning",
+      "title": "Sigma — Multiple Direct Deposit Changes from Anomalous Source"
     }
   ]
 }

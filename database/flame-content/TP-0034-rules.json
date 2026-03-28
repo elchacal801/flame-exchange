@@ -2,64 +2,19 @@
   "tp_id": "TP-0034",
   "rules": [
     {
-      "type": "sigma",
-      "content": "title: DPRK IT Worker Resume Geographic Mismatch\nstatus: experimental\ndescription: Detects job applicants whose resume combines a U.S. residential address with education credentials from non-North American institutions (Singapore, Japan, Hong Kong, China, South Korea). This pattern \nlogsource:\n    product: hr_platform\n    service: applicant_tracking\ndetection:\n    selection:\n        event_type: \"application_submitted\"\n        address_country: \"US\"\n    filter_education:\n        education_country|contains:\n            - \"SG\"\n            - \"JP\"\n            - \"HK\"\n            - \"CN\"\n            - \"KR\"\n            - \"IN\"\n            - \"MY\"\n    filter_thin_profile:\n        linkedin_age_days|lt: 365\n    condition: selection and filter_education and filter_thin_profile\nlevel: medium",
-      "title": "DL-0068: DPRK IT Worker Resume Geographic Mismatch (Sigma)",
-      "source_rule": "DL-0068"
-    },
-    {
-      "type": "sigma",
-      "content": "title: VPN/Proxy Login Anomaly — Astrill or Residential Proxy\nstatus: experimental\ndescription: Detects corporate VPN authentication events originating from known Astrill VPN infrastructure, residential proxy services, or connection patterns indicating VPN-over-VPN layering. DPRK IT workers rout\nlogsource:\n    product: vpn\n    service: authentication\ndetection:\n    selection:\n        event_type: \"vpn_auth_success\"\n    filter_astrill:\n        src_ip_vpn_provider: \"Astrill\"\n    filter_residential_proxy:\n        src_ip_type: \"residential_proxy\"\n    filter_vpn_layering:\n        connection_hops|gte: 3\n        src_ip_type|contains:\n            - \"vpn\"\n            - \"proxy\"\n    condition: selection and (filter_astrill or filter_residential_proxy or filter_vpn_layering)\nlevel: high",
-      "title": "DL-0069: VPN/Proxy Login Anomaly — Astrill or Residential Proxy (Sigma)",
-      "source_rule": "DL-0069"
+      "type": "sql",
+      "content": "SELECT\n    a.applicant_id,\n    a.full_name,\n    a.address_country,\n    a.education_country,\n    a.education_institution,\n    a.linkedin_created_date,\n    a.github_created_date,\n    bg.ssn_first_issued_date,\n    bg.credit_file_depth\nFROM applicants a\nLEFT JOIN background_checks bg ON a.applicant_id = bg.applicant_id\nWHERE a.address_country = 'US'\n  AND a.education_country NOT IN ('US', 'CA', 'GB', 'AU', 'NZ', 'IE')\n  AND (\n    bg.credit_file_depth < 3\n    OR bg.ssn_first_issued_date > CURRENT_DATE - INTERVAL '5 years'\n    OR a.linkedin_created_date > CURRENT_DATE - INTERVAL '12 months'\n  )\nORDER BY a.application_date DESC;",
+      "title": "SQL — DPRK IT Worker Resume Red Flag Detection (Phase 1-2)"
     },
     {
       "type": "spl",
-      "content": "`comment(\"Splunk SPL for Multi-Operator Behavioral Shift — Timezone and Communication Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct src_timezone) by user_id > 2\")`\nindex=flame_identity sourcetype=flame:authentication event_type=\"user_login\"\n| stats dc(src_timezone) as unique_src_timezone by user_id\n| where unique_src_timezone > 2",
-      "title": "DL-0070: Multi-Operator Behavioral Shift — Timezone and Communication Anomaly (SPLUNK)",
-      "source_rule": "DL-0070"
+      "content": "index=vpn_auth sourcetype=corporate_vpn\n| eval hour_local = strftime(_time, \"%H\")\n| stats count AS login_count,\n        values(src_ip) AS source_ips,\n        dc(src_ip) AS unique_ips,\n        earliest(_time) AS first_login,\n        latest(_time) AS last_login\n    BY user, date_wday\n| where unique_ips > 3 OR (hour_local < 5 AND hour_local > 1)\n| lookup ip_reputation src_ip OUTPUT ip_type, vpn_provider\n| where ip_type IN (\"residential_proxy\", \"vpn\", \"datacenter\")\n    OR vpn_provider = \"Astrill\"\n| table user, source_ips, unique_ips, ip_type, vpn_provider, login_count\n| sort - unique_ips",
+      "title": "Splunk — VPN/Proxy Anomaly Detection for Remote Workers (Phase 3)"
     },
     {
       "type": "sigma",
-      "content": "title: Bulk Code Repository Clone by New Employee\nstatus: experimental\ndescription: Detects a new employee (within first 14 days of onboarding) cloning or downloading multiple code repositories, especially repositories outside their assigned team or project scope. DPRK IT workers fre\nlogsource:\n    product: git_platform\n    service: audit_log\ndetection:\n    selection:\n        action|contains:\n            - \"repo.clone\"\n            - \"repo.download\"\n            - \"repo.fork\"\n        actor_account_age_days|lte: 14\n    filter_volume:\n        repos_cloned_24h|gte: 5\n    filter_out_of_scope:\n        repo_team_match: false\n    condition: selection and (filter_volume or filter_out_of_scope)\nlevel: high",
-      "title": "DL-0071: Bulk Code Repository Clone by New Employee (Sigma)",
-      "source_rule": "DL-0071"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Credential Store Access Anomaly During Onboarding\nstatus: experimental\ndescription: Detects new employees accessing browser credential stores, password managers, API key management systems, or SSO session token stores at rates significantly above peer baselines during the first 14 da\nlogsource:\n    product: endpoint\n    service: edr\ndetection:\n    selection:\n        event_type|contains:\n            - \"credential_store_access\"\n            - \"password_manager_export\"\n            - \"session_token_read\"\n            - \"api_key_create\"\n        user_tenure_days|lte: 14\n    filter_volume:\n        credential_access_count_24h|gte: 10\n    condition: selection and filter_volume\nlevel: high",
-      "title": "DL-0072: Credential Store Access Anomaly During Onboarding (Sigma)",
-      "source_rule": "DL-0072"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Salary Direct Deposit Rapid Cryptocurrency Conversion\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_deposit | near selection_conversion\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\ntransaction_type=\"ACH_IN\"\ntransaction_category=\"payroll\"\n(outbound_type=\"crypto_exchange\" OR outbound_type=\"p2p_crypto\" OR outbound_type=\"wire_to_exchange\")\ntime_since_deposit_hours<=48\n| transaction account_id maxspan=1h\n| where eventcount >= 2",
-      "title": "DL-0073: Salary Direct Deposit Rapid Cryptocurrency Conversion (SPLUNK)",
-      "source_rule": "DL-0073"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Post-Termination Data Extortion Indicator\nstatus: experimental\ndescription: Detects indicators of post-termination data extortion, where a recently terminated or resigned employee communicates ransom demands referencing specific internal proprietary code, documents, or trade \nlogsource:\n    product: security_operations\n    service: incident_management\ndetection:\n    selection:\n        event_type|contains:\n            - \"extortion_communication\"\n            - \"data_leak_detected\"\n            - \"proprietary_code_public\"\n        actor_employment_status: \"terminated\"\n        actor_termination_days|lte: 90\n    condition: selection\nlevel: critical",
-      "title": "DL-0074: Post-Termination Data Extortion Indicator (Sigma)",
-      "source_rule": "DL-0074"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Real-Time Face/Voice Changer Detection During Video Interview\")`\n`comment(\"Native query required - audio/video analysis cannot be expressed in Sigma\")`\nindex=flame_collaboration sourcetype=flame:video_conferencing\n(camera_driver_name=\"*OBS Virtual*\" OR camera_driver_name=\"*ManyCam*\" OR camera_driver_name=\"*DeepFace*\" OR camera_driver_name=\"*FaceSwap*\")\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| eval risk_score=case(\n    camera_driver_name LIKE \"%DeepFace%\" OR camera_driver_name LIKE \"%FaceSwap%\", 90,\n    camera_driver_name LIKE \"%OBS Virtual%\" OR camera_driver_name LIKE \"%ManyCam%\", 50,\n    audio_analysis_score>0.75, 80,\n    lip_sync_delta_ms>200, 70)\n| where risk_score>=50\n| stats count values(camera_driver_name) as cameras values(audio_analysis_score) as audio_scores max(lip_sync_delta_ms) as max_lip_delta by user_id session_id",
-      "title": "DL-0116: Real-Time Face/Voice Changer Detection During Video Interview (SPLUNK)",
-      "source_rule": "DL-0116"
-    },
-    {
-      "type": "sigma",
-      "content": "title: KYC Verification Bot Circumvention Detection\nstatus: experimental\ndescription: Detect automated circumvention of KYC identity verification processes: (1) liveness check submissions exhibiting synthetic face indicators such as GAN artifacts or uniform skin texture, (2) document p\nlogsource:\n    product: banking\n    category: identity_verification\n    service: kyc_verification\ndetection:\n    selection_synthetic:\n        liveness_synthetic_score|gt: 0.7\n    selection_lighting:\n        document_lighting_mismatch: true\n        selfie_lighting_mismatch: true\n    selection_multi_ip:\n        identity_multi_ip_count|gt: 2\n        ip_geo_dispersion_km|gt: 500\n    selection_automation:\n        session_interaction_pattern: \"automated\"\n        verification_attempt_count|gte: 3\n    condition: selection_synthetic or selection_lighting or selection_multi_ip or selection_automation\nlevel: high",
-      "title": "DL-0119: KYC Verification Bot Circumvention Detection (Sigma)",
-      "source_rule": "DL-0119"
-    },
-    {
-      "type": "sigma",
-      "content": "title: DPRK Internal Platform Network Connection Detection\nstatus: experimental\ndescription: Detect connections to DPRK-associated internal collaboration platforms OConnect VPN and NetKey VPN, identified by Flare and IBM X-Force as tools used by DPRK IT workers: (1) VPN connections to known O\nlogsource:\n    product: network\n    category: network_connection\n    service: vpn_monitoring\ndetection:\n    selection_vpn_product:\n        vpn_product|contains:\n            - \"OConnect\"\n            - \"NetKey\"\n    selection_dns:\n        dns_query|contains:\n            - \"oconnect\"\n            - \"netkey\"\n            - \"oconnect.net\"\n            - \"netkey.io\"\n    selection_dual_vpn:\n        concurrent_vpn_connections|gte: 2\n        corporate_vpn_active: true\n        external_vpn_detected: true\n    condition: selection_vpn_product or selection_dns or selection_dual_vpn\nlevel: critical",
-      "title": "DL-0121: DPRK Internal Platform Network Connection Detection (Sigma)",
-      "source_rule": "DL-0121"
+      "content": "title: Bulk Code Repository Clone Within First Week\nstatus: experimental\ndescription: Detects a new employee cloning multiple code repositories within their first 7 days, a pattern associated with DPRK IT worker data exfiltration.\nlogsource:\n    product: git_platform\n    service: audit_log\ndetection:\n    selection:\n        action: \"repo.clone\"\n        actor_tenure_days|lte: 7\n    aggregation:\n        count|gte: 5\n        groupby: actor\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: high\ntags:\n    - fraud.dprk_it_worker\n    - cfpf.phase4.execution\n    - attack.t1005",
+      "title": "Sigma — Bulk Code Repository Clone Detection (Phase 4)"
     }
   ]
 }

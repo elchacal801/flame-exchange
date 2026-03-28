@@ -2,46 +2,9 @@
   "tp_id": "TP-0022",
   "rules": [
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Mule Account Velocity Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring transaction_type=\"ACH_IN\"\n| stats dc(originator_name) as unique_originator_name by account_id\n| where unique_originator_name > 3",
-      "title": "DL-0001: Mule Account Velocity Pattern (SPLUNK)",
-      "source_rule": "DL-0001"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Mule Rapid ATM Withdrawal After Inbound Transfer\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_atm_withdrawal by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=2000\nevent_type=\"ATM_WITHDRAWAL\"\ntransaction_amount>=500\n| transaction account_id maxspan=4h\n| where eventcount >= 2",
-      "title": "DL-0037: Mule Rapid ATM Withdrawal After Inbound Transfer (SPLUNK)",
-      "source_rule": "DL-0037"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Account Age vs Transaction Volume Mismatch\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_high_volume | count() by account_id > 20\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\naccount_age_days<90\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\npeer_comparison=\"{'metric': 'transaction_count', 'threshold': 'percentile_95'}\"\n| stats count as event_count by account_id\n| where event_count > 20",
-      "title": "DL-0038: Account Age vs Transaction Volume Mismatch (SPLUNK)",
-      "source_rule": "DL-0038"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Multi-Bank Funnel Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\noriginating_bank_external=true\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\n| stats dc(originating_bank_id) as unique_originating_bank_id by account_id\n| where unique_originating_bank_id > 3\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id <= 2",
-      "title": "DL-0039: Multi-Bank Funnel Pattern (SPLUNK)",
-      "source_rule": "DL-0039"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Crypto Off-Ramp After Wire or ACH Receipt\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_crypto_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=1000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\nbeneficiary_category=\"crypto_exchange\"\n(beneficiary_name=\"Coinbase\" OR beneficiary_name=\"Binance\" OR beneficiary_name=\"Kraken\" OR beneficiary_name=\"FTX\" OR beneficiary_name=\"Gemini\")\n| transaction account_id maxspan=24h\n| where eventcount >= 2",
-      "title": "DL-0040: Crypto Off-Ramp After Wire or ACH Receipt (SPLUNK)",
-      "source_rule": "DL-0040"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Peer-to-Peer Transfer Chain (Smurfing Pattern)\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"P2P_TRANSFER\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"ZELLE_SEND\" OR event_type=\"VENMO_TRANSFER\")\ntransaction_amount>=500\ninbound_event=\"P2P_CREDIT\"\noutbound_event=\"P2P_DEBIT\"\n| stats dc(counterparty_account_id) as unique_counterparty_account_id by account_id\n| where unique_counterparty_account_id > 2",
-      "title": "DL-0041: Peer-to-Peer Transfer Chain (Smurfing Pattern) (SPLUNK)",
-      "source_rule": "DL-0041"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Rapid Fund Layering Through Shell Accounts\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| stats count as event_count by account_id\n| where event_count > 3",
-      "title": "DL-0043: Rapid Fund Layering Through Shell Accounts (SPLUNK)",
-      "source_rule": "DL-0043"
+      "type": "sql",
+      "content": "SELECT \n    a.account_id,\n    COUNT(DISTINCT t.originator_name) as distinct_state_agencies,\n    SUM(t.amount) as total_government_deposits,\n    MAX(t.transaction_date) as latest_deposit\nFROM ach_inbound t\nJOIN accounts a ON t.account_id = a.account_id\nWHERE t.sec_code = 'PPD' \n  AND t.originator_name SIMILAR TO '%(UI|UNEMPLOYMENT|TREAS 310|TAX REF)% '\n  AND t.transaction_date >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY 1\nHAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits\n   AND COUNT(DISTINCT t.receiver_name) > 1; -- For different individuals",
+      "title": "SQL — Multiple UI/Tax Deposits to Single Account (Mule Indicator)"
     }
   ]
 }
