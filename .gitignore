@@ -1,6 +1,10 @@
 # Internal planning documents (not for public repo)
 docs/docs_internal/
 
+# Secrets
+.env
+.env.*
+
 # Python
 __pycache__/
 *.pyc
