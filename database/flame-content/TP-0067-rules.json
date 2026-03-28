@@ -3,13 +3,39 @@
   "rules": [
     {
       "type": "kql",
-      "content": "-- Microsoft Sentinel KQL: Detect AiTM session token replay\n-- User-Agent or IP mismatch between MFA completion and subsequent access\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n| where AccessTime > MFATime and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
-      "title": "Queries / Rules"
+      "content": "// Microsoft Sentinel KQL: Detect AiTM session token replay\n// User-Agent or IP mismatch between MFA completion and subsequent access\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n// Exclude MFA events to prevent self-join noise\n| where AuthenticationRequirement != \"multiFactorAuthentication\"\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n// Access must occur 5min–4h after MFA (skip trivially close auth flow events)\n| where AccessTime > MFATime + 5m and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
+      "title": "DL-0137: AiTM Session Token Replay Detection — User-Agent and IP Mismatch Post-MFA (KQL)",
+      "source_rule": "DL-0137"
     },
     {
-      "type": "sigma",
-      "content": "title: Post-Authentication Inbox Rule Creation from New IP\nstatus: experimental\ndescription: Detects inbox rule creation within 24h of sign-in from previously unseen IP\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection_rule:\n        Operation:\n            - New-InboxRule\n            - Set-InboxRule\n            - Enable-InboxRule\n    filter_known:\n        ClientIP|cidr:\n            - 10.0.0.0/8\n            - 172.16.0.0/12\n            - 192.168.0.0/16\n    timeframe: 24h\n    condition: selection_rule and not filter_known\nfields:\n    - UserId\n    - ClientIP\n    - Parameters\nlevel: high",
-      "title": "TP-0067 detection rule (sigma)"
+      "type": "kql",
+      "content": "// Microsoft Sentinel KQL: Inbox rule manipulation after new-IP authentication\nlet new_ip_signins = SigninLogs\n| where TimeGenerated > ago(48h)\n| where ResultType == 0\n| summarize FirstSeen=min(TimeGenerated) by UserPrincipalName, IPAddress\n| where FirstSeen > ago(24h);\nOfficeActivity\n| where TimeGenerated > ago(24h)\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| join kind=inner new_ip_signins on $left.UserId == $right.UserPrincipalName\n| where TimeGenerated > FirstSeen\n| project TimeGenerated, UserId, Operation, Parameters, ClientIP, IPAddress",
+      "title": "DL-0138: Post-Compromise Inbox Rule Manipulation — Rule Creation After New-IP Authentication (KQL)",
+      "source_rule": "DL-0138"
+    },
+    {
+      "type": "kql",
+      "content": "// KQL: AiTM Session Token Replay Detection\n// Detects same SessionId used from multiple IPs (proxy + attacker)\nlet timeWindow = 4h;\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    IPCount = dcount(IPAddress),\n    IPs = make_set(IPAddress),\n    UserAgents = make_set(UserAgent),\n    AppIds = make_set(AppId),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated),\n    RiskLevels = make_set(RiskLevelDuringSignIn)\n  by SessionId, UserPrincipalName\n| where IPCount >= 2\n| where datetime_diff('hour', MaxTime, MinTime) <= 4\n| project UserPrincipalName, SessionId, IPCount, IPs, UserAgents,\n          AppIds, MinTime, MaxTime, RiskLevels",
+      "title": "DL-0146: AiTM Session Token Replay — Same SessionId from Multiple IPs (KQL)",
+      "source_rule": "DL-0146"
+    },
+    {
+      "type": "kql",
+      "content": "// KQL: Sneaky 2FA Impossible Device Shift Detection\n// Correlates mismatched User-Agents within same authentication flow\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UserAgents = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n// Convert dynamic array to string for substring matching\n| extend UA_str = tostring(UserAgents)\n// High confidence: Safari/iOS + Edge/Windows combination (Sneaky 2FA signature)\n| where (UA_str has \"Safari\" and UA_str has \"Edge\")\n    or (UA_str has \"iPhone\" and UA_str has \"Windows\")\n| project UserPrincipalName, CorrelationId, UACount, UserAgents,\n          IPs, MinTime, MaxTime",
+      "title": "DL-0147: Sneaky 2FA Impossible Device Shift — User-Agent Mismatch per Auth Step (KQL)",
+      "source_rule": "DL-0147"
+    },
+    {
+      "type": "kql",
+      "content": "// KQL: Rockstar 2FA / FlowerStorm Detection\n// Matches hardcoded AppId and WebView/3.0 User-Agent\nSigninLogs\n| where TimeGenerated > ago(7d)\n| where AppId == \"72782ba9-4490-4f03-8d82-562370ea3566\"\n| where UserAgent contains \"WebView/3.0\"\n| project TimeGenerated, UserPrincipalName, IPAddress, UserAgent,\n          AppId, ResultType, RiskLevelDuringSignIn,\n          Location, ConditionalAccessStatus",
+      "title": "DL-0148: Rockstar 2FA / FlowerStorm Application ID and User-Agent Detection (KQL)",
+      "source_rule": "DL-0148"
+    },
+    {
+      "type": "kql",
+      "content": "// KQL: Post-AiTM Inbox Rule Manipulation Detection\n// Correlates risky sign-ins with subsequent inbox rule changes\nlet risky_signins = SigninLogs\n| where TimeGenerated > ago(24h)\n| where RiskLevelDuringSignIn in (\"medium\", \"high\")\n    or RiskLevelAggregated in (\"medium\", \"high\")\n| where ResultType == 0\n| project SignInTime = TimeGenerated, UserPrincipalName, SignInIP = IPAddress,\n          RiskLevel = RiskLevelDuringSignIn;\nlet inbox_changes = OfficeActivity\n| where TimeGenerated > ago(24h)\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\",\n                             \"DeleteMessage\", \"MarkAsRead\")\n| project RuleTime = TimeGenerated, UserId, ClientIP, Operation, Parameters;\nrisky_signins\n| join kind=inner inbox_changes\n    on $left.UserPrincipalName == $right.UserId\n| where RuleTime between (SignInTime .. (SignInTime + 24h))\n| project UserPrincipalName, SignInTime, SignInIP, RiskLevel,\n          RuleTime, Operation, Parameters, ClientIP",
+      "title": "DL-0150: Post-AiTM Inbox Rule Manipulation — New Rules from Risky Sign-In (KQL)",
+      "source_rule": "DL-0150"
     }
   ]
 }

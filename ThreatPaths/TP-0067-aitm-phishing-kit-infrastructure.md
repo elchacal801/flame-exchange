@@ -312,8 +312,8 @@ Despite these victories, impact is consistently temporary — displaced customer
 ### Queries / Rules
 
 ```kql
--- Microsoft Sentinel KQL: Detect AiTM session token replay
--- User-Agent or IP mismatch between MFA completion and subsequent access
+// Microsoft Sentinel KQL: Detect AiTM session token replay (DL-0137)
+// User-Agent or IP mismatch between MFA completion and subsequent access
 let mfa_events = SigninLogs
 | where TimeGenerated > ago(24h)
 | where AuthenticationRequirement == "multiFactorAuthentication"
@@ -323,41 +323,72 @@ let mfa_events = SigninLogs
 let access_events = SigninLogs
 | where TimeGenerated > ago(24h)
 | where ResultType == 0
+// Exclude MFA events to prevent self-join noise
+| where AuthenticationRequirement != "multiFactorAuthentication"
 | project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,
           Access_UserAgent=UserAgent, Access_AppId=AppId;
 mfa_events
 | join kind=inner access_events on UserPrincipalName
-| where AccessTime > MFATime and AccessTime < MFATime + 4h
+// Access must occur 5min–4h after MFA (skip trivially close auth flow events)
+| where AccessTime > MFATime + 5m and AccessTime < MFATime + 4h
 | where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent
 | project UserPrincipalName, MFATime, AccessTime,
           MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent
 ```
 
+```kql
+// Microsoft Sentinel KQL: Same SessionId from Multiple IPs (DL-0146)
+// Strongest AiTM detection signal — phishing proxy IP and attacker replay IP on same session
+let timeWindow = 4h;
+SigninLogs
+| where TimeGenerated > ago(24h)
+| where ResultType == 0
+| summarize
+    IPCount = dcount(IPAddress),
+    IPs = make_set(IPAddress),
+    UserAgents = make_set(UserAgent),
+    AppIds = make_set(AppId),
+    MinTime = min(TimeGenerated),
+    MaxTime = max(TimeGenerated),
+    RiskLevels = make_set(RiskLevelDuringSignIn)
+  by SessionId, UserPrincipalName
+| where IPCount >= 2
+| where datetime_diff('hour', MaxTime, MinTime) <= 4
+| project UserPrincipalName, SessionId, IPCount, IPs, UserAgents,
+          AppIds, MinTime, MaxTime, RiskLevels
+```
+
 ```sigma
-title: Post-Authentication Inbox Rule Creation from New IP
+title: Post-Compromise Inbox Rule Manipulation (DL-0138 — Standalone)
 status: experimental
-description: Detects inbox rule creation within 24h of sign-in from previously unseen IP
+description: >
+  Basic detection: inbox rule creation from non-RFC1918 IP.
+  For the full correlated detection (new-IP sign-in + inbox rule), use the
+  KQL queries in DL-0138 which perform cross-log temporal correlation.
 logsource:
     product: m365
     service: exchange
 detection:
-    selection_rule:
+    selection:
         Operation:
             - New-InboxRule
             - Set-InboxRule
             - Enable-InboxRule
-    filter_known:
+    filter_internal:
         ClientIP|cidr:
             - 10.0.0.0/8
             - 172.16.0.0/12
             - 192.168.0.0/16
-    timeframe: 24h
-    condition: selection_rule and not filter_known
+    condition: selection and not filter_internal
 fields:
     - UserId
     - ClientIP
     - Parameters
 level: high
+falsepositives:
+    - Users creating inbox rules from external networks (home, mobile)
+    - Cloud-hosted email management tools with non-RFC1918 IPs
+    - Corporate networks using public IP NAT for Exchange clients
 ```
 
 ### Behavioral Analytics
