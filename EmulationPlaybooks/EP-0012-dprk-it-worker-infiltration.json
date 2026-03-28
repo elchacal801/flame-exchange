@@ -1,0 +1,77 @@
+{
+    "id": "EP-0012",
+    "title": "DPRK IT Worker Infiltration",
+    "description": "Simulates the end-to-end lifecycle of a DPRK state-sponsored IT worker fraud operation targeting technology companies. The adversary creates fabricated professional profiles, obtains remote employment using stolen or synthetic identities with deepfake interview assistance, extracts salary revenue via cryptocurrency conversion, and exfiltrates proprietary data for extortion. This playbook validates detection coverage across all five CFPF phases for state-sponsored employment fraud and insider threat patterns.",
+    "author": "FLAME Project",
+    "date": "2026-03-27",
+    "target_threat_paths": ["TP-0034"],
+    "cfpf_phases": ["P1", "P2", "P3", "P4", "P5"],
+    "fraud_types": ["employment-fraud", "identity-fraud", "insider-threat", "sanctions-evasion", "data-extortion"],
+    "sectors": ["technology", "cross-sector"],
+    "prerequisites": {
+        "environment": "Fraud detection test environment with HR onboarding systems, identity verification platforms, payroll processing, endpoint monitoring, and cryptocurrency transaction tracking. Requires deepfake detection tooling and remote access monitoring capabilities.",
+        "tools": ["Identity verification platform (test mode)", "HR applicant tracking system", "Video conferencing platform with recording", "Payroll and direct deposit simulator", "Cryptocurrency exchange monitoring tool", "Endpoint data loss prevention system"],
+        "access_required": "Test-environment access to HR onboarding workflows, payroll systems, endpoint monitoring dashboards, and cryptocurrency transaction analytics. Access to simulated LinkedIn and GitHub profile verification tools."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Create Fake LinkedIn and GitHub Profiles",
+            "action": "Establish a fabricated professional identity by creating a LinkedIn profile with a fictitious employment history at recognizable technology companies, fabricated endorsements, and AI-generated profile photo. Create a corresponding GitHub account with forked repositories and superficial commit history to simulate a credible software engineering background. Ensure the identity uses a stolen or fabricated U.S. SSN and residential address provided by a domestic facilitator.",
+            "automation": null,
+            "expected_result": "Identity verification systems should flag inconsistencies between the claimed employment history and employer records. Profile age-to-activity ratio analysis should detect the recently created accounts with artificially inflated activity. Reverse image search on the profile photo should flag AI-generated imagery.",
+            "detection_rule_ref": "DL-0068"
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Apply for Remote Positions Using Stolen or Fabricated Identity",
+            "action": "Submit applications to multiple remote software engineering positions at U.S. technology companies using the fabricated identity. Provide the synthetic SSN, fabricated educational credentials, and the facilitator-hosted U.S. residential address. Use VPN infrastructure to mask the true geographic origin (China, Russia, or Southeast Asia). Apply to at least three companies simultaneously to increase the probability of successful placement.",
+            "automation": null,
+            "expected_result": "Application fraud detection should flag the thin employment verification trail, SSN inconsistencies, and multiple simultaneous applications from infrastructure associated with known VPN exit nodes. IP geolocation analysis should detect discrepancies between claimed U.S. residence and actual connection origin.",
+            "detection_rule_ref": "DL-0069"
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P2",
+            "title": "Pass Video Interview Using Deepfake Face-Changing Technology",
+            "action": "Participate in live video interviews using real-time deepfake face-swapping software to present a face consistent with the fabricated identity's profile photo. Use AI voice modulation to mask accent or linguistic indicators of non-native English origin. Employ a pre-staged environment with U.S.-appearing background elements. Have a technically proficient handler provide answers to complex technical questions via an off-camera feed if needed.",
+            "automation": null,
+            "expected_result": "Video interview analysis should detect artifacts consistent with real-time face manipulation, including temporal inconsistencies, lighting anomalies, and audio-visual synchronization delays. Deepfake detection models should flag the manipulated video stream.",
+            "detection_rule_ref": "DL-0116"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P3",
+            "title": "Begin Employment and Establish Access",
+            "action": "Upon successful hiring, complete the onboarding process and obtain access to corporate systems including source code repositories, internal communication platforms, and cloud infrastructure. Accept the company-issued laptop at the facilitator's U.S. address, where remote access software (e.g., AnyDesk, TeamViewer) is installed to allow the DPRK-based operator to control the device remotely. Maintain minimum viable work output to avoid performance-based termination during the initial probationary period.",
+            "automation": null,
+            "expected_result": "Endpoint monitoring should detect the installation of unauthorized remote access software on the corporate device. Network monitoring should flag connections to the laptop from non-U.S. IP addresses outside business hours. Behavioral analytics should identify unusual access patterns inconsistent with the role's typical workflows.",
+            "detection_rule_ref": "DL-0070"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P4",
+            "title": "Convert Salary Payments to Cryptocurrency",
+            "action": "Redirect salary direct deposits through a series of intermediary bank accounts controlled by the facilitator network. Convert funds to cryptocurrency (Bitcoin, USDT, or Monero) through a combination of peer-to-peer exchanges, decentralized exchanges, and over-the-counter brokers. Use mixing services or chain-hopping techniques to obscure the transaction trail. Ensure conversion occurs within 48 hours of each payroll deposit to minimize exposure to account freezes.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should flag the rapid movement of payroll deposits to cryptocurrency exchanges. Mule account velocity detection should identify the pattern of immediate fund extraction following regular payroll credits. Sanctions screening should flag wallet addresses associated with known DPRK-linked cryptocurrency infrastructure.",
+            "detection_rule_ref": "DL-0073"
+        },
+        {
+            "step_number": 6,
+            "cfpf_phase": "P5",
+            "title": "Exfiltrate Proprietary Data and Extort Employer",
+            "action": "Over the course of employment, systematically exfiltrate proprietary source code, customer data, and internal documentation by uploading files to personal cloud storage, emailing to external accounts, or cloning repositories to unauthorized locations. Upon termination or detection, leverage the exfiltrated data to demand ransom payments, threatening to publicly release or sell the proprietary information on underground marketplaces if payment is not received.",
+            "automation": null,
+            "expected_result": "Data loss prevention systems should detect bulk file transfers to unauthorized external destinations. Source code repository monitoring should flag unusual clone or download activity. Post-termination, threat intelligence feeds should correlate ransom demands with known DPRK extortion patterns. Email security should flag outbound messages containing sensitive file attachments to external domains.",
+            "detection_rule_ref": "DL-0074"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0068", "DL-0069", "DL-0070", "DL-0073", "DL-0074", "DL-0116"],
+        "alerts_generated": "Identity verification alerts on fabricated professional profiles with AI-generated imagery; application fraud alerts on SSN mismatches and VPN-masked geographic origin; deepfake detection alerts during video interviews; endpoint monitoring alerts on unauthorized remote access software installation; transaction monitoring alerts on rapid payroll-to-cryptocurrency conversion patterns; data loss prevention alerts on bulk exfiltration of proprietary source code and customer data; sanctions screening alerts on DPRK-linked cryptocurrency wallet addresses.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for DPRK state-sponsored IT worker fraud. Validates identity fabrication detection at preparation (P1), employment application fraud and deepfake detection at onboarding (P2), insider threat monitoring during positioning (P3), salary laundering detection during execution (P4), and data exfiltration and extortion detection during monetization (P5)."
+    }
+}

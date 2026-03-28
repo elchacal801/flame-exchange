@@ -135,6 +135,7 @@ falsepositives:
   - Balance transfer activity creating temporary utilization spike on source account
 level: high
 tags:
+  - attack.t1657
   - cfpf.phase4.execution
   - flame.first-party-fraud
   - flame.bust-out
