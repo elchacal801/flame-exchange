@@ -2,10 +2,9 @@
   "tp_id": "TP-0015",
   "rules": [
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Employment Fraud Metadata Feature Detection\")`\nindex=job_platforms sourcetype=job:postings\n| eval fraud_risk = case(\n    telecommuting_flag=0 AND has_company_logo=0, \"HIGH_92pct\",\n    has_company_logo=0 AND has_company_profile=0, \"HIGH_85pct\",\n    1=1, \"REVIEW\"\n  )\n| where fraud_risk IN (\"HIGH_92pct\", \"HIGH_85pct\")\n| table _time, posting_id, company_name, job_title, location,\n        salary_range, fraud_risk, telecommuting_flag,\n        has_company_logo, has_company_profile",
-      "title": "DL-0143: Employment Fraud Metadata Feature Detection (SPLUNK)",
-      "source_rule": "DL-0143"
+      "type": "sql",
+      "content": "SELECT d.domain_name, d.creation_date, d.registrar\nFROM recently_registered_domains d\nJOIN mx_records m ON d.domain_id = m.domain_id\nJOIN ssl_certificates s ON d.domain_id = s.domain_id\nWHERE d.domain_name SIMILAR TO '%(health|staffing|rightathome)%'\nAND d.creation_date >= CURRENT_DATE - INTERVAL '90 days'\nAND d.hosting_provider IN ('Hostinger', 'GoDaddy', 'OVH')\nAND m.mx_domain != d.domain_name\nAND s.issuer = 'Let''s Encrypt'\nAND DATEDIFF('day', d.creation_date, s.issue_date) <= 3;",
+      "title": "Domain-Based Detection"
     }
   ]
 }

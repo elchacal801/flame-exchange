@@ -2,10 +2,14 @@
   "tp_id": "TP-0061",
   "rules": [
     {
-      "type": "sigma",
-      "content": "title: TAE Infrastructure Rotation Detection\nstatus: experimental\ndescription: Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems \nlogsource:\n    product: network\n    category: routing_analytics\n    service: bgp_monitoring\ndetection:\n    selection_prefix_transfer:\n        prefix_transfer_days|lt: 30\n        source_asn_related: true\n        destination_asn_related: true\n    selection_new_org:\n        new_organization_age_days|lt: 90\n        ripe_resource_allocation: true\n        organization_verification_status: \"minimal\"\n    selection_threat_density:\n        threat_density_score|gt: 0.6\n        prefix_announcement_age_days|lt: 14\n        historical_abuse_on_prefix: false\n    selection_rebranding:\n        asn_name_change_days|lt: 60\n        infrastructure_overlap_score|gt: 0.7\n    condition: (selection_prefix_transfer and selection_new_org) or selection_threat_density or (selection_prefix_transfer and selection_rebranding)\nlevel: high",
-      "title": "DL-0123: TAE Infrastructure Rotation Detection (Sigma)",
-      "source_rule": "DL-0123"
+      "type": "sql",
+      "content": "SELECT d.domain, d.registration_date, h.ip_address, h.asn, h.hosting_provider,\n       ar.abuse_report_count, ar.days_since_oldest_report,\n       COUNT(DISTINCT fi.fraud_indicator_type) AS fraud_indicator_count\nFROM domains d\nJOIN hosting_records h ON d.domain = h.domain\nLEFT JOIN abuse_reports ar ON h.ip_address = ar.ip_address\nLEFT JOIN fraud_indicators fi ON d.domain = fi.domain\nWHERE h.hosting_provider IN ('Virtualine', 'Stark Industries', 'AEZA', 'Aurologic')\n   OR h.asn IN (SELECT asn FROM tae_provider_asns)\nGROUP BY d.domain, d.registration_date, h.ip_address, h.asn, h.hosting_provider,\n         ar.abuse_report_count, ar.days_since_oldest_report\nHAVING COUNT(DISTINCT fi.fraud_indicator_type) > 0\nORDER BY fraud_indicator_count DESC;",
+      "title": "TAE Infrastructure Hosting Detection (SQL)"
+    },
+    {
+      "type": "spl",
+      "content": "index=dns sourcetype=passive_dns\n| stats dc(answer) AS unique_ips values(answer) AS ip_list earliest(_time) AS first_seen latest(_time) AS last_seen by query\n| eval days_active=round((last_seen-first_seen)/86400, 1)\n| where unique_ips > 3 AND days_active < 30\n| mvexpand ip_list\n| lookup tae_ip_ranges ip_list OUTPUT tae_provider\n| where isnotnull(tae_provider)\n| stats count dc(query) AS domains values(tae_provider) AS providers by ip_list\n| sort -domains",
+      "title": "Infrastructure Rotation Detection (Splunk SPL)"
     }
   ]
 }

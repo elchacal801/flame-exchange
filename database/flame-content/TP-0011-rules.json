@@ -2,52 +2,9 @@
   "tp_id": "TP-0011",
   "rules": [
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Mule Account Velocity Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring transaction_type=\"ACH_IN\"\n| stats dc(originator_name) as unique_originator_name by account_id\n| where unique_originator_name > 3",
-      "title": "DL-0001: Mule Account Velocity Pattern (SPLUNK)",
-      "source_rule": "DL-0001"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Mule Rapid ATM Withdrawal After Inbound Transfer\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_atm_withdrawal by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=2000\nevent_type=\"ATM_WITHDRAWAL\"\ntransaction_amount>=500\n| transaction account_id maxspan=4h\n| where eventcount >= 2",
-      "title": "DL-0037: Mule Rapid ATM Withdrawal After Inbound Transfer (SPLUNK)",
-      "source_rule": "DL-0037"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Account Age vs Transaction Volume Mismatch\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_high_volume | count() by account_id > 20\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\naccount_age_days<90\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\npeer_comparison=\"{'metric': 'transaction_count', 'threshold': 'percentile_95'}\"\n| stats count as event_count by account_id\n| where event_count > 20",
-      "title": "DL-0038: Account Age vs Transaction Volume Mismatch (SPLUNK)",
-      "source_rule": "DL-0038"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Multi-Bank Funnel Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\noriginating_bank_external=true\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\n| stats dc(originating_bank_id) as unique_originating_bank_id by account_id\n| where unique_originating_bank_id > 3\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id <= 2",
-      "title": "DL-0039: Multi-Bank Funnel Pattern (SPLUNK)",
-      "source_rule": "DL-0039"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Peer-to-Peer Transfer Chain (Smurfing Pattern)\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"P2P_TRANSFER\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"ZELLE_SEND\" OR event_type=\"VENMO_TRANSFER\")\ntransaction_amount>=500\ninbound_event=\"P2P_CREDIT\"\noutbound_event=\"P2P_DEBIT\"\n| stats dc(counterparty_account_id) as unique_counterparty_account_id by account_id\n| where unique_counterparty_account_id > 2",
-      "title": "DL-0041: Peer-to-Peer Transfer Chain (Smurfing Pattern) (SPLUNK)",
-      "source_rule": "DL-0041"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Mule Recruitment Test Deposit Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8\")`\nindex=flame_banking sourcetype=flame:ach_processing\n(event_type=\"ACH_CREDIT\" OR event_type=\"P2P_CREDIT\" OR event_type=\"WIRE_CREDIT\")\ntransaction_amount<=100\ntransaction_amount>=1\n| stats dc(originator_id) as unique_originator_id by account_id\n| where unique_originator_id > 8",
-      "title": "DL-0042: Mule Recruitment Test Deposit Pattern (SPLUNK)",
-      "source_rule": "DL-0042"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Rapid Fund Layering Through Shell Accounts\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| stats count as event_count by account_id\n| where event_count > 3",
-      "title": "DL-0043: Rapid Fund Layering Through Shell Accounts (SPLUNK)",
-      "source_rule": "DL-0043"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Cialdini Persuasion Scoring\")`\n`comment(\"Requires NLP scoring service via DSDL or API\")`\nindex=communications sourcetype=fraud:communications\n| apply cialdini_scoring_model\n| where cialdini_principles_detected >= 3\n| where max_principle_score > 0.7\n| table _time, channel, sender, recipient,\n        reciprocity_score, consistency_score, social_proof_score,\n        authority_score, liking_score, scarcity_score,\n        cialdini_principles_detected",
-      "title": "DL-0140: Cialdini Persuasion Principle Scoring in Fraud Communications (SPLUNK)",
-      "source_rule": "DL-0140"
+      "type": "sql",
+      "content": "SELECT account_id\nFROM transactions\nWHERE transaction_type = 'INBOUND'\nAND timestamp >= CURRENT_DATE - INTERVAL '30 days'\nGROUP BY account_id\nHAVING COUNT(DISTINCT sender_id) >= 3\nAND EXISTS (\n    SELECT 1 FROM transactions t_out\n    WHERE t_out.account_id = transactions.account_id\n    AND t_out.transaction_type = 'OUTBOUND'\n    AND t_out.destination_type IN ('INTERNATIONAL_WIRE', 'CRYPTO', 'P2P')\n    AND t_out.timestamp >= transactions.timestamp\n    AND t_out.timestamp <= transactions.timestamp + INTERVAL '48 hours'\n);",
+      "title": "Mule Account Behavioral Pattern"
     }
   ]
 }

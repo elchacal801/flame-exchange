@@ -2,22 +2,9 @@
   "tp_id": "TP-0007",
   "rules": [
     {
-      "type": "sigma",
-      "content": "title: Voice Biometric Confidence Score Anomaly for Known Caller\nstatus: experimental\ndescription: Detects when a voice biometric verification score for a previously enrolled caller falls below an acceptable confidence threshold, which may indicate a deepfake or voice-clone attempt impersonating a \nlogsource:\n    product: banking\n    service: voice_authentication\ndetection:\n    selection:\n        event_type: \"voice_biometric_verify\"\n        enrollment_status: \"enrolled\"\n    filter_low_score:\n        voice_confidence_score|lt: 70\n    filter_historical_high:\n        historical_avg_score|gte: 85\n    condition: selection and filter_low_score and filter_historical_high\nlevel: high",
-      "title": "DL-0050: Voice Biometric Confidence Score Anomaly for Known Caller (Sigma)",
-      "source_rule": "DL-0050"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Callback Number Mismatch for Claimed Institution\nstatus: experimental\ndescription: Detects when an inbound caller claims to represent a specific financial institution or internal department, but the originating ANI or callback number does not match the institution's known directory \nlogsource:\n    product: banking\n    service: voice_authentication\ndetection:\n    selection:\n        event_type: \"inbound_call\"\n        caller_claim|contains:\n            - \"fraud department\"\n            - \"security team\"\n            - \"bank representative\"\n            - \"account services\"\n    filter_ani_mismatch:\n        ani_matches_directory: false\n    filter_callback_mismatch:\n        callback_number_verified: false\n    condition: selection and (filter_ani_mismatch or filter_callback_mismatch)\nlevel: high",
-      "title": "DL-0051: Callback Number Mismatch for Claimed Institution (Sigma)",
-      "source_rule": "DL-0051"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Audio Compression Artifacts Indicative of AI-Generated Speech\nstatus: experimental\ndescription: Detects audio streams exhibiting compression artifacts, spectral anomalies, or frequency-band irregularities characteristic of AI-generated or text-to-speech synthesis engines. These include unnatural\nlogsource:\n    product: banking\n    service: voice_authentication\ndetection:\n    selection:\n        event_type: \"voice_stream_analysis\"\n    filter_artifacts:\n        spectral_flatness_score|gt: 0.85\n        breath_sound_detected: false\n        pitch_variance|lt: 2.5\n    filter_codec:\n        codec_reencoding_detected: true\n    condition: selection and (filter_artifacts or filter_codec)\nlevel: critical",
-      "title": "DL-0052: Audio Compression Artifacts Indicative of AI-Generated Speech (Sigma)",
-      "source_rule": "DL-0052"
+      "type": "sql",
+      "content": "SELECT * FROM wire_authorizations \nWHERE auth_method = 'voice_only' \nAND amount > 50000 \nAND NOT EXISTS (\n    SELECT 1 FROM email_approvals WHERE wire_id = wire_authorizations.id\n);",
+      "title": "Process-Based Detection"
     }
   ]
 }

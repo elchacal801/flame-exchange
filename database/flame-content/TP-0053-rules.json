@@ -1,4 +1,20 @@
 {
   "tp_id": "TP-0053",
-  "rules": []
+  "rules": [
+    {
+      "type": "sql",
+      "content": "SELECT la.dealership_id, la.dealership_name,\n       COUNT(DISTINCT la.application_id) AS application_count,\n       COUNT(DISTINCT la.applicant_ssn) AS unique_applicants,\n       MIN(la.application_date) AS first_application,\n       MAX(la.application_date) AS last_application,\n       SUM(la.requested_loan_amount) AS total_requested\nFROM loan_applications la\nWHERE la.loan_type = 'auto'\nAND la.application_date > CURRENT_DATE - INTERVAL '30 days'\nGROUP BY la.dealership_id, la.dealership_name\nHAVING COUNT(DISTINCT la.application_id) >= 3\nAND DATEDIFF('day', MIN(la.application_date), MAX(la.application_date)) <= 14\nORDER BY total_requested DESC;",
+      "title": "Auto Loan Application Clustering — Same Dealership / Short Window (SQL)"
+    },
+    {
+      "type": "spl",
+      "content": "index=telematics sourcetype=vehicle_gps\n| lookup auto_loans loan_id OUTPUT origination_date, borrower_zip, loan_amount, vehicle_value\n| eval days_since_origination = (now() - strptime(origination_date, \"%Y-%m-%d\")) / 86400\n| where days_since_origination < 60\n| where vehicle_value > 30000\n| iplookup geo_data lat lng OUTPUT region, country\n| where country != borrower_country\n| stats count by loan_id, vehicle_vin, origination_date, last_known_location, country, loan_amount\n| sort -loan_amount",
+      "title": "Vehicle GPS Departure Anomaly — High-Value Loans (Splunk SPL)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT la.loan_id, la.application_date, la.vehicle_vin, la.vehicle_value,\n       la.loan_amount, la.ltv_ratio, la.dealership_name,\n       lp.first_payment_date, lp.last_payment_date,\n       lp.payments_made, lp.default_date,\n       DATEDIFF('day', la.application_date, lp.default_date) AS days_to_default\nFROM loan_applications la\nJOIN loan_payment_history lp ON la.loan_id = lp.loan_id\nWHERE la.loan_type = 'auto'\nAND la.ltv_ratio >= 0.90\nAND la.vehicle_value >= 30000\nAND lp.payments_made <= 3\nAND lp.default_date IS NOT NULL\nAND DATEDIFF('day', la.application_date, lp.default_date) < 120\nORDER BY la.vehicle_value DESC;",
+      "title": "Early Default Anomaly — High-LTV Auto Loans (SQL)"
+    }
+  ]
 }

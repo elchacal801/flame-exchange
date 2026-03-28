@@ -3,15 +3,23 @@
   "rules": [
     {
       "type": "spl",
-      "content": "`comment(\"Splunk SPL for Blank CC Subscription Fraud Pattern Detection\")`\n`comment(\"Identifies nominal-charge-to-recurring-subscription patterns (Ad Trafficko model)\")`\nindex=flame_txn sourcetype=flame:card_transactions transaction_type=CNP\n| eval is_nominal=(if(amount<=2.99, 1, 0))\n| eval is_recurring_followup=(if(transaction_type=\"recurring\" AND amount>=6.99, 1, 0))\n| stats\n    sum(is_nominal) AS nominal_charges\n    sum(is_recurring_followup) AS recurring_charges\n    dc(card_hash) AS unique_cards\n    avg(amount) AS avg_amount\n    max(amount) AS max_amount\n    values(merchant_descriptor) AS descriptors\n    latest(merchant_chargeback_ratio) AS chargeback_ratio\n  by merchant_id\n| where nominal_charges > 10 AND recurring_charges > 5\n| eval conversion_ratio=round(recurring_charges/nominal_charges, 2)\n| where conversion_ratio > 0.3 OR chargeback_ratio > 0.05\n| sort -recurring_charges",
-      "title": "DL-0128: Blank Credit Card Subscription Fraud Pattern Detection (SPLUNK)",
-      "source_rule": "DL-0128"
+      "content": "index=proxy sourcetype=web_proxy\n| eval dest_domain=lower(dest_domain)\n| lookup faas_kit_fingerprints dest_domain OUTPUT kit_family, operator_cluster\n| where isnotnull(kit_family)\n| stats count by dest_domain, kit_family, operator_cluster, src_ip\n| where count > 1\n| sort -count",
+      "title": "FaaS Phishing Kit Fingerprint Detection — Shared Infrastructure (Splunk SPL)"
     },
     {
       "type": "spl",
-      "content": "`comment(\"Splunk SPL for Fake Mobile App Residential Proxy and Subscription Scam Detection\")`\n`comment(\"Detects VexTrio-pattern fake apps: residential proxy abuse and notification-to-subscription scam cycle\")`\n\n`comment(\"--- Detection 1: Fake VPN acting as residential proxy ---\")`\nindex=flame_endpoint sourcetype=flame:mobile_mdm app_category IN (\"VPN\", \"cleaner\", \"optimizer\", \"spam-blocker\")\n| stats\n    dc(dest_ip) AS unique_dest_ips\n    sum(bytes_out) AS total_bytes_out\n    sum(bytes_in) AS total_bytes_in\n    dc(src_port) AS unique_src_ports\n    values(app_name) AS app_names\n  by device_id, app_id\n| eval proxy_ratio=round(total_bytes_in/total_bytes_out, 2)\n| where unique_dest_ips > 50 AND proxy_ratio > 2\n| eval risk=\"residential_proxy_behavior\"\n\n`comment(\"--- Detection 2: Push notification abuse to subscription scam cycle ---\")`\nindex=flame_endpoint sourcetype=flame:mobile_mdm\n| eval has_notification_spike=(if(push_notification_count_24h >= 50, 1, 0))\n| eval has_app_install=(if(isnotnull(new_app_install) AND app_category IN (\"spam-blocker\", \"notification-protector\", \"cleaner\"), 1, 0))\n| eval has_subscription=(if(in_app_purchase_amount >= 6.99 AND in_app_purchase_type=\"subscription\", 1, 0))\n| transaction device_id maxspan=72h\n| where has_notification_spike=1 AND has_app_install=1 AND has_subscription=1\n| eval risk=\"notification_to_subscription_scam_cycle\"",
-      "title": "DL-0129: Fake Mobile App Residential Proxy and Subscription Scam Detection (SPLUNK)",
-      "source_rule": "DL-0129"
+      "content": "index=email sourcetype=email_gateway\n| lookup domain_age_feed sender_domain OUTPUT domain_age_days\n| where domain_age_days < 30\n| regex body=\"(?i)(wire transfer|bank transfer|urgent payment|account number|routing number|IBAN|SWIFT)\"\n| stats count by sender_domain, recipient, subject, domain_age_days\n| sort -count",
+      "title": "BEC Wire Alert — Email from Newly Registered Domain with Wire Instructions (Splunk SPL)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT pg.page_url, pg.ssl_fingerprint, pg.js_hash, pg.css_hash,\n       f.kit_family, f.operator_cluster, d.registration_date\nFROM payment_gateway_scans pg\nJOIN faas_kit_signatures f\n  ON pg.js_hash = f.js_hash OR pg.css_hash = f.css_hash\nJOIN domain_intel d ON pg.domain = d.domain_name\nWHERE d.registration_date > CURRENT_DATE - INTERVAL '30 days'\nORDER BY d.registration_date DESC;",
+      "title": "FaaS Payment Gateway Clone Detection (SQL)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT c1.campaign_id AS campaign_a,\n       c2.campaign_id AS campaign_b,\n       h.hosting_asn, h.hosting_ip_range,\n       COUNT(*) AS shared_domains\nFROM campaign_domains c1\nJOIN campaign_domains c2 ON c1.hosting_ip = c2.hosting_ip\n  AND c1.campaign_id < c2.campaign_id\nJOIN hosting_intel h ON c1.hosting_ip = h.ip_address\nGROUP BY c1.campaign_id, c2.campaign_id, h.hosting_asn, h.hosting_ip_range\nHAVING COUNT(*) > 3\nORDER BY shared_domains DESC;",
+      "title": "Cross-Campaign Infrastructure Clustering (SQL)"
     }
   ]
 }
