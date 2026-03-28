@@ -19,7 +19,7 @@
   },
   {
     "type": "kql",
-    "content": "OfficeActivity\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\")\n| project TimeGenerated, UserId, Parameters, ClientIP",
+    "content": "// Microsoft Sentinel KQL: BEC Forwarding Rule Monitoring (DL-0138)\nOfficeActivity\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\",\n                             \"DeleteMessage\", \"MarkAsRead\")\n| project TimeGenerated, UserId, Operation, Parameters, ClientIP",
     "title": "Email — Forwarding Rule Monitoring (M365)",
     "tp_id": "TP-0002"
   },
@@ -43,7 +43,7 @@
   },
   {
     "type": "kql",
-    "content": "EmailEvents\n| where Subject has_any (\"wire\", \"closing\", \"escrow\", \"wiring instructions\")\n| extend sender_domain = tostring(split(SenderFromAddress, \"@\")[1])\n| where sender_domain !in (known_title_company_domains)\n| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject",
+    "content": "// Microsoft Sentinel KQL: Real Estate Wire Instruction Anomaly\n// Requires: populate known_title_company_domains with your title/escrow company domains\nlet known_title_company_domains = dynamic([\"example-titleco.com\", \"example-escrow.com\"]);\nEmailEvents\n| where Subject has_any (\"wire\", \"closing\", \"escrow\", \"wiring instructions\")\n| extend sender_domain = tostring(split(SenderFromAddress, \"@\")[1])\n| where sender_domain !in (known_title_company_domains)\n| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject, sender_domain",
     "title": "Email — Wire Instruction Anomaly (M365 / Google Workspace)",
     "tp_id": "TP-0006"
   },

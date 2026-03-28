@@ -8,7 +8,7 @@
     },
     {
       "type": "kql",
-      "content": "OfficeActivity\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\")\n| project TimeGenerated, UserId, Parameters, ClientIP",
+      "content": "// Microsoft Sentinel KQL: BEC Forwarding Rule Monitoring (DL-0138)\nOfficeActivity\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\",\n                             \"DeleteMessage\", \"MarkAsRead\")\n| project TimeGenerated, UserId, Operation, Parameters, ClientIP",
       "title": "Email — Forwarding Rule Monitoring (M365)"
     }
   ]
