@@ -153,10 +153,12 @@ index=ap_system action="payment_update"
 **Email — Forwarding Rule Monitoring (M365)**
 
 ```kql
+// Microsoft Sentinel KQL: BEC Forwarding Rule Monitoring (DL-0138)
 OfficeActivity
-| where Operation in ("New-InboxRule", "Set-InboxRule")
-| where Parameters has_any ("ForwardTo", "ForwardAsAttachmentTo", "RedirectTo")
-| project TimeGenerated, UserId, Parameters, ClientIP
+| where Operation in ("New-InboxRule", "Set-InboxRule", "Enable-InboxRule", "Set-Mailbox")
+| where Parameters has_any ("ForwardTo", "ForwardAsAttachmentTo", "RedirectTo",
+                             "DeleteMessage", "MarkAsRead")
+| project TimeGenerated, UserId, Operation, Parameters, ClientIP
 ```
 
 ## Operational Evidence

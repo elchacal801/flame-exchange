@@ -155,11 +155,14 @@ Actors compromise email accounts of real estate agents, title companies, attorne
 **Email — Wire Instruction Anomaly (M365 / Google Workspace)**
 
 ```kql
+// Microsoft Sentinel KQL: Real Estate Wire Instruction Anomaly
+// Requires: populate known_title_company_domains with your title/escrow company domains
+let known_title_company_domains = dynamic(["example-titleco.com", "example-escrow.com"]);
 EmailEvents
 | where Subject has_any ("wire", "closing", "escrow", "wiring instructions")
 | extend sender_domain = tostring(split(SenderFromAddress, "@")[1])
 | where sender_domain !in (known_title_company_domains)
-| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject
+| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject, sender_domain
 ```
 
 **Email — Suspicious Inbox Rule Creation (M365)**
