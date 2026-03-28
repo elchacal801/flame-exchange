@@ -12,7 +12,7 @@
 
 FLAME is an open-source, community-driven platform for sharing structured fraud detection intelligence across organizational and framework boundaries. Every submission maps simultaneously to **6 fraud frameworks**, exports to **STIX 2.1 / MISP / TAXII / Sigma**, and is browsable through a zero-dependency web interface with D3-powered visualizations, AI-assisted intake, and an MCP server for conversational fraud intelligence.
 
-> **[Explore FLAME Live &rarr;](https://elchacal801.github.io/flame-fraud/)**
+> **[Explore FLAME Live &rarr;](https://flameintel.org/)**
 
 ---
 
@@ -473,7 +473,7 @@ FLAME uses 7 GitHub Actions workflows for full automation:
 
 ### Browse online
 
-Visit the [FLAME platform](https://elchacal801.github.io/flame-fraud/).
+Visit the [FLAME platform](https://flameintel.org/).
 
 ### Run locally
 
@@ -531,13 +531,13 @@ FLAME is community-driven. Contributions of **threat paths**, **detection rules*
 
 1. **AI-Assisted Intake** (recommended) -- Open an Issue with the **Intel Submission** template, paste a URL to a fraud advisory or report, and the AI pipeline generates a structured threat path draft for review.
 
-2. **Web submission form** -- Use the [Contribute page](https://elchacal801.github.io/flame-fraud/contribute.html) with live preview and pre-filled GitHub Issue generation.
+2. **Web submission form** -- Use the [Contribute page](https://flameintel.org/contribute.html) with live preview and pre-filled GitHub Issue generation.
 
 3. **Manual PR** -- Fork the repo, copy the appropriate template from `Templates/`, fill in all sections, and submit a pull request.
 
 ### Peer review workflow
 
-Submissions follow a label-driven lifecycle: **submitted** &rarr; **under-review** &rarr; **approved** &rarr; **published**. All PRs are automatically validated against the schema and taxonomy. Contributors are tracked on the [leaderboard](https://elchacal801.github.io/flame-fraud/).
+Submissions follow a label-driven lifecycle: **submitted** &rarr; **under-review** &rarr; **approved** &rarr; **published**. All PRs are automatically validated against the schema and taxonomy. Contributors are tracked on the [leaderboard](https://flameintel.org/).
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines, frontmatter requirements, and quality standards.
 

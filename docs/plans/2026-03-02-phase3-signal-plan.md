@@ -713,7 +713,7 @@ def build_cluster_entry(tp: dict) -> dict:
         "sectors": tp.get("sector", []),
         "cfpf_phases": tp.get("cfpf_phases", []),
         "confidence_score": tp.get("confidence_score", 0),
-        "refs": [f"https://elchacal801.github.io/flame-fraud/?tp={tp_id}"],
+        "refs": [f"https://flameintel.org/?tp={tp_id}"],
     }
 
     # Build MITRE ATT&CK relations
@@ -940,7 +940,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 NAMESPACE = uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")
-TAXII_BASE = "https://elchacal801.github.io/flame-fraud/api/taxii"
+TAXII_BASE = "https://flameintel.org/api/taxii"
 STIX_BUNDLE_PATH = Path("database/flame_stix_bundle.json")
 OUTPUT_DIR = Path("api/taxii")
 

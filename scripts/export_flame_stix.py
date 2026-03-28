@@ -54,7 +54,7 @@ PHASE_MAP = {
     "P5": "P5-monetization",
 }
 
-FLAME_PAGES_BASE = "https://elchacal801.github.io/flame-fraud"
+FLAME_PAGES_BASE = "https://flameintel.org"
 
 # Paths
 CONTENT_DIR = Path("database/flame-content")

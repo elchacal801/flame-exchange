@@ -1344,7 +1344,7 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
 
     Returns the number of items written.
     """
-    BASE_URL = "https://elchacal801.github.io/flame-fraud"
+    BASE_URL = "https://flameintel.org"
     feed_path = root / "database" / "feed.xml"
     feed_path.parent.mkdir(parents=True, exist_ok=True)
 
