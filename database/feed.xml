@@ -2563,5 +2563,161 @@
         <category>synthetic-identity</category>
         <category>severity-high</category>
     </item>
+    <item>
+      <title>[DL-0162] Check Washing — Altered Check Mobile Deposit with Duplicate or MICR Inconsistency</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0162</guid>
+      <description>Detects mobile deposits of potentially washed or altered checks by identifying two key indicators: (1) the same check number deposited at multiple financial institutions within a short window, indicat</description>
+        <category>check-fraud</category>
+        <category>check-washing</category>
+        <category>duplicate-deposit</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0163] Disability Insurance Fraud — Fabricated Medical Documentation Provider Anomaly</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0163</guid>
+      <description>Detects patterns indicative of fabricated medical documentation supporting fraudulent disability claims by identifying two key signals: (1) a single medical provider billing across multiple claimants </description>
+        <category>disability-fraud</category>
+        <category>fraudulent-claim</category>
+        <category>provider-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0164] Insider-Enabled Account Fraud — Employee Access Anomaly with Subsequent Account Changes</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0164</guid>
+      <description>Detects financial institution employees accessing customer accounts outside their normal behavioral pattern, combined with subsequent account modifications — a hallmark of insider- enabled fraud. The </description>
+        <category>account-takeover</category>
+        <category>collusion</category>
+        <category>insider-threat</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0165] Business Identity Takeover — Rapid Signer, Address, and Banking Detail Changes on Established Account</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0165</guid>
+      <description>Detects potential business identity takeover by identifying a cluster of critical account changes occurring within a short window on established commercial accounts. The rule flags accounts where auth</description>
+        <category>account-takeover</category>
+        <category>business-email-compromise</category>
+        <category>identity-theft</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0166] GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0166</guid>
+      <description>Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly </description>
+        <category>authorized-push-payment</category>
+        <category>crypto-laundering</category>
+        <category>investment-scam</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0167] Elder Financial Exploitation — New Payee Addition with Escalating Payment Amounts</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0167</guid>
+      <description>Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to</description>
+        <category>authorized-push-payment</category>
+        <category>elder-exploitation</category>
+        <category>romance-scam</category>
+        <category>social-engineering</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0168] Web3 Wallet Drainer — Malicious Token Approval to Drainer Contract</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0168</guid>
+      <description>Detects wallet drainer approval phishing by identifying three high-confidence on-chain indicators: (1) token approval (approve() or increaseAllowance()) granting unlimited allowance to a contract addr</description>
+        <category>approval-phishing</category>
+        <category>crypto-laundering</category>
+        <category>wallet-drainer</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0169] Ghost Student Financial Aid Fraud — Multi-Signal Botnet Enrollment Detection</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0169</guid>
+      <description>Detects ghost student financial aid fraud by correlating three botnet-driven enrollment indicators: (1) multiple FAFSA applications originating from the same device fingerprint or IP address within an</description>
+        <category>benefit-fraud</category>
+        <category>ghost-student-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0170] Calendar Invite Injection Phishing — Mass External Calendar Event Creation from New Domains</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0170</guid>
+      <description>Detects calendar injection phishing by identifying mass calendar invite creation from external sources targeting internal users, where the event body contains URLs and the organizer domain is recently</description>
+        <category>calendar-phishing</category>
+        <category>social-engineering</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0171] QR Code Payment Fraud (Quishing) — Malicious QR Destination to Credential Harvesting Infrastructure</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0171</guid>
+      <description>Detects quishing attacks by identifying emails or messages containing QR code images where the encoded URL resolves to a recently registered domain (under 30 days), a known URL shortener redirecting t</description>
+        <category>account-takeover</category>
+        <category>credential-harvesting</category>
+        <category>quishing</category>
+        <category>social-engineering</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0172] Sextortion-Investment Hybrid Fraud — Small Payment Escalation to Crypto Addresses with Communication Pattern Shift</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0172</guid>
+      <description>Detects the sextortion-investment hybrid fraud pattern where a victim makes initial small payments followed by escalating amounts to cryptocurrency addresses, with the communication pattern showing a </description>
+        <category>hybrid-fraud</category>
+        <category>investment-scam</category>
+        <category>romance-scam</category>
+        <category>sextortion</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0173] Vehicle Export Financing Fraud — Auto Loan Followed by Rapid Title Transfer or Export with Active Lien</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0173</guid>
+      <description>Detects the vehicle export financing fraud pattern where an auto loan application is approved and the financed vehicle undergoes rapid title transfer or appears in export documentation while the loan </description>
+        <category>application-fraud</category>
+        <category>identity-theft</category>
+        <category>loan-fraud</category>
+        <category>vehicle-export-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0174] Crypto Fraud-Terrorism/Narco Financing Nexus — Sanctions-Exposed Wallets and Peel Chain Patterns Through Mixing Services</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0174</guid>
+      <description>Detects the crypto-terror/narco financing nexus pattern where transactions flow to wallets with known OFAC/sanctions exposure, or exhibit peel chain patterns through cryptocurrency mixing services fol</description>
+        <category>crypto-laundering</category>
+        <category>investment-scam</category>
+        <category>state-criminal-convergence</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0175] Organized Insurance Claims Fraud — Shared Professional Enablers and Claim Timing Clustering Around Policy Inception</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0175</guid>
+      <description>Detects organized insurance claims fraud patterns where the same claimant or provider appears across multiple claims with shared professional enablers (medical provider, legal representative, repair s</description>
+        <category>documentary-fraud</category>
+        <category>fraudulent-claim</category>
+        <category>insurance-fraud</category>
+        <category>staged-accident</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0176] Organized Counterfeit Goods and Non-Delivery Fraud Network — High Dispute Merchant Accounts with Drop Location Clustering and Below-Market Pricing</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0176</guid>
+      <description>Detects organized counterfeit goods and non-delivery fraud network activity by identifying merchant accounts exhibiting multiple fraud indicators simultaneously: high chargeback/dispute rates, shippin</description>
+        <category>auction-fraud</category>
+        <category>brand-impersonation</category>
+        <category>counterfeit-goods</category>
+        <category>non-delivery</category>
+        <category>purchase-scam</category>
+        <category>severity-high</category>
+    </item>
   </channel>
 </rss>

@@ -1380,6 +1380,96 @@
     "text": "Detects clusters of submitted ID documents sharing identical formatting artifacts, template structures, or AI generation signatures. AI document generators produce documents with consistent pixel-level artifacts, font embedding patterns, and template metadata even when the identity details differ. When 3+ documents from different applicants show template_similarity_score > 0.85, this indicates a common AI generator. Underground forgery services like OnlyFake successors use a limited number of document templates per jurisdiction, creating detectable clustering when multiple synthetic identities are onboarded through the same forgery pipeline. Template similarity analysis across the document corpus reveals these clusters even when individual documents pass automated verification checks.\n"
   },
   {
+    "id": "DL-0162",
+    "type": "detection_rule",
+    "title": "Check Washing — Altered Check Mobile Deposit with Duplicate or MICR Inconsistency",
+    "text": "Detects mobile deposits of potentially washed or altered checks by identifying two key indicators: (1) the same check number deposited at multiple financial institutions within a short window, indicating duplicate deposit fraud, and (2) check amounts inconsistent with the MICR (Magnetic Ink Character Recognition) line data, suggesting the payee and amount fields were chemically washed and rewritten while the MICR line was preserved. FinCEN data shows check fraud SARs surged 200%+ from 2021-2023, driven by USPS mail theft and the ease of mobile deposit. Washed checks deposited via mobile apps exploit the lag between deposit and check clearing under Reg CC funds availability requirements. The Recorded Future 2025 report documented a geographic shift in stolen check activity toward the Midwest and suburban/rural USPS routes.\n"
+  },
+  {
+    "id": "DL-0163",
+    "type": "detection_rule",
+    "title": "Disability Insurance Fraud — Fabricated Medical Documentation Provider Anomaly",
+    "text": "Detects patterns indicative of fabricated medical documentation supporting fraudulent disability claims by identifying two key signals: (1) a single medical provider billing across multiple claimants with identical or near-identical diagnosis codes (ICD-10), suggesting template-driven fabricated documentation rather than genuine clinical variation, and (2) claims supported by providers located outside the claimant's geographic area, indicating the claimant traveled specifically to a complicit provider or the documentation was fabricated remotely. DOJ prosecutions reveal organized disability fraud rings where complicit providers generate documentation for dozens of fictitious or exaggerated claims, with cumulative payouts in the millions. The long-tail nature of disability payments means a single fraudulent claim can generate $100,000+ in benefits before detection. Generative AI tools now enable fabrication of convincing medical documentation without provider collusion, representing an emerging escalation vector.\n"
+  },
+  {
+    "id": "DL-0164",
+    "type": "detection_rule",
+    "title": "Insider-Enabled Account Fraud — Employee Access Anomaly with Subsequent Account Changes",
+    "text": "Detects financial institution employees accessing customer accounts outside their normal behavioral pattern, combined with subsequent account modifications — a hallmark of insider- enabled fraud. The rule identifies four converging anomaly signals: (1) account access occurring outside normal business hours for the employee's role, (2) access volume significantly exceeding the employee's baseline, (3) access to accounts not assigned to the employee's portfolio or branch, and (4) account changes (address, beneficiary, contact info, transaction limits) following the anomalous access. The ACFE estimates insider fraud accounts for 5% of organizational revenue globally, with an average detection time of 18 months. Financial institution insiders are particularly dangerous because they understand internal controls and operate below detection thresholds. This rule correlates UEBA access data with account modification logs to surface the positioning phase (CFPF P3) before funds are extracted.\n"
+  },
+  {
+    "id": "DL-0165",
+    "type": "detection_rule",
+    "title": "Business Identity Takeover — Rapid Signer, Address, and Banking Detail Changes on Established Account",
+    "text": "Detects potential business identity takeover by identifying a cluster of critical account changes occurring within a short window on established commercial accounts. The rule flags accounts where authorized signer changes, business address updates, and banking detail modifications (routing/account number, wire instructions, or beneficiary changes) all occur within 14 days — a pattern strongly indicative of corporate hijacking. Threat actors impersonate legitimate businesses by filing fraudulent amendments with the Secretary of State to change registered agents or officers, then use the hijacked identity to modify banking relationships and extract funds. Established accounts (open 12+ months) are specifically targeted because they have built credit history and banking relationships that actors exploit. This pattern was heavily observed during pandemic-era PPP/EIDL fraud and continues to plague commercial lenders. Average commercial loan fraud via business identity theft ranges from $100K to $1M+.\n"
+  },
+  {
+    "id": "DL-0166",
+    "type": "detection_rule",
+    "title": "GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary",
+    "text": "Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $6.57 billion in investment fraud losses in 2024 — the single largest fraud category. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.\n"
+  },
+  {
+    "id": "DL-0167",
+    "type": "detection_rule",
+    "title": "Elder Financial Exploitation — New Payee Addition with Escalating Payment Amounts",
+    "text": "Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $4.885B in elder fraud losses in 2024 (43% YoY increase), with the true figure estimated at $28.3B when accounting for underreporting. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.\n"
+  },
+  {
+    "id": "DL-0168",
+    "type": "detection_rule",
+    "title": "Web3 Wallet Drainer — Malicious Token Approval to Drainer Contract",
+    "text": "Detects wallet drainer approval phishing by identifying three high-confidence on-chain indicators: (1) token approval (approve() or increaseAllowance()) granting unlimited allowance to a contract address on known drainer threat feeds, (2) unlimited ERC-20 approvals to contracts deployed within the last 48 hours with no verified source code, or (3) rapid multi-token approvals (3+ distinct token contracts) from a single wallet to the same spender address within a 10-minute window — characteristic of automated DaaS kit multi-token harvesting. ScamSniffer reported $494M stolen via wallet drainers in 2024, with Inferno Drainer commanding 40-45% DaaS market share. The Permit/Permit2 gasless signature variant bypasses traditional on-chain approval monitoring; this rule covers the on-chain approve() path and Permit2 batch transfer events. Stolen assets are typically consolidated and bridged cross-chain within hours.\n"
+  },
+  {
+    "id": "DL-0169",
+    "type": "detection_rule",
+    "title": "Ghost Student Financial Aid Fraud — Multi-Signal Botnet Enrollment Detection",
+    "text": "Detects ghost student financial aid fraud by correlating three botnet-driven enrollment indicators: (1) multiple FAFSA applications originating from the same device fingerprint or IP address within an enrollment cycle, (2) shared bank accounts across distinct financial aid applicants (multiple student IDs disbursing to the same routing/account number), or (3) financial aid disbursements from multiple student IDs flowing to the same beneficiary account or being withdrawn at the same ATM cluster. California community colleges flagged 31-34% of applications as potentially fraudulent, and Equifax reported preventing $180M in ghost student fraud in a single year. Ghost student botnets exploit open-enrollment admissions to submit hundreds of synthetic identity applications per cycle, file FAFSA for maximum Pell Grant eligibility ($7,395/year), and extract disbursements before census date attendance verification can trigger aid return requirements.\n"
+  },
+  {
+    "id": "DL-0170",
+    "type": "detection_rule",
+    "title": "Calendar Invite Injection Phishing — Mass External Calendar Event Creation from New Domains",
+    "text": "Detects calendar injection phishing by identifying mass calendar invite creation from external sources targeting internal users, where the event body contains URLs and the organizer domain is recently registered (under 30 days) or on a high-abuse TLD. Attackers send emails containing .ics calendar attachments or Google Calendar invite links that auto-populate on victim calendars, bypassing email gateway filtering that focuses on message body and attachment analysis. An observed March 2026 campaign delivered 6,000+ emails across 10 sender domains (9 RDGA-generated on .cyou/.sbs/.click TLDs) with antivirus renewal and meeting invite lures. Calendar events persist after email deletion and re-surface via reminder notifications, creating a delayed-action social engineering vector. Recently created organizer accounts (under 7 days) sending calendar invites to 5+ internal recipients are additionally flagged as high-confidence indicators.\n"
+  },
+  {
+    "id": "DL-0171",
+    "type": "detection_rule",
+    "title": "QR Code Payment Fraud (Quishing) — Malicious QR Destination to Credential Harvesting Infrastructure",
+    "text": "Detects quishing attacks by identifying emails or messages containing QR code images where the encoded URL resolves to a recently registered domain (under 30 days), a known URL shortener redirecting to a credential harvesting page, or a domain impersonating postal services or banking institutions. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents a European modus operandi where fraudsters send fake QR codes claiming payment is available at a post office, routing victims through a fake postal site to a cloned bank login page. In a documented case, USD 110,000 was stolen through this method. The attack exploits a fundamental QR code UX gap: unlike hyperlinks, QR codes do not display a destination URL before the victim commits to following them. The subsequent 2FA device enrollment step converts credential capture into persistent account takeover, making real-time detection at the email/content analysis layer critical before the victim scans.\n"
+  },
+  {
+    "id": "DL-0172",
+    "type": "detection_rule",
+    "title": "Sextortion-Investment Hybrid Fraud — Small Payment Escalation to Crypto Addresses with Communication Pattern Shift",
+    "text": "Detects the sextortion-investment hybrid fraud pattern where a victim makes initial small payments followed by escalating amounts to cryptocurrency addresses, with the communication pattern showing a transition from social/romantic interaction to financial urgency. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents this as a globally escalating pattern where scam centre operators systematically pivot from romance/investment scripts to sextortion as a scripted operational fallback. The hallmark behavioral signature is a first-ever crypto transaction within 30 days of a new social media contact, followed by rapid escalation in both payment frequency and amount, often accompanied by messaging patterns shifting from casual/romantic to urgent/threatening language. The hybrid structure maximizes total extraction while suppressing victim reporting through shame and blackmail leverage.\n"
+  },
+  {
+    "id": "DL-0173",
+    "type": "detection_rule",
+    "title": "Vehicle Export Financing Fraud — Auto Loan Followed by Rapid Title Transfer or Export with Active Lien",
+    "text": "Detects the vehicle export financing fraud pattern where an auto loan application is approved and the financed vehicle undergoes rapid title transfer or appears in export documentation while the loan remains active and the lien is outstanding. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents this as a growing transnational fraud scheme first detected in North America in early 2024, where criminal networks use identity theft and straw buyers to obtain auto loans for high-value vehicles, then export them overseas before lenders detect fraud. The critical detection window is the period between vehicle delivery and export — often as short as 7-21 days. Key indicators include high-value vehicles (>$30,000) with high LTV ratios, fewer than 3 loan payments made, title transfer events within 60 days of origination, and GPS telematics showing vehicle departure from the borrower's stated area toward port cities or border crossings. The structural delay between loan default and fraud detection is the primary vulnerability exploited by these networks.\n"
+  },
+  {
+    "id": "DL-0174",
+    "type": "detection_rule",
+    "title": "Crypto Fraud-Terrorism/Narco Financing Nexus — Sanctions-Exposed Wallets and Peel Chain Patterns Through Mixing Services",
+    "text": "Detects the crypto-terror/narco financing nexus pattern where transactions flow to wallets with known OFAC/sanctions exposure, or exhibit peel chain patterns through cryptocurrency mixing services followed by consolidation to designated entity-linked addresses. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two confirmed manifestations: (1) a USD 150 million cryptocurrency fraud scheme linked to Tren de Aragua laundering drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula; and (2) Operation Catalyst, which uncovered a USD 562 million crypto Ponzi scheme affecting 100,000+ victims across 17 countries with wallet-level links to terrorism financing in Central Africa. The detection logic targets three signatures: direct transactions to OFAC SDN-listed wallet addresses within 2 hops, peel chain patterns where funds are split into decreasingly small amounts through mixing services before reconsolidation, and co-mingling indicators where platform wallets receive both retail investor deposits and large round-number inflows from high-risk wallet clusters. This rule operates at critical severity given the terrorism and narcotics financing implications and associated OFAC blocking obligations.\n"
+  },
+  {
+    "id": "DL-0175",
+    "type": "detection_rule",
+    "title": "Organized Insurance Claims Fraud — Shared Professional Enablers and Claim Timing Clustering Around Policy Inception",
+    "text": "Detects organized insurance claims fraud patterns where the same claimant or provider appears across multiple claims with shared professional enablers (medical provider, legal representative, repair shop), or where claim timing is clustered around policy inception. INTERPOL's 2026 Global Financial Fraud Threat Assessment identifies insurance fraud — notably car and medical insurance claims — as escalating globally, with Europe most impacted: the UK recorded a 25% spike in motor insurance fraud in early 2025, France detected nearly USD 1 billion in fraud in 2024, and German insurers flagged 10% of claims as suspicious with annual losses exceeding USD 7 billion. The detection logic targets two primary signatures: (1) network analysis identifying claimants, providers, legal representatives, or repair shops appearing across multiple claims — indicating an organized fraud ring with division of labor; and (2) temporal analysis identifying claims filed within 90 days of policy inception with high severity, which indicates opportunistic application fraud followed by immediate fraudulent claim filing. The combination of shared enablers and inception-proximate timing is a strong indicator of organized ring activity.\n"
+  },
+  {
+    "id": "DL-0176",
+    "type": "detection_rule",
+    "title": "Organized Counterfeit Goods and Non-Delivery Fraud Network — High Dispute Merchant Accounts with Drop Location Clustering and Below-Market Pricing",
+    "text": "Detects organized counterfeit goods and non-delivery fraud network activity by identifying merchant accounts exhibiting multiple fraud indicators simultaneously: high chargeback/dispute rates, shipping addresses clustered at known drop locations, product listings priced significantly below market value, and seller account age under 90 days with disproportionately high transaction volume. The UNODC Organized Fraud Issue Paper (2024) documents this as the most prevalent fraud category by volume, with organized criminal groups operating multi-site networks backed by dedicated money laundering infrastructure, recruited money mules, and counterfeit supply chains. Case studies from Romania, Germany, and the US show OCGs adopting formal business structures — suppliers, distribution centers, online retailers — to deceive payment providers and scale operations. The detection logic combines four signals: (1) dispute rate exceeding 2% of transactions indicating non-delivery or counterfeit complaints; (2) shipping address concentration at drop locations or mail receiving services; (3) product pricing 30%+ below market benchmarks; and (4) new seller accounts (<90 days) with anomalously high listing and transaction volume. Any two of these four indicators in combination warrant investigation.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",

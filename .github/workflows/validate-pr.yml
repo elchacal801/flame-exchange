@@ -6,6 +6,8 @@ on:
       - 'ThreatPaths/**'
       - 'Baselines/**'
       - 'DetectionLogic/**'
+      - 'scripts/**'
+      - 'requirements.txt'
 
 jobs:
   validate:
@@ -21,6 +23,15 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Security scan (Bandit)
+        run: pip install bandit && bandit -r scripts/ -ll -q
+
+      - name: Dependency vulnerability check (pip-audit)
+        run: pip install pip-audit && pip-audit --strict --desc 2>&1 || true
+
+      - name: Code formatting check (Ruff)
+        run: pip install ruff && ruff check scripts/ --select E9,F63,F7,F82 --no-fix
 
       # SECURITY FIX: Git SHAs moved to env: block to prevent expression injection.
       # While SHAs are hex-constrained, this follows defense-in-depth best practice.

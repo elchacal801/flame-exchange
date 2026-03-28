@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-28T22:33:33.507874+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "7490e048-2342-4abf-8334-3fef0baaf01b",
+    "dl_id": "DL-0167",
+    "title": "Elder Financial Exploitation — New Payee Addition with Escalating Payment Amounts",
+    "status": "experimental",
+    "description": "Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $4.885B in elder fraud losses in 2024 (43% YoY increase), with the true figure estimated at $28.3B when accounting for underreporting. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "account_holder_age|gte": 65
+      },
+      "filter_new_payee": {
+        "payee_first_seen_days|lte": 30,
+        "payee_in_historical_pattern": false
+      },
+      "filter_escalation": {
+        "payment_amount_trend": "increasing",
+        "payment_count_to_payee|gte": 3
+      },
+      "timeframe": "30d",
+      "condition": "selection AND filter_new_payee AND filter_escalation\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "account_holder_age",
+        "payee_id",
+        "payee_name",
+        "payment_amount",
+        "payment_date",
+        "payment_method"
+      ],
+      "enrichment_required": [
+        {
+          "field": "payee_first_seen_days",
+          "source": "Days since payee first appeared in account holder's transaction history"
+        },
+        {
+          "field": "payee_in_historical_pattern",
+          "source": "Boolean flag indicating whether payee exists in 12-month historical payment network"
+        },
+        {
+          "field": "payment_amount_trend",
+          "source": "Trend analysis (increasing/stable/decreasing) of payment amounts to this payee over the rolling window"
+        }
+      ],
+      "derived_fields": [
+        "payment_count_to_payee",
+        "total_amount_to_payee",
+        "avg_payment_amount",
+        "max_payment_amount",
+        "escalation_ratio"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Elder Exploitation — New Payee with Escalating Payments\n// Detects account holders 65+ sending escalating amounts to new payees\naccount_holder_age>=65\npayee_first_seen_days<=30\npayee_in_historical_pattern=false\n| payment_count := count(payment_id)\n| groupBy(account_id, payee_id, function=[\n    collect([account_holder_age, payee_name, payment_method]),\n    count(payment_id, as=payment_count),\n    sum(payment_amount, as=total_amount),\n    min(payment_amount, as=first_payment),\n    max(payment_amount, as=largest_payment)\n  ])\n| payment_count >= 3\n| escalation_ratio := largest_payment / first_payment\n| escalation_ratio > 1.5\n| sort(total_amount, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Elder Exploitation — New Payee with Escalating Payments\")`\n`comment(\"Detects account holders 65+ with escalating payments to new payees\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  account_holder_age>=65\n  payee_first_seen_days<=30\n  payee_in_historical_pattern=\"false\"\n| sort 0 account_id, payee_id, payment_date\n| streamstats count AS payment_seq, sum(payment_amount) AS running_total,\n    first(payment_amount) AS first_payment, last(payment_amount) AS latest_payment\n    by account_id, payee_id\n| where payment_seq >= 3\n| eval escalation_ratio = latest_payment / first_payment\n| where escalation_ratio > 1.5\n| eval risk_score = case(\n    escalation_ratio > 5 AND running_total > 50000, \"critical\",\n    escalation_ratio > 3 OR running_total > 25000, \"high\",\n    1=1, \"medium\")\n| stats max(payment_seq) AS payment_count, max(running_total) AS total_amount,\n    min(first_payment) AS first_payment, max(latest_payment) AS largest_payment,\n    max(escalation_ratio) AS escalation_ratio, values(risk_score) AS risk_score\n    by account_id, account_holder_age, payee_id, payee_name\n| sort - total_amount",
+      "sql": "-- SQL for Elder Exploitation — New Payee with Escalating Payments\n-- Detects escalating payment pattern from elderly account holders to new payees\nWITH payee_payments AS (\n  SELECT\n    t.account_id,\n    c.account_holder_age,\n    t.payee_id,\n    t.payee_name,\n    t.payment_amount,\n    t.payment_date,\n    t.payment_method,\n    ROW_NUMBER() OVER (PARTITION BY t.account_id, t.payee_id ORDER BY t.payment_date) AS payment_seq,\n    COUNT(*) OVER (PARTITION BY t.account_id, t.payee_id) AS payment_count,\n    SUM(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id) AS total_amount,\n    FIRST_VALUE(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id ORDER BY t.payment_date) AS first_payment,\n    MAX(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id) AS largest_payment\n  FROM transactions t\n  JOIN customer_demographics c ON t.account_id = c.account_id\n  LEFT JOIN historical_payee_network h ON t.account_id = h.account_id AND t.payee_id = h.payee_id\n  WHERE c.account_holder_age >= 65\n    AND t.payment_date >= DATEADD(DAY, -30, CURRENT_DATE)\n    AND h.payee_id IS NULL  -- payee not in historical pattern\n)\nSELECT\n  account_id,\n  account_holder_age,\n  payee_id,\n  payee_name,\n  payment_count,\n  total_amount,\n  first_payment,\n  largest_payment,\n  ROUND(largest_payment / NULLIF(first_payment, 0), 2) AS escalation_ratio\nFROM payee_payments\nWHERE payment_seq = payment_count  -- latest row per group\n  AND payment_count >= 3\n  AND largest_payment > first_payment * 1.5\nORDER BY total_amount DESC"
+    },
+    "references": [
+      "FBI IC3, 2024 Elder Fraud Report — $4.885B in losses from 101,068 complaints (60+)",
+      "FinCEN Advisory FIN-2022-A002 — Elder Financial Exploitation red flag indicators",
+      "CFPB, Suspicious Activity Reports on Elder Financial Exploitation (2024)",
+      "DOJ Elder Justice Initiative — federal prosecution data"
+    ],
+    "threat_path_ids": [
+      "TP-0027"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "elder-exploitation",
+      "romance-scam",
+      "social-engineering"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.authorized-push-payment",
+      "flame.elder-exploitation"
+    ],
+    "falsepositives": [
+      "Legitimate new service providers (home repair, medical) with naturally increasing invoice amounts",
+      "Recurring charitable donations with annual increases",
+      "Family members newly added as payees receiving regular support payments",
+      "Home healthcare or assisted living payments that increase with care level changes"
+    ]
+  }
+}

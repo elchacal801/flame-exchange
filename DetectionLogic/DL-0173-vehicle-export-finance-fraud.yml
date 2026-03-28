@@ -1,0 +1,172 @@
+title: Vehicle Export Financing Fraud — Auto Loan Followed by Rapid Title Transfer or Export with Active Lien
+id: 316d3045-0ee9-4dd0-ab13-dab4f8080db3
+status: experimental
+description: >
+  Detects the vehicle export financing fraud pattern where an auto loan application is approved
+  and the financed vehicle undergoes rapid title transfer or appears in export documentation
+  while the loan remains active and the lien is outstanding. INTERPOL's 2026 Global Financial
+  Fraud Threat Assessment documents this as a growing transnational fraud scheme first detected
+  in North America in early 2024, where criminal networks use identity theft and straw buyers
+  to obtain auto loans for high-value vehicles, then export them overseas before lenders detect
+  fraud. The critical detection window is the period between vehicle delivery and export — often
+  as short as 7-21 days. Key indicators include high-value vehicles (>$30,000) with high LTV
+  ratios, fewer than 3 loan payments made, title transfer events within 60 days of origination,
+  and GPS telematics showing vehicle departure from the borrower's stated area toward port cities
+  or border crossings. The structural delay between loan default and fraud detection is the
+  primary vulnerability exploited by these networks.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026"
+  - "INTERPOL GFFTA 2026 — Americas: INTERPOL Uncovers Fraudulent Vehicle Export Scheme"
+  - "INTERPOL Stolen Vehicle Database — cross-border tracing limitations"
+threat_paths:
+  - TP-0053
+cfpf_phase: P4
+fraud_types:
+  - vehicle-export-fraud
+  - loan-fraud
+  - identity-theft
+  - application-fraud
+logsource:
+  product: banking
+  service: auto_lending
+detection:
+  selection:
+    loan_type: auto
+    vehicle_value|gte: 30000
+  filter_title_event:
+    title_transfer_days_since_origination|lte: 60
+  filter_loan_status:
+    loan_status:
+      - active
+      - delinquent
+      - default
+    payments_made|lte: 3
+  filter_vehicle_category:
+    vehicle_category:
+      - pickup_truck
+      - suv
+      - luxury
+  timeframe: 60d
+  condition: >
+    selection AND filter_title_event AND filter_loan_status
+    AND filter_vehicle_category
+data_sources:
+  native_fields:
+    - loan_id
+    - application_id
+    - loan_type
+    - vehicle_vin
+    - vehicle_value
+    - vehicle_category
+    - loan_amount
+    - ltv_ratio
+    - origination_date
+    - dealership_id
+    - dealership_name
+    - borrower_id
+    - borrower_zip
+    - loan_status
+    - payments_made
+  enrichment_required:
+    - field: title_transfer_days_since_origination
+      source: DMV title transfer records cross-referenced with loan origination date
+    - field: export_manifest_match
+      source: CBP pre-departure export manifest data for recently financed VINs
+    - field: gps_last_location
+      source: Vehicle GPS telematics last known position (where lender telematics installed)
+    - field: gps_port_proximity
+      source: Boolean flag if GPS last ping is within 50 miles of port of departure or international border crossing
+  derived_fields:
+    - days_to_title_transfer
+    - days_to_first_default
+    - dealership_cluster_score
+queries:
+  cql: |-
+    // CrowdStrike CQL for Vehicle Export Financing Fraud
+    // Detects high-value auto loans with rapid title transfer or export indicators
+    loan_type="auto"
+    vehicle_value>=30000
+    payments_made<=3
+    title_transfer_days_since_origination<=60
+    (vehicle_category="pickup_truck" OR vehicle_category="suv" OR vehicle_category="luxury")
+    | days_to_title_transfer := title_transfer_days_since_origination
+    | groupBy(loan_id, function=[
+        collect([vehicle_vin, vehicle_value, loan_amount, ltv_ratio,
+                 origination_date, dealership_name, borrower_id, borrower_zip,
+                 payments_made, loan_status, days_to_title_transfer,
+                 gps_last_location, export_manifest_match])
+      ])
+    | sort(vehicle_value, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for Vehicle Export Financing Fraud")`
+    `comment("Detects auto loans on high-value vehicles with rapid title transfer and few payments")`
+    index=flame_banking sourcetype=flame:auto_lending
+      loan_type="auto"
+      vehicle_value>=30000
+      payments_made<=3
+      title_transfer_days_since_origination<=60
+      (vehicle_category="pickup_truck" OR vehicle_category="suv" OR vehicle_category="luxury")
+    | eval risk_score = case(
+        title_transfer_days_since_origination < 14 AND export_manifest_match="true", "critical",
+        title_transfer_days_since_origination < 30 AND payments_made <= 1, "critical",
+        title_transfer_days_since_origination < 45 AND ltv_ratio >= 0.95, "high",
+        1=1, "medium")
+    | lookup dealership_fraud_history dealership_id OUTPUT prior_fraud_count, dealership_risk_tier
+    | table loan_id, vehicle_vin, vehicle_value, vehicle_category, loan_amount, ltv_ratio,
+            origination_date, dealership_name, dealership_risk_tier, borrower_id, borrower_zip,
+            payments_made, loan_status, title_transfer_days_since_origination,
+            gps_last_location, gps_port_proximity, export_manifest_match, risk_score
+    | sort - risk_score, - vehicle_value
+  sql: |-
+    -- SQL for Vehicle Export Financing Fraud
+    -- Detects auto loans with rapid title transfer or export activity while lien is active
+    SELECT
+      la.loan_id,
+      la.vehicle_vin,
+      la.vehicle_value,
+      la.vehicle_category,
+      la.loan_amount,
+      la.ltv_ratio,
+      la.origination_date,
+      la.dealership_id,
+      la.dealership_name,
+      la.borrower_id,
+      la.borrower_zip,
+      lp.payments_made,
+      lp.loan_status,
+      tt.title_transfer_date,
+      DATEDIFF('day', la.origination_date, tt.title_transfer_date) AS days_to_title_transfer,
+      gps.last_known_location,
+      gps.port_proximity_flag,
+      em.export_manifest_date
+    FROM loan_applications la
+    JOIN loan_payment_history lp ON la.loan_id = lp.loan_id
+    LEFT JOIN dmv_title_transfers tt ON la.vehicle_vin = tt.vehicle_vin
+    LEFT JOIN vehicle_gps_telematics gps ON la.vehicle_vin = gps.vehicle_vin
+    LEFT JOIN cbp_export_manifests em ON la.vehicle_vin = em.vehicle_vin
+    WHERE la.loan_type = 'auto'
+      AND la.vehicle_value >= 30000
+      AND la.vehicle_category IN ('pickup_truck', 'suv', 'luxury')
+      AND lp.payments_made <= 3
+      AND lp.loan_status IN ('active', 'delinquent', 'default')
+      AND (
+        (tt.title_transfer_date IS NOT NULL
+         AND DATEDIFF('day', la.origination_date, tt.title_transfer_date) <= 60)
+        OR em.export_manifest_date IS NOT NULL
+        OR gps.port_proximity_flag = TRUE
+      )
+    ORDER BY la.vehicle_value DESC
+falsepositives:
+  - Legitimate vehicle sale by borrower who pays off loan balance at title transfer
+  - Fleet vehicle purchase by business with rapid deployment to multiple locations
+  - Military member transferring vehicle to overseas duty station with proper lender notification
+  - Borrower legitimately relocating near a port city or border area shortly after purchase
+level: high
+tags:
+  - attack.t1657
+  - cfpf.phase4.execution
+  - flame.vehicle-export-fraud
+  - flame.auto-lending-fraud
+  - flame.straw-buyer

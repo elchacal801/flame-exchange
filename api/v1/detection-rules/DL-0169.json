@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-28T22:33:33.524997+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "4a5fc5e4-8f08-405b-8bb4-2426a708d2e6",
+    "dl_id": "DL-0169",
+    "title": "Ghost Student Financial Aid Fraud — Multi-Signal Botnet Enrollment Detection",
+    "status": "experimental",
+    "description": "Detects ghost student financial aid fraud by correlating three botnet-driven enrollment indicators: (1) multiple FAFSA applications originating from the same device fingerprint or IP address within an enrollment cycle, (2) shared bank accounts across distinct financial aid applicants (multiple student IDs disbursing to the same routing/account number), or (3) financial aid disbursements from multiple student IDs flowing to the same beneficiary account or being withdrawn at the same ATM cluster. California community colleges flagged 31-34% of applications as potentially fraudulent, and Equifax reported preventing $180M in ghost student fraud in a single year. Ghost student botnets exploit open-enrollment admissions to submit hundreds of synthetic identity applications per cycle, file FAFSA for maximum Pell Grant eligibility ($7,395/year), and extract disbursements before census date attendance verification can trigger aid return requirements.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_shared_device": {
+        "application_source": "fafsa",
+        "applications_per_device|gte": 3,
+        "timeframe": "90d"
+      },
+      "selection_shared_bank_account": {
+        "disbursement_type": "financial_aid",
+        "distinct_student_ids_per_account|gte": 2
+      },
+      "selection_shared_beneficiary": {
+        "disbursement_type": "financial_aid",
+        "distinct_student_ids_per_beneficiary|gte": 2,
+        "timeframe": "30d"
+      },
+      "condition": "selection_shared_device OR selection_shared_bank_account OR selection_shared_beneficiary\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "student_id",
+        "application_id",
+        "device_fingerprint",
+        "source_ip",
+        "fafsa_submission_date",
+        "bank_routing_number",
+        "bank_account_number",
+        "disbursement_amount",
+        "disbursement_date",
+        "institution_id"
+      ],
+      "enrichment_required": [
+        {
+          "field": "applications_per_device",
+          "source": "Count of distinct FAFSA applications submitted from same device fingerprint within enrollment cycle"
+        },
+        {
+          "field": "distinct_student_ids_per_account",
+          "source": "Count of distinct student IDs with disbursements to the same bank routing + account number"
+        },
+        {
+          "field": "distinct_student_ids_per_beneficiary",
+          "source": "Count of distinct student IDs whose disbursements flow to the same downstream beneficiary"
+        },
+        {
+          "field": "lms_login_count",
+          "source": "Total LMS logins by this student ID in the current term"
+        }
+      ],
+      "derived_fields": [
+        "applications_per_ip_subnet",
+        "total_disbursed_to_shared_account",
+        "lms_engagement_flag",
+        "cross_institution_enrollment_flag"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Ghost Student Financial Aid Fraud\n// Detects shared device/IP FAFSA applications, shared bank accounts, shared beneficiaries\napplication_source=\"fafsa\"\n| groupBy(device_fingerprint, span=90d, function=[\n    count(distinct=student_id, as=distinct_students),\n    count(application_id, as=application_count),\n    collect([student_id, source_ip, fafsa_submission_date, institution_id])\n  ])\n| distinct_students >= 3\n| sort(distinct_students, order=desc)\n// Parallel query for shared bank accounts\ndisbursement_type=\"financial_aid\"\n| groupBy([bank_routing_number, bank_account_number], function=[\n    count(distinct=student_id, as=distinct_students),\n    sum(disbursement_amount, as=total_disbursed),\n    collect([student_id, disbursement_date, institution_id])\n  ])\n| distinct_students >= 2\n| sort(total_disbursed, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Ghost Student Financial Aid Fraud — Shared Device Detection\")`\n`comment(\"Detects multiple FAFSA applications from same device fingerprint\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  application_source=\"fafsa\"\n| stats dc(student_id) AS distinct_students, count AS application_count,\n    values(student_id) AS student_ids, values(source_ip) AS source_ips,\n    values(institution_id) AS institutions\n    by device_fingerprint\n| where distinct_students >= 3\n| eval risk_level = case(\n    distinct_students > 10, \"critical\",\n    distinct_students > 5, \"high\",\n    1=1, \"medium\")\n| sort - distinct_students\n\n`comment(\"Splunk SPL for Ghost Student Financial Aid Fraud — Shared Bank Account Detection\")`\n`comment(\"Detects multiple student IDs disbursing to the same bank account\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  disbursement_type=\"financial_aid\"\n| stats dc(student_id) AS distinct_students, sum(disbursement_amount) AS total_disbursed,\n    values(student_id) AS student_ids, values(disbursement_date) AS disbursement_dates,\n    values(institution_id) AS institutions\n    by bank_routing_number, bank_account_number\n| where distinct_students >= 2\n| eval risk_level = case(\n    distinct_students > 5, \"critical\",\n    distinct_students > 2, \"high\",\n    1=1, \"medium\")\n| sort - distinct_students",
+      "sql": "-- SQL for Ghost Student Financial Aid Fraud\n-- Detects shared device FAFSA applications, shared bank accounts, and shared beneficiaries\n\n-- Query 1: Multiple FAFSA applications from same device/IP\nSELECT\n  fa.device_fingerprint,\n  fa.source_ip,\n  COUNT(DISTINCT fa.student_id) AS distinct_students,\n  COUNT(*) AS application_count,\n  STRING_AGG(DISTINCT fa.student_id, ', ') AS student_ids,\n  STRING_AGG(DISTINCT fa.institution_id, ', ') AS institutions\nFROM fafsa_applications fa\nWHERE fa.fafsa_submission_date >= DATEADD(DAY, -90, CURRENT_DATE)\nGROUP BY fa.device_fingerprint, fa.source_ip\nHAVING COUNT(DISTINCT fa.student_id) >= 3\nORDER BY distinct_students DESC;\n\n-- Query 2: Shared bank account across student disbursements\nSELECT\n  d.bank_routing_number,\n  d.bank_account_number,\n  COUNT(DISTINCT d.student_id) AS distinct_students,\n  SUM(d.disbursement_amount) AS total_disbursed,\n  STRING_AGG(DISTINCT d.student_id, ', ') AS student_ids,\n  STRING_AGG(DISTINCT d.institution_id, ', ') AS institutions\nFROM financial_aid_disbursements d\nWHERE d.disbursement_date >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND d.disbursement_status = 'COMPLETED'\nGROUP BY d.bank_routing_number, d.bank_account_number\nHAVING COUNT(DISTINCT d.student_id) >= 2\nORDER BY distinct_students DESC;\n\n-- Query 3: Cross-reference with zero academic engagement\nSELECT\n  d.student_id,\n  d.disbursement_amount,\n  d.disbursement_date,\n  d.bank_routing_number,\n  d.bank_account_number,\n  COALESCE(l.total_logins, 0) AS lms_logins,\n  COALESCE(l.assignments_submitted, 0) AS assignments\nFROM financial_aid_disbursements d\nLEFT JOIN lms_activity l ON d.student_id = l.student_id AND l.term = d.term\nWHERE d.disbursement_status = 'COMPLETED'\n  AND COALESCE(l.total_logins, 0) = 0\n  AND COALESCE(l.assignments_submitted, 0) = 0\n  AND d.bank_account_number IN (\n    SELECT bank_account_number\n    FROM financial_aid_disbursements\n    GROUP BY bank_routing_number, bank_account_number\n    HAVING COUNT(DISTINCT student_id) >= 2\n  )\nORDER BY d.disbursement_amount DESC"
+    },
+    "references": [
+      "Equifax Education Fraud Prevention — $180M prevented in ghost student fraud",
+      "California Community Colleges Chancellor's Office — 31-34% fraudulent application rate",
+      "DOE Office of Inspector General — Semiannual Reports on financial aid fraud",
+      "GAO, Federal Student Aid Program Integrity Reports"
+    ],
+    "threat_path_ids": [
+      "TP-0033"
+    ],
+    "fraud_types": [
+      "benefit-fraud",
+      "ghost-student-fraud",
+      "synthetic-identity"
+    ],
+    "tags": [
+      "attack.t1589",
+      "cfpf.phase4.execution",
+      "flame.benefit-fraud",
+      "flame.ghost-student",
+      "flame.synthetic-identity"
+    ],
+    "falsepositives": [
+      "Married couples or family members legitimately sharing a bank account for financial aid from different students",
+      "Shared household devices used by multiple family members applying to the same institution",
+      "Institutional computer labs or library terminals used by multiple applicants"
+    ]
+  }
+}

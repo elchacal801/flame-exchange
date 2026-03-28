@@ -1,0 +1,11 @@
+{
+  "tp_id": "TP-0063",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Counterfeit/Non-Delivery Fraud Network Detection\")`\n`comment(\"Detects organized merchant fraud via disputes, drops, pricing, and account age\")`\nindex=flame_ecommerce sourcetype=flame:merchant_monitoring\n  (merchant_type=\"marketplace_seller\" OR merchant_type=\"ecommerce_merchant\" OR merchant_type=\"auction_seller\")\n| eval seller_age_days = round((now() - strptime(seller_account_creation_date, \"%Y-%m-%d\")) / 86400, 0)\n| eval high_dispute = if(dispute_rate_pct >= 2.0 AND dispute_count_30d >= 10, 1, 0)\n| eval drop_location = if(shipping_address_drop_flag=\"true\" AND shipping_address_cluster_count >= 5, 1, 0)\n| eval below_market = if(avg_price_vs_market_ratio <= 0.70, 1, 0)\n| eval new_high_vol = if(seller_age_days <= 90 AND transaction_count_30d >= 50, 1, 0)\n| eval indicator_count = high_dispute + drop_location + below_market + new_high_vol\n| where (high_dispute=1 AND below_market=1)\n     OR (high_dispute=1 AND new_high_vol=1)\n     OR (drop_location=1 AND new_high_vol=1)\n     OR (below_market=1 AND drop_location=1)\n| eval risk_score = case(\n    indicator_count >= 4, \"critical\",\n    indicator_count >= 3, \"high\",\n    indicator_count >= 2, \"medium\",\n    1=1, \"low\")\n| table merchant_id, merchant_name, seller_account_creation_date, seller_age_days,\n        transaction_count_30d, total_sales_30d, dispute_count_30d, dispute_rate_pct,\n        avg_price_vs_market_ratio, shipping_address_drop_flag,\n        shipping_address_cluster_count, indicator_count, risk_score\n| sort - indicator_count, - dispute_rate_pct",
+      "title": "DL-0176: Organized Counterfeit Goods and Non-Delivery Fraud Network — High Dispute Merchant Accounts with Drop Location Clustering and Below-Market Pricing (SPLUNK)",
+      "source_rule": "DL-0176"
+    }
+  ]
+}

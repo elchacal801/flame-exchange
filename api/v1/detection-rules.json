@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T22:12:06.008530+00:00",
-    "total": 161
+    "generated_at": "2026-03-28T22:33:32.634363+00:00",
+    "total": 176
   },
   "data": [
     {
@@ -11362,6 +11362,1657 @@
         "Legitimate documents from the same jurisdiction and issuance period sharing standard government templates",
         "Documents scanned by the same institutional scanner producing consistent compression artifacts",
         "Batch submissions from legitimate corporate onboarding processes"
+      ]
+    },
+    {
+      "id": "20b5c78c-7779-4c5a-8c13-7b9b49ec9294",
+      "dl_id": "DL-0162",
+      "title": "Check Washing — Altered Check Mobile Deposit with Duplicate or MICR Inconsistency",
+      "status": "experimental",
+      "description": "Detects mobile deposits of potentially washed or altered checks by identifying two key indicators: (1) the same check number deposited at multiple financial institutions within a short window, indicating duplicate deposit fraud, and (2) check amounts inconsistent with the MICR (Magnetic Ink Character Recognition) line data, suggesting the payee and amount fields were chemically washed and rewritten while the MICR line was preserved. FinCEN data shows check fraud SARs surged 200%+ from 2021-2023, driven by USPS mail theft and the ease of mobile deposit. Washed checks deposited via mobile apps exploit the lag between deposit and check clearing under Reg CC funds availability requirements. The Recorded Future 2025 report documented a geographic shift in stolen check activity toward the Midwest and suburban/rural USPS routes.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "deposit_channel": [
+            "mobile",
+            "remote_deposit_capture"
+          ]
+        },
+        "filter_duplicate_check": {
+          "check_number_deposit_count|gte": 2
+        },
+        "filter_micr_mismatch": {
+          "micr_amount_match": false
+        },
+        "filter_account_age": {
+          "account_age_days|lt": 30
+        },
+        "timeframe": "7d",
+        "condition": "selection AND (filter_duplicate_check OR filter_micr_mismatch) AND filter_account_age\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "check_processing"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "check_number",
+          "check_amount",
+          "micr_line_data",
+          "micr_encoded_amount",
+          "deposit_channel",
+          "deposit_date",
+          "device_fingerprint",
+          "depositing_institution_id",
+          "account_open_date"
+        ],
+        "enrichment_required": [
+          {
+            "field": "check_number_deposit_count",
+            "source": "Cross-institution duplicate check detection consortium or internal duplicate check database"
+          },
+          {
+            "field": "micr_amount_match",
+            "source": "Comparison of written/printed check amount against MICR-encoded amount"
+          },
+          {
+            "field": "account_age_days",
+            "source": "Derived from account_open_date vs deposit_date"
+          }
+        ],
+        "derived_fields": [
+          "amount_micr_delta",
+          "deposits_from_device_count",
+          "duplicate_institution_count"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Check Washing — Altered Check Mobile Deposit\n// Detects duplicate deposits across institutions or MICR amount mismatches\n(deposit_channel=\"mobile\" OR deposit_channel=\"remote_deposit_capture\")\naccount_age_days<30\n(check_number_deposit_count>=2 OR micr_amount_match=\"false\")\n| amount_micr_delta := check_amount - micr_encoded_amount\n| deposits_from_device := count(account_id, as=deposits_from_device_count, field=device_fingerprint)\n| groupBy(check_number, function=[\n    collect([account_id, check_amount, micr_encoded_amount, amount_micr_delta,\n             deposit_date, device_fingerprint, depositing_institution_id,\n             account_open_date, check_number_deposit_count])\n  ])\n| sort(check_number_deposit_count, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Check Washing — Altered Check Mobile Deposit\")`\n`comment(\"Detects duplicate check deposits or MICR line inconsistencies on mobile deposits to new accounts\")`\nindex=flame_banking sourcetype=flame:check_processing\n  (deposit_channel=\"mobile\" OR deposit_channel=\"remote_deposit_capture\")\n| eval account_age_days = round((now() - strptime(account_open_date, \"%Y-%m-%d\")) / 86400)\n| where account_age_days < 30\n| stats count AS deposit_count dc(depositing_institution_id) AS institution_count\n    values(check_amount) AS amounts values(depositing_institution_id) AS institutions\n    values(device_fingerprint) AS devices\n    BY check_number\n| eval amount_micr_delta = check_amount - micr_encoded_amount\n| eval risk_score = case(\n    institution_count > 1 AND abs(amount_micr_delta) > 0, \"critical\",\n    institution_count > 1, \"high\",\n    abs(amount_micr_delta) > 500, \"high\",\n    1=1, \"medium\")\n| where deposit_count > 1 OR abs(amount_micr_delta) > 0\n| table check_number, deposit_count, institution_count, amounts,\n        institutions, devices, amount_micr_delta, risk_score\n| sort - risk_score",
+        "sql": "-- SQL for Check Washing — Altered Check Mobile Deposit\n-- Detects duplicate deposits across institutions or MICR amount mismatches\nWITH deposit_analysis AS (\n  SELECT\n    d.check_number,\n    d.account_id,\n    d.check_amount,\n    d.micr_encoded_amount,\n    ABS(d.check_amount - d.micr_encoded_amount) AS amount_micr_delta,\n    d.deposit_date,\n    d.device_fingerprint,\n    d.depositing_institution_id,\n    a.account_open_date,\n    DATEDIFF(DAY, a.account_open_date, d.deposit_date) AS account_age_days,\n    COUNT(*) OVER (PARTITION BY d.check_number) AS check_deposit_count,\n    COUNT(DISTINCT d.depositing_institution_id) OVER (PARTITION BY d.check_number) AS institution_count\n  FROM mobile_deposits d\n  JOIN accounts a ON d.account_id = a.account_id\n  WHERE d.deposit_channel IN ('mobile', 'remote_deposit_capture')\n    AND d.deposit_date >= DATEADD(DAY, -7, CURRENT_DATE)\n)\nSELECT *\nFROM deposit_analysis\nWHERE account_age_days < 30\n  AND (check_deposit_count > 1 OR amount_micr_delta > 0)\nORDER BY check_deposit_count DESC, amount_micr_delta DESC"
+      },
+      "references": [
+        "FinCEN, Check Fraud SAR Trends (2023-2024)",
+        "FBI IC3, 2024 Internet Crime Report — $483M in credit card and check fraud losses",
+        "USPS OIG, Mail Theft and Check Fraud Reports",
+        "Recorded Future, Annual Payment Fraud Intelligence Report 2025 — deurbanization trend"
+      ],
+      "threat_path_ids": [
+        "TP-0009"
+      ],
+      "fraud_types": [
+        "check-fraud",
+        "check-washing",
+        "duplicate-deposit"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.check-fraud",
+        "flame.check-washing",
+        "flame.duplicate-deposit"
+      ],
+      "falsepositives": [
+        "Legitimate re-deposit of returned checks (e.g., NSF item re-presented by payee)",
+        "Minor MICR encoding errors from check printing vendors on legitimate checks",
+        "Business customers with high-volume remote deposit capture processing"
+      ]
+    },
+    {
+      "id": "0e18b1c0-c9eb-413f-be41-d7a262dfa9b9",
+      "dl_id": "DL-0163",
+      "title": "Disability Insurance Fraud — Fabricated Medical Documentation Provider Anomaly",
+      "status": "experimental",
+      "description": "Detects patterns indicative of fabricated medical documentation supporting fraudulent disability claims by identifying two key signals: (1) a single medical provider billing across multiple claimants with identical or near-identical diagnosis codes (ICD-10), suggesting template-driven fabricated documentation rather than genuine clinical variation, and (2) claims supported by providers located outside the claimant's geographic area, indicating the claimant traveled specifically to a complicit provider or the documentation was fabricated remotely. DOJ prosecutions reveal organized disability fraud rings where complicit providers generate documentation for dozens of fictitious or exaggerated claims, with cumulative payouts in the millions. The long-tail nature of disability payments means a single fraudulent claim can generate $100,000+ in benefits before detection. Generative AI tools now enable fabrication of convincing medical documentation without provider collusion, representing an emerging escalation vector.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "claim_type": [
+            "short_term_disability",
+            "long_term_disability"
+          ],
+          "claim_status": [
+            "open",
+            "approved",
+            "in_payment"
+          ]
+        },
+        "filter_provider_diagnosis_concentration": {
+          "provider_identical_diagnosis_claimant_count|gte": 3
+        },
+        "filter_provider_geographic_mismatch": {
+          "provider_claimant_distance_miles|gte": 150
+        },
+        "timeframe": "365d",
+        "condition": "selection AND (filter_provider_diagnosis_concentration OR filter_provider_geographic_mismatch)\n"
+      },
+      "logsource": {
+        "product": "insurance",
+        "service": "claims_management"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "claim_id",
+          "claimant_id",
+          "provider_id",
+          "provider_npi",
+          "provider_address_zip",
+          "claimant_address_zip",
+          "icd10_primary_diagnosis",
+          "claim_filing_date",
+          "claim_amount",
+          "claim_status",
+          "policy_effective_date"
+        ],
+        "enrichment_required": [
+          {
+            "field": "provider_identical_diagnosis_claimant_count",
+            "source": "Count of distinct claimants per provider with identical primary ICD-10 code within rolling 12 months"
+          },
+          {
+            "field": "provider_claimant_distance_miles",
+            "source": "Geographic distance between provider address and claimant residence (ZIP centroid calculation)"
+          },
+          {
+            "field": "provider_claim_rate_percentile",
+            "source": "Provider disability claim support rate relative to specialty peer group"
+          }
+        ],
+        "derived_fields": [
+          "policy_to_claim_days",
+          "provider_claimant_ratio",
+          "diagnosis_concentration_score"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Disability Insurance Fraud — Fabricated Medical Documentation\n// Detects provider diagnosis concentration or geographic mismatch patterns\n(claim_type=\"short_term_disability\" OR claim_type=\"long_term_disability\")\n(claim_status=\"open\" OR claim_status=\"approved\" OR claim_status=\"in_payment\")\n(provider_identical_diagnosis_claimant_count>=3 OR provider_claimant_distance_miles>=150)\n| policy_to_claim_days := dateDiff(claim_filing_date, policy_effective_date)\n| groupBy(provider_id, function=[\n    collect([claim_id, claimant_id, icd10_primary_diagnosis, claim_amount,\n             provider_claimant_distance_miles, provider_identical_diagnosis_claimant_count,\n             policy_to_claim_days, claim_filing_date]),\n    count(claimant_id, distinct=true, as=unique_claimants)\n  ])\n| sort(unique_claimants, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Disability Insurance Fraud — Fabricated Medical Documentation\")`\n`comment(\"Detects providers with identical diagnoses across multiple claimants or geographic anomalies\")`\nindex=flame_insurance sourcetype=flame:claims_management\n  (claim_type=\"short_term_disability\" OR claim_type=\"long_term_disability\")\n  (claim_status=\"open\" OR claim_status=\"approved\" OR claim_status=\"in_payment\")\n| eval policy_to_claim_days = round((strptime(claim_filing_date, \"%Y-%m-%d\") - strptime(policy_effective_date, \"%Y-%m-%d\")) / 86400)\n| stats dc(claimant_id) AS unique_claimants\n    values(claimant_id) AS claimants\n    values(claim_amount) AS claim_amounts\n    avg(provider_claimant_distance_miles) AS avg_distance\n    BY provider_id, icd10_primary_diagnosis\n| where unique_claimants >= 3 OR avg_distance >= 150\n| eval risk_score = case(\n    unique_claimants >= 5 AND avg_distance >= 150, \"critical\",\n    unique_claimants >= 5, \"high\",\n    avg_distance >= 300, \"high\",\n    1=1, \"medium\")\n| table provider_id, icd10_primary_diagnosis, unique_claimants,\n        claimants, claim_amounts, avg_distance, risk_score\n| sort - unique_claimants",
+        "sql": "-- SQL for Disability Insurance Fraud — Fabricated Medical Documentation\n-- Detects provider diagnosis concentration or geographic mismatch patterns\nWITH provider_analysis AS (\n  SELECT\n    c.provider_id,\n    c.icd10_primary_diagnosis,\n    COUNT(DISTINCT c.claimant_id) AS unique_claimants,\n    COUNT(c.claim_id) AS total_claims,\n    SUM(c.claim_amount) AS total_claim_amount,\n    AVG(g.provider_claimant_distance_miles) AS avg_distance_miles,\n    AVG(DATEDIFF(DAY, p.effective_date, c.claim_filing_date)) AS avg_policy_to_claim_days\n  FROM disability_claims c\n  JOIN policies p ON c.policy_id = p.policy_id\n  JOIN provider_claimant_geography g ON c.provider_id = g.provider_id\n    AND c.claimant_id = g.claimant_id\n  WHERE c.claim_type IN ('short_term_disability', 'long_term_disability')\n    AND c.claim_status IN ('open', 'approved', 'in_payment')\n    AND c.claim_filing_date >= DATEADD(YEAR, -1, CURRENT_DATE)\n  GROUP BY c.provider_id, c.icd10_primary_diagnosis\n)\nSELECT *\nFROM provider_analysis\nWHERE unique_claimants >= 3\n   OR avg_distance_miles >= 150\nORDER BY unique_claimants DESC, avg_distance_miles DESC"
+      },
+      "references": [
+        "DOJ, Disability Fraud Prosecution Records — organized ring case studies",
+        "Coalition Against Insurance Fraud, Annual Reports",
+        "NICB, Insurance Fraud Reporting",
+        "ACFE, Report to the Nations — occupational fraud statistics"
+      ],
+      "threat_path_ids": [
+        "TP-0010"
+      ],
+      "fraud_types": [
+        "disability-fraud",
+        "fraudulent-claim",
+        "provider-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.disability-fraud",
+        "flame.fabricated-documentation",
+        "flame.provider-fraud"
+      ],
+      "falsepositives": [
+        "Specialist providers legitimately treating patients with the same condition (e.g., orthopedic surgeons with high back injury volume)",
+        "Rural claimants who must travel long distances to see specialists not available locally",
+        "Telehealth providers with geographically dispersed patient bases",
+        "Occupational health providers serving a single large employer with common workplace injuries"
+      ]
+    },
+    {
+      "id": "ce37224e-c6c3-4d00-8deb-7e0edcffd0f1",
+      "dl_id": "DL-0164",
+      "title": "Insider-Enabled Account Fraud — Employee Access Anomaly with Subsequent Account Changes",
+      "status": "experimental",
+      "description": "Detects financial institution employees accessing customer accounts outside their normal behavioral pattern, combined with subsequent account modifications — a hallmark of insider- enabled fraud. The rule identifies four converging anomaly signals: (1) account access occurring outside normal business hours for the employee's role, (2) access volume significantly exceeding the employee's baseline, (3) access to accounts not assigned to the employee's portfolio or branch, and (4) account changes (address, beneficiary, contact info, transaction limits) following the anomalous access. The ACFE estimates insider fraud accounts for 5% of organizational revenue globally, with an average detection time of 18 months. Financial institution insiders are particularly dangerous because they understand internal controls and operate below detection thresholds. This rule correlates UEBA access data with account modification logs to surface the positioning phase (CFPF P3) before funds are extracted.\n",
+      "cfpf_phase": "P3",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "event_type": [
+            "account_view",
+            "account_detail_access",
+            "account_modification"
+          ]
+        },
+        "filter_after_hours": {
+          "access_time_local|outside": "08:00-18:00"
+        },
+        "filter_volume_anomaly": {
+          "daily_account_access_count|gte_multiple_of_baseline": 3
+        },
+        "filter_portfolio_mismatch": {
+          "account_in_employee_portfolio": false
+        },
+        "filter_subsequent_modification": {
+          "account_modification_within_24h": true
+        },
+        "timeframe": "24h",
+        "condition": "selection AND filter_portfolio_mismatch AND (filter_after_hours OR filter_volume_anomaly) AND filter_subsequent_modification\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "employee_audit"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "employee_id",
+          "employee_role",
+          "employee_branch",
+          "account_id",
+          "event_type",
+          "access_timestamp",
+          "modification_type",
+          "modification_timestamp",
+          "source_ip",
+          "workstation_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "daily_account_access_count",
+            "source": "UEBA baseline — rolling 30-day average daily account access count per employee"
+          },
+          {
+            "field": "account_in_employee_portfolio",
+            "source": "CRM/core banking assignment — whether account is assigned to the accessing employee"
+          },
+          {
+            "field": "account_modification_within_24h",
+            "source": "Account modification audit log correlated within 24 hours of anomalous access"
+          }
+        ],
+        "derived_fields": [
+          "access_to_modification_minutes",
+          "baseline_deviation_multiple",
+          "after_hours_flag",
+          "unique_accounts_accessed"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Insider-Enabled Account Fraud — Employee Access Anomaly\n// Detects out-of-portfolio access with after-hours or volume anomaly followed by account changes\n(event_type=\"account_view\" OR event_type=\"account_detail_access\" OR event_type=\"account_modification\")\naccount_in_employee_portfolio=\"false\"\n(access_time_local<\"08:00\" OR access_time_local>\"18:00\" OR daily_account_access_count>=baseline*3)\naccount_modification_within_24h=\"true\"\n| access_to_modification_minutes := dateDiff(modification_timestamp, access_timestamp, unit=minutes)\n| baseline_deviation := daily_account_access_count / baseline_daily_access\n| groupBy(employee_id, function=[\n    collect([account_id, event_type, access_timestamp, modification_type,\n             modification_timestamp, access_to_modification_minutes,\n             employee_branch, source_ip, workstation_id]),\n    count(account_id, distinct=true, as=unique_accounts_accessed)\n  ])\n| sort(unique_accounts_accessed, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Insider-Enabled Account Fraud — Employee Access Anomaly\")`\n`comment(\"Detects out-of-portfolio account access with anomalous timing/volume followed by modifications\")`\nindex=flame_banking sourcetype=flame:employee_audit\n  (event_type=\"account_view\" OR event_type=\"account_detail_access\" OR event_type=\"account_modification\")\n  account_in_employee_portfolio=\"false\"\n| eval hour = strftime(_time, \"%H\")\n| eval after_hours = if(hour < 8 OR hour > 18, 1, 0)\n| stats dc(account_id) AS unique_accounts count AS total_events\n    sum(after_hours) AS after_hours_events\n    values(modification_type) AS modifications\n    values(account_id) AS accounts_accessed\n    BY employee_id, employee_role, employee_branch\n| where unique_accounts > 10 OR after_hours_events > 0\n| lookup employee_baseline employee_id OUTPUT baseline_daily_access\n| eval deviation_multiple = unique_accounts / baseline_daily_access\n| where deviation_multiple >= 3 OR after_hours_events > 0\n| eval risk_score = case(\n    deviation_multiple >= 5 AND after_hours_events > 3 AND isnotnull(modifications), \"critical\",\n    deviation_multiple >= 3 AND isnotnull(modifications), \"high\",\n    after_hours_events > 0 AND isnotnull(modifications), \"high\",\n    1=1, \"medium\")\n| table employee_id, employee_role, employee_branch, unique_accounts,\n        deviation_multiple, after_hours_events, modifications,\n        accounts_accessed, risk_score\n| sort - risk_score",
+        "sql": "-- SQL for Insider-Enabled Account Fraud — Employee Access Anomaly\n-- Detects out-of-portfolio access + anomalous patterns + subsequent account changes\nWITH access_events AS (\n  SELECT\n    ea.employee_id,\n    ea.employee_role,\n    ea.employee_branch,\n    ea.account_id,\n    ea.event_type,\n    ea.access_timestamp,\n    CASE WHEN DATEPART(HOUR, ea.access_timestamp) < 8\n          OR DATEPART(HOUR, ea.access_timestamp) > 18\n         THEN 1 ELSE 0 END AS after_hours_flag,\n    eb.baseline_daily_access\n  FROM employee_audit_log ea\n  JOIN employee_baselines eb ON ea.employee_id = eb.employee_id\n  LEFT JOIN employee_portfolio ep ON ea.employee_id = ep.employee_id\n    AND ea.account_id = ep.account_id\n  WHERE ea.access_timestamp >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\n    AND ep.account_id IS NULL  -- not in employee portfolio\n),\nemployee_summary AS (\n  SELECT\n    employee_id,\n    employee_role,\n    employee_branch,\n    COUNT(DISTINCT account_id) AS unique_accounts_accessed,\n    SUM(after_hours_flag) AS after_hours_events,\n    MAX(baseline_daily_access) AS baseline_daily_access,\n    CAST(COUNT(DISTINCT account_id) AS FLOAT) / NULLIF(MAX(baseline_daily_access), 0) AS deviation_multiple\n  FROM access_events\n  GROUP BY employee_id, employee_role, employee_branch\n),\nmodifications AS (\n  SELECT DISTINCT\n    am.employee_id,\n    am.account_id,\n    am.modification_type,\n    am.modification_timestamp\n  FROM account_modifications am\n  WHERE am.modification_timestamp >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\n)\nSELECT\n  es.*,\n  m.modification_type,\n  m.account_id AS modified_account\nFROM employee_summary es\nJOIN modifications m ON es.employee_id = m.employee_id\nWHERE es.deviation_multiple >= 3 OR es.after_hours_events > 0\nORDER BY es.deviation_multiple DESC"
+      },
+      "references": [
+        "ACFE, Report to the Nations (2024) — occupational fraud statistics, 18-month median detection time",
+        "CERT National Insider Threat Center, Common Sense Guide to Mitigating Insider Threats",
+        "FDIC, Enforcement Decisions — insider fraud cases",
+        "DOJ, Bank fraud prosecution records — insider collusion patterns"
+      ],
+      "threat_path_ids": [
+        "TP-0014"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "collusion",
+        "insider-threat"
+      ],
+      "tags": [
+        "attack.t1078",
+        "attack.t1530",
+        "attack.t1657",
+        "cfpf.phase3.positioning",
+        "flame.access-abuse",
+        "flame.collusion",
+        "flame.insider-threat"
+      ],
+      "falsepositives": [
+        "Managers or team leads covering for absent employees and accessing their portfolio accounts",
+        "System administrators performing authorized bulk account maintenance or data migration",
+        "Employees recently transferred to a new branch accessing accounts from their previous portfolio",
+        "Authorized after-hours processing during month-end, quarter-end, or regulatory reporting cycles"
+      ]
+    },
+    {
+      "id": "22652d9a-2957-4f4c-ba3c-c75b6c61a023",
+      "dl_id": "DL-0165",
+      "title": "Business Identity Takeover — Rapid Signer, Address, and Banking Detail Changes on Established Account",
+      "status": "experimental",
+      "description": "Detects potential business identity takeover by identifying a cluster of critical account changes occurring within a short window on established commercial accounts. The rule flags accounts where authorized signer changes, business address updates, and banking detail modifications (routing/account number, wire instructions, or beneficiary changes) all occur within 14 days — a pattern strongly indicative of corporate hijacking. Threat actors impersonate legitimate businesses by filing fraudulent amendments with the Secretary of State to change registered agents or officers, then use the hijacked identity to modify banking relationships and extract funds. Established accounts (open 12+ months) are specifically targeted because they have built credit history and banking relationships that actors exploit. This pattern was heavily observed during pandemic-era PPP/EIDL fraud and continues to plague commercial lenders. Average commercial loan fraud via business identity theft ranges from $100K to $1M+.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_type": [
+            "commercial",
+            "business_checking",
+            "business_savings",
+            "commercial_line_of_credit"
+          ]
+        },
+        "filter_account_age": {
+          "account_age_months|gte": 12
+        },
+        "filter_signer_change": {
+          "authorized_signer_change_within_window": true
+        },
+        "filter_address_change": {
+          "business_address_change_within_window": true
+        },
+        "filter_banking_detail_change": {
+          "banking_detail_change_within_window": true
+        },
+        "timeframe": "14d",
+        "condition": "selection AND filter_account_age AND filter_signer_change AND filter_address_change AND filter_banking_detail_change\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "commercial_account_management"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "business_name",
+          "tax_id",
+          "account_type",
+          "account_open_date",
+          "authorized_signer_names",
+          "business_address",
+          "routing_number",
+          "wire_instructions",
+          "modification_date",
+          "modification_type",
+          "modified_by_user",
+          "modification_channel"
+        ],
+        "enrichment_required": [
+          {
+            "field": "authorized_signer_change_within_window",
+            "source": "Account modification audit log — signer change event within 14-day window"
+          },
+          {
+            "field": "business_address_change_within_window",
+            "source": "Account modification audit log — address change event within 14-day window"
+          },
+          {
+            "field": "banking_detail_change_within_window",
+            "source": "Account modification audit log — routing/account/wire instruction change within 14-day window"
+          },
+          {
+            "field": "sos_recent_amendment_flag",
+            "source": "Secretary of State data — whether business had officer or agent amendment within 60 days"
+          }
+        ],
+        "derived_fields": [
+          "total_change_types_in_window",
+          "first_change_to_last_change_days",
+          "sos_amendment_to_bank_change_days"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Business Identity Takeover\n// Detects clustered signer + address + banking detail changes on established commercial accounts\n(account_type=\"commercial\" OR account_type=\"business_checking\" OR account_type=\"business_savings\" OR account_type=\"commercial_line_of_credit\")\naccount_age_months>=12\nauthorized_signer_change_within_window=\"true\"\nbusiness_address_change_within_window=\"true\"\nbanking_detail_change_within_window=\"true\"\n| first_change_to_last_change_days := dateDiff(last_modification_date, first_modification_date)\n| groupBy(account_id, function=[\n    collect([business_name, tax_id, account_type, account_open_date,\n             authorized_signer_names, business_address,\n             modification_date, modification_type, modified_by_user,\n             modification_channel, sos_recent_amendment_flag])\n  ])\n| sort(first_change_to_last_change_days, order=asc)",
+        "splunk": "`comment(\"Splunk SPL for Business Identity Takeover\")`\n`comment(\"Detects clustered signer, address, and banking detail changes on established commercial accounts\")`\nindex=flame_banking sourcetype=flame:commercial_account_management\n  (account_type=\"commercial\" OR account_type=\"business_checking\"\n   OR account_type=\"business_savings\" OR account_type=\"commercial_line_of_credit\")\n| eval account_age_months = round((now() - strptime(account_open_date, \"%Y-%m-%d\")) / 2592000)\n| where account_age_months >= 12\n| eval change_category = case(\n    modification_type IN (\"authorized_signer_add\", \"authorized_signer_remove\", \"authorized_signer_change\"), \"signer\",\n    modification_type IN (\"business_address_change\", \"mailing_address_change\", \"registered_address_change\"), \"address\",\n    modification_type IN (\"routing_number_change\", \"wire_instruction_change\", \"beneficiary_change\", \"account_link_change\"), \"banking_detail\",\n    1=1, \"other\")\n| where change_category IN (\"signer\", \"address\", \"banking_detail\")\n| stats dc(change_category) AS change_types\n    min(_time) AS first_change max(_time) AS last_change\n    values(modification_type) AS all_modifications\n    values(modified_by_user) AS modifying_users\n    values(modification_channel) AS channels\n    BY account_id, business_name, tax_id\n| eval window_days = round((last_change - first_change) / 86400)\n| where change_types >= 3 AND window_days <= 14\n| eval risk_score = case(\n    window_days <= 3 AND isnotnull(mvfind(channels, \"online|api\")), \"critical\",\n    window_days <= 7, \"high\",\n    1=1, \"high\")\n| table account_id, business_name, tax_id, change_types, window_days,\n        all_modifications, modifying_users, channels, risk_score\n| sort - risk_score window_days",
+        "sql": "-- SQL for Business Identity Takeover\n-- Detects clustered signer + address + banking detail changes on established accounts\nWITH account_changes AS (\n  SELECT\n    am.account_id,\n    a.business_name,\n    a.tax_id,\n    a.account_type,\n    a.account_open_date,\n    DATEDIFF(MONTH, a.account_open_date, CURRENT_DATE) AS account_age_months,\n    am.modification_type,\n    am.modification_date,\n    am.modified_by_user,\n    am.modification_channel,\n    CASE\n      WHEN am.modification_type IN ('authorized_signer_add', 'authorized_signer_remove', 'authorized_signer_change') THEN 'signer'\n      WHEN am.modification_type IN ('business_address_change', 'mailing_address_change', 'registered_address_change') THEN 'address'\n      WHEN am.modification_type IN ('routing_number_change', 'wire_instruction_change', 'beneficiary_change', 'account_link_change') THEN 'banking_detail'\n    END AS change_category\n  FROM account_modifications am\n  JOIN commercial_accounts a ON am.account_id = a.account_id\n  WHERE a.account_type IN ('commercial', 'business_checking', 'business_savings', 'commercial_line_of_credit')\n    AND DATEDIFF(MONTH, a.account_open_date, CURRENT_DATE) >= 12\n    AND am.modification_date >= DATEADD(DAY, -14, CURRENT_DATE)\n    AND am.modification_type IN (\n      'authorized_signer_add', 'authorized_signer_remove', 'authorized_signer_change',\n      'business_address_change', 'mailing_address_change', 'registered_address_change',\n      'routing_number_change', 'wire_instruction_change', 'beneficiary_change', 'account_link_change'\n    )\n),\naccount_summary AS (\n  SELECT\n    account_id,\n    business_name,\n    tax_id,\n    account_type,\n    account_age_months,\n    COUNT(DISTINCT change_category) AS distinct_change_types,\n    MIN(modification_date) AS first_change,\n    MAX(modification_date) AS last_change,\n    DATEDIFF(DAY, MIN(modification_date), MAX(modification_date)) AS window_days\n  FROM account_changes\n  WHERE change_category IS NOT NULL\n  GROUP BY account_id, business_name, tax_id, account_type, account_age_months\n)\nSELECT *\nFROM account_summary\nWHERE distinct_change_types >= 3\n  AND window_days <= 14\nORDER BY window_days ASC"
+      },
+      "references": [
+        "FinCEN, Alerts on Business Email Compromise and Shell Companies",
+        "SBA Office of Inspector General, Pandemic Fraud Reports — PPP/EIDL business identity theft patterns",
+        "IRS, Identity Theft Information for Businesses — EIN theft prevention",
+        "FinCEN, Beneficial Ownership Information (BOI) reporting requirements (2024)",
+        "NW3C, Business Identity Theft: The Next Frontier — state-level filing exploitation typologies"
+      ],
+      "threat_path_ids": [
+        "TP-0019"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "business-email-compromise",
+        "identity-theft"
+      ],
+      "tags": [
+        "attack.t1566",
+        "attack.t1589",
+        "cfpf.phase3.positioning",
+        "flame.account-takeover",
+        "flame.business-identity-theft",
+        "flame.corporate-hijacking"
+      ],
+      "falsepositives": [
+        "Legitimate business acquisitions or mergers resulting in rapid ownership and banking changes",
+        "Business relocations with concurrent signer updates due to organizational restructuring",
+        "Seasonal businesses reactivating dormant accounts with updated contact and banking information",
+        "Court-ordered changes following business litigation or estate proceedings"
+      ]
+    },
+    {
+      "id": "c5d5c46a-0d68-4cf9-8a06-91a9a6a9f293",
+      "dl_id": "DL-0166",
+      "title": "GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary",
+      "status": "experimental",
+      "description": "Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $6.57 billion in investment fraud losses in 2024 — the single largest fraud category. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "transaction_type": [
+            "wire_transfer",
+            "faster_payment",
+            "ach_credit",
+            "sepa_credit",
+            "crypto_purchase"
+          ]
+        },
+        "filter_new_beneficiary": {
+          "beneficiary_relationship_days|lt": 60
+        },
+        "filter_investment_reference": {
+          "payment_reference|contains": [
+            "invest",
+            "trading",
+            "platform",
+            "portfolio",
+            "return",
+            "crypto",
+            "bitcoin",
+            "forex",
+            "yield",
+            "fund",
+            "capital",
+            "broker"
+          ]
+        },
+        "filter_escalating_amount": {
+          "payment_amount_increase_pct_vs_first|gte": 200
+        },
+        "filter_velocity_acceleration": {
+          "inter_payment_interval_decreasing": true
+        },
+        "timeframe": "60d",
+        "condition": "selection AND filter_new_beneficiary AND filter_investment_reference AND filter_escalating_amount AND filter_velocity_acceleration\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "customer_id",
+          "account_id",
+          "transaction_id",
+          "transaction_type",
+          "transaction_amount",
+          "transaction_date",
+          "beneficiary_id",
+          "beneficiary_name",
+          "beneficiary_account",
+          "beneficiary_added_date",
+          "payment_reference",
+          "payment_channel"
+        ],
+        "enrichment_required": [
+          {
+            "field": "beneficiary_relationship_days",
+            "source": "Derived from beneficiary_added_date vs transaction_date"
+          },
+          {
+            "field": "payment_amount_increase_pct_vs_first",
+            "source": "Current payment amount as percentage increase over first payment to same beneficiary"
+          },
+          {
+            "field": "inter_payment_interval_decreasing",
+            "source": "Boolean — whether the gap between consecutive payments to the beneficiary is shrinking"
+          },
+          {
+            "field": "beneficiary_fraud_intelligence_flag",
+            "source": "Consortium fraud intelligence or regulatory warning list match on beneficiary account"
+          }
+        ],
+        "derived_fields": [
+          "total_payments_to_beneficiary",
+          "cumulative_amount_to_beneficiary",
+          "average_payment_amount",
+          "days_since_first_payment",
+          "payment_velocity_trend"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for GenAI-Enhanced APP Fraud — Investment Variant\n// Detects escalating payments to new beneficiary with investment references\n(transaction_type=\"wire_transfer\" OR transaction_type=\"faster_payment\" OR transaction_type=\"ach_credit\" OR transaction_type=\"sepa_credit\" OR transaction_type=\"crypto_purchase\")\nbeneficiary_relationship_days<60\npayment_reference=/invest|trading|platform|portfolio|return|crypto|bitcoin|forex|yield|fund|capital|broker/i\npayment_amount_increase_pct_vs_first>=200\ninter_payment_interval_decreasing=\"true\"\n| cumulative_amount := sum(transaction_amount)\n| payment_count := count(transaction_id)\n| groupBy([customer_id, beneficiary_id], function=[\n    collect([transaction_id, transaction_amount, transaction_date,\n             beneficiary_name, payment_reference, payment_channel,\n             beneficiary_relationship_days]),\n    sum(transaction_amount, as=cumulative_amount),\n    count(transaction_id, as=total_payments)\n  ])\n| sort(cumulative_amount, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for GenAI-Enhanced APP Fraud — Investment Variant\")`\n`comment(\"Detects escalating authorized push payments to new beneficiaries with investment references\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (transaction_type=\"wire_transfer\" OR transaction_type=\"faster_payment\"\n   OR transaction_type=\"ach_credit\" OR transaction_type=\"sepa_credit\"\n   OR transaction_type=\"crypto_purchase\")\n| eval beneficiary_age_days = round((now() - strptime(beneficiary_added_date, \"%Y-%m-%d\")) / 86400)\n| where beneficiary_age_days < 60\n| regex payment_reference=\"(?i)(invest|trading|platform|portfolio|return|crypto|bitcoin|forex|yield|fund|capital|broker)\"\n| sort customer_id beneficiary_id _time\n| streamstats count AS payment_seq first(transaction_amount) AS first_amount\n    sum(transaction_amount) AS cumulative_amount\n    range(_time) AS time_span\n    BY customer_id, beneficiary_id\n| eval amount_increase_pct = round(((transaction_amount - first_amount) / first_amount) * 100, 1)\n| stats count AS total_payments sum(transaction_amount) AS total_amount\n    first(transaction_amount) AS first_payment last(transaction_amount) AS latest_payment\n    min(_time) AS first_date max(_time) AS last_date\n    values(payment_reference) AS references\n    BY customer_id, beneficiary_id, beneficiary_name\n| eval escalation_ratio = round(latest_payment / first_payment, 1)\n| eval days_span = round((last_date - first_date) / 86400)\n| where total_payments >= 3 AND escalation_ratio >= 3\n| eval risk_score = case(\n    total_amount > 50000 AND escalation_ratio >= 5, \"critical\",\n    total_amount > 20000 AND escalation_ratio >= 3, \"high\",\n    escalation_ratio >= 3, \"high\",\n    1=1, \"medium\")\n| table customer_id, beneficiary_id, beneficiary_name, total_payments,\n        first_payment, latest_payment, escalation_ratio, total_amount,\n        days_span, references, risk_score\n| sort - total_amount",
+        "sql": "-- SQL for GenAI-Enhanced APP Fraud — Investment Variant\n-- Detects escalating authorized push payments to new beneficiaries with investment references\nWITH payment_sequence AS (\n  SELECT\n    t.customer_id,\n    t.account_id,\n    t.beneficiary_id,\n    t.beneficiary_name,\n    t.transaction_amount,\n    t.transaction_date,\n    t.payment_reference,\n    t.payment_channel,\n    DATEDIFF(DAY, b.beneficiary_added_date, t.transaction_date) AS beneficiary_age_days,\n    ROW_NUMBER() OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS payment_seq,\n    FIRST_VALUE(t.transaction_amount) OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS first_payment_amount,\n    LAG(t.transaction_date) OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS prev_payment_date\n  FROM transactions t\n  JOIN beneficiaries b ON t.beneficiary_id = b.beneficiary_id AND t.customer_id = b.customer_id\n  WHERE t.transaction_type IN ('wire_transfer', 'faster_payment', 'ach_credit', 'sepa_credit', 'crypto_purchase')\n    AND t.transaction_date >= DATEADD(DAY, -60, CURRENT_DATE)\n    AND DATEDIFF(DAY, b.beneficiary_added_date, t.transaction_date) < 60\n    AND t.payment_reference LIKE '%invest%'\n     OR t.payment_reference LIKE '%trading%'\n     OR t.payment_reference LIKE '%platform%'\n     OR t.payment_reference LIKE '%crypto%'\n     OR t.payment_reference LIKE '%bitcoin%'\n     OR t.payment_reference LIKE '%forex%'\n     OR t.payment_reference LIKE '%yield%'\n     OR t.payment_reference LIKE '%fund%'\n     OR t.payment_reference LIKE '%capital%'\n     OR t.payment_reference LIKE '%broker%'\n),\nbeneficiary_summary AS (\n  SELECT\n    customer_id,\n    beneficiary_id,\n    beneficiary_name,\n    COUNT(*) AS total_payments,\n    SUM(transaction_amount) AS total_amount,\n    MIN(transaction_amount) AS min_payment,\n    MAX(transaction_amount) AS max_payment,\n    MIN(transaction_date) AS first_payment_date,\n    MAX(transaction_date) AS last_payment_date,\n    DATEDIFF(DAY, MIN(transaction_date), MAX(transaction_date)) AS payment_span_days,\n    MAX(transaction_amount) / NULLIF(MIN(transaction_amount), 0) AS escalation_ratio\n  FROM payment_sequence\n  GROUP BY customer_id, beneficiary_id, beneficiary_name\n)\nSELECT *\nFROM beneficiary_summary\nWHERE total_payments >= 3\n  AND escalation_ratio >= 3\nORDER BY total_amount DESC"
+      },
+      "references": [
+        "FBI IC3, 2024 Internet Crime Report — $6.57B investment fraud, $5.8B crypto investment fraud",
+        "Chainalysis, AI-Enabled Investment Scam Revenue Analysis — 4.5x revenue multiplier for AI-enhanced operations",
+        "UK Payment Systems Regulator (PSR), APP Fraud Mandatory Reimbursement (2024)",
+        "FCA, Consumer Warning — Deepfake Celebrity Investment Scams",
+        "FinCEN, AML Advisory on Investment Scam Typologies"
+      ],
+      "threat_path_ids": [
+        "TP-0026"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "crypto-laundering",
+        "investment-scam"
+      ],
+      "tags": [
+        "attack.t1656",
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.authorized-push-payment",
+        "flame.genai-fraud",
+        "flame.investment-scam",
+        "flame.pig-butchering"
+      ],
+      "falsepositives": [
+        "Legitimate staged investments in registered platforms (brokerage accounts, mutual funds) with increasing contributions",
+        "Business customers making scheduled investment-related payments to regulated financial institutions",
+        "Property investment installment payments with escalating milestone amounts",
+        "Cryptocurrency dollar-cost-averaging strategies with increasing position sizes"
+      ]
+    },
+    {
+      "id": "7490e048-2342-4abf-8334-3fef0baaf01b",
+      "dl_id": "DL-0167",
+      "title": "Elder Financial Exploitation — New Payee Addition with Escalating Payment Amounts",
+      "status": "experimental",
+      "description": "Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $4.885B in elder fraud losses in 2024 (43% YoY increase), with the true figure estimated at $28.3B when accounting for underreporting. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_holder_age|gte": 65
+        },
+        "filter_new_payee": {
+          "payee_first_seen_days|lte": 30,
+          "payee_in_historical_pattern": false
+        },
+        "filter_escalation": {
+          "payment_amount_trend": "increasing",
+          "payment_count_to_payee|gte": 3
+        },
+        "timeframe": "30d",
+        "condition": "selection AND filter_new_payee AND filter_escalation\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "account_holder_age",
+          "payee_id",
+          "payee_name",
+          "payment_amount",
+          "payment_date",
+          "payment_method"
+        ],
+        "enrichment_required": [
+          {
+            "field": "payee_first_seen_days",
+            "source": "Days since payee first appeared in account holder's transaction history"
+          },
+          {
+            "field": "payee_in_historical_pattern",
+            "source": "Boolean flag indicating whether payee exists in 12-month historical payment network"
+          },
+          {
+            "field": "payment_amount_trend",
+            "source": "Trend analysis (increasing/stable/decreasing) of payment amounts to this payee over the rolling window"
+          }
+        ],
+        "derived_fields": [
+          "payment_count_to_payee",
+          "total_amount_to_payee",
+          "avg_payment_amount",
+          "max_payment_amount",
+          "escalation_ratio"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Elder Exploitation — New Payee with Escalating Payments\n// Detects account holders 65+ sending escalating amounts to new payees\naccount_holder_age>=65\npayee_first_seen_days<=30\npayee_in_historical_pattern=false\n| payment_count := count(payment_id)\n| groupBy(account_id, payee_id, function=[\n    collect([account_holder_age, payee_name, payment_method]),\n    count(payment_id, as=payment_count),\n    sum(payment_amount, as=total_amount),\n    min(payment_amount, as=first_payment),\n    max(payment_amount, as=largest_payment)\n  ])\n| payment_count >= 3\n| escalation_ratio := largest_payment / first_payment\n| escalation_ratio > 1.5\n| sort(total_amount, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Elder Exploitation — New Payee with Escalating Payments\")`\n`comment(\"Detects account holders 65+ with escalating payments to new payees\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  account_holder_age>=65\n  payee_first_seen_days<=30\n  payee_in_historical_pattern=\"false\"\n| sort 0 account_id, payee_id, payment_date\n| streamstats count AS payment_seq, sum(payment_amount) AS running_total,\n    first(payment_amount) AS first_payment, last(payment_amount) AS latest_payment\n    by account_id, payee_id\n| where payment_seq >= 3\n| eval escalation_ratio = latest_payment / first_payment\n| where escalation_ratio > 1.5\n| eval risk_score = case(\n    escalation_ratio > 5 AND running_total > 50000, \"critical\",\n    escalation_ratio > 3 OR running_total > 25000, \"high\",\n    1=1, \"medium\")\n| stats max(payment_seq) AS payment_count, max(running_total) AS total_amount,\n    min(first_payment) AS first_payment, max(latest_payment) AS largest_payment,\n    max(escalation_ratio) AS escalation_ratio, values(risk_score) AS risk_score\n    by account_id, account_holder_age, payee_id, payee_name\n| sort - total_amount",
+        "sql": "-- SQL for Elder Exploitation — New Payee with Escalating Payments\n-- Detects escalating payment pattern from elderly account holders to new payees\nWITH payee_payments AS (\n  SELECT\n    t.account_id,\n    c.account_holder_age,\n    t.payee_id,\n    t.payee_name,\n    t.payment_amount,\n    t.payment_date,\n    t.payment_method,\n    ROW_NUMBER() OVER (PARTITION BY t.account_id, t.payee_id ORDER BY t.payment_date) AS payment_seq,\n    COUNT(*) OVER (PARTITION BY t.account_id, t.payee_id) AS payment_count,\n    SUM(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id) AS total_amount,\n    FIRST_VALUE(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id ORDER BY t.payment_date) AS first_payment,\n    MAX(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id) AS largest_payment\n  FROM transactions t\n  JOIN customer_demographics c ON t.account_id = c.account_id\n  LEFT JOIN historical_payee_network h ON t.account_id = h.account_id AND t.payee_id = h.payee_id\n  WHERE c.account_holder_age >= 65\n    AND t.payment_date >= DATEADD(DAY, -30, CURRENT_DATE)\n    AND h.payee_id IS NULL  -- payee not in historical pattern\n)\nSELECT\n  account_id,\n  account_holder_age,\n  payee_id,\n  payee_name,\n  payment_count,\n  total_amount,\n  first_payment,\n  largest_payment,\n  ROUND(largest_payment / NULLIF(first_payment, 0), 2) AS escalation_ratio\nFROM payee_payments\nWHERE payment_seq = payment_count  -- latest row per group\n  AND payment_count >= 3\n  AND largest_payment > first_payment * 1.5\nORDER BY total_amount DESC"
+      },
+      "references": [
+        "FBI IC3, 2024 Elder Fraud Report — $4.885B in losses from 101,068 complaints (60+)",
+        "FinCEN Advisory FIN-2022-A002 — Elder Financial Exploitation red flag indicators",
+        "CFPB, Suspicious Activity Reports on Elder Financial Exploitation (2024)",
+        "DOJ Elder Justice Initiative — federal prosecution data"
+      ],
+      "threat_path_ids": [
+        "TP-0027"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "elder-exploitation",
+        "romance-scam",
+        "social-engineering"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.authorized-push-payment",
+        "flame.elder-exploitation"
+      ],
+      "falsepositives": [
+        "Legitimate new service providers (home repair, medical) with naturally increasing invoice amounts",
+        "Recurring charitable donations with annual increases",
+        "Family members newly added as payees receiving regular support payments",
+        "Home healthcare or assisted living payments that increase with care level changes"
+      ]
+    },
+    {
+      "id": "b7e1735d-f82c-46b0-8f8f-c6a434995486",
+      "dl_id": "DL-0168",
+      "title": "Web3 Wallet Drainer — Malicious Token Approval to Drainer Contract",
+      "status": "experimental",
+      "description": "Detects wallet drainer approval phishing by identifying three high-confidence on-chain indicators: (1) token approval (approve() or increaseAllowance()) granting unlimited allowance to a contract address on known drainer threat feeds, (2) unlimited ERC-20 approvals to contracts deployed within the last 48 hours with no verified source code, or (3) rapid multi-token approvals (3+ distinct token contracts) from a single wallet to the same spender address within a 10-minute window — characteristic of automated DaaS kit multi-token harvesting. ScamSniffer reported $494M stolen via wallet drainers in 2024, with Inferno Drainer commanding 40-45% DaaS market share. The Permit/Permit2 gasless signature variant bypasses traditional on-chain approval monitoring; this rule covers the on-chain approve() path and Permit2 batch transfer events. Stolen assets are typically consolidated and bridged cross-chain within hours.\n",
+      "cfpf_phase": "P4",
+      "level": "critical",
+      "detection": {
+        "selection_known_drainer": {
+          "spender_address|in": "known_drainer_contract_list",
+          "approval_type": [
+            "approve",
+            "increaseAllowance"
+          ]
+        },
+        "selection_unlimited_new_contract": {
+          "approval_amount": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+          "spender_contract_age_hours|lte": 48,
+          "spender_contract_verified": false
+        },
+        "selection_rapid_multi_approval": {
+          "approval_type": [
+            "approve",
+            "increaseAllowance",
+            "permitBatchTransferFrom"
+          ],
+          "distinct_token_contracts|gte": 3,
+          "same_spender": true,
+          "timeframe": "10m"
+        },
+        "condition": "selection_known_drainer OR selection_unlimited_new_contract OR selection_rapid_multi_approval\n"
+      },
+      "logsource": {
+        "product": "crypto",
+        "service": "chain_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "tx_hash",
+          "block_number",
+          "block_timestamp",
+          "from_address",
+          "to_address",
+          "spender_address",
+          "token_contract_address",
+          "approval_amount",
+          "method_selector",
+          "chain_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "spender_contract_age_hours",
+            "source": "Hours since spender contract deployment (block timestamp of contract creation tx)"
+          },
+          {
+            "field": "spender_contract_verified",
+            "source": "Boolean flag from Etherscan/Sourcify indicating verified source code"
+          },
+          {
+            "field": "known_drainer_contract_list",
+            "source": "Threat feed of known drainer contract addresses (ScamSniffer, Forta, SlowMist)"
+          },
+          {
+            "field": "wallet_total_value_usd",
+            "source": "Estimated USD value of all token holdings in the approving wallet"
+          }
+        ],
+        "derived_fields": [
+          "distinct_token_contracts",
+          "approval_value_at_risk_usd",
+          "time_since_first_approval_seconds"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Web3 Wallet Drainer Approval Detection\n// Detects malicious token approvals: known drainers, unlimited to new contracts, rapid multi-token\n(method_selector=\"0x095ea7b3\" OR method_selector=\"0x39509351\" OR method_selector=\"0x30f28b7a\")\n| match(spender_address, file=\"known_drainer_contracts.csv\", field=\"address\", strict=false)\n  OR (approval_amount=\"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\"\n      AND spender_contract_age_hours<=48\n      AND spender_contract_verified=false)\n| groupBy(from_address, span=10m, function=[\n    count(distinct=token_contract_address, as=distinct_tokens),\n    collect([tx_hash, spender_address, token_contract_address, approval_amount, block_timestamp])\n  ])\n| distinct_tokens >= 3 OR _matched = true\n| sort(block_timestamp, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Web3 Wallet Drainer Approval Detection\")`\n`comment(\"Detects malicious token approvals to drainer contracts or suspicious new contracts\")`\nindex=flame_blockchain sourcetype=flame:chain_monitoring\n  (method_selector=\"0x095ea7b3\" OR method_selector=\"0x39509351\" OR method_selector=\"0x30f28b7a\")\n| lookup known_drainer_contracts spender_address AS spender_address OUTPUT is_known_drainer\n| eval is_unlimited = if(approval_amount=\"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\", 1, 0)\n| eval is_new_unverified = if(spender_contract_age_hours<=48 AND spender_contract_verified=\"false\", 1, 0)\n| eval drainer_match = if(is_known_drainer=\"true\", 1, 0)\n| bin _time span=10m\n| stats count AS approval_count,\n    dc(token_contract_address) AS distinct_tokens,\n    values(token_contract_address) AS tokens_approved,\n    values(tx_hash) AS tx_hashes,\n    max(drainer_match) AS has_drainer_match,\n    max(is_unlimited) AS has_unlimited,\n    max(is_new_unverified) AS has_new_unverified\n    by from_address, spender_address, _time\n| where has_drainer_match=1 OR (has_unlimited=1 AND has_new_unverified=1) OR distinct_tokens>=3\n| eval risk_level = case(\n    has_drainer_match=1, \"critical\",\n    distinct_tokens>=5, \"critical\",\n    has_unlimited=1 AND has_new_unverified=1, \"high\",\n    distinct_tokens>=3, \"high\",\n    1=1, \"medium\")\n| sort - risk_level",
+        "sql": "-- SQL for Web3 Wallet Drainer Approval Detection\n-- Detects malicious token approvals: known drainers, unlimited to new contracts, rapid multi-token\nWITH approval_events AS (\n  SELECT\n    t.tx_hash,\n    t.block_timestamp,\n    t.from_address AS victim_wallet,\n    t.spender_address,\n    t.token_contract_address,\n    t.approval_amount,\n    t.chain_id,\n    d.is_known_drainer,\n    c.contract_deploy_timestamp,\n    c.is_verified AS spender_contract_verified,\n    DATEDIFF(HOUR, c.contract_deploy_timestamp, t.block_timestamp) AS spender_age_hours\n  FROM token_approvals t\n  LEFT JOIN known_drainer_contracts d ON t.spender_address = d.contract_address\n  LEFT JOIN contract_metadata c ON t.spender_address = c.contract_address\n  WHERE t.block_timestamp >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\n    AND t.method_selector IN ('0x095ea7b3', '0x39509351', '0x30f28b7a')\n),\nrapid_multi_approvals AS (\n  SELECT\n    victim_wallet,\n    spender_address,\n    MIN(block_timestamp) AS window_start,\n    MAX(block_timestamp) AS window_end,\n    COUNT(DISTINCT token_contract_address) AS distinct_tokens,\n    COUNT(*) AS approval_count\n  FROM approval_events\n  GROUP BY victim_wallet, spender_address\n  HAVING COUNT(DISTINCT token_contract_address) >= 3\n    AND DATEDIFF(MINUTE, MIN(block_timestamp), MAX(block_timestamp)) <= 10\n)\nSELECT\n  a.tx_hash,\n  a.block_timestamp,\n  a.victim_wallet,\n  a.spender_address,\n  a.token_contract_address,\n  a.approval_amount,\n  a.chain_id,\n  CASE\n    WHEN a.is_known_drainer = TRUE THEN 'KNOWN_DRAINER'\n    WHEN a.approval_amount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'\n         AND a.spender_age_hours <= 48\n         AND a.spender_contract_verified = FALSE THEN 'UNLIMITED_NEW_UNVERIFIED'\n    WHEN r.victim_wallet IS NOT NULL THEN 'RAPID_MULTI_APPROVAL'\n  END AS detection_reason,\n  a.spender_age_hours,\n  a.spender_contract_verified\nFROM approval_events a\nLEFT JOIN rapid_multi_approvals r\n  ON a.victim_wallet = r.victim_wallet AND a.spender_address = r.spender_address\nWHERE a.is_known_drainer = TRUE\n  OR (a.approval_amount = '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'\n      AND a.spender_age_hours <= 48\n      AND a.spender_contract_verified = FALSE)\n  OR r.victim_wallet IS NOT NULL\nORDER BY a.block_timestamp DESC"
+      },
+      "references": [
+        "ScamSniffer, 2024 Web3 Phishing Report — $494M stolen via wallet drainers",
+        "Chainalysis, 2025 Crypto Crime Report — $16.1B in CMLN processing",
+        "Elliptic, Drainer-as-a-Service Research — DaaS smart contract architecture",
+        "Forta Network, On-Chain Threat Detection — wallet drainer alert feeds"
+      ],
+      "threat_path_ids": [
+        "TP-0032"
+      ],
+      "fraud_types": [
+        "approval-phishing",
+        "crypto-laundering",
+        "wallet-drainer"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.approval-phishing",
+        "flame.daas",
+        "flame.wallet-drainer"
+      ],
+      "falsepositives": [
+        "Legitimate DeFi protocol interactions requiring unlimited approval (Uniswap, Aave, Compound) — mitigated by verified contract whitelist",
+        "Newly deployed contracts from legitimate protocol upgrades — mitigated by source code verification check",
+        "Power users batch-approving tokens for a new DeFi protocol launch"
+      ]
+    },
+    {
+      "id": "4a5fc5e4-8f08-405b-8bb4-2426a708d2e6",
+      "dl_id": "DL-0169",
+      "title": "Ghost Student Financial Aid Fraud — Multi-Signal Botnet Enrollment Detection",
+      "status": "experimental",
+      "description": "Detects ghost student financial aid fraud by correlating three botnet-driven enrollment indicators: (1) multiple FAFSA applications originating from the same device fingerprint or IP address within an enrollment cycle, (2) shared bank accounts across distinct financial aid applicants (multiple student IDs disbursing to the same routing/account number), or (3) financial aid disbursements from multiple student IDs flowing to the same beneficiary account or being withdrawn at the same ATM cluster. California community colleges flagged 31-34% of applications as potentially fraudulent, and Equifax reported preventing $180M in ghost student fraud in a single year. Ghost student botnets exploit open-enrollment admissions to submit hundreds of synthetic identity applications per cycle, file FAFSA for maximum Pell Grant eligibility ($7,395/year), and extract disbursements before census date attendance verification can trigger aid return requirements.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_shared_device": {
+          "application_source": "fafsa",
+          "applications_per_device|gte": 3,
+          "timeframe": "90d"
+        },
+        "selection_shared_bank_account": {
+          "disbursement_type": "financial_aid",
+          "distinct_student_ids_per_account|gte": 2
+        },
+        "selection_shared_beneficiary": {
+          "disbursement_type": "financial_aid",
+          "distinct_student_ids_per_beneficiary|gte": 2,
+          "timeframe": "30d"
+        },
+        "condition": "selection_shared_device OR selection_shared_bank_account OR selection_shared_beneficiary\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "student_id",
+          "application_id",
+          "device_fingerprint",
+          "source_ip",
+          "fafsa_submission_date",
+          "bank_routing_number",
+          "bank_account_number",
+          "disbursement_amount",
+          "disbursement_date",
+          "institution_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "applications_per_device",
+            "source": "Count of distinct FAFSA applications submitted from same device fingerprint within enrollment cycle"
+          },
+          {
+            "field": "distinct_student_ids_per_account",
+            "source": "Count of distinct student IDs with disbursements to the same bank routing + account number"
+          },
+          {
+            "field": "distinct_student_ids_per_beneficiary",
+            "source": "Count of distinct student IDs whose disbursements flow to the same downstream beneficiary"
+          },
+          {
+            "field": "lms_login_count",
+            "source": "Total LMS logins by this student ID in the current term"
+          }
+        ],
+        "derived_fields": [
+          "applications_per_ip_subnet",
+          "total_disbursed_to_shared_account",
+          "lms_engagement_flag",
+          "cross_institution_enrollment_flag"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Ghost Student Financial Aid Fraud\n// Detects shared device/IP FAFSA applications, shared bank accounts, shared beneficiaries\napplication_source=\"fafsa\"\n| groupBy(device_fingerprint, span=90d, function=[\n    count(distinct=student_id, as=distinct_students),\n    count(application_id, as=application_count),\n    collect([student_id, source_ip, fafsa_submission_date, institution_id])\n  ])\n| distinct_students >= 3\n| sort(distinct_students, order=desc)\n// Parallel query for shared bank accounts\ndisbursement_type=\"financial_aid\"\n| groupBy([bank_routing_number, bank_account_number], function=[\n    count(distinct=student_id, as=distinct_students),\n    sum(disbursement_amount, as=total_disbursed),\n    collect([student_id, disbursement_date, institution_id])\n  ])\n| distinct_students >= 2\n| sort(total_disbursed, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Ghost Student Financial Aid Fraud — Shared Device Detection\")`\n`comment(\"Detects multiple FAFSA applications from same device fingerprint\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  application_source=\"fafsa\"\n| stats dc(student_id) AS distinct_students, count AS application_count,\n    values(student_id) AS student_ids, values(source_ip) AS source_ips,\n    values(institution_id) AS institutions\n    by device_fingerprint\n| where distinct_students >= 3\n| eval risk_level = case(\n    distinct_students > 10, \"critical\",\n    distinct_students > 5, \"high\",\n    1=1, \"medium\")\n| sort - distinct_students\n\n`comment(\"Splunk SPL for Ghost Student Financial Aid Fraud — Shared Bank Account Detection\")`\n`comment(\"Detects multiple student IDs disbursing to the same bank account\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  disbursement_type=\"financial_aid\"\n| stats dc(student_id) AS distinct_students, sum(disbursement_amount) AS total_disbursed,\n    values(student_id) AS student_ids, values(disbursement_date) AS disbursement_dates,\n    values(institution_id) AS institutions\n    by bank_routing_number, bank_account_number\n| where distinct_students >= 2\n| eval risk_level = case(\n    distinct_students > 5, \"critical\",\n    distinct_students > 2, \"high\",\n    1=1, \"medium\")\n| sort - distinct_students",
+        "sql": "-- SQL for Ghost Student Financial Aid Fraud\n-- Detects shared device FAFSA applications, shared bank accounts, and shared beneficiaries\n\n-- Query 1: Multiple FAFSA applications from same device/IP\nSELECT\n  fa.device_fingerprint,\n  fa.source_ip,\n  COUNT(DISTINCT fa.student_id) AS distinct_students,\n  COUNT(*) AS application_count,\n  STRING_AGG(DISTINCT fa.student_id, ', ') AS student_ids,\n  STRING_AGG(DISTINCT fa.institution_id, ', ') AS institutions\nFROM fafsa_applications fa\nWHERE fa.fafsa_submission_date >= DATEADD(DAY, -90, CURRENT_DATE)\nGROUP BY fa.device_fingerprint, fa.source_ip\nHAVING COUNT(DISTINCT fa.student_id) >= 3\nORDER BY distinct_students DESC;\n\n-- Query 2: Shared bank account across student disbursements\nSELECT\n  d.bank_routing_number,\n  d.bank_account_number,\n  COUNT(DISTINCT d.student_id) AS distinct_students,\n  SUM(d.disbursement_amount) AS total_disbursed,\n  STRING_AGG(DISTINCT d.student_id, ', ') AS student_ids,\n  STRING_AGG(DISTINCT d.institution_id, ', ') AS institutions\nFROM financial_aid_disbursements d\nWHERE d.disbursement_date >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND d.disbursement_status = 'COMPLETED'\nGROUP BY d.bank_routing_number, d.bank_account_number\nHAVING COUNT(DISTINCT d.student_id) >= 2\nORDER BY distinct_students DESC;\n\n-- Query 3: Cross-reference with zero academic engagement\nSELECT\n  d.student_id,\n  d.disbursement_amount,\n  d.disbursement_date,\n  d.bank_routing_number,\n  d.bank_account_number,\n  COALESCE(l.total_logins, 0) AS lms_logins,\n  COALESCE(l.assignments_submitted, 0) AS assignments\nFROM financial_aid_disbursements d\nLEFT JOIN lms_activity l ON d.student_id = l.student_id AND l.term = d.term\nWHERE d.disbursement_status = 'COMPLETED'\n  AND COALESCE(l.total_logins, 0) = 0\n  AND COALESCE(l.assignments_submitted, 0) = 0\n  AND d.bank_account_number IN (\n    SELECT bank_account_number\n    FROM financial_aid_disbursements\n    GROUP BY bank_routing_number, bank_account_number\n    HAVING COUNT(DISTINCT student_id) >= 2\n  )\nORDER BY d.disbursement_amount DESC"
+      },
+      "references": [
+        "Equifax Education Fraud Prevention — $180M prevented in ghost student fraud",
+        "California Community Colleges Chancellor's Office — 31-34% fraudulent application rate",
+        "DOE Office of Inspector General — Semiannual Reports on financial aid fraud",
+        "GAO, Federal Student Aid Program Integrity Reports"
+      ],
+      "threat_path_ids": [
+        "TP-0033"
+      ],
+      "fraud_types": [
+        "benefit-fraud",
+        "ghost-student-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1589",
+        "cfpf.phase4.execution",
+        "flame.benefit-fraud",
+        "flame.ghost-student",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Married couples or family members legitimately sharing a bank account for financial aid from different students",
+        "Shared household devices used by multiple family members applying to the same institution",
+        "Institutional computer labs or library terminals used by multiple applicants"
+      ]
+    },
+    {
+      "id": "0c0ab169-2d7e-43cc-8d6a-6fd7e15088ee",
+      "dl_id": "DL-0170",
+      "title": "Calendar Invite Injection Phishing — Mass External Calendar Event Creation from New Domains",
+      "status": "experimental",
+      "description": "Detects calendar injection phishing by identifying mass calendar invite creation from external sources targeting internal users, where the event body contains URLs and the organizer domain is recently registered (under 30 days) or on a high-abuse TLD. Attackers send emails containing .ics calendar attachments or Google Calendar invite links that auto-populate on victim calendars, bypassing email gateway filtering that focuses on message body and attachment analysis. An observed March 2026 campaign delivered 6,000+ emails across 10 sender domains (9 RDGA-generated on .cyou/.sbs/.click TLDs) with antivirus renewal and meeting invite lures. Calendar events persist after email deletion and re-surface via reminder notifications, creating a delayed-action social engineering vector. Recently created organizer accounts (under 7 days) sending calendar invites to 5+ internal recipients are additionally flagged as high-confidence indicators.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection_external_invite": {
+          "event_type": [
+            "calendar_invite_received",
+            "ics_attachment_processed"
+          ],
+          "organizer_is_external": true
+        },
+        "filter_new_domain": {
+          "organizer_domain_age_days|lte": 30
+        },
+        "filter_urls_in_body": {
+          "event_body_contains_url": true
+        },
+        "filter_mass_targeting": {
+          "distinct_internal_recipients|gte": 5,
+          "timeframe": "24h"
+        },
+        "condition": "selection_external_invite AND filter_new_domain AND filter_urls_in_body AND filter_mass_targeting\n"
+      },
+      "logsource": {
+        "product": "m365",
+        "service": "exchange"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "event_id",
+          "organizer_email",
+          "organizer_domain",
+          "recipient_email",
+          "event_title",
+          "event_body",
+          "event_created_timestamp",
+          "attachment_type",
+          "auto_accepted"
+        ],
+        "enrichment_required": [
+          {
+            "field": "organizer_domain_age_days",
+            "source": "Domain age lookup from WHOIS/domain intelligence feed"
+          },
+          {
+            "field": "organizer_domain_tld",
+            "source": "Top-level domain extracted from organizer email domain"
+          },
+          {
+            "field": "event_body_contains_url",
+            "source": "Boolean flag indicating presence of http/https URLs in calendar event description"
+          },
+          {
+            "field": "organizer_account_age_days",
+            "source": "Days since organizer Google/Microsoft account was created (if available from admin logs)"
+          }
+        ],
+        "derived_fields": [
+          "distinct_internal_recipients",
+          "urls_extracted_from_body",
+          "high_abuse_tld_flag",
+          "rdga_consonant_ratio"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Calendar Invite Injection Phishing Detection\n// Detects mass external calendar invites from new domains with URLs in event body\n(event_type=\"calendar_invite_received\" OR event_type=\"ics_attachment_processed\")\norganizer_is_external=true\norganizer_domain_age_days<=30\nevent_body_contains_url=true\n| groupBy(organizer_domain, span=24h, function=[\n    count(distinct=recipient_email, as=distinct_recipients),\n    count(event_id, as=invite_count),\n    collect([organizer_email, event_title, organizer_domain_age_days])\n  ])\n| distinct_recipients >= 5\n| sort(distinct_recipients, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Calendar Invite Injection Phishing Detection\")`\n`comment(\"Detects mass external calendar invites from recently-registered domains\")`\nindex=flame_m365 sourcetype=flame:exchange\n  (event_type=\"calendar_invite_received\" OR event_type=\"ics_attachment_processed\")\n  organizer_is_external=\"true\"\n| lookup domain_age_feed organizer_domain OUTPUT domain_age_days, domain_tld\n| where domain_age_days < 30\n| where match(event_body, \"https?://\")\n| bin _time span=24h\n| stats dc(recipient_email) AS distinct_recipients, count AS invite_count,\n    values(organizer_email) AS organizers, values(event_title) AS event_titles,\n    values(domain_age_days) AS domain_age, values(domain_tld) AS tlds\n    by organizer_domain, _time\n| where distinct_recipients >= 5\n| eval risk_level = case(\n    domain_age_days < 7 AND distinct_recipients > 50, \"critical\",\n    domain_age_days < 7 OR distinct_recipients > 20, \"high\",\n    1=1, \"medium\")\n| eval high_abuse_tld = if(match(domain_tld, \"cyou|sbs|click|top|xyz|biz\"), \"true\", \"false\")\n| sort - distinct_recipients",
+        "sql": "-- SQL for Calendar Invite Injection Phishing Detection\n-- Detects mass external calendar invites from newly-registered domains with URLs\nSELECT\n  ce.organizer_domain,\n  d.domain_age_days,\n  d.tld AS domain_tld,\n  COUNT(DISTINCT ce.recipient_email) AS distinct_recipients,\n  COUNT(*) AS invite_count,\n  STRING_AGG(DISTINCT ce.organizer_email, ', ') AS organizer_emails,\n  STRING_AGG(DISTINCT ce.event_title, ', ') AS event_titles,\n  MIN(ce.event_created_timestamp) AS first_invite,\n  MAX(ce.event_created_timestamp) AS last_invite,\n  CASE\n    WHEN d.domain_age_days < 7 AND COUNT(DISTINCT ce.recipient_email) > 50 THEN 'critical'\n    WHEN d.domain_age_days < 7 OR COUNT(DISTINCT ce.recipient_email) > 20 THEN 'high'\n    ELSE 'medium'\n  END AS risk_level,\n  CASE\n    WHEN d.tld IN ('.cyou', '.sbs', '.click', '.top', '.xyz', '.biz') THEN TRUE\n    ELSE FALSE\n  END AS high_abuse_tld\nFROM calendar_events ce\nJOIN domain_intelligence d ON ce.organizer_domain = d.domain_name\nWHERE ce.organizer_is_external = TRUE\n  AND ce.event_created_timestamp >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\n  AND d.domain_age_days <= 30\n  AND ce.event_body LIKE '%http%'\nGROUP BY ce.organizer_domain, d.domain_age_days, d.tld\nHAVING COUNT(DISTINCT ce.recipient_email) >= 5\nORDER BY distinct_recipients DESC"
+      },
+      "references": [
+        "Malwarebytes Labs, Calendar Phishing Campaign Analysis (February 2026)",
+        "Google Workspace Security, Advisory on External Calendar Invite Auto-Accept Settings",
+        "Infoblox, RDGA Domain Analysis and Zone File Monitoring Methodology",
+        "FBI IC3, Tech Support Scam PSAs — downstream calendar phishing impact"
+      ],
+      "threat_path_ids": [
+        "TP-0050"
+      ],
+      "fraud_types": [
+        "calendar-phishing",
+        "social-engineering"
+      ],
+      "tags": [
+        "attack.t1566",
+        "cfpf.phase2.initial_access",
+        "flame.calendar-phishing",
+        "flame.invite-injection"
+      ],
+      "falsepositives": [
+        "Legitimate external event organizers (conference providers, webinar platforms) using newly registered event-specific domains",
+        "Marketing partners sending calendar invites for scheduled meetings or product demos",
+        "Automated meeting scheduling tools (Calendly, HubSpot) from new customer domains"
+      ]
+    },
+    {
+      "id": "a97c457f-f5af-4cda-a275-d1ea986d2b72",
+      "dl_id": "DL-0171",
+      "title": "QR Code Payment Fraud (Quishing) — Malicious QR Destination to Credential Harvesting Infrastructure",
+      "status": "experimental",
+      "description": "Detects quishing attacks by identifying emails or messages containing QR code images where the encoded URL resolves to a recently registered domain (under 30 days), a known URL shortener redirecting to a credential harvesting page, or a domain impersonating postal services or banking institutions. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents a European modus operandi where fraudsters send fake QR codes claiming payment is available at a post office, routing victims through a fake postal site to a cloned bank login page. In a documented case, USD 110,000 was stolen through this method. The attack exploits a fundamental QR code UX gap: unlike hyperlinks, QR codes do not display a destination URL before the victim commits to following them. The subsequent 2FA device enrollment step converts credential capture into persistent account takeover, making real-time detection at the email/content analysis layer critical before the victim scans.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection_qr_in_message": {
+          "attachment_contains_qr_code": true
+        },
+        "filter_new_domain": {
+          "qr_destination_domain_age_days|lte": 30
+        },
+        "filter_shortener_redirect": {
+          "qr_destination_is_shortener": true,
+          "redirect_final_domain_age_days|lte": 30
+        },
+        "filter_brand_impersonation": {
+          "qr_destination_domain_impersonates": [
+            "postal_service",
+            "banking_institution"
+          ],
+          "qr_destination_domain_is_legitimate": false
+        },
+        "condition": "selection_qr_in_message AND (filter_new_domain OR filter_shortener_redirect OR filter_brand_impersonation)\n"
+      },
+      "logsource": {
+        "product": "email_security",
+        "service": "content_analysis"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "message_id",
+          "sender_email",
+          "sender_domain",
+          "recipient_email",
+          "subject",
+          "attachment_hash",
+          "attachment_type",
+          "message_timestamp"
+        ],
+        "enrichment_required": [
+          {
+            "field": "attachment_contains_qr_code",
+            "source": "QR code detection via image analysis on email attachments and inline images"
+          },
+          {
+            "field": "qr_destination_url",
+            "source": "Decoded URL from QR code image content"
+          },
+          {
+            "field": "qr_destination_domain_age_days",
+            "source": "Domain age lookup from WHOIS/domain intelligence feed for the decoded QR destination"
+          },
+          {
+            "field": "qr_destination_is_shortener",
+            "source": "Boolean flag indicating QR URL uses a known URL shortener service (bit.ly, tinyurl, etc.)"
+          },
+          {
+            "field": "redirect_final_domain_age_days",
+            "source": "Domain age of the final destination after following shortener redirects"
+          },
+          {
+            "field": "qr_destination_domain_impersonates",
+            "source": "Brand impersonation classification from domain intelligence (postal service, banking keywords)"
+          }
+        ],
+        "derived_fields": [
+          "qr_destination_fqdn",
+          "redirect_chain_length",
+          "recipients_with_same_qr_domain",
+          "sender_domain_age_days"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for QR Code Payment Fraud (Quishing) Detection\n// Detects emails with QR codes pointing to new domains or credential harvesting infrastructure\nattachment_contains_qr_code=true\n| (qr_destination_domain_age_days<=30\n   OR (qr_destination_is_shortener=true AND redirect_final_domain_age_days<=30)\n   OR (qr_destination_domain_impersonates IN [\"postal_service\", \"banking_institution\"]\n       AND qr_destination_domain_is_legitimate=false))\n| groupBy(qr_destination_fqdn, span=24h, function=[\n    count(distinct=recipient_email, as=distinct_recipients),\n    count(message_id, as=message_count),\n    collect([sender_email, subject, qr_destination_url, qr_destination_domain_age_days])\n  ])\n| sort(distinct_recipients, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for QR Code Payment Fraud (Quishing) Detection\")`\n`comment(\"Detects emails with QR codes resolving to new/suspicious domains\")`\nindex=flame_email sourcetype=flame:content_analysis\n  attachment_contains_qr_code=\"true\"\n| lookup domain_age_feed qr_destination_fqdn AS fqdn OUTPUT domain_age_days\n| lookup url_shortener_list qr_destination_fqdn AS fqdn OUTPUT is_shortener\n| lookup domain_age_feed redirect_final_fqdn AS fqdn OUTPUT domain_age_days AS redirect_domain_age\n| eval is_new_domain = if(domain_age_days < 30, 1, 0)\n| eval is_shortener_to_new = if(is_shortener=\"true\" AND redirect_domain_age < 30, 1, 0)\n| eval is_brand_impersonation = if(\n    match(qr_destination_fqdn, \"(?i)(post|mail|parcel|bank|login|secure|verify)\")\n    AND qr_destination_domain_is_legitimate=\"false\", 1, 0)\n| where is_new_domain=1 OR is_shortener_to_new=1 OR is_brand_impersonation=1\n| eval detection_reason = case(\n    is_brand_impersonation=1, \"brand_impersonation\",\n    is_shortener_to_new=1, \"shortener_redirect_to_new_domain\",\n    is_new_domain=1, \"new_domain\")\n| eval risk_level = case(\n    is_brand_impersonation=1 AND domain_age_days < 7, \"critical\",\n    is_brand_impersonation=1, \"high\",\n    is_shortener_to_new=1, \"high\",\n    1=1, \"medium\")\n| stats dc(recipient_email) AS distinct_recipients, count AS message_count,\n    values(sender_email) AS senders, values(subject) AS subjects,\n    values(qr_destination_url) AS qr_urls, values(detection_reason) AS detection_reasons\n    by qr_destination_fqdn, risk_level\n| sort - distinct_recipients",
+        "sql": "-- SQL for QR Code Payment Fraud (Quishing) Detection\n-- Detects emails with QR codes pointing to new domains or credential harvesting pages\nSELECT\n  e.message_id,\n  e.sender_email,\n  e.sender_domain,\n  e.recipient_email,\n  e.subject,\n  e.message_timestamp,\n  q.qr_destination_url,\n  q.qr_destination_fqdn,\n  d.domain_age_days AS destination_domain_age,\n  q.redirect_final_fqdn,\n  rd.domain_age_days AS redirect_final_domain_age,\n  CASE\n    WHEN d.domain_age_days <= 30 THEN 'new_domain'\n    WHEN q.qr_destination_is_shortener = TRUE AND rd.domain_age_days <= 30 THEN 'shortener_to_new_domain'\n    WHEN bi.is_brand_impersonation = TRUE AND bi.is_legitimate = FALSE THEN 'brand_impersonation'\n  END AS detection_reason,\n  CASE\n    WHEN bi.is_brand_impersonation = TRUE AND d.domain_age_days < 7 THEN 'critical'\n    WHEN bi.is_brand_impersonation = TRUE THEN 'high'\n    WHEN q.qr_destination_is_shortener = TRUE AND rd.domain_age_days <= 30 THEN 'high'\n    ELSE 'medium'\n  END AS risk_level\nFROM email_messages e\nJOIN qr_code_analysis q ON e.message_id = q.message_id\nLEFT JOIN domain_intelligence d ON q.qr_destination_fqdn = d.domain_name\nLEFT JOIN domain_intelligence rd ON q.redirect_final_fqdn = rd.domain_name\nLEFT JOIN brand_impersonation_feed bi ON q.qr_destination_fqdn = bi.domain_name\nWHERE q.attachment_contains_qr_code = TRUE\n  AND e.message_timestamp >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\n  AND (\n    d.domain_age_days <= 30\n    OR (q.qr_destination_is_shortener = TRUE AND rd.domain_age_days <= 30)\n    OR (bi.is_brand_impersonation = TRUE AND bi.is_legitimate = FALSE)\n  )\nORDER BY e.message_timestamp DESC"
+      },
+      "references": [
+        "INTERPOL, Global Financial Fraud Threat Assessment, 2nd Edition (March 2026) — QR Code Scam Targeting Online Sellers",
+        "INTERPOL GFFTA 2026 — The Convergence of Impersonation and Identity Fraud",
+        "FLAME TP-0050: Calendar/Invite Injection Phishing — comparable off-platform lure delivery",
+        "FLAME TP-0037: Digital Wallet / NFC Payment Fraud — mobile money monetization overlap"
+      ],
+      "threat_path_ids": [
+        "TP-0051"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "credential-harvesting",
+        "quishing",
+        "social-engineering"
+      ],
+      "tags": [
+        "attack.t1566",
+        "cfpf.phase2.initial_access",
+        "flame.credential-harvesting",
+        "flame.quishing"
+      ],
+      "falsepositives": [
+        "Legitimate marketing emails containing QR codes linking to new campaign landing pages",
+        "Event invitations with QR codes for registration on recently launched event platforms",
+        "Payment requests from new merchants using QR-based payment systems",
+        "Internal communications using QR codes linking to newly deployed internal tools"
+      ]
+    },
+    {
+      "id": "c19927d8-084d-4ba3-85b1-74ff158074f4",
+      "dl_id": "DL-0172",
+      "title": "Sextortion-Investment Hybrid Fraud — Small Payment Escalation to Crypto Addresses with Communication Pattern Shift",
+      "status": "experimental",
+      "description": "Detects the sextortion-investment hybrid fraud pattern where a victim makes initial small payments followed by escalating amounts to cryptocurrency addresses, with the communication pattern showing a transition from social/romantic interaction to financial urgency. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents this as a globally escalating pattern where scam centre operators systematically pivot from romance/investment scripts to sextortion as a scripted operational fallback. The hallmark behavioral signature is a first-ever crypto transaction within 30 days of a new social media contact, followed by rapid escalation in both payment frequency and amount, often accompanied by messaging patterns shifting from casual/romantic to urgent/threatening language. The hybrid structure maximizes total extraction while suppressing victim reporting through shame and blackmail leverage.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "payment_type": [
+            "cryptocurrency",
+            "crypto_deposit",
+            "wire_to_crypto_exchange"
+          ]
+        },
+        "filter_escalation_pattern": {
+          "transaction_count_30d|gte": 3,
+          "amount_increase_ratio_last_vs_first|gte": 3.0
+        },
+        "filter_first_crypto": {
+          "is_first_crypto_period": true,
+          "days_since_account_first_crypto|lte": 60
+        },
+        "filter_communication_shift": {
+          "social_contact_recency_days|lte": 30
+        },
+        "timeframe": "30d",
+        "condition": "selection AND filter_escalation_pattern AND filter_first_crypto AND filter_communication_shift\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "transaction_id",
+          "payment_type",
+          "amount",
+          "currency",
+          "crypto_address",
+          "transaction_date",
+          "beneficiary_name"
+        ],
+        "enrichment_required": [
+          {
+            "field": "is_first_crypto_period",
+            "source": "Account transaction history analysis — true if customer had no crypto transactions prior to 60 days ago"
+          },
+          {
+            "field": "days_since_account_first_crypto",
+            "source": "Days since customer's first-ever cryptocurrency transaction"
+          },
+          {
+            "field": "social_contact_recency_days",
+            "source": "Days since last new social media or dating app contact event (requires platform data enrichment or customer-reported timeline)"
+          },
+          {
+            "field": "amount_increase_ratio_last_vs_first",
+            "source": "Ratio of most recent transaction amount to first transaction amount in the 30-day window"
+          },
+          {
+            "field": "transaction_count_30d",
+            "source": "Count of crypto transactions to same or related addresses in trailing 30 days"
+          }
+        ],
+        "derived_fields": [
+          "escalation_velocity",
+          "total_amount_30d",
+          "unique_crypto_addresses"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Sextortion-Investment Hybrid Escalation\n// Detects small-to-large crypto payment escalation following new social contact\n(payment_type=\"cryptocurrency\" OR payment_type=\"crypto_deposit\" OR payment_type=\"wire_to_crypto_exchange\")\nis_first_crypto_period=\"true\"\ndays_since_account_first_crypto<=60\n| transaction_count_30d := count(transaction_id, span=30d)\n| first_amount := min(amount, span=30d)\n| last_amount := max(amount, span=30d)\n| escalation_ratio := last_amount / first_amount\n| where transaction_count_30d >= 3 AND escalation_ratio >= 3.0\n| total_amount_30d := sum(amount, span=30d)\n| unique_crypto_addresses := count(distinct=crypto_address, span=30d)\n| groupBy(account_id, function=[\n    collect([total_amount_30d, transaction_count_30d, escalation_ratio,\n             first_amount, last_amount, unique_crypto_addresses,\n             days_since_account_first_crypto])\n  ])\n| sort(total_amount_30d, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Sextortion-Investment Hybrid Escalation\")`\n`comment(\"Detects escalating crypto payments following new social contact\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (payment_type=\"cryptocurrency\" OR payment_type=\"crypto_deposit\" OR payment_type=\"wire_to_crypto_exchange\")\n  is_first_crypto_period=\"true\"\n  days_since_account_first_crypto<=60\n| stats count AS transaction_count,\n        min(amount) AS first_amount,\n        max(amount) AS last_amount,\n        sum(amount) AS total_amount,\n        dc(crypto_address) AS unique_crypto_addresses,\n        earliest(transaction_date) AS first_txn_date,\n        latest(transaction_date) AS last_txn_date\n  BY account_id\n| where transaction_count >= 3\n| eval escalation_ratio = last_amount / first_amount\n| where escalation_ratio >= 3.0\n| eval risk_score = case(\n    escalation_ratio > 10 AND total_amount > 50000, \"critical\",\n    escalation_ratio > 5 AND total_amount > 10000, \"high\",\n    1=1, \"medium\")\n| table account_id, transaction_count, first_amount, last_amount,\n        escalation_ratio, total_amount, unique_crypto_addresses,\n        first_txn_date, last_txn_date, risk_score\n| sort - total_amount",
+        "sql": "-- SQL for Sextortion-Investment Hybrid Escalation\n-- Detects escalating crypto payments pattern characteristic of hybrid sextortion-investment fraud\nWITH crypto_txns AS (\n  SELECT\n    t.account_id,\n    t.transaction_id,\n    t.amount,\n    t.crypto_address,\n    t.transaction_date,\n    ROW_NUMBER() OVER (PARTITION BY t.account_id ORDER BY t.transaction_date ASC) AS txn_seq,\n    COUNT(*) OVER (PARTITION BY t.account_id) AS txn_count,\n    MIN(t.amount) OVER (PARTITION BY t.account_id) AS first_amount,\n    MAX(t.amount) OVER (PARTITION BY t.account_id) AS last_amount,\n    SUM(t.amount) OVER (PARTITION BY t.account_id) AS total_amount,\n    COUNT(DISTINCT t.crypto_address) OVER (PARTITION BY t.account_id) AS unique_addresses\n  FROM transactions t\n  JOIN account_crypto_history h ON t.account_id = h.account_id\n  WHERE t.payment_type IN ('cryptocurrency', 'crypto_deposit', 'wire_to_crypto_exchange')\n    AND t.transaction_date > CURRENT_DATE - INTERVAL '30 days'\n    AND h.is_first_crypto_period = TRUE\n    AND h.days_since_first_crypto <= 60\n)\nSELECT\n  account_id,\n  txn_count AS transaction_count,\n  first_amount,\n  last_amount,\n  (last_amount / NULLIF(first_amount, 0)) AS escalation_ratio,\n  total_amount,\n  unique_addresses AS unique_crypto_addresses\nFROM crypto_txns\nWHERE txn_seq = 1\n  AND txn_count >= 3\n  AND (last_amount / NULLIF(first_amount, 0)) >= 3.0\nORDER BY total_amount DESC"
+      },
+      "references": [
+        "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+        "INTERPOL GFFTA 2026 — Increasingly Hybrid Fraud Tactics and the Rise in Sextortion",
+        "FBI IC3: Internet Crime Report 2024 — sextortion statistics",
+        "Marasa & Ives, Deconstructing pig butchering, Journal of Economic Criminology, 2024"
+      ],
+      "threat_path_ids": [
+        "TP-0052"
+      ],
+      "fraud_types": [
+        "hybrid-fraud",
+        "investment-scam",
+        "romance-scam",
+        "sextortion"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.hybrid-fraud",
+        "flame.investment-scam",
+        "flame.romance-scam",
+        "flame.sextortion"
+      ],
+      "falsepositives": [
+        "Legitimate new cryptocurrency investor making progressively larger purchases as they gain confidence",
+        "Customer gradually converting savings to crypto for planned overseas relocation or property purchase",
+        "Recurring crypto purchases via dollar-cost-averaging strategy that happen to coincide with new social media activity"
+      ]
+    },
+    {
+      "id": "316d3045-0ee9-4dd0-ab13-dab4f8080db3",
+      "dl_id": "DL-0173",
+      "title": "Vehicle Export Financing Fraud — Auto Loan Followed by Rapid Title Transfer or Export with Active Lien",
+      "status": "experimental",
+      "description": "Detects the vehicle export financing fraud pattern where an auto loan application is approved and the financed vehicle undergoes rapid title transfer or appears in export documentation while the loan remains active and the lien is outstanding. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents this as a growing transnational fraud scheme first detected in North America in early 2024, where criminal networks use identity theft and straw buyers to obtain auto loans for high-value vehicles, then export them overseas before lenders detect fraud. The critical detection window is the period between vehicle delivery and export — often as short as 7-21 days. Key indicators include high-value vehicles (>$30,000) with high LTV ratios, fewer than 3 loan payments made, title transfer events within 60 days of origination, and GPS telematics showing vehicle departure from the borrower's stated area toward port cities or border crossings. The structural delay between loan default and fraud detection is the primary vulnerability exploited by these networks.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "loan_type": "auto",
+          "vehicle_value|gte": 30000
+        },
+        "filter_title_event": {
+          "title_transfer_days_since_origination|lte": 60
+        },
+        "filter_loan_status": {
+          "loan_status": [
+            "active",
+            "delinquent",
+            "default"
+          ],
+          "payments_made|lte": 3
+        },
+        "filter_vehicle_category": {
+          "vehicle_category": [
+            "pickup_truck",
+            "suv",
+            "luxury"
+          ]
+        },
+        "timeframe": "60d",
+        "condition": "selection AND filter_title_event AND filter_loan_status AND filter_vehicle_category\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "auto_lending"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "loan_id",
+          "application_id",
+          "loan_type",
+          "vehicle_vin",
+          "vehicle_value",
+          "vehicle_category",
+          "loan_amount",
+          "ltv_ratio",
+          "origination_date",
+          "dealership_id",
+          "dealership_name",
+          "borrower_id",
+          "borrower_zip",
+          "loan_status",
+          "payments_made"
+        ],
+        "enrichment_required": [
+          {
+            "field": "title_transfer_days_since_origination",
+            "source": "DMV title transfer records cross-referenced with loan origination date"
+          },
+          {
+            "field": "export_manifest_match",
+            "source": "CBP pre-departure export manifest data for recently financed VINs"
+          },
+          {
+            "field": "gps_last_location",
+            "source": "Vehicle GPS telematics last known position (where lender telematics installed)"
+          },
+          {
+            "field": "gps_port_proximity",
+            "source": "Boolean flag if GPS last ping is within 50 miles of port of departure or international border crossing"
+          }
+        ],
+        "derived_fields": [
+          "days_to_title_transfer",
+          "days_to_first_default",
+          "dealership_cluster_score"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Vehicle Export Financing Fraud\n// Detects high-value auto loans with rapid title transfer or export indicators\nloan_type=\"auto\"\nvehicle_value>=30000\npayments_made<=3\ntitle_transfer_days_since_origination<=60\n(vehicle_category=\"pickup_truck\" OR vehicle_category=\"suv\" OR vehicle_category=\"luxury\")\n| days_to_title_transfer := title_transfer_days_since_origination\n| groupBy(loan_id, function=[\n    collect([vehicle_vin, vehicle_value, loan_amount, ltv_ratio,\n             origination_date, dealership_name, borrower_id, borrower_zip,\n             payments_made, loan_status, days_to_title_transfer,\n             gps_last_location, export_manifest_match])\n  ])\n| sort(vehicle_value, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Vehicle Export Financing Fraud\")`\n`comment(\"Detects auto loans on high-value vehicles with rapid title transfer and few payments\")`\nindex=flame_banking sourcetype=flame:auto_lending\n  loan_type=\"auto\"\n  vehicle_value>=30000\n  payments_made<=3\n  title_transfer_days_since_origination<=60\n  (vehicle_category=\"pickup_truck\" OR vehicle_category=\"suv\" OR vehicle_category=\"luxury\")\n| eval risk_score = case(\n    title_transfer_days_since_origination < 14 AND export_manifest_match=\"true\", \"critical\",\n    title_transfer_days_since_origination < 30 AND payments_made <= 1, \"critical\",\n    title_transfer_days_since_origination < 45 AND ltv_ratio >= 0.95, \"high\",\n    1=1, \"medium\")\n| lookup dealership_fraud_history dealership_id OUTPUT prior_fraud_count, dealership_risk_tier\n| table loan_id, vehicle_vin, vehicle_value, vehicle_category, loan_amount, ltv_ratio,\n        origination_date, dealership_name, dealership_risk_tier, borrower_id, borrower_zip,\n        payments_made, loan_status, title_transfer_days_since_origination,\n        gps_last_location, gps_port_proximity, export_manifest_match, risk_score\n| sort - risk_score, - vehicle_value",
+        "sql": "-- SQL for Vehicle Export Financing Fraud\n-- Detects auto loans with rapid title transfer or export activity while lien is active\nSELECT\n  la.loan_id,\n  la.vehicle_vin,\n  la.vehicle_value,\n  la.vehicle_category,\n  la.loan_amount,\n  la.ltv_ratio,\n  la.origination_date,\n  la.dealership_id,\n  la.dealership_name,\n  la.borrower_id,\n  la.borrower_zip,\n  lp.payments_made,\n  lp.loan_status,\n  tt.title_transfer_date,\n  DATEDIFF('day', la.origination_date, tt.title_transfer_date) AS days_to_title_transfer,\n  gps.last_known_location,\n  gps.port_proximity_flag,\n  em.export_manifest_date\nFROM loan_applications la\nJOIN loan_payment_history lp ON la.loan_id = lp.loan_id\nLEFT JOIN dmv_title_transfers tt ON la.vehicle_vin = tt.vehicle_vin\nLEFT JOIN vehicle_gps_telematics gps ON la.vehicle_vin = gps.vehicle_vin\nLEFT JOIN cbp_export_manifests em ON la.vehicle_vin = em.vehicle_vin\nWHERE la.loan_type = 'auto'\n  AND la.vehicle_value >= 30000\n  AND la.vehicle_category IN ('pickup_truck', 'suv', 'luxury')\n  AND lp.payments_made <= 3\n  AND lp.loan_status IN ('active', 'delinquent', 'default')\n  AND (\n    (tt.title_transfer_date IS NOT NULL\n     AND DATEDIFF('day', la.origination_date, tt.title_transfer_date) <= 60)\n    OR em.export_manifest_date IS NOT NULL\n    OR gps.port_proximity_flag = TRUE\n  )\nORDER BY la.vehicle_value DESC"
+      },
+      "references": [
+        "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+        "INTERPOL GFFTA 2026 — Americas: INTERPOL Uncovers Fraudulent Vehicle Export Scheme",
+        "INTERPOL Stolen Vehicle Database — cross-border tracing limitations"
+      ],
+      "threat_path_ids": [
+        "TP-0053"
+      ],
+      "fraud_types": [
+        "application-fraud",
+        "identity-theft",
+        "loan-fraud",
+        "vehicle-export-fraud"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.auto-lending-fraud",
+        "flame.straw-buyer",
+        "flame.vehicle-export-fraud"
+      ],
+      "falsepositives": [
+        "Legitimate vehicle sale by borrower who pays off loan balance at title transfer",
+        "Fleet vehicle purchase by business with rapid deployment to multiple locations",
+        "Military member transferring vehicle to overseas duty station with proper lender notification",
+        "Borrower legitimately relocating near a port city or border area shortly after purchase"
+      ]
+    },
+    {
+      "id": "8f79d1fe-39f6-423c-9007-52643a2f28ca",
+      "dl_id": "DL-0174",
+      "title": "Crypto Fraud-Terrorism/Narco Financing Nexus — Sanctions-Exposed Wallets and Peel Chain Patterns Through Mixing Services",
+      "status": "experimental",
+      "description": "Detects the crypto-terror/narco financing nexus pattern where transactions flow to wallets with known OFAC/sanctions exposure, or exhibit peel chain patterns through cryptocurrency mixing services followed by consolidation to designated entity-linked addresses. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two confirmed manifestations: (1) a USD 150 million cryptocurrency fraud scheme linked to Tren de Aragua laundering drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula; and (2) Operation Catalyst, which uncovered a USD 562 million crypto Ponzi scheme affecting 100,000+ victims across 17 countries with wallet-level links to terrorism financing in Central Africa. The detection logic targets three signatures: direct transactions to OFAC SDN-listed wallet addresses within 2 hops, peel chain patterns where funds are split into decreasingly small amounts through mixing services before reconsolidation, and co-mingling indicators where platform wallets receive both retail investor deposits and large round-number inflows from high-risk wallet clusters. This rule operates at critical severity given the terrorism and narcotics financing implications and associated OFAC blocking obligations.\n",
+      "cfpf_phase": "P5",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "transaction_type": [
+            "crypto_transfer",
+            "crypto_deposit",
+            "crypto_withdrawal"
+          ],
+          "amount_usd|gte": 1000
+        },
+        "filter_sanctions_proximity": {
+          "sdn_hop_distance|lte": 2
+        },
+        "filter_mixing_service": {
+          "mixing_service_interaction": true,
+          "hours_to_mix|lte": 24
+        },
+        "filter_peel_chain": {
+          "peel_chain_detected": true,
+          "consolidation_wallet_risk_score|gte": 80
+        },
+        "timeframe": "90d",
+        "condition": "selection AND (filter_sanctions_proximity OR (filter_mixing_service AND filter_peel_chain))\n"
+      },
+      "logsource": {
+        "product": "crypto",
+        "service": "chain_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "transaction_id",
+          "transaction_hash",
+          "wallet_address",
+          "counterparty_wallet",
+          "amount_usd",
+          "amount_crypto",
+          "crypto_currency",
+          "transaction_date",
+          "block_number",
+          "block_timestamp"
+        ],
+        "enrichment_required": [
+          {
+            "field": "sdn_hop_distance",
+            "source": "OFAC SDN wallet cluster database — minimum hop count from counterparty wallet to nearest SDN-listed address"
+          },
+          {
+            "field": "sdn_entity_name",
+            "source": "OFAC SDN entity name associated with nearest SDN-listed wallet"
+          },
+          {
+            "field": "mixing_service_interaction",
+            "source": "Blockchain analytics — true if transaction chain passes through known mixing/tumbling service within specified timeframe"
+          },
+          {
+            "field": "hours_to_mix",
+            "source": "Hours between initial transaction and first mixing service interaction in the chain"
+          },
+          {
+            "field": "peel_chain_detected",
+            "source": "Blockchain analytics — true if transaction exhibits peel chain splitting pattern (decreasing amounts to sequential wallets)"
+          },
+          {
+            "field": "consolidation_wallet_risk_score",
+            "source": "Risk score (0-100) of the wallet where peel chain funds reconsolidate, based on known entity associations"
+          },
+          {
+            "field": "wallet_cluster_risk_category",
+            "source": "Blockchain analytics wallet clustering — categorization of counterparty wallet cluster (sanctions, terror-financing, narco, high-risk-exchange, unknown)"
+          }
+        ],
+        "derived_fields": [
+          "chain_hop_count",
+          "total_volume_to_sdn_cluster",
+          "mixing_service_name",
+          "peel_chain_depth"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Crypto-Terror/Narco Nexus Detection\n// Detects sanctions-exposed wallet transactions and peel chain patterns through mixers\n(transaction_type=\"crypto_transfer\" OR transaction_type=\"crypto_deposit\" OR transaction_type=\"crypto_withdrawal\")\namount_usd>=1000\n(sdn_hop_distance<=2 OR (mixing_service_interaction=\"true\" AND peel_chain_detected=\"true\"))\n| chain_classification := case {\n    sdn_hop_distance<=1 -> \"direct_sdn_exposure\";\n    sdn_hop_distance==2 -> \"indirect_sdn_exposure\";\n    mixing_service_interaction==\"true\" AND peel_chain_detected==\"true\" -> \"peel_chain_mixing\";\n    * -> \"unknown\";\n  }\n| groupBy(wallet_address, function=[\n    collect([counterparty_wallet, amount_usd, crypto_currency, transaction_date,\n             sdn_hop_distance, sdn_entity_name, mixing_service_interaction,\n             peel_chain_detected, consolidation_wallet_risk_score,\n             chain_classification]),\n    sum(amount_usd, as=total_volume)\n  ])\n| sort(total_volume, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Crypto-Terror/Narco Nexus Detection\")`\n`comment(\"Detects transactions to OFAC-exposed wallets and peel chain patterns through mixers\")`\nindex=flame_blockchain sourcetype=flame:chain_monitoring\n  (transaction_type=\"crypto_transfer\" OR transaction_type=\"crypto_deposit\" OR transaction_type=\"crypto_withdrawal\")\n  amount_usd>=1000\n  (sdn_hop_distance<=2 OR (mixing_service_interaction=\"true\" AND peel_chain_detected=\"true\"))\n| eval chain_classification = case(\n    sdn_hop_distance<=1, \"direct_sdn_exposure\",\n    sdn_hop_distance==2, \"indirect_sdn_exposure\",\n    mixing_service_interaction==\"true\" AND peel_chain_detected==\"true\", \"peel_chain_mixing\",\n    1=1, \"unknown\")\n| eval severity = case(\n    sdn_hop_distance<=1 AND amount_usd >= 50000, \"critical\",\n    sdn_hop_distance<=1, \"critical\",\n    sdn_hop_distance==2 AND amount_usd >= 100000, \"critical\",\n    peel_chain_detected==\"true\" AND consolidation_wallet_risk_score >= 90, \"critical\",\n    1=1, \"high\")\n| stats sum(amount_usd) AS total_volume,\n        count AS transaction_count,\n        dc(counterparty_wallet) AS unique_counterparties,\n        values(chain_classification) AS classifications,\n        values(sdn_entity_name) AS sdn_entities,\n        max(severity) AS max_severity\n  BY wallet_address\n| table wallet_address, total_volume, transaction_count, unique_counterparties,\n        classifications, sdn_entities, max_severity\n| sort - total_volume",
+        "sql": "-- SQL for Crypto-Terror/Narco Nexus Detection\n-- Detects sanctions-exposed wallet transactions and peel chain laundering patterns\nSELECT\n  t.transaction_id,\n  t.transaction_hash,\n  t.wallet_address,\n  t.counterparty_wallet,\n  t.amount_usd,\n  t.crypto_currency,\n  t.transaction_date,\n  s.sdn_entity_name,\n  s.sdn_hop_distance,\n  s.wallet_cluster_risk_category,\n  m.mixing_service_name,\n  m.hours_to_mix,\n  p.peel_chain_depth,\n  p.consolidation_wallet,\n  p.consolidation_wallet_risk_score,\n  CASE\n    WHEN s.sdn_hop_distance <= 1 THEN 'direct_sdn_exposure'\n    WHEN s.sdn_hop_distance = 2 THEN 'indirect_sdn_exposure'\n    WHEN m.mixing_service_interaction = TRUE AND p.peel_chain_detected = TRUE THEN 'peel_chain_mixing'\n    ELSE 'unknown'\n  END AS chain_classification\nFROM crypto_transactions t\nLEFT JOIN sdn_wallet_proximity s\n  ON t.counterparty_wallet = s.wallet_address\nLEFT JOIN mixing_service_interactions m\n  ON t.transaction_hash = m.source_transaction_hash\nLEFT JOIN peel_chain_analysis p\n  ON t.transaction_hash = p.origin_transaction_hash\nWHERE t.amount_usd >= 1000\n  AND t.transaction_date > CURRENT_DATE - INTERVAL '90 days'\n  AND (\n    s.sdn_hop_distance <= 2\n    OR (m.mixing_service_interaction = TRUE\n        AND m.hours_to_mix <= 24\n        AND p.peel_chain_detected = TRUE\n        AND p.consolidation_wallet_risk_score >= 80)\n  )\nORDER BY t.amount_usd DESC"
+      },
+      "references": [
+        "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+        "INTERPOL, International fugitive hunt leads to 85 arrests, 29 December 2025",
+        "INTERPOL, 83 arrests in landmark African operation against terrorism financing, 22 October 2025",
+        "OFAC, Sanctions Compliance Guidance for the Virtual Currency Industry, October 2021",
+        "FinCEN, Advisory on Illicit Activity Involving Convertible Virtual Currency, May 2019",
+        "FATF Recommendation 16 — Wire Transfer Rule",
+        "UNODC, Organized Fraud Issue Paper (Vienna, 2024)"
+      ],
+      "threat_path_ids": [
+        "TP-0055"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "investment-scam",
+        "state-criminal-convergence"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase5.monetization",
+        "flame.crypto-laundering",
+        "flame.narco-financing",
+        "flame.peel-chain",
+        "flame.sanctions-exposure",
+        "flame.terrorism-financing"
+      ],
+      "falsepositives": [
+        "Legitimate crypto transactions to wallets that share cluster membership with SDN-listed addresses due to prior commingling on large exchanges",
+        "Privacy-conscious users routing transactions through mixing services for personal privacy without illicit intent",
+        "False positive wallet clustering where blockchain analytics incorrectly associates unrelated wallets"
+      ]
+    },
+    {
+      "id": "5355b27b-ffb9-4ccd-b3de-7e6c3ac312ad",
+      "dl_id": "DL-0175",
+      "title": "Organized Insurance Claims Fraud — Shared Professional Enablers and Claim Timing Clustering Around Policy Inception",
+      "status": "experimental",
+      "description": "Detects organized insurance claims fraud patterns where the same claimant or provider appears across multiple claims with shared professional enablers (medical provider, legal representative, repair shop), or where claim timing is clustered around policy inception. INTERPOL's 2026 Global Financial Fraud Threat Assessment identifies insurance fraud — notably car and medical insurance claims — as escalating globally, with Europe most impacted: the UK recorded a 25% spike in motor insurance fraud in early 2025, France detected nearly USD 1 billion in fraud in 2024, and German insurers flagged 10% of claims as suspicious with annual losses exceeding USD 7 billion. The detection logic targets two primary signatures: (1) network analysis identifying claimants, providers, legal representatives, or repair shops appearing across multiple claims — indicating an organized fraud ring with division of labor; and (2) temporal analysis identifying claims filed within 90 days of policy inception with high severity, which indicates opportunistic application fraud followed by immediate fraudulent claim filing. The combination of shared enablers and inception-proximate timing is a strong indicator of organized ring activity.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "claim_type": [
+            "motor",
+            "medical",
+            "personal_injury"
+          ]
+        },
+        "filter_shared_enablers": {
+          "shared_provider_across_claims|gte": 2,
+          "shared_legal_rep_across_claims|gte": 2
+        },
+        "filter_claimant_recurrence": {
+          "claimant_claim_count_24m|gte": 3
+        },
+        "filter_inception_proximity": {
+          "days_from_inception_to_claim|lte": 90,
+          "claim_severity": [
+            "high",
+            "total_loss"
+          ]
+        },
+        "timeframe": "24m",
+        "condition": "selection AND (filter_shared_enablers OR filter_claimant_recurrence OR filter_inception_proximity)\n"
+      },
+      "logsource": {
+        "product": "insurance",
+        "service": "claims_management"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "claim_id",
+          "policy_id",
+          "claimant_id",
+          "claimant_name",
+          "claim_type",
+          "claim_date",
+          "incident_date",
+          "claim_amount",
+          "claim_severity",
+          "policy_inception_date",
+          "provider_id",
+          "provider_name",
+          "legal_representative_id",
+          "legal_representative_name",
+          "repair_shop_id",
+          "repair_shop_name"
+        ],
+        "enrichment_required": [
+          {
+            "field": "shared_provider_across_claims",
+            "source": "Count of distinct claims sharing the same medical provider within 24-month window"
+          },
+          {
+            "field": "shared_legal_rep_across_claims",
+            "source": "Count of distinct claims sharing the same legal representative within 24-month window"
+          },
+          {
+            "field": "claimant_claim_count_24m",
+            "source": "Count of claims filed by the same claimant across all insurers in trailing 24 months (requires cross-insurer data sharing)"
+          },
+          {
+            "field": "days_from_inception_to_claim",
+            "source": "Days between policy inception date and first claim filing date"
+          },
+          {
+            "field": "cross_insurer_participant_match",
+            "source": "Boolean flag if claimant or enabler appears in cross-insurer fraud database (IFB, NICB)"
+          }
+        ],
+        "derived_fields": [
+          "enabler_network_score",
+          "inception_proximity_flag",
+          "geographic_cluster_id"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Organized Insurance Claims Fraud\n// Detects shared professional enablers and inception-proximate claim patterns\n(claim_type=\"motor\" OR claim_type=\"medical\" OR claim_type=\"personal_injury\")\n| days_from_inception := dateDiff(policy_inception_date, claim_date, unit=\"days\")\n| groupBy(provider_id, function=[\n    count(claim_id, as=provider_claim_count),\n    collect([claimant_id, claim_amount, claim_date])\n  ])\n| provider_claim_count >= 2\n| join({\n    (claim_type=\"motor\" OR claim_type=\"medical\" OR claim_type=\"personal_injury\")\n    | groupBy(claimant_id, function=[\n        count(claim_id, as=claimant_claim_count),\n        collect([provider_id, legal_representative_id, claim_amount])\n      ])\n    | claimant_claim_count >= 3\n  }, field=claimant_id)\n| sort(provider_claim_count, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Organized Insurance Claims Fraud\")`\n`comment(\"Detects shared enablers and inception-proximate claims indicating organized ring\")`\nindex=flame_insurance sourcetype=flame:claims_management\n  (claim_type=\"motor\" OR claim_type=\"medical\" OR claim_type=\"personal_injury\")\n| eval days_from_inception = round((strptime(claim_date, \"%Y-%m-%d\") - strptime(policy_inception_date, \"%Y-%m-%d\")) / 86400, 0)\n| eval inception_flag = if(days_from_inception <= 90 AND (claim_severity=\"high\" OR claim_severity=\"total_loss\"), 1, 0)\n| stats dc(claim_id) AS claim_count,\n        sum(claim_amount) AS total_claimed,\n        dc(claimant_id) AS unique_claimants,\n        dc(policy_id) AS unique_policies,\n        values(claimant_name) AS claimants,\n        values(claim_type) AS claim_types,\n        avg(days_from_inception) AS avg_days_from_inception,\n        sum(inception_flag) AS inception_proximate_claims\n  BY provider_id, provider_name, legal_representative_id\n| where claim_count >= 2\n| eval risk_score = case(\n    claim_count >= 5 AND inception_proximate_claims >= 2, \"critical\",\n    claim_count >= 3 AND unique_claimants >= 3, \"high\",\n    inception_proximate_claims >= 1, \"high\",\n    1=1, \"medium\")\n| table provider_id, provider_name, legal_representative_id,\n        claim_count, total_claimed, unique_claimants, unique_policies,\n        claim_types, avg_days_from_inception, inception_proximate_claims, risk_score\n| sort - claim_count",
+        "sql": "-- SQL for Organized Insurance Claims Fraud\n-- Detects shared professional enablers and claim timing clustered around policy inception\nWITH enabler_network AS (\n  SELECT\n    c.provider_id,\n    p.provider_name,\n    c.legal_representative_id,\n    lr.representative_name,\n    COUNT(DISTINCT c.claim_id) AS claim_count,\n    COUNT(DISTINCT c.claimant_id) AS unique_claimants,\n    COUNT(DISTINCT c.policy_id) AS unique_policies,\n    SUM(c.claim_amount) AS total_claimed,\n    AVG(DATEDIFF('day', pol.inception_date, c.claim_date)) AS avg_days_from_inception,\n    COUNT(CASE WHEN DATEDIFF('day', pol.inception_date, c.claim_date) <= 90\n                AND c.claim_severity IN ('high', 'total_loss')\n               THEN 1 END) AS inception_proximate_claims\n  FROM claims c\n  JOIN policies pol ON c.policy_id = pol.policy_id\n  LEFT JOIN providers p ON c.provider_id = p.provider_id\n  LEFT JOIN legal_representatives lr ON c.legal_representative_id = lr.representative_id\n  WHERE c.claim_type IN ('motor', 'medical', 'personal_injury')\n    AND c.claim_date > CURRENT_DATE - INTERVAL '24 months'\n  GROUP BY c.provider_id, p.provider_name, c.legal_representative_id, lr.representative_name\n  HAVING COUNT(DISTINCT c.claim_id) >= 2\n),\nclaimant_recurrence AS (\n  SELECT\n    c.claimant_id,\n    c.claimant_name,\n    COUNT(DISTINCT c.claim_id) AS claimant_claim_count,\n    COUNT(DISTINCT c.insurer_id) AS insurers_involved,\n    SUM(c.claim_amount) AS claimant_total_claimed,\n    ARRAY_AGG(DISTINCT c.provider_id) AS providers_used,\n    ARRAY_AGG(DISTINCT c.legal_representative_id) AS legal_reps_used\n  FROM claims c\n  WHERE c.claim_type IN ('motor', 'medical', 'personal_injury')\n    AND c.claim_date > CURRENT_DATE - INTERVAL '24 months'\n  GROUP BY c.claimant_id, c.claimant_name\n  HAVING COUNT(DISTINCT c.claim_id) >= 3\n)\nSELECT\n  en.provider_id,\n  en.provider_name,\n  en.legal_representative_id,\n  en.representative_name,\n  en.claim_count,\n  en.unique_claimants,\n  en.unique_policies,\n  en.total_claimed,\n  en.avg_days_from_inception,\n  en.inception_proximate_claims,\n  cr.claimant_id,\n  cr.claimant_claim_count,\n  cr.insurers_involved\nFROM enabler_network en\nLEFT JOIN claimant_recurrence cr\n  ON cr.claimant_id = ANY(\n    SELECT DISTINCT claimant_id FROM claims\n    WHERE provider_id = en.provider_id\n      AND claim_date > CURRENT_DATE - INTERVAL '24 months'\n  )\nORDER BY en.claim_count DESC, en.total_claimed DESC"
+      },
+      "references": [
+        "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026 — Insurance Fraud",
+        "CIFAS, AI fuels surge in identity fraud — Fraudscape six-month report, August 2025",
+        "ALFA, Fraude a l'assurance, August 2025",
+        "GDV, Insurance fraud causes damage of over six billion euros a year, May 2024",
+        "NICB — National Insurance Crime Bureau fraud detection resources"
+      ],
+      "threat_path_ids": [
+        "TP-0056"
+      ],
+      "fraud_types": [
+        "documentary-fraud",
+        "fraudulent-claim",
+        "insurance-fraud",
+        "staged-accident"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.false-claims",
+        "flame.insurance-fraud",
+        "flame.organized-fraud-ring",
+        "flame.staged-accident"
+      ],
+      "falsepositives": [
+        "High-volume legitimate medical providers (emergency rooms, urgent care clinics) naturally appearing across many claims",
+        "Law firms specializing in personal injury that legitimately represent many claimants",
+        "Legitimate repair shops in areas with high accident rates appearing across multiple motor claims",
+        "New policyholders who experience genuine accidents shortly after policy inception"
+      ]
+    },
+    {
+      "id": "7e35a471-0738-49bf-9195-e044981d0cb1",
+      "dl_id": "DL-0176",
+      "title": "Organized Counterfeit Goods and Non-Delivery Fraud Network — High Dispute Merchant Accounts with Drop Location Clustering and Below-Market Pricing",
+      "status": "experimental",
+      "description": "Detects organized counterfeit goods and non-delivery fraud network activity by identifying merchant accounts exhibiting multiple fraud indicators simultaneously: high chargeback/dispute rates, shipping addresses clustered at known drop locations, product listings priced significantly below market value, and seller account age under 90 days with disproportionately high transaction volume. The UNODC Organized Fraud Issue Paper (2024) documents this as the most prevalent fraud category by volume, with organized criminal groups operating multi-site networks backed by dedicated money laundering infrastructure, recruited money mules, and counterfeit supply chains. Case studies from Romania, Germany, and the US show OCGs adopting formal business structures — suppliers, distribution centers, online retailers — to deceive payment providers and scale operations. The detection logic combines four signals: (1) dispute rate exceeding 2% of transactions indicating non-delivery or counterfeit complaints; (2) shipping address concentration at drop locations or mail receiving services; (3) product pricing 30%+ below market benchmarks; and (4) new seller accounts (<90 days) with anomalously high listing and transaction volume. Any two of these four indicators in combination warrant investigation.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "merchant_type": [
+            "marketplace_seller",
+            "ecommerce_merchant",
+            "auction_seller"
+          ]
+        },
+        "filter_high_dispute_rate": {
+          "dispute_rate_pct|gte": 2.0,
+          "dispute_count_30d|gte": 10
+        },
+        "filter_drop_location": {
+          "shipping_address_drop_flag": true,
+          "shipping_address_cluster_count|gte": 5
+        },
+        "filter_below_market_pricing": {
+          "avg_price_vs_market_ratio|lte": 0.7
+        },
+        "filter_new_high_volume": {
+          "seller_account_age_days|lte": 90,
+          "transaction_count_30d|gte": 50
+        },
+        "timeframe": "30d",
+        "condition": "selection AND (\n  (filter_high_dispute_rate AND filter_below_market_pricing)\n  OR (filter_high_dispute_rate AND filter_new_high_volume)\n  OR (filter_drop_location AND filter_new_high_volume)\n  OR (filter_below_market_pricing AND filter_drop_location)\n)\n"
+      },
+      "logsource": {
+        "product": "ecommerce",
+        "service": "merchant_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "merchant_id",
+          "seller_id",
+          "merchant_name",
+          "merchant_type",
+          "seller_account_creation_date",
+          "transaction_count_30d",
+          "total_sales_30d",
+          "dispute_count_30d",
+          "dispute_rate_pct",
+          "product_category",
+          "avg_product_price"
+        ],
+        "enrichment_required": [
+          {
+            "field": "shipping_address_drop_flag",
+            "source": "Shipping address cross-reference against known mail receiving services, drop locations, and commercial mail boxes"
+          },
+          {
+            "field": "shipping_address_cluster_count",
+            "source": "Count of distinct orders shipped to same address or address cluster (within 0.1 mile radius)"
+          },
+          {
+            "field": "avg_price_vs_market_ratio",
+            "source": "Ratio of seller average product price to market benchmark price for same product category"
+          },
+          {
+            "field": "seller_account_age_days",
+            "source": "Days since seller account was created on the platform"
+          },
+          {
+            "field": "seller_identity_risk_score",
+            "source": "Identity verification risk score for seller registration (synthetic/stolen identity indicators)"
+          }
+        ],
+        "derived_fields": [
+          "combined_risk_score",
+          "dispute_velocity_trend",
+          "pricing_anomaly_severity"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Counterfeit/Non-Delivery Fraud Network Detection\n// Detects merchant accounts with high disputes, drop addresses, below-market pricing, new accounts\n(merchant_type=\"marketplace_seller\" OR merchant_type=\"ecommerce_merchant\" OR merchant_type=\"auction_seller\")\n| dispute_rate := dispute_count_30d / transaction_count_30d * 100\n| seller_age_days := dateDiff(seller_account_creation_date, now(), unit=\"days\")\n| high_dispute := dispute_rate >= 2.0 AND dispute_count_30d >= 10\n| drop_location := shipping_address_drop_flag == \"true\" AND shipping_address_cluster_count >= 5\n| below_market := avg_price_vs_market_ratio <= 0.70\n| new_high_vol := seller_age_days <= 90 AND transaction_count_30d >= 50\n| where (high_dispute AND below_market)\n     OR (high_dispute AND new_high_vol)\n     OR (drop_location AND new_high_vol)\n     OR (below_market AND drop_location)\n| indicator_count := sum([high_dispute, drop_location, below_market, new_high_vol])\n| groupBy(merchant_id, function=[\n    collect([merchant_name, seller_account_creation_date, seller_age_days,\n             transaction_count_30d, total_sales_30d, dispute_count_30d,\n             dispute_rate, avg_price_vs_market_ratio,\n             shipping_address_drop_flag, indicator_count])\n  ])\n| sort(indicator_count, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Counterfeit/Non-Delivery Fraud Network Detection\")`\n`comment(\"Detects organized merchant fraud via disputes, drops, pricing, and account age\")`\nindex=flame_ecommerce sourcetype=flame:merchant_monitoring\n  (merchant_type=\"marketplace_seller\" OR merchant_type=\"ecommerce_merchant\" OR merchant_type=\"auction_seller\")\n| eval seller_age_days = round((now() - strptime(seller_account_creation_date, \"%Y-%m-%d\")) / 86400, 0)\n| eval high_dispute = if(dispute_rate_pct >= 2.0 AND dispute_count_30d >= 10, 1, 0)\n| eval drop_location = if(shipping_address_drop_flag=\"true\" AND shipping_address_cluster_count >= 5, 1, 0)\n| eval below_market = if(avg_price_vs_market_ratio <= 0.70, 1, 0)\n| eval new_high_vol = if(seller_age_days <= 90 AND transaction_count_30d >= 50, 1, 0)\n| eval indicator_count = high_dispute + drop_location + below_market + new_high_vol\n| where (high_dispute=1 AND below_market=1)\n     OR (high_dispute=1 AND new_high_vol=1)\n     OR (drop_location=1 AND new_high_vol=1)\n     OR (below_market=1 AND drop_location=1)\n| eval risk_score = case(\n    indicator_count >= 4, \"critical\",\n    indicator_count >= 3, \"high\",\n    indicator_count >= 2, \"medium\",\n    1=1, \"low\")\n| table merchant_id, merchant_name, seller_account_creation_date, seller_age_days,\n        transaction_count_30d, total_sales_30d, dispute_count_30d, dispute_rate_pct,\n        avg_price_vs_market_ratio, shipping_address_drop_flag,\n        shipping_address_cluster_count, indicator_count, risk_score\n| sort - indicator_count, - dispute_rate_pct",
+        "sql": "-- SQL for Counterfeit/Non-Delivery Fraud Network Detection\n-- Detects organized merchant fraud combining disputes, drop locations, pricing, and account age\nWITH merchant_indicators AS (\n  SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.merchant_type,\n    m.seller_account_creation_date,\n    DATEDIFF('day', m.seller_account_creation_date, CURRENT_DATE) AS seller_age_days,\n    ms.transaction_count_30d,\n    ms.total_sales_30d,\n    ms.dispute_count_30d,\n    ms.dispute_rate_pct,\n    ms.avg_price_vs_market_ratio,\n    sa.shipping_address_drop_flag,\n    sa.shipping_address_cluster_count,\n    CASE WHEN ms.dispute_rate_pct >= 2.0 AND ms.dispute_count_30d >= 10 THEN 1 ELSE 0 END AS high_dispute,\n    CASE WHEN sa.shipping_address_drop_flag = TRUE AND sa.shipping_address_cluster_count >= 5 THEN 1 ELSE 0 END AS drop_location,\n    CASE WHEN ms.avg_price_vs_market_ratio <= 0.70 THEN 1 ELSE 0 END AS below_market,\n    CASE WHEN DATEDIFF('day', m.seller_account_creation_date, CURRENT_DATE) <= 90\n          AND ms.transaction_count_30d >= 50 THEN 1 ELSE 0 END AS new_high_vol\n  FROM merchants m\n  JOIN merchant_stats_30d ms ON m.merchant_id = ms.merchant_id\n  LEFT JOIN shipping_address_analysis sa ON m.merchant_id = sa.merchant_id\n  WHERE m.merchant_type IN ('marketplace_seller', 'ecommerce_merchant', 'auction_seller')\n)\nSELECT\n  merchant_id,\n  merchant_name,\n  merchant_type,\n  seller_account_creation_date,\n  seller_age_days,\n  transaction_count_30d,\n  total_sales_30d,\n  dispute_count_30d,\n  dispute_rate_pct,\n  avg_price_vs_market_ratio,\n  shipping_address_drop_flag,\n  shipping_address_cluster_count,\n  (high_dispute + drop_location + below_market + new_high_vol) AS indicator_count\nFROM merchant_indicators\nWHERE (high_dispute = 1 AND below_market = 1)\n   OR (high_dispute = 1 AND new_high_vol = 1)\n   OR (drop_location = 1 AND new_high_vol = 1)\n   OR (below_market = 1 AND drop_location = 1)\nORDER BY (high_dispute + drop_location + below_market + new_high_vol) DESC,\n         dispute_rate_pct DESC"
+      },
+      "references": [
+        "UNODC, Organized Fraud Issue Paper (Vienna, 2024) — Consumer Products and Services Fraud",
+        "NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1301 Resale",
+        "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026 — e-commerce fraud",
+        "FinCEN, Detecting and Reporting Illicit Financial Flows Tied to OTG/ORC"
+      ],
+      "threat_path_ids": [
+        "TP-0063"
+      ],
+      "fraud_types": [
+        "auction-fraud",
+        "brand-impersonation",
+        "counterfeit-goods",
+        "non-delivery",
+        "purchase-scam"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.counterfeit-goods",
+        "flame.merchant-fraud",
+        "flame.non-delivery",
+        "flame.organized-retail-crime"
+      ],
+      "falsepositives": [
+        "Legitimate liquidation or clearance sellers offering products significantly below retail price",
+        "New marketplace sellers with aggressive pricing strategy during initial launch period",
+        "Fulfillment centers or warehouses that legitimately receive high volumes of shipments to a single address",
+        "Seasonal sellers (holiday, event-specific) with naturally short account lifespans and high volume"
       ]
     }
   ]

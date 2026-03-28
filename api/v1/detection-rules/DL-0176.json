@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-28T22:33:33.587600+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "7e35a471-0738-49bf-9195-e044981d0cb1",
+    "dl_id": "DL-0176",
+    "title": "Organized Counterfeit Goods and Non-Delivery Fraud Network — High Dispute Merchant Accounts with Drop Location Clustering and Below-Market Pricing",
+    "status": "experimental",
+    "description": "Detects organized counterfeit goods and non-delivery fraud network activity by identifying merchant accounts exhibiting multiple fraud indicators simultaneously: high chargeback/dispute rates, shipping addresses clustered at known drop locations, product listings priced significantly below market value, and seller account age under 90 days with disproportionately high transaction volume. The UNODC Organized Fraud Issue Paper (2024) documents this as the most prevalent fraud category by volume, with organized criminal groups operating multi-site networks backed by dedicated money laundering infrastructure, recruited money mules, and counterfeit supply chains. Case studies from Romania, Germany, and the US show OCGs adopting formal business structures — suppliers, distribution centers, online retailers — to deceive payment providers and scale operations. The detection logic combines four signals: (1) dispute rate exceeding 2% of transactions indicating non-delivery or counterfeit complaints; (2) shipping address concentration at drop locations or mail receiving services; (3) product pricing 30%+ below market benchmarks; and (4) new seller accounts (<90 days) with anomalously high listing and transaction volume. Any two of these four indicators in combination warrant investigation.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "merchant_type": [
+          "marketplace_seller",
+          "ecommerce_merchant",
+          "auction_seller"
+        ]
+      },
+      "filter_high_dispute_rate": {
+        "dispute_rate_pct|gte": 2.0,
+        "dispute_count_30d|gte": 10
+      },
+      "filter_drop_location": {
+        "shipping_address_drop_flag": true,
+        "shipping_address_cluster_count|gte": 5
+      },
+      "filter_below_market_pricing": {
+        "avg_price_vs_market_ratio|lte": 0.7
+      },
+      "filter_new_high_volume": {
+        "seller_account_age_days|lte": 90,
+        "transaction_count_30d|gte": 50
+      },
+      "timeframe": "30d",
+      "condition": "selection AND (\n  (filter_high_dispute_rate AND filter_below_market_pricing)\n  OR (filter_high_dispute_rate AND filter_new_high_volume)\n  OR (filter_drop_location AND filter_new_high_volume)\n  OR (filter_below_market_pricing AND filter_drop_location)\n)\n"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "merchant_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "merchant_id",
+        "seller_id",
+        "merchant_name",
+        "merchant_type",
+        "seller_account_creation_date",
+        "transaction_count_30d",
+        "total_sales_30d",
+        "dispute_count_30d",
+        "dispute_rate_pct",
+        "product_category",
+        "avg_product_price"
+      ],
+      "enrichment_required": [
+        {
+          "field": "shipping_address_drop_flag",
+          "source": "Shipping address cross-reference against known mail receiving services, drop locations, and commercial mail boxes"
+        },
+        {
+          "field": "shipping_address_cluster_count",
+          "source": "Count of distinct orders shipped to same address or address cluster (within 0.1 mile radius)"
+        },
+        {
+          "field": "avg_price_vs_market_ratio",
+          "source": "Ratio of seller average product price to market benchmark price for same product category"
+        },
+        {
+          "field": "seller_account_age_days",
+          "source": "Days since seller account was created on the platform"
+        },
+        {
+          "field": "seller_identity_risk_score",
+          "source": "Identity verification risk score for seller registration (synthetic/stolen identity indicators)"
+        }
+      ],
+      "derived_fields": [
+        "combined_risk_score",
+        "dispute_velocity_trend",
+        "pricing_anomaly_severity"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Counterfeit/Non-Delivery Fraud Network Detection\n// Detects merchant accounts with high disputes, drop addresses, below-market pricing, new accounts\n(merchant_type=\"marketplace_seller\" OR merchant_type=\"ecommerce_merchant\" OR merchant_type=\"auction_seller\")\n| dispute_rate := dispute_count_30d / transaction_count_30d * 100\n| seller_age_days := dateDiff(seller_account_creation_date, now(), unit=\"days\")\n| high_dispute := dispute_rate >= 2.0 AND dispute_count_30d >= 10\n| drop_location := shipping_address_drop_flag == \"true\" AND shipping_address_cluster_count >= 5\n| below_market := avg_price_vs_market_ratio <= 0.70\n| new_high_vol := seller_age_days <= 90 AND transaction_count_30d >= 50\n| where (high_dispute AND below_market)\n     OR (high_dispute AND new_high_vol)\n     OR (drop_location AND new_high_vol)\n     OR (below_market AND drop_location)\n| indicator_count := sum([high_dispute, drop_location, below_market, new_high_vol])\n| groupBy(merchant_id, function=[\n    collect([merchant_name, seller_account_creation_date, seller_age_days,\n             transaction_count_30d, total_sales_30d, dispute_count_30d,\n             dispute_rate, avg_price_vs_market_ratio,\n             shipping_address_drop_flag, indicator_count])\n  ])\n| sort(indicator_count, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Counterfeit/Non-Delivery Fraud Network Detection\")`\n`comment(\"Detects organized merchant fraud via disputes, drops, pricing, and account age\")`\nindex=flame_ecommerce sourcetype=flame:merchant_monitoring\n  (merchant_type=\"marketplace_seller\" OR merchant_type=\"ecommerce_merchant\" OR merchant_type=\"auction_seller\")\n| eval seller_age_days = round((now() - strptime(seller_account_creation_date, \"%Y-%m-%d\")) / 86400, 0)\n| eval high_dispute = if(dispute_rate_pct >= 2.0 AND dispute_count_30d >= 10, 1, 0)\n| eval drop_location = if(shipping_address_drop_flag=\"true\" AND shipping_address_cluster_count >= 5, 1, 0)\n| eval below_market = if(avg_price_vs_market_ratio <= 0.70, 1, 0)\n| eval new_high_vol = if(seller_age_days <= 90 AND transaction_count_30d >= 50, 1, 0)\n| eval indicator_count = high_dispute + drop_location + below_market + new_high_vol\n| where (high_dispute=1 AND below_market=1)\n     OR (high_dispute=1 AND new_high_vol=1)\n     OR (drop_location=1 AND new_high_vol=1)\n     OR (below_market=1 AND drop_location=1)\n| eval risk_score = case(\n    indicator_count >= 4, \"critical\",\n    indicator_count >= 3, \"high\",\n    indicator_count >= 2, \"medium\",\n    1=1, \"low\")\n| table merchant_id, merchant_name, seller_account_creation_date, seller_age_days,\n        transaction_count_30d, total_sales_30d, dispute_count_30d, dispute_rate_pct,\n        avg_price_vs_market_ratio, shipping_address_drop_flag,\n        shipping_address_cluster_count, indicator_count, risk_score\n| sort - indicator_count, - dispute_rate_pct",
+      "sql": "-- SQL for Counterfeit/Non-Delivery Fraud Network Detection\n-- Detects organized merchant fraud combining disputes, drop locations, pricing, and account age\nWITH merchant_indicators AS (\n  SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.merchant_type,\n    m.seller_account_creation_date,\n    DATEDIFF('day', m.seller_account_creation_date, CURRENT_DATE) AS seller_age_days,\n    ms.transaction_count_30d,\n    ms.total_sales_30d,\n    ms.dispute_count_30d,\n    ms.dispute_rate_pct,\n    ms.avg_price_vs_market_ratio,\n    sa.shipping_address_drop_flag,\n    sa.shipping_address_cluster_count,\n    CASE WHEN ms.dispute_rate_pct >= 2.0 AND ms.dispute_count_30d >= 10 THEN 1 ELSE 0 END AS high_dispute,\n    CASE WHEN sa.shipping_address_drop_flag = TRUE AND sa.shipping_address_cluster_count >= 5 THEN 1 ELSE 0 END AS drop_location,\n    CASE WHEN ms.avg_price_vs_market_ratio <= 0.70 THEN 1 ELSE 0 END AS below_market,\n    CASE WHEN DATEDIFF('day', m.seller_account_creation_date, CURRENT_DATE) <= 90\n          AND ms.transaction_count_30d >= 50 THEN 1 ELSE 0 END AS new_high_vol\n  FROM merchants m\n  JOIN merchant_stats_30d ms ON m.merchant_id = ms.merchant_id\n  LEFT JOIN shipping_address_analysis sa ON m.merchant_id = sa.merchant_id\n  WHERE m.merchant_type IN ('marketplace_seller', 'ecommerce_merchant', 'auction_seller')\n)\nSELECT\n  merchant_id,\n  merchant_name,\n  merchant_type,\n  seller_account_creation_date,\n  seller_age_days,\n  transaction_count_30d,\n  total_sales_30d,\n  dispute_count_30d,\n  dispute_rate_pct,\n  avg_price_vs_market_ratio,\n  shipping_address_drop_flag,\n  shipping_address_cluster_count,\n  (high_dispute + drop_location + below_market + new_high_vol) AS indicator_count\nFROM merchant_indicators\nWHERE (high_dispute = 1 AND below_market = 1)\n   OR (high_dispute = 1 AND new_high_vol = 1)\n   OR (drop_location = 1 AND new_high_vol = 1)\n   OR (below_market = 1 AND drop_location = 1)\nORDER BY (high_dispute + drop_location + below_market + new_high_vol) DESC,\n         dispute_rate_pct DESC"
+    },
+    "references": [
+      "UNODC, Organized Fraud Issue Paper (Vienna, 2024) — Consumer Products and Services Fraud",
+      "NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1301 Resale",
+      "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026 — e-commerce fraud",
+      "FinCEN, Detecting and Reporting Illicit Financial Flows Tied to OTG/ORC"
+    ],
+    "threat_path_ids": [
+      "TP-0063"
+    ],
+    "fraud_types": [
+      "auction-fraud",
+      "brand-impersonation",
+      "counterfeit-goods",
+      "non-delivery",
+      "purchase-scam"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.counterfeit-goods",
+      "flame.merchant-fraud",
+      "flame.non-delivery",
+      "flame.organized-retail-crime"
+    ],
+    "falsepositives": [
+      "Legitimate liquidation or clearance sellers offering products significantly below retail price",
+      "New marketplace sellers with aggressive pricing strategy during initial launch period",
+      "Fulfillment centers or warehouses that legitimately receive high volumes of shipments to a single address",
+      "Seasonal sellers (holiday, event-specific) with naturally short account lifespans and high volume"
+    ]
+  }
+}
