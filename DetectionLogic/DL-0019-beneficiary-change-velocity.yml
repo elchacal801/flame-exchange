@@ -35,8 +35,8 @@ data_sources:
   native_fields:
   - event_type
 queries:
-  logscale: |-
-    // LogScale LQL for Beneficiary Change Velocity Anomaly
+  cql: |-
+    // CrowdStrike CQL for Beneficiary Change Velocity Anomaly
     // Repository: flame-banking-core-banking
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count(distinct beneficiary_id) by account_id > 3

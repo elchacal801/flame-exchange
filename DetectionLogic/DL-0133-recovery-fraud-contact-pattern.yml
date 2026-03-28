@@ -48,7 +48,7 @@ queries:
     index=flame_banking sourcetype=flame:transaction_monitoring
       transaction_type IN ("WIRE_OUT", "ACH_OUT", "CRYPTO_TRANSFER")
       amount > 500
-    | join customer_id [
+    | join type=inner max=0 customer_id [
       search index=flame_fraud sourcetype=flame:complaints
       | where complaint_date >= relative_time(now(), "-90d")
       | fields customer_id, complaint_date, original_loss_amount, fraud_type
@@ -65,8 +65,8 @@ queries:
       BY customer_id, fraud_type, original_loss_amount
     | where payment_count >= 1
 
-  logscale: |-
-    // LogScale LQL for Recovery Fraud Contact Pattern
+  cql: |-
+    // CrowdStrike CQL for Recovery Fraud Contact Pattern
     // Cross-references fraud complaints with subsequent outbound payments
     transaction_type IN ["WIRE_OUT", "ACH_OUT", "CRYPTO_TRANSFER"]
     | amount > 500
@@ -102,6 +102,8 @@ falsepositives:
   - Victim making normal payments to new vendors unrelated to fraud
 level: high
 tags:
+  - attack.t1656
+  - attack.t1657
   - cfpf.phase4.execution
   - flame.unodc
   - flame.recovery-fraud

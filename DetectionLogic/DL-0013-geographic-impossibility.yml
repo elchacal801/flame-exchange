@@ -32,15 +32,22 @@ data_sources:
   native_fields:
   - event_type
 queries:
-  logscale: |-
-    // LogScale LQL for Geographic Impossibility Login
+  cql: |-
+    // CrowdStrike CQL for Geographic Impossibility Login
     // Repository: flame-banking-auth-logs
-    // Aggregation that cannot be expressed in Sigma:
-    // Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m
+    // Groups logins by user within 60m windows and flags when
+    // multiple distinct countries appear (physical travel impossible)
     (event_type="login_success" OR event_type="login_attempt")
-    // Temporal correlation — use join() or selfJoinFilter() in LogScale
-    // to correlate the selection events within the timeframe
-    | selfJoinFilter(user_id, where=[...])
+    | groupBy(user_id, function=[
+        count(as=login_count),
+        collect([geo_country, src_ip, @timestamp]),
+        selectFirst(geo_country, as=first_country),
+        selectLast(geo_country, as=last_country),
+        min(@timestamp, as=first_time),
+        max(@timestamp, as=last_time)
+      ], span=60m)
+    | login_count >= 2
+    | first_country != last_country
   splunk: |-
     `comment("Splunk SPL for Geographic Impossibility Login")`
     `comment("Aggregation that cannot be expressed in Sigma")`

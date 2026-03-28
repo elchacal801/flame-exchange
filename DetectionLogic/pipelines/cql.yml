@@ -1,14 +1,14 @@
-name: FLAME LogScale Pipeline
+name: FLAME CrowdStrike CQL Pipeline
 priority: 10
 description: >
-  Field mapping pipeline for CrowdStrike LogScale (Falcon NG-SIEM).
-  Maps FLAME custom logsource taxonomy and field names to LogScale
+  Field mapping pipeline for CrowdStrike Falcon NGSIEM (CQL).
+  Maps FLAME custom logsource taxonomy and field names to CrowdStrike
   repositories, parsers, and field conventions.
 
 transformations:
 
   # ============================================================
-  # Logsource → LogScale Repository Mappings
+  # Logsource → CrowdStrike NGSIEM Repository Mappings
   # ============================================================
 
   # --- Banking ---
@@ -434,9 +434,9 @@ transformations:
         service: incident_management
 
   # ============================================================
-  # Field Name Mappings (Sigma → LogScale)
+  # Field Name Mappings (Sigma → CrowdStrike CQL)
   # ============================================================
-  # LogScale uses flat field naming. Most FLAME fields map 1:1.
+  # CrowdStrike NGSIEM uses flat field naming. Most FLAME fields map 1:1.
   # Where disambiguation is needed, prefix with the source context.
 
   - id: ls_field_mappings

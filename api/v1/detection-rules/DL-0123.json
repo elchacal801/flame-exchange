@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-28T04:52:56.814072+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
+    "dl_id": "DL-0123",
+    "title": "TAE Infrastructure Rotation Detection",
+    "status": "experimental",
+    "description": "Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems within short timeframes, (2) RIPE NCC resource reallocation to newly created organizations with minimal operational history, (3) BGP announcement changes matching known TAE rebranding patterns such as Aeza to Hypercore to NetCrafters, (4) threat density score spikes on newly announced prefixes indicating migration of malicious infrastructure to fresh address space.\n",
+    "cfpf_phase": "P1",
+    "level": "high",
+    "detection": {
+      "selection_prefix_transfer": {
+        "prefix_transfer_days|lt": 30,
+        "source_asn_related": true,
+        "destination_asn_related": true
+      },
+      "selection_new_org": {
+        "new_organization_age_days|lt": 90,
+        "ripe_resource_allocation": true,
+        "organization_verification_status": "minimal"
+      },
+      "selection_threat_density": {
+        "threat_density_score|gt": 0.6,
+        "prefix_announcement_age_days|lt": 14,
+        "historical_abuse_on_prefix": false
+      },
+      "selection_rebranding": {
+        "asn_name_change_days|lt": 60,
+        "infrastructure_overlap_score|gt": 0.7
+      },
+      "condition": "(selection_prefix_transfer and selection_new_org) or selection_threat_density or (selection_prefix_transfer and selection_rebranding)"
+    },
+    "logsource": {
+      "product": "network",
+      "service": "bgp_monitoring"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "prefix_transfer_days",
+        "source_asn_related",
+        "destination_asn_related",
+        "new_organization_age_days",
+        "ripe_resource_allocation",
+        "organization_verification_status",
+        "threat_density_score",
+        "prefix_announcement_age_days",
+        "historical_abuse_on_prefix",
+        "asn_name_change_days",
+        "infrastructure_overlap_score"
+      ],
+      "enrichment_required": [
+        {
+          "field": "threat_density_score",
+          "source": "Threat intelligence enrichment (IP prefix threat density calculation)"
+        },
+        {
+          "field": "infrastructure_overlap_score",
+          "source": "BGP analytics enrichment (infrastructure overlap between old and new ASN announcements)"
+        },
+        {
+          "field": "source_asn_related",
+          "source": "WHOIS/RIR enrichment (ASN organizational relationship mapping)"
+        }
+      ]
+    },
+    "threat_path_ids": [
+      "TP-0044",
+      "TP-0061"
+    ],
+    "fraud_types": [
+      "bph-migration",
+      "sanctions-evasion-infrastructure",
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "TP-0044",
+      "TP-0061",
+      "aeza",
+      "attack.t1583.003",
+      "bgp",
+      "bulletproof-hosting",
+      "cfpf.phase1.recon",
+      "ip-rotation",
+      "ripe-abuse",
+      "sanctions-evasion",
+      "tae"
+    ],
+    "falsepositives": [
+      "Legitimate ISP mergers and acquisitions involving prefix transfers",
+      "Planned infrastructure migrations with proper documentation",
+      "Regional Internet Registry administrative reallocation"
+    ]
+  }
+}

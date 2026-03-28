@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.344270+00:00",
+    "generated_at": "2026-03-28T04:52:56.486343+00:00",
     "total": 1
   },
   "data": {
@@ -57,7 +57,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Cross-Platform Deposit and Withdrawal Chain\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n// Temporal ordered correlation — use join() in LogScale\n| join({...}, field=account_id, mode=inner)",
+      "cql": "// CrowdStrike CQL for Cross-Platform Deposit and Withdrawal Chain\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n// Temporal ordered correlation — use join() in CrowdStrike NGSIEM\n| join({...}, field=account_id, mode=inner)",
       "splunk": "`comment(\"Splunk SPL for Cross-Platform Deposit and Withdrawal Chain\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
     },
     "references": [

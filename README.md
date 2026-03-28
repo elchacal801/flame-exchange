@@ -278,7 +278,7 @@ FLAME ships **150 detection rules** as Sigma-compatible YAML, exported to three 
 - **Elasticsearch EQL** -- `database/sigma-exports/elastic/`
 - **Microsoft Sentinel KQL** -- `database/sigma-exports/sentinel/`
 
-95 rules are pure Sigma (boolean selection logic). 55 rules requiring aggregation or correlation include native query implementations with SIEM-specific guidance in `queries:` blocks (LogScale LQL, Splunk SPL, Elasticsearch).
+95 rules are pure Sigma (boolean selection logic). 55 rules requiring aggregation or correlation include native query implementations with SIEM-specific guidance in `queries:` blocks (CrowdStrike CQL, Splunk SPL, Elasticsearch).
 
 Rules are organized by severity level (`informational`, `low`, `medium`, `high`, `critical`) and linked to specific threat paths via `threat_paths:` frontmatter. Each rule maps to a single CFPF phase.
 

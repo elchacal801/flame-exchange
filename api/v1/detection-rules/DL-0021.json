@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.174836+00:00",
+    "generated_at": "2026-03-28T04:52:56.277186+00:00",
     "total": 1
   },
   "data": {
@@ -45,7 +45,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for MFA Method Switch Before High-Value Transaction\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_mfa_change | near selection_high_value_txn by account_id\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+      "cql": "// CrowdStrike CQL for MFA Method Switch Before High-Value Transaction\n// Repository: flame-banking-identity-management\n// Correlates MFA downgrade with subsequent high-value transaction\n// within 4h for the same account\n(event_type=\"MFA_METHOD_CHANGE\" AND\n  (new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\"))\nOR ((event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\") AND\n  transaction_amount>=5000)\n| selfJoinFilter(account_id, where=[\n    {event_type=\"MFA_METHOD_CHANGE\"}\n    {event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\"}\n  ])\n| groupBy(account_id, function=[\n    count(as=event_count),\n    collect([event_type, new_mfa_method, transaction_amount, @timestamp])\n  ], span=4h)\n| event_count >= 2",
       "splunk": "`comment(\"Splunk SPL for MFA Method Switch Before High-Value Transaction\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_mfa_change | near selection_high_value_txn by account_id\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
     },
     "references": [

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.139845+00:00",
+    "generated_at": "2026-03-28T04:52:56.221497+00:00",
     "total": 1
   },
   "data": {
@@ -34,7 +34,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Geographic Impossibility Login\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\n(event_type=\"login_success\" OR event_type=\"login_attempt\")\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(user_id, where=[...])",
+      "cql": "// CrowdStrike CQL for Geographic Impossibility Login\n// Repository: flame-banking-auth-logs\n// Groups logins by user within 60m windows and flags when\n// multiple distinct countries appear (physical travel impossible)\n(event_type=\"login_success\" OR event_type=\"login_attempt\")\n| groupBy(user_id, function=[\n    count(as=login_count),\n    collect([geo_country, src_ip, @timestamp]),\n    selectFirst(geo_country, as=first_country),\n    selectLast(geo_country, as=last_country),\n    min(@timestamp, as=first_time),\n    max(@timestamp, as=last_time)\n  ], span=60m)\n| login_count >= 2\n| first_country != last_country",
       "splunk": "`comment(\"Splunk SPL for Geographic Impossibility Login\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\")`\nindex=flame_banking sourcetype=flame:auth_logs (event_type=\"login_success\" OR event_type=\"login_attempt\")\n| transaction user_id maxspan=60m\n| where eventcount >= 2"
     },
     "references": [

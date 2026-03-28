@@ -1,20 +1,4 @@
 {
   "tp_id": "TP-0033",
-  "rules": [
-    {
-      "type": "sql",
-      "content": "SELECT\n    s.student_id,\n    s.enrollment_date,\n    s.institution_id,\n    fa.total_disbursed,\n    fa.disbursement_date,\n    COALESCE(lms.total_logins, 0) AS lms_logins,\n    COALESCE(lms.assignments_submitted, 0) AS assignments,\n    COALESCE(att.classes_attended, 0) AS attendance_count\nFROM students s\nJOIN financial_aid fa ON s.student_id = fa.student_id\nLEFT JOIN lms_activity lms ON s.student_id = lms.student_id\n    AND lms.term = fa.term\nLEFT JOIN attendance att ON s.student_id = att.student_id\n    AND att.term = fa.term\nWHERE fa.disbursement_status = 'COMPLETED'\n  AND fa.term = CURRENT_TERM()\n  AND COALESCE(lms.total_logins, 0) = 0\n  AND COALESCE(lms.assignments_submitted, 0) = 0\n  AND COALESCE(att.classes_attended, 0) = 0\nORDER BY fa.total_disbursed DESC;",
-      "title": "SQL — Ghost Student Identification: Zero Academic Activity with Active Financial Aid (Phase 4)"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Enrollment Portal - Bot-Driven Application Submission\nstatus: experimental\ndescription: Detects enrollment applications submitted with characteristics indicating automated bot submission - datacenter IP sources, sub-human completion times, or device fingerprint clustering.\nlogsource:\n    product: admissions_portal\n    service: application\ndetection:\n    selection:\n        event_type: \"application_submit\"\n    filter_bot_indicators:\n        form_completion_seconds|lte: 60\n    condition: selection and filter_bot_indicators\nlevel: high\ntags:\n    - fraud.ghost_student\n    - cfpf.phase2.initial_access\n---\ntitle: Enrollment Portal - Application Cluster from Shared Infrastructure\nstatus: experimental\ndescription: Detects clusters of enrollment applications sharing device fingerprints, IP subnets, or address patterns indicating coordinated mass application submission.\nlogsource:\n    product: admissions_portal\n    service: application\ndetection:\n    selection:\n        event_type: \"application_submit\"\n    aggregation:\n        count|gte: 5\n        groupby: device_fingerprint\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: high\ntags:\n    - fraud.ghost_student\n    - cfpf.phase2.initial_access",
-      "title": "Sigma — Bot-Driven Enrollment Application Detection (Phase 2)"
-    },
-    {
-      "type": "spl",
-      "content": "index=financial_aid sourcetype=disbursements\n| stats count AS student_count, sum(amount) AS total_disbursed, values(student_id) AS students BY bank_routing_number, bank_account_number\n| where student_count > 1\n| eval risk_level = case(student_count > 5, \"CRITICAL\", student_count > 2, \"HIGH\", 1=1, \"MEDIUM\")\n| table bank_routing_number, bank_account_number, student_count, total_disbursed, students, risk_level\n| sort - student_count",
-      "title": "Splunk — Disbursement Account Anomaly Detection (Phase 3-4)"
-    }
-  ]
+  "rules": []
 }

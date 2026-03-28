@@ -46,8 +46,8 @@ data_sources:
   - reset_method
   - transaction_amount
 queries:
-  logscale: |-
-    // LogScale LQL for SIM Swap Indicator Chain
+  cql: |-
+    // CrowdStrike CQL for SIM Swap Indicator Chain
     // Repository: flame-banking-identity-management
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h
@@ -56,7 +56,7 @@ queries:
     reset_method="sms_otp"
     (event_type="wire_transfer" OR event_type="beneficiary_add" OR event_type="address_change" OR event_type="email_change")
     transaction_amount>=1000
-    // Sequential correlation — use LogScale sequence detection
+    // Sequential correlation — use CrowdStrike NGSIEM sequence detection
     // Correlate stages sequentially on on within 24h
   splunk: |-
     `comment("Splunk SPL for SIM Swap Indicator Chain")`

@@ -76,7 +76,7 @@ queries:
     `comment("Splunk SPL for Ghost Patient Claims Detection")`
     `comment("Identifies claims submitted for deceased or incarcerated beneficiaries")`
     index=medicare_claims sourcetype=cms_claims
-    | join beneficiary_id [search index=beneficiary_eligibility
+    | join type=inner max=0 beneficiary_id [search index=beneficiary_eligibility
       | where beneficiary_status IN ("deceased", "incarcerated")
       | fields beneficiary_id beneficiary_status status_effective_date]
     | eval claim_date_epoch=strptime(service_date, "%Y-%m-%d")
@@ -99,7 +99,7 @@ queries:
         values(provider_name) AS providers
       by provider_zip, provider_type
     | where provider_count >= 10
-    | join provider_zip [search index=medicare_claims sourcetype=cms_claims
+    | join type=inner max=0 provider_zip [search index=medicare_claims sourcetype=cms_claims
       | stats sum(billed_amount) AS total_zip_billed dc(provider_npi) AS billing_providers by provider_zip
       | eval avg_billing_per_provider=round(total_zip_billed/billing_providers, 2)]
     | where avg_billing_per_provider > 500000
@@ -151,6 +151,8 @@ falsepositives:
 - Large home health agencies serving wide geographic areas from a central office
 level: high
 tags:
+- attack.t1589
+- attack.t1657
 - cfpf.phase3.positioning
 - healthcare-fraud
 - ghost-patient

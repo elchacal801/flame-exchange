@@ -66,7 +66,7 @@ queries:
     | where total_claims >= 500
     | eval code_diversity=round(unique_codes/total_claims, 4)
     | where code_diversity < 0.05
-    | join provider_npi [search index=medicare_claims sourcetype=cms_claims
+    | join type=inner max=0 provider_npi [search index=medicare_claims sourcetype=cms_claims
       | stats count AS code_count by provider_npi, hcpcs_code
       | eventstats sum(code_count) AS provider_total by provider_npi
       | eval code_pct=round(code_count/provider_total*100, 1)
@@ -140,6 +140,7 @@ falsepositives:
   suppliers) — though even specialists typically bill multiple related codes
 level: high
 tags:
+- attack.t1657
 - cfpf.phase4.execution
 - healthcare-fraud
 - single-code-billing

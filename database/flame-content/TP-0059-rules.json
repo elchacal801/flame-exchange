@@ -3,13 +3,15 @@
   "rules": [
     {
       "type": "spl",
-      "content": "index=onboarding sourcetype=account_applications\n| eval completion_seconds=round((submit_time - start_time)/1000, 0)\n| where completion_seconds < 120\n| stats count AS fast_apps dc(identity_hash) AS unique_identities dc(device_fingerprint) AS unique_devices by src_ip, _time span=1h\n| where fast_apps > 3 OR (unique_identities > 2 AND unique_devices < 2)\n| sort -fast_apps",
-      "title": "Account Opening Velocity Anomaly Detection (Splunk SPL)"
+      "content": "`comment(\"Splunk SPL for Automated Mule Account Creation Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n(application_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0)\n| stats count as app_count dc(applicant_id) as unique_applicants values(applicant_id) as applicants\n  avg(application_duration_seconds) as avg_duration min(application_duration_seconds) as min_duration\n  sum(mouse_events_count) as total_mouse_events by device_fingerprint ip_address\n| where app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| eval risk_level=case(app_count>10, \"critical\", app_count>5, \"high\", app_count>3, \"medium\")",
+      "title": "DL-0118: Automated Mule Account Creation Velocity (SPLUNK)",
+      "source_rule": "DL-0118"
     },
     {
-      "type": "sql",
-      "content": "WITH transfer_pairs AS (\n  SELECT t1.account_id AS sender, t2.account_id AS receiver,\n         COUNT(*) AS transfer_count, SUM(t1.amount) AS total_amount\n  FROM transactions t1\n  JOIN transactions t2 ON t1.dest_account = t2.account_id\n    AND t2.transaction_time BETWEEN t1.transaction_time AND t1.transaction_time + INTERVAL '30 minutes'\n  WHERE t1.account_age_days < 30 AND t2.account_age_days < 30\n  GROUP BY t1.account_id, t2.account_id\n)\nSELECT sender, receiver, transfer_count, total_amount\nFROM transfer_pairs\nWHERE transfer_count > 2\n  AND total_amount > 5000\nORDER BY total_amount DESC;",
-      "title": "Mule Network Graph Detection (SQL)"
+      "type": "sigma",
+      "content": "title: KYC Verification Bot Circumvention Detection\nstatus: experimental\ndescription: Detect automated circumvention of KYC identity verification processes: (1) liveness check submissions exhibiting synthetic face indicators such as GAN artifacts or uniform skin texture, (2) document p\nlogsource:\n    product: banking\n    category: identity_verification\n    service: kyc_verification\ndetection:\n    selection_synthetic:\n        liveness_synthetic_score|gt: 0.7\n    selection_lighting:\n        document_lighting_mismatch: true\n        selfie_lighting_mismatch: true\n    selection_multi_ip:\n        identity_multi_ip_count|gt: 2\n        ip_geo_dispersion_km|gt: 500\n    selection_automation:\n        session_interaction_pattern: \"automated\"\n        verification_attempt_count|gte: 3\n    condition: selection_synthetic or selection_lighting or selection_multi_ip or selection_automation\nlevel: high",
+      "title": "DL-0119: KYC Verification Bot Circumvention Detection (Sigma)",
+      "source_rule": "DL-0119"
     }
   ]
 }

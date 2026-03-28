@@ -45,6 +45,7 @@ data_sources:
 queries:
   kql: |-
     // Microsoft Sentinel KQL: Detect AiTM session token replay
+    // User-Agent or IP mismatch between MFA completion and subsequent access
     let mfa_events = SigninLogs
     | where TimeGenerated > ago(24h)
     | where AuthenticationRequirement == "multiFactorAuthentication"
@@ -54,25 +55,36 @@ queries:
     let access_events = SigninLogs
     | where TimeGenerated > ago(24h)
     | where ResultType == 0
+    // Exclude MFA events to prevent self-join noise
+    | where AuthenticationRequirement != "multiFactorAuthentication"
     | project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,
               Access_UserAgent=UserAgent, Access_AppId=AppId;
     mfa_events
     | join kind=inner access_events on UserPrincipalName
-    | where AccessTime > MFATime and AccessTime < MFATime + 4h
+    // Access must occur 5min–4h after MFA (skip trivially close auth flow events)
+    | where AccessTime > MFATime + 5m and AccessTime < MFATime + 4h
     | where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent
     | project UserPrincipalName, MFATime, AccessTime,
               MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent
 
   splunk: |-
     `comment("Splunk SPL for AiTM Session Token Replay Detection")`
+    `comment("Detects IP or User-Agent mismatch between MFA and subsequent access")`
     index=azure sourcetype="azure:aad:signin" AuthenticationRequirement="multiFactorAuthentication" ResultType=0
+    | eval mfa_time=_time
     | rename IPAddress AS MFA_IP, UserAgent AS MFA_UserAgent
-    | join UserPrincipalName [
+    | join type=inner max=0 UserPrincipalName [
       search index=azure sourcetype="azure:aad:signin" ResultType=0
+        AuthenticationRequirement!="multiFactorAuthentication"
       | rename IPAddress AS Access_IP, UserAgent AS Access_UserAgent
+      | eval access_time=_time
     ]
+    | eval time_diff_hours = round((access_time - mfa_time) / 3600, 2)
+    | where time_diff_hours > 0.083 AND time_diff_hours <= 4
     | where Access_IP != MFA_IP OR Access_UserAgent != MFA_UserAgent
-    | table UserPrincipalName, _time, MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent
+    | table UserPrincipalName, mfa_time, access_time, time_diff_hours,
+            MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent
+    | sort - time_diff_hours
 
 falsepositives:
   - Users switching between VPN and direct connection during authentication

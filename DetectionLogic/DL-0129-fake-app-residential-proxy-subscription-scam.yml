@@ -133,6 +133,8 @@ falsepositives:
 - Legitimate notification management apps from established publishers
 level: high
 tags:
+- attack.t1090
+- attack.t1657
 - cfpf.phase4.execution
 - fake-mobile-app
 - residential-proxy

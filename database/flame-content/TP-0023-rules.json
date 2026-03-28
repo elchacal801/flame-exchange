@@ -2,9 +2,40 @@
   "tp_id": "TP-0023",
   "rules": [
     {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Infostealer Credential Dump Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\")`\nindex=flame_banking sourcetype=flame:endpoint_detection\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| stats dc(target_credential) as unique_target_credential by host_id\n| where unique_target_credential > 20",
+      "title": "DL-0002: Infostealer Credential Dump Velocity (SPLUNK)",
+      "source_rule": "DL-0002"
+    },
+    {
       "type": "sigma",
-      "content": "title: Mobile Banking - Impossible Navigation Speed (ATS Indicator)\nstatus: experimental\ndescription: Detects when the time between app launch, login, and transaction initiation is faster than humanly possible, indicating an Automated Transfer System.\nlogsource:\n    product: mobile_banking\n    service: telemetry\ndetection:\n    selection:\n        action: 'transaction_initiated'\n    condition: selection | time_since(session_start) < 4s\nlevel: high\ntags:\n    - attack.t1624\n    - cfpf.phase4.execution",
-      "title": "Sigma — Fast Navigation ATS Anomaly (Conceptual)"
+      "content": "title: Browser Credential Store Access\nstatus: experimental\ndescription: Detects unusual access to browser credential stores (Login Data, logins.json, key3.db/key4.db) by non-browser processes. Infostealers such as RedLine and Vidar systematically read these SQLite databas\nlogsource:\n    product: banking\n    service: endpoint_detection\ndetection:\n    selection:\n        file_path|endswith:\n            - \"\\\\Login Data\"\n            - \"\\\\Login Data-journal\"\n            - \"\\\\logins.json\"\n            - \"\\\\key4.db\"\n            - \"\\\\key3.db\"\n            - \"\\\\signons.sqlite\"\n        file_access_type|contains:\n            - \"read\"\n            - \"open\"\n    filter_browser_processes:\n        process_name|endswith:\n            - \"\\\\chrome.exe\"\n            - \"\\\\firefox.exe\"\n            - \"\\\\msedge.exe\"\n            - \"\\\\brave.exe\"\n            - \"\\\\opera.exe\"\n            - \"\\\\vivaldi.exe\"\n    filter_av:\n        process_name|contains:\n            - \"antivirus\"\n            - \"defender\"\n            - \"security\"\n    condition: selection and not filter_browser_processes and not filter_av\nlevel: high",
+      "title": "DL-0004: Browser Credential Store Access (Sigma)",
+      "source_rule": "DL-0004"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Stealer C2 Beacon Pattern\nstatus: experimental\ndescription: Detects command-and-control callback patterns typical of Malware-as-a-Service (MaaS) stealers. RedLine, Lumma, and StealC use distinctive C2 communication patterns including HTTP POST requests with ba\nlogsource:\n    product: banking\n    service: web_proxy\ndetection:\n    selection_method:\n        http_method: \"POST\"\n    selection_uri_pattern:\n        url_path|contains:\n            - \"/gate.php\"\n            - \"/index.php?id=\"\n            - \"/panel/gate\"\n            - \"/api/check\"\n            - \"/loader/\"\n    selection_payload:\n        request_body_length|gte: 5000\n        content_type|contains: \"application/x-www-form-urlencoded\"\n    selection_domain_age:\n        domain_age_days|lte: 30\n    condition: selection_method and (selection_uri_pattern or (selection_payload and selection_domain_age))\nlevel: high",
+      "title": "DL-0005: Stealer C2 Beacon Pattern (Sigma)",
+      "source_rule": "DL-0005"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Infostealer Exfiltration Archive Creation\nstatus: experimental\ndescription: Detects creation of archive files containing credential-related file patterns consistent with infostealer packaging behavior. Stealers like RedLine and Vidar collect credentials, cookies, autofill dat\nlogsource:\n    product: banking\n    service: endpoint_detection\ndetection:\n    selection_archive_creation:\n        event_type: \"file_create\"\n        file_extension|contains:\n            - \".zip\"\n            - \".rar\"\n            - \".7z\"\n    selection_archive_contents:\n        archive_file_list|contains:\n            - \"passwords\"\n            - \"Login Data\"\n            - \"Cookies\"\n            - \"autofill\"\n            - \"wallet.dat\"\n            - \"seed\"\n            - \"credit_cards\"\n    selection_process_unsigned:\n        process_signed: false\n        process_path|contains:\n            - \"\\\\AppData\\\\Local\\\\Temp\"\n            - \"\\\\Users\\\\Public\"\n            - \"\\\\ProgramData\"\n    condition: selection_archive_creation and (selection_archive_contents or selection_process_unsigned)\nlevel: high",
+      "title": "DL-0007: Infostealer Exfiltration Archive Creation (Sigma)",
+      "source_rule": "DL-0007"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Autofill Data Harvesting\nstatus: experimental\ndescription: Detects form autofill data extraction patterns consistent with infostealer behavior. Stealers like RedLine and Raccoon target browser autofill databases (Web Data, formhistory.sqlite) to harvest store\nlogsource:\n    product: banking\n    service: endpoint_detection\ndetection:\n    selection:\n        file_path|endswith:\n            - \"\\\\Web Data\"\n            - \"\\\\Web Data-journal\"\n            - \"\\\\formhistory.sqlite\"\n            - \"\\\\Form History\"\n        file_access_type: \"read\"\n    filter_browsers:\n        process_name|endswith:\n            - \"\\\\chrome.exe\"\n            - \"\\\\firefox.exe\"\n            - \"\\\\msedge.exe\"\n            - \"\\\\brave.exe\"\n    filter_system:\n        process_integrity_level: \"System\"\n    condition: selection and not filter_browsers and not filter_system\nlevel: medium",
+      "title": "DL-0010: Autofill Data Harvesting (Sigma)",
+      "source_rule": "DL-0010"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Crypto Wallet Seed Phrase Exfiltration\nstatus: experimental\ndescription: Detects wallet seed phrase and private key extraction attempts targeting cryptocurrency wallets. Infostealers such as RedLine, Vidar, and StealC include dedicated modules that search for wallet.dat fi\nlogsource:\n    product: crypto\n    service: endpoint_detection\ndetection:\n    selection_wallet_files:\n        file_path|contains:\n            - \"\\\\Ethereum\\\\keystore\"\n            - \"\\\\Exodus\\\\exodus.wallet\"\n            - \"\\\\Electrum\\\\wallets\"\n            - \"\\\\Bitcoin\\\\wallet.dat\"\n            - \"\\\\Atomic\\\\Local Storage\"\n            - \"\\\\Coinomi\\\\wallets\"\n        file_access_type: \"read\"\n    selection_metamask:\n        file_path|contains:\n            - \"\\\\nkbihfbeogaeaoehlefnkodbefgpgknn\"\n            - \"\\\\ejbalbakoplchlghecdalmeeeajnimhm\"\n        file_access_type: \"read\"\n    selection_seed_files:\n        file_name|contains:\n            - \"seed\"\n            - \"mnemonic\"\n            - \"recovery\"\n            - \"backup\"\n        file_extension|contains:\n            - \".txt\"\n            - \".json\"\n            - \".dat\"\n    filter_wallet_apps:\n        process_name|contains:\n            - \"Exodus\"\n            - \"Electrum\"\n            - \"Atomic\"\n            - \"Coinomi\"\n            - \"MetaMask\"\n    condition: (selection_wallet_files or selection_metamask or selection_seed_files) and not filter_wallet_apps\nlevel: critical",
+      "title": "DL-0011: Crypto Wallet Seed Phrase Exfiltration (Sigma)",
+      "source_rule": "DL-0011"
     }
   ]
 }

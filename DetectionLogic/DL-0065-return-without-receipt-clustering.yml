@@ -29,7 +29,7 @@ detection:
     condition: selection | count() by customer_account_id > 4
   aggregation_region:
     condition: selection | count() by store_region_code > 15
-  condition: aggregation_customer or aggregation_region
+  condition: selection | aggregation_customer or selection | aggregation_region
   timeframe: 30d
 data_sources:
   native_fields:

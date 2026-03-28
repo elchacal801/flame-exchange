@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.073368+00:00",
-    "total": 148
+    "generated_at": "2026-03-28T04:52:56.109458+00:00",
+    "total": 150
   },
   "data": [
     {
@@ -32,7 +32,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Mule Account Velocity Pattern\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\ntransaction_type=\"ACH_IN\"\n| groupBy(account_id, function=[count(as=event_count), collect(originator_name)])\n| event_count > 3",
+        "cql": "// CrowdStrike CQL for Mule Account Velocity Pattern\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\ntransaction_type=\"ACH_IN\"\n| groupBy(account_id, function=[count(as=event_count), collect(originator_name)])\n| event_count > 3",
         "splunk": "`comment(\"Splunk SPL for Mule Account Velocity Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring transaction_type=\"ACH_IN\"\n| stats dc(originator_name) as unique_originator_name by account_id\n| where unique_originator_name > 3"
       },
       "references": [
@@ -93,7 +93,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Infostealer Credential Dump Velocity\n// Repository: flame-banking-endpoint-detection\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| groupBy(host_id, function=[count(as=event_count), collect(target_credential)])\n| event_count > 20",
+        "cql": "// CrowdStrike CQL for Infostealer Credential Dump Velocity\n// Repository: flame-banking-endpoint-detection\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| groupBy(host_id, function=[count(as=event_count), collect(target_credential)])\n| event_count > 20",
         "splunk": "`comment(\"Splunk SPL for Infostealer Credential Dump Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\")`\nindex=flame_banking sourcetype=flame:endpoint_detection\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| stats dc(target_credential) as unique_target_credential by host_id\n| where unique_target_credential > 20"
       },
       "references": [
@@ -368,7 +368,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Credential Testing After Dump\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct user_id) by source_ip > 10\nevent_type=\"login_attempt\"\n(auth_result=\"failure\" OR auth_result=\"success\")\n| groupBy(source_ip, function=[count(as=event_count), collect(user_id)])\n| event_count > 10",
+        "cql": "// CrowdStrike CQL for Credential Testing After Dump\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct user_id) by source_ip > 10\nevent_type=\"login_attempt\"\n(auth_result=\"failure\" OR auth_result=\"success\")\n| groupBy(source_ip, function=[count(as=event_count), collect(user_id)])\n| event_count > 10",
         "splunk": "`comment(\"Splunk SPL for Credential Testing After Dump\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct user_id) by source_ip > 10\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" (auth_result=\"failure\" OR auth_result=\"success\")\n| stats dc(user_id) as unique_user_id by source_ip\n| where unique_user_id > 10"
       },
       "references": [
@@ -494,7 +494,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Multiple Account Access from Single Source\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3\nevent_type=\"login_success\"\n| groupBy(source_ip, function=[count(as=event_count), collect(account_id)])\n| event_count > 5\n| groupBy(device_fingerprint, function=[count(as=event_count), collect(account_id)])\n| event_count > 3",
+        "cql": "// CrowdStrike CQL for Multiple Account Access from Single Source\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3\nevent_type=\"login_success\"\n| groupBy(source_ip, function=[count(as=event_count), collect(account_id)])\n| event_count > 5\n| groupBy(device_fingerprint, function=[count(as=event_count), collect(account_id)])\n| event_count > 3",
         "splunk": "`comment(\"Splunk SPL for Multiple Account Access from Single Source\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_success\"\n| stats dc(account_id) as unique_account_id by source_ip\n| where unique_account_id > 5\n| stats dc(account_id) as unique_account_id by device_fingerprint\n| where unique_account_id > 3"
       },
       "references": [
@@ -553,7 +553,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Stolen Session Token Replay\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_same_context | count() by session_token > 1\nevent_type=\"session_activity\"\nsession_token=true\ngeo_country=\"%original_session_country%\"\ndevice_fingerprint=\"%original_device_fingerprint%\"\n| groupBy(session_token, function=count(as=event_count))\n| event_count > 1",
+        "cql": "// CrowdStrike CQL for Stolen Session Token Replay\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_same_context | count() by session_token > 1\nevent_type=\"session_activity\"\nsession_token=true\ngeo_country=\"%original_session_country%\"\ndevice_fingerprint=\"%original_device_fingerprint%\"\n| groupBy(session_token, function=[count(as=event_count)])\n| event_count > 1",
         "splunk": "`comment(\"Splunk SPL for Stolen Session Token Replay\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_same_context | count() by session_token > 1\")`\nindex=flame_banking sourcetype=flame:auth_logs\nevent_type=\"session_activity\"\nsession_token=true\ngeo_country=\"%original_session_country%\"\ndevice_fingerprint=\"%original_device_fingerprint%\"\n| stats count as event_count by session_token\n| where event_count > 1"
       },
       "references": [
@@ -767,7 +767,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Login Velocity Anomaly\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_internal | count() by source_ip > 50\nevent_type=\"login_attempt\"\n(source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| groupBy(source_ip, function=count(as=event_count))\n| event_count > 50",
+        "cql": "// CrowdStrike CQL for Login Velocity Anomaly\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_internal | count() by source_ip > 50\nevent_type=\"login_attempt\"\n(source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| groupBy(source_ip, function=[count(as=event_count)])\n| event_count > 50",
         "splunk": "`comment(\"Splunk SPL for Login Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_internal | count() by source_ip > 50\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" (source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| stats count as event_count by source_ip\n| where event_count > 50"
       },
       "references": [
@@ -823,7 +823,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Geographic Impossibility Login\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\n(event_type=\"login_success\" OR event_type=\"login_attempt\")\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(user_id, where=[...])",
+        "cql": "// CrowdStrike CQL for Geographic Impossibility Login\n// Repository: flame-banking-auth-logs\n// Groups logins by user within 60m windows and flags when\n// multiple distinct countries appear (physical travel impossible)\n(event_type=\"login_success\" OR event_type=\"login_attempt\")\n| groupBy(user_id, function=[\n    count(as=login_count),\n    collect([geo_country, src_ip, @timestamp]),\n    selectFirst(geo_country, as=first_country),\n    selectLast(geo_country, as=last_country),\n    min(@timestamp, as=first_time),\n    max(@timestamp, as=last_time)\n  ], span=60m)\n| login_count >= 2\n| first_country != last_country",
         "splunk": "`comment(\"Splunk SPL for Geographic Impossibility Login\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\")`\nindex=flame_banking sourcetype=flame:auth_logs (event_type=\"login_success\" OR event_type=\"login_attempt\")\n| transaction user_id maxspan=60m\n| where eventcount >= 2"
       },
       "references": [
@@ -876,7 +876,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Device Fingerprint Anomaly\n// Repository: flame-banking-web-gateway\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezo\nevent_type=\"session_start\"\ndevice_fingerprint=true\n// Aggregation logic from original condition:\n// selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezone_offset\n  or webgl_renderer != baseline.webgl_renderer\n  or canvas_hash != baseline.canvas_hash\n)\n",
+        "cql": "// CrowdStrike CQL for Device Fingerprint Anomaly\n// Repository: flame-banking-web-gateway\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezo\nevent_type=\"session_start\"\ndevice_fingerprint=true\n// Aggregation logic from original condition:\n// selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezone_offset\n  or webgl_renderer != baseline.webgl_renderer\n  or canvas_hash != baseline.canvas_hash\n)\n",
         "splunk": "`comment(\"Splunk SPL for Device Fingerprint Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_\")`\nindex=flame_banking sourcetype=flame:web_gateway event_type=\"session_start\" device_fingerprint=true\n`comment(\"Aggregation logic from: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_\")`\n| stats count as event_count by account_id\n| where event_count > 1"
       },
       "references": [
@@ -930,7 +930,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Combo List Iteration Pattern\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\n| groupBy(source_ip, function=[count(as=event_count), collect(username)])\n| event_count > 15",
+        "cql": "// CrowdStrike CQL for Combo List Iteration Pattern\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\n| groupBy(source_ip, function=[count(as=event_count), collect(username)])\n| event_count > 15",
         "splunk": "`comment(\"Splunk SPL for Combo List Iteration Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" auth_result=\"failure\"\n| stats dc(username) as unique_username by source_ip\n| where unique_username > 15"
       },
       "references": [
@@ -989,7 +989,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Distributed Credential Stuffing\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=/^Mozilla/5\\.0.*$/\n| groupBy(user_agent, function=[count(as=event_count), collect(source_ip)])\n| event_count > 20\n| groupBy(user_agent, function=[count(as=event_count), collect(username)])\n| event_count > 50",
+        "cql": "// CrowdStrike CQL for Distributed Credential Stuffing\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=/^Mozilla/5\\.0.*$/\n| groupBy(user_agent, function=[count(as=event_count), collect(source_ip)])\n| event_count > 20\n| groupBy(user_agent, function=[count(as=event_count), collect(username)])\n| event_count > 50",
         "splunk": "`comment(\"Splunk SPL for Distributed Credential Stuffing\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count()\")`\nindex=flame_banking sourcetype=flame:auth_logs\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=\"^Mozilla/5\\.0.*$\"\n| stats dc(source_ip) as unique_source_ip by user_agent\n| where unique_source_ip > 20\n| stats dc(username) as unique_username by user_agent\n| where unique_username > 50"
       },
       "references": [
@@ -1118,7 +1118,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Credential Spray Single Password\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct username) by password_hash > 20 and count(distinct password_hash) by source_ip < 3\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\n| groupBy(password_hash, function=[count(as=event_count), collect(username)])\n| event_count > 20\n| groupBy(source_ip, function=[count(as=event_count), collect(password_hash)])\n| event_count < 3",
+        "cql": "// CrowdStrike CQL for Credential Spray Single Password\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct username) by password_hash > 20 and count(distinct password_hash) by source_ip < 3\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\n| groupBy(password_hash, function=[count(as=event_count), collect(username)])\n| event_count > 20\n| groupBy(source_ip, function=[count(as=event_count), collect(password_hash)])\n| event_count < 3",
         "splunk": "`comment(\"Splunk SPL for Credential Spray Single Password\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct username) by password_hash > 20 and count(distinct password_hash) by source_ip < 3\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" auth_result=\"failure\"\n| stats dc(username) as unique_username by password_hash\n| where unique_username > 20\n| stats dc(password_hash) as unique_password_hash by source_ip\n| where unique_password_hash < 3"
       },
       "references": [
@@ -1174,7 +1174,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Beneficiary Change Velocity Anomaly\n// Repository: flame-banking-core-banking\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct beneficiary_id) by account_id > 3\n(event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 3",
+        "cql": "// CrowdStrike CQL for Beneficiary Change Velocity Anomaly\n// Repository: flame-banking-core-banking\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct beneficiary_id) by account_id > 3\n(event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 3",
         "splunk": "`comment(\"Splunk SPL for Beneficiary Change Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct beneficiary_id) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:core_banking (event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 3"
       },
       "references": [
@@ -1238,7 +1238,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Rapid Contact Information Change\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count >= 3",
+        "cql": "// CrowdStrike CQL for Rapid Contact Information Change\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count >= 3",
         "splunk": "`comment(\"Splunk SPL for Rapid Contact Information Change\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| stats count as event_count by account_id\n| where event_count >= 3"
       },
       "references": [
@@ -1303,7 +1303,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for MFA Method Switch Before High-Value Transaction\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_mfa_change | near selection_high_value_txn by account_id\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+        "cql": "// CrowdStrike CQL for MFA Method Switch Before High-Value Transaction\n// Repository: flame-banking-identity-management\n// Correlates MFA downgrade with subsequent high-value transaction\n// within 4h for the same account\n(event_type=\"MFA_METHOD_CHANGE\" AND\n  (new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\"))\nOR ((event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\") AND\n  transaction_amount>=5000)\n| selfJoinFilter(account_id, where=[\n    {event_type=\"MFA_METHOD_CHANGE\"}\n    {event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\"}\n  ])\n| groupBy(account_id, function=[\n    count(as=event_count),\n    collect([event_type, new_mfa_method, transaction_amount, @timestamp])\n  ], span=4h)\n| event_count >= 2",
         "splunk": "`comment(\"Splunk SPL for MFA Method Switch Before High-Value Transaction\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_mfa_change | near selection_high_value_txn by account_id\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"MFA_METHOD_CHANGE\"\n(new_mfa_method=\"sms_otp\" OR new_mfa_method=\"email_otp\" OR new_mfa_method=\"voice_call\")\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=5000\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
       },
       "references": [
@@ -1738,7 +1738,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Transaction Amount Clustering Near Reporting Threshold\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"CASH_DEPOSIT\")\ntransaction_amount>=9000\ntransaction_amount<10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"INTERNATIONAL_TRANSFER\")\ntransaction_amount>=2800\ntransaction_amount<3000\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 2\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 2",
+        "cql": "// CrowdStrike CQL for Transaction Amount Clustering Near Reporting Threshold\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"CASH_DEPOSIT\")\ntransaction_amount>=9000\ntransaction_amount<10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"INTERNATIONAL_TRANSFER\")\ntransaction_amount>=2800\ntransaction_amount<3000\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 2\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 2",
         "splunk": "`comment(\"Splunk SPL for Transaction Amount Clustering Near Reporting Threshold\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"CASH_DEPOSIT\")\ntransaction_amount>=9000\ntransaction_amount<10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"INTERNATIONAL_TRANSFER\")\ntransaction_amount>=2800\ntransaction_amount<3000\n| stats count as event_count by account_id\n| where event_count > 2\n| stats count as event_count by account_id\n| where event_count > 2"
       },
       "references": [
@@ -1803,7 +1803,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Split Transfer Chain Detection\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 2",
+        "cql": "// CrowdStrike CQL for Split Transfer Chain Detection\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 2",
         "splunk": "`comment(\"Splunk SPL for Split Transfer Chain Detection\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:wire_system\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 2"
       },
       "references": [
@@ -1931,7 +1931,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Rapid Outbound Wire After Large Inbound\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | near selection_outbound by account_id\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=8000\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+        "cql": "// CrowdStrike CQL for Rapid Outbound Wire After Large Inbound\n// Repository: flame-banking-transaction-monitoring\n// Correlates large inbound credit with rapid outbound transfer\n// within 6h for the same account (pass-through pattern)\n((event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\") AND transaction_amount>=10000)\nOR ((event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\") AND transaction_amount>=8000)\n| selfJoinFilter(account_id, where=[\n    {event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\"}\n    {event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\"}\n  ])\n| groupBy(account_id, function=[\n    count(as=event_count),\n    collect([event_type, transaction_amount, beneficiary_name, @timestamp])\n  ], span=6h)\n| event_count >= 2",
         "splunk": "`comment(\"Splunk SPL for Rapid Outbound Wire After Large Inbound\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=8000\n| transaction account_id maxspan=6h\n| where eventcount >= 2"
       },
       "references": [
@@ -2051,7 +2051,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Round-Dollar Wire Amount Pattern\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 4\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 4",
+        "cql": "// CrowdStrike CQL for Round-Dollar Wire Amount Pattern\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 4\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 4",
         "splunk": "`comment(\"Splunk SPL for Round-Dollar Wire Amount Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 4\")`\nindex=flame_banking sourcetype=flame:wire_system\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| stats count as event_count by account_id\n| where event_count > 4"
       },
       "references": [
@@ -2110,7 +2110,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for ACH Return Rate Anomaly\n// Repository: flame-banking-ach-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_returns | count() by originator_id > 5\nevent_type=\"ACH_RETURN\"\n(return_code=\"R10\" OR return_code=\"R29\" OR return_code=\"R07\" OR return_code=\"R08\")\n| groupBy(originator_id, function=count(as=event_count))\n| event_count > 5",
+        "cql": "// CrowdStrike CQL for ACH Return Rate Anomaly\n// Repository: flame-banking-ach-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_returns | count() by originator_id > 5\nevent_type=\"ACH_RETURN\"\n(return_code=\"R10\" OR return_code=\"R29\" OR return_code=\"R07\" OR return_code=\"R08\")\n| groupBy(originator_id, function=[count(as=event_count)])\n| event_count > 5",
         "splunk": "`comment(\"Splunk SPL for ACH Return Rate Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_returns | count() by originator_id > 5\")`\nindex=flame_banking sourcetype=flame:ach_processing event_type=\"ACH_RETURN\" (return_code=\"R10\" OR return_code=\"R29\" OR return_code=\"R07\" OR return_code=\"R08\")\n| stats count as event_count by originator_id\n| where event_count > 5"
       },
       "references": [
@@ -2250,7 +2250,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Payment Instruction Velocity Spike\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by session_id > 5\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| groupBy(session_id, function=count(as=event_count))\n| event_count > 5",
+        "cql": "// CrowdStrike CQL for Payment Instruction Velocity Spike\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by session_id > 5\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| groupBy(session_id, function=[count(as=event_count)])\n| event_count > 5",
         "splunk": "`comment(\"Splunk SPL for Payment Instruction Velocity Spike\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by session_id > 5\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| stats count as event_count by session_id\n| where event_count > 5"
       },
       "references": [
@@ -2311,7 +2311,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Mule Rapid ATM Withdrawal After Inbound Transfer\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | near selection_atm_withdrawal by account_id\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=2000\nevent_type=\"ATM_WITHDRAWAL\"\ntransaction_amount>=500\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+        "cql": "// CrowdStrike CQL for Mule Rapid ATM Withdrawal After Inbound Transfer\n// Repository: flame-banking-transaction-monitoring\n// Correlates inbound wire/ACH with rapid ATM cash-out within 4h\n((event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\") AND transaction_amount>=2000)\nOR (event_type=\"ATM_WITHDRAWAL\" AND transaction_amount>=500)\n| selfJoinFilter(account_id, where=[\n    {event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\"}\n    {event_type=\"ATM_WITHDRAWAL\"}\n  ])\n| groupBy(account_id, function=[\n    count(as=event_count),\n    collect([event_type, transaction_amount, @timestamp])\n  ], span=4h)\n| event_count >= 2",
         "splunk": "`comment(\"Splunk SPL for Mule Rapid ATM Withdrawal After Inbound Transfer\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_atm_withdrawal by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=2000\nevent_type=\"ATM_WITHDRAWAL\"\ntransaction_amount>=500\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
       },
       "references": [
@@ -2386,7 +2386,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Account Age vs Transaction Volume Mismatch\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_high_volume | count() by account_id > 20\naccount_age_days<90\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\npeer_comparison=\"{'metric': 'transaction_count', 'threshold': 'percentile_95'}\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 20",
+        "cql": "// CrowdStrike CQL for Account Age vs Transaction Volume Mismatch\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_high_volume | count() by account_id > 20\naccount_age_days<90\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\npeer_comparison=\"{'metric': 'transaction_count', 'threshold': 'percentile_95'}\"\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 20",
         "splunk": "`comment(\"Splunk SPL for Account Age vs Transaction Volume Mismatch\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_high_volume | count() by account_id > 20\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\naccount_age_days<90\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\npeer_comparison=\"{'metric': 'transaction_count', 'threshold': 'percentile_95'}\"\n| stats count as event_count by account_id\n| where event_count > 20"
       },
       "references": [
@@ -2448,7 +2448,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Multi-Bank Funnel Pattern\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\noriginating_bank_external=true\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\n| groupBy(account_id, function=[count(as=event_count), collect(originating_bank_id)])\n| event_count > 3\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count <= 2",
+        "cql": "// CrowdStrike CQL for Multi-Bank Funnel Pattern\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\noriginating_bank_external=true\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\n| groupBy(account_id, function=[count(as=event_count), collect(originating_bank_id)])\n| event_count > 3\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count <= 2",
         "splunk": "`comment(\"Splunk SPL for Multi-Bank Funnel Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\noriginating_bank_external=true\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\n| stats dc(originating_bank_id) as unique_originating_bank_id by account_id\n| where unique_originating_bank_id > 3\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id <= 2"
       },
       "references": [
@@ -2524,7 +2524,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Crypto Off-Ramp After Wire or ACH Receipt\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | near selection_crypto_outbound by account_id\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=1000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\nbeneficiary_category=\"crypto_exchange\"\n(beneficiary_name=\"Coinbase\" OR beneficiary_name=\"Binance\" OR beneficiary_name=\"Kraken\" OR beneficiary_name=\"FTX\" OR beneficiary_name=\"Gemini\" OR beneficiary_name=\"Crypto.com\" OR beneficiary_name=\"Bitfinex\")\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+        "cql": "// CrowdStrike CQL for Crypto Off-Ramp After Wire or ACH Receipt\n// Repository: flame-banking-transaction-monitoring\n// Correlates inbound fiat with outbound transfer to crypto exchange within 24h\n((event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\") AND transaction_amount>=1000)\nOR ((event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\") AND\n  beneficiary_category=\"crypto_exchange\")\n| selfJoinFilter(account_id, where=[\n    {event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\"}\n    {beneficiary_category=\"crypto_exchange\"}\n  ])\n| groupBy(account_id, function=[\n    count(as=event_count),\n    collect([event_type, transaction_amount, beneficiary_name, @timestamp])\n  ], span=24h)\n| event_count >= 2",
         "splunk": "`comment(\"Splunk SPL for Crypto Off-Ramp After Wire or ACH Receipt\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_crypto_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=1000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\nbeneficiary_category=\"crypto_exchange\"\n(beneficiary_name=\"Coinbase\" OR beneficiary_name=\"Binance\" OR beneficiary_name=\"Kraken\" OR beneficiary_name=\"FTX\" OR beneficiary_name=\"Gemini\")\n| transaction account_id maxspan=24h\n| where eventcount >= 2"
       },
       "references": [
@@ -2589,7 +2589,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Peer-to-Peer Transfer Chain (Smurfing Pattern)\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\n(event_type=\"P2P_TRANSFER\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"ZELLE_SEND\" OR event_type=\"VENMO_TRANSFER\")\ntransaction_amount>=500\ninbound_event=\"P2P_CREDIT\"\noutbound_event=\"P2P_DEBIT\"\n| groupBy(account_id, function=[count(as=event_count), collect(counterparty_account_id)])\n| event_count > 2",
+        "cql": "// CrowdStrike CQL for Peer-to-Peer Transfer Chain (Smurfing Pattern)\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\n(event_type=\"P2P_TRANSFER\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"ZELLE_SEND\" OR event_type=\"VENMO_TRANSFER\")\ntransaction_amount>=500\ninbound_event=\"P2P_CREDIT\"\noutbound_event=\"P2P_DEBIT\"\n| groupBy(account_id, function=[count(as=event_count), collect(counterparty_account_id)])\n| event_count > 2",
         "splunk": "`comment(\"Splunk SPL for Peer-to-Peer Transfer Chain (Smurfing Pattern)\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"P2P_TRANSFER\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"ZELLE_SEND\" OR event_type=\"VENMO_TRANSFER\")\ntransaction_amount>=500\ninbound_event=\"P2P_CREDIT\"\noutbound_event=\"P2P_DEBIT\"\n| stats dc(counterparty_account_id) as unique_counterparty_account_id by account_id\n| where unique_counterparty_account_id > 2"
       },
       "references": [
@@ -2649,7 +2649,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Mule Recruitment Test Deposit Pattern\n// Repository: flame-banking-ach-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8\n(event_type=\"ACH_CREDIT\" OR event_type=\"P2P_CREDIT\" OR event_type=\"WIRE_CREDIT\")\ntransaction_amount<=100\ntransaction_amount>=1\n| groupBy(account_id, function=[count(as=event_count), collect(originator_id)])\n| event_count > 8",
+        "cql": "// CrowdStrike CQL for Mule Recruitment Test Deposit Pattern\n// Repository: flame-banking-ach-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8\n(event_type=\"ACH_CREDIT\" OR event_type=\"P2P_CREDIT\" OR event_type=\"WIRE_CREDIT\")\ntransaction_amount<=100\ntransaction_amount>=1\n| groupBy(account_id, function=[count(as=event_count), collect(originator_id)])\n| event_count > 8",
         "splunk": "`comment(\"Splunk SPL for Mule Recruitment Test Deposit Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8\")`\nindex=flame_banking sourcetype=flame:ach_processing\n(event_type=\"ACH_CREDIT\" OR event_type=\"P2P_CREDIT\" OR event_type=\"WIRE_CREDIT\")\ntransaction_amount<=100\ntransaction_amount>=1\n| stats dc(originator_id) as unique_originator_id by account_id\n| where unique_originator_id > 8"
       },
       "references": [
@@ -2722,7 +2722,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Rapid Fund Layering Through Shell Accounts\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 3",
+        "cql": "// CrowdStrike CQL for Rapid Fund Layering Through Shell Accounts\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 3",
         "splunk": "`comment(\"Splunk SPL for Rapid Fund Layering Through Shell Accounts\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| stats count as event_count by account_id\n| where event_count > 3"
       },
       "references": [
@@ -2789,7 +2789,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Carrier Change Authentication Correlation\n// Repository: flame-telecom-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n// Sequential correlation — use LogScale sequence detection\n// Correlate stages sequentially on phone_number within 120m",
+        "cql": "// CrowdStrike CQL for Carrier Change Authentication Correlation\n// Repository: flame-telecom-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n// Sequential correlation — use CrowdStrike NGSIEM sequence detection\n// Correlate stages sequentially on phone_number within 120m",
         "splunk": "`comment(\"Splunk SPL for Carrier Change Authentication Correlation\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\")`\nindex=flame_telecom sourcetype=flame:identity_management\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n| transaction phone_number maxspan=120m\n| where eventcount >= 2\n`comment(\"Sequential correlation across stages\")`"
       },
       "references": [
@@ -2920,7 +2920,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for MFA Push Bombing\n// Repository: flame-banking-mfa-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by user_id > 5 and count(selection_denied) by user_id > 3\nevent_type=\"mfa_push_sent\"\nmfa_method=\"push\"\n(mfa_result=\"denied\" OR mfa_result=\"timeout\" OR mfa_result=\"ignored\")\n| groupBy(user_id, function=count(as=event_count))\n| event_count > 5",
+        "cql": "// CrowdStrike CQL for MFA Push Bombing\n// Repository: flame-banking-mfa-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by user_id > 5 and count(selection_denied) by user_id > 3\nevent_type=\"mfa_push_sent\"\nmfa_method=\"push\"\n(mfa_result=\"denied\" OR mfa_result=\"timeout\" OR mfa_result=\"ignored\")\n| groupBy(user_id, function=[count(as=event_count)])\n| event_count > 5",
         "splunk": "`comment(\"Splunk SPL for MFA Push Bombing\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by user_id > 5 and count(selection_denied) by user_id > 3\")`\nindex=flame_banking sourcetype=flame:mfa_logs\nevent_type=\"mfa_push_sent\"\nmfa_method=\"push\"\n(mfa_result=\"denied\" OR mfa_result=\"timeout\" OR mfa_result=\"ignored\")\n| stats count as event_count by user_id\n| where event_count > 5"
       },
       "references": [
@@ -2990,7 +2990,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for SIM Swap Indicator Chain\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n// Sequential correlation — use LogScale sequence detection\n// Correlate stages sequentially on on within 24h",
+        "cql": "// CrowdStrike CQL for SIM Swap Indicator Chain\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n// Sequential correlation — use CrowdStrike NGSIEM sequence detection\n// Correlate stages sequentially on on within 24h",
         "splunk": "`comment(\"Splunk SPL for SIM Swap Indicator Chain\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\")`\nindex=flame_banking sourcetype=flame:identity_management\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n| transaction on maxspan=24h\n| where eventcount >= 2\n`comment(\"Sequential correlation across stages\")`"
       },
       "references": [
@@ -3632,7 +3632,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Instant Payment Velocity Spike Above 30-Day Baseline\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\n// Aggregation logic from original condition:\n// selection | count() by account_id | compare(op=gt, period=30d, stdev=3)",
+        "cql": "// CrowdStrike CQL for Instant Payment Velocity Spike Above 30-Day Baseline\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\n// Aggregation logic from original condition:\n// selection | count() by account_id | compare(op=gt, period=30d, stdev=3)",
         "splunk": "`comment(\"Splunk SPL for Instant Payment Velocity Spike Above 30-Day Baseline\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring event_type=\"instant_payment_initiated\" (payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\n`comment(\"Aggregation logic from: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\")`\n| stats count as event_count by account_id\n| where event_count > 1"
       },
       "references": [
@@ -3710,7 +3710,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Cross-Platform Deposit and Withdrawal Chain\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n// Temporal ordered correlation — use join() in LogScale\n| join({...}, field=account_id, mode=inner)",
+        "cql": "// CrowdStrike CQL for Cross-Platform Deposit and Withdrawal Chain\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n// Temporal ordered correlation — use join() in CrowdStrike NGSIEM\n| join({...}, field=account_id, mode=inner)",
         "splunk": "`comment(\"Splunk SPL for Cross-Platform Deposit and Withdrawal Chain\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
       },
       "references": [
@@ -3779,7 +3779,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Repeated A2A Payments at Maximum Per-Transaction Limit\n// Repository: flame-banking-a2a-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and filter_at_limit | count() by account_id > 3\nevent_type=\"a2a_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\namount_pct_of_rail_limit>=95\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 3",
+        "cql": "// CrowdStrike CQL for Repeated A2A Payments at Maximum Per-Transaction Limit\n// Repository: flame-banking-a2a-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and filter_at_limit | count() by account_id > 3\nevent_type=\"a2a_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\namount_pct_of_rail_limit>=95\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 3",
         "splunk": "`comment(\"Splunk SPL for Repeated A2A Payments at Maximum Per-Transaction Limit\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and filter_at_limit | count() by account_id > 3\")`\nindex=flame_banking sourcetype=flame:a2a_processing\nevent_type=\"a2a_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\namount_pct_of_rail_limit>=95\n| stats count as event_count by account_id\n| where event_count > 3"
       },
       "references": [
@@ -3847,7 +3847,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for New Account Sending Multiple Instant Payments\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and filter_new_account | count() by account_id > 5\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\naccount_age_days<30\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 5",
+        "cql": "// CrowdStrike CQL for New Account Sending Multiple Instant Payments\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and filter_new_account | count() by account_id > 5\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\naccount_age_days<30\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 5",
         "splunk": "`comment(\"Splunk SPL for New Account Sending Multiple Instant Payments\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and filter_new_account | count() by account_id > 5\")`\nindex=flame_banking sourcetype=flame:instant_payments\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\naccount_age_days<30\n| stats count as event_count by account_id\n| where event_count > 5"
       },
       "references": [
@@ -3900,7 +3900,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Zelle Recipient Enumeration via Multiple Failed Lookups\n// Repository: flame-banking-a2a-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 10\nevent_type=\"zelle_recipient_lookup\"\nlookup_result=\"not_found\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 10",
+        "cql": "// CrowdStrike CQL for Zelle Recipient Enumeration via Multiple Failed Lookups\n// Repository: flame-banking-a2a-processing\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 10\nevent_type=\"zelle_recipient_lookup\"\nlookup_result=\"not_found\"\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 10",
         "splunk": "`comment(\"Splunk SPL for Zelle Recipient Enumeration via Multiple Failed Lookups\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 10\")`\nindex=flame_banking sourcetype=flame:a2a_processing event_type=\"zelle_recipient_lookup\" lookup_result=\"not_found\"\n| stats count as event_count by account_id\n| where event_count > 10"
       },
       "references": [
@@ -3963,7 +3963,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Real-Time Payment Followed by Immediate Refund or Return Request\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n// Temporal ordered correlation — use join() in LogScale\n| join({...}, field=payment_reference_id, mode=inner)",
+        "cql": "// CrowdStrike CQL for Real-Time Payment Followed by Immediate Refund or Return Request\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n// Temporal ordered correlation — use join() in CrowdStrike NGSIEM\n| join({...}, field=payment_reference_id, mode=inner)",
         "splunk": "`comment(\"Splunk SPL for Real-Time Payment Followed by Immediate Refund or Return Request\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\")`\nindex=flame_banking sourcetype=flame:instant_payments\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n| transaction payment_reference_id maxspan=2h\n| where eventcount >= 2"
       },
       "references": [
@@ -4071,7 +4071,7 @@
           "condition": "selection\n| groupby(customer_account_id)\n| where count(event_type='refund_issued') / count(event_type='order_completed') > 0.4\n| where count(event_type='order_completed') >= 10\n"
         },
         "timeframe": "90d",
-        "condition": "aggregation"
+        "condition": "selection | aggregation"
       },
       "logsource": {
         "product": "ecommerce",
@@ -4192,7 +4192,7 @@
         "aggregation_region": {
           "condition": "selection | count() by store_region_code > 15"
         },
-        "condition": "aggregation_customer or aggregation_region",
+        "condition": "selection | aggregation_customer or selection | aggregation_region",
         "timeframe": "30d"
       },
       "logsource": {
@@ -4529,7 +4529,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Multi-Operator Behavioral Shift — Timezone and Communication Anomaly\n// Repository: flame-identity-platform-authentication\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct src_timezone) by user_id > 2\nevent_type=\"user_login\"\n| groupBy(user_id, function=[count(as=event_count), collect(src_timezone)])\n| event_count > 2",
+        "cql": "// CrowdStrike CQL for Multi-Operator Behavioral Shift — Timezone and Communication Anomaly\n// Repository: flame-identity-platform-authentication\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct src_timezone) by user_id > 2\nevent_type=\"user_login\"\n| groupBy(user_id, function=[count(as=event_count), collect(src_timezone)])\n| event_count > 2",
         "splunk": "`comment(\"Splunk SPL for Multi-Operator Behavioral Shift — Timezone and Communication Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct src_timezone) by user_id > 2\")`\nindex=flame_identity sourcetype=flame:authentication event_type=\"user_login\"\n| stats dc(src_timezone) as unique_src_timezone by user_id\n| where unique_src_timezone > 2"
       },
       "references": [
@@ -4721,7 +4721,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Salary Direct Deposit Rapid Cryptocurrency Conversion\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_deposit | near selection_conversion\ntransaction_type=\"ACH_IN\"\ntransaction_category=\"payroll\"\n(outbound_type=\"crypto_exchange\" OR outbound_type=\"p2p_crypto\" OR outbound_type=\"wire_to_exchange\")\ntime_since_deposit_hours<=48\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+        "cql": "// CrowdStrike CQL for Salary Direct Deposit Rapid Cryptocurrency Conversion\n// Repository: flame-banking-transaction-monitoring\n// Correlates payroll deposit with crypto exchange transfer within 48h\n(transaction_type=\"ACH_IN\" AND transaction_category=\"payroll\")\nOR (outbound_type=\"crypto_exchange\" OR outbound_type=\"p2p_crypto\"\n    OR outbound_type=\"wire_to_exchange\")\n| selfJoinFilter(account_id, where=[\n    {transaction_type=\"ACH_IN\" AND transaction_category=\"payroll\"}\n    {outbound_type=\"crypto_exchange\" OR outbound_type=\"p2p_crypto\"\n      OR outbound_type=\"wire_to_exchange\"}\n  ])\n| groupBy(account_id, function=[\n    count(as=event_count),\n    collect([transaction_type, outbound_type, transaction_amount, @timestamp])\n  ], span=48h)\n| event_count >= 2",
         "splunk": "`comment(\"Splunk SPL for Salary Direct Deposit Rapid Cryptocurrency Conversion\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_deposit | near selection_conversion\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\ntransaction_type=\"ACH_IN\"\ntransaction_category=\"payroll\"\n(outbound_type=\"crypto_exchange\" OR outbound_type=\"p2p_crypto\" OR outbound_type=\"wire_to_exchange\")\ntime_since_deposit_hours<=48\n| transaction account_id maxspan=1h\n| where eventcount >= 2"
       },
       "references": [
@@ -7583,6 +7583,7 @@
       ],
       "tags": [
         "TP-0057",
+        "attack.t1589",
         "cfpf.phase1.recon",
         "daas",
         "deepfake",
@@ -7593,6 +7594,88 @@
         "Legitimate AI SaaS subscriptions paid in cryptocurrency",
         "NFT art purchases from digital artists",
         "Legitimate face-swap or avatar generation services for entertainment"
+      ]
+    },
+    {
+      "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "dl_id": "DL-0116",
+      "title": "Real-Time Face/Voice Changer Detection During Video Interview",
+      "status": "experimental",
+      "description": "Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_virtual_camera": {
+          "camera_driver_name|contains": [
+            "OBS Virtual",
+            "ManyCam",
+            "DeepFace",
+            "FaceSwap",
+            "Snap Camera"
+          ]
+        },
+        "selection_audio_anomaly": {
+          "audio_analysis_score|gt": 0.75,
+          "audio_formant_anomaly": true
+        },
+        "selection_lip_sync": {
+          "lip_sync_delta_ms|gt": 200
+        },
+        "condition": "selection_virtual_camera or selection_audio_anomaly or selection_lip_sync"
+      },
+      "logsource": {
+        "product": "collaboration",
+        "service": "video_conferencing"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "camera_driver_name",
+          "audio_analysis_score",
+          "audio_formant_anomaly",
+          "lip_sync_delta_ms"
+        ],
+        "enrichment_required": [
+          {
+            "field": "audio_analysis_score",
+            "source": "Audio analysis enrichment (spectral anomaly detection scoring)"
+          },
+          {
+            "field": "lip_sync_delta_ms",
+            "source": "Video analysis enrichment (lip-to-audio synchronization measurement)"
+          }
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Real-Time Face/Voice Changer Detection During Video Interview\n// Repository: flame-collaboration-video-monitoring\n// Native query required - audio/video analysis cannot be expressed in Sigma\ncamera_driver_name=/OBS Virtual|ManyCam|DeepFace|FaceSwap|Snap Camera/i\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| case {\n    camera_driver_name=/DeepFace|FaceSwap/i | risk_score:=90;\n    camera_driver_name=/OBS Virtual|ManyCam/i | risk_score:=50;\n    audio_analysis_score>0.75 | risk_score:=80;\n    lip_sync_delta_ms>200 | risk_score:=70;\n    * | risk_score:=0;\n  }\n| risk_score>=50\n| groupBy([user_id, session_id], function=[count(), collect([camera_driver_name, audio_analysis_score, lip_sync_delta_ms])])",
+        "splunk": "`comment(\"Splunk SPL for Real-Time Face/Voice Changer Detection During Video Interview\")`\n`comment(\"Native query required - audio/video analysis cannot be expressed in Sigma\")`\nindex=flame_collaboration sourcetype=flame:video_conferencing\n(camera_driver_name=\"*OBS Virtual*\" OR camera_driver_name=\"*ManyCam*\" OR camera_driver_name=\"*DeepFace*\" OR camera_driver_name=\"*FaceSwap*\")\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| eval risk_score=case(\n    camera_driver_name LIKE \"%DeepFace%\" OR camera_driver_name LIKE \"%FaceSwap%\", 90,\n    camera_driver_name LIKE \"%OBS Virtual%\" OR camera_driver_name LIKE \"%ManyCam%\", 50,\n    audio_analysis_score>0.75, 80,\n    lip_sync_delta_ms>200, 70)\n| where risk_score>=50\n| stats count values(camera_driver_name) as cameras values(audio_analysis_score) as audio_scores max(lip_sync_delta_ms) as max_lip_delta by user_id session_id"
+      },
+      "threat_path_ids": [
+        "TP-0034",
+        "TP-0057"
+      ],
+      "fraud_types": [
+        "ai-face-voice-changer",
+        "deepfake-fraud",
+        "dprk-it-worker-fraud"
+      ],
+      "tags": [
+        "TP-0034",
+        "TP-0057",
+        "attack.t1656",
+        "cfpf.phase2.initial_access",
+        "deepfake",
+        "dprk",
+        "face-changer",
+        "flame.dprk",
+        "voice-changer"
+      ],
+      "falsepositives": [
+        "Legitimate OBS usage for screen sharing or streaming",
+        "Virtual background applications using camera driver interception",
+        "Legitimate audio processing software for noise cancellation",
+        "Poor network conditions causing audio-video desynchronization"
       ]
     },
     {
@@ -7659,6 +7742,8 @@
       "tags": [
         "TP-0017",
         "TP-0058",
+        "attack.t1566",
+        "attack.t1656",
         "cfpf.phase2.initial_access",
         "chatbot",
         "multilingual",
@@ -7724,7 +7809,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Automated Mule Account Creation Velocity\n// Repository: flame-banking-account-onboarding\n// Aggregation that cannot be expressed in Sigma\napplication_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0\n| groupBy([device_fingerprint, ip_address], function=[\n    count(as=app_count),\n    countDistinct(applicant_id, as=unique_applicants),\n    collect(applicant_id),\n    avg(application_duration_seconds, as=avg_duration),\n    min(application_duration_seconds, as=min_duration),\n    sum(mouse_events_count, as=total_mouse_events)\n  ])\n| app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| case {\n    app_count>10 | risk_level:=\"critical\";\n    app_count>5 | risk_level:=\"high\";\n    app_count>3 | risk_level:=\"medium\";\n  }",
+        "cql": "// CrowdStrike CQL for Automated Mule Account Creation Velocity\n// Repository: flame-banking-account-onboarding\n// Aggregation that cannot be expressed in Sigma\napplication_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0\n| groupBy([device_fingerprint, ip_address], function=[\n    count(as=app_count),\n    countDistinct(applicant_id, as=unique_applicants),\n    collect(applicant_id),\n    avg(application_duration_seconds, as=avg_duration),\n    min(application_duration_seconds, as=min_duration),\n    sum(mouse_events_count, as=total_mouse_events)\n  ])\n| app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| case {\n    app_count>10 | risk_level:=\"critical\";\n    app_count>5 | risk_level:=\"high\";\n    app_count>3 | risk_level:=\"medium\";\n  }",
         "splunk": "`comment(\"Splunk SPL for Automated Mule Account Creation Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n(application_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0)\n| stats count as app_count dc(applicant_id) as unique_applicants values(applicant_id) as applicants\n  avg(application_duration_seconds) as avg_duration min(application_duration_seconds) as min_duration\n  sum(mouse_events_count) as total_mouse_events by device_fingerprint ip_address\n| where app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| eval risk_level=case(app_count>10, \"critical\", app_count>5, \"high\", app_count>3, \"medium\")"
       },
       "threat_path_ids": [
@@ -7737,6 +7822,7 @@
       ],
       "tags": [
         "TP-0059",
+        "attack.t1589",
         "automation",
         "bot-detection",
         "cfpf.phase2.initial_access",
@@ -7817,6 +7903,7 @@
       "tags": [
         "TP-0034",
         "TP-0059",
+        "attack.t1589",
         "bot-circumvention",
         "cfpf.phase2.initial_access",
         "gan-detection",
@@ -7907,6 +7994,7 @@
       "tags": [
         "TP-0042",
         "TP-0060",
+        "attack.t1583.001",
         "cfpf.phase3.positioning",
         "cname-routing",
         "etoro-evasion",
@@ -7987,6 +8075,7 @@
       ],
       "tags": [
         "TP-0034",
+        "attack.t1090",
         "cfpf.phase3.positioning",
         "critical",
         "dprk",
@@ -8066,7 +8155,7 @@
         ]
       },
       "queries": {
-        "logscale": "// LogScale LQL for Keitaro/Binom TDS Abuse Infrastructure Detection\n// Repository: flame-proxy-http-log\n// HTTP redirect chain analysis for TDS abuse patterns\n(url_query=/click_id=|campaign_id=|keitaro|binom|cnv_id=/)\nOR (url_path=/\\/tracker\\/|\\/click\\/|\\/go\\/|\\/click\\.php/)\n| selfJoinFilter(session_id, where=[{url_query=/keitaro/ OR url_path=/\\/tracker\\//} {url_query=/binom/ OR url_path=/\\/click\\.php/}])\n| groupBy([session_id, src_ip], function=[\n    count(as=redirect_count),\n    collect([url, final_destination])\n  ])\n| redirect_count>=3",
+        "cql": "// CrowdStrike CQL for Keitaro/Binom TDS Abuse Infrastructure Detection\n// Repository: flame-proxy-http-log\n// HTTP redirect chain analysis for TDS abuse patterns\n(url_query=/click_id=|campaign_id=|keitaro|binom|cnv_id=/)\nOR (url_path=/\\/tracker\\/|\\/click\\/|\\/go\\/|\\/click\\.php/)\n| selfJoinFilter(session_id, where=[{url_query=/keitaro/ OR url_path=/\\/tracker\\//} {url_query=/binom/ OR url_path=/\\/click\\.php/}])\n| groupBy([session_id, src_ip], function=[\n    count(as=redirect_count),\n    collect([url, final_destination])\n  ])\n| redirect_count>=3",
         "splunk": "`comment(\"Splunk SPL for Keitaro/Binom TDS Abuse Infrastructure Detection\")`\n`comment(\"HTTP redirect chain analysis for TDS abuse patterns\")`\nindex=flame_proxy sourcetype=flame:http_log\n(url_query=\"*click_id=*\" OR url_query=\"*campaign_id=*\" OR url_query=\"*keitaro*\" OR url_query=\"*binom*\" OR url_query=\"*cnv_id=*\")\nOR (url_path=\"*/tracker/*\" OR url_path=\"*/click/*\" OR url_path=\"*/go/*\" OR url_path=\"*/click.php*\")\n| transaction session_id maxspan=30s\n| where eventcount>=3\n| eval redirect_chain=mvjoin(url, \" -> \")\n| eval has_keitaro=if(like(url_query, \"%keitaro%\") OR like(url_path, \"%/tracker/%\"), 1, 0)\n| eval has_binom=if(like(url_query, \"%binom%\") OR like(url_path, \"%/click.php%\"), 1, 0)\n| where has_keitaro=1 OR has_binom=1\n| stats count values(redirect_chain) as chains values(final_destination) as destinations by src_ip session_id"
       },
       "threat_path_ids": [
@@ -8080,6 +8169,8 @@
       "tags": [
         "TP-0042",
         "TP-0060",
+        "attack.t1090.003",
+        "attack.t1583.001",
         "binom",
         "cfpf.phase2.initial_access",
         "cloaking",
@@ -8091,6 +8182,98 @@
       "falsepositives": [
         "Legitimate digital marketing campaigns using Keitaro or Binom for affiliate analytics",
         "Performance marketing redirect chains for authorized advertising"
+      ]
+    },
+    {
+      "id": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
+      "dl_id": "DL-0123",
+      "title": "TAE Infrastructure Rotation Detection",
+      "status": "experimental",
+      "description": "Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems within short timeframes, (2) RIPE NCC resource reallocation to newly created organizations with minimal operational history, (3) BGP announcement changes matching known TAE rebranding patterns such as Aeza to Hypercore to NetCrafters, (4) threat density score spikes on newly announced prefixes indicating migration of malicious infrastructure to fresh address space.\n",
+      "cfpf_phase": "P1",
+      "level": "high",
+      "detection": {
+        "selection_prefix_transfer": {
+          "prefix_transfer_days|lt": 30,
+          "source_asn_related": true,
+          "destination_asn_related": true
+        },
+        "selection_new_org": {
+          "new_organization_age_days|lt": 90,
+          "ripe_resource_allocation": true,
+          "organization_verification_status": "minimal"
+        },
+        "selection_threat_density": {
+          "threat_density_score|gt": 0.6,
+          "prefix_announcement_age_days|lt": 14,
+          "historical_abuse_on_prefix": false
+        },
+        "selection_rebranding": {
+          "asn_name_change_days|lt": 60,
+          "infrastructure_overlap_score|gt": 0.7
+        },
+        "condition": "(selection_prefix_transfer and selection_new_org) or selection_threat_density or (selection_prefix_transfer and selection_rebranding)"
+      },
+      "logsource": {
+        "product": "network",
+        "service": "bgp_monitoring"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "prefix_transfer_days",
+          "source_asn_related",
+          "destination_asn_related",
+          "new_organization_age_days",
+          "ripe_resource_allocation",
+          "organization_verification_status",
+          "threat_density_score",
+          "prefix_announcement_age_days",
+          "historical_abuse_on_prefix",
+          "asn_name_change_days",
+          "infrastructure_overlap_score"
+        ],
+        "enrichment_required": [
+          {
+            "field": "threat_density_score",
+            "source": "Threat intelligence enrichment (IP prefix threat density calculation)"
+          },
+          {
+            "field": "infrastructure_overlap_score",
+            "source": "BGP analytics enrichment (infrastructure overlap between old and new ASN announcements)"
+          },
+          {
+            "field": "source_asn_related",
+            "source": "WHOIS/RIR enrichment (ASN organizational relationship mapping)"
+          }
+        ]
+      },
+      "threat_path_ids": [
+        "TP-0044",
+        "TP-0061"
+      ],
+      "fraud_types": [
+        "bph-migration",
+        "sanctions-evasion-infrastructure",
+        "state-criminal-convergence"
+      ],
+      "tags": [
+        "TP-0044",
+        "TP-0061",
+        "aeza",
+        "attack.t1583.003",
+        "bgp",
+        "bulletproof-hosting",
+        "cfpf.phase1.recon",
+        "ip-rotation",
+        "ripe-abuse",
+        "sanctions-evasion",
+        "tae"
+      ],
+      "falsepositives": [
+        "Legitimate ISP mergers and acquisitions involving prefix transfers",
+        "Planned infrastructure migrations with proper documentation",
+        "Regional Internet Registry administrative reallocation"
       ]
     },
     {
@@ -8268,7 +8451,7 @@
       ]
     },
     {
-      "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "id": "02c097e8-b078-4714-a22f-8c57401c33df",
       "dl_id": "DL-0126",
       "title": "Indirect Prompt Injection in UCP Agent Browsing Content",
       "status": "experimental",
@@ -8333,32 +8516,19 @@
         "https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/"
       ],
       "threat_path_ids": [
-        "TP-0034",
-        "TP-0039",
-        "TP-0057"
+        "TP-0039"
       ],
       "fraud_types": [
-        "ai-face-voice-changer",
         "autonomous-ai-fraud",
-        "deepfake-fraud",
-        "dprk-it-worker-fraud",
         "social-engineering"
       ],
       "tags": [
-        "TP-0034",
-        "TP-0057",
         "attack.t1059",
         "cfpf.phase2.initial_access",
-        "cfpf.phase2.initial_access",
-        "deepfake",
-        "dprk",
-        "face-changer",
         "flame.agentic_commerce",
-        "flame.dprk",
         "flame.ecommerce",
         "flame.prompt_injection",
-        "flame.ucp",
-        "voice-changer"
+        "flame.ucp"
       ],
       "falsepositives": [
         "Legitimate SEO metadata containing keyword patterns matching injection signatures",
@@ -8367,7 +8537,7 @@
       ]
     },
     {
-      "id": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
+      "id": "a430a7cf-65c1-488b-9547-76c2388c8845",
       "dl_id": "DL-0127",
       "title": "TDS URL Parameter Fingerprint Tracking Across Rotating Domains",
       "status": "experimental",
@@ -8419,7 +8589,7 @@
       },
       "queries": {
         "splunk": "`comment(\"Splunk SPL for TDS URL Parameter Fingerprint Tracking\")`\n`comment(\"Identifies consistent TDS parameter patterns across rotating domains\")`\nindex=flame_proxy sourcetype=flame:http_log http_status IN (301, 302, 307)\n(url_query=\"*?u=*&o=*\" OR url_query=\"*aff_id=*&click_id=*\" OR url_query=\"*subid=*&source=*&clickid=*\" OR url_query=\"*pid=*&offer_id=*\")\n| rex field=url_query \"(?<param_pattern>[a-z_]+=)[^&]*(&[a-z_]+=)[^&]*\"\n| eval param_fingerprint=param_pattern\n| lookup domain_age_feed dest_domain OUTPUT domain_age_days\n| where domain_age_days < 90 OR isnull(domain_age_days)\n| stats dc(dest_domain) AS unique_domains\n        values(dest_domain) AS domains\n        dc(src_ip) AS unique_visitors\n        count AS total_hits\n        earliest(_time) AS first_seen\n        latest(_time) AS last_seen\n    by param_fingerprint\n| where unique_domains >= 3\n| sort -unique_domains",
-        "logscale": "// LogScale LQL for TDS URL Parameter Fingerprint Tracking\n// Repository: flame-proxy-http-log\nhttp_status=/30[127]/\n| url_query=/\\?(u=[^&]*&o=|aff_id=[^&]*&click_id=|subid=[^&]*&source=[^&]*&clickid=|pid=[^&]*&offer_id=)/\n| regex(\"(?<param_fingerprint>[a-z_]+=)[^&]*(&[a-z_]+=)\", field=url_query)\n| groupBy([param_fingerprint], function=[\n    count(as=total_hits),\n    collectDistinct(dest_domain, as=unique_domains),\n    collectDistinct(src_ip, as=unique_visitors)\n  ])\n| length(unique_domains) >= 3"
+        "cql": "// CrowdStrike CQL for TDS URL Parameter Fingerprint Tracking\n// Repository: flame-proxy-http-log\nhttp_status=/30[127]/\n| url_query=/\\?(u=[^&]*&o=|aff_id=[^&]*&click_id=|subid=[^&]*&source=[^&]*&clickid=|pid=[^&]*&offer_id=)/\n| regex(\"(?<param_fingerprint>[a-z_]+=)[^&]*(&[a-z_]+=)\", field=url_query)\n| groupBy([param_fingerprint], function=[\n    count(as=total_hits),\n    collectDistinct(dest_domain, as=unique_domains),\n    collectDistinct(src_ip, as=unique_visitors)\n  ])\n| length(unique_domains) >= 3"
       },
       "references": [
         "https://blackhat.com/us-25/briefings/schedule/#no-hoodies-here-organized-crime-in-adtech-46001",
@@ -8427,35 +8597,21 @@
       ],
       "threat_path_ids": [
         "TP-0042",
-        "TP-0044",
-        "TP-0060",
-        "TP-0061"
+        "TP-0060"
       ],
       "fraud_types": [
         "affiliate-fraud",
-        "bph-migration",
         "malvertising",
-        "sanctions-evasion-infrastructure",
-        "state-criminal-convergence",
         "tds-exploitation"
       ],
       "tags": [
         "TP-0042",
-        "TP-0044",
         "TP-0060",
-        "TP-0061",
-        "aeza",
         "affiliate-tracking",
+        "attack.t1583.001",
         "behavioral-fingerprint",
-        "bgp",
-        "bulletproof-hosting",
-        "cfpf.phase1.recon",
         "cfpf.phase3.positioning",
         "domain-rotation",
-        "ip-rotation",
-        "ripe-abuse",
-        "sanctions-evasion",
-        "tae",
         "tds",
         "url-parameter-fingerprint",
         "vextrio"
@@ -8547,6 +8703,7 @@
         "TP-0054",
         "ad-trafficko",
         "affiliate-fraud",
+        "attack.t1657",
         "blank-cc-submit",
         "cfpf.phase4.execution",
         "chargeback-anomaly",
@@ -8651,6 +8808,8 @@
       "tags": [
         "TP-0042",
         "TP-0054",
+        "attack.t1090",
+        "attack.t1657",
         "cfpf.phase4.execution",
         "fake-mobile-app",
         "keyword-scanning",
@@ -8715,7 +8874,7 @@
         ]
       },
       "queries": {
-        "splunk": "`comment(\"Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\")`\n`comment(\"Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment\")`\nindex=medicare_claims sourcetype=cms_claims\n| join provider_npi [search index=pecos_enrollment\n  | fields provider_npi enrollment_effective_date provider_type provider_zip]\n| eval days_to_first_claim=round((strptime(claim_date,\"%Y-%m-%d\")\n  - strptime(enrollment_effective_date,\"%Y-%m-%d\")) / 86400)\n| where days_to_first_claim >= 0 AND days_to_first_claim <= 30\n| stats\n    count AS claim_count\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n    min(claim_date) AS first_claim_date\n    max(claim_date) AS last_claim_date\n    values(provider_type) AS provider_type\n    values(provider_zip) AS provider_zip\n  by provider_npi, enrollment_effective_date\n| where total_billed > 100000\n| eval code_diversity_ratio=round(unique_codes/claim_count, 4)\n| eval avg_per_beneficiary=round(total_billed/unique_beneficiaries, 2)\n| eval risk_score=case(\n    total_billed > 1000000 AND code_diversity_ratio < 0.05, \"CRITICAL\",\n    total_billed > 500000, \"HIGH\",\n    total_billed > 100000 AND code_diversity_ratio < 0.1, \"HIGH\",\n    1=1, \"MEDIUM\")\n| sort -total_billed",
+        "splunk": "`comment(\"Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\")`\n`comment(\"Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment\")`\nindex=medicare_claims sourcetype=cms_claims\n| join type=inner max=0 provider_npi [search index=pecos_enrollment\n  | fields provider_npi enrollment_effective_date provider_type provider_zip]\n| eval days_to_first_claim=round((strptime(claim_date,\"%Y-%m-%d\")\n  - strptime(enrollment_effective_date,\"%Y-%m-%d\")) / 86400)\n| where days_to_first_claim >= 0 AND days_to_first_claim <= 30\n| stats\n    count AS claim_count\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n    min(claim_date) AS first_claim_date\n    max(claim_date) AS last_claim_date\n    values(provider_type) AS provider_type\n    values(provider_zip) AS provider_zip\n  by provider_npi, enrollment_effective_date\n| where total_billed > 100000\n| eval code_diversity_ratio=round(unique_codes/claim_count, 4)\n| eval avg_per_beneficiary=round(total_billed/unique_beneficiaries, 2)\n| eval risk_score=case(\n    total_billed > 1000000 AND code_diversity_ratio < 0.05, \"CRITICAL\",\n    total_billed > 500000, \"HIGH\",\n    total_billed > 100000 AND code_diversity_ratio < 0.1, \"HIGH\",\n    1=1, \"MEDIUM\")\n| sort -total_billed",
         "sql": "-- SQL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\n-- Identifies providers with suspicious billing velocity post-enrollment\nSELECT\n  s.provider_npi,\n  s.provider_name,\n  s.enrollment_effective_date,\n  s.provider_type,\n  s.physical_address,\n  COUNT(c.claim_id) AS total_claims,\n  SUM(c.billed_amount) AS total_billed,\n  COUNT(DISTINCT c.beneficiary_id) AS unique_beneficiaries,\n  COUNT(DISTINCT c.hcpcs_code) AS unique_codes,\n  MIN(c.service_date) AS first_claim_date,\n  EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) AS days_to_first_claim,\n  ROUND(COUNT(DISTINCT c.hcpcs_code)::numeric / NULLIF(COUNT(c.claim_id), 0), 4) AS code_diversity_ratio,\n  ROUND(SUM(c.billed_amount)::numeric / NULLIF(COUNT(DISTINCT c.beneficiary_id), 0), 2) AS avg_per_beneficiary\nFROM provider_enrollment s\nJOIN claims c ON s.provider_npi = c.provider_npi\nWHERE s.enrollment_effective_date >= CURRENT_DATE - INTERVAL '365 days'\n  AND EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) <= 30\nGROUP BY s.provider_npi, s.provider_name, s.enrollment_effective_date,\n         s.provider_type, s.physical_address\nHAVING SUM(c.billed_amount) > 100000\nORDER BY total_billed DESC;"
       },
       "references": [
@@ -8733,6 +8892,8 @@
       "tags": [
         "TP-0021",
         "TP-0028",
+        "attack.t1078",
+        "attack.t1657",
         "cfpf.phase4.execution",
         "dme-fraud",
         "healthcare-fraud",
@@ -8792,7 +8953,7 @@
         ]
       },
       "queries": {
-        "splunk": "`comment(\"Splunk SPL for Single-Code Billing Concentration Detection\")`\n`comment(\"Flags providers where one HCPCS code exceeds 80% of total claims\")`\nindex=medicare_claims sourcetype=cms_claims\n| stats\n    count AS total_claims\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n  by provider_npi\n| where total_claims >= 500\n| eval code_diversity=round(unique_codes/total_claims, 4)\n| where code_diversity < 0.05\n| join provider_npi [search index=medicare_claims sourcetype=cms_claims\n  | stats count AS code_count by provider_npi, hcpcs_code\n  | eventstats sum(code_count) AS provider_total by provider_npi\n  | eval code_pct=round(code_count/provider_total*100, 1)\n  | where code_pct > 80\n  | fields provider_npi, hcpcs_code, code_pct]\n| sort -total_billed\n| eval alert_type=\"SINGLE_CODE_CONCENTRATION\"\n\n`comment(\"--- Detection 2: Impossible Day Billing ---\")`\n`comment(\"Flags providers billing more than 24 hours of procedures per day\")`\nindex=medicare_claims sourcetype=cms_claims\n| lookup hcpcs_time_estimates hcpcs_code OUTPUT estimated_minutes\n| stats\n    sum(estimated_minutes) AS total_minutes\n    count AS claim_count\n    dc(beneficiary_id) AS patients_per_day\n    sum(billed_amount) AS daily_billed\n  by provider_npi, service_date\n| where total_minutes > 1440\n| eval hours_billed=round(total_minutes/60, 1)\n| eval alert_type=\"IMPOSSIBLE_DAY\"\n| sort -total_minutes",
+        "splunk": "`comment(\"Splunk SPL for Single-Code Billing Concentration Detection\")`\n`comment(\"Flags providers where one HCPCS code exceeds 80% of total claims\")`\nindex=medicare_claims sourcetype=cms_claims\n| stats\n    count AS total_claims\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n  by provider_npi\n| where total_claims >= 500\n| eval code_diversity=round(unique_codes/total_claims, 4)\n| where code_diversity < 0.05\n| join type=inner max=0 provider_npi [search index=medicare_claims sourcetype=cms_claims\n  | stats count AS code_count by provider_npi, hcpcs_code\n  | eventstats sum(code_count) AS provider_total by provider_npi\n  | eval code_pct=round(code_count/provider_total*100, 1)\n  | where code_pct > 80\n  | fields provider_npi, hcpcs_code, code_pct]\n| sort -total_billed\n| eval alert_type=\"SINGLE_CODE_CONCENTRATION\"\n\n`comment(\"--- Detection 2: Impossible Day Billing ---\")`\n`comment(\"Flags providers billing more than 24 hours of procedures per day\")`\nindex=medicare_claims sourcetype=cms_claims\n| lookup hcpcs_time_estimates hcpcs_code OUTPUT estimated_minutes\n| stats\n    sum(estimated_minutes) AS total_minutes\n    count AS claim_count\n    dc(beneficiary_id) AS patients_per_day\n    sum(billed_amount) AS daily_billed\n  by provider_npi, service_date\n| where total_minutes > 1440\n| eval hours_billed=round(total_minutes/60, 1)\n| eval alert_type=\"IMPOSSIBLE_DAY\"\n| sort -total_minutes",
         "sql": "-- SQL for Single-Code Billing Concentration Detection\nWITH provider_code_stats AS (\n  SELECT\n    provider_npi,\n    hcpcs_code,\n    COUNT(*) AS code_claims,\n    SUM(billed_amount) AS code_billed,\n    SUM(COUNT(*)) OVER (PARTITION BY provider_npi) AS total_claims,\n    SUM(SUM(billed_amount)) OVER (PARTITION BY provider_npi) AS total_billed\n  FROM claims\n  WHERE service_date >= CURRENT_DATE - INTERVAL '90 days'\n  GROUP BY provider_npi, hcpcs_code\n)\nSELECT\n  provider_npi,\n  hcpcs_code AS dominant_code,\n  code_claims,\n  total_claims,\n  ROUND(code_claims::numeric / total_claims * 100, 1) AS code_pct,\n  total_billed,\n  'SINGLE_CODE_CONCENTRATION' AS alert_type\nFROM provider_code_stats\nWHERE total_claims >= 500\n  AND ROUND(code_claims::numeric / total_claims * 100, 1) > 80\nORDER BY total_billed DESC;\n\n-- SQL for Impossible Day Billing Detection\nSELECT\n  c.provider_npi,\n  p.provider_name,\n  c.service_date,\n  SUM(h.estimated_minutes) AS total_minutes_billed,\n  ROUND(SUM(h.estimated_minutes) / 60.0, 1) AS hours_billed,\n  COUNT(*) AS claim_count,\n  COUNT(DISTINCT c.beneficiary_id) AS patients,\n  SUM(c.billed_amount) AS daily_billed\nFROM claims c\nJOIN hcpcs_time_estimates h ON c.hcpcs_code = h.hcpcs_code\nJOIN providers p ON c.provider_npi = p.provider_npi\nWHERE c.service_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY c.provider_npi, p.provider_name, c.service_date\nHAVING SUM(h.estimated_minutes) > 1440\nORDER BY total_minutes_billed DESC;"
       },
       "references": [
@@ -8810,6 +8971,7 @@
       "tags": [
         "TP-0021",
         "TP-0028",
+        "attack.t1657",
         "cfpf.phase4.execution",
         "hcpcs-anomaly",
         "healthcare-fraud",
@@ -8891,7 +9053,7 @@
         ]
       },
       "queries": {
-        "splunk": "`comment(\"Splunk SPL for Ghost Patient Claims Detection\")`\n`comment(\"Identifies claims submitted for deceased or incarcerated beneficiaries\")`\nindex=medicare_claims sourcetype=cms_claims\n| join beneficiary_id [search index=beneficiary_eligibility\n  | where beneficiary_status IN (\"deceased\", \"incarcerated\")\n  | fields beneficiary_id beneficiary_status status_effective_date]\n| eval claim_date_epoch=strptime(service_date, \"%Y-%m-%d\")\n| eval status_date_epoch=strptime(status_effective_date, \"%Y-%m-%d\")\n| where claim_date_epoch > status_date_epoch\n| stats\n    count AS ghost_claims\n    sum(billed_amount) AS ghost_billed\n    dc(beneficiary_id) AS ghost_beneficiaries\n    values(beneficiary_status) AS status_types\n  by provider_npi\n| where ghost_claims > 5\n| sort -ghost_billed\n\n`comment(\"--- Detection 2: Geographic Provider Clustering ---\")`\n`comment(\"Identifies ZIP codes with anomalous provider density and billing\")`\nindex=pecos_enrollment sourcetype=cms_enrollment\n| stats\n    dc(provider_npi) AS provider_count\n    values(provider_name) AS providers\n  by provider_zip, provider_type\n| where provider_count >= 10\n| join provider_zip [search index=medicare_claims sourcetype=cms_claims\n  | stats sum(billed_amount) AS total_zip_billed dc(provider_npi) AS billing_providers by provider_zip\n  | eval avg_billing_per_provider=round(total_zip_billed/billing_providers, 2)]\n| where avg_billing_per_provider > 500000\n| eval alert_type=\"GEOGRAPHIC_CLUSTERING\"\n| sort -provider_count",
+        "splunk": "`comment(\"Splunk SPL for Ghost Patient Claims Detection\")`\n`comment(\"Identifies claims submitted for deceased or incarcerated beneficiaries\")`\nindex=medicare_claims sourcetype=cms_claims\n| join type=inner max=0 beneficiary_id [search index=beneficiary_eligibility\n  | where beneficiary_status IN (\"deceased\", \"incarcerated\")\n  | fields beneficiary_id beneficiary_status status_effective_date]\n| eval claim_date_epoch=strptime(service_date, \"%Y-%m-%d\")\n| eval status_date_epoch=strptime(status_effective_date, \"%Y-%m-%d\")\n| where claim_date_epoch > status_date_epoch\n| stats\n    count AS ghost_claims\n    sum(billed_amount) AS ghost_billed\n    dc(beneficiary_id) AS ghost_beneficiaries\n    values(beneficiary_status) AS status_types\n  by provider_npi\n| where ghost_claims > 5\n| sort -ghost_billed\n\n`comment(\"--- Detection 2: Geographic Provider Clustering ---\")`\n`comment(\"Identifies ZIP codes with anomalous provider density and billing\")`\nindex=pecos_enrollment sourcetype=cms_enrollment\n| stats\n    dc(provider_npi) AS provider_count\n    values(provider_name) AS providers\n  by provider_zip, provider_type\n| where provider_count >= 10\n| join type=inner max=0 provider_zip [search index=medicare_claims sourcetype=cms_claims\n  | stats sum(billed_amount) AS total_zip_billed dc(provider_npi) AS billing_providers by provider_zip\n  | eval avg_billing_per_provider=round(total_zip_billed/billing_providers, 2)]\n| where avg_billing_per_provider > 500000\n| eval alert_type=\"GEOGRAPHIC_CLUSTERING\"\n| sort -provider_count",
         "sql": "-- SQL for Ghost Patient Claims Detection\nSELECT\n  c.provider_npi,\n  p.provider_name,\n  COUNT(*) AS ghost_claims,\n  SUM(c.billed_amount) AS ghost_billed,\n  COUNT(DISTINCT c.beneficiary_id) AS ghost_beneficiaries,\n  b.beneficiary_status\nFROM claims c\nJOIN beneficiary_eligibility b ON c.beneficiary_id = b.beneficiary_id\nJOIN providers p ON c.provider_npi = p.provider_npi\nWHERE b.beneficiary_status IN ('deceased', 'incarcerated')\n  AND c.service_date > b.status_effective_date\n  AND c.service_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY c.provider_npi, p.provider_name, b.beneficiary_status\nHAVING COUNT(*) > 5\nORDER BY ghost_billed DESC;\n\n-- SQL for Geographic Provider Clustering Detection\nSELECT\n  e.provider_zip,\n  e.provider_type,\n  COUNT(DISTINCT e.provider_npi) AS provider_count,\n  COALESCE(SUM(c.billed_amount), 0) AS total_zip_billed,\n  ROUND(COALESCE(SUM(c.billed_amount), 0)::numeric\n    / NULLIF(COUNT(DISTINCT e.provider_npi), 0), 2) AS avg_billing_per_provider,\n  COUNT(DISTINCT CASE WHEN addr.address_type = 'CMRA' THEN e.provider_npi END) AS cmra_addresses,\n  COUNT(DISTINCT CASE WHEN addr.address_type = 'residential' THEN e.provider_npi END) AS residential_addresses\nFROM provider_enrollment e\nLEFT JOIN claims c ON e.provider_npi = c.provider_npi\n  AND c.service_date >= CURRENT_DATE - INTERVAL '365 days'\nLEFT JOIN address_classification addr ON e.physical_address = addr.address\nWHERE e.provider_type IN ('hospice', 'home_health', 'dme', 'aba_therapy')\nGROUP BY e.provider_zip, e.provider_type\nHAVING COUNT(DISTINCT e.provider_npi) >= 10\n   AND ROUND(COALESCE(SUM(c.billed_amount), 0)::numeric\n    / NULLIF(COUNT(DISTINCT e.provider_npi), 0), 2) > 500000\nORDER BY provider_count DESC;"
       },
       "references": [
@@ -8911,6 +9073,8 @@
       "tags": [
         "TP-0021",
         "TP-0028",
+        "attack.t1589",
+        "attack.t1657",
         "cfpf.phase3.positioning",
         "cmra-address",
         "deceased-beneficiary",
@@ -8968,8 +9132,8 @@
         ]
       },
       "queries": {
-        "splunk": "`comment(\"Splunk SPL for Recovery Fraud Contact Pattern\")`\n`comment(\"Cross-references fraud complaints with subsequent outbound payments to new recipients\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n  amount > 500\n| join customer_id [\n  search index=flame_fraud sourcetype=flame:complaints\n  | where complaint_date >= relative_time(now(), \"-90d\")\n  | fields customer_id, complaint_date, original_loss_amount, fraud_type\n]\n| search NOT [\n  search index=flame_banking sourcetype=flame:transaction_monitoring\n    transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n    transaction_date < complaint_date\n  | dedup recipient_account, customer_id\n  | fields recipient_account, customer_id\n]\n| stats count AS payment_count, sum(amount) AS total_amount,\n        values(recipient_account) AS recipients\n  BY customer_id, fraud_type, original_loss_amount\n| where payment_count >= 1",
-        "logscale": "// LogScale LQL for Recovery Fraud Contact Pattern\n// Cross-references fraud complaints with subsequent outbound payments\ntransaction_type IN [\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\"]\n| amount > 500\n| match(file=\"flame_fraud_complaints_90d.csv\", field=customer_id, include=[complaint_date, original_loss_amount, fraud_type])\n| groupBy(customer_id, function=[count(as=payment_count), sum(amount, as=total_amount), collect(recipient_account)])\n| payment_count >= 1",
+        "splunk": "`comment(\"Splunk SPL for Recovery Fraud Contact Pattern\")`\n`comment(\"Cross-references fraud complaints with subsequent outbound payments to new recipients\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n  amount > 500\n| join type=inner max=0 customer_id [\n  search index=flame_fraud sourcetype=flame:complaints\n  | where complaint_date >= relative_time(now(), \"-90d\")\n  | fields customer_id, complaint_date, original_loss_amount, fraud_type\n]\n| search NOT [\n  search index=flame_banking sourcetype=flame:transaction_monitoring\n    transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n    transaction_date < complaint_date\n  | dedup recipient_account, customer_id\n  | fields recipient_account, customer_id\n]\n| stats count AS payment_count, sum(amount) AS total_amount,\n        values(recipient_account) AS recipients\n  BY customer_id, fraud_type, original_loss_amount\n| where payment_count >= 1",
+        "cql": "// CrowdStrike CQL for Recovery Fraud Contact Pattern\n// Cross-references fraud complaints with subsequent outbound payments\ntransaction_type IN [\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\"]\n| amount > 500\n| match(file=\"flame_fraud_complaints_90d.csv\", field=customer_id, include=[complaint_date, original_loss_amount, fraud_type])\n| groupBy(customer_id, function=[count(as=payment_count), sum(amount, as=total_amount), collect(recipient_account)])\n| payment_count >= 1",
         "sql": "-- SQL for Recovery Fraud Contact Pattern\nSELECT\n    t.customer_id,\n    t.transaction_date,\n    t.amount,\n    t.recipient_account,\n    c.complaint_date,\n    c.original_loss_amount,\n    c.fraud_type AS original_fraud_type\nFROM transactions t\nJOIN fraud_complaints c ON t.customer_id = c.customer_id\nWHERE c.complaint_date >= DATEADD(day, -90, t.transaction_date)\n  AND t.recipient_account NOT IN (\n    SELECT DISTINCT recipient_account\n    FROM transactions\n    WHERE customer_id = t.customer_id\n      AND transaction_date < c.complaint_date\n  )\n  AND t.amount > 500\nORDER BY t.transaction_date DESC"
       },
       "references": [
@@ -8985,6 +9149,8 @@
         "recovery-fraud"
       ],
       "tags": [
+        "attack.t1656",
+        "attack.t1657",
         "cfpf.phase4.execution",
         "flame.recovery-fraud",
         "flame.unodc"
@@ -9028,7 +9194,7 @@
       },
       "queries": {
         "splunk": "`comment(\"Splunk SPL for Mass-Marketing Burst Calling Pattern\")`\n`comment(\"Detects SIM farm / robodialling burst patterns\")`\nindex=flame_telecom sourcetype=flame:cdr call_direction=\"inbound\"\n| eval source_prefix=substr(source_number, 1, 7)\n| bin _time span=1h\n| stats dc(destination_number) AS unique_targets,\n        avg(call_duration) AS avg_duration,\n        count AS total_calls,\n        values(caller_id_verification_status) AS attestation\n  BY source_prefix, _time\n| where unique_targets > 50 AND avg_duration < 30\n| sort - unique_targets",
-        "logscale": "// LogScale LQL for Mass-Marketing Burst Calling Pattern\ncall_direction=\"inbound\"\n| source_prefix := substring(source_number, start=0, end=7)\n| bucket(field=@timestamp, span=1h)\n| groupBy([source_prefix, @timestamp], function=[\n    count(as=total_calls),\n    count(field=destination_number, distinct=true, as=unique_targets),\n    avg(call_duration, as=avg_duration),\n    collect(caller_id_verification_status)\n  ])\n| unique_targets > 50 AND avg_duration < 30",
+        "cql": "// CrowdStrike CQL for Mass-Marketing Burst Calling Pattern\ncall_direction=\"inbound\"\n| source_prefix := substring(source_number, start=0, end=7)\n| bucket(field=@timestamp, span=1h)\n| groupBy([source_prefix, @timestamp], function=[\n    count(as=total_calls),\n    count(field=destination_number, distinct=true, as=unique_targets),\n    avg(call_duration, as=avg_duration),\n    collect(caller_id_verification_status)\n  ])\n| unique_targets > 50 AND avg_duration < 30",
         "sigma": "title: Mass-Marketing Fraud Burst Calling Pattern\nstatus: experimental\nlogsource:\n    product: telecom\n    service: cdr\ndetection:\n    selection:\n        call_direction: inbound\n        call_duration|lt: 30\n    timeframe: 1h\n    condition: selection | count(distinct destination_number) by source_number_prefix > 50\nfields:\n    - source_number\n    - destination_number\n    - call_duration\n    - caller_id_verification_status\nlevel: medium"
       },
       "references": [
@@ -9045,6 +9211,8 @@
         "vishing"
       ],
       "tags": [
+        "attack.t1566",
+        "attack.t1656",
         "cfpf.phase2.initial_access",
         "flame.mass-marketing",
         "flame.sim-farm",
@@ -9105,6 +9273,7 @@
         "long-firm-fraud"
       ],
       "tags": [
+        "attack.t1657",
         "cfpf.phase4.execution",
         "flame.commercial-credit",
         "flame.long-firm",
@@ -9168,6 +9337,7 @@
         "insurance-fraud"
       ],
       "tags": [
+        "attack.t1657",
         "cfpf.phase4.execution",
         "flame.crash-for-cash",
         "flame.insurance-ring",
@@ -9213,8 +9383,8 @@
         ]
       },
       "queries": {
-        "kql": "// Microsoft Sentinel KQL: Detect AiTM session token replay\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n| where AccessTime > MFATime and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
-        "splunk": "`comment(\"Splunk SPL for AiTM Session Token Replay Detection\")`\nindex=azure sourcetype=\"azure:aad:signin\" AuthenticationRequirement=\"multiFactorAuthentication\" ResultType=0\n| rename IPAddress AS MFA_IP, UserAgent AS MFA_UserAgent\n| join UserPrincipalName [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n  | rename IPAddress AS Access_IP, UserAgent AS Access_UserAgent\n]\n| where Access_IP != MFA_IP OR Access_UserAgent != MFA_UserAgent\n| table UserPrincipalName, _time, MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent"
+        "kql": "// Microsoft Sentinel KQL: Detect AiTM session token replay\n// User-Agent or IP mismatch between MFA completion and subsequent access\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n// Exclude MFA events to prevent self-join noise\n| where AuthenticationRequirement != \"multiFactorAuthentication\"\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n// Access must occur 5min–4h after MFA (skip trivially close auth flow events)\n| where AccessTime > MFATime + 5m and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
+        "splunk": "`comment(\"Splunk SPL for AiTM Session Token Replay Detection\")`\n`comment(\"Detects IP or User-Agent mismatch between MFA and subsequent access\")`\nindex=azure sourcetype=\"azure:aad:signin\" AuthenticationRequirement=\"multiFactorAuthentication\" ResultType=0\n| eval mfa_time=_time\n| rename IPAddress AS MFA_IP, UserAgent AS MFA_UserAgent\n| join type=inner max=0 UserPrincipalName [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n    AuthenticationRequirement!=\"multiFactorAuthentication\"\n  | rename IPAddress AS Access_IP, UserAgent AS Access_UserAgent\n  | eval access_time=_time\n]\n| eval time_diff_hours = round((access_time - mfa_time) / 3600, 2)\n| where time_diff_hours > 0.083 AND time_diff_hours <= 4\n| where Access_IP != MFA_IP OR Access_UserAgent != MFA_UserAgent\n| table UserPrincipalName, mfa_time, access_time, time_diff_hours,\n        MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent\n| sort - time_diff_hours"
       },
       "references": [
         "Organized fraud detection in 2026: a technical landscape report — BEC and AiTM phishing",
@@ -9251,32 +9421,50 @@
       "cfpf_phase": "P3",
       "level": "high",
       "detection": {
-        "selection": {
+        "selection_inbox_rule": {
           "Operation": [
             "New-InboxRule",
             "Set-InboxRule",
             "Enable-InboxRule"
           ]
         },
-        "filter_internal": {
-          "ClientIP|cidr": [
-            "10.0.0.0/8",
-            "172.16.0.0/12",
-            "192.168.0.0/16"
-          ]
+        "correlation": {
+          "type": "temporal",
+          "description": "Inbox rule creation must occur within 24h of a sign-in from an IP address not previously seen for this user (first-seen within 24h window). Requires cross-log correlation between Exchange Online audit logs and Entra ID sign-in logs.\n"
         },
         "timeframe": "24h",
-        "condition": "selection and not filter_internal"
+        "condition": "selection_inbox_rule AND user authenticated from previously-unseen IP within preceding 24 hours\n"
       },
       "logsource": {
         "product": "m365",
         "service": "exchange"
       },
-      "sigma_compatible": true,
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "Operation",
+          "UserId",
+          "ClientIP",
+          "Parameters",
+          "TimeGenerated"
+        ],
+        "cross_log_sources": [
+          {
+            "source": "azure/signinlogs",
+            "fields": [
+              "UserPrincipalName",
+              "IPAddress",
+              "ResultType",
+              "TimeGenerated"
+            ]
+          }
+        ]
+      },
       "queries": {
         "kql": "// Microsoft Sentinel KQL: Inbox rule manipulation after new-IP authentication\nlet new_ip_signins = SigninLogs\n| where TimeGenerated > ago(48h)\n| where ResultType == 0\n| summarize FirstSeen=min(TimeGenerated) by UserPrincipalName, IPAddress\n| where FirstSeen > ago(24h);\nOfficeActivity\n| where TimeGenerated > ago(24h)\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| join kind=inner new_ip_signins on $left.UserId == $right.UserPrincipalName\n| where TimeGenerated > FirstSeen\n| project TimeGenerated, UserId, Operation, Parameters, ClientIP, IPAddress",
-        "splunk": "`comment(\"Splunk SPL for Post-Compromise Inbox Rule Manipulation\")`\nindex=o365 sourcetype=\"o365:management:activity\"\n  Operation IN (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| eval rule_time=_time\n| join UserId [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n  | stats earliest(_time) AS first_seen BY UserPrincipalName, IPAddress\n  | where first_seen > relative_time(now(), \"-24h\")\n  | rename UserPrincipalName AS UserId\n]\n| where rule_time > first_seen\n| table _time, UserId, Operation, Parameters, ClientIP",
-        "sigma": "title: Post-Compromise Inbox Rule Manipulation\nstatus: experimental\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection:\n        Operation:\n            - New-InboxRule\n            - Set-InboxRule\n            - Enable-InboxRule\n    filter_internal:\n        ClientIP|cidr:\n            - 10.0.0.0/8\n            - 172.16.0.0/12\n            - 192.168.0.0/16\n    condition: selection and not filter_internal\nfields:\n    - UserId\n    - ClientIP\n    - Parameters\nlevel: high"
+        "splunk": "`comment(\"Splunk SPL for Post-Compromise Inbox Rule Manipulation\")`\n`comment(\"Correlates inbox rule creation with sign-in from new IP within 24h\")`\nindex=o365 sourcetype=\"o365:management:activity\"\n  Operation IN (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| eval rule_time=_time\n| join type=inner max=0 UserId [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n    earliest=-48h latest=now\n  | stats earliest(_time) AS first_seen BY UserPrincipalName, IPAddress\n  | where first_seen > relative_time(now(), \"-24h\")\n  | rename UserPrincipalName AS UserId\n]\n| where rule_time > first_seen\n| eval hours_after_new_ip = round((rule_time - first_seen) / 3600, 1)\n| table _time, UserId, Operation, Parameters, ClientIP,\n        IPAddress, hours_after_new_ip",
+        "sigma": "title: Post-Compromise Inbox Rule Manipulation (Standalone — No Cross-Log Correlation)\nstatus: experimental\ndescription: >\n  Basic detection: inbox rule creation from non-RFC1918 IP.\n  For the full correlated detection (new-IP sign-in + inbox rule), use the\n  KQL or SPL queries which perform cross-log temporal correlation.\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection:\n        Operation:\n            - New-InboxRule\n            - Set-InboxRule\n            - Enable-InboxRule\n    filter_internal:\n        ClientIP|cidr:\n            - 10.0.0.0/8\n            - 172.16.0.0/12\n            - 192.168.0.0/16\n    condition: selection and not filter_internal\nfields:\n    - UserId\n    - ClientIP\n    - Parameters\nlevel: high\nfalsepositives:\n    - Users creating inbox rules from external networks (home, mobile)\n    - Cloud-hosted email management tools with non-RFC1918 IPs\n    - Corporate networks using public IP NAT for Exchange clients"
       },
       "references": [
         "Organized fraud detection in 2026: a technical landscape report — BEC and AiTM phishing",
@@ -9362,6 +9550,7 @@
         "social-engineering"
       ],
       "tags": [
+        "attack.t1566",
         "cfpf.phase2.initial_access",
         "flame.ai-detection",
         "flame.nlp",
@@ -9437,6 +9626,7 @@
         "social-engineering"
       ],
       "tags": [
+        "attack.t1566",
         "cfpf.phase2.initial_access",
         "flame.cialdini",
         "flame.nlp",
@@ -9484,7 +9674,7 @@
         ]
       },
       "queries": {
-        "splunk": "`comment(\"Splunk SPL for SIM Swap Network-Level API Detection\")`\n`comment(\"Correlates SIM change signals with MFA authentication attempts\")`\nindex=flame_telecom sourcetype=flame:number_intelligence\n| eval sim_risk = case(\n    sim_swap_recently == \"true\", \"HIGH\",\n    device_mismatch == \"true\", \"HIGH\",\n    call_forwarding_active == \"true\", \"MEDIUM\",\n    1=1, \"LOW\"\n  )\n| where sim_risk IN (\"HIGH\", \"MEDIUM\")\n| join phone_number [\n  search index=flame_banking sourcetype=flame:mfa_events\n  | where mfa_channel = \"SMS\"\n  | where _time > relative_time(now(), \"-1h\")\n]\n| table _time, phone_number, customer_id, sim_risk,\n        sim_swap_recently, sim_swap_timestamp,\n        device_mismatch, call_forwarding_active,\n        mfa_result",
+        "splunk": "`comment(\"Splunk SPL for SIM Swap Network-Level API Detection\")`\n`comment(\"Correlates SIM change signals with MFA authentication attempts\")`\nindex=flame_telecom sourcetype=flame:number_intelligence\n| eval sim_risk = case(\n    sim_swap_recently == \"true\", \"HIGH\",\n    device_mismatch == \"true\", \"HIGH\",\n    call_forwarding_active == \"true\", \"MEDIUM\",\n    1=1, \"LOW\"\n  )\n| where sim_risk IN (\"HIGH\", \"MEDIUM\")\n| join type=inner max=0 phone_number [\n  search index=flame_banking sourcetype=flame:mfa_events\n  | where mfa_channel = \"SMS\"\n  | where _time > relative_time(now(), \"-1h\")\n]\n| table _time, phone_number, customer_id, sim_risk,\n        sim_swap_recently, sim_swap_timestamp,\n        device_mismatch, call_forwarding_active,\n        mfa_result",
         "sql": "-- SQL: Correlate SIM swap signals with MFA authentication\nSELECT\n    n.phone_number,\n    n.check_timestamp,\n    n.sim_swap_recently,\n    n.sim_swap_date,\n    n.device_mismatch,\n    n.call_forwarding_active,\n    m.mfa_event_time,\n    m.mfa_result,\n    m.customer_id,\n    CASE\n        WHEN n.sim_swap_recently = TRUE THEN 'HIGH'\n        WHEN n.device_mismatch = TRUE THEN 'HIGH'\n        WHEN n.call_forwarding_active = TRUE THEN 'MEDIUM'\n    END AS risk_level\nFROM number_intelligence_checks n\nJOIN mfa_events m ON n.phone_number = m.phone_number\nWHERE m.mfa_channel = 'SMS'\n  AND m.mfa_event_time BETWEEN n.check_timestamp\n      AND DATEADD(hour, 1, n.check_timestamp)\n  AND (n.sim_swap_recently = TRUE\n       OR n.device_mismatch = TRUE\n       OR n.call_forwarding_active = TRUE)\nORDER BY n.check_timestamp DESC"
       },
       "references": [
@@ -9497,6 +9687,7 @@
         "account-takeover"
       ],
       "tags": [
+        "attack.t1111",
         "cfpf.phase2.initial_access",
         "flame.mfa-bypass",
         "flame.sim-swap"
@@ -9566,6 +9757,7 @@
         "rug-pull"
       ],
       "tags": [
+        "attack.t1657",
         "cfpf.phase4.execution",
         "flame.defi",
         "flame.osint",
@@ -9627,6 +9819,7 @@
         "social-engineering"
       ],
       "tags": [
+        "attack.t1589",
         "cfpf.phase2.initial_access",
         "flame.employment-fraud",
         "flame.metadata-detection"
@@ -9684,6 +9877,7 @@
         "gift-card-fraud"
       ],
       "tags": [
+        "attack.t1657",
         "cfpf.phase2.initial_access",
         "flame.gift-card",
         "flame.nrf-rft"
@@ -9745,6 +9939,7 @@
         "gift-card-tampering"
       ],
       "tags": [
+        "attack.t1657",
         "cfpf.phase3.positioning",
         "flame.gift-card",
         "flame.nrf-rft"
@@ -9771,7 +9966,7 @@
       },
       "logsource": {
         "product": "azure",
-        "service": "entra_id_signin"
+        "service": "signinlogs"
       },
       "sigma_compatible": false,
       "native_query_required": true,
@@ -9804,6 +9999,9 @@
         "aitm-phishing"
       ],
       "tags": [
+        "attack.t1539",
+        "attack.t1550.004",
+        "attack.t1557",
         "cfpf.phase3.positioning",
         "flame.aitm",
         "flame.mfa-bypass",
@@ -9825,13 +10023,13 @@
       "level": "critical",
       "detection": {
         "selection": {
-          "AuthenticationStepResultType": 0
+          "ResultType": 0
         },
         "condition": "count(distinct UserAgent) by CorrelationId >= 2 AND timeframe < 10 minutes\n"
       },
       "logsource": {
         "product": "azure",
-        "service": "entra_id_signin"
+        "service": "signinlogs"
       },
       "sigma_compatible": false,
       "native_query_required": true,
@@ -9841,12 +10039,12 @@
           "UserAgent",
           "UserPrincipalName",
           "IPAddress",
-          "AuthenticationStepResultType",
-          "AuthenticationDetails"
+          "ResultType",
+          "TimeGenerated"
         ]
       },
       "queries": {
-        "kql": "// KQL: Sneaky 2FA Impossible Device Shift Detection\n// Correlates mismatched User-Agents within same authentication flow\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UserAgents = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n// High confidence: Safari/iOS + Edge/Windows combination\n| where UserAgents has \"Safari\" and UserAgents has \"Edge\"\n    or UserAgents has \"iPhone\" and UserAgents has \"Windows\"\n| project UserPrincipalName, CorrelationId, UACount, UserAgents,\n          IPs, MinTime, MaxTime",
+        "kql": "// KQL: Sneaky 2FA Impossible Device Shift Detection\n// Correlates mismatched User-Agents within same authentication flow\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UserAgents = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n// Convert dynamic array to string for substring matching\n| extend UA_str = tostring(UserAgents)\n// High confidence: Safari/iOS + Edge/Windows combination (Sneaky 2FA signature)\n| where (UA_str has \"Safari\" and UA_str has \"Edge\")\n    or (UA_str has \"iPhone\" and UA_str has \"Windows\")\n| project UserPrincipalName, CorrelationId, UACount, UserAgents,\n          IPs, MinTime, MaxTime",
         "splunk": "`comment(\"Splunk SPL for Sneaky 2FA Impossible Device Shift\")`\n`comment(\"Detects User-Agent mismatch within same auth correlation ID\")`\nindex=azure sourcetype=azure:aad:signin ResultType=0\n| stats dc(UserAgent) AS ua_count,\n        values(UserAgent) AS user_agents,\n        values(IPAddress) AS ips,\n        min(_time) AS first_event,\n        max(_time) AS last_event\n  BY CorrelationId, UserPrincipalName\n| where ua_count >= 2\n| eval window_minutes = round((last_event - first_event) / 60, 1)\n| where window_minutes <= 10\n| search (user_agents=\"*Safari*\" AND user_agents=\"*Edge*\")\n    OR (user_agents=\"*iPhone*\" AND user_agents=\"*Windows*\")\n| sort - ua_count"
       },
       "references": [
@@ -9861,6 +10059,8 @@
         "aitm-phishing"
       ],
       "tags": [
+        "attack.t1111",
+        "attack.t1557",
         "cfpf.phase2.initial_access",
         "flame.aitm",
         "flame.sneaky-2fa",
@@ -9889,7 +10089,7 @@
       },
       "logsource": {
         "product": "azure",
-        "service": "entra_id_signin"
+        "service": "signinlogs"
       },
       "sigma_compatible": false,
       "native_query_required": true,
@@ -9921,6 +10121,9 @@
         "aitm-phishing"
       ],
       "tags": [
+        "attack.t1078.004",
+        "attack.t1550.004",
+        "attack.t1557",
         "cfpf.phase2.initial_access",
         "flame.aitm",
         "flame.flowerstorm",
@@ -9998,6 +10201,8 @@
         "smishing"
       ],
       "tags": [
+        "attack.t1566",
+        "attack.t1583.001",
         "cfpf.phase2.initial_access",
         "flame.chenlun",
         "flame.darcula",
@@ -10038,8 +10243,12 @@
             "MoveToFolder"
           ]
         },
+        "correlation": {
+          "type": "temporal",
+          "description": "Inbox rule creation with suspicious parameters must occur within 24h of a sign-in flagged with medium or high risk (RiskLevelDuringSignIn or RiskLevelAggregated). Requires cross-log correlation between Exchange Online audit logs and Entra ID sign-in logs.\n"
+        },
         "timeframe": "24h",
-        "condition": "selection_inbox_rule AND selection_suspicious_params"
+        "condition": "selection_inbox_rule AND selection_suspicious_params AND user had medium/high risk sign-in within preceding 24 hours\n"
       },
       "logsource": {
         "product": "m365",
@@ -10059,7 +10268,7 @@
       },
       "queries": {
         "kql": "// KQL: Post-AiTM Inbox Rule Manipulation Detection\n// Correlates risky sign-ins with subsequent inbox rule changes\nlet risky_signins = SigninLogs\n| where TimeGenerated > ago(24h)\n| where RiskLevelDuringSignIn in (\"medium\", \"high\")\n    or RiskLevelAggregated in (\"medium\", \"high\")\n| where ResultType == 0\n| project SignInTime = TimeGenerated, UserPrincipalName, SignInIP = IPAddress,\n          RiskLevel = RiskLevelDuringSignIn;\nlet inbox_changes = OfficeActivity\n| where TimeGenerated > ago(24h)\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\",\n                             \"DeleteMessage\", \"MarkAsRead\")\n| project RuleTime = TimeGenerated, UserId, ClientIP, Operation, Parameters;\nrisky_signins\n| join kind=inner inbox_changes\n    on $left.UserPrincipalName == $right.UserId\n| where RuleTime between (SignInTime .. (SignInTime + 24h))\n| project UserPrincipalName, SignInTime, SignInIP, RiskLevel,\n          RuleTime, Operation, Parameters, ClientIP",
-        "splunk": "`comment(\"Splunk SPL for Post-AiTM Inbox Rule Manipulation\")`\n`comment(\"Correlates risky sign-ins with inbox rule creation within 24h\")`\nindex=o365 sourcetype=o365:management:activity\n  Operation IN (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| search Parameters=\"*ForwardTo*\" OR Parameters=\"*RedirectTo*\"\n    OR Parameters=\"*DeleteMessage*\" OR Parameters=\"*MarkAsRead*\"\n    OR Parameters=\"*ForwardAsAttachmentTo*\"\n| join UserId [\n  search index=azure sourcetype=azure:aad:signin\n    ResultType=0\n    (RiskLevelDuringSignIn=\"medium\" OR RiskLevelDuringSignIn=\"high\"\n     OR RiskLevelAggregated=\"medium\" OR RiskLevelAggregated=\"high\")\n  | rename UserPrincipalName AS UserId, _time AS signin_time\n]\n| eval hours_after_signin = round((_time - signin_time) / 3600, 1)\n| where hours_after_signin >= 0 AND hours_after_signin <= 24\n| table _time, UserId, signin_time, hours_after_signin,\n        ClientIP, Operation, Parameters, RiskLevelDuringSignIn"
+        "splunk": "`comment(\"Splunk SPL for Post-AiTM Inbox Rule Manipulation\")`\n`comment(\"Correlates risky sign-ins with inbox rule creation within 24h\")`\nindex=o365 sourcetype=o365:management:activity\n  Operation IN (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| search Parameters=\"*ForwardTo*\" OR Parameters=\"*RedirectTo*\"\n    OR Parameters=\"*DeleteMessage*\" OR Parameters=\"*MarkAsRead*\"\n    OR Parameters=\"*ForwardAsAttachmentTo*\"\n| join type=inner max=0 UserId [\n  search index=azure sourcetype=azure:aad:signin\n    ResultType=0 earliest=-48h latest=now\n    (RiskLevelDuringSignIn=\"medium\" OR RiskLevelDuringSignIn=\"high\"\n     OR RiskLevelAggregated=\"medium\" OR RiskLevelAggregated=\"high\")\n  | rename UserPrincipalName AS UserId, _time AS signin_time\n]\n| eval hours_after_signin = round((_time - signin_time) / 3600, 1)\n| where hours_after_signin >= 0 AND hours_after_signin <= 24\n| table _time, UserId, signin_time, hours_after_signin,\n        ClientIP, Operation, Parameters, RiskLevelDuringSignIn\n| sort - hours_after_signin"
       },
       "references": [
         "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)",
@@ -10075,6 +10284,9 @@
         "business-email-compromise"
       ],
       "tags": [
+        "attack.t1114.003",
+        "attack.t1557",
+        "attack.t1564.008",
         "cfpf.phase3.positioning",
         "flame.aitm",
         "flame.bec",

@@ -24,7 +24,7 @@ fraud_types:
   - account-takeover
 logsource:
   product: azure
-  service: entra_id_signin
+  service: signinlogs
 detection:
   selection_appid:
     AppId: "72782ba9-4490-4f03-8d82-562370ea3566"
@@ -66,6 +66,9 @@ falsepositives:
     used by legitimate Microsoft client applications
 level: critical
 tags:
+  - attack.t1557
+  - attack.t1550.004
+  - attack.t1078.004
   - cfpf.phase2.initial_access
   - flame.aitm
   - flame.rockstar-2fa

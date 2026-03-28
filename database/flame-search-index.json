@@ -1104,6 +1104,12 @@
     "text": "Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.\n"
   },
   {
+    "id": "DL-0116",
+    "type": "detection_rule",
+    "title": "Real-Time Face/Voice Changer Detection During Video Interview",
+    "text": "Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.\n"
+  },
+  {
     "id": "DL-0117",
     "type": "detection_rule",
     "title": "Multilingual Chatbot Scam Pattern Detection",
@@ -1138,6 +1144,12 @@
     "type": "detection_rule",
     "title": "Keitaro/Binom TDS Abuse Infrastructure Detection",
     "text": "Detect abuse of legitimate Traffic Distribution Systems Keitaro and Binom for fraud infrastructure: (1) HTTP redirect chains containing Keitaro tracking parameters such as click_id, campaign_id, and characteristic Keitaro URL path structures, (2) domains resolving to IP addresses associated with Keitaro or Binom hosting infrastructure, (3) redirect chain behavior patterns matching cloaking and visitor fingerprinting techniques used to evade security researchers while directing victims to investment scam landing pages.\n"
+  },
+  {
+    "id": "DL-0123",
+    "type": "detection_rule",
+    "title": "TAE Infrastructure Rotation Detection",
+    "text": "Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems within short timeframes, (2) RIPE NCC resource reallocation to newly created organizations with minimal operational history, (3) BGP announcement changes matching known TAE rebranding patterns such as Aeza to Hypercore to NetCrafters, (4) threat density score spikes on newly announced prefixes indicating migration of malicious infrastructure to fresh address space.\n"
   },
   {
     "id": "DL-0124",

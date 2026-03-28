@@ -78,6 +78,7 @@ falsepositives:
   - Batch balance verification during audit periods
 level: high
 tags:
+  - attack.t1657
   - cfpf.phase2.initial_access
   - flame.gift-card
   - flame.nrf-rft

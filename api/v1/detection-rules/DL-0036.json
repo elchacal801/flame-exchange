@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.243235+00:00",
+    "generated_at": "2026-03-28T04:52:56.359931+00:00",
     "total": 1
   },
   "data": {
@@ -42,7 +42,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Payment Instruction Velocity Spike\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by session_id > 5\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| groupBy(session_id, function=count(as=event_count))\n| event_count > 5",
+      "cql": "// CrowdStrike CQL for Payment Instruction Velocity Spike\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by session_id > 5\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| groupBy(session_id, function=[count(as=event_count)])\n| event_count > 5",
       "splunk": "`comment(\"Splunk SPL for Payment Instruction Velocity Spike\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by session_id > 5\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| stats count as event_count by session_id\n| where event_count > 5"
     },
     "references": [

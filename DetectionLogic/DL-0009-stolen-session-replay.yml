@@ -37,8 +37,8 @@ data_sources:
   - geo_country
   - session_token
 queries:
-  logscale: |-
-    // LogScale LQL for Stolen Session Token Replay
+  cql: |-
+    // CrowdStrike CQL for Stolen Session Token Replay
     // Repository: flame-banking-auth-logs
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection and not filter_same_context | count() by session_token > 1
@@ -46,7 +46,7 @@ queries:
     session_token=true
     geo_country="%original_session_country%"
     device_fingerprint="%original_device_fingerprint%"
-    | groupBy(session_token, function=count(as=event_count))
+    | groupBy(session_token, function=[count(as=event_count)])
     | event_count > 1
   splunk: |-
     `comment("Splunk SPL for Stolen Session Token Replay")`

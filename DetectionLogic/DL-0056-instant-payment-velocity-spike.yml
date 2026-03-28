@@ -36,8 +36,8 @@ data_sources:
   - event_type
   - payment_rail
 queries:
-  logscale: |-
-    // LogScale LQL for Instant Payment Velocity Spike Above 30-Day Baseline
+  cql: |-
+    // CrowdStrike CQL for Instant Payment Velocity Spike Above 30-Day Baseline
     // Repository: flame-banking-transaction-monitoring
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)

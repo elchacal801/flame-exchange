@@ -37,8 +37,8 @@ data_sources:
   - event_type
   - field_changed
 queries:
-  logscale: |-
-    // LogScale LQL for Rapid Contact Information Change
+  cql: |-
+    // CrowdStrike CQL for Rapid Contact Information Change
     // Repository: flame-banking-identity-management
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3
@@ -48,7 +48,7 @@ queries:
     field_changed="phone"
     event_type="CONTACT_CHANGE"
     field_changed="mailing_address"
-    | groupBy(account_id, function=count(as=event_count))
+    | groupBy(account_id, function=[count(as=event_count)])
     | event_count >= 3
   splunk: |-
     `comment("Splunk SPL for Rapid Contact Information Change")`

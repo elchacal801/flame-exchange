@@ -51,8 +51,8 @@ data_sources:
   - field: outbound_amount_pct_of_inbound
     source: Transaction correlation enrichment (outbound-to-inbound amount ratio)
 queries:
-  logscale: |-
-    // LogScale LQL for Cross-Platform Deposit and Withdrawal Chain
+  cql: |-
+    // CrowdStrike CQL for Cross-Platform Deposit and Withdrawal Chain
     // Repository: flame-banking-transaction-monitoring
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)
@@ -61,7 +61,7 @@ queries:
     event_type="instant_payment_initiated"
     (outbound_rail="ZELLE" OR outbound_rail="FEDNOW" OR outbound_rail="RTP" OR outbound_rail="ACH_SAMEDAY")
     outbound_amount_pct_of_inbound>=80
-    // Temporal ordered correlation — use join() in LogScale
+    // Temporal ordered correlation — use join() in CrowdStrike NGSIEM
     | join({...}, field=account_id, mode=inner)
   splunk: |-
     `comment("Splunk SPL for Cross-Platform Deposit and Withdrawal Chain")`

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.745507+00:00",
+    "generated_at": "2026-03-28T04:52:56.949757+00:00",
     "total": 1
   },
   "data": {
@@ -40,7 +40,7 @@
       ]
     },
     "queries": {
-      "splunk": "`comment(\"Splunk SPL for SIM Swap Network-Level API Detection\")`\n`comment(\"Correlates SIM change signals with MFA authentication attempts\")`\nindex=flame_telecom sourcetype=flame:number_intelligence\n| eval sim_risk = case(\n    sim_swap_recently == \"true\", \"HIGH\",\n    device_mismatch == \"true\", \"HIGH\",\n    call_forwarding_active == \"true\", \"MEDIUM\",\n    1=1, \"LOW\"\n  )\n| where sim_risk IN (\"HIGH\", \"MEDIUM\")\n| join phone_number [\n  search index=flame_banking sourcetype=flame:mfa_events\n  | where mfa_channel = \"SMS\"\n  | where _time > relative_time(now(), \"-1h\")\n]\n| table _time, phone_number, customer_id, sim_risk,\n        sim_swap_recently, sim_swap_timestamp,\n        device_mismatch, call_forwarding_active,\n        mfa_result",
+      "splunk": "`comment(\"Splunk SPL for SIM Swap Network-Level API Detection\")`\n`comment(\"Correlates SIM change signals with MFA authentication attempts\")`\nindex=flame_telecom sourcetype=flame:number_intelligence\n| eval sim_risk = case(\n    sim_swap_recently == \"true\", \"HIGH\",\n    device_mismatch == \"true\", \"HIGH\",\n    call_forwarding_active == \"true\", \"MEDIUM\",\n    1=1, \"LOW\"\n  )\n| where sim_risk IN (\"HIGH\", \"MEDIUM\")\n| join type=inner max=0 phone_number [\n  search index=flame_banking sourcetype=flame:mfa_events\n  | where mfa_channel = \"SMS\"\n  | where _time > relative_time(now(), \"-1h\")\n]\n| table _time, phone_number, customer_id, sim_risk,\n        sim_swap_recently, sim_swap_timestamp,\n        device_mismatch, call_forwarding_active,\n        mfa_result",
       "sql": "-- SQL: Correlate SIM swap signals with MFA authentication\nSELECT\n    n.phone_number,\n    n.check_timestamp,\n    n.sim_swap_recently,\n    n.sim_swap_date,\n    n.device_mismatch,\n    n.call_forwarding_active,\n    m.mfa_event_time,\n    m.mfa_result,\n    m.customer_id,\n    CASE\n        WHEN n.sim_swap_recently = TRUE THEN 'HIGH'\n        WHEN n.device_mismatch = TRUE THEN 'HIGH'\n        WHEN n.call_forwarding_active = TRUE THEN 'MEDIUM'\n    END AS risk_level\nFROM number_intelligence_checks n\nJOIN mfa_events m ON n.phone_number = m.phone_number\nWHERE m.mfa_channel = 'SMS'\n  AND m.mfa_event_time BETWEEN n.check_timestamp\n      AND DATEADD(hour, 1, n.check_timestamp)\n  AND (n.sim_swap_recently = TRUE\n       OR n.device_mismatch = TRUE\n       OR n.call_forwarding_active = TRUE)\nORDER BY n.check_timestamp DESC"
     },
     "references": [
@@ -53,6 +53,7 @@
       "account-takeover"
     ],
     "tags": [
+      "attack.t1111",
       "cfpf.phase2.initial_access",
       "flame.mfa-bypass",
       "flame.sim-swap"

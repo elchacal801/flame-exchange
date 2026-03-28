@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.145067+00:00",
+    "generated_at": "2026-03-28T04:52:56.229475+00:00",
     "total": 1
   },
   "data": {
@@ -32,7 +32,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Device Fingerprint Anomaly\n// Repository: flame-banking-web-gateway\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezo\nevent_type=\"session_start\"\ndevice_fingerprint=true\n// Aggregation logic from original condition:\n// selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezone_offset\n  or webgl_renderer != baseline.webgl_renderer\n  or canvas_hash != baseline.canvas_hash\n)\n",
+      "cql": "// CrowdStrike CQL for Device Fingerprint Anomaly\n// Repository: flame-banking-web-gateway\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezo\nevent_type=\"session_start\"\ndevice_fingerprint=true\n// Aggregation logic from original condition:\n// selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_resolution\n  or timezone_offset != baseline.timezone_offset\n  or webgl_renderer != baseline.webgl_renderer\n  or canvas_hash != baseline.canvas_hash\n)\n",
       "splunk": "`comment(\"Splunk SPL for Device Fingerprint Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_version\n  or screen_resolution != baseline.screen_\")`\nindex=flame_banking sourcetype=flame:web_gateway event_type=\"session_start\" device_fingerprint=true\n`comment(\"Aggregation logic from: selection | where device_fingerprint in known_device_fingerprints and (\n  os_version != baseline.os_\")`\n| stats count as event_count by account_id\n| where event_count > 1"
     },
     "references": [

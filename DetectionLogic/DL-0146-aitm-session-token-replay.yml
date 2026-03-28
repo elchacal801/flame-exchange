@@ -23,7 +23,7 @@ fraud_types:
   - account-takeover
 logsource:
   product: azure
-  service: entra_id_signin
+  service: signinlogs
 detection:
   selection:
     ResultType: 0
@@ -85,6 +85,9 @@ falsepositives:
   - Mobile users transitioning between WiFi and cellular networks
 level: high
 tags:
+  - attack.t1550.004
+  - attack.t1539
+  - attack.t1557
   - cfpf.phase3.positioning
   - flame.aitm
   - flame.session-replay

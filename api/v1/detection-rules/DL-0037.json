@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.248402+00:00",
+    "generated_at": "2026-03-28T04:52:56.366093+00:00",
     "total": 1
   },
   "data": {
@@ -40,7 +40,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Mule Rapid ATM Withdrawal After Inbound Transfer\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | near selection_atm_withdrawal by account_id\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=2000\nevent_type=\"ATM_WITHDRAWAL\"\ntransaction_amount>=500\n// Temporal correlation — use join() or selfJoinFilter() in LogScale\n// to correlate the selection events within the timeframe\n| selfJoinFilter(account_id, where=[...])",
+      "cql": "// CrowdStrike CQL for Mule Rapid ATM Withdrawal After Inbound Transfer\n// Repository: flame-banking-transaction-monitoring\n// Correlates inbound wire/ACH with rapid ATM cash-out within 4h\n((event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\") AND transaction_amount>=2000)\nOR (event_type=\"ATM_WITHDRAWAL\" AND transaction_amount>=500)\n| selfJoinFilter(account_id, where=[\n    {event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\"}\n    {event_type=\"ATM_WITHDRAWAL\"}\n  ])\n| groupBy(account_id, function=[\n    count(as=event_count),\n    collect([event_type, transaction_amount, @timestamp])\n  ], span=4h)\n| event_count >= 2",
       "splunk": "`comment(\"Splunk SPL for Mule Rapid ATM Withdrawal After Inbound Transfer\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_atm_withdrawal by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=2000\nevent_type=\"ATM_WITHDRAWAL\"\ntransaction_amount>=500\n| transaction account_id maxspan=4h\n| where eventcount >= 2"
     },
     "references": [

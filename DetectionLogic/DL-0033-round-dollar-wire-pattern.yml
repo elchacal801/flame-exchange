@@ -34,15 +34,15 @@ data_sources:
   - transaction_amount
   - transaction_amount_is_round
 queries:
-  logscale: |-
-    // LogScale LQL for Round-Dollar Wire Amount Pattern
+  cql: |-
+    // CrowdStrike CQL for Round-Dollar Wire Amount Pattern
     // Repository: flame-banking-wire-system
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count() by account_id > 4
     event_type="WIRE_INITIATION"
     transaction_amount>=1000
     transaction_amount_is_round=true
-    | groupBy(account_id, function=count(as=event_count))
+    | groupBy(account_id, function=[count(as=event_count)])
     | event_count > 4
   splunk: |-
     `comment("Splunk SPL for Round-Dollar Wire Amount Pattern")`

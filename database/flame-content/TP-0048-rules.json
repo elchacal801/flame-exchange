@@ -1,0 +1,23 @@
+{
+  "tp_id": "TP-0048",
+  "rules": [
+    {
+      "type": "sigma",
+      "content": "title: BPH IP Block Migration Post-Sanctions\nstatus: experimental\ndescription: Detect IP address blocks previously associated with sanctioned or seized BPH providers appearing under new BGP announcements from different ASNs. Track continuity of malicious hosting through IP block\nlogsource:\n    product: dns_intelligence\n    category: bgp_monitoring\n    service: ip_allocation\ndetection:\n    selection:\n        previously_sanctioned_ip_range: true\n        new_bgp_announcement: true\n        different_asn: true\n        timeframe|lte: \"90d\"\n    condition: selection\nlevel: high",
+      "title": "DL-0110: BPH IP Block Migration Post-Sanctions (Sigma)",
+      "source_rule": "DL-0110"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Cloud Provider IP Abuse for BPH Resale\nstatus: experimental\ndescription: Detect patterns consistent with legitimate cloud provider IP blocks being resold for BPH: unusual CNAME density (100+ domains per IP), diverse domain registrants sharing the same cloud IP range, and h\nlogsource:\n    product: dns_intelligence\n    category: cname_analysis\n    service: zone_file_diff\ndetection:\n    selection:\n        cloud_provider_ip: true\n        cname_density|gt: 100\n        diverse_registrants: true\n        abuse_ratio|gt: \"threshold\"\n    condition: selection\nlevel: medium",
+      "title": "DL-0111: Cloud Provider IP Abuse for BPH Resale (Sigma)",
+      "source_rule": "DL-0111"
+    },
+    {
+      "type": "sigma",
+      "content": "title: CNAME Clustering for DGA Domain Networks\nstatus: experimental\ndescription: Detect anomalous CNAME record density where hundreds or thousands of apparently unrelated domains share CNAME chains terminating at a small number of infrastructure endpoints. Indicates centrally mana\nlogsource:\n    product: dns_intelligence\n    category: cname_analysis\n    service: passive_dns\ndetection:\n    selection:\n        cname_chain_endpoint_count|gt: \"threshold\"\n        unique_domain_count|gt: 500\n        cname_chain_depth|gte: 2\n    condition: selection\nlevel: medium",
+      "title": "DL-0112: CNAME Clustering for DGA Domain Networks (Sigma)",
+      "source_rule": "DL-0112"
+    }
+  ]
+}

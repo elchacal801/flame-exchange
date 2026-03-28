@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.222843+00:00",
+    "generated_at": "2026-03-28T04:52:56.343633+00:00",
     "total": 1
   },
   "data": {
@@ -35,7 +35,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Round-Dollar Wire Amount Pattern\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 4\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 4",
+      "cql": "// CrowdStrike CQL for Round-Dollar Wire Amount Pattern\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count() by account_id > 4\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 4",
       "splunk": "`comment(\"Splunk SPL for Round-Dollar Wire Amount Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 4\")`\nindex=flame_banking sourcetype=flame:wire_system\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| stats count as event_count by account_id\n| where event_count > 4"
     },
     "references": [

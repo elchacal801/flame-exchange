@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.686251+00:00",
+    "generated_at": "2026-03-28T04:52:56.885927+00:00",
     "total": 1
   },
   "data": {
@@ -53,7 +53,7 @@
       ]
     },
     "queries": {
-      "splunk": "`comment(\"Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\")`\n`comment(\"Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment\")`\nindex=medicare_claims sourcetype=cms_claims\n| join provider_npi [search index=pecos_enrollment\n  | fields provider_npi enrollment_effective_date provider_type provider_zip]\n| eval days_to_first_claim=round((strptime(claim_date,\"%Y-%m-%d\")\n  - strptime(enrollment_effective_date,\"%Y-%m-%d\")) / 86400)\n| where days_to_first_claim >= 0 AND days_to_first_claim <= 30\n| stats\n    count AS claim_count\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n    min(claim_date) AS first_claim_date\n    max(claim_date) AS last_claim_date\n    values(provider_type) AS provider_type\n    values(provider_zip) AS provider_zip\n  by provider_npi, enrollment_effective_date\n| where total_billed > 100000\n| eval code_diversity_ratio=round(unique_codes/claim_count, 4)\n| eval avg_per_beneficiary=round(total_billed/unique_beneficiaries, 2)\n| eval risk_score=case(\n    total_billed > 1000000 AND code_diversity_ratio < 0.05, \"CRITICAL\",\n    total_billed > 500000, \"HIGH\",\n    total_billed > 100000 AND code_diversity_ratio < 0.1, \"HIGH\",\n    1=1, \"MEDIUM\")\n| sort -total_billed",
+      "splunk": "`comment(\"Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\")`\n`comment(\"Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment\")`\nindex=medicare_claims sourcetype=cms_claims\n| join type=inner max=0 provider_npi [search index=pecos_enrollment\n  | fields provider_npi enrollment_effective_date provider_type provider_zip]\n| eval days_to_first_claim=round((strptime(claim_date,\"%Y-%m-%d\")\n  - strptime(enrollment_effective_date,\"%Y-%m-%d\")) / 86400)\n| where days_to_first_claim >= 0 AND days_to_first_claim <= 30\n| stats\n    count AS claim_count\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n    min(claim_date) AS first_claim_date\n    max(claim_date) AS last_claim_date\n    values(provider_type) AS provider_type\n    values(provider_zip) AS provider_zip\n  by provider_npi, enrollment_effective_date\n| where total_billed > 100000\n| eval code_diversity_ratio=round(unique_codes/claim_count, 4)\n| eval avg_per_beneficiary=round(total_billed/unique_beneficiaries, 2)\n| eval risk_score=case(\n    total_billed > 1000000 AND code_diversity_ratio < 0.05, \"CRITICAL\",\n    total_billed > 500000, \"HIGH\",\n    total_billed > 100000 AND code_diversity_ratio < 0.1, \"HIGH\",\n    1=1, \"MEDIUM\")\n| sort -total_billed",
       "sql": "-- SQL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly\n-- Identifies providers with suspicious billing velocity post-enrollment\nSELECT\n  s.provider_npi,\n  s.provider_name,\n  s.enrollment_effective_date,\n  s.provider_type,\n  s.physical_address,\n  COUNT(c.claim_id) AS total_claims,\n  SUM(c.billed_amount) AS total_billed,\n  COUNT(DISTINCT c.beneficiary_id) AS unique_beneficiaries,\n  COUNT(DISTINCT c.hcpcs_code) AS unique_codes,\n  MIN(c.service_date) AS first_claim_date,\n  EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) AS days_to_first_claim,\n  ROUND(COUNT(DISTINCT c.hcpcs_code)::numeric / NULLIF(COUNT(c.claim_id), 0), 4) AS code_diversity_ratio,\n  ROUND(SUM(c.billed_amount)::numeric / NULLIF(COUNT(DISTINCT c.beneficiary_id), 0), 2) AS avg_per_beneficiary\nFROM provider_enrollment s\nJOIN claims c ON s.provider_npi = c.provider_npi\nWHERE s.enrollment_effective_date >= CURRENT_DATE - INTERVAL '365 days'\n  AND EXTRACT(DAY FROM MIN(c.service_date) - s.enrollment_effective_date) <= 30\nGROUP BY s.provider_npi, s.provider_name, s.enrollment_effective_date,\n         s.provider_type, s.physical_address\nHAVING SUM(c.billed_amount) > 100000\nORDER BY total_billed DESC;"
     },
     "references": [
@@ -71,6 +71,8 @@
     "tags": [
       "TP-0021",
       "TP-0028",
+      "attack.t1078",
+      "attack.t1657",
       "cfpf.phase4.execution",
       "dme-fraud",
       "healthcare-fraud",

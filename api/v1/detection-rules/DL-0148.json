@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.782224+00:00",
+    "generated_at": "2026-03-28T04:52:56.986060+00:00",
     "total": 1
   },
   "data": {
@@ -23,7 +23,7 @@
     },
     "logsource": {
       "product": "azure",
-      "service": "entra_id_signin"
+      "service": "signinlogs"
     },
     "sigma_compatible": false,
     "native_query_required": true,
@@ -55,6 +55,9 @@
       "aitm-phishing"
     ],
     "tags": [
+      "attack.t1078.004",
+      "attack.t1550.004",
+      "attack.t1557",
       "cfpf.phase2.initial_access",
       "flame.aitm",
       "flame.flowerstorm",

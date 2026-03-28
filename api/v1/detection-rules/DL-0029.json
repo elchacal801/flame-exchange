@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.206439+00:00",
+    "generated_at": "2026-03-28T04:52:56.321768+00:00",
     "total": 1
   },
   "data": {
@@ -44,7 +44,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Split Transfer Chain Detection\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 2",
+      "cql": "// CrowdStrike CQL for Split Transfer Chain Detection\n// Repository: flame-banking-wire-system\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 2",
       "splunk": "`comment(\"Splunk SPL for Split Transfer Chain Detection\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:wire_system\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 2"
     },
     "references": [

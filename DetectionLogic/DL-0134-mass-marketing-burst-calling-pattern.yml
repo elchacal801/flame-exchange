@@ -53,8 +53,8 @@ queries:
     | where unique_targets > 50 AND avg_duration < 30
     | sort - unique_targets
 
-  logscale: |-
-    // LogScale LQL for Mass-Marketing Burst Calling Pattern
+  cql: |-
+    // CrowdStrike CQL for Mass-Marketing Burst Calling Pattern
     call_direction="inbound"
     | source_prefix := substring(source_number, start=0, end=7)
     | bucket(field=@timestamp, span=1h)
@@ -91,6 +91,8 @@ falsepositives:
   - Political campaign robodialling during election periods
 level: medium
 tags:
+  - attack.t1566
+  - attack.t1656
   - cfpf.phase2.initial_access
   - flame.unodc
   - flame.mass-marketing

@@ -48,8 +48,8 @@ data_sources:
   - field: lip_sync_delta_ms
     source: Video analysis enrichment (lip-to-audio synchronization measurement)
 queries:
-  logscale: |-
-    // LogScale LQL for Real-Time Face/Voice Changer Detection During Video Interview
+  cql: |-
+    // CrowdStrike CQL for Real-Time Face/Voice Changer Detection During Video Interview
     // Repository: flame-collaboration-video-monitoring
     // Native query required - audio/video analysis cannot be expressed in Sigma
     camera_driver_name=/OBS Virtual|ManyCam|DeepFace|FaceSwap|Snap Camera/i
@@ -85,6 +85,7 @@ falsepositives:
 - Poor network conditions causing audio-video desynchronization
 level: high
 tags:
+- attack.t1656
 - cfpf.phase2.initial_access
 - deepfake
 - face-changer

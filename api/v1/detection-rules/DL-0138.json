@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.730177+00:00",
+    "generated_at": "2026-03-28T04:52:56.934283+00:00",
     "total": 1
   },
   "data": {
@@ -13,32 +13,50 @@
     "cfpf_phase": "P3",
     "level": "high",
     "detection": {
-      "selection": {
+      "selection_inbox_rule": {
         "Operation": [
           "New-InboxRule",
           "Set-InboxRule",
           "Enable-InboxRule"
         ]
       },
-      "filter_internal": {
-        "ClientIP|cidr": [
-          "10.0.0.0/8",
-          "172.16.0.0/12",
-          "192.168.0.0/16"
-        ]
+      "correlation": {
+        "type": "temporal",
+        "description": "Inbox rule creation must occur within 24h of a sign-in from an IP address not previously seen for this user (first-seen within 24h window). Requires cross-log correlation between Exchange Online audit logs and Entra ID sign-in logs.\n"
       },
       "timeframe": "24h",
-      "condition": "selection and not filter_internal"
+      "condition": "selection_inbox_rule AND user authenticated from previously-unseen IP within preceding 24 hours\n"
     },
     "logsource": {
       "product": "m365",
       "service": "exchange"
     },
-    "sigma_compatible": true,
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "Operation",
+        "UserId",
+        "ClientIP",
+        "Parameters",
+        "TimeGenerated"
+      ],
+      "cross_log_sources": [
+        {
+          "source": "azure/signinlogs",
+          "fields": [
+            "UserPrincipalName",
+            "IPAddress",
+            "ResultType",
+            "TimeGenerated"
+          ]
+        }
+      ]
+    },
     "queries": {
       "kql": "// Microsoft Sentinel KQL: Inbox rule manipulation after new-IP authentication\nlet new_ip_signins = SigninLogs\n| where TimeGenerated > ago(48h)\n| where ResultType == 0\n| summarize FirstSeen=min(TimeGenerated) by UserPrincipalName, IPAddress\n| where FirstSeen > ago(24h);\nOfficeActivity\n| where TimeGenerated > ago(24h)\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| join kind=inner new_ip_signins on $left.UserId == $right.UserPrincipalName\n| where TimeGenerated > FirstSeen\n| project TimeGenerated, UserId, Operation, Parameters, ClientIP, IPAddress",
-      "splunk": "`comment(\"Splunk SPL for Post-Compromise Inbox Rule Manipulation\")`\nindex=o365 sourcetype=\"o365:management:activity\"\n  Operation IN (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| eval rule_time=_time\n| join UserId [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n  | stats earliest(_time) AS first_seen BY UserPrincipalName, IPAddress\n  | where first_seen > relative_time(now(), \"-24h\")\n  | rename UserPrincipalName AS UserId\n]\n| where rule_time > first_seen\n| table _time, UserId, Operation, Parameters, ClientIP",
-      "sigma": "title: Post-Compromise Inbox Rule Manipulation\nstatus: experimental\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection:\n        Operation:\n            - New-InboxRule\n            - Set-InboxRule\n            - Enable-InboxRule\n    filter_internal:\n        ClientIP|cidr:\n            - 10.0.0.0/8\n            - 172.16.0.0/12\n            - 192.168.0.0/16\n    condition: selection and not filter_internal\nfields:\n    - UserId\n    - ClientIP\n    - Parameters\nlevel: high"
+      "splunk": "`comment(\"Splunk SPL for Post-Compromise Inbox Rule Manipulation\")`\n`comment(\"Correlates inbox rule creation with sign-in from new IP within 24h\")`\nindex=o365 sourcetype=\"o365:management:activity\"\n  Operation IN (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| eval rule_time=_time\n| join type=inner max=0 UserId [\n  search index=azure sourcetype=\"azure:aad:signin\" ResultType=0\n    earliest=-48h latest=now\n  | stats earliest(_time) AS first_seen BY UserPrincipalName, IPAddress\n  | where first_seen > relative_time(now(), \"-24h\")\n  | rename UserPrincipalName AS UserId\n]\n| where rule_time > first_seen\n| eval hours_after_new_ip = round((rule_time - first_seen) / 3600, 1)\n| table _time, UserId, Operation, Parameters, ClientIP,\n        IPAddress, hours_after_new_ip",
+      "sigma": "title: Post-Compromise Inbox Rule Manipulation (Standalone — No Cross-Log Correlation)\nstatus: experimental\ndescription: >\n  Basic detection: inbox rule creation from non-RFC1918 IP.\n  For the full correlated detection (new-IP sign-in + inbox rule), use the\n  KQL or SPL queries which perform cross-log temporal correlation.\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection:\n        Operation:\n            - New-InboxRule\n            - Set-InboxRule\n            - Enable-InboxRule\n    filter_internal:\n        ClientIP|cidr:\n            - 10.0.0.0/8\n            - 172.16.0.0/12\n            - 192.168.0.0/16\n    condition: selection and not filter_internal\nfields:\n    - UserId\n    - ClientIP\n    - Parameters\nlevel: high\nfalsepositives:\n    - Users creating inbox rules from external networks (home, mobile)\n    - Cloud-hosted email management tools with non-RFC1918 IPs\n    - Corporate networks using public IP NAT for Exchange clients"
     },
     "references": [
       "Organized fraud detection in 2026: a technical landscape report — BEC and AiTM phishing",

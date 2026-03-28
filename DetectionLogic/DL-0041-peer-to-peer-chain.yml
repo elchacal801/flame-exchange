@@ -42,8 +42,8 @@ data_sources:
   - outbound_event
   - transaction_amount
 queries:
-  logscale: |-
-    // LogScale LQL for Peer-to-Peer Transfer Chain (Smurfing Pattern)
+  cql: |-
+    // CrowdStrike CQL for Peer-to-Peer Transfer Chain (Smurfing Pattern)
     // Repository: flame-banking-transaction-monitoring
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2

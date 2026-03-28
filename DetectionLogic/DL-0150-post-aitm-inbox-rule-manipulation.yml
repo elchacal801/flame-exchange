@@ -41,8 +41,17 @@ detection:
       - "DeleteMessage"
       - "MarkAsRead"
       - "MoveToFolder"
+  correlation:
+    type: temporal
+    description: >
+      Inbox rule creation with suspicious parameters must occur within 24h of
+      a sign-in flagged with medium or high risk (RiskLevelDuringSignIn or
+      RiskLevelAggregated). Requires cross-log correlation between Exchange
+      Online audit logs and Entra ID sign-in logs.
   timeframe: 24h
-  condition: selection_inbox_rule AND selection_suspicious_params
+  condition: >
+    selection_inbox_rule AND selection_suspicious_params
+    AND user had medium/high risk sign-in within preceding 24 hours
 data_sources:
   native_fields:
     - Operation
@@ -83,9 +92,9 @@ queries:
     | search Parameters="*ForwardTo*" OR Parameters="*RedirectTo*"
         OR Parameters="*DeleteMessage*" OR Parameters="*MarkAsRead*"
         OR Parameters="*ForwardAsAttachmentTo*"
-    | join UserId [
+    | join type=inner max=0 UserId [
       search index=azure sourcetype=azure:aad:signin
-        ResultType=0
+        ResultType=0 earliest=-48h latest=now
         (RiskLevelDuringSignIn="medium" OR RiskLevelDuringSignIn="high"
          OR RiskLevelAggregated="medium" OR RiskLevelAggregated="high")
       | rename UserPrincipalName AS UserId, _time AS signin_time
@@ -94,6 +103,7 @@ queries:
     | where hours_after_signin >= 0 AND hours_after_signin <= 24
     | table _time, UserId, signin_time, hours_after_signin,
             ClientIP, Operation, Parameters, RiskLevelDuringSignIn
+    | sort - hours_after_signin
 
 falsepositives:
   - Legitimate inbox rule creation by users shortly after a sign-in flagged as risky
@@ -102,6 +112,9 @@ falsepositives:
   - Automated email management tools creating rules on behalf of users
 level: high
 tags:
+  - attack.t1114.003
+  - attack.t1564.008
+  - attack.t1557
   - cfpf.phase3.positioning
   - flame.aitm
   - flame.inbox-rule

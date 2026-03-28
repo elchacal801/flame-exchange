@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.166457+00:00",
+    "generated_at": "2026-03-28T04:52:56.261506+00:00",
     "total": 1
   },
   "data": {
@@ -35,7 +35,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Beneficiary Change Velocity Anomaly\n// Repository: flame-banking-core-banking\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct beneficiary_id) by account_id > 3\n(event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 3",
+      "cql": "// CrowdStrike CQL for Beneficiary Change Velocity Anomaly\n// Repository: flame-banking-core-banking\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct beneficiary_id) by account_id > 3\n(event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])\n| event_count > 3",
       "splunk": "`comment(\"Splunk SPL for Beneficiary Change Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct beneficiary_id) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:core_banking (event_type=\"BENEFICIARY_ADD\" OR event_type=\"BENEFICIARY_MODIFY\" OR event_type=\"BENEFICIARY_DELETE\")\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 3"
     },
     "references": [

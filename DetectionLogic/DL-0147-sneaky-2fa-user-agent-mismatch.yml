@@ -22,10 +22,10 @@ fraud_types:
   - account-takeover
 logsource:
   product: azure
-  service: entra_id_signin
+  service: signinlogs
 detection:
   selection:
-    AuthenticationStepResultType: 0
+    ResultType: 0
   condition: >
     count(distinct UserAgent) by CorrelationId >= 2
     AND timeframe < 10 minutes
@@ -35,8 +35,8 @@ data_sources:
     - UserAgent
     - UserPrincipalName
     - IPAddress
-    - AuthenticationStepResultType
-    - AuthenticationDetails
+    - ResultType
+    - TimeGenerated
 queries:
   kql: |-
     // KQL: Sneaky 2FA Impossible Device Shift Detection
@@ -53,9 +53,11 @@ queries:
       by CorrelationId, UserPrincipalName
     | where UACount >= 2
     | where datetime_diff('minute', MaxTime, MinTime) <= 10
-    // High confidence: Safari/iOS + Edge/Windows combination
-    | where UserAgents has "Safari" and UserAgents has "Edge"
-        or UserAgents has "iPhone" and UserAgents has "Windows"
+    // Convert dynamic array to string for substring matching
+    | extend UA_str = tostring(UserAgents)
+    // High confidence: Safari/iOS + Edge/Windows combination (Sneaky 2FA signature)
+    | where (UA_str has "Safari" and UA_str has "Edge")
+        or (UA_str has "iPhone" and UA_str has "Windows")
     | project UserPrincipalName, CorrelationId, UACount, UserAgents,
               IPs, MinTime, MaxTime
 
@@ -81,6 +83,8 @@ falsepositives:
     the same correlation ID should not occur in normal browser authentication
 level: critical
 tags:
+  - attack.t1111
+  - attack.t1557
   - cfpf.phase2.initial_access
   - flame.aitm
   - flame.sneaky-2fa

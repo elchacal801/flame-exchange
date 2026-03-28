@@ -52,7 +52,7 @@ queries:
         1=1, "LOW"
       )
     | where sim_risk IN ("HIGH", "MEDIUM")
-    | join phone_number [
+    | join type=inner max=0 phone_number [
       search index=flame_banking sourcetype=flame:mfa_events
       | where mfa_channel = "SMS"
       | where _time > relative_time(now(), "-1h")
@@ -95,6 +95,7 @@ falsepositives:
   - Users activating call forwarding for legitimate reasons
 level: high
 tags:
+  - attack.t1111
   - cfpf.phase2.initial_access
   - flame.sim-swap
   - flame.mfa-bypass

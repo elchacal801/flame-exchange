@@ -59,7 +59,7 @@ queries:
     `comment("Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly")`
     `comment("Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment")`
     index=medicare_claims sourcetype=cms_claims
-    | join provider_npi [search index=pecos_enrollment
+    | join type=inner max=0 provider_npi [search index=pecos_enrollment
       | fields provider_npi enrollment_effective_date provider_type provider_zip]
     | eval days_to_first_claim=round((strptime(claim_date,"%Y-%m-%d")
       - strptime(enrollment_effective_date,"%Y-%m-%d")) / 86400)
@@ -114,6 +114,8 @@ falsepositives:
 - Large healthcare systems enrolling new provider NPIs for existing operational locations
 level: high
 tags:
+- attack.t1657
+- attack.t1078
 - cfpf.phase4.execution
 - healthcare-fraud
 - rapid-enrollment

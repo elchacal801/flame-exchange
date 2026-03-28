@@ -2,9 +2,70 @@
   "tp_id": "TP-0013",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT account_id, \n       SUM(points_redeemed) as total_redeemed,\n       COUNT(DISTINCT gift_card_id) as cards_generated,\n       MIN(session_ip) as source_ip\nFROM redemption_log\nWHERE redemption_date >= CURRENT_DATE - INTERVAL '7 days'\nGROUP BY account_id\nHAVING total_redeemed > 10000  -- threshold\n   AND cards_generated > 2\n   AND source_ip NOT IN (SELECT known_ip FROM account_known_ips WHERE account_id = redemption_log.account_id)\nORDER BY total_redeemed DESC;",
-      "title": "Post-Auth — Account Drain Pattern"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Login Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_internal | count() by source_ip > 50\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" (source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| stats count as event_count by source_ip\n| where event_count > 50",
+      "title": "DL-0012: Login Velocity Anomaly (SPLUNK)",
+      "source_rule": "DL-0012"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Geographic Impossibility Login\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | near by user_id | where geo_distance(src.geo_lat, src.geo_lon, dst.geo_lat, dst.geo_lon) > 1000 and time_diff < 60m\")`\nindex=flame_banking sourcetype=flame:auth_logs (event_type=\"login_success\" OR event_type=\"login_attempt\")\n| transaction user_id maxspan=60m\n| where eventcount >= 2",
+      "title": "DL-0013: Geographic Impossibility Login (SPLUNK)",
+      "source_rule": "DL-0013"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Combo List Iteration Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" auth_result=\"failure\"\n| stats dc(username) as unique_username by source_ip\n| where unique_username > 15",
+      "title": "DL-0015: Combo List Iteration Pattern (SPLUNK)",
+      "source_rule": "DL-0015"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Distributed Credential Stuffing\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count()\")`\nindex=flame_banking sourcetype=flame:auth_logs\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=\"^Mozilla/5\\.0.*$\"\n| stats dc(source_ip) as unique_source_ip by user_agent\n| where unique_source_ip > 20\n| stats dc(username) as unique_username by user_agent\n| where unique_username > 50",
+      "title": "DL-0016: Distributed Credential Stuffing (SPLUNK)",
+      "source_rule": "DL-0016"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Residential Proxy Login Attempt\nstatus: experimental\ndescription: Detects login attempts originating from known residential proxy networks. Credential stuffing actors increasingly route attacks through residential proxies (Luminati/Bright Data, Oxylabs, SmartProxy) \nlogsource:\n    product: banking\n    service: auth_logs\ndetection:\n    selection:\n        event_type|contains:\n            - \"login_attempt\"\n            - \"login_success\"\n    selection_proxy:\n        source_ip_threat_intel|contains:\n            - \"residential_proxy\"\n            - \"proxy_network\"\n        source_ip_category: \"residential\"\n        source_asn_type: \"isp\"\n    selection_additional:\n        auth_result: \"success\"\n    condition: selection and selection_proxy and selection_additional\nlevel: medium",
+      "title": "DL-0017: Residential Proxy Login Attempt (Sigma)",
+      "source_rule": "DL-0017"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Credential Spray Single Password\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct username) by password_hash > 20 and count(distinct password_hash) by source_ip < 3\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" auth_result=\"failure\"\n| stats dc(username) as unique_username by password_hash\n| where unique_username > 20\n| stats dc(password_hash) as unique_password_hash by source_ip\n| where unique_password_hash < 3",
+      "title": "DL-0018: Credential Spray Single Password (SPLUNK)",
+      "source_rule": "DL-0018"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Fake Tracking ID (FTID) Refund Fraud Indicators\nstatus: experimental\ndescription: Detects indicators of fake tracking ID (FTID) refund fraud, where a customer claims a package was not received or returned by providing a manipulated or fabricated tracking number. Indicators include \nlogsource:\n    product: ecommerce\n    service: returns_processing\ndetection:\n    selection:\n        event_type: \"refund_request\"\n        refund_reason|contains:\n            - \"item_not_received\"\n            - \"return_in_transit\"\n    filter_tracking_anomaly:\n        tracking_delivery_address_match: false\n    filter_weight:\n        tracking_package_weight_oz|lt: 4\n        order_expected_weight_oz|gt: 16\n    filter_known_pattern:\n        tracking_id_pattern_match: \"ftid_known_format\"\n    condition: selection and (filter_tracking_anomaly or filter_weight or filter_known_pattern)\nlevel: high",
+      "title": "DL-0062: Fake Tracking ID (FTID) Refund Fraud Indicators (Sigma)",
+      "source_rule": "DL-0062"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Abnormally High Refund Rate Per Customer Account\nstatus: experimental\ndescription: Detects customer accounts with an abnormally high refund-to-order ratio over a rolling window. Accounts exceeding a refund rate of 40% across 10 or more orders within 90 days are flagged as potential \nlogsource:\n    product: ecommerce\n    service: order_management\ndetection:\n    selection:\n        event_type|contains:\n            - \"order_completed\"\n            - \"refund_issued\"\n    aggregation:\n        condition: \"selection\\n| groupby(customer_account_id)\\n| where count(event_type='refund_issued') / count(event_type='order_completed') > 0.4\\n| where count(event_type='order_completed') >= 10\\n\"\n    timeframe: 90d\n    condition: selection | aggregation\nlevel: medium",
+      "title": "DL-0063: Abnormally High Refund Rate Per Customer Account (Sigma)",
+      "source_rule": "DL-0063"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Triangulation Fraud Shipping Pattern Detection\nstatus: experimental\ndescription: Detects orders where the shipping address differs from the billing address and matches known drop-ship or reshipping patterns associated with triangulation fraud. In triangulation fraud, a fraudster l\nlogsource:\n    product: ecommerce\n    service: order_management\ndetection:\n    selection:\n        event_type: \"order_placed\"\n        billing_shipping_address_match: false\n    filter_drop_address:\n        shipping_address_type|contains:\n            - \"freight_forwarder\"\n            - \"reshipper\"\n            - \"po_box\"\n            - \"commercial_mailbox\"\n    filter_shared_address:\n        shipping_address_distinct_accounts|gt: 3\n    filter_velocity:\n        shipping_address_orders_7d|gt: 5\n    condition: selection and (filter_drop_address or filter_shared_address or filter_velocity)\nlevel: high",
+      "title": "DL-0064: Triangulation Fraud Shipping Pattern Detection (Sigma)",
+      "source_rule": "DL-0064"
+    },
+    {
+      "type": "sigma",
+      "content": "title: High-Value Item Not Received Claims Exceeding Threshold\nstatus: experimental\ndescription: Detects \"item not received\" (INR) claims filed on high-value orders that exceed a configurable dollar threshold. High-value INR claims are a primary vector for refund fraud, particularly when the deli\nlogsource:\n    product: ecommerce\n    service: order_management\ndetection:\n    selection:\n        event_type: \"dispute_filed\"\n        dispute_reason: \"item_not_received\"\n    filter_high_value:\n        order_total_usd|gte: 500\n    filter_delivery_confirmed:\n        carrier_delivery_status: \"delivered\"\n    filter_repeat:\n        account_inr_claims_90d|gte: 2\n    condition: selection and filter_high_value and (filter_delivery_confirmed or filter_repeat)\nlevel: high",
+      "title": "DL-0066: High-Value Item Not Received Claims Exceeding Threshold (Sigma)",
+      "source_rule": "DL-0066"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Excessive Promotional Code or Coupon Abuse from Related Accounts\nstatus: experimental\ndescription: Detects excessive use of promotional codes, referral bonuses, or coupon offers from accounts that share common attributes such as device fingerprint, IP address, payment method, or shipping address. T\nlogsource:\n    product: ecommerce\n    service: payment_gateway\ndetection:\n    selection:\n        event_type: \"order_placed\"\n        promo_code_applied: true\n    filter_device_cluster:\n        device_fingerprint_promo_uses_30d|gt: 5\n    filter_ip_cluster:\n        source_ip_promo_uses_30d|gt: 10\n    filter_payment_cluster:\n        payment_method_hash_promo_uses_30d|gt: 5\n    filter_new_account:\n        account_age_days|lt: 7\n        promo_type|contains:\n            - \"new_customer\"\n            - \"referral_bonus\"\n            - \"first_order\"\n    condition: selection and (filter_device_cluster or filter_ip_cluster or filter_payment_cluster or filter_new_account)\nlevel: medium",
+      "title": "DL-0067: Excessive Promotional Code or Coupon Abuse from Related Accounts (Sigma)",
+      "source_rule": "DL-0067"
     }
   ]
 }

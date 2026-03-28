@@ -40,15 +40,15 @@ data_sources:
   - field: account_age_days
     source: Account analytics enrichment (account opening date lookup)
 queries:
-  logscale: |-
-    // LogScale LQL for New Account Sending Multiple Instant Payments
+  cql: |-
+    // CrowdStrike CQL for New Account Sending Multiple Instant Payments
     // Repository: flame-banking-instant-payments
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection and filter_new_account | count() by account_id > 5
     event_type="instant_payment_initiated"
     (payment_rail="ZELLE" OR payment_rail="FEDNOW" OR payment_rail="RTP" OR payment_rail="ACH_SAMEDAY")
     account_age_days<30
-    | groupBy(account_id, function=count(as=event_count))
+    | groupBy(account_id, function=[count(as=event_count)])
     | event_count > 5
   splunk: |-
     `comment("Splunk SPL for New Account Sending Multiple Instant Payments")`

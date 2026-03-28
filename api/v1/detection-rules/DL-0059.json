@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.355059+00:00",
+    "generated_at": "2026-03-28T04:52:56.497944+00:00",
     "total": 1
   },
   "data": {
@@ -47,7 +47,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for New Account Sending Multiple Instant Payments\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and filter_new_account | count() by account_id > 5\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\naccount_age_days<30\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 5",
+      "cql": "// CrowdStrike CQL for New Account Sending Multiple Instant Payments\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and filter_new_account | count() by account_id > 5\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\naccount_age_days<30\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 5",
       "splunk": "`comment(\"Splunk SPL for New Account Sending Multiple Instant Payments\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and filter_new_account | count() by account_id > 5\")`\nindex=flame_banking sourcetype=flame:instant_payments\nevent_type=\"instant_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\naccount_age_days<30\n| stats count as event_count by account_id\n| where event_count > 5"
     },
     "references": [

@@ -19,10 +19,10 @@
     {
       "name": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
       "threat_paths": 5,
-      "detection_rules": 13,
+      "detection_rules": 14,
       "baselines": 0,
       "emulation_playbooks": 0,
-      "total": 18
+      "total": 19
     },
     {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Infoblox DNS Intelligence)",
@@ -65,6 +65,14 @@
       "total": 4
     },
     {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, Atlantic Council)",
+      "threat_paths": 1,
+      "detection_rules": 2,
+      "baselines": 0,
+      "emulation_playbooks": 0,
+      "total": 3
+    },
+    {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Finance Derivative 2026, Radware, Orange Cyberdefense)",
       "threat_paths": 1,
       "detection_rules": 2,
@@ -82,14 +90,6 @@
     },
     {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report \u2014 multi-source synthesis)",
-      "threat_paths": 1,
-      "detection_rules": 1,
-      "baselines": 0,
-      "emulation_playbooks": 0,
-      "total": 2
-    },
-    {
-      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, Atlantic Council)",
       "threat_paths": 1,
       "detection_rules": 1,
       "baselines": 0,
@@ -185,5 +185,5 @@
       "total": 1
     }
   ],
-  "generated_at": "2026-03-26T00:44:59.115830+00:00"
+  "generated_at": "2026-03-28T04:52:57.112523+00:00"
 }

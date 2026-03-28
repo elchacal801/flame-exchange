@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.363538+00:00",
+    "generated_at": "2026-03-28T04:52:56.505730+00:00",
     "total": 1
   },
   "data": {
@@ -43,7 +43,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Real-Time Payment Followed by Immediate Refund or Return Request\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n// Temporal ordered correlation — use join() in LogScale\n| join({...}, field=payment_reference_id, mode=inner)",
+      "cql": "// CrowdStrike CQL for Real-Time Payment Followed by Immediate Refund or Return Request\n// Repository: flame-banking-instant-payments\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n// Temporal ordered correlation — use join() in CrowdStrike NGSIEM\n| join({...}, field=payment_reference_id, mode=inner)",
       "splunk": "`comment(\"Splunk SPL for Real-Time Payment Followed by Immediate Refund or Return Request\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_payment and selection_refund) | temporal(ordered=true, maxspan=2h, by=payment_reference_id)\")`\nindex=flame_banking sourcetype=flame:instant_payments\nevent_type=\"instant_payment_completed\"\n(payment_rail=\"RTP\" OR payment_rail=\"FEDNOW\")\n(event_type=\"refund_request\" OR event_type=\"return_request\" OR event_type=\"rrof_submitted\")\n| transaction payment_reference_id maxspan=2h\n| where eventcount >= 2"
     },
     "references": [

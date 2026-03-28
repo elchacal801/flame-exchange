@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.711540+00:00",
+    "generated_at": "2026-03-28T04:52:56.912569+00:00",
     "total": 1
   },
   "data": {
@@ -37,7 +37,7 @@
     },
     "queries": {
       "splunk": "`comment(\"Splunk SPL for Mass-Marketing Burst Calling Pattern\")`\n`comment(\"Detects SIM farm / robodialling burst patterns\")`\nindex=flame_telecom sourcetype=flame:cdr call_direction=\"inbound\"\n| eval source_prefix=substr(source_number, 1, 7)\n| bin _time span=1h\n| stats dc(destination_number) AS unique_targets,\n        avg(call_duration) AS avg_duration,\n        count AS total_calls,\n        values(caller_id_verification_status) AS attestation\n  BY source_prefix, _time\n| where unique_targets > 50 AND avg_duration < 30\n| sort - unique_targets",
-      "logscale": "// LogScale LQL for Mass-Marketing Burst Calling Pattern\ncall_direction=\"inbound\"\n| source_prefix := substring(source_number, start=0, end=7)\n| bucket(field=@timestamp, span=1h)\n| groupBy([source_prefix, @timestamp], function=[\n    count(as=total_calls),\n    count(field=destination_number, distinct=true, as=unique_targets),\n    avg(call_duration, as=avg_duration),\n    collect(caller_id_verification_status)\n  ])\n| unique_targets > 50 AND avg_duration < 30",
+      "cql": "// CrowdStrike CQL for Mass-Marketing Burst Calling Pattern\ncall_direction=\"inbound\"\n| source_prefix := substring(source_number, start=0, end=7)\n| bucket(field=@timestamp, span=1h)\n| groupBy([source_prefix, @timestamp], function=[\n    count(as=total_calls),\n    count(field=destination_number, distinct=true, as=unique_targets),\n    avg(call_duration, as=avg_duration),\n    collect(caller_id_verification_status)\n  ])\n| unique_targets > 50 AND avg_duration < 30",
       "sigma": "title: Mass-Marketing Fraud Burst Calling Pattern\nstatus: experimental\nlogsource:\n    product: telecom\n    service: cdr\ndetection:\n    selection:\n        call_direction: inbound\n        call_duration|lt: 30\n    timeframe: 1h\n    condition: selection | count(distinct destination_number) by source_number_prefix > 50\nfields:\n    - source_number\n    - destination_number\n    - call_duration\n    - caller_id_verification_status\nlevel: medium"
     },
     "references": [
@@ -54,6 +54,8 @@
       "vishing"
     ],
     "tags": [
+      "attack.t1566",
+      "attack.t1656",
       "cfpf.phase2.initial_access",
       "flame.mass-marketing",
       "flame.sim-farm",

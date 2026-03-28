@@ -104,6 +104,8 @@ falsepositives:
   - Security researchers analyzing smishing infrastructure
 level: high
 tags:
+  - attack.t1566
+  - attack.t1583.001
   - cfpf.phase2.initial_access
   - flame.smishing
   - flame.darcula

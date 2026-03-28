@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.773027+00:00",
+    "generated_at": "2026-03-28T04:52:56.975153+00:00",
     "total": 1
   },
   "data": {
@@ -20,7 +20,7 @@
     },
     "logsource": {
       "product": "azure",
-      "service": "entra_id_signin"
+      "service": "signinlogs"
     },
     "sigma_compatible": false,
     "native_query_required": true,
@@ -53,6 +53,9 @@
       "aitm-phishing"
     ],
     "tags": [
+      "attack.t1539",
+      "attack.t1550.004",
+      "attack.t1557",
       "cfpf.phase3.positioning",
       "flame.aitm",
       "flame.mfa-bypass",
