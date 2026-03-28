@@ -3,18 +3,9 @@
   "rules": [
     {
       "type": "spl",
-      "content": "index=transactions sourcetype=payment_events\n| where payment_type=\"cryptocurrency\"\n| lookup customer_social_media_events customer_id OUTPUT last_new_contact_date, contact_platform\n| eval days_since_new_contact = (now() - strptime(last_new_contact_date, \"%Y-%m-%d\")) / 86400\n| where days_since_new_contact < 30\n| where is_first_crypto_transaction = \"true\"\n| stats count by customer_id, payment_type, amount, crypto_address, contact_platform, days_since_new_contact\n| sort -amount",
-      "title": "First Crypto Transaction Following New Social Media Contact (Splunk SPL)"
-    },
-    {
-      "type": "sql",
-      "content": "SELECT t.account_id, t.transaction_date, t.amount, t.currency,\n       t.beneficiary_name, t.beneficiary_account, p.registration_status,\n       p.regulatory_body, p.registration_date\nFROM transactions t\nLEFT JOIN investment_platform_registry p\n  ON t.beneficiary_name ILIKE '%' || p.platform_name || '%'\n  OR t.beneficiary_account = p.platform_account\nWHERE t.transaction_type IN ('crypto_deposit', 'wire', 'faster_payment')\nAND t.beneficiary_category = 'investment_platform'\nAND (p.registration_status IS NULL OR p.registration_status = 'unregistered')\nAND t.transaction_date > CURRENT_DATE - INTERVAL '90 days'\nORDER BY t.amount DESC;",
-      "title": "Investment Platform Deposit — Unregistered Entity Detection (SQL)"
-    },
-    {
-      "type": "sql",
-      "content": "SELECT v.victim_account_id, v.sar_id, v.report_date,\n       t.transaction_hash, t.crypto_address, t.amount,\n       m.service_name AS mixer_service, m.hop_count\nFROM sar_reports v\nJOIN crypto_transactions t ON v.victim_account_id = t.account_id\nJOIN crypto_mixing_proximity m ON t.transaction_hash = m.transaction_hash\nWHERE v.fraud_category IN ('sextortion', 'investment_fraud', 'hybrid_fraud')\nAND m.hop_count <= 3\nAND t.transaction_date BETWEEN v.incident_start_date AND v.report_date + INTERVAL '30 days'\nORDER BY t.amount DESC;",
-      "title": "Cryptocurrency Address — Mixing Service Proximity Detection (SQL)"
+      "content": "`comment(\"Splunk SPL for Sextortion-Investment Hybrid Escalation\")`\n`comment(\"Detects escalating crypto payments following new social contact\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (payment_type=\"cryptocurrency\" OR payment_type=\"crypto_deposit\" OR payment_type=\"wire_to_crypto_exchange\")\n  is_first_crypto_period=\"true\"\n  days_since_account_first_crypto<=60\n| stats count AS transaction_count,\n        min(amount) AS first_amount,\n        max(amount) AS last_amount,\n        sum(amount) AS total_amount,\n        dc(crypto_address) AS unique_crypto_addresses,\n        earliest(transaction_date) AS first_txn_date,\n        latest(transaction_date) AS last_txn_date\n  BY account_id\n| where transaction_count >= 3\n| eval escalation_ratio = last_amount / first_amount\n| where escalation_ratio >= 3.0\n| eval risk_score = case(\n    escalation_ratio > 10 AND total_amount > 50000, \"critical\",\n    escalation_ratio > 5 AND total_amount > 10000, \"high\",\n    1=1, \"medium\")\n| table account_id, transaction_count, first_amount, last_amount,\n        escalation_ratio, total_amount, unique_crypto_addresses,\n        first_txn_date, last_txn_date, risk_score\n| sort - total_amount",
+      "title": "DL-0172: Sextortion-Investment Hybrid Fraud — Small Payment Escalation to Crypto Addresses with Communication Pattern Shift (SPLUNK)",
+      "source_rule": "DL-0172"
     }
   ]
 }

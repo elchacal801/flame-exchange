@@ -2,9 +2,10 @@
   "tp_id": "TP-0010",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT c.claim_id, c.claimant_id, c.provider_id, c.claim_amount\nFROM claims c\nJOIN policies p ON c.policy_id = p.policy_id\nJOIN providers prov ON c.provider_id = prov.provider_id\nWHERE DATEDIFF('day', p.effective_date, c.filing_date) <= 90\nAND prov.risk_tier = 'High'\nAND c.claim_amount > (\n    SELECT PERCENTILE_CONT(0.9) WITHIN GROUP (ORDER BY claim_amount) FROM claims\n);",
-      "title": "Predictive Model — Claim Risk Scoring"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Disability Insurance Fraud — Fabricated Medical Documentation\")`\n`comment(\"Detects providers with identical diagnoses across multiple claimants or geographic anomalies\")`\nindex=flame_insurance sourcetype=flame:claims_management\n  (claim_type=\"short_term_disability\" OR claim_type=\"long_term_disability\")\n  (claim_status=\"open\" OR claim_status=\"approved\" OR claim_status=\"in_payment\")\n| eval policy_to_claim_days = round((strptime(claim_filing_date, \"%Y-%m-%d\") - strptime(policy_effective_date, \"%Y-%m-%d\")) / 86400)\n| stats dc(claimant_id) AS unique_claimants\n    values(claimant_id) AS claimants\n    values(claim_amount) AS claim_amounts\n    avg(provider_claimant_distance_miles) AS avg_distance\n    BY provider_id, icd10_primary_diagnosis\n| where unique_claimants >= 3 OR avg_distance >= 150\n| eval risk_score = case(\n    unique_claimants >= 5 AND avg_distance >= 150, \"critical\",\n    unique_claimants >= 5, \"high\",\n    avg_distance >= 300, \"high\",\n    1=1, \"medium\")\n| table provider_id, icd10_primary_diagnosis, unique_claimants,\n        claimants, claim_amounts, avg_distance, risk_score\n| sort - unique_claimants",
+      "title": "DL-0163: Disability Insurance Fraud — Fabricated Medical Documentation Provider Anomaly (SPLUNK)",
+      "source_rule": "DL-0163"
     }
   ]
 }

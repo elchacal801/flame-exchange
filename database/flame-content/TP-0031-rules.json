@@ -2,19 +2,34 @@
   "tp_id": "TP-0031",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT\n    customer_id,\n    COUNT(*) AS refund_count_90d,\n    SUM(refund_amount) AS total_refund_value_90d,\n    COUNT(DISTINCT order_id) AS orders_with_refunds,\n    ROUND(SUM(refund_amount) / NULLIF(SUM(order_total), 0) * 100, 2) AS refund_rate_pct,\n    COUNT(CASE WHEN refund_reason = 'DNA' THEN 1 END) AS dna_claims,\n    COUNT(CASE WHEN refund_reason = 'SNAD' THEN 1 END) AS snad_claims\nFROM refunds r\nJOIN orders o ON r.order_id = o.order_id\nWHERE r.refund_date >= DATEADD(day, -90, GETDATE())\nGROUP BY customer_id\nHAVING COUNT(*) > 3\n   AND SUM(refund_amount) > 500\nORDER BY total_refund_value_90d DESC;",
-      "title": "SQL — Refund Velocity Anomaly Detection (Phase 4) — Detection Logic: DL-0062"
+      "type": "sigma",
+      "content": "title: Fake Tracking ID (FTID) Refund Fraud Indicators\nstatus: experimental\ndescription: Detects indicators of fake tracking ID (FTID) refund fraud, where a customer claims a package was not received or returned by providing a manipulated or fabricated tracking number. Indicators include \nlogsource:\n    product: ecommerce\n    service: returns_processing\ndetection:\n    selection:\n        event_type: \"refund_request\"\n        refund_reason|contains:\n            - \"item_not_received\"\n            - \"return_in_transit\"\n    filter_tracking_anomaly:\n        tracking_delivery_address_match: false\n    filter_weight:\n        tracking_package_weight_oz|lt: 4\n        order_expected_weight_oz|gt: 16\n    filter_known_pattern:\n        tracking_id_pattern_match: \"ftid_known_format\"\n    condition: selection and (filter_tracking_anomaly or filter_weight or filter_known_pattern)\nlevel: high",
+      "title": "DL-0062: Fake Tracking ID (FTID) Refund Fraud Indicators (Sigma)",
+      "source_rule": "DL-0062"
     },
     {
       "type": "sigma",
-      "content": "title: Return Package Weight Discrepancy - Potential Empty Box or FTID\nstatus: experimental\ndescription: Detects return packages where received weight deviates significantly from expected product weight, indicating empty box returns or substitute-filled packages.\nlogsource:\n    product: returns_processing\n    service: warehouse\ndetection:\n    selection:\n        event_type: \"return_received\"\n    filter_weight_mismatch:\n        weight_delta_pct|gte: 30\n    condition: selection and filter_weight_mismatch\nlevel: high\ntags:\n    - fraud.refund\n    - cfpf.phase3.positioning",
-      "title": "Sigma — Return Package Weight Discrepancy (Phase 3) — Detection Logic: DL-0064"
+      "content": "title: Abnormally High Refund Rate Per Customer Account\nstatus: experimental\ndescription: Detects customer accounts with an abnormally high refund-to-order ratio over a rolling window. Accounts exceeding a refund rate of 40% across 10 or more orders within 90 days are flagged as potential \nlogsource:\n    product: ecommerce\n    service: order_management\ndetection:\n    selection:\n        event_type|contains:\n            - \"order_completed\"\n            - \"refund_issued\"\n    aggregation:\n        condition: \"selection\\n| groupby(customer_account_id)\\n| where count(event_type='refund_issued') / count(event_type='order_completed') > 0.4\\n| where count(event_type='order_completed') >= 10\\n\"\n    timeframe: 90d\n    condition: selection | aggregation\nlevel: medium",
+      "title": "DL-0063: Abnormally High Refund Rate Per Customer Account (Sigma)",
+      "source_rule": "DL-0063"
     },
     {
-      "type": "spl",
-      "content": "index=customer_service sourcetype=refund_claims\n| stats count AS claim_count, dc(customer_id) AS unique_customers, values(customer_id) AS customers BY device_fingerprint, src_ip\n| where unique_customers > 2 AND claim_count > 5\n| eval suspicious_operator = if(unique_customers > 3 AND claim_count > 10, \"HIGH\", \"MEDIUM\")\n| table device_fingerprint, src_ip, unique_customers, claim_count, customers, suspicious_operator\n| sort - unique_customers",
-      "title": "Splunk — Cross-Account Refund Operator Detection (Phase 2) — Detection Logic: DL-0065"
+      "type": "sigma",
+      "content": "title: Return Without Receipt Clustering by Customer or Region\nstatus: experimental\ndescription: Detects clusters of product returns submitted without receipts or order references from the same customer identity or geographic region. Organized return fraud rings often exploit no-receipt return po\nlogsource:\n    product: ecommerce\n    service: returns_processing\ndetection:\n    selection:\n        event_type: \"return_processed\"\n        receipt_provided: false\n        order_reference_matched: false\n    aggregation_customer:\n        condition: \"selection | count() by customer_account_id > 4\"\n    aggregation_region:\n        condition: \"selection | count() by store_region_code > 15\"\n    timeframe: 30d\n    condition: selection | aggregation_customer or selection | aggregation_region\nlevel: medium",
+      "title": "DL-0065: Return Without Receipt Clustering by Customer or Region (Sigma)",
+      "source_rule": "DL-0065"
+    },
+    {
+      "type": "sigma",
+      "content": "title: High-Value Item Not Received Claims Exceeding Threshold\nstatus: experimental\ndescription: Detects \"item not received\" (INR) claims filed on high-value orders that exceed a configurable dollar threshold. High-value INR claims are a primary vector for refund fraud, particularly when the deli\nlogsource:\n    product: ecommerce\n    service: order_management\ndetection:\n    selection:\n        event_type: \"dispute_filed\"\n        dispute_reason: \"item_not_received\"\n    filter_high_value:\n        order_total_usd|gte: 500\n    filter_delivery_confirmed:\n        carrier_delivery_status: \"delivered\"\n    filter_repeat:\n        account_inr_claims_90d|gte: 2\n    condition: selection and filter_high_value and (filter_delivery_confirmed or filter_repeat)\nlevel: high",
+      "title": "DL-0066: High-Value Item Not Received Claims Exceeding Threshold (Sigma)",
+      "source_rule": "DL-0066"
+    },
+    {
+      "type": "sigma",
+      "content": "title: UCP Returns Logic Hijacking — Void Return and Verify Step Bypass\nstatus: experimental\ndescription: Detects exploitation of the UCP returns state machine where AI agents skip the order.return.verify step and trigger settlement.refund.instant() using fraudulent tracking IDs (e.g., void-000). Threat a\nlogsource:\n    product: ecommerce\n    service: ucp_returns\ndetection:\n    selection_void_tracking:\n        return_tracking_id|startswith: \"void-\"\n    selection_verify_skip:\n        return_verify_step_completed: false\n        refund_method: \"settlement.refund.instant\"\n    selection_no_shipping_scan:\n        shipping_scan_validated: false\n        refund_issued: true\n    aggregation_velocity:\n        count|gte: 10\n        groupby: \"merchant_id\"\n        timeframe: \"1h\"\n    condition: selection_void_tracking or selection_verify_skip or (selection_no_shipping_scan and aggregation_velocity)\nlevel: critical",
+      "title": "DL-0125: UCP Returns Logic Hijacking — Void Return and Verify Step Bypass (Sigma)",
+      "source_rule": "DL-0125"
     }
   ]
 }

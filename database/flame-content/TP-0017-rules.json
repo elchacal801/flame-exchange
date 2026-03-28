@@ -2,9 +2,16 @@
   "tp_id": "TP-0017",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT \n    c.customer_id,\n    c.age,\n    w.wire_amount,\n    w.beneficiary_name,\n    w.wire_date\nFROM customers c\nJOIN wire_outbound w ON c.account_id = w.account_id\nWHERE c.age >= 60\n  AND w.wire_amount > 25000\n  AND w.beneficiary_name SIMILAR TO '%(coinbase|kraken|binance|gemini)%'\n  AND NOT EXISTS (\n      -- Detect if this is their first time wiring to crypto\n      SELECT 1 FROM wire_outbound w_old \n      WHERE w_old.account_id = c.account_id \n        AND w_old.wire_date < CURRENT_DATE - INTERVAL '30 days'\n        AND w_old.beneficiary_name SIMILAR TO '%(coinbase|kraken|binance|gemini)%'\n  );",
-      "title": "SQL — High-Value Outbound to Crypto Exchange (Elder Financial Exploitation Indicator)"
+      "type": "sigma",
+      "content": "title: Multilingual Chatbot Scam Pattern Detection\nstatus: experimental\ndescription: Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conver\nlogsource:\n    product: messaging_platform\n    category: conversation_analytics\n    service: abuse_detection\ndetection:\n    selection_timing:\n        response_time_variance_ms|lt: 2000\n        message_count|gte: 10\n    selection_template:\n        conversation_template_match_score|gt: 0.8\n    selection_language_switch:\n        language_switch_count|gte: 1\n        conversation_languages_count|gte: 2\n    selection_duplicate_phrasing:\n        cross_instance_phrase_similarity|gt: 0.9\n        reported_instances|gte: 2\n    condition: selection_timing and (selection_template or selection_language_switch or selection_duplicate_phrasing)\nlevel: medium",
+      "title": "DL-0117: Multilingual Chatbot Scam Pattern Detection (Sigma)",
+      "source_rule": "DL-0117"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Crypto Rug Pull On-Chain Indicators\")`\nindex=blockchain sourcetype=defi:events\n| eval risk_score = case(\n    liquidity_removal_pct > 80, 10,\n    top5_holder_pct > 0.60, 7,\n    has_hidden_mint = \"true\", 8,\n    has_hidden_pause = \"true\", 6,\n    liquidity_unlocked = \"true\", 5,\n    1=1, 0\n  )\n| where risk_score >= 7\n| table _time, token_address, token_name, risk_score,\n        liquidity_removal_pct, top5_holder_pct,\n        has_hidden_mint, has_hidden_pause, liquidity_unlocked",
+      "title": "DL-0142: Crypto Token Rug Pull Early Warning — On-Chain and OSINT Indicators (SPLUNK)",
+      "source_rule": "DL-0142"
     }
   ]
 }

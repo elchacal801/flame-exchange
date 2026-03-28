@@ -2,9 +2,46 @@
   "tp_id": "TP-0003",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT account_id, identity_id,\n       MAX(utilization_pct) - LAG(MAX(utilization_pct), 30) \n         OVER (PARTITION BY identity_id ORDER BY report_date) as util_change_30d\nFROM credit_monitoring\nWHERE report_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY account_id, identity_id\nHAVING util_change_30d > 60  -- 60%+ utilization jump in 30 days\nORDER BY util_change_30d DESC;",
-      "title": "SQL — Bust-Out Velocity Detection"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Synthetic Identity Credit Utilization Spike\")`\n`comment(\"Detects 6+ months low utilization followed by rapid spike to >80%\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  trailing_6m_avg_utilization_pct<35\n  current_utilization_pct>=80\n  previous_month_utilization_pct<50\n| eval utilization_jump = current_utilization_pct - previous_month_utilization_pct\n| eval risk_score = case(\n    utilization_jump > 70 AND trailing_6m_avg_utilization_pct < 20, \"critical\",\n    utilization_jump > 50, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, trailing_6m_avg_utilization_pct,\n        previous_month_utilization_pct, utilization_jump,\n        account_open_date, risk_score\n| sort - utilization_jump",
+      "title": "DL-0151: Synthetic Identity Credit Utilization Spike — Low-and-Slow Buildup Followed by Bust-Out (SPLUNK)",
+      "source_rule": "DL-0151"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Thin-File Identity Clustering\")`\n`comment(\"Detects 3+ thin-file applicants sharing address, phone, or device\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n  credit_history_months<12 tradeline_count<3\n| stats dc(applicant_id) AS applicant_count,\n        values(applicant_id) AS applicants,\n        values(phone) AS phones,\n        values(device_fingerprint) AS devices,\n        values(ssn_hash) AS ssn_hashes,\n        min(application_date) AS first_app,\n        max(application_date) AS last_app\n  BY address\n| where applicant_count >= 3\n| eval days_span = round((strptime(last_app, \"%Y-%m-%d\") - strptime(first_app, \"%Y-%m-%d\")) / 86400)\n| where days_span <= 180\n| eval shared_attribute = \"address\"\n| table address, applicant_count, applicants, phones, devices,\n        ssn_hashes, first_app, last_app, days_span\n| sort - applicant_count",
+      "title": "DL-0152: Thin-File Identity Clustering — Shared Address, Phone, or Device Across New Applicants (SPLUNK)",
+      "source_rule": "DL-0152"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Coordinated Bust-Out Timing\")`\n`comment(\"Detects 3+ products maxed within 72h for same identity\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  current_utilization_pct>=90\n| stats dc(account_id) AS products_maxed,\n        sum(transaction_amount) AS total_exposure,\n        values(account_id) AS accounts,\n        values(transaction_type) AS txn_types,\n        values(merchant_category) AS merchants,\n        max(credit_limit) AS max_limit\n  BY identity_id _time span=72h\n| where products_maxed >= 3\n| search txn_types=\"*CASH_ADVANCE*\" OR txn_types=\"*BALANCE_TRANSFER*\"\n    OR txn_types=\"*CONVENIENCE_CHECK*\"\n| eval risk = if(products_maxed >= 5, \"critical\",\n              if(total_exposure > 100000, \"critical\", \"high\"))\n| table identity_id, products_maxed, total_exposure, accounts,\n        txn_types, merchants, risk\n| sort - total_exposure",
+      "title": "DL-0153: Coordinated Bust-Out Timing — Simultaneous Max-Utilization Across Multiple Products (SPLUNK)",
+      "source_rule": "DL-0153"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for SSN Age and Issuance Mismatch\")`\n`comment(\"Detects synthetic identity via SSN-DOB-credit file inconsistencies\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n  event_type=\"CREDIT_APPLICATION\"\n| eval ssn_dob_gap = ssn_issue_year_estimated - applicant_birth_year\n| eval risk_indicator = case(\n    applicant_stated_age > 25 AND credit_file_age_months < 18, \"late_credit_file\",\n    ssn_issue_year_estimated > applicant_birth_year, \"ssn_postdates_birth\",\n    applicant_stated_age < 16 AND credit_inquiry_exists=\"true\", \"minor_ssn_with_credit\",\n    1=1, \"none\")\n| where risk_indicator != \"none\"\n| table applicant_id, application_date, applicant_stated_age,\n        credit_file_age_months, ssn_issue_year_estimated,\n        applicant_birth_year, ssn_dob_gap,\n        risk_indicator, address, device_fingerprint\n| sort - application_date",
+      "title": "DL-0154: SSN Age and Issuance Mismatch — Synthetic Identity Indicator (SPLUNK)",
+      "source_rule": "DL-0154"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Rapid Authorized User Addition\")`\n`comment(\"Detects same individual added as authorized user on 3+ accounts in 30 days\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  event_type=\"authorized_user_added\"\n  earliest=-30d@d latest=now\n| stats dc(account_id) as distinct_account_count,\n        values(account_id) as accounts,\n        values(primary_account_holder_id) as primary_holders,\n        min(event_date) as first_addition,\n        max(event_date) as last_addition\n  by authorized_user_id, authorized_user_name\n| where distinct_account_count >= 3\n| eval addition_span_days = round((strptime(last_addition, \"%Y-%m-%d\") - strptime(first_addition, \"%Y-%m-%d\")) / 86400, 0)\n| eval risk_score = case(\n    distinct_account_count >= 5, \"critical\",\n    distinct_account_count >= 4, \"high\",\n    1=1, \"medium\")\n| table authorized_user_id, authorized_user_name, distinct_account_count,\n        accounts, primary_holders, first_addition, last_addition,\n        addition_span_days, risk_score\n| sort - distinct_account_count",
+      "title": "DL-0157: Rapid Authorized User Addition Across Multiple Accounts (SPLUNK)",
+      "source_rule": "DL-0157"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for AI-Generated ID Document Detection\")`\n`comment(\"Detects document submissions with metadata indicating AI generation\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"DOCUMENT_SUBMISSION\"\n| eval anomaly_type = case(\n    document_ai_score > 0.7, \"high_ai_score\",\n    match(pdf_creator, \"Photoshop|GIMP|Stable Diffusion|Midjourney|DALL-E|unknown_ai_generator\")\n      AND exif_data_present=\"false\", \"suspicious_creator_no_exif\",\n    pdf_creation_date > pdf_modification_date, \"timestamp_manipulation\",\n    dpi_consistency_check=\"false\", \"dpi_inconsistency\",\n    font_embedding_anomaly=\"true\", \"font_anomaly\",\n    1=1, \"none\")\n| where anomaly_type != \"none\"\n| table applicant_id, submission_timestamp, document_type,\n        document_ai_score, pdf_creator, exif_data_present,\n        dpi_consistency_check, font_embedding_anomaly,\n        anomaly_type, device_fingerprint, ip_address\n| sort - submission_timestamp",
+      "title": "DL-0158: Document Metadata Anomaly — AI-Generated ID Document Detection (SPLUNK)",
+      "source_rule": "DL-0158"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Cross-Application Identity Collision Detection\")`\n`comment(\"Detects same biometric or device across different identity applications\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"CREDIT_APPLICATION\"\n  earliest=-90d@d\n| stats\n    dc(applicant_name) as distinct_names,\n    dc(ssn_hash) as distinct_ssns,\n    values(applicant_id) as applicant_ids,\n    values(applicant_name) as names,\n    values(ssn_hash) as ssn_hashes,\n    values(application_date) as application_dates\n    by face_embedding_hash\n| where distinct_names >= 2 OR distinct_ssns >= 2\n| eval identity_collision_type = \"biometric_collision\"\n| append [\n    search index=flame_banking sourcetype=flame:document_verification\n      event_type=\"CREDIT_APPLICATION\"\n      earliest=-90d@d\n    | stats\n        dc(applicant_name) as distinct_names,\n        dc(ssn_hash) as distinct_ssns,\n        values(applicant_id) as applicant_ids,\n        values(applicant_name) as names,\n        values(ssn_hash) as ssn_hashes,\n        values(application_date) as application_dates\n        by device_fingerprint\n    | where distinct_names >= 2 OR distinct_ssns >= 2\n    | eval identity_collision_type = \"device_collision\"\n  ]\n| sort - distinct_names",
+      "title": "DL-0160: Cross-Application Identity Collision — Same Biometric or Device Across Different Identities (SPLUNK)",
+      "source_rule": "DL-0160"
     }
   ]
 }

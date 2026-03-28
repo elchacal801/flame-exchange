@@ -2,9 +2,34 @@
   "tp_id": "TP-0012",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT t.transaction_id, t.account_id\nFROM transactions t\nJOIN active_calls c ON t.customer_phone = c.phone_number\nJOIN customer_profiles cp ON t.account_id = cp.account_id\nWHERE t.beneficiary_is_new = TRUE\nAND t.amount > 5000\nAND cp.age > 60\nAND c.call_start <= t.timestamp \nAND c.call_end >= t.timestamp;",
-      "title": "Real-Time Transaction Risk Scoring"
+      "type": "sigma",
+      "content": "title: Real-Time Payment to New Payee After Credential or Contact Change\nstatus: experimental\ndescription: Detects when a real-time or instant payment (Zelle, FedNow, RTP) is initiated to a previously unseen payee within 24 hours of a credential change (password reset, MFA re-enrollment) or contact informa\nlogsource:\n    product: banking\n    service: instant_payments\ndetection:\n    selection_payment:\n        event_type: \"instant_payment_initiated\"\n        payment_rail|contains:\n            - \"ZELLE\"\n            - \"FEDNOW\"\n            - \"RTP\"\n            - \"ACH_SAMEDAY\"\n        payee_relationship: \"new\"\n    selection_recent_change:\n        credential_change_hours_ago|lt: 24\n    timeframe: 24h\n    condition: selection_payment and selection_recent_change\nlevel: high",
+      "title": "DL-0055: Real-Time Payment to New Payee After Credential or Contact Change (Sigma)",
+      "source_rule": "DL-0055"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Instant Payment Velocity Spike Above 30-Day Baseline\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring event_type=\"instant_payment_initiated\" (payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\n`comment(\"Aggregation logic from: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)\")`\n| stats count as event_count by account_id\n| where event_count > 1",
+      "title": "DL-0056: Instant Payment Velocity Spike Above 30-Day Baseline (SPLUNK)",
+      "source_rule": "DL-0056"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Cross-Platform Deposit and Withdrawal Chain\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_inbound and selection_outbound and filter_amount) | temporal(ordered=true, maxspan=4h, by=account_id)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\nevent_type=\"payment_received\"\n(inbound_rail=\"ACH_IN\" OR inbound_rail=\"WIRE_IN\" OR inbound_rail=\"RTP_IN\" OR inbound_rail=\"FEDNOW_IN\")\nevent_type=\"instant_payment_initiated\"\n(outbound_rail=\"ZELLE\" OR outbound_rail=\"FEDNOW\" OR outbound_rail=\"RTP\" OR outbound_rail=\"ACH_SAMEDAY\")\noutbound_amount_pct_of_inbound>=80\n| transaction account_id maxspan=4h\n| where eventcount >= 2",
+      "title": "DL-0057: Cross-Platform Deposit and Withdrawal Chain (SPLUNK)",
+      "source_rule": "DL-0057"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Repeated A2A Payments at Maximum Per-Transaction Limit\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and filter_at_limit | count() by account_id > 3\")`\nindex=flame_banking sourcetype=flame:a2a_processing\nevent_type=\"a2a_payment_initiated\"\n(payment_rail=\"ZELLE\" OR payment_rail=\"FEDNOW\" OR payment_rail=\"RTP\" OR payment_rail=\"ACH_SAMEDAY\")\namount_pct_of_rail_limit>=95\n| stats count as event_count by account_id\n| where event_count > 3",
+      "title": "DL-0058: Repeated A2A Payments at Maximum Per-Transaction Limit (SPLUNK)",
+      "source_rule": "DL-0058"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Zelle Recipient Enumeration via Multiple Failed Lookups\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 10\")`\nindex=flame_banking sourcetype=flame:a2a_processing event_type=\"zelle_recipient_lookup\" lookup_result=\"not_found\"\n| stats count as event_count by account_id\n| where event_count > 10",
+      "title": "DL-0060: Zelle Recipient Enumeration via Multiple Failed Lookups (SPLUNK)",
+      "source_rule": "DL-0060"
     }
   ]
 }
