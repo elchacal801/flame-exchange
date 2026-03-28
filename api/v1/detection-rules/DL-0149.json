@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T04:52:56.991760+00:00",
+    "generated_at": "2026-03-28T05:01:14.560794+00:00",
     "total": 1
   },
   "data": {
@@ -53,6 +53,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Smishing Triad Domain Pattern Detection\n// Matches Darcula com- prefix, Chenlun kit files, and toll-scam lures\n#repo=\"web_proxy\" #event_type=\"url_filtering\"\n| case {\n    url=/^https?:\\/\\/com-[a-z0-9]+/ | smishing_indicator := \"darcula_domain_pattern\";\n    url=\"*ResourceRedConfig.js*\" | smishing_indicator := \"chenlun_kit_fingerprint\";\n    url=\"*/ResourceConfig/urlConfig.json*\" | smishing_indicator := \"chenlun_kit_fingerprint\";\n    url=/(?i)(ezpass|sunpass|fastrak|ipass|toll-|parking-notice)/ | smishing_indicator := \"toll_scam_lure\";\n  }\n| smishing_indicator=\"*\"\n| domain_age_days < 30 OR NOT _exists_(domain_age_days)\n| groupBy([smishing_indicator, domain, source_ip, url], function=[count(as=cnt)])\n| sort(cnt, order=desc)",
       "splunk": "`comment(\"Splunk SPL for Smishing Triad Domain Pattern Detection\")`\n`comment(\"Matches Darcula com- prefix, Chenlun kit files, and toll-scam lures\")`\nindex=web sourcetype=proxy:access\n| eval smishing_indicator = case(\n    match(url, \"^https?://com-[a-z0-9]+\"), \"darcula_domain_pattern\",\n    match(url, \"ResourceRedConfig\\.js\"), \"chenlun_kit_fingerprint\",\n    match(url, \"/ResourceConfig/urlConfig\\.json\"), \"chenlun_kit_fingerprint\",\n    match(url, \"(?i)(ezpass|sunpass|fastrak|ipass|toll-|parking-notice)\"), \"toll_scam_lure\",\n    1=1, null()\n  )\n| where isnotnull(smishing_indicator)\n| lookup domain_age_lookup domain OUTPUT domain_age_days\n| where domain_age_days < 30 OR isnull(domain_age_days)\n| stats count BY smishing_indicator, domain, source_ip, url\n| sort - count",
       "sql": "-- SQL: Smishing Triad domain pattern detection\n-- Correlates proxy logs with domain intelligence\nSELECT\n    p.access_time,\n    p.source_ip,\n    p.url,\n    p.domain,\n    d.registration_date,\n    DATEDIFF(day, d.registration_date, GETDATE()) AS domain_age_days,\n    CASE\n        WHEN p.domain LIKE 'com-%' THEN 'darcula_domain_pattern'\n        WHEN p.url LIKE '%ResourceRedConfig.js%' THEN 'chenlun_kit_fingerprint'\n        WHEN p.url LIKE '%/ResourceConfig/urlConfig.json%' THEN 'chenlun_kit_fingerprint'\n        WHEN p.url LIKE '%ezpass%' OR p.url LIKE '%sunpass%'\n            OR p.url LIKE '%fastrak%' OR p.url LIKE '%ipass%' THEN 'toll_scam_lure'\n    END AS indicator_type\nFROM proxy_access_logs p\nLEFT JOIN domain_intelligence d ON p.domain = d.domain\nWHERE (p.domain LIKE 'com-%'\n       OR p.url LIKE '%ResourceRedConfig.js%'\n       OR p.url LIKE '%/ResourceConfig/urlConfig.json%'\n       OR p.url LIKE '%ezpass%' OR p.url LIKE '%sunpass%'\n       OR p.url LIKE '%fastrak%' OR p.url LIKE '%ipass%')\n  AND p.access_time >= DATEADD(day, -7, GETDATE())\nORDER BY p.access_time DESC"
     },

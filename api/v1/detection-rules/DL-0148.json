@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T04:52:56.986060+00:00",
+    "generated_at": "2026-03-28T05:01:14.555288+00:00",
     "total": 1
   },
   "data": {
@@ -39,6 +39,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Rockstar 2FA / FlowerStorm Detection\n// Matches hardcoded AppId and WebView/3.0 User-Agent\n#repo=\"azure_signinlogs\"\nAppId=\"72782ba9-4490-4f03-8d82-562370ea3566\"\nUserAgent=\"*WebView/3.0*\"\n| select([@timestamp, UserPrincipalName, IPAddress, UserAgent,\n          AppId, ResultType, RiskLevelDuringSignIn,\n          Location, ConditionalAccessStatus])\n| sort(@timestamp, order=desc)",
       "kql": "// KQL: Rockstar 2FA / FlowerStorm Detection\n// Matches hardcoded AppId and WebView/3.0 User-Agent\nSigninLogs\n| where TimeGenerated > ago(7d)\n| where AppId == \"72782ba9-4490-4f03-8d82-562370ea3566\"\n| where UserAgent contains \"WebView/3.0\"\n| project TimeGenerated, UserPrincipalName, IPAddress, UserAgent,\n          AppId, ResultType, RiskLevelDuringSignIn,\n          Location, ConditionalAccessStatus",
       "splunk": "`comment(\"Splunk SPL for Rockstar 2FA / FlowerStorm Detection\")`\n`comment(\"High-fidelity match on hardcoded AppId + WebView/3.0 User-Agent\")`\nindex=azure sourcetype=azure:aad:signin\n  AppId=\"72782ba9-4490-4f03-8d82-562370ea3566\"\n  UserAgent=\"*WebView/3.0*\"\n| table _time, UserPrincipalName, IPAddress, UserAgent,\n        AppId, ResultType, RiskLevelDuringSignIn, Location"
     },

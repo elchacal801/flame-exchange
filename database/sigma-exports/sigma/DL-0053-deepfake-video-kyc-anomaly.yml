@@ -1,27 +1,28 @@
 title: Deepfake Anomalies in Video KYC Session
 id: 5c37b4de-19e8-483a-b781-57d2e0d77be8
 status: experimental
-description: >
-  Detects anomalies during video KYC (Know Your Customer) sessions that may indicate
-  the use of deepfake technology. Indicators include irregular frame rates suggesting
-  real-time face-swapping, inconsistent lighting between face and background, lip-sync
-  desynchronization, unnatural eye-blink patterns, and face-boundary artifacts.
+description: 'Detects anomalies during video KYC (Know Your Customer) sessions that may indicate the use of deepfake technology.
+  Indicators include irregular frame rates suggesting real-time face-swapping, inconsistent lighting between face and background,
+  lip-sync desynchronization, unnatural eye-blink patterns, and face-boundary artifacts.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://pages.nist.gov/frvt/html/frvt_morph.html
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://pages.nist.gov/frvt/html/frvt_morph.html
 threat_paths:
-  - TP-0018
+- TP-0018
 cfpf_phase: P2
 fraud_types:
-  - deepfake-fraud
-  - impersonation
+- deepfake-fraud
+- impersonation
 logsource:
   product: banking
   service: video_kyc
 detection:
   selection:
-    event_type: 'video_kyc_session'
-    session_status: 'in_progress'
+    event_type: video_kyc_session
+    session_status: in_progress
   filter_frame_anomaly:
     frame_rate_variance|gt: 8.0
   filter_lipsync:
@@ -31,12 +32,25 @@ detection:
   filter_lighting:
     face_background_lighting_delta|gt: 40
   condition: selection and (filter_frame_anomaly or filter_lipsync or filter_blink or filter_lighting)
+data_sources:
+  native_fields:
+  - event_type
+  - session_status
+  enrichment_required:
+  - field: blink_rate_per_minute
+    source: Video analysis enrichment (blink detection model)
+  - field: face_background_lighting_delta
+    source: Video analysis enrichment (lighting consistency analysis)
+  - field: frame_rate_variance
+    source: Video analysis enrichment (frame rate anomaly detection)
+  - field: lip_sync_offset_ms
+    source: Video analysis enrichment (lip-sync analysis model)
 falsepositives:
-  - Poor internet connection causing frame drops and variable frame rates
-  - Unusual ambient lighting conditions in the caller's environment
-  - Customer wearing heavy makeup or glasses affecting facial analysis
+- Poor internet connection causing frame drops and variable frame rates
+- Unusual ambient lighting conditions in the caller's environment
+- Customer wearing heavy makeup or glasses affecting facial analysis
 level: high
 tags:
-  - cfpf.phase2.targeting
-  - attack.t1656
-  - flame.deepfake
+- cfpf.phase2.targeting
+- attack.t1656
+- flame.deepfake

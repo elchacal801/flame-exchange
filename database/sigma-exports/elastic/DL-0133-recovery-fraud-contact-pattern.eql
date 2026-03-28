@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+transaction_type:(WIRE_OUT OR ACH_OUT OR CRYPTO_TRANSFER)

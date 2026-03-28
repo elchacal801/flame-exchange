@@ -2,15 +2,15 @@
   "summary": {
     "rules_audited": 150,
     "rules_with_issues": 25,
-    "total_issues": 63,
+    "total_issues": 72,
     "fail_count": 0,
-    "warn_count": 55,
+    "warn_count": 64,
     "info_count": 8,
     "by_check": {
-      "field_consistency": 51,
+      "field_consistency": 57,
       "spl_quality": 8,
       "stub_detection": 1,
-      "threshold_consistency": 1,
+      "threshold_consistency": 4,
       "spl_syntax": 1,
       "kql_syntax": 1
     }
@@ -19,8 +19,8 @@
     {
       "check": "field_consistency",
       "severity": "warn",
-      "lang": "logscale",
-      "message": "data_sources fields not found in logscale query: ['final_destination_domain_age_days', 'redirect_chain_length', 'redirect_chain_tds_fingerprint', 'url_path', 'url_query']",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['final_destination_domain_age_days', 'redirect_chain_length', 'redirect_chain_tds_fingerprint', 'url_path', 'url_query']",
       "rule": "DL-0122"
     },
     {
@@ -33,12 +33,6 @@
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['count', 'groupby', 'timeframe']",
-      "rule": "DL-0125"
-    },
-    {
-      "check": "field_consistency",
-      "severity": "warn",
       "lang": "splunk",
       "message": "data_sources fields not found in splunk query: ['dest_domain', 'dest_domain_age_days', 'session_id', 'src_ip']",
       "rule": "DL-0127"
@@ -46,9 +40,16 @@
     {
       "check": "field_consistency",
       "severity": "warn",
-      "lang": "logscale",
-      "message": "data_sources fields not found in logscale query: ['dest_domain', 'dest_domain_age_days', 'http_status', 'session_id', 'src_ip', 'url_query']",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['dest_domain', 'dest_domain_age_days', 'http_status', 'session_id', 'src_ip', 'url_query']",
       "rule": "DL-0127"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['card_hash', 'merchant_category_code', 'merchant_chargeback_ratio', 'merchant_descriptor', 'merchant_id', 'merchant_registration_age_days']",
+      "rule": "DL-0128"
     },
     {
       "check": "field_consistency",
@@ -67,28 +68,30 @@
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['days_after_initial', 'same_card_hash', 'same_merchant_group']",
-      "rule": "DL-0128"
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['app_name', 'app_permission', 'app_permissions', 'in_app_purchase_frequency', 'network_traffic_pattern', 'push_notification_permission_change', 'push_notification_rate']",
+      "rule": "DL-0129"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
       "lang": "splunk",
-      "message": "data_sources fields not found in splunk query: ['app_name', 'app_permissions', 'in_app_purchase_frequency', 'network_traffic_pattern', 'push_notification_rate']",
+      "message": "data_sources fields not found in splunk query: ['app_name', 'app_permission', 'app_permissions', 'in_app_purchase_frequency', 'network_traffic_pattern', 'push_notification_permission_change', 'push_notification_rate']",
       "rule": "DL-0129"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
       "lang": "sql",
-      "message": "data_sources fields not found in sql query: ['app_name', 'app_permissions', 'in_app_purchase_amount', 'in_app_purchase_frequency', 'network_traffic_pattern', 'push_notification_rate']",
+      "message": "data_sources fields not found in sql query: ['app_name', 'app_permission', 'app_permissions', 'in_app_purchase_amount', 'in_app_purchase_frequency', 'network_traffic_pattern', 'push_notification_permission_change', 'push_notification_rate']",
       "rule": "DL-0129"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['app_permission', 'browser_push_notification_rate_per_day', 'data_exfil_pattern', 'inbound_proxy_connections', 'outbound_connections_to_unknown_ips', 'push_notification_permission_change', 'time_from_install_to_purchase_hours']",
-      "rule": "DL-0129"
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['beneficiary_id', 'billed_amount', 'claim_date', 'enrollment_effective_date', 'hcpcs_code', 'provider_address_zip', 'provider_npi']",
+      "rule": "DL-0130"
     },
     {
       "check": "field_consistency",
@@ -105,16 +108,17 @@
       "rule": "DL-0130"
     },
     {
-      "check": "field_consistency",
-      "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['claims_per_day', 'days_to_first_claim', 'enrollment_age_days', 'total_billed_amount']",
-      "rule": "DL-0130"
-    },
-    {
       "check": "spl_quality",
       "severity": "info",
       "message": "SPL uses join command \u2014 consider stats-based approach for better performance",
       "rule": "DL-0130"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['beneficiary_id', 'billed_amount', 'claim_date', 'estimated_procedure_minutes', 'hcpcs_code', 'provider_npi', 'service_date']",
+      "rule": "DL-0131"
     },
     {
       "check": "field_consistency",
@@ -131,16 +135,17 @@
       "rule": "DL-0131"
     },
     {
-      "check": "field_consistency",
-      "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['total_claims', 'total_procedure_minutes_per_day', 'unique_hcpcs_ratio']",
-      "rule": "DL-0131"
-    },
-    {
       "check": "spl_quality",
       "severity": "info",
       "message": "SPL uses join command \u2014 consider stats-based approach for better performance",
       "rule": "DL-0131"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['beneficiary_date_of_death', 'beneficiary_id', 'billed_amount', 'claim_service_date', 'practice_address', 'provider_address_zip', 'provider_npi']",
+      "rule": "DL-0132"
     },
     {
       "check": "field_consistency",
@@ -157,12 +162,6 @@
       "rule": "DL-0132"
     },
     {
-      "check": "field_consistency",
-      "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['avg_billing_per_provider', 'claim_service_date_after_status_change', 'providers_per_zip']",
-      "rule": "DL-0132"
-    },
-    {
       "check": "spl_quality",
       "severity": "info",
       "message": "SPL uses join command \u2014 consider stats-based approach for better performance",
@@ -171,8 +170,8 @@
     {
       "check": "field_consistency",
       "severity": "warn",
-      "lang": "logscale",
-      "message": "data_sources fields not found in logscale query: ['customer_id', 'recipient_account', 'transaction_date', 'transaction_type']",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['customer_id', 'recipient_account', 'transaction_date', 'transaction_type']",
       "rule": "DL-0133"
     },
     {
@@ -198,8 +197,8 @@
     {
       "check": "field_consistency",
       "severity": "warn",
-      "lang": "logscale",
-      "message": "data_sources fields not found in logscale query: ['call_duration', 'call_origin_geography', 'caller_id_verification_status', 'destination_number', 'source_number']",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['call_duration', 'call_origin_geography', 'caller_id_verification_status', 'destination_number', 'source_number']",
       "rule": "DL-0134"
     },
     {
@@ -208,6 +207,13 @@
       "lang": "sigma",
       "message": "data_sources fields not found in sigma query: ['call_direction', 'call_duration', 'call_origin_geography', 'caller_id_verification_status', 'destination_number', 'source_number']",
       "rule": "DL-0134"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'credit_limit', 'credit_utilization_pct', 'monthly_payment_amount', 'transaction_date']",
+      "rule": "DL-0135"
     },
     {
       "check": "field_consistency",
@@ -232,6 +238,13 @@
     {
       "check": "field_consistency",
       "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['accident_id', 'claim_amount', 'claim_date', 'claim_id', 'claimant_address', 'claimant_name', 'legal_representative', 'medical_provider', 'repair_shop']",
+      "rule": "DL-0136"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
       "lang": "splunk",
       "message": "data_sources fields not found in splunk query: ['accident_id', 'claim_amount', 'claim_date', 'claim_id', 'claimant_address', 'claimant_name']",
       "rule": "DL-0136"
@@ -240,20 +253,34 @@
       "check": "field_consistency",
       "severity": "warn",
       "lang": "sql",
-      "message": "data_sources fields not found in sql query: ['accident_id', 'claim_amount', 'claim_date', 'claim_id', 'claimant_address', 'claimant_name', 'legal_representative', 'medical_provider', 'repair_shop']",
+      "message": "data_sources fields not found in sql query: ['accident_id', 'claim_amount', 'claim_date', 'claim_id', 'claim_type', 'claimant_address', 'claimant_name', 'legal_representative', 'medical_provider', 'repair_shop']",
       "rule": "DL-0136"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['claim_type']",
-      "rule": "DL-0136"
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['AppId', 'IPAddress', 'UserAgent', 'UserPrincipalName']",
+      "rule": "DL-0137"
+    },
+    {
+      "check": "threshold_consistency",
+      "severity": "warn",
+      "message": "Threshold mismatch between cql and splunk: cql=[300000.0, 14400000.0], splunk=[0.083, 4.0]",
+      "rule": "DL-0137"
     },
     {
       "check": "spl_quality",
       "severity": "info",
       "message": "SPL uses join command \u2014 consider stats-based approach for better performance",
       "rule": "DL-0137"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['ClientIP', 'IPAddress', 'Parameters', 'UserId', 'UserPrincipalName']",
+      "rule": "DL-0138"
     },
     {
       "check": "spl_quality",
@@ -264,27 +291,35 @@
     {
       "check": "field_consistency",
       "severity": "warn",
-      "lang": "python",
-      "message": "data_sources fields not found in python query: ['body_text', 'message_id', 'recipient', 'sender', 'subject']",
-      "rule": "DL-0139"
-    },
-    {
-      "check": "field_consistency",
-      "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['content_type']",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['body_text', 'message_id', 'recipient', 'sender', 'subject']",
       "rule": "DL-0139"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
       "lang": "python",
-      "message": "data_sources fields not found in python query: ['body_text', 'channel', 'message_id', 'recipient', 'sender']",
+      "message": "data_sources fields not found in python query: ['body_text', 'content_type', 'message_id', 'recipient', 'sender', 'subject']",
+      "rule": "DL-0139"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['body_text', 'channel', 'message_id', 'recipient', 'sender']",
       "rule": "DL-0140"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['content_type']",
+      "lang": "python",
+      "message": "data_sources fields not found in python query: ['body_text', 'channel', 'content_type', 'message_id', 'recipient', 'sender']",
+      "rule": "DL-0140"
+    },
+    {
+      "check": "threshold_consistency",
+      "severity": "warn",
+      "message": "Threshold mismatch between cql and python: cql=[0.7, 3.0], python=[0.5]",
       "rule": "DL-0140"
     },
     {
@@ -296,21 +331,22 @@
     {
       "check": "field_consistency",
       "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['api_type', 'call_forwarding_status', 'device_match_status', 'forwarding_destination', 'number_verification_result', 'phone_number', 'sim_swap_check_result', 'sim_swap_timestamp']",
+      "rule": "DL-0141"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
       "lang": "splunk",
-      "message": "data_sources fields not found in splunk query: ['call_forwarding_status', 'device_match_status', 'forwarding_destination', 'number_verification_result', 'sim_swap_check_result', 'sim_swap_timestamp']",
+      "message": "data_sources fields not found in splunk query: ['api_type', 'call_forwarding_status', 'device_match_status', 'forwarding_destination', 'number_verification_result', 'sim_swap_check_result', 'sim_swap_timestamp']",
       "rule": "DL-0141"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
       "lang": "sql",
-      "message": "data_sources fields not found in sql query: ['call_forwarding_status', 'device_match_status', 'forwarding_destination', 'number_verification_result', 'sim_swap_check_result', 'sim_swap_timestamp']",
-      "rule": "DL-0141"
-    },
-    {
-      "check": "field_consistency",
-      "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['api_type']",
+      "message": "data_sources fields not found in sql query: ['api_type', 'call_forwarding_status', 'device_match_status', 'forwarding_destination', 'number_verification_result', 'sim_swap_check_result', 'sim_swap_timestamp']",
       "rule": "DL-0141"
     },
     {
@@ -322,55 +358,71 @@
     {
       "check": "field_consistency",
       "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['contract_bytecode_flags', 'holder_distribution', 'liquidity_pool_address', 'liquidity_removal_amount', 'token_address']",
+      "rule": "DL-0142"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
       "lang": "python",
-      "message": "data_sources fields not found in python query: ['contract_bytecode_flags', 'holder_distribution', 'liquidity_pool_address', 'liquidity_removal_amount', 'liquidity_removal_pct', 'token_address']",
+      "message": "data_sources fields not found in python query: ['contract_bytecode_flags', 'event_type', 'holder_distribution', 'liquidity_pool_address', 'liquidity_removal_amount', 'liquidity_removal_pct', 'token_address']",
       "rule": "DL-0142"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
       "lang": "splunk",
-      "message": "data_sources fields not found in splunk query: ['contract_bytecode_flags', 'holder_distribution', 'liquidity_pool_address', 'liquidity_removal_amount']",
+      "message": "data_sources fields not found in splunk query: ['contract_bytecode_flags', 'event_type', 'holder_distribution', 'liquidity_pool_address', 'liquidity_removal_amount']",
       "rule": "DL-0142"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['event_type']",
-      "rule": "DL-0142"
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['company_name', 'job_title', 'location', 'posting_date', 'posting_id', 'posting_type', 'required_experience', 'salary_range']",
+      "rule": "DL-0143"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
       "lang": "sql",
-      "message": "data_sources fields not found in sql query: ['company_name', 'job_title', 'posting_date', 'posting_id', 'required_experience', 'salary_range']",
+      "message": "data_sources fields not found in sql query: ['company_name', 'job_title', 'posting_date', 'posting_id', 'posting_type', 'required_experience', 'salary_range']",
+      "rule": "DL-0143"
+    },
+    {
+      "check": "threshold_consistency",
+      "severity": "warn",
+      "message": "Threshold mismatch between cql and sql: cql=[92.0], sql=[3.0, 10.0]",
       "rule": "DL-0143"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['posting_type']",
-      "rule": "DL-0143"
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['card_number', 'device_fingerprint', 'endpoint_type', 'phone_number', 'request_timestamp', 'response_status', 'source_ip', 'user_agent']",
+      "rule": "DL-0144"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
       "lang": "splunk",
-      "message": "data_sources fields not found in splunk query: ['card_number', 'device_fingerprint', 'phone_number', 'request_timestamp', 'response_status', 'user_agent']",
+      "message": "data_sources fields not found in splunk query: ['card_number', 'device_fingerprint', 'endpoint_type', 'phone_number', 'request_timestamp', 'response_status', 'user_agent']",
       "rule": "DL-0144"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
       "lang": "sql",
-      "message": "data_sources fields not found in sql query: ['card_number', 'device_fingerprint', 'phone_number', 'request_timestamp', 'response_status', 'user_agent']",
+      "message": "data_sources fields not found in sql query: ['card_number', 'device_fingerprint', 'endpoint_type', 'phone_number', 'request_timestamp', 'response_status', 'user_agent']",
       "rule": "DL-0144"
     },
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['endpoint_type']",
-      "rule": "DL-0144"
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['customer_id', 'destination_card', 'source_card', 'source_ip', 'transfer_amount', 'transfer_timestamp']",
+      "rule": "DL-0145"
     },
     {
       "check": "field_consistency",
@@ -389,8 +441,9 @@
     {
       "check": "field_consistency",
       "severity": "warn",
-      "message": "Detection block fields not in data_sources: ['transaction_type']",
-      "rule": "DL-0145"
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['AppId', 'AuthenticationRequirement', 'IPAddress', 'RiskLevelDuringSignIn', 'SessionId', 'UserAgent', 'UserPrincipalName']",
+      "rule": "DL-0146"
     },
     {
       "check": "field_consistency",
@@ -407,11 +460,32 @@
       "rule": "DL-0146"
     },
     {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['CorrelationId', 'IPAddress', 'UserAgent', 'UserPrincipalName']",
+      "rule": "DL-0147"
+    },
+    {
       "check": "spl_syntax",
       "severity": "warn",
       "lang": "splunk",
       "message": "SPL 'search' command after transforming command \u2014 may not work as expected",
       "rule": "DL-0147"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['IPAddress', 'Location', 'ResultType', 'RiskLevelDuringSignIn', 'UserPrincipalName']",
+      "rule": "DL-0148"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['destination_ip', 'domain', 'referrer', 'source_ip', 'tls_sni', 'user_agent']",
+      "rule": "DL-0149"
     },
     {
       "check": "field_consistency",

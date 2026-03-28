@@ -43,3 +43,9 @@ jobs:
           echo "$CHANGED_FILES" | tr ' ' '\n' | while IFS= read -r file; do
             [ -n "$file" ] && python scripts/validate_submission.py "$file"
           done
+
+      - name: Validate detection rules (CI)
+        run: python scripts/validate_rules.py
+
+      - name: Audit detection rule query content
+        run: python scripts/audit_queries.py

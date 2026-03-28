@@ -66,12 +66,43 @@ data_sources:
   - claim_service_date
   - billed_amount
   - provider_type
+  derived_fields:
+  - avg_billing_per_provider
+  - claim_service_date_after_status_change
+  - providers_per_zip
   enrichment_required:
   - field: beneficiary_status
     source: CMS beneficiary eligibility records (death, incarceration, relocation status)
   - field: practice_address_type
     source: USPS Commercial Mail Receiving Agency database cross-reference
 queries:
+  cql: |-
+    // CrowdStrike CQL for Ghost Patient Claims Detection
+    // Identifies claims submitted for deceased or incarcerated beneficiaries
+    | match(file="beneficiary_eligibility.csv", field=beneficiary_id, include=[beneficiary_status, status_effective_date])
+    | beneficiary_status="deceased" OR beneficiary_status="incarcerated"
+    | filter(service_date > status_effective_date)
+    | groupBy(provider_npi, function=[
+        count(as=ghost_claims),
+        sum(billed_amount, as=ghost_billed),
+        count(field=beneficiary_id, distinct=true, as=ghost_beneficiaries),
+        collect([beneficiary_status])
+      ])
+    | ghost_claims > 5
+    | sort(ghost_billed, order=desc)
+
+    // CrowdStrike CQL for Geographic Provider Clustering Detection
+    // Identifies ZIP codes with anomalous provider density and billing
+    // provider_type="hospice" OR provider_type="home_health" OR provider_type="dme" OR provider_type="aba_therapy"
+    // | groupBy([provider_zip, provider_type], function=[
+    //     count(field=provider_npi, distinct=true, as=provider_count),
+    //     sum(billed_amount, as=total_zip_billed),
+    //     collect([provider_name])
+    //   ])
+    // | provider_count >= 10
+    // | avg_billing_per_provider := round(total_zip_billed / provider_count * 100) / 100
+    // | avg_billing_per_provider > 500000
+    // | sort(provider_count, order=desc)
   splunk: |-
     `comment("Splunk SPL for Ghost Patient Claims Detection")`
     `comment("Identifies claims submitted for deceased or incarcerated beneficiaries")`

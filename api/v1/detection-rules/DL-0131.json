@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T04:52:56.893747+00:00",
+    "generated_at": "2026-03-28T05:01:14.462169+00:00",
     "total": 1
   },
   "data": {
@@ -38,6 +38,11 @@
         "billed_amount",
         "beneficiary_id"
       ],
+      "derived_fields": [
+        "total_claims",
+        "total_procedure_minutes_per_day",
+        "unique_hcpcs_ratio"
+      ],
       "enrichment_required": [
         {
           "field": "estimated_procedure_minutes",
@@ -50,6 +55,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Single-Code Billing Concentration Detection\n// Flags providers where one HCPCS code exceeds 80% of total claims\n| groupBy(provider_npi, function=[\n    count(as=total_claims),\n    sum(billed_amount, as=total_billed),\n    count(field=beneficiary_id, distinct=true, as=unique_beneficiaries),\n    count(field=hcpcs_code, distinct=true, as=unique_codes)\n  ])\n| total_claims >= 500\n| code_diversity := round(unique_codes / total_claims * 10000) / 10000\n| code_diversity < 0.05\n| alert_type := \"SINGLE_CODE_CONCENTRATION\"\n| sort(total_billed, order=desc)\n\n// CrowdStrike CQL for Impossible Day Billing Detection\n// Flags providers billing more than 24 hours of procedures per day\n// | match(file=\"hcpcs_time_estimates.csv\", field=hcpcs_code, include=[estimated_minutes])\n// | groupBy([provider_npi, service_date], function=[\n//     sum(estimated_minutes, as=total_minutes),\n//     count(as=claim_count),\n//     count(field=beneficiary_id, distinct=true, as=patients_per_day),\n//     sum(billed_amount, as=daily_billed)\n//   ])\n// | total_minutes > 1440\n// | hours_billed := round(total_minutes / 60 * 10) / 10\n// | alert_type := \"IMPOSSIBLE_DAY\"\n// | sort(total_minutes, order=desc)",
       "splunk": "`comment(\"Splunk SPL for Single-Code Billing Concentration Detection\")`\n`comment(\"Flags providers where one HCPCS code exceeds 80% of total claims\")`\nindex=medicare_claims sourcetype=cms_claims\n| stats\n    count AS total_claims\n    sum(billed_amount) AS total_billed\n    dc(beneficiary_id) AS unique_beneficiaries\n    dc(hcpcs_code) AS unique_codes\n  by provider_npi\n| where total_claims >= 500\n| eval code_diversity=round(unique_codes/total_claims, 4)\n| where code_diversity < 0.05\n| join type=inner max=0 provider_npi [search index=medicare_claims sourcetype=cms_claims\n  | stats count AS code_count by provider_npi, hcpcs_code\n  | eventstats sum(code_count) AS provider_total by provider_npi\n  | eval code_pct=round(code_count/provider_total*100, 1)\n  | where code_pct > 80\n  | fields provider_npi, hcpcs_code, code_pct]\n| sort -total_billed\n| eval alert_type=\"SINGLE_CODE_CONCENTRATION\"\n\n`comment(\"--- Detection 2: Impossible Day Billing ---\")`\n`comment(\"Flags providers billing more than 24 hours of procedures per day\")`\nindex=medicare_claims sourcetype=cms_claims\n| lookup hcpcs_time_estimates hcpcs_code OUTPUT estimated_minutes\n| stats\n    sum(estimated_minutes) AS total_minutes\n    count AS claim_count\n    dc(beneficiary_id) AS patients_per_day\n    sum(billed_amount) AS daily_billed\n  by provider_npi, service_date\n| where total_minutes > 1440\n| eval hours_billed=round(total_minutes/60, 1)\n| eval alert_type=\"IMPOSSIBLE_DAY\"\n| sort -total_minutes",
       "sql": "-- SQL for Single-Code Billing Concentration Detection\nWITH provider_code_stats AS (\n  SELECT\n    provider_npi,\n    hcpcs_code,\n    COUNT(*) AS code_claims,\n    SUM(billed_amount) AS code_billed,\n    SUM(COUNT(*)) OVER (PARTITION BY provider_npi) AS total_claims,\n    SUM(SUM(billed_amount)) OVER (PARTITION BY provider_npi) AS total_billed\n  FROM claims\n  WHERE service_date >= CURRENT_DATE - INTERVAL '90 days'\n  GROUP BY provider_npi, hcpcs_code\n)\nSELECT\n  provider_npi,\n  hcpcs_code AS dominant_code,\n  code_claims,\n  total_claims,\n  ROUND(code_claims::numeric / total_claims * 100, 1) AS code_pct,\n  total_billed,\n  'SINGLE_CODE_CONCENTRATION' AS alert_type\nFROM provider_code_stats\nWHERE total_claims >= 500\n  AND ROUND(code_claims::numeric / total_claims * 100, 1) > 80\nORDER BY total_billed DESC;\n\n-- SQL for Impossible Day Billing Detection\nSELECT\n  c.provider_npi,\n  p.provider_name,\n  c.service_date,\n  SUM(h.estimated_minutes) AS total_minutes_billed,\n  ROUND(SUM(h.estimated_minutes) / 60.0, 1) AS hours_billed,\n  COUNT(*) AS claim_count,\n  COUNT(DISTINCT c.beneficiary_id) AS patients,\n  SUM(c.billed_amount) AS daily_billed\nFROM claims c\nJOIN hcpcs_time_estimates h ON c.hcpcs_code = h.hcpcs_code\nJOIN providers p ON c.provider_npi = p.provider_npi\nWHERE c.service_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY c.provider_npi, p.provider_name, c.service_date\nHAVING SUM(h.estimated_minutes) > 1440\nORDER BY total_minutes_billed DESC;"
     },

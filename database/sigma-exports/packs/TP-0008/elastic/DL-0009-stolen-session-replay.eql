@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:session_activity AND _exists_:session_token) AND (NOT (geo_country:%original_session_country% AND device_fingerprint:%original_device_fingerprint%))

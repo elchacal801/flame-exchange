@@ -277,7 +277,10 @@ def check_field_consistency(dl_id, rule):
 
     # Check detection block fields vs ALL data_sources fields (native + enrichment + derived)
     if det_fields and ds_all_fields:
-        det_not_in_ds = det_fields - ds_all_fields - {"type", "description"}
+        # Exclude Sigma syntax keywords that appear as detection block keys
+        sigma_keywords = {"type", "description", "count", "groupby", "timeframe",
+                          "near", "condition", "correlation"}
+        det_not_in_ds = det_fields - ds_all_fields - sigma_keywords
         if det_not_in_ds:
             issues.append({
                 "check": "field_consistency",

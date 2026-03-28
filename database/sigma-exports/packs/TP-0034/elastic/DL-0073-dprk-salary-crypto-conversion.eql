@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(transaction_type:ACH_IN AND transaction_category:payroll) AND ((outbound_type:(*crypto_exchange* OR *p2p_crypto* OR *wire_to_exchange*)) AND time_since_deposit_hours:<=48)

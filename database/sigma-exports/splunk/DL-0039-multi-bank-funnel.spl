@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type IN ("WIRE_CREDIT", "ACH_CREDIT") originating_bank_external=true

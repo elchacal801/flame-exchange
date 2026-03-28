@@ -1,40 +1,63 @@
 title: Instant Payment Velocity Spike Above 30-Day Baseline
 id: a6b63f49-b57c-44a8-8584-59cacee0ff2c
 status: experimental
-description: >
-  Detects a sudden spike in instant payment frequency that significantly exceeds the
-  account's established 30-day baseline. A spike is defined as the current day's
-  instant payment count exceeding 3 standard deviations above the rolling 30-day
-  mean, indicating potential account compromise or mule activity where the account
-  is being drained rapidly.
+description: 'Detects a sudden spike in instant payment frequency that significantly exceeds the account''s established 30-day
+  baseline. A spike is defined as the current day''s instant payment count exceeding 3 standard deviations above the rolling
+  30-day mean, indicating potential account compromise or mule activity where the account is being drained rapidly.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.fincen.gov/sites/default/files/advisory/2019-10-11/FinCEN%20Advisory%20Convertible%20Virtual%20Currency%20FINAL%20508.pdf
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.fincen.gov/sites/default/files/advisory/2019-10-11/FinCEN%20Advisory%20Convertible%20Virtual%20Currency%20FINAL%20508.pdf
 threat_paths:
-  - TP-0024
-  - TP-0012
+- TP-0024
+- TP-0012
 cfpf_phase: P4
 fraud_types:
-  - authorized-push-payment
-  - wire-fraud
+- authorized-push-payment
+- wire-fraud
 logsource:
   product: banking
   service: transaction_monitoring
 detection:
   selection:
-    event_type: 'instant_payment_initiated'
+    event_type: instant_payment_initiated
     payment_rail|contains:
-      - 'ZELLE'
-      - 'FEDNOW'
-      - 'RTP'
-      - 'ACH_SAMEDAY'
-  condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)
+    - ZELLE
+    - FEDNOW
+    - RTP
+    - ACH_SAMEDAY
+  condition: selection
   timeframe: 1d
+data_sources:
+  native_fields:
+  - event_type
+  - payment_rail
+queries:
+  cql: |-
+    // CrowdStrike CQL for Instant Payment Velocity Spike Above 30-Day Baseline
+    // Repository: flame-banking-transaction-monitoring
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)
+    event_type="instant_payment_initiated"
+    (payment_rail="ZELLE" OR payment_rail="FEDNOW" OR payment_rail="RTP" OR payment_rail="ACH_SAMEDAY")
+    // Aggregation logic from original condition:
+    // selection | count() by account_id | compare(op=gt, period=30d, stdev=3)
+  splunk: |-
+    `comment("Splunk SPL for Instant Payment Velocity Spike Above 30-Day Baseline")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)")`
+    index=flame_banking sourcetype=flame:transaction_monitoring event_type="instant_payment_initiated" (payment_rail="ZELLE" OR payment_rail="FEDNOW" OR payment_rail="RTP" OR payment_rail="ACH_SAMEDAY")
+    `comment("Aggregation logic from: selection | count() by account_id | compare(op=gt, period=30d, stdev=3)")`
+    | stats count as event_count by account_id
+    | where event_count > 1
 falsepositives:
-  - Small business owner processing seasonal surge in vendor payments
-  - Customer making multiple legitimate payments on a move-in day (deposits, utilities, services)
+- Small business owner processing seasonal surge in vendor payments
+- Customer making multiple legitimate payments on a move-in day (deposits, utilities, services)
 level: high
 tags:
-  - cfpf.phase4.execution
-  - attack.t1565
-  - flame.a2a
+- cfpf.phase4.execution
+- attack.t1565
+- flame.a2a

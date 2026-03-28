@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+event_type:WIRE_INITIATION AND transaction_amount:>=1000 AND transaction_amount_is_round:true

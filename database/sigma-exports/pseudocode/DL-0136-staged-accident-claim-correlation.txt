@@ -1,0 +1,53 @@
+# ======================================================================
+# FLAME Detection Rule: Staged Accident Claim Correlation — Shared Professional Enabler Network Detection
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0066
+#
+# Description:
+#   Detects potential organized crash-for-cash insurance fraud rings by
+#   identifying claims from multiple ostensibly unrelated accidents that
+#   share common professional enablers (same medical provider, legal
+#   representative, or repair shop). Organized insurance fraud rings rely
+#   on networks of corrupt professionals who process claims across multiple
+#   staged incidents. The shared professional enabler network is the most
+#   durable and detectable element of the ring, as replacing trusted
+#   corrupt professionals is harder than recruiting new participants.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: insurance
+#   service: claims_management
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     claim_type: vehicle_accident
+#   timeframe: 365d
+#   condition: 'count(distinct accident_id) by shared_provider >= 3
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate high-volume medical providers or repair shops in areas with high accident rates
+#   - Law firms specializing in personal injury claims handling multiple genuine cases
+#   - Preferred provider networks directed by insurance companies
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

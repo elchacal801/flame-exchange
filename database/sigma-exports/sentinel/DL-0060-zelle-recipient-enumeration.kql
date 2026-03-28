@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+event_type =~ "zelle_recipient_lookup" and lookup_result =~ "not_found"

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T04:52:56.944528+00:00",
+    "generated_at": "2026-03-28T05:01:14.515129+00:00",
     "total": 1
   },
   "data": {
@@ -30,6 +30,7 @@
     "native_query_required": true,
     "data_sources": {
       "native_fields": [
+        "content_type",
         "message_id",
         "channel",
         "sender",
@@ -48,6 +49,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Cialdini Persuasion Principle Scoring\n// NLP/SBERT scoring is performed externally; this query filters scored results\n// Assumes principle scores are pre-computed and ingested as enriched communication events\n#repo=\"communication_analysis\" #event_type=\"nlp_scoring\"\ncontent_type=\"email\" OR content_type=\"sms\" OR content_type=\"chat\"\n| cialdini_principles_detected >= 3\n| max_principle_score > 0.7\n| select([@timestamp, channel, sender, recipient,\n          reciprocity_score, consistency_score, social_proof_score,\n          authority_score, liking_score, scarcity_score,\n          cialdini_principles_detected, max_principle_score])\n| sort(@timestamp, order=desc)",
       "python": "# Cialdini Persuasion Principle Scoring Pipeline\n# Each principle scored 0.0-1.0 based on linguistic markers\n\nPRINCIPLE_MARKERS = {\n    'reciprocity': ['gift', 'free', 'bonus', 'reward', 'complimentary',\n                    'as a thank you', 'in return'],\n    'consistency': ['you previously agreed', 'as you committed',\n                   'continuing your', 'as always', 'you already'],\n    'social_proof': ['everyone is', 'thousands of people', 'most popular',\n                    'trending', 'others like you', 'community'],\n    'authority': ['official notice', 'government', 'compliance required',\n                 'legal obligation', 'regulatory', 'certified', 'verified'],\n    'liking': ['dear friend', 'I care about you', 'we have so much in common',\n              'I trust you', 'you are special', 'between us'],\n    'scarcity': ['limited time', 'only X left', 'expires today',\n                'final chance', 'act now', 'once in a lifetime', 'exclusive']\n}\n\ndef score_cialdini_principles(text):\n    scores = {}\n    for principle, markers in PRINCIPLE_MARKERS.items():\n        # Marker count + SBERT semantic similarity to principle exemplars\n        marker_hits = sum(1 for m in markers if m.lower() in text.lower())\n        semantic_sim = sbert_similarity(text, principle_exemplars[principle])\n        scores[principle] = min(1.0, (marker_hits * 0.2) + (semantic_sim * 0.6))\n\n    detected = sum(1 for s in scores.values() if s > 0.5)\n    return scores, detected",
       "splunk": "`comment(\"Splunk SPL for Cialdini Persuasion Scoring\")`\n`comment(\"Requires NLP scoring service via DSDL or API\")`\nindex=communications sourcetype=fraud:communications\n| apply cialdini_scoring_model\n| where cialdini_principles_detected >= 3\n| where max_principle_score > 0.7\n| table _time, channel, sender, recipient,\n        reciprocity_score, consistency_score, social_proof_score,\n        authority_score, liking_score, scarcity_score,\n        cialdini_principles_detected"
     },

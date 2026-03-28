@@ -12,6 +12,7 @@ Detection rules mapped to **Romance Scam to Money Mule Recruitment Pipeline**.
 | DL-0041 | Peer-to-Peer Transfer Chain (Smurfing Pattern) | medium | P5 |
 | DL-0042 | Mule Recruitment Test Deposit Pattern | medium | P5 |
 | DL-0043 | Rapid Fund Layering Through Shell Accounts | high | P5 |
+| DL-0140 | Cialdini Persuasion Principle Scoring in Fraud Communications | medium | P2 |
 
 ## Formats
 

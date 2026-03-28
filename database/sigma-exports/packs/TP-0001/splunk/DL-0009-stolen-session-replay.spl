@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="session_activity" session_token=* NOT (geo_country="%original_session_country%" device_fingerprint="%original_device_fingerprint%")

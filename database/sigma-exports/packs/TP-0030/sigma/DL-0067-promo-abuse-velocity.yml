@@ -1,28 +1,29 @@
 title: Excessive Promotional Code or Coupon Abuse from Related Accounts
 id: 53c373d8-cca1-440f-924f-ba1a986c7b41
 status: experimental
-description: >
-  Detects excessive use of promotional codes, referral bonuses, or coupon offers
-  from accounts that share common attributes such as device fingerprint, IP address,
-  payment method, or shipping address. This pattern indicates promo abuse rings that
-  create multiple accounts to exploit new-customer or referral promotions repeatedly,
-  often using synthetic or stolen identities.
+description: 'Detects excessive use of promotional codes, referral bonuses, or coupon offers from accounts that share common
+  attributes such as device fingerprint, IP address, payment method, or shipping address. This pattern indicates promo abuse
+  rings that create multiple accounts to exploit new-customer or referral promotions repeatedly, often using synthetic or
+  stolen identities.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.chargebacks911.com/promo-abuse/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.chargebacks911.com/promo-abuse/
 threat_paths:
-  - TP-0030
-  - TP-0013
+- TP-0030
+- TP-0013
 cfpf_phase: P4
 fraud_types:
-  - first-party-fraud
-  - identity-theft
+- first-party-fraud
+- identity-theft
 logsource:
   product: ecommerce
   service: payment_gateway
 detection:
   selection:
-    event_type: 'order_placed'
+    event_type: order_placed
     promo_code_applied: true
   filter_device_cluster:
     device_fingerprint_promo_uses_30d|gt: 5
@@ -33,15 +34,26 @@ detection:
   filter_new_account:
     account_age_days|lt: 7
     promo_type|contains:
-      - 'new_customer'
-      - 'referral_bonus'
-      - 'first_order'
+    - new_customer
+    - referral_bonus
+    - first_order
   condition: selection and (filter_device_cluster or filter_ip_cluster or filter_payment_cluster or filter_new_account)
+data_sources:
+  native_fields:
+  - device_fingerprint_promo_uses_30d
+  - event_type
+  - payment_method_hash_promo_uses_30d
+  - promo_code_applied
+  - promo_type
+  - source_ip_promo_uses_30d
+  enrichment_required:
+  - field: account_age_days
+    source: Account analytics enrichment (account opening date lookup)
 falsepositives:
-  - Family members on shared household network legitimately using individual promotions
-  - Corporate office where multiple employees order from same IP using valid individual accounts
+- Family members on shared household network legitimately using individual promotions
+- Corporate office where multiple employees order from same IP using valid individual accounts
 level: medium
 tags:
-  - cfpf.phase4.execution
-  - attack.t1136
-  - flame.ecommerce
+- cfpf.phase4.execution
+- attack.t1136
+- flame.ecommerce

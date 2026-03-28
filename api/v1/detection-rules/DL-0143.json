@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T04:52:56.960287+00:00",
+    "generated_at": "2026-03-28T05:01:14.530972+00:00",
     "total": 1
   },
   "data": {
@@ -26,6 +26,7 @@
     "native_query_required": true,
     "data_sources": {
       "native_fields": [
+        "posting_type",
         "posting_id",
         "company_name",
         "job_title",
@@ -39,6 +40,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Employment Fraud Metadata Feature Detection\n// Primary signal: telecommuting=0 AND company_logo=0 -> 92% fraud probability\n#repo=\"job_platforms\" #event_type=\"job_postings\"\n| case {\n    telecommuting_flag=0 AND has_company_logo=0\n      | fraud_risk_level := \"HIGH\" | fraud_probability := 0.92;\n    has_company_logo=0 AND has_company_profile=0\n      | fraud_risk_level := \"HIGH\" | fraud_probability := 0.85;\n    * | fraud_risk_level := \"REVIEW\" | fraud_probability := 0.50;\n  }\n| fraud_risk_level=\"HIGH\"\n| select([@timestamp, posting_id, company_name, job_title, location,\n          salary_range, fraud_risk_level, fraud_probability,\n          telecommuting_flag, has_company_logo, has_company_profile])\n| sort(fraud_probability, order=desc)",
       "sql": "-- SQL: Employment fraud metadata feature detection\n-- Primary signal: telecommuting=0 AND company_logo=0 → 92% fraud probability\nSELECT\n    posting_id,\n    company_name,\n    job_title,\n    location,\n    salary_range,\n    CASE\n        WHEN telecommuting_flag = 0 AND has_company_logo = 0 THEN 'HIGH'\n        WHEN has_company_logo = 0 AND has_company_profile = 0 THEN 'HIGH'\n        WHEN location IN (SELECT city FROM fraud_concentration_cities\n                          WHERE fake_to_real_ratio > 10) THEN 'MEDIUM'\n        WHEN salary_range / NULLIF(required_experience_years, 0) > 3.0\n             AND has_company_logo = 0 THEN 'MEDIUM'\n        ELSE 'LOW'\n    END AS fraud_risk_level,\n    CASE\n        WHEN telecommuting_flag = 0 AND has_company_logo = 0 THEN 0.92\n        WHEN has_company_logo = 0 AND has_company_profile = 0 THEN 0.85\n        ELSE 0.50\n    END AS fraud_probability\nFROM job_postings\nWHERE posting_date >= DATEADD(day, -7, GETDATE())\n  AND (\n    (telecommuting_flag = 0 AND has_company_logo = 0)\n    OR (has_company_logo = 0 AND has_company_profile = 0)\n    OR location IN (SELECT city FROM fraud_concentration_cities\n                    WHERE fake_to_real_ratio > 10)\n  )\nORDER BY fraud_probability DESC",
       "splunk": "`comment(\"Splunk SPL for Employment Fraud Metadata Feature Detection\")`\nindex=job_platforms sourcetype=job:postings\n| eval fraud_risk = case(\n    telecommuting_flag=0 AND has_company_logo=0, \"HIGH_92pct\",\n    has_company_logo=0 AND has_company_profile=0, \"HIGH_85pct\",\n    1=1, \"REVIEW\"\n  )\n| where fraud_risk IN (\"HIGH_92pct\", \"HIGH_85pct\")\n| table _time, posting_id, company_name, job_title, location,\n        salary_range, fraud_risk, telecommuting_flag,\n        has_company_logo, has_company_profile"
     },

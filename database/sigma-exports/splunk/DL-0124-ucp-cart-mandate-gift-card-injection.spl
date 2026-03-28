@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="cart_mandate_submission" initiated_by="ai_agent" (line_item_type IN ("*gift_card*", "*e_gift_card*", "*digital_gift_card*") display_status="hidden") OR (line_item_type IN ("*gift_card*", "*e_gift_card*", "*digital_gift_card*") recipient_email_matches_user=false) OR (line_item_type IN ("*gift_card*", "*e_gift_card*", "*digital_gift_card*") line_item_added_by="agent_auto" user_intent_contains_gift_card=false)

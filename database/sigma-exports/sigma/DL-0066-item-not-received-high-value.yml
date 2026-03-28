@@ -1,41 +1,49 @@
 title: High-Value Item Not Received Claims Exceeding Threshold
 id: 7a3cda5a-2d65-4c95-bc68-1073db44a108
 status: experimental
-description: >
-  Detects "item not received" (INR) claims filed on high-value orders that exceed a
-  configurable dollar threshold. High-value INR claims are a primary vector for
-  refund fraud, particularly when the delivery confirmation shows successful delivery.
-  Repeated INR claims on expensive items from the same account or device fingerprint
-  are strong indicators of first-party fraud or professional refunding services.
+description: 'Detects "item not received" (INR) claims filed on high-value orders that exceed a configurable dollar threshold.
+  High-value INR claims are a primary vector for refund fraud, particularly when the delivery confirmation shows successful
+  delivery. Repeated INR claims on expensive items from the same account or device fingerprint are strong indicators of first-party
+  fraud or professional refunding services.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.ftc.gov/business-guidance/resources/consumer-sentinel-network-data-book-2023
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.ftc.gov/business-guidance/resources/consumer-sentinel-network-data-book-2023
 threat_paths:
-  - TP-0031
-  - TP-0013
+- TP-0031
+- TP-0013
 cfpf_phase: P4
 fraud_types:
-  - first-party-fraud
-  - refunding-as-a-service
+- first-party-fraud
+- refunding-as-a-service
 logsource:
   product: ecommerce
   service: order_management
 detection:
   selection:
-    event_type: 'dispute_filed'
-    dispute_reason: 'item_not_received'
+    event_type: dispute_filed
+    dispute_reason: item_not_received
   filter_high_value:
     order_total_usd|gte: 500
   filter_delivery_confirmed:
-    carrier_delivery_status: 'delivered'
+    carrier_delivery_status: delivered
   filter_repeat:
     account_inr_claims_90d|gte: 2
   condition: selection and filter_high_value and (filter_delivery_confirmed or filter_repeat)
+data_sources:
+  native_fields:
+  - account_inr_claims_90d
+  - carrier_delivery_status
+  - dispute_reason
+  - event_type
+  - order_total_usd
 falsepositives:
-  - Legitimate porch piracy where delivered package was stolen from doorstep
-  - Carrier misdelivery to wrong address with GPS confirmation error
+- Legitimate porch piracy where delivered package was stolen from doorstep
+- Carrier misdelivery to wrong address with GPS confirmation error
 level: high
 tags:
-  - cfpf.phase4.execution
-  - attack.t1565
-  - flame.ecommerce
+- cfpf.phase4.execution
+- attack.t1565
+- flame.ecommerce

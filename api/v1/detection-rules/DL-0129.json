@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T04:52:56.879374+00:00",
+    "generated_at": "2026-03-28T05:01:14.447670+00:00",
     "total": 1
   },
   "data": {
@@ -62,7 +62,16 @@
         "network_traffic_pattern",
         "push_notification_rate",
         "in_app_purchase_amount",
-        "in_app_purchase_frequency"
+        "in_app_purchase_frequency",
+        "app_permission",
+        "push_notification_permission_change"
+      ],
+      "derived_fields": [
+        "browser_push_notification_rate_per_day",
+        "data_exfil_pattern",
+        "inbound_proxy_connections",
+        "outbound_connections_to_unknown_ips",
+        "time_from_install_to_purchase_hours"
       ],
       "enrichment_required": [
         {
@@ -76,6 +85,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Fake Mobile App Residential Proxy and Subscription Scam Detection\n// Detection 1: Fake VPN acting as residential proxy\napp_category=\"VPN\" OR app_category=\"cleaner\" OR app_category=\"optimizer\" OR app_category=\"spam-blocker\"\n| groupBy([device_id, app_id], function=[\n    count(field=dest_ip, distinct=true, as=unique_dest_ips),\n    sum(bytes_out, as=total_bytes_out),\n    sum(bytes_in, as=total_bytes_in),\n    count(field=src_port, distinct=true, as=unique_src_ports),\n    collect([app_name])\n  ])\n| proxy_ratio := round(total_bytes_in / total_bytes_out * 100) / 100\n| unique_dest_ips > 50 AND proxy_ratio > 2\n| risk := \"residential_proxy_behavior\"\n// Detection 2: Push notification abuse to subscription scam cycle\n// Run separately and union results:\n// push_notification_count_24h >= 50\n// | selfJoinFilter(device_id, where=[\n//     {push_notification_count_24h >= 50},\n//     {app_category=\"spam-blocker\" OR app_category=\"notification-protector\" OR app_category=\"cleaner\"},\n//     {in_app_purchase_amount >= 6.99 AND in_app_purchase_type=\"subscription\"}\n//   ])\n// | risk := \"notification_to_subscription_scam_cycle\"",
       "splunk": "`comment(\"Splunk SPL for Fake Mobile App Residential Proxy and Subscription Scam Detection\")`\n`comment(\"Detects VexTrio-pattern fake apps: residential proxy abuse and notification-to-subscription scam cycle\")`\n\n`comment(\"--- Detection 1: Fake VPN acting as residential proxy ---\")`\nindex=flame_endpoint sourcetype=flame:mobile_mdm app_category IN (\"VPN\", \"cleaner\", \"optimizer\", \"spam-blocker\")\n| stats\n    dc(dest_ip) AS unique_dest_ips\n    sum(bytes_out) AS total_bytes_out\n    sum(bytes_in) AS total_bytes_in\n    dc(src_port) AS unique_src_ports\n    values(app_name) AS app_names\n  by device_id, app_id\n| eval proxy_ratio=round(total_bytes_in/total_bytes_out, 2)\n| where unique_dest_ips > 50 AND proxy_ratio > 2\n| eval risk=\"residential_proxy_behavior\"\n\n`comment(\"--- Detection 2: Push notification abuse to subscription scam cycle ---\")`\nindex=flame_endpoint sourcetype=flame:mobile_mdm\n| eval has_notification_spike=(if(push_notification_count_24h >= 50, 1, 0))\n| eval has_app_install=(if(isnotnull(new_app_install) AND app_category IN (\"spam-blocker\", \"notification-protector\", \"cleaner\"), 1, 0))\n| eval has_subscription=(if(in_app_purchase_amount >= 6.99 AND in_app_purchase_type=\"subscription\", 1, 0))\n| transaction device_id maxspan=72h\n| where has_notification_spike=1 AND has_app_install=1 AND has_subscription=1\n| eval risk=\"notification_to_subscription_scam_cycle\"",
       "sql": "-- SQL for Fake Mobile App Residential Proxy Detection\n-- Identifies apps with proxy-like traffic patterns (high inbound/outbound ratio, many destinations)\nSELECT\n  d.device_id,\n  a.app_name,\n  a.app_publisher,\n  a.app_category,\n  COUNT(DISTINCT nc.dest_ip) AS unique_destinations,\n  SUM(nc.bytes_out) AS total_bytes_out,\n  SUM(nc.bytes_in) AS total_bytes_in,\n  ROUND(SUM(nc.bytes_in)::numeric / NULLIF(SUM(nc.bytes_out), 0), 2) AS proxy_ratio,\n  a.install_date,\n  a.requested_permissions\nFROM device_inventory d\nJOIN installed_apps a ON d.device_id = a.device_id\nJOIN network_connections nc ON d.device_id = nc.device_id AND a.app_id = nc.app_id\nWHERE a.app_category IN ('VPN', 'cleaner', 'optimizer', 'spam-blocker', 'notification-protector')\n  AND nc.connection_date >= CURRENT_DATE - INTERVAL '7 days'\nGROUP BY d.device_id, a.app_name, a.app_publisher, a.app_category,\n         a.install_date, a.requested_permissions\nHAVING COUNT(DISTINCT nc.dest_ip) > 50\n   AND ROUND(SUM(nc.bytes_in)::numeric / NULLIF(SUM(nc.bytes_out), 0), 2) > 2.0\nORDER BY unique_destinations DESC;"
     },

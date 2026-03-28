@@ -47,12 +47,44 @@ data_sources:
   - estimated_procedure_minutes
   - billed_amount
   - beneficiary_id
+  derived_fields:
+  - total_claims
+  - total_procedure_minutes_per_day
+  - unique_hcpcs_ratio
   enrichment_required:
   - field: estimated_procedure_minutes
     source: CMS HCPCS code time estimates (standard procedure duration mapping)
   - field: specialty_peer_mean
     source: CMS provider specialty billing statistics (peer comparison baseline)
 queries:
+  cql: |-
+    // CrowdStrike CQL for Single-Code Billing Concentration Detection
+    // Flags providers where one HCPCS code exceeds 80% of total claims
+    | groupBy(provider_npi, function=[
+        count(as=total_claims),
+        sum(billed_amount, as=total_billed),
+        count(field=beneficiary_id, distinct=true, as=unique_beneficiaries),
+        count(field=hcpcs_code, distinct=true, as=unique_codes)
+      ])
+    | total_claims >= 500
+    | code_diversity := round(unique_codes / total_claims * 10000) / 10000
+    | code_diversity < 0.05
+    | alert_type := "SINGLE_CODE_CONCENTRATION"
+    | sort(total_billed, order=desc)
+
+    // CrowdStrike CQL for Impossible Day Billing Detection
+    // Flags providers billing more than 24 hours of procedures per day
+    // | match(file="hcpcs_time_estimates.csv", field=hcpcs_code, include=[estimated_minutes])
+    // | groupBy([provider_npi, service_date], function=[
+    //     sum(estimated_minutes, as=total_minutes),
+    //     count(as=claim_count),
+    //     count(field=beneficiary_id, distinct=true, as=patients_per_day),
+    //     sum(billed_amount, as=daily_billed)
+    //   ])
+    // | total_minutes > 1440
+    // | hours_billed := round(total_minutes / 60 * 10) / 10
+    // | alert_type := "IMPOSSIBLE_DAY"
+    // | sort(total_minutes, order=desc)
   splunk: |-
     `comment("Splunk SPL for Single-Code Billing Concentration Detection")`
     `comment("Flags providers where one HCPCS code exceeds 80% of total claims")`

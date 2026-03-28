@@ -1,44 +1,73 @@
 title: Split Transfer Chain Detection
 id: f74ea92f-6a23-4c07-9bdb-c1c5a5cc393c
 status: experimental
-description: >
-  Detects when a large inbound amount is split into multiple smaller outbound transfers
-  to different beneficiaries in sequence. This layering technique is used to obscure
-  the origin and destination of fraudulently obtained funds.
+description: 'Detects when a large inbound amount is split into multiple smaller outbound transfers to different beneficiaries
+  in sequence. This layering technique is used to obscure the origin and destination of fraudulently obtained funds.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html
 threat_paths:
-  - TP-0002
-  - TP-0006
-  - TP-0020
+- TP-0002
+- TP-0006
+- TP-0020
 cfpf_phase: P4
 fraud_types:
-  - wire-fraud
-  - payment-diversion
-  - money-mule
+- wire-fraud
+- payment-diversion
+- money-mule
 logsource:
   product: banking
   service: wire_system
 detection:
   selection_large_inbound:
     event_type:
-      - 'WIRE_CREDIT'
-      - 'ACH_CREDIT'
+    - WIRE_CREDIT
+    - ACH_CREDIT
     transaction_amount|gte: 25000
   selection_multiple_outbound:
     event_type:
-      - 'WIRE_INITIATION'
-      - 'ACH_DEBIT'
-      - 'INTERNAL_TRANSFER'
+    - WIRE_INITIATION
+    - ACH_DEBIT
+    - INTERNAL_TRANSFER
     transaction_amount|lt: 10000
   timeframe: 48h
-  condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2
+  condition: selection_large_inbound and selection_multiple_outbound
+data_sources:
+  native_fields:
+  - event_type
+  - transaction_amount
+queries:
+  cql: |-
+    // CrowdStrike CQL for Split Transfer Chain Detection
+    // Repository: flame-banking-wire-system
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2
+    (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT")
+    transaction_amount>=25000
+    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT" OR event_type="INTERNAL_TRANSFER")
+    transaction_amount<10000
+    | groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])
+    | event_count > 2
+  splunk: |-
+    `comment("Splunk SPL for Split Transfer Chain Detection")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2")`
+    index=flame_banking sourcetype=flame:wire_system
+    (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT")
+    transaction_amount>=25000
+    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT" OR event_type="INTERNAL_TRANSFER")
+    transaction_amount<10000
+    | stats dc(beneficiary_id) as unique_beneficiary_id by account_id
+    | where unique_beneficiary_id > 2
 falsepositives:
-  - Businesses receiving large payments and distributing to multiple sub-contractors
-  - Investment accounts rebalancing across multiple fund positions
+- Businesses receiving large payments and distributing to multiple sub-contractors
+- Investment accounts rebalancing across multiple fund positions
 level: high
 tags:
-  - cfpf.phase4.execution
-  - attack.t1657
-  - flame.wire_ach
+- cfpf.phase4.execution
+- attack.t1657
+- flame.wire_ach

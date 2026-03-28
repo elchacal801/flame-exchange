@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T04:52:56.902327+00:00",
+    "generated_at": "2026-03-28T05:01:14.469959+00:00",
     "total": 1
   },
   "data": {
@@ -59,6 +59,11 @@
         "billed_amount",
         "provider_type"
       ],
+      "derived_fields": [
+        "avg_billing_per_provider",
+        "claim_service_date_after_status_change",
+        "providers_per_zip"
+      ],
       "enrichment_required": [
         {
           "field": "beneficiary_status",
@@ -71,6 +76,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Ghost Patient Claims Detection\n// Identifies claims submitted for deceased or incarcerated beneficiaries\n| match(file=\"beneficiary_eligibility.csv\", field=beneficiary_id, include=[beneficiary_status, status_effective_date])\n| beneficiary_status=\"deceased\" OR beneficiary_status=\"incarcerated\"\n| filter(service_date > status_effective_date)\n| groupBy(provider_npi, function=[\n    count(as=ghost_claims),\n    sum(billed_amount, as=ghost_billed),\n    count(field=beneficiary_id, distinct=true, as=ghost_beneficiaries),\n    collect([beneficiary_status])\n  ])\n| ghost_claims > 5\n| sort(ghost_billed, order=desc)\n\n// CrowdStrike CQL for Geographic Provider Clustering Detection\n// Identifies ZIP codes with anomalous provider density and billing\n// provider_type=\"hospice\" OR provider_type=\"home_health\" OR provider_type=\"dme\" OR provider_type=\"aba_therapy\"\n// | groupBy([provider_zip, provider_type], function=[\n//     count(field=provider_npi, distinct=true, as=provider_count),\n//     sum(billed_amount, as=total_zip_billed),\n//     collect([provider_name])\n//   ])\n// | provider_count >= 10\n// | avg_billing_per_provider := round(total_zip_billed / provider_count * 100) / 100\n// | avg_billing_per_provider > 500000\n// | sort(provider_count, order=desc)",
       "splunk": "`comment(\"Splunk SPL for Ghost Patient Claims Detection\")`\n`comment(\"Identifies claims submitted for deceased or incarcerated beneficiaries\")`\nindex=medicare_claims sourcetype=cms_claims\n| join type=inner max=0 beneficiary_id [search index=beneficiary_eligibility\n  | where beneficiary_status IN (\"deceased\", \"incarcerated\")\n  | fields beneficiary_id beneficiary_status status_effective_date]\n| eval claim_date_epoch=strptime(service_date, \"%Y-%m-%d\")\n| eval status_date_epoch=strptime(status_effective_date, \"%Y-%m-%d\")\n| where claim_date_epoch > status_date_epoch\n| stats\n    count AS ghost_claims\n    sum(billed_amount) AS ghost_billed\n    dc(beneficiary_id) AS ghost_beneficiaries\n    values(beneficiary_status) AS status_types\n  by provider_npi\n| where ghost_claims > 5\n| sort -ghost_billed\n\n`comment(\"--- Detection 2: Geographic Provider Clustering ---\")`\n`comment(\"Identifies ZIP codes with anomalous provider density and billing\")`\nindex=pecos_enrollment sourcetype=cms_enrollment\n| stats\n    dc(provider_npi) AS provider_count\n    values(provider_name) AS providers\n  by provider_zip, provider_type\n| where provider_count >= 10\n| join type=inner max=0 provider_zip [search index=medicare_claims sourcetype=cms_claims\n  | stats sum(billed_amount) AS total_zip_billed dc(provider_npi) AS billing_providers by provider_zip\n  | eval avg_billing_per_provider=round(total_zip_billed/billing_providers, 2)]\n| where avg_billing_per_provider > 500000\n| eval alert_type=\"GEOGRAPHIC_CLUSTERING\"\n| sort -provider_count",
       "sql": "-- SQL for Ghost Patient Claims Detection\nSELECT\n  c.provider_npi,\n  p.provider_name,\n  COUNT(*) AS ghost_claims,\n  SUM(c.billed_amount) AS ghost_billed,\n  COUNT(DISTINCT c.beneficiary_id) AS ghost_beneficiaries,\n  b.beneficiary_status\nFROM claims c\nJOIN beneficiary_eligibility b ON c.beneficiary_id = b.beneficiary_id\nJOIN providers p ON c.provider_npi = p.provider_npi\nWHERE b.beneficiary_status IN ('deceased', 'incarcerated')\n  AND c.service_date > b.status_effective_date\n  AND c.service_date >= CURRENT_DATE - INTERVAL '90 days'\nGROUP BY c.provider_npi, p.provider_name, b.beneficiary_status\nHAVING COUNT(*) > 5\nORDER BY ghost_billed DESC;\n\n-- SQL for Geographic Provider Clustering Detection\nSELECT\n  e.provider_zip,\n  e.provider_type,\n  COUNT(DISTINCT e.provider_npi) AS provider_count,\n  COALESCE(SUM(c.billed_amount), 0) AS total_zip_billed,\n  ROUND(COALESCE(SUM(c.billed_amount), 0)::numeric\n    / NULLIF(COUNT(DISTINCT e.provider_npi), 0), 2) AS avg_billing_per_provider,\n  COUNT(DISTINCT CASE WHEN addr.address_type = 'CMRA' THEN e.provider_npi END) AS cmra_addresses,\n  COUNT(DISTINCT CASE WHEN addr.address_type = 'residential' THEN e.provider_npi END) AS residential_addresses\nFROM provider_enrollment e\nLEFT JOIN claims c ON e.provider_npi = c.provider_npi\n  AND c.service_date >= CURRENT_DATE - INTERVAL '365 days'\nLEFT JOIN address_classification addr ON e.physical_address = addr.address\nWHERE e.provider_type IN ('hospice', 'home_health', 'dme', 'aba_therapy')\nGROUP BY e.provider_zip, e.provider_type\nHAVING COUNT(DISTINCT e.provider_npi) >= 10\n   AND ROUND(COALESCE(SUM(c.billed_amount), 0)::numeric\n    / NULLIF(COUNT(DISTINCT e.provider_npi), 0), 2) > 500000\nORDER BY provider_count DESC;"
     },

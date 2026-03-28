@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+((event_type in~ ("WIRE_CREDIT", "ACH_CREDIT")) and transaction_amount >= 1000) and ((event_type in~ ("WIRE_INITIATION", "ACH_DEBIT")) and beneficiary_category =~ "crypto_exchange" and (beneficiary_name contains "Coinbase" or beneficiary_name contains "Binance" or beneficiary_name contains "Kraken" or beneficiary_name contains "FTX" or beneficiary_name contains "Gemini" or beneficiary_name contains "Crypto.com" or beneficiary_name contains "Bitfinex"))
