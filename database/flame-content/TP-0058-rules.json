@@ -2,10 +2,14 @@
   "tp_id": "TP-0058",
   "rules": [
     {
-      "type": "sigma",
-      "content": "title: Multilingual Chatbot Scam Pattern Detection\nstatus: experimental\ndescription: Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conver\nlogsource:\n    product: messaging_platform\n    category: conversation_analytics\n    service: abuse_detection\ndetection:\n    selection_timing:\n        response_time_variance_ms|lt: 2000\n        message_count|gte: 10\n    selection_template:\n        conversation_template_match_score|gt: 0.8\n    selection_language_switch:\n        language_switch_count|gte: 1\n        conversation_languages_count|gte: 2\n    selection_duplicate_phrasing:\n        cross_instance_phrase_similarity|gt: 0.9\n        reported_instances|gte: 2\n    condition: selection_timing and (selection_template or selection_language_switch or selection_duplicate_phrasing)\nlevel: medium",
-      "title": "DL-0117: Multilingual Chatbot Scam Pattern Detection (Sigma)",
-      "source_rule": "DL-0117"
+      "type": "sql",
+      "content": "SELECT s.session_id, s.platform, s.first_message_ts,\n       AVG(m.response_time_ms) AS avg_response_ms,\n       STDDEV(m.response_time_ms) AS stddev_response_ms,\n       COUNT(DISTINCT m.language_detected) AS languages_used,\n       COUNT(*) AS message_count\nFROM chat_sessions s\nJOIN chat_messages m ON s.session_id = m.session_id\nWHERE m.direction = 'inbound'\nGROUP BY s.session_id, s.platform, s.first_message_ts\nHAVING STDDEV(m.response_time_ms) < 200\n   AND COUNT(DISTINCT m.language_detected) > 1\n   AND COUNT(*) > 20\nORDER BY s.first_message_ts DESC;",
+      "title": "Compound Chatbot Pattern Detection (SQL)"
+    },
+    {
+      "type": "spl",
+      "content": "index=transactions sourcetype=wire_transfer\n| eval dest_domain=lower(dest_domain)\n| lookup domain_age_feed dest_domain OUTPUT domain_age_days\n| where domain_age_days < 90\n| transaction customer_id maxspan=30d\n| where eventcount > 3 AND sum(amount) > 10000\n| eval avg_interval=duration/eventcount\n| where avg_interval > 86400 AND avg_interval < 604800\n| stats count sum(amount) AS total_amount by customer_id, dest_domain\n| sort -total_amount",
+      "title": "Compound Investment Platform Deposit Pattern (Splunk SPL)"
     }
   ]
 }

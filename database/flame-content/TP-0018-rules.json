@@ -2,34 +2,9 @@
   "tp_id": "TP-0018",
   "rules": [
     {
-      "type": "sigma",
-      "content": "title: Voice Biometric Confidence Score Anomaly for Known Caller\nstatus: experimental\ndescription: Detects when a voice biometric verification score for a previously enrolled caller falls below an acceptable confidence threshold, which may indicate a deepfake or voice-clone attempt impersonating a \nlogsource:\n    product: banking\n    service: voice_authentication\ndetection:\n    selection:\n        event_type: \"voice_biometric_verify\"\n        enrollment_status: \"enrolled\"\n    filter_low_score:\n        voice_confidence_score|lt: 70\n    filter_historical_high:\n        historical_avg_score|gte: 85\n    condition: selection and filter_low_score and filter_historical_high\nlevel: high",
-      "title": "DL-0050: Voice Biometric Confidence Score Anomaly for Known Caller (Sigma)",
-      "source_rule": "DL-0050"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Audio Compression Artifacts Indicative of AI-Generated Speech\nstatus: experimental\ndescription: Detects audio streams exhibiting compression artifacts, spectral anomalies, or frequency-band irregularities characteristic of AI-generated or text-to-speech synthesis engines. These include unnatural\nlogsource:\n    product: banking\n    service: voice_authentication\ndetection:\n    selection:\n        event_type: \"voice_stream_analysis\"\n    filter_artifacts:\n        spectral_flatness_score|gt: 0.85\n        breath_sound_detected: false\n        pitch_variance|lt: 2.5\n    filter_codec:\n        codec_reencoding_detected: true\n    condition: selection and (filter_artifacts or filter_codec)\nlevel: critical",
-      "title": "DL-0052: Audio Compression Artifacts Indicative of AI-Generated Speech (Sigma)",
-      "source_rule": "DL-0052"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Deepfake Anomalies in Video KYC Session\nstatus: experimental\ndescription: Detects anomalies during video KYC (Know Your Customer) sessions that may indicate the use of deepfake technology. Indicators include irregular frame rates suggesting real-time face-swapping, inconsis\nlogsource:\n    product: banking\n    service: video_kyc\ndetection:\n    selection:\n        event_type: \"video_kyc_session\"\n        session_status: \"in_progress\"\n    filter_frame_anomaly:\n        frame_rate_variance|gt: 8.0\n    filter_lipsync:\n        lip_sync_offset_ms|gt: 150\n    filter_blink:\n        blink_rate_per_minute|lt: 3\n    filter_lighting:\n        face_background_lighting_delta|gt: 40\n    condition: selection and (filter_frame_anomaly or filter_lipsync or filter_blink or filter_lighting)\nlevel: high",
-      "title": "DL-0053: Deepfake Anomalies in Video KYC Session (Sigma)",
-      "source_rule": "DL-0053"
-    },
-    {
-      "type": "sigma",
-      "content": "title: AI-Generated Document Detection in Verification\nstatus: experimental\ndescription: Detects indicators of AI-generated or synthetically created identity documents submitted during verification workflows. Flags include metadata anomalies (missing EXIF data, uniform noise patterns), fo\nlogsource:\n    product: banking\n    service: document_verification\ndetection:\n    selection:\n        event_type: \"document_verification_scan\"\n        document_type|contains:\n            - \"drivers_license\"\n            - \"passport\"\n            - \"national_id\"\n            - \"utility_bill\"\n    filter_metadata:\n        exif_data_present: false\n        creation_tool_detected|contains:\n            - \"stable-diffusion\"\n            - \"midjourney\"\n            - \"dall-e\"\n            - \"photoshop-generative\"\n    filter_visual:\n        gan_artifact_score|gt: 0.7\n        microprint_validation: \"failed\"\n    filter_font:\n        font_consistency_score|lt: 0.5\n    condition: selection and (filter_metadata or filter_visual or filter_font)\nlevel: high",
-      "title": "DL-0054: AI-Generated Document Detection in Verification (Sigma)",
-      "source_rule": "DL-0054"
-    },
-    {
       "type": "spl",
-      "content": "`comment(\"Splunk SPL for Iterative Deepfake Tuning Detection\")`\n`comment(\"Detects repeated liveness failures followed by success from same device\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"LIVENESS_CHECK\"\n| sort 0 device_fingerprint, liveness_timestamp\n| eventstats\n    count(if(liveness_result=\"fail\", 1, NULL)) as failure_count,\n    count(if(liveness_result=\"pass\", 1, NULL)) as success_count,\n    min(liveness_timestamp) as first_attempt,\n    max(liveness_timestamp) as last_attempt\n    by device_fingerprint\n| where (last_attempt - first_attempt) <= 86400\n    AND failure_count >= 3 AND success_count >= 1\n| streamstats current=t window=0 values(liveness_score) as score_history\n    by device_fingerprint\n| dedup device_fingerprint\n| table device_fingerprint, failure_count, success_count,\n        score_history, first_attempt, last_attempt\n| sort - failure_count",
-      "title": "DL-0159: Facial Liveness Failure Pattern — Iterative Deepfake Tuning (SPLUNK)",
-      "source_rule": "DL-0159"
+      "content": "index=onboarding action=\"document_verification\"\n| stats count dc(applicant_name) as distinct_names sum(eval(status=\"rejected_ai_suspected\")) as deepfake_rejects by device_fingerprint, source_ip\n| where count > 3 AND distinct_names > 2\n| table device_fingerprint, source_ip, count, distinct_names, deepfake_rejects\n| sort - deepfake_rejects",
+      "title": "Splunk — Detecting Shared Device Fingerprints Across Multiple AI Onboarding Attempts"
     }
   ]
 }

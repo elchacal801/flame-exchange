@@ -2,16 +2,14 @@
   "tp_id": "TP-0030",
   "rules": [
     {
-      "type": "sigma",
-      "content": "title: Triangulation Fraud Shipping Pattern Detection\nstatus: experimental\ndescription: Detects orders where the shipping address differs from the billing address and matches known drop-ship or reshipping patterns associated with triangulation fraud. In triangulation fraud, a fraudster l\nlogsource:\n    product: ecommerce\n    service: order_management\ndetection:\n    selection:\n        event_type: \"order_placed\"\n        billing_shipping_address_match: false\n    filter_drop_address:\n        shipping_address_type|contains:\n            - \"freight_forwarder\"\n            - \"reshipper\"\n            - \"po_box\"\n            - \"commercial_mailbox\"\n    filter_shared_address:\n        shipping_address_distinct_accounts|gt: 3\n    filter_velocity:\n        shipping_address_orders_7d|gt: 5\n    condition: selection and (filter_drop_address or filter_shared_address or filter_velocity)\nlevel: high",
-      "title": "DL-0064: Triangulation Fraud Shipping Pattern Detection (Sigma)",
-      "source_rule": "DL-0064"
+      "type": "spl",
+      "content": "index=ecommerce sourcetype=orders\n| eval billing_ship_match=if(billing_zip == shipping_zip, 1, 0)\n| eval is_single_item=if(item_count == 1, 1, 0)\n| stats\n    count as order_count,\n    dc(shipping_address) as unique_ship_addresses,\n    dc(card_last4) as unique_cards,\n    avg(billing_ship_match) as pct_billing_match,\n    avg(is_single_item) as pct_single_item,\n    sum(order_total) as total_revenue\n    by session_fingerprint, ip_subnet\n| where order_count > 10\n    AND unique_ship_addresses > 8\n    AND pct_billing_match < 0.2\n    AND pct_single_item > 0.8\n| table session_fingerprint, ip_subnet, order_count, unique_ship_addresses, unique_cards, pct_billing_match, pct_single_item, total_revenue\n| sort - order_count",
+      "title": "Splunk -- Triangulation Purchase Pattern Detection at Retailer (Phase 4)"
     },
     {
       "type": "sigma",
-      "content": "title: Excessive Promotional Code or Coupon Abuse from Related Accounts\nstatus: experimental\ndescription: Detects excessive use of promotional codes, referral bonuses, or coupon offers from accounts that share common attributes such as device fingerprint, IP address, payment method, or shipping address. T\nlogsource:\n    product: ecommerce\n    service: payment_gateway\ndetection:\n    selection:\n        event_type: \"order_placed\"\n        promo_code_applied: true\n    filter_device_cluster:\n        device_fingerprint_promo_uses_30d|gt: 5\n    filter_ip_cluster:\n        source_ip_promo_uses_30d|gt: 10\n    filter_payment_cluster:\n        payment_method_hash_promo_uses_30d|gt: 5\n    filter_new_account:\n        account_age_days|lt: 7\n        promo_type|contains:\n            - \"new_customer\"\n            - \"referral_bonus\"\n            - \"first_order\"\n    condition: selection and (filter_device_cluster or filter_ip_cluster or filter_payment_cluster or filter_new_account)\nlevel: medium",
-      "title": "DL-0067: Excessive Promotional Code or Coupon Abuse from Related Accounts (Sigma)",
-      "source_rule": "DL-0067"
+      "content": "title: Marketplace Seller Exhibiting Triangulation Fraud Indicators\nstatus: experimental\ndescription: Detects marketplace seller accounts exhibiting behavioral patterns consistent with triangulation fraud, including below-market pricing, high order fulfillment from third-party retailers, and elevated shipping address diversity.\nlogsource:\n    product: marketplace_platform\n    service: seller_analytics\ndetection:\n    selection:\n        seller_age_days|lte: 180\n    triangulation_indicators:\n        avg_price_vs_market|lte: 0.85\n        pct_orders_dropshipped|gte: 0.90\n        unique_shipping_addresses_ratio|gte: 0.95\n    condition: selection and 2 of triangulation_indicators\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - cfpf.phase3.positioning\n    - ecommerce.triangulation",
+      "title": "Sigma -- Marketplace Seller Triangulation Indicators (Phase 2-3)"
     }
   ]
 }

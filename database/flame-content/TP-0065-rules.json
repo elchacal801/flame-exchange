@@ -3,15 +3,8 @@
   "rules": [
     {
       "type": "sigma",
-      "content": "title: Mass-Marketing Fraud Burst Calling Pattern\nstatus: experimental\nlogsource:\n    product: telecom\n    service: cdr\ndetection:\n    selection:\n        call_direction: inbound\n        call_duration|lt: 30\n    timeframe: 1h\n    condition: selection | count(distinct destination_number) by source_number_prefix > 50\nfields:\n    - source_number\n    - destination_number\n    - call_duration\n    - caller_id_verification_status\nlevel: medium",
-      "title": "DL-0134: Mass-Marketing Fraud Burst Calling Pattern — SIM Farm and Robodialling Detection (SIGMA)",
-      "source_rule": "DL-0134"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Cialdini Persuasion Scoring\")`\n`comment(\"Requires NLP scoring service via DSDL or API\")`\nindex=communications sourcetype=fraud:communications\n| apply cialdini_scoring_model\n| where cialdini_principles_detected >= 3\n| where max_principle_score > 0.7\n| table _time, channel, sender, recipient,\n        reciprocity_score, consistency_score, social_proof_score,\n        authority_score, liking_score, scarcity_score,\n        cialdini_principles_detected",
-      "title": "DL-0140: Cialdini Persuasion Principle Scoring in Fraud Communications (SPLUNK)",
-      "source_rule": "DL-0140"
+      "content": "title: Mass-Marketing Fraud Burst Calling Pattern\nstatus: experimental\ndescription: Detects burst patterns from potential SIM farm or robodialling infrastructure\nlogsource:\n    product: telecom\n    service: cdr\ndetection:\n    selection:\n        call_direction: inbound\n        call_duration|lt: 30\n    timeframe: 1h\n    condition: selection | count(source_number) by destination_number > 3\n        AND selection | count(distinct destination_number) by source_number_prefix > 50\nfields:\n    - source_number\n    - destination_number\n    - call_duration\n    - caller_id_verification_status\nlevel: medium",
+      "title": "Queries / Rules"
     }
   ]
 }
