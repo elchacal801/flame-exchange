@@ -49,6 +49,9 @@ related_tps:
 regulatory_refs:
   - REG-FINCEN-CDD
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids:
+  - BL-0007
+  - BL-0032
 tags:
   - credit-building
   - bust-out

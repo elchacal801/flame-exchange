@@ -1314,6 +1314,72 @@
     "text": "Detects inbox rule creation or modification in Exchange Online following a sign-in flagged with medium or high risk, or following authentication from a previously unseen IP address. Post-AiTM inbox rule manipulation is a characteristic Phase 3 (Positioning) technique: within minutes of session hijack, attackers create inbox rules to redirect or delete security alerts, payment notifications, and colleague communications. This detection correlates Exchange Online Unified Audit Log operations (New-InboxRule, Set-InboxRule, Set-Mailbox forwarding) with Entra ID risky sign-in events.\n"
   },
   {
+    "id": "DL-0151",
+    "type": "detection_rule",
+    "title": "Synthetic Identity Credit Utilization Spike — Low-and-Slow Buildup Followed by Bust-Out",
+    "text": "Detects the characteristic synthetic identity bust-out pattern: prolonged low credit utilization (< 35% for 6+ months) followed by a rapid spike to near-maximum utilization (> 80%) within 30 days. Synthetic identity fraudsters nurture credit profiles over 12-24 months with steady payments and low utilization, then execute a coordinated bust-out where all available credit is maxed simultaneously. The Federal Reserve estimates synthetic identity fraud costs U.S. lenders $6B+ annually. The discontinuous utilization jump from a stable baseline is the hallmark behavioral indicator.\n"
+  },
+  {
+    "id": "DL-0152",
+    "type": "detection_rule",
+    "title": "Thin-File Identity Clustering — Shared Address, Phone, or Device Across New Applicants",
+    "text": "Detects clusters of thin-file credit applicants sharing physical addresses, phone numbers, or device fingerprints — a hallmark indicator of synthetic identity ring activity. Fraud rings fabricate multiple synthetic identities that share infrastructure (mailing addresses, burner phones, devices used for applications). When 3+ new applicants with thin credit files (< 12 months history, < 3 tradelines) share an address, phone, or device within a 180-day window, this indicates coordinated identity fabrication rather than coincidental overlap. The Federal Reserve identifies address and device clustering as primary synthetic identity detection signals.\n"
+  },
+  {
+    "id": "DL-0153",
+    "type": "detection_rule",
+    "title": "Coordinated Bust-Out Timing — Simultaneous Max-Utilization Across Multiple Products",
+    "text": "Detects coordinated bust-out execution where the same identity (or linked identities) max out credit across multiple products within a 72-hour window. Synthetic identity rings time their bust-out to extract maximum value before accounts are frozen: cash advances, balance transfers to controlled accounts, and high-value purchases for resale all occur within a narrow window. When 3+ credit products associated with the same identity show utilization above 90% within 72 hours, and at least one involves a cash advance or balance transfer, this is a high-confidence bust-out indicator.\n"
+  },
+  {
+    "id": "DL-0154",
+    "type": "detection_rule",
+    "title": "SSN Age and Issuance Mismatch — Synthetic Identity Indicator",
+    "text": "Detects credit applications where the SSN characteristics are inconsistent with the applicant's stated identity — a primary indicator of synthetic identity fabrication. Key signals: (1) SSN issued after the applicant's date of birth suggests the SSN belongs to someone else (minors, immigrants, recently deceased), (2) post-2011 randomized SSNs that don't match SSA area number geography, (3) SSN first appearing at credit bureaus within the last 18 months combined with an applicant age > 25 (natural credit profiles start appearing at 18-22). The eCBSV (electronic Consent Based SSN Verification) service can confirm SSN-name-DOB matches, but adoption is inconsistent.\n"
+  },
+  {
+    "id": "DL-0155",
+    "type": "detection_rule",
+    "title": "First-Party Credit Buildup and Sudden Spike",
+    "text": "Detects consumer accounts following a first-party fraud pattern: steady good payments for 6-12 months then sudden utilization spike and missed payments within 60 days. Unlike synthetic identity (TP-0003), the identity is real but the intent is fraudulent. First-party bust-out actors nurture credit profiles with consistent on-time payments and low utilization, then rapidly maximize available credit before abandoning the account. The transition from responsible usage to aggressive drawdown is the key behavioral signal. LexisNexis estimates first-party fraud now represents 36% of all detected fraud events globally.\n"
+  },
+  {
+    "id": "DL-0156",
+    "type": "detection_rule",
+    "title": "Never-Pay Pattern — Immediate Max Utilization with Zero Payments",
+    "text": "Detects new credit accounts with immediate high utilization and zero payment activity after 60 days — classic \"never-pay\" first-party fraud where the consumer opens an account with no intent to pay. Unlike bust-out schemes that involve a credit nurturing phase, never-pay actors maximize utilization immediately after account opening and make no payments whatsoever. This pattern is distinguishable from legitimate new account activity because at least one billing cycle has passed with zero payment response. The never-pay variant accounts for a significant share of first-party fraud losses, particularly in unsecured credit products.\n"
+  },
+  {
+    "id": "DL-0157",
+    "type": "detection_rule",
+    "title": "Rapid Authorized User Addition Across Multiple Accounts",
+    "text": "Detects the same individual being added as an authorized user across 3 or more credit accounts within 30 days. This technique is used in first-party bust-out and synthetic identity schemes to rapidly build credit history or gain access to multiple credit lines for coordinated bust-out. Authorized user tradelines inherit the primary account's payment history, allowing fraudsters to artificially inflate credit scores in weeks rather than months. When combined with subsequent high utilization, this pattern is a strong leading indicator of coordinated bust-out activity. The \"piggybacking\" of authorized user status is a well-documented credit manipulation technique exploited by both first-party fraudsters and synthetic identity rings.\n"
+  },
+  {
+    "id": "DL-0158",
+    "type": "detection_rule",
+    "title": "Document Metadata Anomaly — AI-Generated ID Document Detection",
+    "text": "Detects submitted identity documents with metadata inconsistencies indicating AI generation or manipulation: PDF creation tools (Photoshop, GIMP, AI generators), timestamp manipulation (creation date after modification date), inconsistent DPI, missing EXIF data, font embedding anomalies. 85% of synthetic fraud now involves GenAI document fabrication. Underground services like OnlyFake and ProKYC produce photo-realistic government IDs for as little as $30, complete with simulated holograms and barcode data, but leave detectable metadata and structural artifacts that differ from genuine document scans.\n"
+  },
+  {
+    "id": "DL-0159",
+    "type": "detection_rule",
+    "title": "Facial Liveness Failure Pattern — Iterative Deepfake Tuning",
+    "text": "Detects repeated liveness check failures from the same device followed by eventual success — indicates iterative deepfake tuning where fraudsters adjust their deepfake parameters until they pass liveness detection. Normal users fail once (bad lighting) and succeed quickly; attackers show a pattern of 3+ failures with improving scores. Real-time face-swap applications and pre-recorded deepfake videos are used to defeat challenges requiring head turns, blinking, or phrase repetition. The iterative improvement pattern — each attempt scoring higher than the last — is a strong indicator of adversarial tuning against the liveness detection model.\n"
+  },
+  {
+    "id": "DL-0160",
+    "type": "detection_rule",
+    "title": "Cross-Application Identity Collision — Same Biometric or Device Across Different Identities",
+    "text": "Detects the same biometric template (face embedding), device fingerprint, or behavioral pattern appearing across applications submitted under different identity names. Fraudsters using AI-generated faces may reuse the same base model or device, creating detectable collisions in the biometric or device space. Even when AI-generated facial images appear visually distinct, the underlying face embedding vectors may cluster due to shared generative model artifacts. Similarly, device fingerprints and behavioral biometric profiles persist across sessions even when the presented identity changes, enabling cross-application correlation that reveals synthetic identity networks.\n"
+  },
+  {
+    "id": "DL-0161",
+    "type": "detection_rule",
+    "title": "AI Document Template Cluster — Identical Formatting Patterns Across Applications",
+    "text": "Detects clusters of submitted ID documents sharing identical formatting artifacts, template structures, or AI generation signatures. AI document generators produce documents with consistent pixel-level artifacts, font embedding patterns, and template metadata even when the identity details differ. When 3+ documents from different applicants show template_similarity_score > 0.85, this indicates a common AI generator. Underground forgery services like OnlyFake successors use a limited number of document templates per jurisdiction, creating detectable clustering when multiple synthetic identities are onboarded through the same forgery pipeline. Template similarity analysis across the document corpus reveals these clusters even when individual documents pass automated verification checks.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",

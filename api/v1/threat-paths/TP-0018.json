@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T05:34:30.204767+00:00",
+    "generated_at": "2026-03-28T22:12:05.204521+00:00",
     "total": 1
   },
   "data": {
@@ -81,11 +81,15 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0007"
+    ],
     "detection_rule_ids": [
       "DL-0050",
       "DL-0052",
       "DL-0053",
-      "DL-0054"
+      "DL-0054",
+      "DL-0159"
     ],
     "related_tps": [
       {

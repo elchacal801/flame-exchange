@@ -61,6 +61,9 @@ related_tps:
     relationship: enables
   - id: TP-0029
     relationship: related-to
+baseline_ids:
+  - BL-0023
+  - BL-0033
 tags:
   - ai-generated
   - llm-phishing

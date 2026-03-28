@@ -66,6 +66,9 @@ regulatory_refs:
   - REG-CFPB-REGE
   - REG-FINCEN-AML
   - REG-INTERPOL-GFFTA
+baseline_ids:
+  - BL-0003
+  - BL-0004
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

@@ -50,6 +50,9 @@ regulatory_refs:
   - REG-NRF-RFT-V1
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids:
+  - BL-0009
+  - BL-0035
 tags:
   - loyalty-fraud
   - rewards-points

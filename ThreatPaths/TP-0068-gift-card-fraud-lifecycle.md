@@ -56,6 +56,8 @@ related_tps:
     relationship: shares-infrastructure
 regulatory_refs:
   - REG-NRF-RFT-V1
+baseline_ids:
+  - BL-0035
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

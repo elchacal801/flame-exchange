@@ -2,9 +2,16 @@
   "tp_id": "TP-0062",
   "rules": [
     {
-      "type": "sql",
-      "content": "-- Detect potential recovery fraud contact: payments from customers\n-- who filed fraud complaints in preceding 90 days to new unfamiliar recipients\nSELECT\n    t.customer_id,\n    t.transaction_date,\n    t.amount,\n    t.recipient_account,\n    c.complaint_date,\n    c.original_loss_amount,\n    c.fraud_type AS original_fraud_type\nFROM transactions t\nJOIN fraud_complaints c ON t.customer_id = c.customer_id\nWHERE c.complaint_date >= DATEADD(day, -90, t.transaction_date)\n  AND t.recipient_account NOT IN (\n    SELECT DISTINCT recipient_account\n    FROM transactions\n    WHERE customer_id = t.customer_id\n      AND transaction_date < c.complaint_date\n  )\n  AND t.amount > 500\nORDER BY t.transaction_date DESC;",
-      "title": "Queries / Rules"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Recovery Fraud Contact Pattern\")`\n`comment(\"Cross-references fraud complaints with subsequent outbound payments to new recipients\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n  amount > 500\n| join type=inner max=0 customer_id [\n  search index=flame_fraud sourcetype=flame:complaints\n  | where complaint_date >= relative_time(now(), \"-90d\")\n  | fields customer_id, complaint_date, original_loss_amount, fraud_type\n]\n| search NOT [\n  search index=flame_banking sourcetype=flame:transaction_monitoring\n    transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n    transaction_date < complaint_date\n  | dedup recipient_account, customer_id\n  | fields recipient_account, customer_id\n]\n| stats count AS payment_count, sum(amount) AS total_amount,\n        values(recipient_account) AS recipients\n  BY customer_id, fraud_type, original_loss_amount\n| where payment_count >= 1",
+      "title": "DL-0133: Recovery Fraud Contact Pattern — Payments from Recent Fraud Victims to Unfamiliar Recipients (SPLUNK)",
+      "source_rule": "DL-0133"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Cialdini Persuasion Scoring\")`\n`comment(\"Requires NLP scoring service via DSDL or API\")`\nindex=communications sourcetype=fraud:communications\n| apply cialdini_scoring_model\n| where cialdini_principles_detected >= 3\n| where max_principle_score > 0.7\n| table _time, channel, sender, recipient,\n        reciprocity_score, consistency_score, social_proof_score,\n        authority_score, liking_score, scarcity_score,\n        cialdini_principles_detected",
+      "title": "DL-0140: Cialdini Persuasion Principle Scoring in Fraud Communications (SPLUNK)",
+      "source_rule": "DL-0140"
     }
   ]
 }

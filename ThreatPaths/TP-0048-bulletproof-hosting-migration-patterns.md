@@ -53,6 +53,9 @@ related_tps:
 regulatory_refs:
   - REG-WCI-2024
   - REG-RF-CTA-2026-0319
+baseline_ids:
+  - BL-0026
+  - BL-0036
 tags:
   - bulletproof-hosting
   - bph-migration

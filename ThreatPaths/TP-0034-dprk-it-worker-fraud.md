@@ -78,6 +78,9 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-RF-CTA-2026-0319
   - REG-WCI-2024
+baseline_ids:
+  - BL-0013
+  - BL-0028
 tags:
   - dprk
   - north-korea

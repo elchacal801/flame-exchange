@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-28T22:12:06.790310+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "0fffda23-9253-42c6-987d-3957552a1540",
+    "dl_id": "DL-0158",
+    "title": "Document Metadata Anomaly — AI-Generated ID Document Detection",
+    "status": "experimental",
+    "description": "Detects submitted identity documents with metadata inconsistencies indicating AI generation or manipulation: PDF creation tools (Photoshop, GIMP, AI generators), timestamp manipulation (creation date after modification date), inconsistent DPI, missing EXIF data, font embedding anomalies. 85% of synthetic fraud now involves GenAI document fabrication. Underground services like OnlyFake and ProKYC produce photo-realistic government IDs for as little as $30, complete with simulated holograms and barcode data, but leave detectable metadata and structural artifacts that differ from genuine document scans.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection_document_submission": {
+        "event_type": "DOCUMENT_SUBMISSION"
+      },
+      "filter_ai_score": {
+        "document_ai_score|gt": 0.7
+      },
+      "filter_metadata_anomaly": {
+        "pdf_creator|contains": [
+          "Photoshop",
+          "GIMP",
+          "Stable Diffusion",
+          "Midjourney",
+          "DALL-E",
+          "unknown_ai_generator"
+        ],
+        "exif_data_present": false
+      },
+      "filter_timestamp_anomaly": {
+        "pdf_creation_date|gt": "pdf_modification_date"
+      },
+      "filter_dpi_inconsistency": {
+        "dpi_consistency_check": false
+      },
+      "filter_font_anomaly": {
+        "font_embedding_anomaly": true
+      },
+      "condition": "selection_document_submission AND (filter_ai_score OR (filter_metadata_anomaly) OR filter_timestamp_anomaly OR filter_dpi_inconsistency OR filter_font_anomaly)\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "document_verification"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "applicant_id",
+        "event_type",
+        "submission_timestamp",
+        "document_type",
+        "document_file_hash",
+        "device_fingerprint",
+        "ip_address"
+      ],
+      "enrichment_required": [
+        {
+          "field": "document_ai_score",
+          "source": "AI forgery detection model — probability score (0-1) indicating AI generation"
+        },
+        {
+          "field": "pdf_creator",
+          "source": "PDF metadata extraction — Creator field from document properties"
+        },
+        {
+          "field": "exif_data_present",
+          "source": "EXIF metadata analysis — boolean indicating presence of camera EXIF data"
+        },
+        {
+          "field": "pdf_creation_date",
+          "source": "PDF metadata extraction — document creation timestamp"
+        },
+        {
+          "field": "pdf_modification_date",
+          "source": "PDF metadata extraction — document last modified timestamp"
+        },
+        {
+          "field": "dpi_consistency_check",
+          "source": "Image analysis — boolean indicating consistent DPI across document regions"
+        },
+        {
+          "field": "font_embedding_anomaly",
+          "source": "Font analysis — boolean indicating anomalous font embedding patterns"
+        }
+      ],
+      "derived_fields": [
+        "metadata_risk_score",
+        "anomaly_type"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for AI-Generated ID Document Detection\n// Detects document submissions with metadata inconsistencies indicating AI generation\nevent_type=\"DOCUMENT_SUBMISSION\"\n| anomaly_type := case {\n    document_ai_score > 0.7 | \"high_ai_score\";\n    pdf_creator = /Photoshop|GIMP|Stable Diffusion|Midjourney|DALL-E|unknown_ai_generator/\n      AND exif_data_present = \"false\" | \"suspicious_creator_no_exif\";\n    pdf_creation_date > pdf_modification_date | \"timestamp_manipulation\";\n    dpi_consistency_check = \"false\" | \"dpi_inconsistency\";\n    font_embedding_anomaly = \"true\" | \"font_anomaly\";\n    * | \"none\";\n  }\n| anomaly_type != \"none\"\n| select([applicant_id, submission_timestamp, document_type,\n          document_ai_score, pdf_creator, exif_data_present,\n          dpi_consistency_check, font_embedding_anomaly,\n          anomaly_type, device_fingerprint, ip_address])\n| sort(submission_timestamp, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for AI-Generated ID Document Detection\")`\n`comment(\"Detects document submissions with metadata indicating AI generation\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"DOCUMENT_SUBMISSION\"\n| eval anomaly_type = case(\n    document_ai_score > 0.7, \"high_ai_score\",\n    match(pdf_creator, \"Photoshop|GIMP|Stable Diffusion|Midjourney|DALL-E|unknown_ai_generator\")\n      AND exif_data_present=\"false\", \"suspicious_creator_no_exif\",\n    pdf_creation_date > pdf_modification_date, \"timestamp_manipulation\",\n    dpi_consistency_check=\"false\", \"dpi_inconsistency\",\n    font_embedding_anomaly=\"true\", \"font_anomaly\",\n    1=1, \"none\")\n| where anomaly_type != \"none\"\n| table applicant_id, submission_timestamp, document_type,\n        document_ai_score, pdf_creator, exif_data_present,\n        dpi_consistency_check, font_embedding_anomaly,\n        anomaly_type, device_fingerprint, ip_address\n| sort - submission_timestamp",
+      "sql": "-- SQL for AI-Generated ID Document Detection\n-- Detects document submissions with metadata indicating AI generation\nSELECT\n  d.applicant_id,\n  d.submission_timestamp,\n  d.document_type,\n  e.document_ai_score,\n  e.pdf_creator,\n  e.exif_data_present,\n  e.dpi_consistency_check,\n  e.font_embedding_anomaly,\n  CASE\n    WHEN e.document_ai_score > 0.7 THEN 'high_ai_score'\n    WHEN e.pdf_creator IN ('Photoshop', 'GIMP', 'Stable Diffusion', 'Midjourney', 'DALL-E', 'unknown_ai_generator')\n         AND e.exif_data_present = 0 THEN 'suspicious_creator_no_exif'\n    WHEN e.pdf_creation_date > e.pdf_modification_date THEN 'timestamp_manipulation'\n    WHEN e.dpi_consistency_check = 0 THEN 'dpi_inconsistency'\n    WHEN e.font_embedding_anomaly = 1 THEN 'font_anomaly'\n  END AS anomaly_type,\n  d.device_fingerprint,\n  d.ip_address\nFROM document_submissions d\nJOIN document_enrichment e ON d.document_file_hash = e.document_file_hash\nWHERE d.event_type = 'DOCUMENT_SUBMISSION'\n  AND (\n    e.document_ai_score > 0.7\n    OR (e.pdf_creator IN ('Photoshop', 'GIMP', 'Stable Diffusion', 'Midjourney', 'DALL-E', 'unknown_ai_generator')\n        AND e.exif_data_present = 0)\n    OR e.pdf_creation_date > e.pdf_modification_date\n    OR e.dpi_consistency_check = 0\n    OR e.font_embedding_anomaly = 1\n  )\nORDER BY d.submission_timestamp DESC"
+    },
+    "references": [
+      "Entrust 2025 Identity Fraud Report — 311% increase in AI-generated document fraud",
+      "LexisNexis Risk Solutions, Global State of Fraud and Identity Report 2026",
+      "Trend Micro, Underground KYC Bypass Market Research"
+    ],
+    "threat_path_ids": [
+      "TP-0003",
+      "TP-0029"
+    ],
+    "fraud_types": [
+      "ai-accelerated-fraud-infrastructure",
+      "document-fraud",
+      "synthetic-identity"
+    ],
+    "tags": [
+      "attack.t1588.005",
+      "attack.t1656",
+      "cfpf.phase2.initial_access",
+      "flame.ai-document-fraud",
+      "flame.document-forgery",
+      "flame.synthetic-identity"
+    ],
+    "falsepositives": [
+      "Legitimate documents that were scanned using software that strips EXIF data",
+      "Documents re-saved or compressed by institution systems altering metadata",
+      "Older documents digitized with inconsistent scanning settings across pages"
+    ]
+  }
+}

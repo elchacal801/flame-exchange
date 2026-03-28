@@ -55,6 +55,7 @@ regulatory_refs:
   - REG-PSD3-SCA
   - REG-UK-PSR-APP
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids: []
 tags:
   - authorized-push-payment
   - APP-fraud

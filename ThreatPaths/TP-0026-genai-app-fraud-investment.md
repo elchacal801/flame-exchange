@@ -71,6 +71,8 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-SEC-SAR
   - REG-UK-PSR-APP
+baseline_ids:
+  - BL-0004
 tags:
   - genai
   - deepfake

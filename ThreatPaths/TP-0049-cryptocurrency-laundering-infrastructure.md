@@ -55,6 +55,10 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+baseline_ids:
+  - BL-0027
+  - BL-0034
+  - BL-0036
 tags:
   - cmln
   - cryptocurrency-laundering

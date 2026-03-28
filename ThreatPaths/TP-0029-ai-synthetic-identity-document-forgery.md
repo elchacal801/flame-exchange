@@ -59,6 +59,8 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
+baseline_ids:
+  - BL-0007
 tags:
   - ai-generated
   - synthetic-identity

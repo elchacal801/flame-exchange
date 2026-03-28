@@ -70,6 +70,8 @@ regulatory_refs:
   - REG-CFPB-REGE
   - REG-FCA-APP
   - REG-AU-SPF
+baseline_ids:
+  - BL-0020
 tags:
   - bnpl
   - klarna-method

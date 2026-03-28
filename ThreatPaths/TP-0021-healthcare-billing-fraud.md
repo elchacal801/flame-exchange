@@ -61,6 +61,8 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-AML
+baseline_ids:
+  - BL-0006
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

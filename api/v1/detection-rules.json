@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T05:34:30.967432+00:00",
-    "total": 150
+    "generated_at": "2026-03-28T22:12:06.008530+00:00",
+    "total": 161
   },
   "data": [
     {
@@ -10356,6 +10356,1012 @@
         "Legitimate inbox rule creation by users shortly after a sign-in flagged as risky due to VPN or travel",
         "IT administrators creating mail flow rules from new IP addresses",
         "Automated email management tools creating rules on behalf of users"
+      ]
+    },
+    {
+      "id": "e6e36d6c-d779-4af5-b8bf-4a3bd480061d",
+      "dl_id": "DL-0151",
+      "title": "Synthetic Identity Credit Utilization Spike — Low-and-Slow Buildup Followed by Bust-Out",
+      "status": "experimental",
+      "description": "Detects the characteristic synthetic identity bust-out pattern: prolonged low credit utilization (< 35% for 6+ months) followed by a rapid spike to near-maximum utilization (> 80%) within 30 days. Synthetic identity fraudsters nurture credit profiles over 12-24 months with steady payments and low utilization, then execute a coordinated bust-out where all available credit is maxed simultaneously. The Federal Reserve estimates synthetic identity fraud costs U.S. lenders $6B+ annually. The discontinuous utilization jump from a stable baseline is the hallmark behavioral indicator.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_type": [
+            "consumer_credit",
+            "credit_card"
+          ]
+        },
+        "filter_utilization_history": {
+          "trailing_6m_avg_utilization_pct|lt": 35
+        },
+        "filter_current_spike": {
+          "current_utilization_pct|gte": 80
+        },
+        "filter_previous_month": {
+          "previous_month_utilization_pct|lt": 50
+        },
+        "timeframe": "30d",
+        "condition": "selection AND filter_utilization_history AND filter_current_spike AND filter_previous_month\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "credit_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "account_type",
+          "credit_limit",
+          "current_balance",
+          "current_utilization_pct",
+          "account_open_date",
+          "payment_history_months"
+        ],
+        "enrichment_required": [
+          {
+            "field": "trailing_6m_avg_utilization_pct",
+            "source": "Rolling 6-month average utilization from credit bureau or internal reporting"
+          },
+          {
+            "field": "previous_month_utilization_pct",
+            "source": "Prior month-end utilization snapshot"
+          }
+        ],
+        "derived_fields": [
+          "utilization_jump_pct",
+          "months_at_low_utilization"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Synthetic Identity Credit Utilization Spike\n// Detects bust-out pattern: 6+ months low utilization then rapid spike\n(account_type=\"consumer_credit\" OR account_type=\"credit_card\")\ntrailing_6m_avg_utilization_pct<35\ncurrent_utilization_pct>=80\nprevious_month_utilization_pct<50\n| utilization_jump_pct := current_utilization_pct - previous_month_utilization_pct\n| months_at_low_utilization := payment_history_months\n| groupBy(account_id, function=[\n    collect([credit_limit, current_balance, current_utilization_pct,\n             trailing_6m_avg_utilization_pct, utilization_jump_pct,\n             account_open_date])\n  ])\n| sort(utilization_jump_pct, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Synthetic Identity Credit Utilization Spike\")`\n`comment(\"Detects 6+ months low utilization followed by rapid spike to >80%\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  trailing_6m_avg_utilization_pct<35\n  current_utilization_pct>=80\n  previous_month_utilization_pct<50\n| eval utilization_jump = current_utilization_pct - previous_month_utilization_pct\n| eval risk_score = case(\n    utilization_jump > 70 AND trailing_6m_avg_utilization_pct < 20, \"critical\",\n    utilization_jump > 50, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, trailing_6m_avg_utilization_pct,\n        previous_month_utilization_pct, utilization_jump,\n        account_open_date, risk_score\n| sort - utilization_jump",
+        "sql": "-- SQL for Synthetic Identity Credit Utilization Spike\n-- Detects bust-out pattern: prolonged low utilization then rapid spike\nSELECT\n  a.account_id,\n  a.account_type,\n  a.credit_limit,\n  a.current_balance,\n  a.current_utilization_pct,\n  h.trailing_6m_avg_utilization_pct,\n  h.previous_month_utilization_pct,\n  (a.current_utilization_pct - h.previous_month_utilization_pct) AS utilization_jump,\n  a.account_open_date,\n  DATEDIFF(MONTH, a.account_open_date, CURRENT_DATE) AS account_age_months\nFROM credit_accounts a\nJOIN credit_utilization_history h ON a.account_id = h.account_id\nWHERE a.account_type IN ('consumer_credit', 'credit_card')\n  AND h.trailing_6m_avg_utilization_pct < 35\n  AND a.current_utilization_pct >= 80\n  AND h.previous_month_utilization_pct < 50\nORDER BY utilization_jump DESC"
+      },
+      "references": [
+        "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+        "OCC, Comptroller's Handbook: Credit Card Lending — Synthetic Identity Red Flags",
+        "UNODC, Organized Fraud — Issue Paper (Vienna, 2024)"
+      ],
+      "threat_path_ids": [
+        "TP-0003",
+        "TP-0016"
+      ],
+      "fraud_types": [
+        "bust-out",
+        "credit-card-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.bust-out",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Legitimate large purchases (wedding, home renovation) causing temporary utilization spike",
+        "Consumers consolidating debt via balance transfer to a single card",
+        "Emergency medical expenses"
+      ]
+    },
+    {
+      "id": "350fa872-c970-4e6c-ae97-8317fe269e9d",
+      "dl_id": "DL-0152",
+      "title": "Thin-File Identity Clustering — Shared Address, Phone, or Device Across New Applicants",
+      "status": "experimental",
+      "description": "Detects clusters of thin-file credit applicants sharing physical addresses, phone numbers, or device fingerprints — a hallmark indicator of synthetic identity ring activity. Fraud rings fabricate multiple synthetic identities that share infrastructure (mailing addresses, burner phones, devices used for applications). When 3+ new applicants with thin credit files (< 12 months history, < 3 tradelines) share an address, phone, or device within a 180-day window, this indicates coordinated identity fabrication rather than coincidental overlap. The Federal Reserve identifies address and device clustering as primary synthetic identity detection signals.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_thin_file": {
+          "credit_history_months|lt": 12,
+          "tradeline_count|lt": 3
+        },
+        "condition": "count(distinct applicant_id) by shared_attribute >= 3 where shared_attribute in (address, phone, device_fingerprint) within 180 days AND selection_thin_file\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "account_onboarding"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "applicant_id",
+          "application_date",
+          "address",
+          "phone",
+          "device_fingerprint",
+          "ssn_hash",
+          "email"
+        ],
+        "enrichment_required": [
+          {
+            "field": "credit_history_months",
+            "source": "Credit bureau inquiry — months since oldest tradeline"
+          },
+          {
+            "field": "tradeline_count",
+            "source": "Credit bureau inquiry — number of active tradelines"
+          }
+        ],
+        "derived_fields": [
+          "cluster_size",
+          "shared_attribute_type",
+          "days_between_applications"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Thin-File Identity Clustering\n// Detects 3+ thin-file applicants sharing address/phone/device within 180 days\ncredit_history_months<12 tradeline_count<3\n| groupBy(address, function=[\n    count(field=applicant_id, distinct=true, as=applicant_count),\n    collect([applicant_id, phone, device_fingerprint, application_date, ssn_hash])\n  ], span=180d)\n| applicant_count >= 3\n| shared_attribute_type := \"address\"\n| sort(applicant_count, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Thin-File Identity Clustering\")`\n`comment(\"Detects 3+ thin-file applicants sharing address, phone, or device\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n  credit_history_months<12 tradeline_count<3\n| stats dc(applicant_id) AS applicant_count,\n        values(applicant_id) AS applicants,\n        values(phone) AS phones,\n        values(device_fingerprint) AS devices,\n        values(ssn_hash) AS ssn_hashes,\n        min(application_date) AS first_app,\n        max(application_date) AS last_app\n  BY address\n| where applicant_count >= 3\n| eval days_span = round((strptime(last_app, \"%Y-%m-%d\") - strptime(first_app, \"%Y-%m-%d\")) / 86400)\n| where days_span <= 180\n| eval shared_attribute = \"address\"\n| table address, applicant_count, applicants, phones, devices,\n        ssn_hashes, first_app, last_app, days_span\n| sort - applicant_count",
+        "sql": "-- SQL for Thin-File Identity Clustering\n-- Detects 3+ thin-file applicants sharing address within 180 days\nSELECT\n  a.address,\n  COUNT(DISTINCT a.applicant_id) AS applicant_count,\n  STRING_AGG(a.applicant_id, ', ') AS applicants,\n  STRING_AGG(DISTINCT a.phone, ', ') AS phones,\n  STRING_AGG(DISTINCT a.device_fingerprint, ', ') AS devices,\n  MIN(a.application_date) AS first_application,\n  MAX(a.application_date) AS last_application,\n  DATEDIFF(DAY, MIN(a.application_date), MAX(a.application_date)) AS days_span\nFROM credit_applications a\nWHERE a.credit_history_months < 12\n  AND a.tradeline_count < 3\n  AND a.application_date >= DATEADD(DAY, -180, CURRENT_DATE)\nGROUP BY a.address\nHAVING COUNT(DISTINCT a.applicant_id) >= 3\nORDER BY applicant_count DESC"
+      },
+      "references": [
+        "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+        "OCC, Comptroller's Handbook: Credit Card Lending — Address Clustering",
+        "Socure, Synthetic Identity Detection via Graph Analytics (2025)"
+      ],
+      "threat_path_ids": [
+        "TP-0003",
+        "TP-0029"
+      ],
+      "fraud_types": [
+        "application-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1583.001",
+        "attack.t1589",
+        "cfpf.phase2.initial_access",
+        "flame.clustering",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Shared housing (college dormitories, military barracks, assisted living facilities)",
+        "Family members with thin credit files applying from the same household",
+        "New immigrants sharing temporary housing while establishing credit"
+      ]
+    },
+    {
+      "id": "b6480e4f-0499-40a9-8814-be0d21e2bd64",
+      "dl_id": "DL-0153",
+      "title": "Coordinated Bust-Out Timing — Simultaneous Max-Utilization Across Multiple Products",
+      "status": "experimental",
+      "description": "Detects coordinated bust-out execution where the same identity (or linked identities) max out credit across multiple products within a 72-hour window. Synthetic identity rings time their bust-out to extract maximum value before accounts are frozen: cash advances, balance transfers to controlled accounts, and high-value purchases for resale all occur within a narrow window. When 3+ credit products associated with the same identity show utilization above 90% within 72 hours, and at least one involves a cash advance or balance transfer, this is a high-confidence bust-out indicator.\n",
+      "cfpf_phase": "P4",
+      "level": "critical",
+      "detection": {
+        "selection_high_utilization": {
+          "current_utilization_pct|gte": 90
+        },
+        "selection_cash_advance": {
+          "transaction_type": [
+            "CASH_ADVANCE",
+            "BALANCE_TRANSFER",
+            "CONVENIENCE_CHECK"
+          ]
+        },
+        "timeframe": "72h",
+        "condition": "count(distinct account_id) by identity_id >= 3 AND selection_high_utilization AND at least one selection_cash_advance within timeframe\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "identity_id",
+          "account_id",
+          "transaction_type",
+          "transaction_amount",
+          "merchant_category",
+          "current_utilization_pct",
+          "credit_limit"
+        ],
+        "derived_fields": [
+          "products_maxed_count",
+          "total_exposure",
+          "has_cash_advance"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Coordinated Bust-Out Timing\n// Detects 3+ products maxed within 72h for same identity\ncurrent_utilization_pct>=90\n| groupBy(identity_id, function=[\n    count(field=account_id, distinct=true, as=products_maxed),\n    sum(transaction_amount, as=total_exposure),\n    collect([account_id, transaction_type, transaction_amount,\n             credit_limit, current_utilization_pct, merchant_category])\n  ], span=72h)\n| products_maxed >= 3\n| has_cash_advance := transaction_type=/CASH_ADVANCE|BALANCE_TRANSFER|CONVENIENCE_CHECK/\n| sort(total_exposure, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Coordinated Bust-Out Timing\")`\n`comment(\"Detects 3+ products maxed within 72h for same identity\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  current_utilization_pct>=90\n| stats dc(account_id) AS products_maxed,\n        sum(transaction_amount) AS total_exposure,\n        values(account_id) AS accounts,\n        values(transaction_type) AS txn_types,\n        values(merchant_category) AS merchants,\n        max(credit_limit) AS max_limit\n  BY identity_id _time span=72h\n| where products_maxed >= 3\n| search txn_types=\"*CASH_ADVANCE*\" OR txn_types=\"*BALANCE_TRANSFER*\"\n    OR txn_types=\"*CONVENIENCE_CHECK*\"\n| eval risk = if(products_maxed >= 5, \"critical\",\n              if(total_exposure > 100000, \"critical\", \"high\"))\n| table identity_id, products_maxed, total_exposure, accounts,\n        txn_types, merchants, risk\n| sort - total_exposure",
+        "sql": "-- SQL for Coordinated Bust-Out Timing\n-- Detects 3+ products maxed within 72h for same identity\nWITH maxed_products AS (\n  SELECT\n    t.identity_id,\n    t.account_id,\n    t.transaction_type,\n    t.transaction_amount,\n    a.credit_limit,\n    a.current_utilization_pct,\n    t.transaction_date\n  FROM transactions t\n  JOIN credit_accounts a ON t.account_id = a.account_id\n  WHERE a.current_utilization_pct >= 90\n    AND t.transaction_date >= DATEADD(HOUR, -72, CURRENT_TIMESTAMP)\n)\nSELECT\n  identity_id,\n  COUNT(DISTINCT account_id) AS products_maxed,\n  SUM(transaction_amount) AS total_exposure,\n  STRING_AGG(DISTINCT transaction_type, ', ') AS txn_types,\n  MAX(CASE WHEN transaction_type IN ('CASH_ADVANCE', 'BALANCE_TRANSFER', 'CONVENIENCE_CHECK')\n      THEN 1 ELSE 0 END) AS has_cash_advance\nFROM maxed_products\nGROUP BY identity_id\nHAVING COUNT(DISTINCT account_id) >= 3\n   AND MAX(CASE WHEN transaction_type IN ('CASH_ADVANCE', 'BALANCE_TRANSFER', 'CONVENIENCE_CHECK')\n           THEN 1 ELSE 0 END) = 1\nORDER BY total_exposure DESC"
+      },
+      "references": [
+        "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+        "Aite-Novarica, Synthetic Identity Fraud: Coordinated Bust-Out Patterns (2025)"
+      ],
+      "threat_path_ids": [
+        "TP-0003"
+      ],
+      "fraud_types": [
+        "bust-out",
+        "cash-advance-fraud",
+        "credit-card-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1657",
+        "cfpf.phase4.execution",
+        "flame.bust-out",
+        "flame.coordinated",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Consumers aggressively using multiple cards for large planned purchases (rare)",
+        "Business owners using multiple personal cards for business expenses during cash flow crunch"
+      ]
+    },
+    {
+      "id": "635744c1-1639-474b-b160-ff57b3b01873",
+      "dl_id": "DL-0154",
+      "title": "SSN Age and Issuance Mismatch — Synthetic Identity Indicator",
+      "status": "experimental",
+      "description": "Detects credit applications where the SSN characteristics are inconsistent with the applicant's stated identity — a primary indicator of synthetic identity fabrication. Key signals: (1) SSN issued after the applicant's date of birth suggests the SSN belongs to someone else (minors, immigrants, recently deceased), (2) post-2011 randomized SSNs that don't match SSA area number geography, (3) SSN first appearing at credit bureaus within the last 18 months combined with an applicant age > 25 (natural credit profiles start appearing at 18-22). The eCBSV (electronic Consent Based SSN Verification) service can confirm SSN-name-DOB matches, but adoption is inconsistent.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_application": {
+          "event_type": "CREDIT_APPLICATION"
+        },
+        "filter_ssn_age_mismatch": {
+          "ssn_issue_year_estimated|gt": 0
+        },
+        "condition": "selection_application AND (applicant_stated_age > 25 AND credit_file_age_months < 18) OR (ssn_issue_year_estimated > applicant_birth_year) OR (applicant_stated_age < 16 AND credit_inquiry_exists = true)\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "account_onboarding"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "applicant_id",
+          "event_type",
+          "application_date",
+          "applicant_stated_dob",
+          "ssn_hash",
+          "address",
+          "phone",
+          "device_fingerprint"
+        ],
+        "enrichment_required": [
+          {
+            "field": "ssn_issue_year_estimated",
+            "source": "SSA issuance year estimation (pre-2011 area-group-serial; post-2011 randomized)"
+          },
+          {
+            "field": "applicant_birth_year",
+            "source": "Derived from applicant_stated_dob"
+          },
+          {
+            "field": "applicant_stated_age",
+            "source": "Derived from applicant_stated_dob"
+          },
+          {
+            "field": "credit_file_age_months",
+            "source": "Credit bureau inquiry — months since credit file creation"
+          },
+          {
+            "field": "credit_inquiry_exists",
+            "source": "Credit bureau — whether any prior inquiries exist for this SSN"
+          }
+        ],
+        "derived_fields": [
+          "ssn_dob_gap_years",
+          "risk_indicator_type"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for SSN Age and Issuance Mismatch\n// Detects synthetic identity indicators via SSN-DOB-credit file inconsistencies\nevent_type=\"CREDIT_APPLICATION\"\n| ssn_dob_gap_years := ssn_issue_year_estimated - applicant_birth_year\n| risk_indicator_type := case {\n    applicant_stated_age > 25 AND credit_file_age_months < 18 | \"late_credit_file\";\n    ssn_issue_year_estimated > applicant_birth_year | \"ssn_postdates_birth\";\n    applicant_stated_age < 16 AND credit_inquiry_exists=\"true\" | \"minor_ssn_with_credit\";\n    * | \"none\";\n  }\n| risk_indicator_type != \"none\"\n| select([applicant_id, application_date, applicant_stated_age,\n          credit_file_age_months, ssn_issue_year_estimated,\n          applicant_birth_year, ssn_dob_gap_years,\n          risk_indicator_type, address, device_fingerprint])\n| sort(application_date, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for SSN Age and Issuance Mismatch\")`\n`comment(\"Detects synthetic identity via SSN-DOB-credit file inconsistencies\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n  event_type=\"CREDIT_APPLICATION\"\n| eval ssn_dob_gap = ssn_issue_year_estimated - applicant_birth_year\n| eval risk_indicator = case(\n    applicant_stated_age > 25 AND credit_file_age_months < 18, \"late_credit_file\",\n    ssn_issue_year_estimated > applicant_birth_year, \"ssn_postdates_birth\",\n    applicant_stated_age < 16 AND credit_inquiry_exists=\"true\", \"minor_ssn_with_credit\",\n    1=1, \"none\")\n| where risk_indicator != \"none\"\n| table applicant_id, application_date, applicant_stated_age,\n        credit_file_age_months, ssn_issue_year_estimated,\n        applicant_birth_year, ssn_dob_gap,\n        risk_indicator, address, device_fingerprint\n| sort - application_date",
+        "sql": "-- SQL for SSN Age and Issuance Mismatch\n-- Detects synthetic identity via SSN-DOB-credit file inconsistencies\nSELECT\n  a.applicant_id,\n  a.application_date,\n  DATEDIFF(YEAR, a.applicant_stated_dob, CURRENT_DATE) AS applicant_stated_age,\n  e.credit_file_age_months,\n  e.ssn_issue_year_estimated,\n  YEAR(a.applicant_stated_dob) AS applicant_birth_year,\n  (e.ssn_issue_year_estimated - YEAR(a.applicant_stated_dob)) AS ssn_dob_gap,\n  CASE\n    WHEN DATEDIFF(YEAR, a.applicant_stated_dob, CURRENT_DATE) > 25\n         AND e.credit_file_age_months < 18 THEN 'late_credit_file'\n    WHEN e.ssn_issue_year_estimated > YEAR(a.applicant_stated_dob)\n         THEN 'ssn_postdates_birth'\n    WHEN DATEDIFF(YEAR, a.applicant_stated_dob, CURRENT_DATE) < 16\n         AND e.credit_inquiry_exists = 1 THEN 'minor_ssn_with_credit'\n  END AS risk_indicator,\n  a.address,\n  a.device_fingerprint\nFROM credit_applications a\nJOIN applicant_enrichment e ON a.applicant_id = e.applicant_id\nWHERE a.event_type = 'CREDIT_APPLICATION'\n  AND (\n    (DATEDIFF(YEAR, a.applicant_stated_dob, CURRENT_DATE) > 25 AND e.credit_file_age_months < 18)\n    OR (e.ssn_issue_year_estimated > YEAR(a.applicant_stated_dob))\n    OR (DATEDIFF(YEAR, a.applicant_stated_dob, CURRENT_DATE) < 16 AND e.credit_inquiry_exists = 1)\n  )\nORDER BY a.application_date DESC"
+      },
+      "references": [
+        "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+        "SSA, Electronic Consent Based SSN Verification (eCBSV) Service",
+        "TransUnion, Synthetic Identity Detection via SSN Anomaly Analysis (2025)"
+      ],
+      "threat_path_ids": [
+        "TP-0003",
+        "TP-0029"
+      ],
+      "fraud_types": [
+        "application-fraud",
+        "identity-theft",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1589",
+        "cfpf.phase2.initial_access",
+        "flame.ssn-anomaly",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Recent immigrants who obtained SSNs later in life (legitimate late credit file)",
+        "Young adults with limited credit history applying for first credit products",
+        "Data entry errors in date of birth fields"
+      ]
+    },
+    {
+      "id": "1903959c-5364-4172-988b-8fe4bf68bb24",
+      "dl_id": "DL-0155",
+      "title": "First-Party Credit Buildup and Sudden Spike",
+      "status": "experimental",
+      "description": "Detects consumer accounts following a first-party fraud pattern: steady good payments for 6-12 months then sudden utilization spike and missed payments within 60 days. Unlike synthetic identity (TP-0003), the identity is real but the intent is fraudulent. First-party bust-out actors nurture credit profiles with consistent on-time payments and low utilization, then rapidly maximize available credit before abandoning the account. The transition from responsible usage to aggressive drawdown is the key behavioral signal. LexisNexis estimates first-party fraud now represents 36% of all detected fraud events globally.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_type": [
+            "consumer_credit",
+            "credit_card"
+          ]
+        },
+        "filter_good_history": {
+          "on_time_payment_months|gte": 6
+        },
+        "filter_utilization_spike": {
+          "previous_avg_utilization_pct|lt": 40,
+          "current_utilization_pct|gte": 85
+        },
+        "filter_missed_payment": {
+          "days_since_first_missed_payment|lte": 60,
+          "days_since_utilization_spike|lte": 60
+        },
+        "timeframe": "60d",
+        "condition": "selection AND filter_good_history AND filter_utilization_spike AND filter_missed_payment\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "credit_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "account_type",
+          "credit_limit",
+          "current_balance",
+          "current_utilization_pct",
+          "account_open_date",
+          "payment_history_months",
+          "last_payment_date"
+        ],
+        "enrichment_required": [
+          {
+            "field": "on_time_payment_months",
+            "source": "Consecutive on-time payment count from credit bureau or internal payment history"
+          },
+          {
+            "field": "previous_avg_utilization_pct",
+            "source": "Rolling average utilization over prior 6-month window"
+          },
+          {
+            "field": "days_since_first_missed_payment",
+            "source": "Derived from payment due dates and payment receipt records"
+          },
+          {
+            "field": "days_since_utilization_spike",
+            "source": "Derived from utilization crossing 85% threshold date"
+          }
+        ],
+        "derived_fields": [
+          "utilization_jump_pct",
+          "payment_behavior_change_flag"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for First-Party Credit Buildup and Sudden Spike\n// Detects bust-out pattern: 6+ months good payments then spike and missed payment\n(account_type=\"consumer_credit\" OR account_type=\"credit_card\")\non_time_payment_months>=6\nprevious_avg_utilization_pct<40\ncurrent_utilization_pct>=85\ndays_since_first_missed_payment<=60\ndays_since_utilization_spike<=60\n| utilization_jump_pct := current_utilization_pct - previous_avg_utilization_pct\n| payment_behavior_change_flag := if(days_since_first_missed_payment <= days_since_utilization_spike, \"spike_then_miss\", \"miss_then_spike\")\n| groupBy(account_id, function=[\n    collect([credit_limit, current_balance, current_utilization_pct,\n             previous_avg_utilization_pct, utilization_jump_pct,\n             on_time_payment_months, days_since_first_missed_payment,\n             account_open_date])\n  ])\n| sort(utilization_jump_pct, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for First-Party Credit Buildup and Sudden Spike\")`\n`comment(\"Detects 6+ months good payments followed by utilization spike and missed payment\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  on_time_payment_months>=6\n  previous_avg_utilization_pct<40\n  current_utilization_pct>=85\n  days_since_first_missed_payment<=60\n  days_since_utilization_spike<=60\n| eval utilization_jump = current_utilization_pct - previous_avg_utilization_pct\n| eval risk_score = case(\n    utilization_jump > 60 AND on_time_payment_months >= 12, \"critical\",\n    utilization_jump > 45, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, previous_avg_utilization_pct,\n        utilization_jump, on_time_payment_months,\n        days_since_first_missed_payment, account_open_date, risk_score\n| sort - utilization_jump",
+        "sql": "-- SQL for First-Party Credit Buildup and Sudden Spike\n-- Detects bust-out pattern: good payment history then sudden spike and missed payment\nSELECT\n  a.account_id,\n  a.account_type,\n  a.credit_limit,\n  a.current_balance,\n  a.current_utilization_pct,\n  h.previous_avg_utilization_pct,\n  (a.current_utilization_pct - h.previous_avg_utilization_pct) AS utilization_jump,\n  p.on_time_payment_months,\n  DATEDIFF(DAY, p.first_missed_payment_date, CURRENT_DATE) AS days_since_first_missed_payment,\n  a.account_open_date,\n  DATEDIFF(MONTH, a.account_open_date, CURRENT_DATE) AS account_age_months\nFROM credit_accounts a\nJOIN credit_utilization_history h ON a.account_id = h.account_id\nJOIN payment_history p ON a.account_id = p.account_id\nWHERE a.account_type IN ('consumer_credit', 'credit_card')\n  AND p.on_time_payment_months >= 6\n  AND h.previous_avg_utilization_pct < 40\n  AND a.current_utilization_pct >= 85\n  AND p.first_missed_payment_date IS NOT NULL\n  AND DATEDIFF(DAY, p.first_missed_payment_date, CURRENT_DATE) <= 60\nORDER BY utilization_jump DESC"
+      },
+      "references": [
+        "LexisNexis Risk Solutions, Global State of Fraud and Identity Report (2026)",
+        "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+        "Aite-Novarica Group, First-Party Fraud: The Growing Challenge (2023)"
+      ],
+      "threat_path_ids": [
+        "TP-0016"
+      ],
+      "fraud_types": [
+        "bust-out",
+        "credit-card-fraud",
+        "first-party-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.bust-out",
+        "flame.first-party-fraud"
+      ],
+      "falsepositives": [
+        "Legitimate financial hardship (job loss, medical emergency) causing simultaneous high spending and missed payments",
+        "Consumers running up balances during planned bankruptcy filing",
+        "Balance transfer activity creating temporary utilization spike on source account"
+      ]
+    },
+    {
+      "id": "b66aa9c6-3803-4edb-8c8b-3c139fa2ff0a",
+      "dl_id": "DL-0156",
+      "title": "Never-Pay Pattern — Immediate Max Utilization with Zero Payments",
+      "status": "experimental",
+      "description": "Detects new credit accounts with immediate high utilization and zero payment activity after 60 days — classic \"never-pay\" first-party fraud where the consumer opens an account with no intent to pay. Unlike bust-out schemes that involve a credit nurturing phase, never-pay actors maximize utilization immediately after account opening and make no payments whatsoever. This pattern is distinguishable from legitimate new account activity because at least one billing cycle has passed with zero payment response. The never-pay variant accounts for a significant share of first-party fraud losses, particularly in unsecured credit products.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_type": [
+            "consumer_credit",
+            "credit_card"
+          ]
+        },
+        "filter_new_account": {
+          "account_age_days|lte": 90
+        },
+        "filter_high_utilization": {
+          "current_utilization_pct|gte": 75
+        },
+        "filter_zero_payments": {
+          "total_payments_made": 0
+        },
+        "filter_billing_cycle": {
+          "billing_cycles_elapsed|gte": 1
+        },
+        "condition": "selection AND filter_new_account AND filter_high_utilization AND filter_zero_payments AND filter_billing_cycle\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "credit_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "account_type",
+          "credit_limit",
+          "current_balance",
+          "current_utilization_pct",
+          "account_open_date",
+          "account_age_days",
+          "total_payments_made"
+        ],
+        "enrichment_required": [
+          {
+            "field": "account_age_days",
+            "source": "Days since account opening (derived from account_open_date)"
+          },
+          {
+            "field": "billing_cycles_elapsed",
+            "source": "Count of completed billing cycles since account opening"
+          },
+          {
+            "field": "total_payments_made",
+            "source": "Sum of all payment transactions on the account"
+          }
+        ],
+        "derived_fields": [
+          "days_to_max_utilization",
+          "spend_velocity_per_day"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Never-Pay Pattern\n// Detects new accounts with immediate high utilization and zero payments\n(account_type=\"consumer_credit\" OR account_type=\"credit_card\")\naccount_age_days<=90\ncurrent_utilization_pct>=75\ntotal_payments_made=0\nbilling_cycles_elapsed>=1\n| days_to_max_utilization := account_age_days\n| spend_velocity_per_day := current_balance / account_age_days\n| groupBy(account_id, function=[\n    collect([credit_limit, current_balance, current_utilization_pct,\n             account_age_days, billing_cycles_elapsed,\n             spend_velocity_per_day, account_open_date])\n  ])\n| sort(current_utilization_pct, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Never-Pay Pattern\")`\n`comment(\"Detects new accounts with immediate high utilization and zero payments\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  account_age_days<=90\n  current_utilization_pct>=75\n  total_payments_made=0\n  billing_cycles_elapsed>=1\n| eval spend_velocity = round(current_balance / account_age_days, 2)\n| eval risk_score = case(\n    current_utilization_pct >= 95 AND billing_cycles_elapsed >= 2, \"critical\",\n    current_utilization_pct >= 85, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, account_age_days, billing_cycles_elapsed,\n        spend_velocity, account_open_date, risk_score\n| sort - current_utilization_pct",
+        "sql": "-- SQL for Never-Pay Pattern\n-- Detects new accounts with immediate high utilization and zero payments\nSELECT\n  a.account_id,\n  a.account_type,\n  a.credit_limit,\n  a.current_balance,\n  a.current_utilization_pct,\n  DATEDIFF(DAY, a.account_open_date, CURRENT_DATE) AS account_age_days,\n  b.billing_cycles_elapsed,\n  ROUND(a.current_balance / NULLIF(DATEDIFF(DAY, a.account_open_date, CURRENT_DATE), 0), 2) AS spend_velocity_per_day,\n  a.account_open_date\nFROM credit_accounts a\nJOIN billing_cycle_summary b ON a.account_id = b.account_id\nLEFT JOIN payments p ON a.account_id = p.account_id\nWHERE a.account_type IN ('consumer_credit', 'credit_card')\n  AND DATEDIFF(DAY, a.account_open_date, CURRENT_DATE) <= 90\n  AND a.current_utilization_pct >= 75\n  AND p.account_id IS NULL\n  AND b.billing_cycles_elapsed >= 1\nORDER BY a.current_utilization_pct DESC"
+      },
+      "references": [
+        "LexisNexis Risk Solutions, Global State of Fraud and Identity Report (2026)",
+        "Aite-Novarica Group, First-Party Fraud: The Growing Challenge (2023)",
+        "OCC, Comptroller's Handbook: Credit Card Lending — Early-Stage Delinquency Indicators"
+      ],
+      "threat_path_ids": [
+        "TP-0016"
+      ],
+      "fraud_types": [
+        "bust-out",
+        "credit-card-fraud",
+        "first-party-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.first-party-fraud",
+        "flame.never-pay"
+      ],
+      "falsepositives": [
+        "Newly opened accounts used for a single large planned purchase with payment pending",
+        "Accounts opened near billing cycle boundary where payment is not yet due",
+        "Corporate cards issued to employees with centralized payment processing"
+      ]
+    },
+    {
+      "id": "a2848517-37c9-429f-aed8-adfc79bac581",
+      "dl_id": "DL-0157",
+      "title": "Rapid Authorized User Addition Across Multiple Accounts",
+      "status": "experimental",
+      "description": "Detects the same individual being added as an authorized user across 3 or more credit accounts within 30 days. This technique is used in first-party bust-out and synthetic identity schemes to rapidly build credit history or gain access to multiple credit lines for coordinated bust-out. Authorized user tradelines inherit the primary account's payment history, allowing fraudsters to artificially inflate credit scores in weeks rather than months. When combined with subsequent high utilization, this pattern is a strong leading indicator of coordinated bust-out activity. The \"piggybacking\" of authorized user status is a well-documented credit manipulation technique exploited by both first-party fraudsters and synthetic identity rings.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": "authorized_user_added"
+        },
+        "aggregation": {
+          "group_by": "authorized_user_id",
+          "count_distinct": "account_id",
+          "count_distinct|gte": 3
+        },
+        "timeframe": "30d",
+        "condition": "selection AND aggregation\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "credit_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "primary_account_holder_id",
+          "authorized_user_id",
+          "authorized_user_ssn",
+          "authorized_user_name",
+          "event_type",
+          "event_date"
+        ],
+        "enrichment_required": [
+          {
+            "field": "authorized_user_credit_score",
+            "source": "Credit bureau score for the authorized user at time of addition"
+          },
+          {
+            "field": "primary_holder_relationship",
+            "source": "Declared relationship between primary holder and authorized user"
+          }
+        ],
+        "derived_fields": [
+          "distinct_account_count",
+          "addition_velocity_days",
+          "total_credit_exposure"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Rapid Authorized User Addition\n// Detects same individual added as authorized user on 3+ accounts in 30 days\nevent_type=\"authorized_user_added\"\n| groupBy(authorized_user_id, function=[\n    count(account_id, distinct=true, as=distinct_account_count),\n    collect([authorized_user_name, account_id, primary_account_holder_id, event_date])\n  ])\n| distinct_account_count >= 3\n| addition_velocity_days := duration(min(event_date), max(event_date))\n| sort(distinct_account_count, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Rapid Authorized User Addition\")`\n`comment(\"Detects same individual added as authorized user on 3+ accounts in 30 days\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  event_type=\"authorized_user_added\"\n  earliest=-30d@d latest=now\n| stats dc(account_id) as distinct_account_count,\n        values(account_id) as accounts,\n        values(primary_account_holder_id) as primary_holders,\n        min(event_date) as first_addition,\n        max(event_date) as last_addition\n  by authorized_user_id, authorized_user_name\n| where distinct_account_count >= 3\n| eval addition_span_days = round((strptime(last_addition, \"%Y-%m-%d\") - strptime(first_addition, \"%Y-%m-%d\")) / 86400, 0)\n| eval risk_score = case(\n    distinct_account_count >= 5, \"critical\",\n    distinct_account_count >= 4, \"high\",\n    1=1, \"medium\")\n| table authorized_user_id, authorized_user_name, distinct_account_count,\n        accounts, primary_holders, first_addition, last_addition,\n        addition_span_days, risk_score\n| sort - distinct_account_count",
+        "sql": "-- SQL for Rapid Authorized User Addition\n-- Detects same individual added as authorized user on 3+ accounts in 30 days\nSELECT\n  au.authorized_user_id,\n  au.authorized_user_name,\n  COUNT(DISTINCT au.account_id) AS distinct_account_count,\n  STRING_AGG(DISTINCT au.account_id, ', ') AS accounts,\n  STRING_AGG(DISTINCT au.primary_account_holder_id, ', ') AS primary_holders,\n  MIN(au.event_date) AS first_addition,\n  MAX(au.event_date) AS last_addition,\n  DATEDIFF(DAY, MIN(au.event_date), MAX(au.event_date)) AS addition_span_days\nFROM authorized_user_events au\nWHERE au.event_type = 'authorized_user_added'\n  AND au.event_date >= DATEADD(DAY, -30, CURRENT_DATE)\nGROUP BY au.authorized_user_id, au.authorized_user_name\nHAVING COUNT(DISTINCT au.account_id) >= 3\nORDER BY distinct_account_count DESC"
+      },
+      "references": [
+        "LexisNexis Risk Solutions, Global State of Fraud and Identity Report (2026)",
+        "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+        "CFPB, Authorized User Tradeline Abuse Advisory (2024)"
+      ],
+      "threat_path_ids": [
+        "TP-0003",
+        "TP-0016"
+      ],
+      "fraud_types": [
+        "bust-out",
+        "credit-piggybacking",
+        "first-party-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "cfpf.phase3.positioning",
+        "flame.bust-out",
+        "flame.credit-piggybacking",
+        "flame.first-party-fraud",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Legitimate family financial management (parent adding child to multiple accounts)",
+        "Business owners adding trusted employees across corporate credit accounts",
+        "Credit repair services using authorized user tradeline strategies (legal but monitored)"
+      ]
+    },
+    {
+      "id": "0fffda23-9253-42c6-987d-3957552a1540",
+      "dl_id": "DL-0158",
+      "title": "Document Metadata Anomaly — AI-Generated ID Document Detection",
+      "status": "experimental",
+      "description": "Detects submitted identity documents with metadata inconsistencies indicating AI generation or manipulation: PDF creation tools (Photoshop, GIMP, AI generators), timestamp manipulation (creation date after modification date), inconsistent DPI, missing EXIF data, font embedding anomalies. 85% of synthetic fraud now involves GenAI document fabrication. Underground services like OnlyFake and ProKYC produce photo-realistic government IDs for as little as $30, complete with simulated holograms and barcode data, but leave detectable metadata and structural artifacts that differ from genuine document scans.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_document_submission": {
+          "event_type": "DOCUMENT_SUBMISSION"
+        },
+        "filter_ai_score": {
+          "document_ai_score|gt": 0.7
+        },
+        "filter_metadata_anomaly": {
+          "pdf_creator|contains": [
+            "Photoshop",
+            "GIMP",
+            "Stable Diffusion",
+            "Midjourney",
+            "DALL-E",
+            "unknown_ai_generator"
+          ],
+          "exif_data_present": false
+        },
+        "filter_timestamp_anomaly": {
+          "pdf_creation_date|gt": "pdf_modification_date"
+        },
+        "filter_dpi_inconsistency": {
+          "dpi_consistency_check": false
+        },
+        "filter_font_anomaly": {
+          "font_embedding_anomaly": true
+        },
+        "condition": "selection_document_submission AND (filter_ai_score OR (filter_metadata_anomaly) OR filter_timestamp_anomaly OR filter_dpi_inconsistency OR filter_font_anomaly)\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "document_verification"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "applicant_id",
+          "event_type",
+          "submission_timestamp",
+          "document_type",
+          "document_file_hash",
+          "device_fingerprint",
+          "ip_address"
+        ],
+        "enrichment_required": [
+          {
+            "field": "document_ai_score",
+            "source": "AI forgery detection model — probability score (0-1) indicating AI generation"
+          },
+          {
+            "field": "pdf_creator",
+            "source": "PDF metadata extraction — Creator field from document properties"
+          },
+          {
+            "field": "exif_data_present",
+            "source": "EXIF metadata analysis — boolean indicating presence of camera EXIF data"
+          },
+          {
+            "field": "pdf_creation_date",
+            "source": "PDF metadata extraction — document creation timestamp"
+          },
+          {
+            "field": "pdf_modification_date",
+            "source": "PDF metadata extraction — document last modified timestamp"
+          },
+          {
+            "field": "dpi_consistency_check",
+            "source": "Image analysis — boolean indicating consistent DPI across document regions"
+          },
+          {
+            "field": "font_embedding_anomaly",
+            "source": "Font analysis — boolean indicating anomalous font embedding patterns"
+          }
+        ],
+        "derived_fields": [
+          "metadata_risk_score",
+          "anomaly_type"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for AI-Generated ID Document Detection\n// Detects document submissions with metadata inconsistencies indicating AI generation\nevent_type=\"DOCUMENT_SUBMISSION\"\n| anomaly_type := case {\n    document_ai_score > 0.7 | \"high_ai_score\";\n    pdf_creator = /Photoshop|GIMP|Stable Diffusion|Midjourney|DALL-E|unknown_ai_generator/\n      AND exif_data_present = \"false\" | \"suspicious_creator_no_exif\";\n    pdf_creation_date > pdf_modification_date | \"timestamp_manipulation\";\n    dpi_consistency_check = \"false\" | \"dpi_inconsistency\";\n    font_embedding_anomaly = \"true\" | \"font_anomaly\";\n    * | \"none\";\n  }\n| anomaly_type != \"none\"\n| select([applicant_id, submission_timestamp, document_type,\n          document_ai_score, pdf_creator, exif_data_present,\n          dpi_consistency_check, font_embedding_anomaly,\n          anomaly_type, device_fingerprint, ip_address])\n| sort(submission_timestamp, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for AI-Generated ID Document Detection\")`\n`comment(\"Detects document submissions with metadata indicating AI generation\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"DOCUMENT_SUBMISSION\"\n| eval anomaly_type = case(\n    document_ai_score > 0.7, \"high_ai_score\",\n    match(pdf_creator, \"Photoshop|GIMP|Stable Diffusion|Midjourney|DALL-E|unknown_ai_generator\")\n      AND exif_data_present=\"false\", \"suspicious_creator_no_exif\",\n    pdf_creation_date > pdf_modification_date, \"timestamp_manipulation\",\n    dpi_consistency_check=\"false\", \"dpi_inconsistency\",\n    font_embedding_anomaly=\"true\", \"font_anomaly\",\n    1=1, \"none\")\n| where anomaly_type != \"none\"\n| table applicant_id, submission_timestamp, document_type,\n        document_ai_score, pdf_creator, exif_data_present,\n        dpi_consistency_check, font_embedding_anomaly,\n        anomaly_type, device_fingerprint, ip_address\n| sort - submission_timestamp",
+        "sql": "-- SQL for AI-Generated ID Document Detection\n-- Detects document submissions with metadata indicating AI generation\nSELECT\n  d.applicant_id,\n  d.submission_timestamp,\n  d.document_type,\n  e.document_ai_score,\n  e.pdf_creator,\n  e.exif_data_present,\n  e.dpi_consistency_check,\n  e.font_embedding_anomaly,\n  CASE\n    WHEN e.document_ai_score > 0.7 THEN 'high_ai_score'\n    WHEN e.pdf_creator IN ('Photoshop', 'GIMP', 'Stable Diffusion', 'Midjourney', 'DALL-E', 'unknown_ai_generator')\n         AND e.exif_data_present = 0 THEN 'suspicious_creator_no_exif'\n    WHEN e.pdf_creation_date > e.pdf_modification_date THEN 'timestamp_manipulation'\n    WHEN e.dpi_consistency_check = 0 THEN 'dpi_inconsistency'\n    WHEN e.font_embedding_anomaly = 1 THEN 'font_anomaly'\n  END AS anomaly_type,\n  d.device_fingerprint,\n  d.ip_address\nFROM document_submissions d\nJOIN document_enrichment e ON d.document_file_hash = e.document_file_hash\nWHERE d.event_type = 'DOCUMENT_SUBMISSION'\n  AND (\n    e.document_ai_score > 0.7\n    OR (e.pdf_creator IN ('Photoshop', 'GIMP', 'Stable Diffusion', 'Midjourney', 'DALL-E', 'unknown_ai_generator')\n        AND e.exif_data_present = 0)\n    OR e.pdf_creation_date > e.pdf_modification_date\n    OR e.dpi_consistency_check = 0\n    OR e.font_embedding_anomaly = 1\n  )\nORDER BY d.submission_timestamp DESC"
+      },
+      "references": [
+        "Entrust 2025 Identity Fraud Report — 311% increase in AI-generated document fraud",
+        "LexisNexis Risk Solutions, Global State of Fraud and Identity Report 2026",
+        "Trend Micro, Underground KYC Bypass Market Research"
+      ],
+      "threat_path_ids": [
+        "TP-0003",
+        "TP-0029"
+      ],
+      "fraud_types": [
+        "ai-accelerated-fraud-infrastructure",
+        "document-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1588.005",
+        "attack.t1656",
+        "cfpf.phase2.initial_access",
+        "flame.ai-document-fraud",
+        "flame.document-forgery",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Legitimate documents that were scanned using software that strips EXIF data",
+        "Documents re-saved or compressed by institution systems altering metadata",
+        "Older documents digitized with inconsistent scanning settings across pages"
+      ]
+    },
+    {
+      "id": "fb790d19-b335-4e31-951a-b8dc5d2715ca",
+      "dl_id": "DL-0159",
+      "title": "Facial Liveness Failure Pattern — Iterative Deepfake Tuning",
+      "status": "experimental",
+      "description": "Detects repeated liveness check failures from the same device followed by eventual success — indicates iterative deepfake tuning where fraudsters adjust their deepfake parameters until they pass liveness detection. Normal users fail once (bad lighting) and succeed quickly; attackers show a pattern of 3+ failures with improving scores. Real-time face-swap applications and pre-recorded deepfake videos are used to defeat challenges requiring head turns, blinking, or phrase repetition. The iterative improvement pattern — each attempt scoring higher than the last — is a strong indicator of adversarial tuning against the liveness detection model.\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection_liveness_check": {
+          "event_type": "LIVENESS_CHECK"
+        },
+        "filter_failure_pattern": {
+          "device_fingerprint|exists": true
+        },
+        "condition": "selection_liveness_check AND filter_failure_pattern AND (count(liveness_result = \"fail\" WHERE same device_fingerprint within 24h) >= 3 AND liveness_result = \"pass\" within same 24h window) OR (liveness_score shows monotonic increase across 3+ consecutive attempts from same device_fingerprint)\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "document_verification"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "applicant_id",
+          "event_type",
+          "liveness_timestamp",
+          "liveness_result",
+          "liveness_score",
+          "device_fingerprint",
+          "ip_address",
+          "session_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "liveness_failure_count_24h",
+            "source": "Aggregation — count of liveness failures per device_fingerprint in rolling 24h window"
+          },
+          {
+            "field": "liveness_score_trend",
+            "source": "Derived — directional trend of liveness_score across consecutive attempts"
+          },
+          {
+            "field": "time_between_attempts",
+            "source": "Derived — interval between consecutive liveness check attempts"
+          },
+          {
+            "field": "video_compression_anomaly",
+            "source": "Liveness session analysis — unusual video compression artifacts indicating injection"
+          }
+        ],
+        "derived_fields": [
+          "failure_count_before_success",
+          "score_improvement_pattern",
+          "avg_time_between_attempts"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Iterative Deepfake Tuning Detection\n// Detects repeated liveness failures followed by success from same device\nevent_type=\"LIVENESS_CHECK\"\n| groupBy(device_fingerprint, function=[\n    count(liveness_result = \"fail\", as=failure_count),\n    count(liveness_result = \"pass\", as=success_count),\n    collect([liveness_score], limit=20) as score_history,\n    min(liveness_timestamp) as first_attempt,\n    max(liveness_timestamp) as last_attempt\n  ])\n| time_window_hours := (last_attempt - first_attempt) / 3600\n| time_window_hours <= 24\n| failure_count >= 3 AND success_count >= 1\n| select([device_fingerprint, failure_count, success_count,\n          score_history, first_attempt, last_attempt,\n          time_window_hours])\n| sort(failure_count, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Iterative Deepfake Tuning Detection\")`\n`comment(\"Detects repeated liveness failures followed by success from same device\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"LIVENESS_CHECK\"\n| sort 0 device_fingerprint, liveness_timestamp\n| eventstats\n    count(if(liveness_result=\"fail\", 1, NULL)) as failure_count,\n    count(if(liveness_result=\"pass\", 1, NULL)) as success_count,\n    min(liveness_timestamp) as first_attempt,\n    max(liveness_timestamp) as last_attempt\n    by device_fingerprint\n| where (last_attempt - first_attempt) <= 86400\n    AND failure_count >= 3 AND success_count >= 1\n| streamstats current=t window=0 values(liveness_score) as score_history\n    by device_fingerprint\n| dedup device_fingerprint\n| table device_fingerprint, failure_count, success_count,\n        score_history, first_attempt, last_attempt\n| sort - failure_count",
+        "sql": "-- SQL for Iterative Deepfake Tuning Detection\n-- Detects repeated liveness failures followed by success from same device\nWITH liveness_stats AS (\n  SELECT\n    l.device_fingerprint,\n    l.applicant_id,\n    COUNT(CASE WHEN l.liveness_result = 'fail' THEN 1 END) AS failure_count,\n    COUNT(CASE WHEN l.liveness_result = 'pass' THEN 1 END) AS success_count,\n    MIN(l.liveness_timestamp) AS first_attempt,\n    MAX(l.liveness_timestamp) AS last_attempt,\n    DATEDIFF(HOUR, MIN(l.liveness_timestamp), MAX(l.liveness_timestamp)) AS time_window_hours,\n    STRING_AGG(CAST(l.liveness_score AS VARCHAR), ',' ORDER BY l.liveness_timestamp) AS score_history\n  FROM liveness_checks l\n  WHERE l.event_type = 'LIVENESS_CHECK'\n    AND l.liveness_timestamp >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\n  GROUP BY l.device_fingerprint, l.applicant_id\n)\nSELECT\n  device_fingerprint,\n  applicant_id,\n  failure_count,\n  success_count,\n  first_attempt,\n  last_attempt,\n  time_window_hours,\n  score_history\nFROM liveness_stats\nWHERE failure_count >= 3\n  AND success_count >= 1\n  AND time_window_hours <= 24\nORDER BY failure_count DESC"
+      },
+      "references": [
+        "Entrust 2025 Identity Fraud Report — deepfake liveness bypass trends",
+        "NIST SP 800-63B, Digital Identity Guidelines — biometric verification",
+        "LexisNexis Risk Solutions, Global State of Fraud and Identity Report 2026"
+      ],
+      "threat_path_ids": [
+        "TP-0018",
+        "TP-0029"
+      ],
+      "fraud_types": [
+        "ai-accelerated-fraud-infrastructure",
+        "document-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1204",
+        "attack.t1656",
+        "cfpf.phase2.initial_access",
+        "flame.ai-accelerated-fraud-infrastructure",
+        "flame.deepfake-detection",
+        "flame.liveness-bypass"
+      ],
+      "falsepositives": [
+        "Users with poor camera quality or lighting requiring multiple genuine attempts",
+        "Users unfamiliar with liveness check process who need several tries",
+        "Network connectivity issues causing liveness check session interruptions"
+      ]
+    },
+    {
+      "id": "a6c8ec34-f2ac-43c2-b3f6-ff08aae94a25",
+      "dl_id": "DL-0160",
+      "title": "Cross-Application Identity Collision — Same Biometric or Device Across Different Identities",
+      "status": "experimental",
+      "description": "Detects the same biometric template (face embedding), device fingerprint, or behavioral pattern appearing across applications submitted under different identity names. Fraudsters using AI-generated faces may reuse the same base model or device, creating detectable collisions in the biometric or device space. Even when AI-generated facial images appear visually distinct, the underlying face embedding vectors may cluster due to shared generative model artifacts. Similarly, device fingerprints and behavioral biometric profiles persist across sessions even when the presented identity changes, enabling cross-application correlation that reveals synthetic identity networks.\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection_application": {
+          "event_type": "CREDIT_APPLICATION"
+        },
+        "filter_biometric_collision": {
+          "face_embedding_hash|count_distinct(applicant_name)|gt": 1
+        },
+        "filter_device_collision": {
+          "device_fingerprint|count_distinct(ssn_hash)|gt": 1
+        },
+        "condition": "selection_application AND (same face_embedding_hash across 2+ different applicant_name/ssn_hash combinations within 90 days) OR (same device_fingerprint across 2+ different applicant_name/ssn_hash combinations within 90 days)\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "document_verification"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "applicant_id",
+          "event_type",
+          "application_date",
+          "applicant_name",
+          "ssn_hash",
+          "device_fingerprint",
+          "ip_address",
+          "session_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "face_embedding_hash",
+            "source": "Biometric verification — locality-sensitive hash of facial embedding vector"
+          },
+          {
+            "field": "face_embedding_similarity",
+            "source": "Biometric verification — cosine similarity between face embeddings across applications"
+          },
+          {
+            "field": "behavioral_profile_hash",
+            "source": "Behavioral biometrics — hash of behavioral pattern (typing, mouse movement, scroll)"
+          }
+        ],
+        "derived_fields": [
+          "identity_collision_type",
+          "collision_count",
+          "distinct_identities_per_signal"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Cross-Application Identity Collision Detection\n// Detects same biometric or device across different identity applications\nevent_type=\"CREDIT_APPLICATION\"\n| application_date > now() - 90d\n| groupBy(face_embedding_hash, function=[\n    count(distinct=true, field=applicant_name, as=distinct_names),\n    count(distinct=true, field=ssn_hash, as=distinct_ssns),\n    collect([applicant_id, applicant_name, ssn_hash, application_date,\n             device_fingerprint], limit=50) as application_details\n  ])\n| distinct_names >= 2 OR distinct_ssns >= 2\n| identity_collision_type := \"biometric_collision\"\n| select([face_embedding_hash, distinct_names, distinct_ssns,\n          identity_collision_type, application_details])\n| sort(distinct_names, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Cross-Application Identity Collision Detection\")`\n`comment(\"Detects same biometric or device across different identity applications\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"CREDIT_APPLICATION\"\n  earliest=-90d@d\n| stats\n    dc(applicant_name) as distinct_names,\n    dc(ssn_hash) as distinct_ssns,\n    values(applicant_id) as applicant_ids,\n    values(applicant_name) as names,\n    values(ssn_hash) as ssn_hashes,\n    values(application_date) as application_dates\n    by face_embedding_hash\n| where distinct_names >= 2 OR distinct_ssns >= 2\n| eval identity_collision_type = \"biometric_collision\"\n| append [\n    search index=flame_banking sourcetype=flame:document_verification\n      event_type=\"CREDIT_APPLICATION\"\n      earliest=-90d@d\n    | stats\n        dc(applicant_name) as distinct_names,\n        dc(ssn_hash) as distinct_ssns,\n        values(applicant_id) as applicant_ids,\n        values(applicant_name) as names,\n        values(ssn_hash) as ssn_hashes,\n        values(application_date) as application_dates\n        by device_fingerprint\n    | where distinct_names >= 2 OR distinct_ssns >= 2\n    | eval identity_collision_type = \"device_collision\"\n  ]\n| sort - distinct_names",
+        "sql": "-- SQL for Cross-Application Identity Collision Detection\n-- Detects same biometric or device across different identity applications\n-- Part 1: Biometric collisions (same face_embedding_hash, different identities)\nSELECT\n  'biometric_collision' AS identity_collision_type,\n  a.face_embedding_hash AS collision_key,\n  COUNT(DISTINCT a.applicant_name) AS distinct_names,\n  COUNT(DISTINCT a.ssn_hash) AS distinct_ssns,\n  STRING_AGG(DISTINCT a.applicant_name, ', ') AS names,\n  STRING_AGG(DISTINCT a.applicant_id, ', ') AS applicant_ids,\n  MIN(a.application_date) AS earliest_application,\n  MAX(a.application_date) AS latest_application\nFROM credit_applications a\nWHERE a.event_type = 'CREDIT_APPLICATION'\n  AND a.application_date >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND a.face_embedding_hash IS NOT NULL\nGROUP BY a.face_embedding_hash\nHAVING COUNT(DISTINCT a.applicant_name) >= 2\n   OR COUNT(DISTINCT a.ssn_hash) >= 2\n\nUNION ALL\n\n-- Part 2: Device collisions (same device_fingerprint, different identities)\nSELECT\n  'device_collision' AS identity_collision_type,\n  a.device_fingerprint AS collision_key,\n  COUNT(DISTINCT a.applicant_name) AS distinct_names,\n  COUNT(DISTINCT a.ssn_hash) AS distinct_ssns,\n  STRING_AGG(DISTINCT a.applicant_name, ', ') AS names,\n  STRING_AGG(DISTINCT a.applicant_id, ', ') AS applicant_ids,\n  MIN(a.application_date) AS earliest_application,\n  MAX(a.application_date) AS latest_application\nFROM credit_applications a\nWHERE a.event_type = 'CREDIT_APPLICATION'\n  AND a.application_date >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND a.device_fingerprint IS NOT NULL\nGROUP BY a.device_fingerprint\nHAVING COUNT(DISTINCT a.applicant_name) >= 2\n   OR COUNT(DISTINCT a.ssn_hash) >= 2\n\nORDER BY distinct_names DESC"
+      },
+      "references": [
+        "Federal Reserve Board, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+        "Entrust 2025 Identity Fraud Report — cross-platform identity correlation",
+        "LexisNexis Risk Solutions, Global State of Fraud and Identity Report 2026"
+      ],
+      "threat_path_ids": [
+        "TP-0003",
+        "TP-0029"
+      ],
+      "fraud_types": [
+        "ai-accelerated-fraud-infrastructure",
+        "document-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1585.001",
+        "attack.t1656",
+        "cfpf.phase2.initial_access",
+        "flame.biometric-collision",
+        "flame.cross-application-correlation",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Household members applying from the same shared device (device collision only)",
+        "Identical twins or family members with similar facial features (biometric collision)",
+        "Corporate devices used by loan officers submitting multiple client applications"
+      ]
+    },
+    {
+      "id": "48c67c22-55fb-47fc-bb4d-99d4891ef92e",
+      "dl_id": "DL-0161",
+      "title": "AI Document Template Cluster — Identical Formatting Patterns Across Applications",
+      "status": "experimental",
+      "description": "Detects clusters of submitted ID documents sharing identical formatting artifacts, template structures, or AI generation signatures. AI document generators produce documents with consistent pixel-level artifacts, font embedding patterns, and template metadata even when the identity details differ. When 3+ documents from different applicants show template_similarity_score > 0.85, this indicates a common AI generator. Underground forgery services like OnlyFake successors use a limited number of document templates per jurisdiction, creating detectable clustering when multiple synthetic identities are onboarded through the same forgery pipeline. Template similarity analysis across the document corpus reveals these clusters even when individual documents pass automated verification checks.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_document_submission": {
+          "event_type": "DOCUMENT_SUBMISSION"
+        },
+        "filter_template_cluster": {
+          "template_similarity_score|gt": 0.85
+        },
+        "condition": "selection_document_submission AND template_similarity_score > 0.85 across 3+ documents from different applicant_name/ssn_hash combinations within 90 days\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "document_verification"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "applicant_id",
+          "event_type",
+          "submission_timestamp",
+          "document_type",
+          "document_file_hash",
+          "applicant_name",
+          "ssn_hash",
+          "device_fingerprint"
+        ],
+        "enrichment_required": [
+          {
+            "field": "template_similarity_score",
+            "source": "Document analysis — pairwise similarity score (0-1) comparing document template structure"
+          },
+          {
+            "field": "template_cluster_id",
+            "source": "Document clustering model — cluster assignment based on template structural features"
+          },
+          {
+            "field": "pixel_artifact_hash",
+            "source": "Image analysis — perceptual hash of pixel-level artifacts in document background"
+          },
+          {
+            "field": "font_profile_hash",
+            "source": "Font analysis — hash of font embedding characteristics across document text regions"
+          },
+          {
+            "field": "template_source_match",
+            "source": "Threat intel — match against known forgery service template database"
+          }
+        ],
+        "derived_fields": [
+          "cluster_size",
+          "distinct_identities_in_cluster",
+          "cluster_time_span_days"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for AI Document Template Cluster Detection\n// Detects clusters of documents sharing AI generation template signatures\nevent_type=\"DOCUMENT_SUBMISSION\"\n| submission_timestamp > now() - 90d\n| groupBy(template_cluster_id, function=[\n    count(as=cluster_size),\n    count(distinct=true, field=applicant_name, as=distinct_applicants),\n    count(distinct=true, field=ssn_hash, as=distinct_ssns),\n    avg(template_similarity_score, as=avg_similarity),\n    collect([applicant_id, applicant_name, submission_timestamp,\n             document_type, device_fingerprint], limit=50) as cluster_members,\n    min(submission_timestamp) as cluster_start,\n    max(submission_timestamp) as cluster_end\n  ])\n| cluster_size >= 3 AND distinct_applicants >= 3 AND avg_similarity > 0.85\n| select([template_cluster_id, cluster_size, distinct_applicants,\n          distinct_ssns, avg_similarity, cluster_start, cluster_end,\n          cluster_members])\n| sort(cluster_size, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for AI Document Template Cluster Detection\")`\n`comment(\"Detects clusters of documents sharing AI generation template signatures\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"DOCUMENT_SUBMISSION\"\n  earliest=-90d@d\n| stats\n    count as cluster_size,\n    dc(applicant_name) as distinct_applicants,\n    dc(ssn_hash) as distinct_ssns,\n    avg(template_similarity_score) as avg_similarity,\n    values(applicant_id) as applicant_ids,\n    values(applicant_name) as names,\n    values(document_type) as document_types,\n    min(submission_timestamp) as cluster_start,\n    max(submission_timestamp) as cluster_end\n    by template_cluster_id\n| where cluster_size >= 3 AND distinct_applicants >= 3 AND avg_similarity > 0.85\n| eval cluster_time_span_days = round((cluster_end - cluster_start) / 86400, 1)\n| table template_cluster_id, cluster_size, distinct_applicants,\n        distinct_ssns, avg_similarity, cluster_start, cluster_end,\n        cluster_time_span_days, applicant_ids, names, document_types\n| sort - cluster_size",
+        "sql": "-- SQL for AI Document Template Cluster Detection\n-- Detects clusters of documents sharing AI generation template signatures\nSELECT\n  d.template_cluster_id,\n  COUNT(*) AS cluster_size,\n  COUNT(DISTINCT d.applicant_name) AS distinct_applicants,\n  COUNT(DISTINCT d.ssn_hash) AS distinct_ssns,\n  AVG(d.template_similarity_score) AS avg_similarity,\n  MIN(d.submission_timestamp) AS cluster_start,\n  MAX(d.submission_timestamp) AS cluster_end,\n  DATEDIFF(DAY, MIN(d.submission_timestamp), MAX(d.submission_timestamp)) AS cluster_time_span_days,\n  STRING_AGG(DISTINCT d.applicant_name, ', ') AS names,\n  STRING_AGG(DISTINCT d.applicant_id, ', ') AS applicant_ids\nFROM document_submissions d\nWHERE d.event_type = 'DOCUMENT_SUBMISSION'\n  AND d.submission_timestamp >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND d.template_cluster_id IS NOT NULL\nGROUP BY d.template_cluster_id\nHAVING COUNT(*) >= 3\n  AND COUNT(DISTINCT d.applicant_name) >= 3\n  AND AVG(d.template_similarity_score) > 0.85\nORDER BY COUNT(*) DESC"
+      },
+      "references": [
+        "Entrust 2025 Identity Fraud Report — document template clustering analysis",
+        "Trend Micro, Underground KYC Bypass Market Research — forgery service template reuse",
+        "LexisNexis Risk Solutions, Global State of Fraud and Identity Report 2026"
+      ],
+      "threat_path_ids": [
+        "TP-0029"
+      ],
+      "fraud_types": [
+        "ai-accelerated-fraud-infrastructure",
+        "document-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "attack.t1588.005",
+        "attack.t1656",
+        "cfpf.phase2.initial_access",
+        "flame.ai-document-fraud",
+        "flame.forgery-service-detection",
+        "flame.template-clustering"
+      ],
+      "falsepositives": [
+        "Legitimate documents from the same jurisdiction and issuance period sharing standard government templates",
+        "Documents scanned by the same institutional scanner producing consistent compression artifacts",
+        "Batch submissions from legitimate corporate onboarding processes"
       ]
     }
   ]

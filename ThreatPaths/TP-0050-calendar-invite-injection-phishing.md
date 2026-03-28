@@ -56,6 +56,7 @@ related_tps:
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-UK-PSR-APP
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

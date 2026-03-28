@@ -1,20 +1,4 @@
 {
   "tp_id": "TP-0032",
-  "rules": [
-    {
-      "type": "sql",
-      "content": "-- Detect unlimited token approvals to contracts not in verified/whitelist\nSELECT\n    tx_hash,\n    block_timestamp,\n    from_address AS victim_wallet,\n    to_address AS token_contract,\n    CAST(CONV(SUBSTRING(input_data, 75, 64), 16, 10) AS DECIMAL) AS approval_amount,\n    CONCAT('0x', SUBSTRING(input_data, 35, 40)) AS spender_address\nFROM ethereum.transactions\nWHERE SUBSTRING(input_data, 1, 10) = '0x095ea7b3'  -- approve() function selector\n  AND SUBSTRING(input_data, 75, 64) = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'  -- unlimited approval\n  AND CONCAT('0x', SUBSTRING(input_data, 35, 40)) NOT IN (SELECT address FROM verified_contracts)\n  AND block_timestamp >= DATE_SUB(NOW(), INTERVAL 24 HOUR)\nORDER BY block_timestamp DESC;",
-      "title": "On-Chain Query — Unlimited ERC-20 Approval to Unverified Contract (Phase 2)"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Permit2 Batch Transfer Following New Permit Signature\nstatus: experimental\ndescription: Detects batch token transfers via Permit2 contract that follow a newly submitted permit signature, indicative of wallet drainer execution.\nlogsource:\n    product: blockchain_monitoring\n    service: ethereum\ndetection:\n    selection_permit2:\n        contract_address: \"0x000000000022d473030f116ddee9f6b43ac78ba3\"  # Canonical Permit2\n        method: \"permitBatchTransferFrom\"\n    filter_value:\n        total_value_usd|gte: 1000\n    condition: selection_permit2 and filter_value\nlevel: critical\ntags:\n    - fraud.wallet_drainer\n    - cfpf.phase4.execution",
-      "title": "Sigma — Permit2 Batch Transfer Anomaly (Phase 4)"
-    },
-    {
-      "type": "spl",
-      "content": "index=domain_monitoring sourcetype=cert_transparency\n| search domain=\"*airdrop*\" OR domain=\"*claim*\" OR domain=\"*mint*\" OR domain=\"*drop*\"\n| eval age_hours=round((now() - registration_epoch) / 3600, 1)\n| where age_hours < 48\n| lookup verified_web3_domains domain AS domain OUTPUT is_legitimate\n| where isnull(is_legitimate) OR is_legitimate=\"false\"\n| table domain, registration_date, age_hours, registrar, hosting_ip, ssl_issuer\n| sort age_hours",
-      "title": "Splunk — Phishing Domain Detection for Web3 Projects (Phase 1)"
-    }
-  ]
+  "rules": []
 }

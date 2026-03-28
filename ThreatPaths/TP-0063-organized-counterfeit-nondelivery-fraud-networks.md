@@ -62,6 +62,7 @@ related_tps:
 regulatory_refs:
   - REG-NRF-RFT-V1
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

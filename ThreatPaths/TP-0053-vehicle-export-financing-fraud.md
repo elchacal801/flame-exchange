@@ -59,6 +59,7 @@ related_tps:
 regulatory_refs:
   - REG-FINCEN-AML
   - REG-CFPB-REGE
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

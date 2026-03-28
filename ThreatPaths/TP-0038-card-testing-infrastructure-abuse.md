@@ -57,6 +57,9 @@ related_tps:
 regulatory_refs:
   - REG-FINCEN-CDD
   - REG-OCC-FRAUD
+baseline_ids:
+  - BL-0016
+  - BL-0018
 tags:
   - card-testing
   - BIN-attack

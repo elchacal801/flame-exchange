@@ -2,19 +2,16 @@
   "tp_id": "TP-0038",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT\n    m.merchant_id,\n    m.merchant_name,\n    m.account_open_date,\n    COUNT(*) AS auth_count,\n    COUNT(DISTINCT a.card_number_hash) AS unique_cards,\n    SUM(CASE WHEN a.response_code != '00' THEN 1 ELSE 0 END)::FLOAT / COUNT(*) AS decline_rate,\n    SUM(CASE WHEN a.amount < 1.00 THEN 1 ELSE 0 END)::FLOAT / COUNT(*) AS sub_dollar_rate,\n    AVG(a.amount) AS avg_amount,\n    COUNT(DISTINCT a.source_ip) AS unique_ips\nFROM authorizations a\nJOIN merchants m ON a.merchant_id = m.merchant_id\nWHERE a.auth_timestamp > CURRENT_TIMESTAMP - INTERVAL '1 hour'\n    AND a.amount < 1.00\nGROUP BY m.merchant_id, m.merchant_name, m.account_open_date\nHAVING COUNT(*) > 50\n    AND (SUM(CASE WHEN a.response_code != '00' THEN 1 ELSE 0 END)::FLOAT / COUNT(*)) > 0.70\nORDER BY auth_count DESC;",
-      "title": "SQL -- Card Testing Micro-Authorization Detection (Phase 4)"
-    },
-    {
-      "type": "spl",
-      "content": "index=authorization sourcetype=card_auth amount<1.00\n| eval bin_prefix = substr(card_number_hash, 1, 8)\n| eval card_suffix = substr(card_number_hash, 9, 99)\n| stats count AS auth_count,\n        dc(card_number_hash) AS unique_cards,\n        values(card_suffix) AS suffixes,\n        sum(eval(if(response_code!=\"00\", 1, 0))) AS declines,\n        dc(source_ip) AS unique_ips\n    BY bin_prefix, merchant_id\n| eval decline_rate = round(declines / auth_count * 100, 1)\n| where auth_count > 20 AND unique_cards > 15 AND decline_rate > 80\n| eval sequential_indicator = if(unique_cards > 10 AND auth_count / unique_cards < 1.5, \"HIGH\", \"MODERATE\")\n| table merchant_id, bin_prefix, auth_count, unique_cards, decline_rate, sequential_indicator, unique_ips\n| sort - auth_count",
-      "title": "Splunk -- BIN Enumeration Pattern Detection (Phase 4)"
+      "type": "sigma",
+      "content": "title: Card Testing Micro-Authorization Velocity Spike\nstatus: experimental\ndescription: Detects high velocity of sub-dollar ($0.01-$0.99) authorization attempts from the same merchant or source against multiple distinct card numbers, a pattern characteristic of automated card testing ope\nlogsource:\n    product: ecommerce\n    service: payment_gateway\ndetection:\n    selection:\n        transaction_amount|lt: 1.0\n        event_type|contains:\n            - \"authorization\"\n            - \"auth_request\"\n    aggregation:\n        count|gte: 50\n        groupby: \"merchant_id\"\n        timeframe: \"1h\"\n    filter_card_diversity:\n        dc_card_number_hash|gte: 30\n    filter_decline_rate:\n        decline_rate|gte: 0.5\n    condition: selection and aggregation and filter_card_diversity and filter_decline_rate\nlevel: high",
+      "title": "DL-0083: Card Testing Micro-Authorization Velocity Spike (Sigma)",
+      "source_rule": "DL-0083"
     },
     {
       "type": "sigma",
-      "content": "title: New Merchant Card Testing Activity\nstatus: experimental\ndescription: Detects card testing patterns on merchant accounts opened within the last 90 days, characterized by high-velocity sub-dollar authorizations and elevated decline rates.\nlogsource:\n    product: ecommerce\n    service: payment_gateway\ndetection:\n    selection:\n        transaction_amount|lt: 1.00\n        merchant_account_age_days|lte: 90\n    aggregation:\n        count|gte: 50\n        groupby: merchant_id\n        timeframe: 1h\n    filter_decline:\n        decline_rate|gte: 0.5\n    condition: selection and aggregation and filter_decline\nlevel: high\ntags:\n    - fraud.card_testing\n    - cfpf.phase4.execution\n    - attack.t1110.001",
-      "title": "Sigma -- Tester Merchant Early-Life Anomaly (Phase 2-4)"
+      "content": "title: BIN Enumeration Sequential Card Number Attack\nstatus: experimental\ndescription: Detects sequential or near-sequential card number authorization attempts sharing the same Bank Identification Number (BIN) prefix with incremental variation in the remaining digits. BIN enumeration at\nlogsource:\n    product: ecommerce\n    service: payment_gateway\ndetection:\n    selection:\n        transaction_amount|lt: 5.0\n        event_type|contains:\n            - \"authorization\"\n            - \"auth_request\"\n    aggregation_bin:\n        count|gte: 10\n        groupby:\n            - \"merchant_id\"\n            - \"bin_prefix_8\"\n        timeframe: \"30m\"\n    filter_sequential:\n        sequential_card_numbers|gte: 5\n        card_number_increment_pattern: true\n    filter_decline:\n        decline_rate|gte: 0.8\n    condition: selection and aggregation_bin and filter_sequential and filter_decline\nlevel: critical",
+      "title": "DL-0084: BIN Enumeration Sequential Card Number Attack (Sigma)",
+      "source_rule": "DL-0084"
     }
   ]
 }

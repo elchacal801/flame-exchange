@@ -52,6 +52,8 @@ related_tps:
     relationship: shares-infrastructure
 regulatory_refs:
   - REG-NRF-RFT-V1
+baseline_ids:
+  - BL-0008
 tags:
   - refund-fraud
   - FTID

@@ -61,6 +61,8 @@ regulatory_refs:
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-FINCEN-AML
   - REG-FBI-IC3
+baseline_ids:
+  - BL-0031
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

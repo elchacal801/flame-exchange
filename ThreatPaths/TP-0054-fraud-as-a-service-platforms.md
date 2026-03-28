@@ -71,6 +71,9 @@ regulatory_refs:
   - REG-RF-CTA-2026-0319
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+baseline_ids:
+  - BL-0033
+  - BL-0036
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

@@ -63,6 +63,7 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+baseline_ids: []
 tags:
   - human-trafficking
   - scam-compound

@@ -60,6 +60,8 @@ regulatory_refs:
   - REG-RF-CTA-2026-0319
   - REG-INTERPOL-GFFTA
   - REG-INTERPOL-SHADOW-STORM
+baseline_ids:
+  - BL-0036
 geopolitical_timing: none
 nation_state_nexus: hybrid
 tags:

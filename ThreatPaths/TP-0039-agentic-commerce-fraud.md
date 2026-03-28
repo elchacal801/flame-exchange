@@ -71,6 +71,8 @@ regulatory_refs:
   - REG-DORA
   - REG-PSD3-SCA
   - REG-INTERPOL-GFFTA
+baseline_ids:
+  - BL-0019
 tags:
   - agentic-ai
   - ai-agent

@@ -69,6 +69,9 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-DORA
   - REG-WCI-2024
+baseline_ids:
+  - BL-0028
+  - BL-0033
 geopolitical_timing: none
 nation_state_nexus: hybrid
 tags:

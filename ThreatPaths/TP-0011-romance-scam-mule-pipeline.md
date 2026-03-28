@@ -55,6 +55,9 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+baseline_ids:
+  - BL-0003
+  - BL-0031
 tags:
   - pig-butchering
   - social-engineering

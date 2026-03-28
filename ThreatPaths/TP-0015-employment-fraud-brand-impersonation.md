@@ -48,6 +48,7 @@ regulatory_refs:
   - REG-FINCEN-CDD
   - REG-UK-PSR-APP
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids: []
 tags:
   - employment-fraud
   - brand-impersonation

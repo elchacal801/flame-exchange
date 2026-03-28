@@ -63,6 +63,8 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids:
+  - BL-0012
 tags:
   - deepfake-voice
   - CEO-fraud

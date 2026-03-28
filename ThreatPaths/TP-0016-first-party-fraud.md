@@ -46,6 +46,8 @@ related_tps:
   - id: TP-0040
     relationship: variant-of
 regulatory_refs: []
+baseline_ids:
+  - BL-0032
 tags:
   - first-party
   - credit-card

@@ -65,6 +65,8 @@ regulatory_refs:
   - REG-DORA
   - REG-FFIEC-AUTH
   - REG-OCC-FRAUD
+baseline_ids:
+  - BL-0017
 tags:
   - digital-wallet
   - nfc-relay

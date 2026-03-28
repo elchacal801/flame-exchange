@@ -60,6 +60,10 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+baseline_ids:
+  - BL-0004
+  - BL-0031
+  - BL-0034
 tags:
   - pig-butchering
   - crypto-scam

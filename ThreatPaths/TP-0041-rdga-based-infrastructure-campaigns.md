@@ -58,6 +58,8 @@ related_tps:
     relationship: shares-infrastructure
 regulatory_refs:
   - REG-RF-CTA-2026-0319
+baseline_ids:
+  - BL-0021
 tags:
   - rdga
   - registered-dga

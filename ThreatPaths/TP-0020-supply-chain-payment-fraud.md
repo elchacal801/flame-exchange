@@ -54,6 +54,9 @@ regulatory_refs:
   - REG-FATF-R16
   - REG-FBI-IC3
   - REG-OCC-FRAUD
+baseline_ids:
+  - BL-0002
+  - BL-0012
 tags:
   - supply-chain
   - b2b-payments

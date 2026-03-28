@@ -285,6 +285,12 @@ CREATE TABLE IF NOT EXISTS submission_ucff_domains (
     FOREIGN KEY (submission_id) REFERENCES submissions(id)
 );
 
+CREATE TABLE IF NOT EXISTS submission_baseline_ids (
+    submission_id TEXT NOT NULL,
+    baseline_id TEXT NOT NULL,
+    FOREIGN KEY (submission_id) REFERENCES submissions(id)
+);
+
 CREATE TABLE IF NOT EXISTS submission_related_tps (
     submission_id TEXT NOT NULL,
     related_tp_id TEXT NOT NULL,
@@ -292,6 +298,7 @@ CREATE TABLE IF NOT EXISTS submission_related_tps (
     FOREIGN KEY (submission_id) REFERENCES submissions(id)
 );
 
+CREATE INDEX IF NOT EXISTS idx_baseline_ids ON submission_baseline_ids(baseline_id);
 CREATE INDEX IF NOT EXISTS idx_related_tps ON submission_related_tps(related_tp_id);
 CREATE INDEX IF NOT EXISTS idx_reg_source ON regulatory_alerts(source);
 CREATE INDEX IF NOT EXISTS idx_reg_date ON regulatory_alerts(date);
@@ -408,6 +415,16 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
             (sub_id, json.dumps(ucff))
         )
 
+    # Baseline IDs — link TPs to applicable baselines
+    baseline_ids = meta.get("baseline_ids")
+    if baseline_ids and isinstance(baseline_ids, list):
+        for bl_id in baseline_ids:
+            if bl_id:
+                conn.execute(
+                    "INSERT INTO submission_baseline_ids (submission_id, baseline_id) VALUES (?, ?)",
+                    (sub_id, str(bl_id))
+                )
+
     # Related TPs — typed cross-references
     related_tps = meta.get("related_tps")
     if related_tps and isinstance(related_tps, list):
@@ -431,6 +448,7 @@ _VALID_MULTI_TABLES = {
     ("submission_mitre_f3", "technique_id"),
     ("submission_groupib_stages", "stage"),
     ("submission_regulatory_refs", "reg_id"),
+    ("submission_baseline_ids", "baseline_id"),
 }
 
 
@@ -784,6 +802,9 @@ def _build_full_entry(conn: sqlite3.Connection, entry: dict) -> dict:
         (sub_id,)
     ).fetchone()
     entry["ucff_domains"] = json.loads(ucff_row[0]) if ucff_row else {}
+
+    # Baseline IDs
+    entry["baseline_ids"] = _fetch_list(conn, "submission_baseline_ids", "baseline_id", sub_id)
 
     # Cross-reference: detection rules that reference this TP
     entry["detection_rule_ids"] = _fetch_detection_rule_ids(conn, sub_id)

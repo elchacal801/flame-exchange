@@ -52,6 +52,8 @@ regulatory_refs:
   - REG-FBI-IC3
   - REG-OCC-FRAUD
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids:
+  - BL-0012
 tags:
   - vendor-impersonation
   - accounts-payable

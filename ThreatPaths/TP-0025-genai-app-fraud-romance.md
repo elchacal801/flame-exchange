@@ -68,6 +68,9 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-UK-PSR-APP
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids:
+  - BL-0003
+  - BL-0033
 tags:
   - genai
   - deepfake

@@ -582,6 +582,21 @@ def validate_file(filepath: Path) -> ValidationResult:
                 if ref not in VALID_REGULATORY_IDS:
                     result.error(f"Unrecognized regulatory_refs entry '{ref}' (not in config/regulatory_requirements.yaml)")
 
+    # --- Baseline references (optional, ThreatPath only) ---
+    baseline_ids = meta.get("baseline_ids")
+    if baseline_ids is not None:
+        if not isinstance(baseline_ids, list):
+            result.error("baseline_ids must be a list")
+        else:
+            repo_root = filepath.resolve().parent.parent
+            for bl_id in baseline_ids:
+                if not re.match(r"^BL-\d{4}$", str(bl_id)):
+                    result.error(f"baseline_ids entry must match BL-XXXX format, got '{bl_id}'")
+                else:
+                    bl_matches = list((repo_root / "Baselines").glob(f"{bl_id}-*.md"))
+                    if not bl_matches:
+                        result.warn(f"baseline_ids reference '{bl_id}' does not match any file in Baselines/")
+
     # --- Body section validation (only for ThreatPath) ---
     if category != "Baseline":
         body_after_frontmatter = text[match.end():]

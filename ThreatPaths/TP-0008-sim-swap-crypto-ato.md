@@ -58,6 +58,7 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids: []
 tags:
   - SIM-swap
   - cryptocurrency

@@ -93,7 +93,17 @@
     "report": "Level 3",
     "improve": "Level 4"
   },
-  "detection_rule_ids": [],
+  "baseline_ids": [
+    "BL-0007"
+  ],
+  "detection_rule_ids": [
+    "DL-0152",
+    "DL-0154",
+    "DL-0158",
+    "DL-0159",
+    "DL-0160",
+    "DL-0161"
+  ],
   "related_tps": [
     {
       "id": "TP-0003",

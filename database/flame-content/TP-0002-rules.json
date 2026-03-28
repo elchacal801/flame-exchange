@@ -3,13 +3,80 @@
   "rules": [
     {
       "type": "spl",
-      "content": "index=ap_system action=\"payment_update\"\n| eval prev_bank=coalesce(previous_routing_number, \"none\")\n| where prev_bank != routing_number AND prev_bank != \"none\"\n| table vendor_name, invoice_id, prev_bank, routing_number, modified_by, _time",
-      "title": "Splunk — Invoice Banking Detail Change Detection"
+      "content": "`comment(\"Splunk SPL for Mule Account Velocity Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring transaction_type=\"ACH_IN\"\n| stats dc(originator_name) as unique_originator_name by account_id\n| where unique_originator_name > 3",
+      "title": "DL-0001: Mule Account Velocity Pattern (SPLUNK)",
+      "source_rule": "DL-0001"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Transaction Amount Clustering Near Reporting Threshold\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k | count() by account_id > 2)\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"CASH_DEPOSIT\")\ntransaction_amount>=9000\ntransaction_amount<10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"INTERNATIONAL_TRANSFER\")\ntransaction_amount>=2800\ntransaction_amount<3000\n| stats count as event_count by account_id\n| where event_count > 2\n| stats count as event_count by account_id\n| where event_count > 2",
+      "title": "DL-0028: Transaction Amount Clustering Near Reporting Threshold (SPLUNK)",
+      "source_rule": "DL-0028"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Split Transfer Chain Detection\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:wire_system\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 2",
+      "title": "DL-0029: Split Transfer Chain Detection (SPLUNK)",
+      "source_rule": "DL-0029"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Rapid Outbound Wire After Large Inbound\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=8000\n| transaction account_id maxspan=6h\n| where eventcount >= 2",
+      "title": "DL-0031: Rapid Outbound Wire After Large Inbound (SPLUNK)",
+      "source_rule": "DL-0031"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Round-Dollar Wire Amount Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 4\")`\nindex=flame_banking sourcetype=flame:wire_system\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| stats count as event_count by account_id\n| where event_count > 4",
+      "title": "DL-0033: Round-Dollar Wire Amount Pattern (SPLUNK)",
+      "source_rule": "DL-0033"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for ACH Return Rate Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_returns | count() by originator_id > 5\")`\nindex=flame_banking sourcetype=flame:ach_processing event_type=\"ACH_RETURN\" (return_code=\"R10\" OR return_code=\"R29\" OR return_code=\"R07\" OR return_code=\"R08\")\n| stats count as event_count by originator_id\n| where event_count > 5",
+      "title": "DL-0034: ACH Return Rate Anomaly (SPLUNK)",
+      "source_rule": "DL-0034"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Multi-Bank Funnel Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\noriginating_bank_external=true\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\n| stats dc(originating_bank_id) as unique_originating_bank_id by account_id\n| where unique_originating_bank_id > 3\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id <= 2",
+      "title": "DL-0039: Multi-Bank Funnel Pattern (SPLUNK)",
+      "source_rule": "DL-0039"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Crypto Off-Ramp After Wire or ACH Receipt\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_crypto_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=1000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\nbeneficiary_category=\"crypto_exchange\"\n(beneficiary_name=\"Coinbase\" OR beneficiary_name=\"Binance\" OR beneficiary_name=\"Kraken\" OR beneficiary_name=\"FTX\" OR beneficiary_name=\"Gemini\")\n| transaction account_id maxspan=24h\n| where eventcount >= 2",
+      "title": "DL-0040: Crypto Off-Ramp After Wire or ACH Receipt (SPLUNK)",
+      "source_rule": "DL-0040"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Peer-to-Peer Transfer Chain (Smurfing Pattern)\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_p2p | count() by account_id > 3 and selection_chain | count(distinct counterparty_account_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"P2P_TRANSFER\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"ZELLE_SEND\" OR event_type=\"VENMO_TRANSFER\")\ntransaction_amount>=500\ninbound_event=\"P2P_CREDIT\"\noutbound_event=\"P2P_DEBIT\"\n| stats dc(counterparty_account_id) as unique_counterparty_account_id by account_id\n| where unique_counterparty_account_id > 2",
+      "title": "DL-0041: Peer-to-Peer Transfer Chain (Smurfing Pattern) (SPLUNK)",
+      "source_rule": "DL-0041"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Rapid Fund Layering Through Shell Accounts\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| stats count as event_count by account_id\n| where event_count > 3",
+      "title": "DL-0043: Rapid Fund Layering Through Shell Accounts (SPLUNK)",
+      "source_rule": "DL-0043"
     },
     {
       "type": "kql",
+<<<<<<< HEAD
       "content": "// Microsoft Sentinel KQL: BEC Forwarding Rule Monitoring (DL-0138)\nOfficeActivity\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\", \"Set-Mailbox\")\n| where Parameters has_any (\"ForwardTo\", \"ForwardAsAttachmentTo\", \"RedirectTo\",\n                             \"DeleteMessage\", \"MarkAsRead\")\n| project TimeGenerated, UserId, Operation, Parameters, ClientIP",
       "title": "Email — Forwarding Rule Monitoring (M365)"
+=======
+      "content": "// Microsoft Sentinel KQL: Detect AiTM session token replay\n// User-Agent or IP mismatch between MFA completion and subsequent access\nlet mfa_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where AuthenticationRequirement == \"multiFactorAuthentication\"\n| where ResultType == 0\n| project MFATime=TimeGenerated, UserPrincipalName, MFA_IP=IPAddress,\n          MFA_UserAgent=UserAgent, MFA_AppId=AppId;\nlet access_events = SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n// Exclude MFA events to prevent self-join noise\n| where AuthenticationRequirement != \"multiFactorAuthentication\"\n| project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,\n          Access_UserAgent=UserAgent, Access_AppId=AppId;\nmfa_events\n| join kind=inner access_events on UserPrincipalName\n// Access must occur 5min–4h after MFA (skip trivially close auth flow events)\n| where AccessTime > MFATime + 5m and AccessTime < MFATime + 4h\n| where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent\n| project UserPrincipalName, MFATime, AccessTime,\n          MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent",
+      "title": "DL-0137: AiTM Session Token Replay Detection — User-Agent and IP Mismatch Post-MFA (KQL)",
+      "source_rule": "DL-0137"
+    },
+    {
+      "type": "kql",
+      "content": "// Microsoft Sentinel KQL: Inbox rule manipulation after new-IP authentication\nlet new_ip_signins = SigninLogs\n| where TimeGenerated > ago(48h)\n| where ResultType == 0\n| summarize FirstSeen=min(TimeGenerated) by UserPrincipalName, IPAddress\n| where FirstSeen > ago(24h);\nOfficeActivity\n| where TimeGenerated > ago(24h)\n| where Operation in (\"New-InboxRule\", \"Set-InboxRule\", \"Enable-InboxRule\")\n| join kind=inner new_ip_signins on $left.UserId == $right.UserPrincipalName\n| where TimeGenerated > FirstSeen\n| project TimeGenerated, UserId, Operation, Parameters, ClientIP, IPAddress",
+      "title": "DL-0138: Post-Compromise Inbox Rule Manipulation — Rule Creation After New-IP Authentication (KQL)",
+      "source_rule": "DL-0138"
+>>>>>>> 7889d78 (feat: baseline schema + Big 3 detection rules (TP-0003, TP-0016, TP-0029))
     }
   ]
 }

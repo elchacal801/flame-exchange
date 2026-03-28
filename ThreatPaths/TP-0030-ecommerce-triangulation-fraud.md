@@ -61,6 +61,8 @@ related_tps:
     relationship: feeds-into
 regulatory_refs:
   - REG-FINCEN-CDD
+baseline_ids:
+  - BL-0008
 tags:
   - triangulation-fraud
   - marketplace-fraud

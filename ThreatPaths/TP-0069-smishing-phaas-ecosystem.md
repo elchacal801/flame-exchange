@@ -67,6 +67,7 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-CFPB-REGE
   - REG-WCI-2024
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

@@ -48,6 +48,8 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
+baseline_ids:
+  - BL-0007
 tags:
   - deepfake
   - kyc-bypass

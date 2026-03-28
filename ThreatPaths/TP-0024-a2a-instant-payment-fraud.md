@@ -69,6 +69,9 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-OCC-FRAUD
   - REG-UK-PSR-APP
+baseline_ids:
+  - BL-0002
+  - BL-0012
 tags:
   - real-time-payments
   - instant-payments

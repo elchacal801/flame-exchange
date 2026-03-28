@@ -62,6 +62,9 @@ regulatory_refs:
   - REG-UK-PSR-APP
   - REG-AU-SPF
   - REG-FCA-APP
+baseline_ids:
+  - BL-0016
+  - BL-0018
 tags:
   - purchase-scam
   - scam-merchant

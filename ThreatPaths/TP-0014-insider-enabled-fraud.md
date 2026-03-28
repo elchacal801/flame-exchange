@@ -56,6 +56,7 @@ regulatory_refs:
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
   - REG-SEC-SAR
+baseline_ids: []
 tags:
   - insider
   - employee-fraud

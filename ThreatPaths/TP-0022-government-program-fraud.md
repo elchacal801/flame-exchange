@@ -49,6 +49,7 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
+baseline_ids: []
 tags:
   - benefits-scam
   - irs-fraud

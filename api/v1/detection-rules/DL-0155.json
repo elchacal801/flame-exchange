@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-28T22:12:06.769631+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "1903959c-5364-4172-988b-8fe4bf68bb24",
+    "dl_id": "DL-0155",
+    "title": "First-Party Credit Buildup and Sudden Spike",
+    "status": "experimental",
+    "description": "Detects consumer accounts following a first-party fraud pattern: steady good payments for 6-12 months then sudden utilization spike and missed payments within 60 days. Unlike synthetic identity (TP-0003), the identity is real but the intent is fraudulent. First-party bust-out actors nurture credit profiles with consistent on-time payments and low utilization, then rapidly maximize available credit before abandoning the account. The transition from responsible usage to aggressive drawdown is the key behavioral signal. LexisNexis estimates first-party fraud now represents 36% of all detected fraud events globally.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "account_type": [
+          "consumer_credit",
+          "credit_card"
+        ]
+      },
+      "filter_good_history": {
+        "on_time_payment_months|gte": 6
+      },
+      "filter_utilization_spike": {
+        "previous_avg_utilization_pct|lt": 40,
+        "current_utilization_pct|gte": 85
+      },
+      "filter_missed_payment": {
+        "days_since_first_missed_payment|lte": 60,
+        "days_since_utilization_spike|lte": 60
+      },
+      "timeframe": "60d",
+      "condition": "selection AND filter_good_history AND filter_utilization_spike AND filter_missed_payment\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "credit_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "account_type",
+        "credit_limit",
+        "current_balance",
+        "current_utilization_pct",
+        "account_open_date",
+        "payment_history_months",
+        "last_payment_date"
+      ],
+      "enrichment_required": [
+        {
+          "field": "on_time_payment_months",
+          "source": "Consecutive on-time payment count from credit bureau or internal payment history"
+        },
+        {
+          "field": "previous_avg_utilization_pct",
+          "source": "Rolling average utilization over prior 6-month window"
+        },
+        {
+          "field": "days_since_first_missed_payment",
+          "source": "Derived from payment due dates and payment receipt records"
+        },
+        {
+          "field": "days_since_utilization_spike",
+          "source": "Derived from utilization crossing 85% threshold date"
+        }
+      ],
+      "derived_fields": [
+        "utilization_jump_pct",
+        "payment_behavior_change_flag"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for First-Party Credit Buildup and Sudden Spike\n// Detects bust-out pattern: 6+ months good payments then spike and missed payment\n(account_type=\"consumer_credit\" OR account_type=\"credit_card\")\non_time_payment_months>=6\nprevious_avg_utilization_pct<40\ncurrent_utilization_pct>=85\ndays_since_first_missed_payment<=60\ndays_since_utilization_spike<=60\n| utilization_jump_pct := current_utilization_pct - previous_avg_utilization_pct\n| payment_behavior_change_flag := if(days_since_first_missed_payment <= days_since_utilization_spike, \"spike_then_miss\", \"miss_then_spike\")\n| groupBy(account_id, function=[\n    collect([credit_limit, current_balance, current_utilization_pct,\n             previous_avg_utilization_pct, utilization_jump_pct,\n             on_time_payment_months, days_since_first_missed_payment,\n             account_open_date])\n  ])\n| sort(utilization_jump_pct, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for First-Party Credit Buildup and Sudden Spike\")`\n`comment(\"Detects 6+ months good payments followed by utilization spike and missed payment\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  on_time_payment_months>=6\n  previous_avg_utilization_pct<40\n  current_utilization_pct>=85\n  days_since_first_missed_payment<=60\n  days_since_utilization_spike<=60\n| eval utilization_jump = current_utilization_pct - previous_avg_utilization_pct\n| eval risk_score = case(\n    utilization_jump > 60 AND on_time_payment_months >= 12, \"critical\",\n    utilization_jump > 45, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, previous_avg_utilization_pct,\n        utilization_jump, on_time_payment_months,\n        days_since_first_missed_payment, account_open_date, risk_score\n| sort - utilization_jump",
+      "sql": "-- SQL for First-Party Credit Buildup and Sudden Spike\n-- Detects bust-out pattern: good payment history then sudden spike and missed payment\nSELECT\n  a.account_id,\n  a.account_type,\n  a.credit_limit,\n  a.current_balance,\n  a.current_utilization_pct,\n  h.previous_avg_utilization_pct,\n  (a.current_utilization_pct - h.previous_avg_utilization_pct) AS utilization_jump,\n  p.on_time_payment_months,\n  DATEDIFF(DAY, p.first_missed_payment_date, CURRENT_DATE) AS days_since_first_missed_payment,\n  a.account_open_date,\n  DATEDIFF(MONTH, a.account_open_date, CURRENT_DATE) AS account_age_months\nFROM credit_accounts a\nJOIN credit_utilization_history h ON a.account_id = h.account_id\nJOIN payment_history p ON a.account_id = p.account_id\nWHERE a.account_type IN ('consumer_credit', 'credit_card')\n  AND p.on_time_payment_months >= 6\n  AND h.previous_avg_utilization_pct < 40\n  AND a.current_utilization_pct >= 85\n  AND p.first_missed_payment_date IS NOT NULL\n  AND DATEDIFF(DAY, p.first_missed_payment_date, CURRENT_DATE) <= 60\nORDER BY utilization_jump DESC"
+    },
+    "references": [
+      "LexisNexis Risk Solutions, Global State of Fraud and Identity Report (2026)",
+      "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+      "Aite-Novarica Group, First-Party Fraud: The Growing Challenge (2023)"
+    ],
+    "threat_path_ids": [
+      "TP-0016"
+    ],
+    "fraud_types": [
+      "bust-out",
+      "credit-card-fraud",
+      "first-party-fraud"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.bust-out",
+      "flame.first-party-fraud"
+    ],
+    "falsepositives": [
+      "Legitimate financial hardship (job loss, medical emergency) causing simultaneous high spending and missed payments",
+      "Consumers running up balances during planned bankruptcy filing",
+      "Balance transfer activity creating temporary utilization spike on source account"
+    ]
+  }
+}

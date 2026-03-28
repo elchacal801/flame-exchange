@@ -64,6 +64,8 @@ regulatory_refs:
   - REG-FINCEN-CDD
   - REG-PSD3-SCA
   - REG-DORA
+baseline_ids:
+  - BL-0015
 tags:
   - magecart
   - e-skimmer

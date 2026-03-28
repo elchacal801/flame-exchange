@@ -68,6 +68,7 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-INTERPOL-GFFTA
   - REG-WCI-2024
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

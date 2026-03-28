@@ -2452,5 +2452,116 @@
         <category>business-email-compromise</category>
         <category>severity-high</category>
     </item>
+    <item>
+      <title>[DL-0151] Synthetic Identity Credit Utilization Spike — Low-and-Slow Buildup Followed by Bust-Out</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0151</guid>
+      <description>Detects the characteristic synthetic identity bust-out pattern: prolonged low credit utilization (&lt; 35% for 6+ months) followed by a rapid spike to near-maximum utilization (&gt; 80%) within 30 days. Syn</description>
+        <category>bust-out</category>
+        <category>credit-card-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0152] Thin-File Identity Clustering — Shared Address, Phone, or Device Across New Applicants</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0152</guid>
+      <description>Detects clusters of thin-file credit applicants sharing physical addresses, phone numbers, or device fingerprints — a hallmark indicator of synthetic identity ring activity. Fraud rings fabricate mult</description>
+        <category>application-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0153] Coordinated Bust-Out Timing — Simultaneous Max-Utilization Across Multiple Products</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0153</guid>
+      <description>Detects coordinated bust-out execution where the same identity (or linked identities) max out credit across multiple products within a 72-hour window. Synthetic identity rings time their bust-out to e</description>
+        <category>bust-out</category>
+        <category>cash-advance-fraud</category>
+        <category>credit-card-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0154] SSN Age and Issuance Mismatch — Synthetic Identity Indicator</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0154</guid>
+      <description>Detects credit applications where the SSN characteristics are inconsistent with the applicant&apos;s stated identity — a primary indicator of synthetic identity fabrication. Key signals: (1) SSN issued aft</description>
+        <category>application-fraud</category>
+        <category>identity-theft</category>
+        <category>synthetic-identity</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0155] First-Party Credit Buildup and Sudden Spike</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0155</guid>
+      <description>Detects consumer accounts following a first-party fraud pattern: steady good payments for 6-12 months then sudden utilization spike and missed payments within 60 days. Unlike synthetic identity (TP-00</description>
+        <category>bust-out</category>
+        <category>credit-card-fraud</category>
+        <category>first-party-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0156] Never-Pay Pattern — Immediate Max Utilization with Zero Payments</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0156</guid>
+      <description>Detects new credit accounts with immediate high utilization and zero payment activity after 60 days — classic &quot;never-pay&quot; first-party fraud where the consumer opens an account with no intent to pay. U</description>
+        <category>bust-out</category>
+        <category>credit-card-fraud</category>
+        <category>first-party-fraud</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0157] Rapid Authorized User Addition Across Multiple Accounts</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0157</guid>
+      <description>Detects the same individual being added as an authorized user across 3 or more credit accounts within 30 days. This technique is used in first-party bust-out and synthetic identity schemes to rapidly </description>
+        <category>bust-out</category>
+        <category>credit-piggybacking</category>
+        <category>first-party-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0158] Document Metadata Anomaly — AI-Generated ID Document Detection</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0158</guid>
+      <description>Detects submitted identity documents with metadata inconsistencies indicating AI generation or manipulation: PDF creation tools (Photoshop, GIMP, AI generators), timestamp manipulation (creation date </description>
+        <category>ai-accelerated-fraud-infrastructure</category>
+        <category>document-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-high</category>
+    </item>
+    <item>
+      <title>[DL-0159] Facial Liveness Failure Pattern — Iterative Deepfake Tuning</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0159</guid>
+      <description>Detects repeated liveness check failures from the same device followed by eventual success — indicates iterative deepfake tuning where fraudsters adjust their deepfake parameters until they pass liven</description>
+        <category>ai-accelerated-fraud-infrastructure</category>
+        <category>document-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0160] Cross-Application Identity Collision — Same Biometric or Device Across Different Identities</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0160</guid>
+      <description>Detects the same biometric template (face embedding), device fingerprint, or behavioral pattern appearing across applications submitted under different identity names. Fraudsters using AI-generated fa</description>
+        <category>ai-accelerated-fraud-infrastructure</category>
+        <category>document-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0161] AI Document Template Cluster — Identical Formatting Patterns Across Applications</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0161</guid>
+      <description>Detects clusters of submitted ID documents sharing identical formatting artifacts, template structures, or AI generation signatures. AI document generators produce documents with consistent pixel-leve</description>
+        <category>ai-accelerated-fraud-infrastructure</category>
+        <category>document-fraud</category>
+        <category>synthetic-identity</category>
+        <category>severity-high</category>
+    </item>
   </channel>
 </rss>

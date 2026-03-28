@@ -52,6 +52,7 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids: []
 tags:
   - HR-portal
   - direct-deposit

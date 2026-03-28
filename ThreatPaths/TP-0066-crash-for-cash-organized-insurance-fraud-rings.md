@@ -54,6 +54,7 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

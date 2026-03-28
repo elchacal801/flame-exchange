@@ -2,19 +2,22 @@
   "tp_id": "TP-0037",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT\n    wp.provisioning_id,\n    wp.card_id,\n    wp.device_id,\n    wp.provisioning_timestamp,\n    wp.device_first_seen_date,\n    otp.otp_request_timestamp,\n    otp.otp_delivery_channel,\n    otp.otp_requestor_ip,\n    EXTRACT(EPOCH FROM (wp.provisioning_timestamp - otp.otp_request_timestamp)) AS otp_to_provision_seconds,\n    ph.phishing_indicator_timestamp,\n    ph.indicator_type\nFROM wallet_provisioning wp\nJOIN otp_events otp ON wp.card_id = otp.card_id\n    AND otp.otp_request_timestamp BETWEEN wp.provisioning_timestamp - INTERVAL '10 minutes'\n        AND wp.provisioning_timestamp\nLEFT JOIN phishing_indicators ph ON wp.card_id = ph.card_id\n    AND ph.phishing_indicator_timestamp BETWEEN wp.provisioning_timestamp - INTERVAL '30 minutes'\n        AND wp.provisioning_timestamp\nWHERE wp.provisioning_timestamp > CURRENT_TIMESTAMP - INTERVAL '24 hours'\n    AND wp.device_first_seen_date > CURRENT_DATE - INTERVAL '1 day'\n    AND (\n        EXTRACT(EPOCH FROM (wp.provisioning_timestamp - otp.otp_request_timestamp)) < 15\n        OR ph.phishing_indicator_timestamp IS NOT NULL\n    )\nORDER BY wp.provisioning_timestamp DESC;",
-      "title": "SQL -- Wallet Provisioning Correlated with OTP Anomaly (Phase 3)"
-    },
-    {
-      "type": "spl",
-      "content": "index=transaction_auth sourcetype=pos_contactless\n| eval txn_time = _time\n| stats earliest(txn_time) AS first_txn, latest(txn_time) AS last_txn,\n        values(terminal_city) AS cities,\n        values(terminal_lat) AS lats,\n        values(terminal_lon) AS lons,\n        dc(terminal_id) AS unique_terminals,\n        count AS txn_count\n    BY wallet_token_id, date_mday\n| where unique_terminals > 2 AND txn_count > 3\n| eval time_span_minutes = (last_txn - first_txn) / 60\n| where time_span_minutes < 60 AND unique_terminals > 2\n| lookup geo_distance_calc lat1=first_lat, lon1=first_lon, lat2=last_lat, lon2=last_lon OUTPUT distance_km\n| where distance_km > 50 AND time_span_minutes < 60\n| table wallet_token_id, cities, unique_terminals, txn_count, time_span_minutes, distance_km\n| sort - distance_km",
-      "title": "Splunk -- Contactless Transaction Geographic Anomaly (Phase 4)"
+      "type": "sigma",
+      "content": "title: Wallet Provisioning Following OTP Interception Indicator\nstatus: experimental\ndescription: Detects digital wallet provisioning events where the OTP or verification code was delivered within minutes of a social engineering indicator, such as an inbound call from a suspicious source, a phishi\nlogsource:\n    product: banking\n    service: wallet_provisioning\ndetection:\n    selection_provisioning:\n        event_type: \"wallet_card_provisioned\"\n        device_first_seen: true\n    correlation_otp:\n        otp_delivery_elapsed_seconds|lte: 600\n        otp_to_provisioning_seconds|lte: 15\n    correlation_phishing:\n        preceding_event_type|contains:\n            - \"phishing_click\"\n            - \"smishing_response\"\n            - \"suspicious_inbound_call\"\n            - \"social_engineering_indicator\"\n        preceding_event_window: 1800\n    condition: selection_provisioning and (correlation_otp or correlation_phishing)\nlevel: critical",
+      "title": "DL-0080: Wallet Provisioning Following OTP Interception Indicator (Sigma)",
+      "source_rule": "DL-0080"
     },
     {
       "type": "sigma",
-      "content": "title: Ghost-Tap NFC Relay Multi-Terminal Velocity\nstatus: experimental\ndescription: Detects multiple contactless transactions from the same wallet token across multiple POS terminals in a timeframe inconsistent with physical movement, indicative of NFC relay ghost-tapping.\nlogsource:\n    product: banking\n    service: transaction_monitoring\ndetection:\n    selection:\n        transaction_type: \"contactless\"\n        entry_mode: \"wallet_nfc\"\n    aggregation:\n        count|gte: 3\n        groupby: wallet_token_id\n        timeframe: 30m\n    filter_multi_terminal:\n        dc_terminal_id|gte: 3\n    condition: selection and aggregation and filter_multi_terminal\nlevel: critical\ntags:\n    - fraud.nfc_relay\n    - cfpf.phase4.execution\n    - attack.t1657",
-      "title": "Sigma -- NFC Relay Ghost-Tap Velocity Detection (Phase 4)"
+      "content": "title: NFC Relay Geographic Impossibility on Contactless Transaction\nstatus: experimental\ndescription: Detects contactless (tap-to-pay) transactions where the POS terminal location is geographically impossible given the cardholder's last known location. When a contactless transaction occurs at a POS te\nlogsource:\n    product: banking\n    service: transaction_monitoring\ndetection:\n    selection:\n        transaction_type: \"contactless\"\n        entry_mode|contains:\n            - \"wallet_nfc\"\n            - \"contactless_emv\"\n            - \"tap_to_pay\"\n    correlation_geographic:\n        cardholder_last_known_lat|exists: true\n        cardholder_last_known_lon|exists: true\n        cardholder_last_activity_minutes|lte: 120\n    filter_distance:\n        geo_distance_km|gte: 100\n    filter_travel_impossible:\n        required_speed_kmh|gte: 500\n    condition: selection and correlation_geographic and filter_distance and filter_travel_impossible\nlevel: high",
+      "title": "DL-0081: NFC Relay Geographic Impossibility on Contactless Transaction (Sigma)",
+      "source_rule": "DL-0081"
+    },
+    {
+      "type": "sigma",
+      "content": "title: Ghost-Tap Multi-Terminal Contactless Velocity Anomaly\nstatus: experimental\ndescription: Detects multiple contactless transactions from the same wallet token or card credential across multiple distinct POS terminals within a short timeframe. Normal cardholder behavior produces a maximum o\nlogsource:\n    product: banking\n    service: transaction_monitoring\ndetection:\n    selection:\n        transaction_type: \"contactless\"\n        entry_mode|contains:\n            - \"wallet_nfc\"\n            - \"contactless_emv\"\n            - \"tap_to_pay\"\n    aggregation:\n        count|gte: 3\n        groupby: \"wallet_token_id\"\n        timeframe: \"30m\"\n    filter_multi_terminal:\n        dc_terminal_id|gte: 3\n    filter_multi_location:\n        dc_terminal_city|gte: 2\n    condition: selection and aggregation and (filter_multi_terminal or filter_multi_location)\nlevel: critical",
+      "title": "DL-0082: Ghost-Tap Multi-Terminal Contactless Velocity Anomaly (Sigma)",
+      "source_rule": "DL-0082"
     }
   ]
 }

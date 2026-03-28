@@ -61,6 +61,9 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+baseline_ids:
+  - BL-0034
+  - BL-0036
 geopolitical_timing: none
 nation_state_nexus: suspected
 tags:

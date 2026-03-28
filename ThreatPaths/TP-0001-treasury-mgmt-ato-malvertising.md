@@ -68,6 +68,8 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids:
+  - BL-0012
 tags:
   - treasury-management
   - commercial-banking

@@ -1,20 +1,4 @@
 {
   "tp_id": "TP-0050",
-  "rules": [
-    {
-      "type": "spl",
-      "content": "index=email sourcetype=email_gateway\n| where attachment_type=\"text/calendar\" OR attachment_extension=\".ics\"\n| lookup domain_age_feed sender_domain OUTPUT domain_age_days\n| where domain_age_days < 30\n| stats count by sender_domain, recipient, subject, domain_age_days\n| where count > 5\n| sort -count",
-      "title": "Email Gateway — .ics from Newly-Registered Domains (Splunk SPL)"
-    },
-    {
-      "type": "sql",
-      "content": "SELECT ce.event_id, ce.organizer_email, ce.title, ce.created_at,\n       d.domain_name, d.registration_date, d.tld\nFROM calendar_events ce\nJOIN domain_intel d ON ce.organizer_domain = d.domain_name\nWHERE ce.organizer_is_external = TRUE\nAND ce.auto_accepted = TRUE\nAND d.registration_date > CURRENT_DATE - INTERVAL '30 days'\nAND d.tld IN ('.cyou', '.sbs', '.click', '.biz', '.top', '.xyz')\nORDER BY ce.created_at DESC;",
-      "title": "Calendar Event Injection Detection (SQL)"
-    },
-    {
-      "type": "sql",
-      "content": "SELECT domain_label,\n       LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n       NULLIF(LENGTH(domain_label), 0) AS consonant_ratio,\n       tld, registration_date\nFROM zone_file_domains\nWHERE registration_date > CURRENT_DATE - INTERVAL '7 days'\nAND tld IN ('.cyou', '.sbs', '.click')\nAND LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n    NULLIF(LENGTH(domain_label), 0) > 0.75\nORDER BY registration_date DESC;",
-      "title": "RDGA Sender Domain Consonant Ratio Detection (SQL)"
-    }
-  ]
+  "rules": []
 }

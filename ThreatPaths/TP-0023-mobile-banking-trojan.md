@@ -60,6 +60,7 @@ regulatory_refs:
   - REG-FFIEC-AUTH
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids: []
 tags:
   - mbanking
   - android-malware

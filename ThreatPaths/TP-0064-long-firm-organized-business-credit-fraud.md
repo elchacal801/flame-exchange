@@ -62,6 +62,8 @@ regulatory_refs:
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-FINCEN-CDD
   - REG-OCC-FRAUD
+baseline_ids:
+  - BL-0032
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

@@ -42,6 +42,7 @@ related_tps:
     relationship: provides-mules-for
 regulatory_refs:
   - REG-OCC-FRAUD
+baseline_ids: []
 tags:
   - check-washing
   - mail-theft

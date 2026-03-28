@@ -96,6 +96,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0001",
       "DL-0002",
@@ -243,6 +246,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0001",
       "DL-0028",
@@ -356,7 +362,19 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0007",
+      "BL-0032"
+    ],
+    "detection_rule_ids": [
+      "DL-0151",
+      "DL-0152",
+      "DL-0153",
+      "DL-0154",
+      "DL-0157",
+      "DL-0158",
+      "DL-0160"
+    ],
     "related_tps": [
       {
         "id": "TP-0009",
@@ -469,6 +487,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0019",
       "DL-0022",
@@ -576,6 +595,7 @@
       "report": "Level 3",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0020",
       "DL-0021",
@@ -687,6 +707,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0019",
       "DL-0021",
@@ -816,6 +839,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0050",
       "DL-0051",
@@ -946,6 +972,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0003",
       "DL-0006",
@@ -1063,6 +1090,7 @@
       "report": "Level 3",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -1154,6 +1182,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -1254,6 +1283,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0003",
+      "BL-0031"
+    ],
     "detection_rule_ids": [
       "DL-0001",
       "DL-0037",
@@ -1384,6 +1417,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0055",
       "DL-0056",
@@ -1500,6 +1534,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0009",
+      "BL-0035"
+    ],
     "detection_rule_ids": [
       "DL-0012",
       "DL-0013",
@@ -1619,6 +1657,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -1731,6 +1770,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0143"
     ],
@@ -1819,7 +1859,15 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0032"
+    ],
+    "detection_rule_ids": [
+      "DL-0151",
+      "DL-0155",
+      "DL-0156",
+      "DL-0157"
+    ],
     "related_tps": [
       {
         "id": "TP-0003",
@@ -1932,6 +1980,11 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0004",
+      "BL-0031",
+      "BL-0034"
+    ],
     "detection_rule_ids": [
       "DL-0117",
       "DL-0142"
@@ -2024,11 +2077,15 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0007"
+    ],
     "detection_rule_ids": [
       "DL-0050",
       "DL-0052",
       "DL-0053",
-      "DL-0054"
+      "DL-0054",
+      "DL-0159"
     ],
     "related_tps": [
       {
@@ -2131,6 +2188,7 @@
       "report": "Level 3",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -2229,6 +2287,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0002",
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0028",
       "DL-0029",
@@ -2347,6 +2409,9 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0006"
+    ],
     "detection_rule_ids": [
       "DL-0130",
       "DL-0131",
@@ -2443,6 +2508,7 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0001",
       "DL-0037",
@@ -2557,6 +2623,7 @@
       "report": "Level 2",
       "improve": "Level 4"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0002",
       "DL-0004",
@@ -2682,6 +2749,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0002",
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0055",
       "DL-0056",
@@ -2809,6 +2880,10 @@
       "report": "Level 3",
       "improve": "Level 4"
     },
+    "baseline_ids": [
+      "BL-0003",
+      "BL-0033"
+    ],
     "detection_rule_ids": [
       "DL-0139",
       "DL-0140"
@@ -2934,6 +3009,9 @@
       "report": "Level 3",
       "improve": "Level 4"
     },
+    "baseline_ids": [
+      "BL-0004"
+    ],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -3054,6 +3132,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0005"
+    ],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -3175,6 +3256,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0006"
+    ],
     "detection_rule_ids": [
       "DL-0130",
       "DL-0131",
@@ -3294,7 +3378,17 @@
       "report": "Level 3",
       "improve": "Level 4"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0007"
+    ],
+    "detection_rule_ids": [
+      "DL-0152",
+      "DL-0154",
+      "DL-0158",
+      "DL-0159",
+      "DL-0160",
+      "DL-0161"
+    ],
     "related_tps": [
       {
         "id": "TP-0003",
@@ -3393,6 +3487,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0008"
+    ],
     "detection_rule_ids": [
       "DL-0064",
       "DL-0067"
@@ -3503,6 +3600,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0008"
+    ],
     "detection_rule_ids": [
       "DL-0062",
       "DL-0063",
@@ -3619,6 +3719,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0010"
+    ],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -3720,6 +3823,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0011"
+    ],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -3849,6 +3955,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0013",
+      "BL-0028"
+    ],
     "detection_rule_ids": [
       "DL-0068",
       "DL-0069",
@@ -3981,6 +4091,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0015"
+    ],
     "detection_rule_ids": [
       "DL-0075",
       "DL-0076",
@@ -4090,6 +4203,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0016",
+      "BL-0018"
+    ],
     "detection_rule_ids": [
       "DL-0078",
       "DL-0079"
@@ -4205,6 +4322,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0017"
+    ],
     "detection_rule_ids": [
       "DL-0080",
       "DL-0081",
@@ -4306,6 +4426,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0016",
+      "BL-0018"
+    ],
     "detection_rule_ids": [
       "DL-0083",
       "DL-0084"
@@ -4434,6 +4558,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0019"
+    ],
     "detection_rule_ids": [
       "DL-0085",
       "DL-0086",
@@ -4552,6 +4679,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0020"
+    ],
     "detection_rule_ids": [
       "DL-0087",
       "DL-0088",
@@ -4668,6 +4798,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0021"
+    ],
     "detection_rule_ids": [
       "DL-0092",
       "DL-0093",
@@ -4802,6 +4935,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0022",
+      "BL-0030"
+    ],
     "detection_rule_ids": [
       "DL-0095",
       "DL-0096",
@@ -4919,6 +5056,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0023",
+      "BL-0033"
+    ],
     "detection_rule_ids": [
       "DL-0098",
       "DL-0099",
@@ -5033,6 +5174,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0024",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0101",
       "DL-0123"
@@ -5128,6 +5273,10 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0025",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0102",
       "DL-0103",
@@ -5222,6 +5371,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0025",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0105",
       "DL-0106",
@@ -5319,6 +5472,7 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0108",
       "DL-0109"
@@ -5412,6 +5566,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0026",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0110",
       "DL-0111",
@@ -5508,6 +5666,11 @@
       "report": "Level 4",
       "improve": "Level 4"
     },
+    "baseline_ids": [
+      "BL-0027",
+      "BL-0034",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0113",
       "DL-0114",
@@ -5605,6 +5768,7 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -5696,6 +5860,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -5796,6 +5961,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0003",
+      "BL-0004"
+    ],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -5892,6 +6061,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -6010,6 +6180,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0033",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0128",
       "DL-0129"
@@ -6120,6 +6294,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0034",
+      "BL-0036"
+    ],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -6209,6 +6387,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -6314,6 +6493,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0028",
+      "BL-0033"
+    ],
     "detection_rule_ids": [
       "DL-0115",
       "DL-0116"
@@ -6429,6 +6612,7 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0117"
     ],
@@ -6534,6 +6718,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0029"
+    ],
     "detection_rule_ids": [
       "DL-0118",
       "DL-0119"
@@ -6640,6 +6827,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0030"
+    ],
     "detection_rule_ids": [
       "DL-0120",
       "DL-0122",
@@ -6739,6 +6929,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0123"
     ],
@@ -6841,6 +7034,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0031"
+    ],
     "detection_rule_ids": [
       "DL-0133",
       "DL-0140"
@@ -6942,6 +7138,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [],
     "related_tps": [
       {
@@ -7041,6 +7238,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0032"
+    ],
     "detection_rule_ids": [
       "DL-0135"
     ],
@@ -7146,6 +7346,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0134",
       "DL-0140"
@@ -7240,6 +7441,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0136"
     ],
@@ -7357,6 +7559,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0137",
       "DL-0138",
@@ -7456,6 +7659,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0035"
+    ],
     "detection_rule_ids": [
       "DL-0144",
       "DL-0145"
@@ -7567,6 +7773,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0149"
     ],

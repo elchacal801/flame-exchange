@@ -61,6 +61,8 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-MAS-SRF
   - REG-PSD3-SCA
+baseline_ids:
+  - BL-0010
 tags:
   - wallet-drainer
   - approval-phishing

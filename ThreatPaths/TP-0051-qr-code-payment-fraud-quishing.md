@@ -62,6 +62,7 @@ regulatory_refs:
   - REG-CFPB-REGE
   - REG-UK-PSR-APP
   - REG-PSD3-SCA
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

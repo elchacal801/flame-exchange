@@ -2,9 +2,16 @@
   "tp_id": "TP-0068",
   "rules": [
     {
-      "type": "sql",
-      "content": "-- SQL: Gift card merge anomaly detection\n-- Multiple cards merged into single card in short timeframe\nSELECT\n    destination_card,\n    COUNT(DISTINCT source_card) AS source_card_count,\n    SUM(transfer_amount) AS total_transferred,\n    MIN(transfer_time) AS first_transfer,\n    MAX(transfer_time) AS last_transfer,\n    DATEDIFF(minute, MIN(transfer_time), MAX(transfer_time)) AS window_minutes\nFROM gift_card_transfers\nWHERE transfer_time >= DATEADD(day, -7, GETDATE())\nGROUP BY destination_card\nHAVING COUNT(DISTINCT source_card) >= 3\n   AND DATEDIFF(minute, MIN(transfer_time), MAX(transfer_time)) < 60\nORDER BY source_card_count DESC",
-      "title": "TP-0068 detection rule (sql)"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Gift Card Balance Probing Velocity Detection\")`\n`comment(\"NRF FT1103: Monitor balance check endpoints for automated probing\")`\nindex=retail sourcetype=giftcard:balance_check\n| bin _time span=1h\n| stats count AS check_count,\n        dc(card_number) AS unique_cards,\n        dc(user_agent) AS unique_agents,\n        values(device_fingerprint) AS devices\n  BY source_ip, _time\n| where check_count > 50 OR unique_cards > 20\n| eval risk = case(\n    check_count > 200 AND unique_cards > 100, \"CRITICAL\",\n    check_count > 100 OR unique_cards > 50, \"HIGH\",\n    check_count > 50 OR unique_cards > 20, \"MEDIUM\"\n  )\n| sort - check_count",
+      "title": "DL-0144: Gift Card Balance Probing Velocity Detection (SPLUNK)",
+      "source_rule": "DL-0144"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Gift Card Merge and Transfer Anomaly Detection\")`\n`comment(\"NRF FT1202: Monitor for suspicious multi-card merges\")`\nindex=retail sourcetype=giftcard:transactions\n  transaction_type IN (\"merge\", \"transfer\", \"consolidate\")\n| stats count AS merge_count,\n        dc(source_card) AS source_card_count,\n        sum(transfer_amount) AS total_transferred,\n        min(_time) AS first_merge,\n        max(_time) AS last_merge,\n        values(source_ip) AS source_ips\n  BY destination_card\n| eval window_minutes = round((last_merge - first_merge) / 60, 1)\n| where source_card_count >= 3 AND window_minutes < 60\n| sort - source_card_count",
+      "title": "DL-0145: Gift Card Merge and Transfer Anomaly Detection (SPLUNK)",
+      "source_rule": "DL-0145"
     }
   ]
 }
