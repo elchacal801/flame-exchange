@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-29T03:18:13.409071+00:00",
-    "total": 69
+    "generated_at": "2026-03-29T17:53:50.959819+00:00",
+    "total": 77
   },
   "data": [
     {
@@ -379,7 +379,8 @@
         "DL-0154",
         "DL-0157",
         "DL-0158",
-        "DL-0160"
+        "DL-0160",
+        "DL-0184"
       ],
       "related_tps": [
         {
@@ -728,7 +729,8 @@
         "DL-0032",
         "DL-0033",
         "DL-0035",
-        "DL-0036"
+        "DL-0036",
+        "DL-0186"
       ],
       "related_tps": [
         {
@@ -7834,6 +7836,713 @@
         }
       ],
       "evidence_count": 2
+    },
+    {
+      "id": "TP-0070",
+      "title": "Travel Booking Fraud & Fake OTA Networks",
+      "category": "ThreatPath",
+      "date": "2026-03-29",
+      "author": "FLAME Project",
+      "source": "Sumsub Travel Fraud Report (2026); NordVPN/Saily Travel Scam Intelligence (2026); Riskified OTA Fraud Analysis; Trustwave Threat Briefing; HackerNews (Nov 2025)",
+      "tlp": "WHITE",
+      "summary": "Travel booking fraud and fake Online Travel Agency (OTA) networks represent a rapidly growing fraud category, with estimated global losses reaching $37 billion through Buy-for-You (B4U) services alone. Fraudsters operate fake travel agency websites mimicking legitimate OTAs (Booking.com, Expedia, Airbnb), with 4,344 fake travel domains identified in active campaigns. Telegram-based B4U agencies offer deeply discounted travel bookings purchased with stolen payment credentials, creating a laundering layer between cardholders and travel providers. The ecosystem encompasses fake OTA domains, vacation rental hijacking, loyalty point laundering (TP-0013), and AI-enhanced scam operations that generate convincing travel listings and customer service interactions. Seasonal peaks align with holiday booking periods, amplifying losses during Q4 and summer travel seasons.",
+      "confidence_score": 78,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "seasonal",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "travel",
+        "payments",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "travel-booking-fraud",
+        "buy-for-you-fraud",
+        "fake-ota",
+        "loyalty-point-laundering"
+      ],
+      "tags": [
+        "travel-booking-fraud",
+        "fake-ota",
+        "buy-for-you",
+        "b4u-services",
+        "loyalty-point-laundering",
+        "vacation-rental-hijack",
+        "ai-travel-scam",
+        "telegram-b4u",
+        "wci-geographic-attribution"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1566.002",
+        "T1078",
+        "T1656",
+        "T1598",
+        "T1059"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT007.009",
+        "FT011.003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-WCI-2024"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0180",
+        "DL-0181"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0013",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0036",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 3
+    },
+    {
+      "id": "TP-0071",
+      "title": "IRSF & Telecom Revenue Share Fraud",
+      "category": "ThreatPath",
+      "date": "2026-03-29",
+      "author": "FLAME Project",
+      "source": "Subex Telecom Fraud Intelligence (2025, 2026); TNS/CFCA Global Fraud Loss Survey (2026); Akamai Telecom Threat Report; NDSS Symposium",
+      "tlp": "WHITE",
+      "summary": "International Revenue Share Fraud (IRSF) is the single largest category of telecommunications fraud, generating $10.76 billion in annual losses according to the CFCA/TNS Global Fraud Loss Survey (2026). IRSF exploits the inter-carrier settlement system where originating carriers pay terminating carriers per-minute rates for international calls. Fraudsters establish revenue-sharing agreements with premium-rate number providers in high-rate destinations, then generate artificial call traffic to those numbers using compromised PBX systems, SIM boxes, or automated dialers. Wangiri (\"one-ring\") fraud, a variant where victims are tricked into calling back premium-rate numbers, adds a social engineering dimension. The convergence of SIM box fraud (TP-0008), compromised enterprise PBX systems, and sophisticated traffic routing creates a multi-layered ecosystem that is difficult to detect in real time. Machine learning-based detection has achieved 98% accuracy in identifying IRSF traffic patterns.",
+      "confidence_score": 80,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "telecommunications"
+      ],
+      "fraud_types": [
+        "irsf",
+        "premium-rate-fraud",
+        "telecom-revenue-fraud",
+        "wangiri"
+      ],
+      "tags": [
+        "irsf",
+        "premium-rate-fraud",
+        "wangiri",
+        "sim-box-fraud",
+        "telecom-revenue-share",
+        "international-revenue-share",
+        "pbx-hacking",
+        "one-ring-callback",
+        "traffic-pumping",
+        "wci-geographic-attribution"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1496",
+        "T1078",
+        "T1059",
+        "T1583.001",
+        "T1571",
+        "T1205"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT011.002"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-WCI-2024"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0182",
+        "DL-0183"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0008",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0065",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 3
+    },
+    {
+      "id": "TP-0072",
+      "title": "Telecom Subscription & Billing Fraud",
+      "category": "ThreatPath",
+      "date": "2026-03-29",
+      "author": "FLAME Project",
+      "source": "Subex Telecom Fraud Intelligence (2025, 2026); TransUnion Consumer Pulse (2025); SEON Telecom Fraud Guide; Vonage Communications Fraud Report",
+      "tlp": "WHITE",
+      "summary": "Telecom subscription and billing fraud encompasses the use of stolen, synthetic, or manipulated identities to fraudulently obtain telecom services, devices, and credit -- combined with unauthorized billing manipulation that charges victims for premium services they never requested. TransUnion reports that 53% of telecom executives identify subscription fraud as their top concern, driven by the increasing sophistication of synthetic identity creation (TP-0003) and GenAI-powered KYC bypass techniques. The total telecom fraud ecosystem reaches $41.82B annually (CFCA/TNS 2026), with subscription fraud as a primary entry point that enables downstream fraud including device resale, SIM swap attacks (TP-0008), and premium SMS billing schemes (cramming). GenAI tools now generate convincing synthetic identity documents that pass automated KYC checks, enabling fraudsters to open multiple telecom accounts for device acquisition at industrial scale.",
+      "confidence_score": 75,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "telecommunications"
+      ],
+      "fraud_types": [
+        "subscription-fraud",
+        "telecom-billing-fraud",
+        "premium-sms-fraud"
+      ],
+      "tags": [
+        "subscription-fraud",
+        "telecom-billing-fraud",
+        "premium-sms-fraud",
+        "synthetic-identity-telecom",
+        "device-fraud",
+        "genai-kyc-bypass",
+        "cramming",
+        "wci-geographic-attribution"
+      ],
+      "cfpf_phases": [
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1078",
+        "T1656",
+        "T1136",
+        "T1098",
+        "T1565"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT007.003",
+        "FT011.001"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Initial Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-WCI-2024"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0184",
+        "DL-0185"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0003",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0008",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 3
+    },
+    {
+      "id": "TP-0073",
+      "title": "Real Estate Title Fraud & Deed Theft",
+      "category": "ThreatPath",
+      "date": "2026-03-29",
+      "author": "FLAME Project",
+      "source": "First American Title Fraud Report; HousingWire (2025); ALTA Best Practices; Virginia Deed Fraud Study (2025); NAR Fraud Advisory; CertifID Wire Fraud Report; Entrust Identity Fraud Report (2026)",
+      "tlp": "WHITE",
+      "summary": "Real estate title fraud and deed theft represent a growing category of property-related fraud, with FBI data reporting $16.6 billion in total real estate fraud losses in 2024. The core scheme involves impersonating property owners -- primarily targeting vacant lots, unencumbered properties, and absentee-owner homes -- to fraudulently transfer titles or initiate sales, diverting proceeds to attacker-controlled accounts. The emergence of AI-forged documents (deeds, government IDs, notary stamps) and deepfake video notarization has dramatically lowered the barrier to executing these schemes, with Entrust reporting a 40% year-over-year increase in deepfake-related fraud attempts. Seller impersonation of vacant property owners is the most common vector, as these properties lack occupants who would notice unauthorized activity. Virginia's 2025 deed fraud legislation represents the first major legislative response, mandating enhanced identity verification for property transfers. This threat path intersects with wire fraud (TP-0006) at the monetization phase, where sale proceeds are redirected via business email compromise or fraudulent wire instructions.",
+      "confidence_score": 80,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "real-estate"
+      ],
+      "fraud_types": [
+        "title-fraud",
+        "deed-theft",
+        "seller-impersonation",
+        "appraisal-fraud"
+      ],
+      "tags": [
+        "title-fraud",
+        "deed-theft",
+        "seller-impersonation",
+        "appraisal-fraud",
+        "deepfake-notary",
+        "ai-forged-documents",
+        "vacant-property-fraud",
+        "wire-fraud-real-estate",
+        "remote-notarization-fraud",
+        "wci-geographic-attribution"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656",
+        "T1566.002",
+        "T1078",
+        "T1565",
+        "T1136",
+        "T1583.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FT007.009",
+        "FT011.001"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA",
+        "REG-WCI-2024"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0186",
+        "DL-0187"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0006",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 3
+    },
+    {
+      "id": "TP-0074",
+      "title": "Ghost Broking & Unauthorized Insurance Portals",
+      "category": "ThreatPath",
+      "date": "2026-03-27",
+      "author": "FLAME Project",
+      "source": "Aviva ghost broking intelligence (Nov 2025); City of London Police (2025); Insurance Times (2025); ABI (2025); FraudOps (2026); NICB",
+      "tlp": "WHITE",
+      "summary": "Ghost broking is a rapidly growing insurance fraud typology where unlicensed individuals or organized crime groups sell fraudulent, forged, or illegitimately obtained motor insurance policies to unsuspecting consumers. Victims increased 93% in 2025, driven by cost-of-living pressures that make below-market premiums attractive. An emerging evolution is the \"ghost portal\" — fraudsters now build and sell entire fake insurance verification platforms to other criminals, creating a fraud-as-a-service layer within the insurance ecosystem. City of London Police made significant arrests in May 2025, and the Insurance Fraud Enforcement Department (IFED) designated February 2026 as a ghost broking intensification month. UK fraud losses topped GBP 1 billion in 2024, with ghost broking contributing a material share of motor insurance fraud.\n\n**Distinction from TP-0056**: TP-0056 covers claims fraud (filing false or inflated claims against legitimate policies). TP-0074 covers the upstream fraud of selling fake or unauthorized policies themselves, where the victim believes they have legitimate coverage but does not.",
+      "confidence_score": 82,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "insurance"
+      ],
+      "fraud_types": [
+        "ghost-broking",
+        "ghost-portal",
+        "insurance-policy-fraud",
+        "unlicensed-insurance"
+      ],
+      "tags": [
+        "ghost-broking",
+        "ghost-portal",
+        "fake-insurance",
+        "unlicensed-intermediary",
+        "insurance-fraud",
+        "organized-crime",
+        "uk-insurance",
+        "ifed"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1566.002",
+        "T1078",
+        "T1589",
+        "T1656"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0188",
+        "DL-0189"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0056",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0066",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 3
+    },
+    {
+      "id": "TP-0075",
+      "title": "Friendly Fraud & Chargeback Abuse",
+      "category": "ThreatPath",
+      "date": "2026-03-27",
+      "author": "FLAME Project",
+      "source": "Chargebacks911 (2026); Chargeflow (2025); Payscout (2025); Chargeback.io (2026); Alloy; Offenso Academy (2026)",
+      "tlp": "WHITE",
+      "summary": "Friendly fraud — where legitimate cardholders dispute genuine transactions to obtain refunds while retaining goods or services — has become the single largest fraud category in payment networks, representing 36% of all fraud and projected to reach 337 million chargebacks costing USD 15.3 billion in the US by 2026. Unlike third-party fraud, the identity is real and the transaction is legitimate, making detection fundamentally different. Chargeback abuse surged 233% between Q1 and Q3 2025, with 84% of consumers finding chargebacks simpler than contacting the merchant. The economic multiplier is severe: merchants lose USD 4.61 for every USD 1.00 of friendly fraud. Visa's VAMP (Visa Acquirer Monitoring Program) launched April 2025 to impose stricter thresholds on merchants and acquirers. Underground \"refund hack\" tutorials proliferate on forums and social platforms, teaching consumers systematic chargeback abuse techniques.\n\n**Distinction from TP-0031**: TP-0031 covers Refund-as-a-Service (RaaS) — organized refund fraud where third-party services file refunds on behalf of consumers against merchants. TP-0075 covers first-party chargeback abuse where the cardholder directly files disputes through the payment network, bypassing the merchant entirely.\n\n**Distinction from TP-0016**: TP-0016 covers first-party bust-out fraud (synthetic or real identity credit abuse). TP-0075 covers dispute-level abuse of the chargeback mechanism against individual transactions, not credit line bust-outs.",
+      "confidence_score": 85,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "payments",
+        "ecommerce",
+        "retail"
+      ],
+      "fraud_types": [
+        "friendly-fraud",
+        "chargeback-abuse",
+        "first-party-misuse",
+        "dispute-fraud"
+      ],
+      "tags": [
+        "friendly-fraud",
+        "chargeback-abuse",
+        "first-party-fraud",
+        "dispute-fraud",
+        "visa-vamp",
+        "refund-hack",
+        "chargeback-velocity",
+        "delivery-confirmation",
+        "merchant-fraud"
+      ],
+      "cfpf_phases": [
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1657"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0190",
+        "DL-0191"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0016",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0031",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 4
+    },
+    {
+      "id": "TP-0076",
+      "title": "Affiliate Network Fraud & Invalid Traffic",
+      "category": "ThreatPath",
+      "date": "2026-03-27",
+      "author": "FLAME Project",
+      "source": "TrafficGuard (2025); Tapper (2025, 2026); BluePear (2025); Anura (2025); SearchEngineLand (2026)",
+      "tlp": "WHITE",
+      "summary": "Affiliate network fraud encompasses a range of techniques where fraudulent affiliates generate fake clicks, impressions, leads, or conversions to earn illegitimate commissions from advertiser programs. Global ad fraud is projected to reach USD 71 billion in 2025 (Juniper Research). Cookie stuffing accounts for approximately 60% of affiliate fraud cases, while bot networks generate 40% of all click fraud. AI-powered bots are increasingly mimicking genuine user behavior — generating realistic mouse movements, scroll patterns, and session durations — making detection significantly harder. Approximately 25% of leads generated through affiliate programs are fake, wasting advertiser spend and corrupting marketing analytics. Click injection and postback manipulation represent emerging techniques that exploit mobile attribution windows and server-side tracking vulnerabilities respectively.\n\n**Relationship to TP-0042 (TDS)**: Traffic Distribution Systems documented in TP-0042 provide infrastructure that affiliate fraudsters exploit for traffic manipulation and redirection. TP-0076 covers the affiliate fraud techniques themselves rather than the TDS infrastructure.",
+      "confidence_score": 75,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "ecommerce",
+        "technology"
+      ],
+      "fraud_types": [
+        "affiliate-fraud",
+        "click-fraud",
+        "ad-fraud",
+        "cookie-stuffing",
+        "invalid-traffic"
+      ],
+      "tags": [
+        "affiliate-fraud",
+        "click-fraud",
+        "ad-fraud",
+        "cookie-stuffing",
+        "invalid-traffic",
+        "bot-traffic",
+        "click-injection",
+        "postback-manipulation",
+        "fake-leads",
+        "ivt"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1584.005",
+        "T1059",
+        "T1571",
+        "T1036"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0192",
+        "DL-0193"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0042",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0043",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 3
+    },
+    {
+      "id": "TP-0077",
+      "title": "AI-Generated Insurance Claims Fraud",
+      "category": "ThreatPath",
+      "date": "2026-03-27",
+      "author": "FLAME Project",
+      "source": "Shift Technology (2025); USI (2025); Utah Insurance Dept; Insurance Journal (2026); Debener et al. (2023, J. Risk & Insurance, doi:10.1111/jori.12427)",
+      "tlp": "WHITE",
+      "summary": "Generative AI is transforming insurance claims fraud by enabling fraudsters to create highly convincing fabricated or altered evidence — including deepfake vehicle damage photos, forged medical records, synthetic invoices, and AI-generated supporting documentation. An estimated 25-30% of insurance claims now involve some form of GenAI-altered content, ranging from minor photo manipulation to entirely fabricated damage scenarios. Deepfake vehicle damage photos represent a particularly acute threat, with AI-generated images of vehicle damage that can bypass visual inspection by claims adjusters. The 2025 US Healthcare Fraud Takedown (324 defendants, USD 14.6 billion in alleged fraud) demonstrated the scale of organized claims fraud that AI tools can amplify. The insurance fraud detection market is growing from USD 7.5 billion to USD 9.13 billion, reflecting industry investment in countermeasures. Academic research (Debener et al., 2023) demonstrates that XGBoost and isolation forest algorithms are complementary approaches for detecting anomalous claims patterns.\n\n**Distinction from TP-0056**: TP-0056 covers traditional claims fraud (exaggerated, staged, or fabricated claims using conventional methods). TP-0077 specifically covers the use of generative AI tools to create or alter claims evidence, which requires different detection techniques focused on digital forensics and AI artifact analysis rather than claims pattern analytics alone.\n\n**Distinction from TP-0029/TP-0018**: TP-0029 covers AI-generated synthetic identities and TP-0018 covers deepfake document fraud broadly. TP-0077 focuses on the specific application of these techniques within the insurance claims process, where the claims workflow creates unique detection opportunities.",
+      "confidence_score": 78,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "insurance"
+      ],
+      "fraud_types": [
+        "ai-generated-claims",
+        "deepfake-claims",
+        "document-fraud",
+        "insurance-fraud"
+      ],
+      "tags": [
+        "ai-generated-claims",
+        "deepfake-claims",
+        "document-fraud",
+        "insurance-fraud",
+        "genai-fraud",
+        "vehicle-damage-deepfake",
+        "claims-fraud",
+        "gan-artifacts",
+        "exif-anomaly",
+        "xgboost",
+        "isolation-forest"
+      ],
+      "cfpf_phases": [
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566",
+        "T1036",
+        "T1027",
+        "T1589"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0194",
+        "DL-0195"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0018",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0029",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0056",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 3
     }
   ]
 }

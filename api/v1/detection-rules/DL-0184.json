@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-29T17:53:53.043433+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "6bee5e8a-8b36-4fa7-9339-8ed36bdb51a3",
+    "dl_id": "DL-0184",
+    "title": "Telecom Subscription Velocity — Multiple New Service Activations From Same Identity/Device Within 30 Days",
+    "status": "experimental",
+    "description": "Detects subscription fraud patterns where the same identity or device IMEI is used to activate multiple new telecom service accounts within a 30-day window. Subscription fraud is the top concern for 53% of telecom executives (TransUnion 2025). Fraudsters use synthetic identities (TP-0003) with GenAI-generated KYC documents to open accounts across multiple carriers, acquiring subsidized flagship devices on installment plans with no payment intent. The multi-carrier activation pattern is the strongest detection signal, as legitimate customers rarely activate 3+ accounts across 2+ carriers in a 30-day period. Devices acquired through subscription fraud are resold at 60-80% of retail value on secondary markets.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "activation_type": "new_account"
+      },
+      "filter_velocity": {
+        "activation_count_30d|gte": 3
+      },
+      "filter_multi_carrier": {
+        "unique_carriers_30d|gte": 2
+      },
+      "timeframe": "30d",
+      "condition": "selection AND (filter_velocity OR filter_multi_carrier)"
+    },
+    "logsource": {
+      "product": "telecom",
+      "service": "account_activations"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "identity_hash",
+        "customer_name",
+        "activation_date",
+        "carrier_id",
+        "device_imei",
+        "device_model",
+        "device_value",
+        "plan_type",
+        "activation_channel"
+      ],
+      "enrichment_required": [
+        {
+          "field": "activation_count_30d",
+          "source": "Rolling 30-day count of new account activations per identity hash"
+        },
+        {
+          "field": "unique_carriers_30d",
+          "source": "Distinct carrier count per identity hash in 30-day window"
+        },
+        {
+          "field": "credit_file_age_months",
+          "source": "Credit bureau data on identity's credit history length"
+        }
+      ],
+      "derived_fields": [
+        "total_device_value",
+        "avg_device_value",
+        "activation_velocity_per_day"
+      ]
+    },
+    "queries": {
+      "splunk": "`comment(\"Splunk SPL for Telecom Subscription Velocity — DL-0184\")`\n`comment(\"Detects multiple new service activations from same identity/device within 30 days\")`\nindex=flame_telecom sourcetype=flame:account_activations\n  activation_type=\"new_account\"\n| bin _time span=30d\n| stats count as activation_count,\n        dc(carrier_id) as unique_carriers,\n        dc(device_imei) as unique_devices,\n        values(carrier_id) as carriers,\n        values(device_imei) as devices,\n        values(device_model) as device_models,\n        values(plan_type) as plan_types,\n        sum(device_value) as total_device_value,\n        earliest(_time) as first_activation,\n        latest(_time) as last_activation\n  by identity_hash, _time\n| where activation_count >= 3 OR unique_carriers >= 2\n| eval risk_score = case(\n    activation_count >= 5 AND unique_carriers >= 3, \"critical\",\n    activation_count >= 4 AND total_device_value > 5000, \"high\",\n    activation_count >= 3 OR unique_carriers >= 2, \"medium\")\n| eval days_between = round((last_activation - first_activation) / 86400, 1)\n| table identity_hash, activation_count, unique_carriers, unique_devices,\n        carriers, devices, device_models, plan_types, total_device_value,\n        first_activation, last_activation, days_between, risk_score\n| sort - activation_count",
+      "sql": "-- SQL for Telecom Subscription Velocity\n-- Detects multiple new service activations from same identity/device within 30 days\nSELECT\n  a.identity_hash,\n  COUNT(*) AS activation_count,\n  COUNT(DISTINCT a.carrier_id) AS unique_carriers,\n  COUNT(DISTINCT a.device_imei) AS unique_devices,\n  STRING_AGG(DISTINCT a.carrier_id, ', ') AS carriers,\n  STRING_AGG(DISTINCT a.device_model, ', ') AS device_models,\n  SUM(a.device_value) AS total_device_value,\n  AVG(a.device_value) AS avg_device_value,\n  MIN(a.activation_date) AS first_activation,\n  MAX(a.activation_date) AS last_activation,\n  DATEDIFF(DAY, MIN(a.activation_date), MAX(a.activation_date)) AS window_days,\n  CASE\n    WHEN COUNT(*) >= 5 AND COUNT(DISTINCT a.carrier_id) >= 3 THEN 'critical'\n    WHEN COUNT(*) >= 4 AND SUM(a.device_value) > 5000 THEN 'high'\n    ELSE 'medium'\n  END AS risk_score\nFROM account_activations a\nWHERE a.activation_type = 'new_account'\n  AND a.activation_date >= DATEADD(DAY, -30, CURRENT_DATE)\nGROUP BY a.identity_hash\nHAVING COUNT(*) >= 3 OR COUNT(DISTINCT a.carrier_id) >= 2\nORDER BY activation_count DESC",
+      "cql": "// CrowdStrike CQL for Telecom Subscription Velocity\nactivation_type=\"new_account\"\n| groupBy(identity_hash, function=[\n    count(as=activation_count),\n    countDistinct(carrier_id, as=unique_carriers),\n    countDistinct(device_imei, as=unique_devices),\n    sum(device_value, as=total_device_value),\n    collect([carrier_id, device_model, device_imei, plan_type]),\n    min(activation_date, as=first_activation),\n    max(activation_date, as=last_activation)\n  ], span=30d)\n| activation_count >= 3 OR unique_carriers >= 2\n| sort(activation_count, order=desc)"
+    },
+    "references": [
+      "TransUnion, Consumer Pulse Report (2025)",
+      "Subex, Global Telecom Fraud Intelligence Report (2025, 2026)",
+      "SEON, Telecom Fraud Prevention Guide"
+    ],
+    "threat_path_ids": [
+      "TP-0003",
+      "TP-0072"
+    ],
+    "fraud_types": [
+      "device-fraud",
+      "subscription-fraud",
+      "synthetic-identity"
+    ],
+    "tags": [
+      "cfpf.phase3.positioning",
+      "flame.device-fraud",
+      "flame.subscription-fraud",
+      "flame.synthetic-identity"
+    ],
+    "falsepositives": [
+      "Corporate accounts activating multiple lines for new employees",
+      "Legitimate device upgrades across carrier switches during promotional periods",
+      "Family plan activations where multiple members onboard simultaneously",
+      "Resellers and authorized dealers activating demonstration or inventory devices"
+    ]
+  }
+}

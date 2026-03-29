@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-29T17:53:53.114557+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "0bd06774-5b44-44ea-8ed7-61db1df6ecd4",
+    "dl_id": "DL-0194",
+    "title": "AI-Generated Claims Document Detection — Metadata Anomalies and Generation Tool Signatures",
+    "status": "experimental",
+    "description": "Detects AI-generated or AI-altered insurance claims documents by analyzing metadata anomalies including GAN artifacts, inconsistent EXIF data, and AI generation tool signatures. An estimated 25-30% of insurance claims now involve some form of GenAI-altered content. This rule targets the document forensics layer: photos submitted without legitimate camera metadata, documents with AI tool signatures in creation metadata, images with frequency domain anomalies characteristic of GAN generation, and GPS coordinates that contradict the claimed loss location. The insurance fraud detection market is growing from USD 7.5B to USD 9.13B reflecting industry investment in these countermeasures. Debener et al. (2023) demonstrate that XGBoost and isolation forests provide complementary detection approaches for anomalous claims.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "document_type": [
+          "photo",
+          "invoice",
+          "medical_record",
+          "repair_estimate",
+          "police_report"
+        ]
+      },
+      "filter_missing_camera": {
+        "exif_camera_model": null,
+        "document_type": "photo"
+      },
+      "filter_ai_tool": {
+        "creation_tool|contains": [
+          "stable diffusion",
+          "midjourney",
+          "dall-e",
+          "comfyui",
+          "automatic1111"
+        ]
+      },
+      "filter_gan_artifacts": {
+        "gan_artifact_score|gte": 0.7
+      },
+      "filter_frequency_anomaly": {
+        "frequency_domain_anomaly_score|gte": 0.8
+      },
+      "filter_gps_mismatch": {
+        "exif_gps_loss_location_match": false
+      },
+      "timeframe": "30d",
+      "condition": "selection AND (filter_missing_camera OR filter_ai_tool OR filter_gan_artifacts OR filter_frequency_anomaly OR filter_gps_mismatch)\n"
+    },
+    "logsource": {
+      "product": "insurance",
+      "service": "claims_processing"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "claim_id",
+        "claimant_id",
+        "document_id",
+        "document_type",
+        "file_name",
+        "submission_date",
+        "claim_amount"
+      ],
+      "enrichment_required": [
+        {
+          "field": "exif_camera_model",
+          "source": "EXIF metadata extraction from submitted photo files"
+        },
+        {
+          "field": "creation_tool",
+          "source": "Document metadata extraction (PDF creator, image software tag)"
+        },
+        {
+          "field": "gan_artifact_score",
+          "source": "GAN artifact detection model (pixel-level frequency domain analysis)"
+        },
+        {
+          "field": "frequency_domain_anomaly_score",
+          "source": "Fourier transform analysis for synthetic image fingerprints"
+        },
+        {
+          "field": "exif_gps_loss_location_match",
+          "source": "Comparison of photo GPS coordinates with claimed loss location"
+        }
+      ],
+      "derived_fields": [
+        "anomaly_type",
+        "combined_forensic_score",
+        "documents_flagged_per_claim"
+      ]
+    },
+    "queries": {
+      "cql": "// CQL for AI-Generated Claims Document Detection — DL-0194\n// Flags claims documents with AI generation metadata anomalies\nClaimDocuments\n| document_type = \"photo\" OR document_type = \"invoice\" OR document_type = \"medical_record\" OR document_type = \"repair_estimate\"\n| submission_date >= now() - 30d\n| anomaly_type := if(document_type = \"photo\" AND exif_camera_model = null, \"missing_camera_metadata\", if(match(creation_tool, \"(?i)(stable.diffusion|midjourney|dall-e|comfyui)\"), \"ai_tool_signature\", if(gan_artifact_score > 0.7, \"gan_artifacts\", if(frequency_domain_anomaly_score > 0.8, \"frequency_anomaly\", if(exif_gps_coordinates != null AND exif_gps_loss_location_match = false, \"gps_mismatch\", null)))))\n| anomaly_type != null\n| groupBy([claim_id, claimant_id, claim_type],\n    function=[count() as flagged_documents,\n              collect(anomaly_type) as anomaly_types,\n              sum(claim_amount) as total_claim_value,\n              countDistinct(document_id) as unique_documents])\n| sort(flagged_documents, order=desc)",
+      "sql": "-- SQL: AI-Generated Claims Document Detection\n-- Claims documents with metadata anomalies indicating AI generation\nSELECT\n  c.claim_id,\n  c.claimant_id,\n  c.claim_type,\n  c.claim_amount,\n  d.document_id,\n  d.document_type,\n  d.file_name,\n  d.exif_camera_model,\n  d.exif_gps_coordinates,\n  d.creation_tool,\n  d.gan_artifact_score,\n  d.frequency_domain_anomaly_score,\n  CASE\n    WHEN d.exif_camera_model IS NULL AND d.document_type = 'photo'\n      THEN 'missing_camera_metadata'\n    WHEN d.creation_tool LIKE '%stable%diffusion%'\n      OR d.creation_tool LIKE '%midjourney%'\n      OR d.creation_tool LIKE '%dall-e%'\n      OR d.creation_tool LIKE '%comfyui%'\n      THEN 'ai_tool_signature'\n    WHEN d.gan_artifact_score > 0.7 THEN 'gan_artifacts'\n    WHEN d.frequency_domain_anomaly_score > 0.8 THEN 'frequency_anomaly'\n    WHEN d.exif_gps_coordinates IS NOT NULL\n      AND d.exif_gps_loss_location_match = 0 THEN 'gps_mismatch'\n    ELSE 'multiple_indicators'\n  END AS anomaly_type,\n  COUNT(*) OVER (PARTITION BY c.claim_id) AS flagged_docs_per_claim,\n  COUNT(*) OVER (PARTITION BY c.claimant_id) AS flagged_docs_per_claimant\nFROM claims c\nJOIN claim_documents d ON c.claim_id = d.claim_id\nWHERE d.submission_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND (\n    (d.document_type = 'photo' AND d.exif_camera_model IS NULL)\n    OR d.creation_tool LIKE '%stable%diffusion%'\n    OR d.creation_tool LIKE '%midjourney%'\n    OR d.creation_tool LIKE '%dall-e%'\n    OR d.creation_tool LIKE '%comfyui%'\n    OR d.gan_artifact_score > 0.7\n    OR d.frequency_domain_anomaly_score > 0.8\n    OR (d.exif_gps_coordinates IS NOT NULL\n        AND d.exif_gps_loss_location_match = 0)\n  )\nORDER BY d.gan_artifact_score DESC, c.claim_amount DESC",
+      "splunk": "`comment(\"Splunk SPL: AI-Generated Claims Document Detection\")`\n`comment(\"Flags claims documents with AI generation metadata anomalies\")`\nindex=flame_insurance sourcetype=flame:claims_processing\n  (document_type=\"photo\" OR document_type=\"invoice\"\n   OR document_type=\"medical_record\" OR document_type=\"repair_estimate\")\n| eval anomaly_type = case(\n    document_type=\"photo\" AND isnull(exif_camera_model), \"missing_camera_metadata\",\n    match(creation_tool, \"(?i)(stable.diffusion|midjourney|dall-e|comfyui)\"),\n      \"ai_tool_signature\",\n    gan_artifact_score > 0.7, \"gan_artifacts\",\n    frequency_domain_anomaly_score > 0.8, \"frequency_anomaly\",\n    isnotnull(exif_gps_coordinates) AND exif_gps_loss_location_match=\"false\",\n      \"gps_mismatch\",\n    1=1, null())\n| where isnotnull(anomaly_type)\n| stats count AS flagged_documents,\n        values(anomaly_type) AS anomaly_types,\n        sum(claim_amount) AS total_claim_value,\n        dc(document_id) AS unique_documents\n  BY claim_id, claimant_id, claim_type\n| sort - flagged_documents"
+    },
+    "references": [
+      "Shift Technology, AI-Powered Insurance Fraud Detection (2025)",
+      "Insurance Journal, The AI Arms Race in Insurance Claims Fraud (2026)",
+      "Debener et al. (2023), Detecting Insurance Fraud Using Supervised and Unsupervised Machine Learning, J. Risk & Insurance, doi:10.1111/jori.12427",
+      "USI, Insurance Fraud Landscape 2025"
+    ],
+    "threat_path_ids": [
+      "TP-0077"
+    ],
+    "fraud_types": [
+      "ai-generated-claims",
+      "document-fraud",
+      "insurance-fraud"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.ai-generated-claims",
+      "flame.document-fraud",
+      "flame.genai-detection",
+      "flame.insurance-fraud"
+    ],
+    "falsepositives": [
+      "Screenshots or screen captures submitted as evidence (no camera EXIF)",
+      "Photos transferred via messaging apps that strip EXIF metadata",
+      "Scanned documents that lose original creation metadata",
+      "Legitimate use of photo editing software flagged by creation tool detection"
+    ]
+  }
+}

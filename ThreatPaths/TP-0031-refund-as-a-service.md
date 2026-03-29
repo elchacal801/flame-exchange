@@ -383,6 +383,20 @@ index=customer_service sourcetype=refund_claims
 
 ---
 
+## Distinction from Friendly Fraud & Chargeback Abuse
+
+TP-0031 covers **merchant-level refund exploitation** — fraudsters abuse the merchant's return/refund process (fake tracking IDs, DNA claims, partial returns, refunder-as-a-service). The remediation pathway is between customer and merchant.
+
+**TP-0075 (Friendly Fraud & Chargeback Abuse)** covers **payment-network-level dispute exploitation** — customers file chargebacks directly with their issuing bank after receiving goods/services, bypassing the merchant entirely. The remediation pathway involves the payment network (Visa, Mastercard) arbitration process.
+
+These are distinct threat models:
+- **TP-0031**: Customer → Merchant (refund process) → Value extraction
+- **TP-0075**: Customer → Issuing Bank → Payment Network (chargeback process) → Merchant debited
+
+Both may be used by the same actor but represent different operational pathways with different detection signals and different stakeholder impacts.
+
+---
+
 ## Revision History
 
 | Date | Author | Change |

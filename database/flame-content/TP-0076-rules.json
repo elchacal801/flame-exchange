@@ -1,0 +1,17 @@
+{
+  "tp_id": "TP-0076",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL: Cookie Stuffing Detection\")`\n`comment(\"Affiliates setting cookies without corresponding click events\")`\nindex=flame_advertising sourcetype=flame:affiliate_tracking\n  event_type=\"cookie_set\"\n| stats count AS cookies_set,\n        dc(session_id) AS sessions,\n        dc(cookie_id) AS unique_cookies,\n        sum(if(cookie_source=\"iframe\" OR cookie_source=\"pixel\"\n               OR cookie_source=\"script\", 1, 0)) AS hidden_cookies\n  BY affiliate_id, affiliate_name\n| join type=left affiliate_id [\n    search index=flame_advertising sourcetype=flame:affiliate_tracking\n      event_type=\"click\"\n    | stats dc(click_id) AS clicks_recorded BY affiliate_id\n  ]\n| fillnull value=0 clicks_recorded\n| where (clicks_recorded=0 AND cookies_set >= 50)\n  OR (cookies_set / max(clicks_recorded, 1)) >= 5.0\n| sort - cookies_set",
+      "title": "DL-0192: Cookie Stuffing Detection — Affiliate Cookies Set Without Corresponding Click Events (SPLUNK)",
+      "source_rule": "DL-0192"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL: Bot Traffic Behavioral Anomaly Detection\")`\n`comment(\"Detects mechanical consistency in affiliate session behavioral metrics\")`\nindex=flame_advertising sourcetype=flame:web_analytics\n  traffic_source=\"affiliate\"\n| stats count AS session_count,\n        avg(session_duration_sec) AS avg_duration,\n        stdev(session_duration_sec) AS duration_stddev,\n        avg(scroll_depth_pct) AS avg_scroll,\n        stdev(scroll_depth_pct) AS scroll_stddev,\n        avg(mouse_movement_pixels) AS avg_mouse,\n        stdev(mouse_movement_pixels) AS mouse_stddev,\n        sum(if(mouse_movement_pixels=0, 1, 0)) AS zero_mouse_sessions,\n        dc(src_ip) AS distinct_ips\n  BY affiliate_id, affiliate_name\n| where session_count >= 100\n  AND (duration_stddev < 1.0 OR scroll_stddev < 2.0\n       OR (zero_mouse_sessions / session_count) > 0.5)\n| sort - session_count",
+      "title": "DL-0193: Bot Traffic Behavioral Anomaly — Mechanical Consistency in Affiliate Session Metrics (SPLUNK)",
+      "source_rule": "DL-0193"
+    }
+  ]
+}

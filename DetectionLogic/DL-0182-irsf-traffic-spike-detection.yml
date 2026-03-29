@@ -1,0 +1,213 @@
+title: IRSF Traffic Spike Detection — Abnormal Call Volume to Premium-Rate International Numbers
+id: a5658571-9b67-4954-9624-f54f2565f924
+status: experimental
+description: >
+  Detects abnormal spikes in outbound call volume to premium-rate international number
+  ranges, the hallmark indicator of International Revenue Share Fraud (IRSF). IRSF is
+  the single largest telecom fraud category at $10.76B in annual losses (CFCA/TNS 2026).
+  Fraudsters generate artificial traffic to premium-rate numbers where they hold revenue-
+  sharing agreements, typically using compromised PBX systems or automated dialers. The
+  detection uses z-score analysis against per-source baseline call volumes to premium-rate
+  destinations, flagging when hourly volume exceeds 3 standard deviations. A compromised
+  PBX can generate $50K-$500K in fraudulent charges within hours, making real-time detection
+  critical.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "TNS/CFCA, Global Fraud Loss Survey (2026)"
+  - "Subex, Global Telecom Fraud Intelligence Report (2025, 2026)"
+  - "NDSS Symposium, ML-Based Detection of International Revenue Share Fraud"
+threat_paths:
+  - TP-0071
+cfpf_phase: P4
+fraud_types:
+  - irsf
+  - premium-rate-fraud
+  - telecom-revenue-fraud
+logsource:
+  product: telecom
+  service: call_detail_records
+detection:
+  selection:
+    call_direction: outbound
+    destination_type: international
+  filter_premium_rate:
+    destination_prefix|in_lookup: premium_rate_number_ranges
+  filter_volume_anomaly:
+    hourly_call_count_zscore|gte: 3
+  timeframe: 1h
+  condition: selection AND filter_premium_rate AND filter_volume_anomaly
+data_sources:
+  native_fields:
+    - call_id
+    - calling_number
+    - called_number
+    - call_direction
+    - destination_type
+    - destination_country
+    - call_start_time
+    - call_duration_seconds
+    - source_system
+    - trunk_group
+  enrichment_required:
+    - field: is_premium_rate
+      source: Premium-rate number range lookup table (CFCA/i3 Forum intelligence)
+    - field: risk_country
+      source: Country risk classification from telecom fraud intelligence
+    - field: baseline_hourly_volume
+      source: Rolling 30-day average hourly call volume per source to premium-rate destinations
+  derived_fields:
+    - hourly_call_count_zscore
+    - total_estimated_charges
+    - calls_per_minute_rate
+queries:
+  cql: |-
+    // CQL for IRSF Traffic Spike Detection — DL-0182
+    // Detects abnormal call volume to premium-rate international numbers using z-score
+    CallDetailRecords
+    | call_direction = "outbound"
+    | destination_type = "international"
+    | is_premium_rate = "true"
+    | groupBy([source_system, trunk_group, risk_country, hourly_bin],
+        function=[count() as call_count,
+                  sum(call_duration_seconds) as total_duration_sec,
+                  countDistinct(calling_number) as unique_callers,
+                  countDistinct(called_number) as unique_destinations,
+                  avg(call_duration_seconds) as avg_duration])
+    | selfJoinFilter(key=[source_system, trunk_group],
+        where=[avg(call_count) as baseline_count,
+               stddev(call_count) as stdev_count])
+    | stdev_count > 0
+    | z_score := (call_count - baseline_count) / stdev_count
+    | z_score > 3
+    | sort(z_score, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for IRSF Traffic Spike Detection — DL-0182")`
+    `comment("Detects abnormal call volume to premium-rate international numbers")`
+    index=flame_telecom sourcetype=flame:cdr
+      call_direction="outbound"
+      destination_type="international"
+    | lookup premium_rate_ranges number_prefix OUTPUTNEW is_premium_rate, risk_country, per_minute_rate
+    | where is_premium_rate="true"
+    | bin _time span=1h
+    | stats count as call_count,
+            sum(call_duration_seconds) as total_duration_sec,
+            dc(calling_number) as unique_callers,
+            dc(called_number) as unique_destinations,
+            avg(call_duration_seconds) as avg_duration
+      by source_system, trunk_group, risk_country, _time
+    | eventstats avg(call_count) as baseline_count, stdev(call_count) as stdev_count
+      by source_system, trunk_group
+    | where stdev_count > 0
+    | addinfo
+    | rex mode=sed field=call_count "s/^/z_score_numerator=/"
+    | streamstats current=t window=1 values(call_count) as current_count
+    | where ((current_count - baseline_count) / stdev_count) > 3
+    | rename current_count as flagged_call_count
+    | table source_system, trunk_group, risk_country, _time, flagged_call_count,
+            total_duration_sec, unique_callers, unique_destinations,
+            avg_duration, baseline_count, stdev_count
+    | sort - flagged_call_count
+  kql: |-
+    // KQL for IRSF Traffic Spike Detection
+    // Detects abnormal call volume to premium-rate international numbers
+    let premium_rate_calls = CallDetailRecords
+    | where TimeGenerated > ago(1h)
+    | where CallDirection == "outbound"
+    | where DestinationType == "international"
+    | join kind=inner (PremiumRateRanges) on $left.DestinationPrefix == $right.NumberPrefix
+    | summarize CallCount = count(),
+                TotalDurationSec = sum(CallDurationSeconds),
+                UniqueCallers = dcount(CallingNumber),
+                UniqueDestinations = dcount(CalledNumber),
+                AvgDuration = avg(CallDurationSeconds)
+      by SourceSystem, TrunkGroup, RiskCountry, bin(TimeGenerated, 1h);
+    let baselines = CallDetailRecords
+    | where TimeGenerated > ago(30d) and TimeGenerated < ago(1h)
+    | where CallDirection == "outbound"
+    | where DestinationType == "international"
+    | join kind=inner (PremiumRateRanges) on $left.DestinationPrefix == $right.NumberPrefix
+    | summarize HourlyCount = count()
+      by SourceSystem, TrunkGroup, bin(TimeGenerated, 1h)
+    | summarize BaselineCount = avg(HourlyCount), StdevCount = stdev(HourlyCount)
+      by SourceSystem, TrunkGroup;
+    premium_rate_calls
+    | join kind=inner baselines on SourceSystem, TrunkGroup
+    | extend ZScore = iff(StdevCount > 0, (CallCount - BaselineCount) / StdevCount, 0.0)
+    | where ZScore > 3
+    | project SourceSystem, TrunkGroup, RiskCountry, TimeGenerated,
+              CallCount, TotalDurationSec, UniqueCallers, UniqueDestinations,
+              AvgDuration, BaselineCount, ZScore
+    | order by ZScore desc
+  sql: |-
+    -- SQL for IRSF Traffic Spike Detection
+    -- Detects abnormal call volume to premium-rate international numbers using z-score
+    WITH hourly_stats AS (
+      SELECT
+        c.source_system,
+        c.trunk_group,
+        p.risk_country,
+        DATE_TRUNC('hour', c.call_start_time) AS call_hour,
+        COUNT(*) AS call_count,
+        SUM(c.call_duration_seconds) AS total_duration_sec,
+        COUNT(DISTINCT c.calling_number) AS unique_callers,
+        COUNT(DISTINCT c.called_number) AS unique_destinations,
+        AVG(c.call_duration_seconds) AS avg_duration
+      FROM call_detail_records c
+      JOIN premium_rate_numbers p ON c.called_number LIKE p.number_prefix || '%'
+      WHERE c.call_direction = 'outbound'
+        AND c.destination_type = 'international'
+        AND c.call_start_time >= DATEADD(HOUR, -1, CURRENT_TIMESTAMP)
+      GROUP BY c.source_system, c.trunk_group, p.risk_country,
+               DATE_TRUNC('hour', c.call_start_time)
+    ),
+    baselines AS (
+      SELECT
+        source_system,
+        trunk_group,
+        AVG(hourly_count) AS baseline_count,
+        STDDEV(hourly_count) AS stdev_count
+      FROM (
+        SELECT source_system, trunk_group,
+               DATE_TRUNC('hour', call_start_time) AS call_hour,
+               COUNT(*) AS hourly_count
+        FROM call_detail_records
+        WHERE call_direction = 'outbound'
+          AND destination_type = 'international'
+          AND call_start_time >= DATEADD(DAY, -30, CURRENT_TIMESTAMP)
+        GROUP BY source_system, trunk_group, DATE_TRUNC('hour', call_start_time)
+      ) hist
+      GROUP BY source_system, trunk_group
+    )
+    SELECT
+      h.source_system,
+      h.trunk_group,
+      h.risk_country,
+      h.call_hour,
+      h.call_count,
+      h.total_duration_sec,
+      h.unique_callers,
+      h.unique_destinations,
+      h.avg_duration,
+      b.baseline_count,
+      CASE WHEN b.stdev_count > 0
+           THEN (h.call_count - b.baseline_count) / b.stdev_count
+           ELSE 0 END AS z_score
+    FROM hourly_stats h
+    JOIN baselines b ON h.source_system = b.source_system
+                    AND h.trunk_group = b.trunk_group
+    WHERE CASE WHEN b.stdev_count > 0
+               THEN (h.call_count - b.baseline_count) / b.stdev_count
+               ELSE 0 END > 3
+    ORDER BY z_score DESC
+falsepositives:
+  - Legitimate international call campaigns (telemarketing, customer outreach) to premium-rate regions
+  - Seasonal spikes in international calling (holidays, business cycles)
+  - Network routing changes causing temporary traffic redistribution
+  - Test calls during PBX maintenance or carrier migration
+level: critical
+tags:
+  - attack.t1496
+  - cfpf.phase4.execution
+  - flame.irsf
+  - flame.premium-rate-fraud

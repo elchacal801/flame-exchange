@@ -1,0 +1,17 @@
+{
+  "tp_id": "TP-0075",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL: Chargeback Velocity Pattern Detection\")`\n`comment(\"Identifies serial chargeback abusers across multiple merchants\")`\nindex=flame_payments sourcetype=flame:dispute_management\n  (dispute_type=\"chargeback\" OR dispute_type=\"pre-arbitration\")\n| lookup delivery_lookup original_transaction_id OUTPUT delivery_confirmed, delivery_date\n| where delivery_confirmed=\"true\"\n| stats count AS dispute_count,\n        dc(merchant_id) AS merchant_count,\n        sum(dispute_amount) AS total_disputed,\n        min(dispute_date) AS first_dispute,\n        max(dispute_date) AS last_dispute,\n        values(dispute_reason_code) AS reason_codes\n  BY cardholder_id, cardholder_name\n| where dispute_count >= 3 AND merchant_count >= 2\n| eval dispute_window_days = round((strptime(last_dispute, \"%Y-%m-%d\") - strptime(first_dispute, \"%Y-%m-%d\")) / 86400, 0)\n| sort - dispute_count",
+      "title": "DL-0190: Chargeback Velocity Pattern — Serial Dispute Filing Across Merchants with Confirmed Delivery (SPLUNK)",
+      "source_rule": "DL-0190"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL: First-Party Dispute Anomaly Detection\")`\n`comment(\"Triple-correlated friendly fraud: delivery + device match + no merchant contact\")`\nindex=flame_payments sourcetype=flame:dispute_management\n  dispute_type=\"chargeback\"\n| lookup delivery_lookup original_transaction_id\n    OUTPUT delivery_confirmed, delivery_date\n| lookup device_lookup original_transaction_id\n    OUTPUT purchase_device_fingerprint\n| lookup merchant_contact_lookup cardholder_id, merchant_id\n    OUTPUT merchant_contact_prior\n| where delivery_confirmed=\"true\"\n  AND dispute_device_fingerprint=purchase_device_fingerprint\n  AND (merchant_contact_prior=\"false\" OR isnull(merchant_contact_prior))\n| eval days_delivery_to_dispute = round(\n    (strptime(dispute_date, \"%Y-%m-%d\") - strptime(delivery_date, \"%Y-%m-%d\")) / 86400, 0)\n| table dispute_id, cardholder_id, merchant_id, dispute_amount,\n        dispute_reason_code, dispute_date, delivery_date,\n        days_delivery_to_dispute, purchase_device_fingerprint\n| sort - dispute_amount",
+      "title": "DL-0191: First-Party Dispute Anomaly — Chargeback with Delivery Confirmation, Device Match, and No Merchant Contact (SPLUNK)",
+      "source_rule": "DL-0191"
+    }
+  ]
+}

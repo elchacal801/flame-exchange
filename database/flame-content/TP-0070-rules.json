@@ -1,0 +1,17 @@
+{
+  "tp_id": "TP-0070",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Fake OTA Domain Pattern Detection — DL-0180\")`\n`comment(\"Detects access to recently registered domains mimicking major OTA brands\")`\nindex=flame_proxy sourcetype=flame:web_traffic\n| rex field=request_domain \"(?i)(?<brand_match>book[1i!l]ng|b00king|exped[1i!l]a|exp3dia|a[1i!l]rbnb|airbnb)\"\n| where isnotnull(brand_match)\n| lookup domain_whois_enrichment request_domain OUTPUT domain_registration_date, domain_age_days\n| where domain_age_days < 30\n| eval is_payment_page = if(match(request_url, \"(?i)(payment|checkout|pay|billing|card|credit)\"), 1, 0)\n| eval risk_score = case(\n    is_payment_page=1 AND domain_age_days < 7, \"critical\",\n    is_payment_page=1, \"high\",\n    domain_age_days < 7, \"high\",\n    1=1, \"medium\")\n| stats count as request_count,\n        dc(source_ip) as unique_visitors,\n        values(request_url) as urls,\n        max(is_payment_page) as has_payment_page\n  by request_domain, domain_registration_date, domain_age_days, risk_score\n| sort - request_count",
+      "title": "DL-0180: Fake OTA Domain Pattern Detection — Domains Mimicking Booking.com/Expedia/Airbnb Registered < 30 Days (SPLUNK)",
+      "source_rule": "DL-0180"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for B4U Booking Velocity Anomaly — DL-0181\")`\n`comment(\"Detects same payment method booking across multiple OTAs/hotels in rapid succession\")`\nindex=flame_payments sourcetype=flame:travel_bookings\n  (transaction_type=\"travel_booking\" OR transaction_type=\"hotel_reservation\"\n   OR transaction_type=\"flight_purchase\" OR transaction_type=\"car_rental\")\n| bin _time span=24h\n| stats dc(merchant_name) as unique_merchants,\n        dc(traveler_name) as unique_travelers,\n        dc(destination_city) as unique_destinations,\n        count as booking_count,\n        sum(transaction_amount) as total_amount,\n        values(traveler_name) as traveler_names,\n        values(merchant_name) as merchants,\n        values(destination_city) as destinations\n  by payment_method_hash, _time\n| where booking_count >= 3 AND unique_merchants >= 2\n| eval risk_score = case(\n    booking_count >= 6 AND unique_merchants >= 4 AND unique_travelers >= 3, \"critical\",\n    booking_count >= 4 AND unique_merchants >= 3 AND unique_travelers >= 2, \"high\",\n    1=1, \"medium\")\n| eval traveler_count = mvcount(traveler_names)\n| where traveler_count >= 2\n| table payment_method_hash, _time, booking_count, unique_merchants,\n        unique_travelers, unique_destinations, total_amount,\n        traveler_names, merchants, destinations, risk_score\n| sort - booking_count",
+      "title": "DL-0181: B4U Booking Velocity Anomaly — Same Payment Method Booking Across Multiple OTAs/Hotels in Rapid Succession (SPLUNK)",
+      "source_rule": "DL-0181"
+    }
+  ]
+}

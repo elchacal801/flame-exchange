@@ -165,6 +165,28 @@ Actors use large-scale credential stuffing (automated testing of stolen username
 - **Level 4 (Advanced):** Data-driven, continuously improving fraud program
 - **Level 5 (Leading):** Industry-leading, predictive fraud management
 
+## Travel Loyalty Ecosystem — Airline Miles & Hotel Rewards Fraud (2025–2026)
+
+Travel loyalty programs represent the highest-value targets in the loyalty fraud ecosystem. Airlines and hotels manage points currencies worth billions in aggregate redemption value, yet security investment lags behind banking and payments sectors.
+
+### Scale and Impact
+
+- Loyalty fraud costs the travel industry over **$1 billion annually** (Mastercard Services)
+- **72% of customer loyalty programs** have experienced theft or fraud (Transmit Security)
+- **31% of all online merchant fraud attempts** target loyalty programs (Accertify)
+- Airlines lose approximately **3% of their loyalty points value** to fraud, with account takeovers increasing **30-40%** from bot attacks
+- **45% of loyalty program accounts are inactive** or infrequently used — prime targets for undetected takeover
+
+### Travel-Specific Attack Vectors
+
+| Vector | Technique | Impact |
+|--------|-----------|--------|
+| Credential stuffing at scale | Bot-driven login attempts against airline/hotel portals using breached credentials | Mass ATO of dormant accounts |
+| Points laundering | Stolen points converted to gift cards, merchandise, or transferred to accomplice accounts | Untraceable value extraction |
+| Mileage broker exploitation | Travel agencies harvest member accounts and resell redemption tickets | Unauthorized point redemption |
+| Welcome bonus abuse | Synthetic identities created to exploit sign-up bonuses, points pooled across accounts | Loyalty program financial dilution |
+| Dark web points trading | Airline miles and hotel points sold at 60-80% discount on forums and Telegram | Underground economy for stolen loyalty value |
+
 ## Detection Approaches
 
 **WAF / API Gateway — Credential Stuffing Detection**
@@ -227,6 +249,10 @@ Credential stuffing remains one of the highest-volume attack patterns in financi
 - OWASP: Credential Stuffing Prevention Cheat Sheet. [Link](https://cheatsheetseries.owasp.org/cheatsheets/Credential_Stuffing_Prevention_Cheat_Sheet.html)
 - Group-IB Fraud Intelligence: "Credentials Stuffing using BAS" scheme report (BAS tooling analysis, technique-level Fraud Matrix mapping)
 - NRF Retail Fraud Taxonomy v1.0 (November 2024) — FT1105 Credential Stuffing, FT1104 Valid Accounts, FT1205 Loyalty Points Abuse
+- Mastercard Services, "Fighting Loyalty Fraud: Essential Strategies for the Travel Industry" (2025)
+- ARC Corp, "Miles and Points: The New Currency of Travel Fraud" (2025)
+- Accertify, "Inside Loyalty Fraud 2.0" (2025)
+- Transmit Security, "The Rising Threat of Hospitality Fraud" (2025)
 
 ## Revision History
 | Date | Author | Change |

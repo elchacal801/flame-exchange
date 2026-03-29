@@ -1,0 +1,17 @@
+{
+  "tp_id": "TP-0074",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL: Ghost Broker Policy Pattern Detection\")`\n`comment(\"Identifies intermediaries with high policy volume, disposable contacts, below-market premiums\")`\nindex=flame_insurance sourcetype=flame:policy_management\n  (policy_type=\"motor\" OR policy_type=\"vehicle\")\n| lookup market_premium_lookup risk_category OUTPUT market_avg_premium\n| eval premium_pct_of_market = round(premium_amount / market_avg_premium * 100, 1)\n| where premium_pct_of_market < 70\n| eval is_disposable = if(match(contact_email, \"(protonmail|guerrillamail|tempmail|throwaway|yopmail)\"), 1, 0)\n| stats count AS policy_count,\n        dc(contact_email) AS distinct_emails,\n        dc(contact_phone) AS distinct_phones,\n        avg(premium_amount) AS avg_premium,\n        sum(is_disposable) AS disposable_email_count,\n        values(market_avg_premium) AS market_avg\n  BY intermediary_id, intermediary_name\n| where policy_count >= 5\n  AND (distinct_emails > policy_count * 0.8 OR disposable_email_count >= 3)\n| eval premium_discount = round((1 - avg_premium / market_avg) * 100, 1)\n| sort - policy_count",
+      "title": "DL-0188: Ghost Broker Policy Pattern — Multiple Policies with Disposable Contacts and Below-Market Premiums (SPLUNK)",
+      "source_rule": "DL-0188"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL: Ghost Portal Infrastructure Detection\")`\n`comment(\"Insurance verification portals on recently registered domains\")`\nindex=flame_web sourcetype=flame:dns_proxy\n  (query=\"*insurance*verify*\" OR query=\"*policy*check*\" OR query=\"*insurance*confirm*\"\n   OR query=\"*motor*verify*\" OR query=\"*cover*check*\" OR query=\"*insure*valid*\")\n| lookup domain_age_lookup domain AS query OUTPUT domain_registered_date\n| eval domain_age_days = round((now() - strptime(domain_registered_date, \"%Y-%m-%d\")) / 86400)\n| where domain_age_days < 90\n| stats count AS query_count, dc(src_ip) AS unique_requestors,\n        values(query) AS domains, min(_time) AS first_seen, max(_time) AS last_seen\n  BY domain_registered_date\n| where query_count >= 10\n| eval days_active = round((last_seen - first_seen) / 86400, 1)\n| sort - query_count",
+      "title": "DL-0189: Ghost Portal Infrastructure Detection — Fake Insurance Verification on Recently Registered Domains (SPLUNK)",
+      "source_rule": "DL-0189"
+    }
+  ]
+}

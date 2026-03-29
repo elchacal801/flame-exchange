@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-29T17:53:53.106301+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "43afbb0b-32af-4f8e-8fdf-396ba36ed8bb",
+    "dl_id": "DL-0193",
+    "title": "Bot Traffic Behavioral Anomaly — Mechanical Consistency in Affiliate Session Metrics",
+    "status": "experimental",
+    "description": "Detects bot-generated affiliate traffic by identifying sessions with mechanical behavioral consistency — identical session durations, linear scroll patterns, and zero mouse movement variance — that indicate automated rather than human browsing. Bot networks account for approximately 40% of all click fraud, and AI-powered bots increasingly mimic individual human sessions. However, bot traffic still exhibits statistically detectable patterns at the population level: genuine human traffic has natural variance in behavioral metrics, while bot traffic — even sophisticated AI bots — produces distributions with anomalously low standard deviation. This rule analyzes session-level behavioral distributions per affiliate to detect mechanical consistency at the aggregate level.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "traffic_source": [
+          "affiliate"
+        ]
+      },
+      "filter_volume": {
+        "session_count|gte": 100
+      },
+      "filter_mechanical": {
+        "session_duration_stddev|lt": 1.0
+      },
+      "filter_scroll": {
+        "scroll_depth_stddev|lt": 2.0
+      },
+      "filter_mouse": {
+        "zero_mouse_ratio|gte": 0.5
+      },
+      "timeframe": "7d",
+      "condition": "selection AND filter_volume AND (filter_mechanical OR filter_scroll OR filter_mouse)\n"
+    },
+    "logsource": {
+      "product": "advertising",
+      "service": "web_analytics"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "session_id",
+        "affiliate_id",
+        "session_duration_sec",
+        "scroll_depth_pct",
+        "mouse_movement_pixels",
+        "page_views",
+        "src_ip"
+      ],
+      "enrichment_required": [
+        {
+          "field": "session_duration_stddev",
+          "source": "Standard deviation of session durations per affiliate over timeframe"
+        },
+        {
+          "field": "scroll_depth_stddev",
+          "source": "Standard deviation of scroll depth per affiliate over timeframe"
+        },
+        {
+          "field": "zero_mouse_ratio",
+          "source": "Ratio of sessions with zero mouse movement to total sessions per affiliate"
+        }
+      ],
+      "derived_fields": [
+        "behavioral_anomaly_score",
+        "datacenter_ip_ratio"
+      ]
+    },
+    "queries": {
+      "sql": "-- SQL: Bot Traffic Behavioral Anomaly Detection\n-- Affiliate traffic with mechanical consistency indicating automated activity\nSELECT\n  a.affiliate_id,\n  a.affiliate_name,\n  COUNT(*) AS session_count,\n  ROUND(AVG(s.session_duration_sec), 2) AS avg_session_duration,\n  ROUND(STDDEV(s.session_duration_sec), 2) AS session_duration_stddev,\n  ROUND(AVG(s.scroll_depth_pct), 2) AS avg_scroll_depth,\n  ROUND(STDDEV(s.scroll_depth_pct), 2) AS scroll_depth_stddev,\n  ROUND(AVG(s.mouse_movement_pixels), 2) AS avg_mouse_movement,\n  ROUND(STDDEV(s.mouse_movement_pixels), 2) AS mouse_movement_stddev,\n  COUNT(CASE WHEN s.mouse_movement_pixels = 0 THEN 1 END) AS zero_mouse_sessions,\n  ROUND(COUNT(CASE WHEN s.mouse_movement_pixels = 0 THEN 1 END) * 1.0\n        / COUNT(*), 3) AS zero_mouse_ratio,\n  COUNT(DISTINCT s.src_ip) AS distinct_ips,\n  ROUND(AVG(s.page_views), 2) AS avg_page_views\nFROM affiliate_sessions s\nJOIN affiliates a ON s.affiliate_id = a.affiliate_id\nWHERE s.session_date >= DATEADD(DAY, -7, CURRENT_DATE)\n  AND s.traffic_source = 'affiliate'\nGROUP BY a.affiliate_id, a.affiliate_name\nHAVING COUNT(*) >= 100\n  AND (STDDEV(s.session_duration_sec) < 1.0\n       OR STDDEV(s.scroll_depth_pct) < 2.0\n       OR (COUNT(CASE WHEN s.mouse_movement_pixels = 0 THEN 1 END) * 1.0\n           / COUNT(*)) > 0.5)\nORDER BY session_count DESC",
+      "splunk": "`comment(\"Splunk SPL: Bot Traffic Behavioral Anomaly Detection\")`\n`comment(\"Detects mechanical consistency in affiliate session behavioral metrics\")`\nindex=flame_advertising sourcetype=flame:web_analytics\n  traffic_source=\"affiliate\"\n| stats count AS session_count,\n        avg(session_duration_sec) AS avg_duration,\n        stdev(session_duration_sec) AS duration_stddev,\n        avg(scroll_depth_pct) AS avg_scroll,\n        stdev(scroll_depth_pct) AS scroll_stddev,\n        avg(mouse_movement_pixels) AS avg_mouse,\n        stdev(mouse_movement_pixels) AS mouse_stddev,\n        sum(if(mouse_movement_pixels=0, 1, 0)) AS zero_mouse_sessions,\n        dc(src_ip) AS distinct_ips\n  BY affiliate_id, affiliate_name\n| where session_count >= 100\n  AND (duration_stddev < 1.0 OR scroll_stddev < 2.0\n       OR (zero_mouse_sessions / session_count) > 0.5)\n| sort - session_count",
+      "cql": "// CrowdStrike CQL: Bot Traffic Behavioral Anomaly\n// Mechanical consistency in affiliate session metrics\ntraffic_source=\"affiliate\"\n| groupBy(affiliate_id, function=[\n    count(as=session_count),\n    avg(field=session_duration_sec, as=avg_duration),\n    stddev(field=session_duration_sec, as=duration_stddev),\n    avg(field=scroll_depth_pct, as=avg_scroll),\n    stddev(field=scroll_depth_pct, as=scroll_stddev),\n    avg(field=mouse_movement_pixels, as=avg_mouse),\n    stddev(field=mouse_movement_pixels, as=mouse_stddev)\n  ])\n| session_count >= 100\n| duration_stddev < 1.0 OR scroll_stddev < 2.0\n| sort(session_count, order=desc)"
+    },
+    "references": [
+      "Anura, Invalid Traffic Report 2025 — 40% bot traffic",
+      "TrafficGuard, Ad Fraud Report 2025 — bot network analysis",
+      "Tapper, Affiliate Fraud Trends 2026 — AI bot evolution",
+      "Juniper Research, Ad Fraud Market Analysis 2025 — USD 71B projection"
+    ],
+    "threat_path_ids": [
+      "TP-0076"
+    ],
+    "fraud_types": [
+      "affiliate-fraud",
+      "click-fraud",
+      "invalid-traffic"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.affiliate-fraud",
+      "flame.bot-detection",
+      "flame.click-fraud",
+      "flame.invalid-traffic"
+    ],
+    "falsepositives": [
+      "Legitimate automated testing or monitoring tools generating uniform traffic patterns",
+      "Accessibility tools that produce consistent browsing patterns (screen readers, keyboard-only navigation)",
+      "Embedded browser views in mobile apps with constrained interaction patterns"
+    ]
+  }
+}

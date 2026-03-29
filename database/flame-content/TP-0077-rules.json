@@ -1,0 +1,17 @@
+{
+  "tp_id": "TP-0077",
+  "rules": [
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL: AI-Generated Claims Document Detection\")`\n`comment(\"Flags claims documents with AI generation metadata anomalies\")`\nindex=flame_insurance sourcetype=flame:claims_processing\n  (document_type=\"photo\" OR document_type=\"invoice\"\n   OR document_type=\"medical_record\" OR document_type=\"repair_estimate\")\n| eval anomaly_type = case(\n    document_type=\"photo\" AND isnull(exif_camera_model), \"missing_camera_metadata\",\n    match(creation_tool, \"(?i)(stable.diffusion|midjourney|dall-e|comfyui)\"),\n      \"ai_tool_signature\",\n    gan_artifact_score > 0.7, \"gan_artifacts\",\n    frequency_domain_anomaly_score > 0.8, \"frequency_anomaly\",\n    isnotnull(exif_gps_coordinates) AND exif_gps_loss_location_match=\"false\",\n      \"gps_mismatch\",\n    1=1, null())\n| where isnotnull(anomaly_type)\n| stats count AS flagged_documents,\n        values(anomaly_type) AS anomaly_types,\n        sum(claim_amount) AS total_claim_value,\n        dc(document_id) AS unique_documents\n  BY claim_id, claimant_id, claim_type\n| sort - flagged_documents",
+      "title": "DL-0194: AI-Generated Claims Document Detection — Metadata Anomalies and Generation Tool Signatures (SPLUNK)",
+      "source_rule": "DL-0194"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL: Deepfake Vehicle Damage Photo Pattern Detection\")`\n`comment(\"Detects AI-generated vehicle damage photos via pixel and metadata analysis\")`\nindex=flame_insurance sourcetype=flame:claims_processing\n  (claim_type=\"vehicle_collision\" OR claim_type=\"vehicle_comprehensive\"\n   OR claim_type=\"vehicle_vandalism\")\n  document_type=\"photo\"\n| eval is_flagged = case(\n    pixel_artifact_score > 0.8, 1,\n    lighting_consistency_score < 0.3, 1,\n    shadow_consistency_score < 0.3, 1,\n    ai_generation_probability > 0.75, 1,\n    isnull(exif_camera_model) AND isnotnull(exif_software), 1,\n    1=1, 0)\n| where is_flagged=1\n| eval primary_indicator = case(\n    pixel_artifact_score > 0.8, \"high_pixel_artifacts\",\n    lighting_consistency_score < 0.3, \"inconsistent_lighting\",\n    shadow_consistency_score < 0.3, \"inconsistent_shadows\",\n    ai_generation_probability > 0.75, \"high_ai_probability\",\n    isnull(exif_camera_model) AND isnotnull(exif_software), \"metadata_anomaly\",\n    1=1, \"multiple_indicators\")\n| eval combined_score = round(\n    (coalesce(pixel_artifact_score, 0) * 0.3)\n    + ((1 - coalesce(lighting_consistency_score, 1)) * 0.2)\n    + ((1 - coalesce(shadow_consistency_score, 1)) * 0.2)\n    + (coalesce(ai_generation_probability, 0) * 0.3), 3)\n| stats count AS flagged_photos,\n        values(primary_indicator) AS indicators,\n        max(combined_score) AS max_deepfake_score,\n        sum(claim_amount) AS total_claim_value\n  BY claim_id, claimant_id, claim_type, vehicle_vin\n| sort - max_deepfake_score",
+      "title": "DL-0195: Deepfake Vehicle Damage Photo Pattern — Pixel Artifacts, Lighting Inconsistencies, and AI Generation Indicators (SPLUNK)",
+      "source_rule": "DL-0195"
+    }
+  ]
+}

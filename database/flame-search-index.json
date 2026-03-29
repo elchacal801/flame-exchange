@@ -414,6 +414,54 @@
     "text": "The Smishing PhaaS Ecosystem is a loosely federated Chinese-speaking cybercrime network — collectively known as the Smishing Triad — that operates industrialized smishing infrastructure at unprecedented scale: 194,000+ malicious domains registered since January 2024, 884,000+ credit cards compromised in a seven-month period, and victims in 121+ countries. The ecosystem centers on three major Phishing-as-a-Service (PhaaS) platforms — Darcula (tracked as LARVA-246), Lucid (operated by XinXin Group / LARVA-242), and Lighthouse (developed by Wang Duo Yu / LARVA-241) — supported by independent kit developers (Chenlun), bulk SMS enablers (Oak Tel/Carrie SMS), and dedicated smishing message platforms (Panda Shop, StupidFISH). What distinguishes this threat path from traditional SMS phishing is the exploitation of Apple iMessage and Android RCS to bypass carrier-level SMS filtering, real-time character-by-character credential streaming via Magic Cat, and the integration of GenAI-powered phishing form generation (darcula-suite 3.0). FBI IC3 received 59,271 toll-scam complaints in 2024 alone, reflecting the scale of the toll/road fee lure campaign impersonating E-ZPass, SunPass, FasTrak, and I-Pass across 8+ U.S. states.\n\n**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure focused on session token hijacking and MFA bypass via reverse proxy. TP-0069 covers the smishing delivery ecosystem — the SMS/iMessage/RCS-based credential harvest pipeline, the PhaaS platforms that power it, and the supporting bulk messaging and kit development infrastructure specific to mobile messaging channels."
   },
   {
+    "id": "TP-0070",
+    "type": "threat_path",
+    "title": "Travel Booking Fraud & Fake OTA Networks",
+    "text": "Travel booking fraud and fake Online Travel Agency (OTA) networks represent a rapidly growing fraud category, with estimated global losses reaching $37 billion through Buy-for-You (B4U) services alone. Fraudsters operate fake travel agency websites mimicking legitimate OTAs (Booking.com, Expedia, Airbnb), with 4,344 fake travel domains identified in active campaigns. Telegram-based B4U agencies offer deeply discounted travel bookings purchased with stolen payment credentials, creating a laundering layer between cardholders and travel providers. The ecosystem encompasses fake OTA domains, vacation rental hijacking, loyalty point laundering (TP-0013), and AI-enhanced scam operations that generate convincing travel listings and customer service interactions. Seasonal peaks align with holiday booking periods, amplifying losses during Q4 and summer travel seasons."
+  },
+  {
+    "id": "TP-0071",
+    "type": "threat_path",
+    "title": "IRSF & Telecom Revenue Share Fraud",
+    "text": "International Revenue Share Fraud (IRSF) is the single largest category of telecommunications fraud, generating $10.76 billion in annual losses according to the CFCA/TNS Global Fraud Loss Survey (2026). IRSF exploits the inter-carrier settlement system where originating carriers pay terminating carriers per-minute rates for international calls. Fraudsters establish revenue-sharing agreements with premium-rate number providers in high-rate destinations, then generate artificial call traffic to those numbers using compromised PBX systems, SIM boxes, or automated dialers. Wangiri (\"one-ring\") fraud, a variant where victims are tricked into calling back premium-rate numbers, adds a social engineering dimension. The convergence of SIM box fraud (TP-0008), compromised enterprise PBX systems, and sophisticated traffic routing creates a multi-layered ecosystem that is difficult to detect in real time. Machine learning-based detection has achieved 98% accuracy in identifying IRSF traffic patterns."
+  },
+  {
+    "id": "TP-0072",
+    "type": "threat_path",
+    "title": "Telecom Subscription & Billing Fraud",
+    "text": "Telecom subscription and billing fraud encompasses the use of stolen, synthetic, or manipulated identities to fraudulently obtain telecom services, devices, and credit -- combined with unauthorized billing manipulation that charges victims for premium services they never requested. TransUnion reports that 53% of telecom executives identify subscription fraud as their top concern, driven by the increasing sophistication of synthetic identity creation (TP-0003) and GenAI-powered KYC bypass techniques. The total telecom fraud ecosystem reaches $41.82B annually (CFCA/TNS 2026), with subscription fraud as a primary entry point that enables downstream fraud including device resale, SIM swap attacks (TP-0008), and premium SMS billing schemes (cramming). GenAI tools now generate convincing synthetic identity documents that pass automated KYC checks, enabling fraudsters to open multiple telecom accounts for device acquisition at industrial scale."
+  },
+  {
+    "id": "TP-0073",
+    "type": "threat_path",
+    "title": "Real Estate Title Fraud & Deed Theft",
+    "text": "Real estate title fraud and deed theft represent a growing category of property-related fraud, with FBI data reporting $16.6 billion in total real estate fraud losses in 2024. The core scheme involves impersonating property owners -- primarily targeting vacant lots, unencumbered properties, and absentee-owner homes -- to fraudulently transfer titles or initiate sales, diverting proceeds to attacker-controlled accounts. The emergence of AI-forged documents (deeds, government IDs, notary stamps) and deepfake video notarization has dramatically lowered the barrier to executing these schemes, with Entrust reporting a 40% year-over-year increase in deepfake-related fraud attempts. Seller impersonation of vacant property owners is the most common vector, as these properties lack occupants who would notice unauthorized activity. Virginia's 2025 deed fraud legislation represents the first major legislative response, mandating enhanced identity verification for property transfers. This threat path intersects with wire fraud (TP-0006) at the monetization phase, where sale proceeds are redirected via business email compromise or fraudulent wire instructions."
+  },
+  {
+    "id": "TP-0074",
+    "type": "threat_path",
+    "title": "Ghost Broking & Unauthorized Insurance Portals",
+    "text": "Ghost broking is a rapidly growing insurance fraud typology where unlicensed individuals or organized crime groups sell fraudulent, forged, or illegitimately obtained motor insurance policies to unsuspecting consumers. Victims increased 93% in 2025, driven by cost-of-living pressures that make below-market premiums attractive. An emerging evolution is the \"ghost portal\" — fraudsters now build and sell entire fake insurance verification platforms to other criminals, creating a fraud-as-a-service layer within the insurance ecosystem. City of London Police made significant arrests in May 2025, and the Insurance Fraud Enforcement Department (IFED) designated February 2026 as a ghost broking intensification month. UK fraud losses topped GBP 1 billion in 2024, with ghost broking contributing a material share of motor insurance fraud.\n\n**Distinction from TP-0056**: TP-0056 covers claims fraud (filing false or inflated claims against legitimate policies). TP-0074 covers the upstream fraud of selling fake or unauthorized policies themselves, where the victim believes they have legitimate coverage but does not."
+  },
+  {
+    "id": "TP-0075",
+    "type": "threat_path",
+    "title": "Friendly Fraud & Chargeback Abuse",
+    "text": "Friendly fraud — where legitimate cardholders dispute genuine transactions to obtain refunds while retaining goods or services — has become the single largest fraud category in payment networks, representing 36% of all fraud and projected to reach 337 million chargebacks costing USD 15.3 billion in the US by 2026. Unlike third-party fraud, the identity is real and the transaction is legitimate, making detection fundamentally different. Chargeback abuse surged 233% between Q1 and Q3 2025, with 84% of consumers finding chargebacks simpler than contacting the merchant. The economic multiplier is severe: merchants lose USD 4.61 for every USD 1.00 of friendly fraud. Visa's VAMP (Visa Acquirer Monitoring Program) launched April 2025 to impose stricter thresholds on merchants and acquirers. Underground \"refund hack\" tutorials proliferate on forums and social platforms, teaching consumers systematic chargeback abuse techniques.\n\n**Distinction from TP-0031**: TP-0031 covers Refund-as-a-Service (RaaS) — organized refund fraud where third-party services file refunds on behalf of consumers against merchants. TP-0075 covers first-party chargeback abuse where the cardholder directly files disputes through the payment network, bypassing the merchant entirely.\n\n**Distinction from TP-0016**: TP-0016 covers first-party bust-out fraud (synthetic or real identity credit abuse). TP-0075 covers dispute-level abuse of the chargeback mechanism against individual transactions, not credit line bust-outs."
+  },
+  {
+    "id": "TP-0076",
+    "type": "threat_path",
+    "title": "Affiliate Network Fraud & Invalid Traffic",
+    "text": "Affiliate network fraud encompasses a range of techniques where fraudulent affiliates generate fake clicks, impressions, leads, or conversions to earn illegitimate commissions from advertiser programs. Global ad fraud is projected to reach USD 71 billion in 2025 (Juniper Research). Cookie stuffing accounts for approximately 60% of affiliate fraud cases, while bot networks generate 40% of all click fraud. AI-powered bots are increasingly mimicking genuine user behavior — generating realistic mouse movements, scroll patterns, and session durations — making detection significantly harder. Approximately 25% of leads generated through affiliate programs are fake, wasting advertiser spend and corrupting marketing analytics. Click injection and postback manipulation represent emerging techniques that exploit mobile attribution windows and server-side tracking vulnerabilities respectively.\n\n**Relationship to TP-0042 (TDS)**: Traffic Distribution Systems documented in TP-0042 provide infrastructure that affiliate fraudsters exploit for traffic manipulation and redirection. TP-0076 covers the affiliate fraud techniques themselves rather than the TDS infrastructure."
+  },
+  {
+    "id": "TP-0077",
+    "type": "threat_path",
+    "title": "AI-Generated Insurance Claims Fraud",
+    "text": "Generative AI is transforming insurance claims fraud by enabling fraudsters to create highly convincing fabricated or altered evidence — including deepfake vehicle damage photos, forged medical records, synthetic invoices, and AI-generated supporting documentation. An estimated 25-30% of insurance claims now involve some form of GenAI-altered content, ranging from minor photo manipulation to entirely fabricated damage scenarios. Deepfake vehicle damage photos represent a particularly acute threat, with AI-generated images of vehicle damage that can bypass visual inspection by claims adjusters. The 2025 US Healthcare Fraud Takedown (324 defendants, USD 14.6 billion in alleged fraud) demonstrated the scale of organized claims fraud that AI tools can amplify. The insurance fraud detection market is growing from USD 7.5 billion to USD 9.13 billion, reflecting industry investment in countermeasures. Academic research (Debener et al., 2023) demonstrates that XGBoost and isolation forest algorithms are complementary approaches for detecting anomalous claims patterns.\n\n**Distinction from TP-0056**: TP-0056 covers traditional claims fraud (exaggerated, staged, or fabricated claims using conventional methods). TP-0077 specifically covers the use of generative AI tools to create or alter claims evidence, which requires different detection techniques focused on digital forensics and AI artifact analysis rather than claims pattern analytics alone.\n\n**Distinction from TP-0029/TP-0018**: TP-0029 covers AI-generated synthetic identities and TP-0018 covers deepfake document fraud broadly. TP-0077 focuses on the specific application of these techniques within the insurance claims process, where the claims workflow creates unique detection opportunities."
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -1486,6 +1534,102 @@
     "type": "detection_rule",
     "title": "Cloud Phone Behavioral Anomaly — Device-Environment Decorrelation Detection",
     "text": "Detects cloud phone behavioral anomalies indicative of industrial-scale dropper/mule account creation. Cloud phones — remote-access Android devices running genuine firmware on ARM hardware in data centers — pass hardware attestation and present authentic device signals, making them invisible to traditional emulator detection. This rule uses a composite scoring approach combining device-environment decorrelation signals: perpetual full battery, absence of accelerometer motion during active sessions, presence of VPN/proxy and vendor management apps, unusually high banking app density, and recent device first-seen dates. Group-IB reports cloud phone rental from $0.10/hour with pre-verified dropper accounts selling for $50–200 on darknet markets. UK APP fraud losses reached £485.2M in 2023 with dropper accounts as the top contributing factor.\n"
+  },
+  {
+    "id": "DL-0180",
+    "type": "detection_rule",
+    "title": "Fake OTA Domain Pattern Detection — Domains Mimicking Booking.com/Expedia/Airbnb Registered < 30 Days",
+    "text": "Detects web traffic to recently registered domains (< 30 days old) that mimic major Online Travel Agency brands (Booking.com, Expedia, Airbnb) using typosquatting, homoglyph substitution, or brand-adjacent naming patterns. These fake OTA domains are the primary infrastructure for travel booking fraud credential harvesting operations. NordVPN/Saily identified 4,344 active fake travel domains in 2026. Average domain lifespan is 18 days before takedown, making registration age the highest-signal detection feature. Domains serving payment form pages are critical-severity indicators.\n"
+  },
+  {
+    "id": "DL-0181",
+    "type": "detection_rule",
+    "title": "B4U Booking Velocity Anomaly — Same Payment Method Booking Across Multiple OTAs/Hotels in Rapid Succession",
+    "text": "Detects Buy-for-You (B4U) booking fraud patterns where the same payment method is used to make travel bookings across multiple OTAs, airlines, or hotel chains within a 24-hour period, especially when bookings are made for different travelers. B4U operators use stolen payment credentials to purchase travel at legitimate platforms, then resell bookings at 30-60% of face value. Sumsub estimates B4U services generate $37B in annual travel fraud losses. The velocity of bookings across disparate merchants with mismatched traveler names is the hallmark detection signal.\n"
+  },
+  {
+    "id": "DL-0182",
+    "type": "detection_rule",
+    "title": "IRSF Traffic Spike Detection — Abnormal Call Volume to Premium-Rate International Numbers",
+    "text": "Detects abnormal spikes in outbound call volume to premium-rate international number ranges, the hallmark indicator of International Revenue Share Fraud (IRSF). IRSF is the single largest telecom fraud category at $10.76B in annual losses (CFCA/TNS 2026). Fraudsters generate artificial traffic to premium-rate numbers where they hold revenue- sharing agreements, typically using compromised PBX systems or automated dialers. The detection uses z-score analysis against per-source baseline call volumes to premium-rate destinations, flagging when hourly volume exceeds 3 standard deviations. A compromised PBX can generate $50K-$500K in fraudulent charges within hours, making real-time detection critical.\n"
+  },
+  {
+    "id": "DL-0183",
+    "type": "detection_rule",
+    "title": "Wangiri Callback Velocity — High Volume of Short-Duration Outbound International Calls From Single Source",
+    "text": "Detects Wangiri (\"one-ring\") fraud patterns where a high volume of short-duration (< 5 seconds) outbound international calls originate from a single source, indicating subscriber callbacks to premium-rate numbers. In a Wangiri scheme, fraudsters place brief inbound calls from premium-rate numbers to trigger victim callbacks. The callbacks connect to IVR systems or premium content lines that accumulate per-minute charges. This rule detects the callback side of the attack: clusters of brief outbound international calls from individual subscribers or PBX systems to premium-rate destinations. Average victim loss is $15-$50 per callback; aggregate campaign revenues reach $100K-$1M (Subex/Akamai).\n"
+  },
+  {
+    "id": "DL-0184",
+    "type": "detection_rule",
+    "title": "Telecom Subscription Velocity — Multiple New Service Activations From Same Identity/Device Within 30 Days",
+    "text": "Detects subscription fraud patterns where the same identity or device IMEI is used to activate multiple new telecom service accounts within a 30-day window. Subscription fraud is the top concern for 53% of telecom executives (TransUnion 2025). Fraudsters use synthetic identities (TP-0003) with GenAI-generated KYC documents to open accounts across multiple carriers, acquiring subsidized flagship devices on installment plans with no payment intent. The multi-carrier activation pattern is the strongest detection signal, as legitimate customers rarely activate 3+ accounts across 2+ carriers in a 30-day period. Devices acquired through subscription fraud are resold at 60-80% of retail value on secondary markets.\n"
+  },
+  {
+    "id": "DL-0185",
+    "type": "detection_rule",
+    "title": "Premium SMS Billing Anomaly — Unauthorized Premium SMS Subscriptions Appearing on Accounts",
+    "text": "Detects unauthorized premium SMS subscriptions (cramming) appearing on customer accounts without corresponding opt-in or consent records. Premium SMS cramming generates an estimated $1.5B in unauthorized consumer charges annually (CFCA/TNS 2026). Fraudsters add premium SMS shortcode subscriptions to accounts through compromised billing APIs, social engineering of carrier support staff, or malware-initiated WAP billing triggers. The key detection signal is premium SMS subscription records that lack a corresponding customer opt-in event. Multiple premium subscriptions appearing on the same account within a 30-day window without opt-in are high-confidence cramming indicators.\n"
+  },
+  {
+    "id": "DL-0186",
+    "type": "detection_rule",
+    "title": "Seller Impersonation Pattern — Property Sale Initiated by Non-Resident Owner of Vacant/Unencumbered Property With Recent Contact Info Changes",
+    "text": "Detects the characteristic seller impersonation pattern in real estate title fraud: a property sale or title transfer is initiated on a vacant, unencumbered property where the owner is non-resident (mailing address differs from property address) and the owner's contact information has been recently changed. FBI data shows $16.6B in total real estate fraud losses (2024), with seller impersonation of vacant property owners as the fastest-growing subcategory. Fraudsters target vacant, mortgage-free properties because there is no occupant to notice and no lender monitoring the title. A risk score is computed from multiple indicators: non-resident owner, vacant property, unencumbered, recent contact changes, and below-market listing price.\n"
+  },
+  {
+    "id": "DL-0187",
+    "type": "detection_rule",
+    "title": "Fraudulent Deed Transfer Anomaly — Deed Recording With Document Metadata Anomalies (AI Generation Indicators) on Properties With No Prior Activity",
+    "text": "Detects deed recordings that exhibit document metadata anomalies indicative of AI- generated or forged documents, particularly on properties with no recent prior recording activity. The detection combines document forensic signals (AI tool signatures in PDF metadata, rapid creation timestamps, font inconsistencies) with property-level risk factors (no prior recordings in 5 years, vacant status, unencumbered, non-resident owner). Entrust reports a 40% YoY increase in deepfake-related fraud attempts (2026), with AI-forged deeds, government IDs, and notary stamps as primary vectors in real estate title fraud. Notary commission validation is a critical check -- invalid or expired notary credentials are a high-confidence fraud indicator.\n"
+  },
+  {
+    "id": "DL-0188",
+    "type": "detection_rule",
+    "title": "Ghost Broker Policy Pattern — Multiple Policies with Disposable Contacts and Below-Market Premiums",
+    "text": "Detects ghost broker activity by identifying intermediaries submitting multiple insurance policies using disposable contact details (temporary email addresses, prepaid phone numbers) with premiums significantly below market rates. Ghost broking victims increased 93% in 2025, with organized operators selling fake or fraudulently obtained policies at 30-60% below market rates. The combination of high policy volume, rotating disposable contacts, and below-market pricing is the hallmark pattern of ghost broker operations. City of London Police made arrests in May 2025 and IFED designated February 2026 as a ghost broking intensification month.\n"
+  },
+  {
+    "id": "DL-0189",
+    "type": "detection_rule",
+    "title": "Ghost Portal Infrastructure Detection — Fake Insurance Verification on Recently Registered Domains",
+    "text": "Detects ghost portal infrastructure — fraudulent insurance verification websites deployed on recently registered domains that return valid-looking but unverifiable policy numbers. Ghost portals represent the evolution of ghost broking into a fraud-as-a-service model, where operators build and sell fake insurance verification platforms to other fraudsters. These portals are typically deployed on domains registered within the past 90 days, use insurance-related keywords, and mimic legitimate insurer verification workflows. Detection focuses on DNS queries and web traffic to recently registered domains containing insurance verification terminology.\n"
+  },
+  {
+    "id": "DL-0190",
+    "type": "detection_rule",
+    "title": "Chargeback Velocity Pattern — Serial Dispute Filing Across Merchants with Confirmed Delivery",
+    "text": "Detects friendly fraud chargeback abuse by identifying cardholders with 3 or more chargebacks filed within a 90-day window across different merchants where delivery was confirmed for the original transactions. Friendly fraud represents 36% of all fraud, with 337 million chargebacks projected for 2026 costing USD 15.3 billion in the US. Chargeback abuse surged 233% between Q1 and Q3 2025. The combination of multi-merchant dispute filing with contradicting delivery evidence is a high-confidence indicator of first-party chargeback abuse rather than legitimate disputes. Merchants lose USD 4.61 for every USD 1.00 of friendly fraud.\n"
+  },
+  {
+    "id": "DL-0191",
+    "type": "detection_rule",
+    "title": "First-Party Dispute Anomaly — Chargeback with Delivery Confirmation, Device Match, and No Merchant Contact",
+    "text": "Detects high-confidence friendly fraud by identifying chargebacks where three independent indicators contradict the dispute claim: (1) delivery was confirmed for the original order, (2) the device fingerprint filing the dispute matches the device used for the original purchase, and (3) no merchant contact was attempted before the chargeback was filed. The triple correlation of delivery evidence, device match, and merchant bypass is a strong signal that the cardholder is the original purchaser who received the goods and chose to file a chargeback rather than a legitimate return. 84% of consumers find chargebacks simpler than contacting merchants, creating systemic abuse of the dispute mechanism.\n"
+  },
+  {
+    "id": "DL-0192",
+    "type": "detection_rule",
+    "title": "Cookie Stuffing Detection — Affiliate Cookies Set Without Corresponding Click Events",
+    "text": "Detects cookie stuffing — the most prevalent affiliate fraud technique (approximately 60% of cases) — by identifying affiliates that set tracking cookies in user browsers without corresponding user click events. Cookie stuffing uses hidden iframes, 1x1 pixel images, or JavaScript injection to drop affiliate cookies without the user's knowledge or intent. This steals attribution credit from legitimate affiliates and organic traffic, inflating the fraudulent affiliate's commission payments. Detection relies on the cookie-to-click ratio: legitimate affiliates typically have a ratio near 1:1, while cookie stuffers exhibit ratios of 5:1 or higher, or set cookies with zero associated clicks entirely. Global ad fraud is projected at USD 71 billion in 2025.\n"
+  },
+  {
+    "id": "DL-0193",
+    "type": "detection_rule",
+    "title": "Bot Traffic Behavioral Anomaly — Mechanical Consistency in Affiliate Session Metrics",
+    "text": "Detects bot-generated affiliate traffic by identifying sessions with mechanical behavioral consistency — identical session durations, linear scroll patterns, and zero mouse movement variance — that indicate automated rather than human browsing. Bot networks account for approximately 40% of all click fraud, and AI-powered bots increasingly mimic individual human sessions. However, bot traffic still exhibits statistically detectable patterns at the population level: genuine human traffic has natural variance in behavioral metrics, while bot traffic — even sophisticated AI bots — produces distributions with anomalously low standard deviation. This rule analyzes session-level behavioral distributions per affiliate to detect mechanical consistency at the aggregate level.\n"
+  },
+  {
+    "id": "DL-0194",
+    "type": "detection_rule",
+    "title": "AI-Generated Claims Document Detection — Metadata Anomalies and Generation Tool Signatures",
+    "text": "Detects AI-generated or AI-altered insurance claims documents by analyzing metadata anomalies including GAN artifacts, inconsistent EXIF data, and AI generation tool signatures. An estimated 25-30% of insurance claims now involve some form of GenAI-altered content. This rule targets the document forensics layer: photos submitted without legitimate camera metadata, documents with AI tool signatures in creation metadata, images with frequency domain anomalies characteristic of GAN generation, and GPS coordinates that contradict the claimed loss location. The insurance fraud detection market is growing from USD 7.5B to USD 9.13B reflecting industry investment in these countermeasures. Debener et al. (2023) demonstrate that XGBoost and isolation forests provide complementary detection approaches for anomalous claims.\n"
+  },
+  {
+    "id": "DL-0195",
+    "type": "detection_rule",
+    "title": "Deepfake Vehicle Damage Photo Pattern — Pixel Artifacts, Lighting Inconsistencies, and AI Generation Indicators",
+    "text": "Detects deepfake vehicle damage photos in insurance claims by analyzing pixel-level artifacts, lighting and shadow inconsistencies, and metadata indicating AI image generation tools. AI-generated vehicle damage photos represent an acute threat to auto insurance claims processing, as generative AI can produce realistic collision, hail, and vandalism damage images that bypass visual inspection by claims adjusters. Detection relies on computer vision analysis: GAN-generated images exhibit characteristic pixel artifacts at damage boundaries, physically impossible lighting/shadow combinations, and frequency domain signatures distinct from camera-captured photos. This rule targets vehicle-specific claims (collision, comprehensive, vandalism) and correlates image forensics scores with claim characteristics.\n"
   },
   {
     "id": "BASE-001",

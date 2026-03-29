@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-29T03:18:14.415316+00:00",
-    "total": 179
+    "generated_at": "2026-03-29T17:53:52.064251+00:00",
+    "total": 195
   },
   "data": [
     {
@@ -13357,6 +13357,1576 @@
       "falsepositives": [
         "Devices in static charging cradles",
         "Accessibility-configured tablets used for banking"
+      ]
+    },
+    {
+      "id": "efe5474d-d15f-4485-a014-ad0357484e80",
+      "dl_id": "DL-0180",
+      "title": "Fake OTA Domain Pattern Detection — Domains Mimicking Booking.com/Expedia/Airbnb Registered < 30 Days",
+      "status": "experimental",
+      "description": "Detects web traffic to recently registered domains (< 30 days old) that mimic major Online Travel Agency brands (Booking.com, Expedia, Airbnb) using typosquatting, homoglyph substitution, or brand-adjacent naming patterns. These fake OTA domains are the primary infrastructure for travel booking fraud credential harvesting operations. NordVPN/Saily identified 4,344 active fake travel domains in 2026. Average domain lifespan is 18 days before takedown, making registration age the highest-signal detection feature. Domains serving payment form pages are critical-severity indicators.\n",
+      "cfpf_phase": "P1",
+      "level": "high",
+      "detection": {
+        "selection_domain_patterns": {
+          "request_domain|re": [
+            "(?i)(book[1i!l]ng|b00king|booking-?\\w+)\\.(com|net|org|info|travel|xyz|top)",
+            "(?i)(exped[1i!l]a|exp3dia|expedia-?\\w+)\\.(com|net|org|info|travel|xyz|top)",
+            "(?i)(a[1i!l]rbnb|airbnb-?\\w+|a1rbnb)\\.(com|net|org|info|travel|xyz|top)",
+            "(?i)(hotels?-?\\w*book|book-?\\w*travel|cheap-?\\w*flight)\\.(com|net|org|info|travel)"
+          ]
+        },
+        "filter_legitimate": {
+          "request_domain": [
+            "booking.com",
+            "*.booking.com",
+            "expedia.com",
+            "*.expedia.com",
+            "airbnb.com",
+            "*.airbnb.com",
+            "hotels.com",
+            "*.hotels.com"
+          ]
+        },
+        "filter_domain_age": {
+          "domain_registration_age_days|lt": 30
+        },
+        "condition": "selection_domain_patterns and not filter_legitimate and filter_domain_age"
+      },
+      "logsource": {
+        "product": "proxy",
+        "service": "web_traffic"
+      },
+      "sigma_compatible": true,
+      "data_sources": {
+        "native_fields": [
+          "request_domain",
+          "source_ip",
+          "user_agent",
+          "request_url",
+          "http_method",
+          "response_code"
+        ],
+        "enrichment_required": [
+          {
+            "field": "domain_registration_age_days",
+            "source": "Domain WHOIS or passive DNS enrichment providing domain registration date"
+          },
+          {
+            "field": "domain_registration_date",
+            "source": "WHOIS registration date lookup"
+          },
+          {
+            "field": "ssl_certificate_age_days",
+            "source": "Certificate Transparency log enrichment"
+          }
+        ],
+        "derived_fields": [
+          "is_payment_page",
+          "brand_similarity_score"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Fake OTA Domain Pattern Detection — DL-0180\")`\n`comment(\"Detects access to recently registered domains mimicking major OTA brands\")`\nindex=flame_proxy sourcetype=flame:web_traffic\n| rex field=request_domain \"(?i)(?<brand_match>book[1i!l]ng|b00king|exped[1i!l]a|exp3dia|a[1i!l]rbnb|airbnb)\"\n| where isnotnull(brand_match)\n| lookup domain_whois_enrichment request_domain OUTPUT domain_registration_date, domain_age_days\n| where domain_age_days < 30\n| eval is_payment_page = if(match(request_url, \"(?i)(payment|checkout|pay|billing|card|credit)\"), 1, 0)\n| eval risk_score = case(\n    is_payment_page=1 AND domain_age_days < 7, \"critical\",\n    is_payment_page=1, \"high\",\n    domain_age_days < 7, \"high\",\n    1=1, \"medium\")\n| stats count as request_count,\n        dc(source_ip) as unique_visitors,\n        values(request_url) as urls,\n        max(is_payment_page) as has_payment_page\n  by request_domain, domain_registration_date, domain_age_days, risk_score\n| sort - request_count",
+        "sql": "-- SQL for Fake OTA Domain Pattern Detection\nSELECT\n  w.request_domain,\n  d.domain_registration_date,\n  DATEDIFF(DAY, d.domain_registration_date, CURRENT_DATE) AS domain_age_days,\n  COUNT(*) AS request_count,\n  COUNT(DISTINCT w.source_ip) AS unique_visitors,\n  MAX(CASE WHEN w.request_url LIKE '%payment%' OR w.request_url LIKE '%checkout%'\n           OR w.request_url LIKE '%billing%' THEN 1 ELSE 0 END) AS has_payment_page\nFROM web_traffic_logs w\nJOIN domain_whois d ON w.request_domain = d.domain_name\nWHERE (w.request_domain LIKE '%book_ng%' OR w.request_domain LIKE '%b00king%'\n       OR w.request_domain LIKE '%exped_a%' OR w.request_domain LIKE '%airbnb%'\n       OR w.request_domain LIKE '%a_rbnb%')\n  AND w.request_domain NOT IN ('booking.com', 'expedia.com', 'airbnb.com',\n                                'hotels.com')\n  AND w.request_domain NOT LIKE '%.booking.com'\n  AND w.request_domain NOT LIKE '%.expedia.com'\n  AND w.request_domain NOT LIKE '%.airbnb.com'\n  AND DATEDIFF(DAY, d.domain_registration_date, CURRENT_DATE) < 30\nGROUP BY w.request_domain, d.domain_registration_date\nORDER BY request_count DESC"
+      },
+      "references": [
+        "NordVPN/Saily, Travel Scam Intelligence Report (2026)",
+        "Sumsub, Travel Fraud: The Hidden Epidemic (2026)",
+        "Riskified, OTA Fraud Patterns and Detection Strategies"
+      ],
+      "threat_path_ids": [
+        "TP-0070"
+      ],
+      "fraud_types": [
+        "credential-harvesting",
+        "fake-ota",
+        "travel-booking-fraud"
+      ],
+      "tags": [
+        "attack.t1583.001",
+        "cfpf.phase1.recon",
+        "flame.fake-ota",
+        "flame.travel-booking-fraud"
+      ],
+      "falsepositives": [
+        "Legitimate new travel startups with names similar to established OTA brands",
+        "Regional OTA affiliates or partner sites with brand-adjacent domains",
+        "Travel deal aggregator sites with recently registered domains",
+        "Marketing campaign microsites operated by legitimate OTA brands"
+      ]
+    },
+    {
+      "id": "6f7f17fe-f856-48d2-8187-08a778f96915",
+      "dl_id": "DL-0181",
+      "title": "B4U Booking Velocity Anomaly — Same Payment Method Booking Across Multiple OTAs/Hotels in Rapid Succession",
+      "status": "experimental",
+      "description": "Detects Buy-for-You (B4U) booking fraud patterns where the same payment method is used to make travel bookings across multiple OTAs, airlines, or hotel chains within a 24-hour period, especially when bookings are made for different travelers. B4U operators use stolen payment credentials to purchase travel at legitimate platforms, then resell bookings at 30-60% of face value. Sumsub estimates B4U services generate $37B in annual travel fraud losses. The velocity of bookings across disparate merchants with mismatched traveler names is the hallmark detection signal.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "transaction_type": [
+            "travel_booking",
+            "hotel_reservation",
+            "flight_purchase",
+            "car_rental"
+          ]
+        },
+        "filter_velocity": {
+          "booking_count_24h|gte": 3
+        },
+        "filter_multi_merchant": {
+          "unique_merchants_24h|gte": 2
+        },
+        "filter_multi_traveler": {
+          "unique_travelers_24h|gte": 2
+        },
+        "timeframe": "24h",
+        "condition": "selection AND filter_velocity AND filter_multi_merchant AND filter_multi_traveler\n"
+      },
+      "logsource": {
+        "product": "payments",
+        "service": "travel_bookings"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "transaction_id",
+          "payment_method_hash",
+          "merchant_name",
+          "merchant_category",
+          "transaction_amount",
+          "traveler_name",
+          "booking_date",
+          "travel_date",
+          "destination_city",
+          "device_fingerprint"
+        ],
+        "enrichment_required": [
+          {
+            "field": "booking_count_24h",
+            "source": "Rolling 24-hour count of bookings per payment method"
+          },
+          {
+            "field": "unique_merchants_24h",
+            "source": "Distinct merchant count per payment method in 24-hour window"
+          },
+          {
+            "field": "unique_travelers_24h",
+            "source": "Distinct traveler name count per payment method in 24-hour window"
+          }
+        ],
+        "derived_fields": [
+          "cardholder_traveler_match",
+          "booking_to_departure_hours",
+          "average_discount_from_market"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for B4U Booking Velocity Anomaly — DL-0181\")`\n`comment(\"Detects same payment method booking across multiple OTAs/hotels in rapid succession\")`\nindex=flame_payments sourcetype=flame:travel_bookings\n  (transaction_type=\"travel_booking\" OR transaction_type=\"hotel_reservation\"\n   OR transaction_type=\"flight_purchase\" OR transaction_type=\"car_rental\")\n| bin _time span=24h\n| stats dc(merchant_name) as unique_merchants,\n        dc(traveler_name) as unique_travelers,\n        dc(destination_city) as unique_destinations,\n        count as booking_count,\n        sum(transaction_amount) as total_amount,\n        values(traveler_name) as traveler_names,\n        values(merchant_name) as merchants,\n        values(destination_city) as destinations\n  by payment_method_hash, _time\n| where booking_count >= 3 AND unique_merchants >= 2\n| eval risk_score = case(\n    booking_count >= 6 AND unique_merchants >= 4 AND unique_travelers >= 3, \"critical\",\n    booking_count >= 4 AND unique_merchants >= 3 AND unique_travelers >= 2, \"high\",\n    1=1, \"medium\")\n| eval traveler_count = mvcount(traveler_names)\n| where traveler_count >= 2\n| table payment_method_hash, _time, booking_count, unique_merchants,\n        unique_travelers, unique_destinations, total_amount,\n        traveler_names, merchants, destinations, risk_score\n| sort - booking_count",
+        "sql": "-- SQL for B4U Booking Velocity Anomaly\n-- Detects same payment method used for multiple travel bookings with different travelers\nSELECT\n  b.payment_method_hash,\n  CAST(b.booking_date AS DATE) AS booking_day,\n  COUNT(*) AS booking_count,\n  COUNT(DISTINCT b.merchant_name) AS unique_merchants,\n  COUNT(DISTINCT b.traveler_name) AS unique_travelers,\n  COUNT(DISTINCT b.destination_city) AS unique_destinations,\n  SUM(b.transaction_amount) AS total_amount,\n  STRING_AGG(DISTINCT b.traveler_name, ', ') AS traveler_names,\n  STRING_AGG(DISTINCT b.merchant_name, ', ') AS merchants,\n  CASE\n    WHEN COUNT(*) >= 6 AND COUNT(DISTINCT b.merchant_name) >= 4 THEN 'critical'\n    WHEN COUNT(*) >= 4 AND COUNT(DISTINCT b.merchant_name) >= 3 THEN 'high'\n    ELSE 'medium'\n  END AS risk_score\nFROM travel_bookings b\nWHERE b.transaction_type IN ('travel_booking', 'hotel_reservation',\n                              'flight_purchase', 'car_rental')\n  AND b.booking_date >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\nGROUP BY b.payment_method_hash, CAST(b.booking_date AS DATE)\nHAVING COUNT(*) >= 3\n   AND COUNT(DISTINCT b.merchant_name) >= 2\n   AND COUNT(DISTINCT b.traveler_name) >= 2\nORDER BY booking_count DESC",
+        "cql": "// CrowdStrike CQL for B4U Booking Velocity Anomaly\n(transaction_type=\"travel_booking\" OR transaction_type=\"hotel_reservation\"\n OR transaction_type=\"flight_purchase\" OR transaction_type=\"car_rental\")\n| groupBy(payment_method_hash, function=[\n    count(as=booking_count),\n    countDistinct(merchant_name, as=unique_merchants),\n    countDistinct(traveler_name, as=unique_travelers),\n    countDistinct(destination_city, as=unique_destinations),\n    sum(transaction_amount, as=total_amount),\n    collect([traveler_name, merchant_name, destination_city])\n  ], span=24h)\n| booking_count >= 3\n| unique_merchants >= 2\n| unique_travelers >= 2\n| sort(booking_count, order=desc)"
+      },
+      "references": [
+        "Sumsub, Travel Fraud: The Hidden Epidemic (2026)",
+        "Riskified, OTA Fraud Patterns and Detection Strategies",
+        "NordVPN/Saily, Travel Scam Intelligence Report (2026)"
+      ],
+      "threat_path_ids": [
+        "TP-0070"
+      ],
+      "fraud_types": [
+        "buy-for-you-fraud",
+        "card-not-present-fraud",
+        "travel-booking-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.buy-for-you",
+        "flame.card-not-present",
+        "flame.travel-booking-fraud"
+      ],
+      "falsepositives": [
+        "Corporate travel managers booking for multiple employees using a company card",
+        "Travel agencies making legitimate bookings for multiple clients",
+        "Family vacation bookings across multiple platforms for price comparison",
+        "Event organizers booking group travel for conferences or weddings"
+      ]
+    },
+    {
+      "id": "a5658571-9b67-4954-9624-f54f2565f924",
+      "dl_id": "DL-0182",
+      "title": "IRSF Traffic Spike Detection — Abnormal Call Volume to Premium-Rate International Numbers",
+      "status": "experimental",
+      "description": "Detects abnormal spikes in outbound call volume to premium-rate international number ranges, the hallmark indicator of International Revenue Share Fraud (IRSF). IRSF is the single largest telecom fraud category at $10.76B in annual losses (CFCA/TNS 2026). Fraudsters generate artificial traffic to premium-rate numbers where they hold revenue- sharing agreements, typically using compromised PBX systems or automated dialers. The detection uses z-score analysis against per-source baseline call volumes to premium-rate destinations, flagging when hourly volume exceeds 3 standard deviations. A compromised PBX can generate $50K-$500K in fraudulent charges within hours, making real-time detection critical.\n",
+      "cfpf_phase": "P4",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "call_direction": "outbound",
+          "destination_type": "international"
+        },
+        "filter_premium_rate": {
+          "destination_prefix|in_lookup": "premium_rate_number_ranges"
+        },
+        "filter_volume_anomaly": {
+          "hourly_call_count_zscore|gte": 3
+        },
+        "timeframe": "1h",
+        "condition": "selection AND filter_premium_rate AND filter_volume_anomaly"
+      },
+      "logsource": {
+        "product": "telecom",
+        "service": "call_detail_records"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "call_id",
+          "calling_number",
+          "called_number",
+          "call_direction",
+          "destination_type",
+          "destination_country",
+          "call_start_time",
+          "call_duration_seconds",
+          "source_system",
+          "trunk_group"
+        ],
+        "enrichment_required": [
+          {
+            "field": "is_premium_rate",
+            "source": "Premium-rate number range lookup table (CFCA/i3 Forum intelligence)"
+          },
+          {
+            "field": "risk_country",
+            "source": "Country risk classification from telecom fraud intelligence"
+          },
+          {
+            "field": "baseline_hourly_volume",
+            "source": "Rolling 30-day average hourly call volume per source to premium-rate destinations"
+          }
+        ],
+        "derived_fields": [
+          "hourly_call_count_zscore",
+          "total_estimated_charges",
+          "calls_per_minute_rate"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for IRSF Traffic Spike Detection — DL-0182\n// Detects abnormal call volume to premium-rate international numbers using z-score\nCallDetailRecords\n| call_direction = \"outbound\"\n| destination_type = \"international\"\n| is_premium_rate = \"true\"\n| groupBy([source_system, trunk_group, risk_country, hourly_bin],\n    function=[count() as call_count,\n              sum(call_duration_seconds) as total_duration_sec,\n              countDistinct(calling_number) as unique_callers,\n              countDistinct(called_number) as unique_destinations,\n              avg(call_duration_seconds) as avg_duration])\n| selfJoinFilter(key=[source_system, trunk_group],\n    where=[avg(call_count) as baseline_count,\n           stddev(call_count) as stdev_count])\n| stdev_count > 0\n| z_score := (call_count - baseline_count) / stdev_count\n| z_score > 3\n| sort(z_score, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for IRSF Traffic Spike Detection — DL-0182\")`\n`comment(\"Detects abnormal call volume to premium-rate international numbers\")`\nindex=flame_telecom sourcetype=flame:cdr\n  call_direction=\"outbound\"\n  destination_type=\"international\"\n| lookup premium_rate_ranges number_prefix OUTPUTNEW is_premium_rate, risk_country, per_minute_rate\n| where is_premium_rate=\"true\"\n| bin _time span=1h\n| stats count as call_count,\n        sum(call_duration_seconds) as total_duration_sec,\n        dc(calling_number) as unique_callers,\n        dc(called_number) as unique_destinations,\n        avg(call_duration_seconds) as avg_duration\n  by source_system, trunk_group, risk_country, _time\n| eventstats avg(call_count) as baseline_count, stdev(call_count) as stdev_count\n  by source_system, trunk_group\n| where stdev_count > 0\n| addinfo\n| rex mode=sed field=call_count \"s/^/z_score_numerator=/\"\n| streamstats current=t window=1 values(call_count) as current_count\n| where ((current_count - baseline_count) / stdev_count) > 3\n| rename current_count as flagged_call_count\n| table source_system, trunk_group, risk_country, _time, flagged_call_count,\n        total_duration_sec, unique_callers, unique_destinations,\n        avg_duration, baseline_count, stdev_count\n| sort - flagged_call_count",
+        "kql": "// KQL for IRSF Traffic Spike Detection\n// Detects abnormal call volume to premium-rate international numbers\nlet premium_rate_calls = CallDetailRecords\n| where TimeGenerated > ago(1h)\n| where CallDirection == \"outbound\"\n| where DestinationType == \"international\"\n| join kind=inner (PremiumRateRanges) on $left.DestinationPrefix == $right.NumberPrefix\n| summarize CallCount = count(),\n            TotalDurationSec = sum(CallDurationSeconds),\n            UniqueCallers = dcount(CallingNumber),\n            UniqueDestinations = dcount(CalledNumber),\n            AvgDuration = avg(CallDurationSeconds)\n  by SourceSystem, TrunkGroup, RiskCountry, bin(TimeGenerated, 1h);\nlet baselines = CallDetailRecords\n| where TimeGenerated > ago(30d) and TimeGenerated < ago(1h)\n| where CallDirection == \"outbound\"\n| where DestinationType == \"international\"\n| join kind=inner (PremiumRateRanges) on $left.DestinationPrefix == $right.NumberPrefix\n| summarize HourlyCount = count()\n  by SourceSystem, TrunkGroup, bin(TimeGenerated, 1h)\n| summarize BaselineCount = avg(HourlyCount), StdevCount = stdev(HourlyCount)\n  by SourceSystem, TrunkGroup;\npremium_rate_calls\n| join kind=inner baselines on SourceSystem, TrunkGroup\n| extend ZScore = iff(StdevCount > 0, (CallCount - BaselineCount) / StdevCount, 0.0)\n| where ZScore > 3\n| project SourceSystem, TrunkGroup, RiskCountry, TimeGenerated,\n          CallCount, TotalDurationSec, UniqueCallers, UniqueDestinations,\n          AvgDuration, BaselineCount, ZScore\n| order by ZScore desc",
+        "sql": "-- SQL for IRSF Traffic Spike Detection\n-- Detects abnormal call volume to premium-rate international numbers using z-score\nWITH hourly_stats AS (\n  SELECT\n    c.source_system,\n    c.trunk_group,\n    p.risk_country,\n    DATE_TRUNC('hour', c.call_start_time) AS call_hour,\n    COUNT(*) AS call_count,\n    SUM(c.call_duration_seconds) AS total_duration_sec,\n    COUNT(DISTINCT c.calling_number) AS unique_callers,\n    COUNT(DISTINCT c.called_number) AS unique_destinations,\n    AVG(c.call_duration_seconds) AS avg_duration\n  FROM call_detail_records c\n  JOIN premium_rate_numbers p ON c.called_number LIKE p.number_prefix || '%'\n  WHERE c.call_direction = 'outbound'\n    AND c.destination_type = 'international'\n    AND c.call_start_time >= DATEADD(HOUR, -1, CURRENT_TIMESTAMP)\n  GROUP BY c.source_system, c.trunk_group, p.risk_country,\n           DATE_TRUNC('hour', c.call_start_time)\n),\nbaselines AS (\n  SELECT\n    source_system,\n    trunk_group,\n    AVG(hourly_count) AS baseline_count,\n    STDDEV(hourly_count) AS stdev_count\n  FROM (\n    SELECT source_system, trunk_group,\n           DATE_TRUNC('hour', call_start_time) AS call_hour,\n           COUNT(*) AS hourly_count\n    FROM call_detail_records\n    WHERE call_direction = 'outbound'\n      AND destination_type = 'international'\n      AND call_start_time >= DATEADD(DAY, -30, CURRENT_TIMESTAMP)\n    GROUP BY source_system, trunk_group, DATE_TRUNC('hour', call_start_time)\n  ) hist\n  GROUP BY source_system, trunk_group\n)\nSELECT\n  h.source_system,\n  h.trunk_group,\n  h.risk_country,\n  h.call_hour,\n  h.call_count,\n  h.total_duration_sec,\n  h.unique_callers,\n  h.unique_destinations,\n  h.avg_duration,\n  b.baseline_count,\n  CASE WHEN b.stdev_count > 0\n       THEN (h.call_count - b.baseline_count) / b.stdev_count\n       ELSE 0 END AS z_score\nFROM hourly_stats h\nJOIN baselines b ON h.source_system = b.source_system\n                AND h.trunk_group = b.trunk_group\nWHERE CASE WHEN b.stdev_count > 0\n           THEN (h.call_count - b.baseline_count) / b.stdev_count\n           ELSE 0 END > 3\nORDER BY z_score DESC"
+      },
+      "references": [
+        "TNS/CFCA, Global Fraud Loss Survey (2026)",
+        "Subex, Global Telecom Fraud Intelligence Report (2025, 2026)",
+        "NDSS Symposium, ML-Based Detection of International Revenue Share Fraud"
+      ],
+      "threat_path_ids": [
+        "TP-0071"
+      ],
+      "fraud_types": [
+        "irsf",
+        "premium-rate-fraud",
+        "telecom-revenue-fraud"
+      ],
+      "tags": [
+        "attack.t1496",
+        "cfpf.phase4.execution",
+        "flame.irsf",
+        "flame.premium-rate-fraud"
+      ],
+      "falsepositives": [
+        "Legitimate international call campaigns (telemarketing, customer outreach) to premium-rate regions",
+        "Seasonal spikes in international calling (holidays, business cycles)",
+        "Network routing changes causing temporary traffic redistribution",
+        "Test calls during PBX maintenance or carrier migration"
+      ]
+    },
+    {
+      "id": "c68daae0-88fc-44d9-b84d-e27ef3e25361",
+      "dl_id": "DL-0183",
+      "title": "Wangiri Callback Velocity — High Volume of Short-Duration Outbound International Calls From Single Source",
+      "status": "experimental",
+      "description": "Detects Wangiri (\"one-ring\") fraud patterns where a high volume of short-duration (< 5 seconds) outbound international calls originate from a single source, indicating subscriber callbacks to premium-rate numbers. In a Wangiri scheme, fraudsters place brief inbound calls from premium-rate numbers to trigger victim callbacks. The callbacks connect to IVR systems or premium content lines that accumulate per-minute charges. This rule detects the callback side of the attack: clusters of brief outbound international calls from individual subscribers or PBX systems to premium-rate destinations. Average victim loss is $15-$50 per callback; aggregate campaign revenues reach $100K-$1M (Subex/Akamai).\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "call_direction": "outbound",
+          "call_type": "international"
+        },
+        "filter_short_duration": {
+          "call_duration_seconds|lt": 5
+        },
+        "filter_volume": {
+          "short_call_count_24h|gte": 10
+        },
+        "filter_destination_diversity": {
+          "unique_premium_destinations_24h|gte": 3
+        },
+        "timeframe": "24h",
+        "condition": "selection AND filter_short_duration AND filter_volume AND filter_destination_diversity\n"
+      },
+      "logsource": {
+        "product": "telecom",
+        "service": "call_detail_records"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "call_id",
+          "calling_number",
+          "called_number",
+          "call_direction",
+          "call_type",
+          "call_start_time",
+          "call_duration_seconds",
+          "source_system",
+          "destination_country"
+        ],
+        "enrichment_required": [
+          {
+            "field": "is_premium_rate",
+            "source": "Premium-rate number range lookup table (CFCA/i3 Forum intelligence)"
+          },
+          {
+            "field": "inbound_missed_call_correlation",
+            "source": "CDR correlation identifying prior inbound one-ring calls from the same international prefix"
+          },
+          {
+            "field": "risk_country",
+            "source": "Country risk classification for Wangiri-target destinations"
+          }
+        ],
+        "derived_fields": [
+          "short_call_count_24h",
+          "unique_premium_destinations_24h",
+          "time_since_inbound_ring"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Wangiri Callback Velocity — DL-0183\")`\n`comment(\"Detects high volume of short-duration outbound international calls\")`\nindex=flame_telecom sourcetype=flame:cdr\n  call_direction=\"outbound\"\n  call_type=\"international\"\n  call_duration_seconds < 5\n| lookup premium_rate_ranges number_prefix OUTPUTNEW is_premium_rate, risk_country\n| where is_premium_rate=\"true\"\n| bin _time span=24h\n| stats count as short_call_count,\n        dc(called_number) as unique_destinations,\n        dc(destination_country) as unique_countries,\n        values(called_number) as called_numbers,\n        values(destination_country) as countries,\n        avg(call_duration_seconds) as avg_duration,\n        earliest(_time) as first_call,\n        latest(_time) as last_call\n  by calling_number, source_system, _time\n| where short_call_count >= 10 AND unique_destinations >= 3\n| eval risk_score = case(\n    short_call_count >= 50 AND unique_destinations >= 10, \"critical\",\n    short_call_count >= 25 AND unique_destinations >= 5, \"high\",\n    1=1, \"medium\")\n| table calling_number, source_system, short_call_count, unique_destinations,\n        unique_countries, called_numbers, countries, avg_duration,\n        first_call, last_call, risk_score\n| sort - short_call_count",
+        "sql": "-- SQL for Wangiri Callback Velocity Detection\n-- Detects high volume of short-duration outbound international calls from single source\nSELECT\n  c.calling_number,\n  c.source_system,\n  COUNT(*) AS short_call_count,\n  COUNT(DISTINCT c.called_number) AS unique_destinations,\n  COUNT(DISTINCT c.destination_country) AS unique_countries,\n  AVG(c.call_duration_seconds) AS avg_duration_seconds,\n  MIN(c.call_start_time) AS first_call,\n  MAX(c.call_start_time) AS last_call,\n  DATEDIFF(MINUTE, MIN(c.call_start_time), MAX(c.call_start_time)) AS window_minutes,\n  CASE\n    WHEN COUNT(*) >= 50 AND COUNT(DISTINCT c.called_number) >= 10 THEN 'critical'\n    WHEN COUNT(*) >= 25 AND COUNT(DISTINCT c.called_number) >= 5 THEN 'high'\n    ELSE 'medium'\n  END AS risk_score\nFROM call_detail_records c\nJOIN premium_rate_numbers p ON c.called_number LIKE p.number_prefix || '%'\nWHERE c.call_direction = 'outbound'\n  AND c.call_type = 'international'\n  AND c.call_duration_seconds < 5\n  AND c.call_start_time >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\nGROUP BY c.calling_number, c.source_system\nHAVING COUNT(*) >= 10\n   AND COUNT(DISTINCT c.called_number) >= 3\nORDER BY short_call_count DESC",
+        "cql": "// CrowdStrike CQL for Wangiri Callback Velocity\ncall_direction=\"outbound\" call_type=\"international\" call_duration_seconds < 5\n| join premium_rate_numbers on called_number\n| groupBy(calling_number, source_system, function=[\n    count(as=short_call_count),\n    countDistinct(called_number, as=unique_destinations),\n    countDistinct(destination_country, as=unique_countries),\n    avg(call_duration_seconds, as=avg_duration),\n    min(call_start_time, as=first_call),\n    max(call_start_time, as=last_call),\n    collect([called_number, destination_country])\n  ], span=24h)\n| short_call_count >= 10\n| unique_destinations >= 3\n| sort(short_call_count, order=desc)"
+      },
+      "references": [
+        "Subex, Global Telecom Fraud Intelligence Report (2025)",
+        "Akamai, Telecom Threat Landscape Report",
+        "TNS/CFCA, Global Fraud Loss Survey (2026)"
+      ],
+      "threat_path_ids": [
+        "TP-0071"
+      ],
+      "fraud_types": [
+        "premium-rate-fraud",
+        "telecom-revenue-fraud",
+        "wangiri"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.premium-rate-fraud",
+        "flame.telecom-revenue-fraud",
+        "flame.wangiri"
+      ],
+      "falsepositives": [
+        "International business call attempts with connection failures (busy/no answer)",
+        "Automated system health checks or monitoring calls to international endpoints",
+        "Call center operations with short-duration international callback attempts",
+        "Network testing or carrier quality assurance calls"
+      ]
+    },
+    {
+      "id": "6bee5e8a-8b36-4fa7-9339-8ed36bdb51a3",
+      "dl_id": "DL-0184",
+      "title": "Telecom Subscription Velocity — Multiple New Service Activations From Same Identity/Device Within 30 Days",
+      "status": "experimental",
+      "description": "Detects subscription fraud patterns where the same identity or device IMEI is used to activate multiple new telecom service accounts within a 30-day window. Subscription fraud is the top concern for 53% of telecom executives (TransUnion 2025). Fraudsters use synthetic identities (TP-0003) with GenAI-generated KYC documents to open accounts across multiple carriers, acquiring subsidized flagship devices on installment plans with no payment intent. The multi-carrier activation pattern is the strongest detection signal, as legitimate customers rarely activate 3+ accounts across 2+ carriers in a 30-day period. Devices acquired through subscription fraud are resold at 60-80% of retail value on secondary markets.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "activation_type": "new_account"
+        },
+        "filter_velocity": {
+          "activation_count_30d|gte": 3
+        },
+        "filter_multi_carrier": {
+          "unique_carriers_30d|gte": 2
+        },
+        "timeframe": "30d",
+        "condition": "selection AND (filter_velocity OR filter_multi_carrier)"
+      },
+      "logsource": {
+        "product": "telecom",
+        "service": "account_activations"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "identity_hash",
+          "customer_name",
+          "activation_date",
+          "carrier_id",
+          "device_imei",
+          "device_model",
+          "device_value",
+          "plan_type",
+          "activation_channel"
+        ],
+        "enrichment_required": [
+          {
+            "field": "activation_count_30d",
+            "source": "Rolling 30-day count of new account activations per identity hash"
+          },
+          {
+            "field": "unique_carriers_30d",
+            "source": "Distinct carrier count per identity hash in 30-day window"
+          },
+          {
+            "field": "credit_file_age_months",
+            "source": "Credit bureau data on identity's credit history length"
+          }
+        ],
+        "derived_fields": [
+          "total_device_value",
+          "avg_device_value",
+          "activation_velocity_per_day"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Telecom Subscription Velocity — DL-0184\")`\n`comment(\"Detects multiple new service activations from same identity/device within 30 days\")`\nindex=flame_telecom sourcetype=flame:account_activations\n  activation_type=\"new_account\"\n| bin _time span=30d\n| stats count as activation_count,\n        dc(carrier_id) as unique_carriers,\n        dc(device_imei) as unique_devices,\n        values(carrier_id) as carriers,\n        values(device_imei) as devices,\n        values(device_model) as device_models,\n        values(plan_type) as plan_types,\n        sum(device_value) as total_device_value,\n        earliest(_time) as first_activation,\n        latest(_time) as last_activation\n  by identity_hash, _time\n| where activation_count >= 3 OR unique_carriers >= 2\n| eval risk_score = case(\n    activation_count >= 5 AND unique_carriers >= 3, \"critical\",\n    activation_count >= 4 AND total_device_value > 5000, \"high\",\n    activation_count >= 3 OR unique_carriers >= 2, \"medium\")\n| eval days_between = round((last_activation - first_activation) / 86400, 1)\n| table identity_hash, activation_count, unique_carriers, unique_devices,\n        carriers, devices, device_models, plan_types, total_device_value,\n        first_activation, last_activation, days_between, risk_score\n| sort - activation_count",
+        "sql": "-- SQL for Telecom Subscription Velocity\n-- Detects multiple new service activations from same identity/device within 30 days\nSELECT\n  a.identity_hash,\n  COUNT(*) AS activation_count,\n  COUNT(DISTINCT a.carrier_id) AS unique_carriers,\n  COUNT(DISTINCT a.device_imei) AS unique_devices,\n  STRING_AGG(DISTINCT a.carrier_id, ', ') AS carriers,\n  STRING_AGG(DISTINCT a.device_model, ', ') AS device_models,\n  SUM(a.device_value) AS total_device_value,\n  AVG(a.device_value) AS avg_device_value,\n  MIN(a.activation_date) AS first_activation,\n  MAX(a.activation_date) AS last_activation,\n  DATEDIFF(DAY, MIN(a.activation_date), MAX(a.activation_date)) AS window_days,\n  CASE\n    WHEN COUNT(*) >= 5 AND COUNT(DISTINCT a.carrier_id) >= 3 THEN 'critical'\n    WHEN COUNT(*) >= 4 AND SUM(a.device_value) > 5000 THEN 'high'\n    ELSE 'medium'\n  END AS risk_score\nFROM account_activations a\nWHERE a.activation_type = 'new_account'\n  AND a.activation_date >= DATEADD(DAY, -30, CURRENT_DATE)\nGROUP BY a.identity_hash\nHAVING COUNT(*) >= 3 OR COUNT(DISTINCT a.carrier_id) >= 2\nORDER BY activation_count DESC",
+        "cql": "// CrowdStrike CQL for Telecom Subscription Velocity\nactivation_type=\"new_account\"\n| groupBy(identity_hash, function=[\n    count(as=activation_count),\n    countDistinct(carrier_id, as=unique_carriers),\n    countDistinct(device_imei, as=unique_devices),\n    sum(device_value, as=total_device_value),\n    collect([carrier_id, device_model, device_imei, plan_type]),\n    min(activation_date, as=first_activation),\n    max(activation_date, as=last_activation)\n  ], span=30d)\n| activation_count >= 3 OR unique_carriers >= 2\n| sort(activation_count, order=desc)"
+      },
+      "references": [
+        "TransUnion, Consumer Pulse Report (2025)",
+        "Subex, Global Telecom Fraud Intelligence Report (2025, 2026)",
+        "SEON, Telecom Fraud Prevention Guide"
+      ],
+      "threat_path_ids": [
+        "TP-0003",
+        "TP-0072"
+      ],
+      "fraud_types": [
+        "device-fraud",
+        "subscription-fraud",
+        "synthetic-identity"
+      ],
+      "tags": [
+        "cfpf.phase3.positioning",
+        "flame.device-fraud",
+        "flame.subscription-fraud",
+        "flame.synthetic-identity"
+      ],
+      "falsepositives": [
+        "Corporate accounts activating multiple lines for new employees",
+        "Legitimate device upgrades across carrier switches during promotional periods",
+        "Family plan activations where multiple members onboard simultaneously",
+        "Resellers and authorized dealers activating demonstration or inventory devices"
+      ]
+    },
+    {
+      "id": "b01a56cb-6931-4d86-9db9-68ed7dbd7fc8",
+      "dl_id": "DL-0185",
+      "title": "Premium SMS Billing Anomaly — Unauthorized Premium SMS Subscriptions Appearing on Accounts",
+      "status": "experimental",
+      "description": "Detects unauthorized premium SMS subscriptions (cramming) appearing on customer accounts without corresponding opt-in or consent records. Premium SMS cramming generates an estimated $1.5B in unauthorized consumer charges annually (CFCA/TNS 2026). Fraudsters add premium SMS shortcode subscriptions to accounts through compromised billing APIs, social engineering of carrier support staff, or malware-initiated WAP billing triggers. The key detection signal is premium SMS subscription records that lack a corresponding customer opt-in event. Multiple premium subscriptions appearing on the same account within a 30-day window without opt-in are high-confidence cramming indicators.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "charge_type": [
+            "premium_sms",
+            "premium_content",
+            "shortcode_subscription"
+          ]
+        },
+        "filter_no_opt_in": {
+          "has_opt_in_record": false
+        },
+        "filter_multiple_subscriptions": {
+          "premium_subscription_count_30d|gte": 2
+        },
+        "timeframe": "30d",
+        "condition": "selection AND filter_no_opt_in AND filter_multiple_subscriptions"
+      },
+      "logsource": {
+        "product": "telecom",
+        "service": "billing"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "customer_name",
+          "shortcode",
+          "charge_amount",
+          "charge_frequency",
+          "subscription_start_date",
+          "content_provider",
+          "billing_source"
+        ],
+        "enrichment_required": [
+          {
+            "field": "has_opt_in_record",
+            "source": "Customer consent management system — presence of explicit opt-in for the specific shortcode"
+          },
+          {
+            "field": "premium_subscription_count_30d",
+            "source": "Count of new premium SMS subscriptions per account in 30-day window"
+          },
+          {
+            "field": "account_age_days",
+            "source": "Account tenure derived from activation date"
+          }
+        ],
+        "derived_fields": [
+          "total_monthly_premium_charges",
+          "subscription_without_opt_in_count",
+          "charge_as_pct_of_monthly_bill"
+        ]
+      },
+      "queries": {
+        "splunk": "`comment(\"Splunk SPL for Premium SMS Billing Anomaly — DL-0185\")`\n`comment(\"Detects unauthorized premium SMS subscriptions appearing on accounts\")`\nindex=flame_telecom sourcetype=flame:billing\n  (charge_type=\"premium_sms\" OR charge_type=\"premium_content\"\n   OR charge_type=\"shortcode_subscription\")\n| lookup premium_sms_opt_in account_id, shortcode OUTPUT opt_in_date, opt_in_channel\n| where isnull(opt_in_date)\n| bin _time span=30d\n| stats dc(shortcode) as unique_shortcodes,\n        count as charge_count,\n        sum(charge_amount) as total_charges,\n        values(shortcode) as shortcodes,\n        values(content_provider) as content_providers,\n        values(billing_source) as billing_sources,\n        earliest(subscription_start_date) as first_subscription,\n        latest(subscription_start_date) as last_subscription\n  by account_id, customer_name, _time\n| where unique_shortcodes >= 2\n| eval risk_score = case(\n    unique_shortcodes >= 5 AND total_charges > 100, \"critical\",\n    unique_shortcodes >= 3 AND total_charges > 50, \"high\",\n    1=1, \"medium\")\n| table account_id, customer_name, unique_shortcodes, charge_count,\n        total_charges, shortcodes, content_providers, billing_sources,\n        first_subscription, last_subscription, risk_score\n| sort - unique_shortcodes",
+        "sql": "-- SQL for Premium SMS Billing Anomaly Detection\n-- Detects unauthorized premium SMS subscriptions without opt-in records\nSELECT\n  a.account_id,\n  a.customer_name,\n  a.account_open_date,\n  COUNT(DISTINCT s.shortcode) AS unique_shortcodes,\n  COUNT(*) AS charge_count,\n  SUM(s.charge_amount) AS total_charges,\n  STRING_AGG(DISTINCT s.shortcode, ', ') AS shortcodes,\n  STRING_AGG(DISTINCT s.content_provider, ', ') AS content_providers,\n  MIN(s.subscription_start_date) AS first_subscription,\n  MAX(s.subscription_start_date) AS last_subscription,\n  CASE\n    WHEN COUNT(DISTINCT s.shortcode) >= 5 THEN 'critical'\n    WHEN COUNT(DISTINCT s.shortcode) >= 3 THEN 'high'\n    ELSE 'medium'\n  END AS risk_score\nFROM customer_accounts a\nJOIN premium_sms_subscriptions s ON a.account_id = s.account_id\nLEFT JOIN premium_sms_opt_in o ON a.account_id = o.account_id\n                               AND s.shortcode = o.shortcode\nWHERE s.subscription_start_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND o.opt_in_id IS NULL\nGROUP BY a.account_id, a.customer_name, a.account_open_date\nHAVING COUNT(DISTINCT s.shortcode) >= 2\nORDER BY total_charges DESC",
+        "cql": "// CrowdStrike CQL for Premium SMS Billing Anomaly\n(charge_type=\"premium_sms\" OR charge_type=\"premium_content\"\n OR charge_type=\"shortcode_subscription\")\n| !has_opt_in_record\n| groupBy(account_id, customer_name, function=[\n    countDistinct(shortcode, as=unique_shortcodes),\n    count(as=charge_count),\n    sum(charge_amount, as=total_charges),\n    collect([shortcode, content_provider, billing_source]),\n    min(subscription_start_date, as=first_subscription),\n    max(subscription_start_date, as=last_subscription)\n  ], span=30d)\n| unique_shortcodes >= 2\n| sort(total_charges, order=desc)"
+      },
+      "references": [
+        "Vonage, Communications Fraud Report",
+        "Subex, Global Telecom Fraud Intelligence Report (2025, 2026)",
+        "TNS/CFCA, Global Fraud Loss Survey (2026)"
+      ],
+      "threat_path_ids": [
+        "TP-0072"
+      ],
+      "fraud_types": [
+        "cramming",
+        "premium-sms-fraud",
+        "telecom-billing-fraud"
+      ],
+      "tags": [
+        "attack.t1565",
+        "cfpf.phase4.execution",
+        "flame.cramming",
+        "flame.premium-sms-fraud",
+        "flame.telecom-billing-fraud"
+      ],
+      "falsepositives": [
+        "Customers who legitimately subscribed to multiple premium SMS services via web or app opt-in flows not captured in the consent management system",
+        "Promotional trials that auto-convert to paid subscriptions after consent was given verbally",
+        "Partner-bundled premium services included with certain plan types",
+        "Consent records delayed due to system synchronization lag between opt-in platform and billing"
+      ]
+    },
+    {
+      "id": "ddda9b5b-828d-4fd8-80d3-bd0db4aa3e8d",
+      "dl_id": "DL-0186",
+      "title": "Seller Impersonation Pattern — Property Sale Initiated by Non-Resident Owner of Vacant/Unencumbered Property With Recent Contact Info Changes",
+      "status": "experimental",
+      "description": "Detects the characteristic seller impersonation pattern in real estate title fraud: a property sale or title transfer is initiated on a vacant, unencumbered property where the owner is non-resident (mailing address differs from property address) and the owner's contact information has been recently changed. FBI data shows $16.6B in total real estate fraud losses (2024), with seller impersonation of vacant property owners as the fastest-growing subcategory. Fraudsters target vacant, mortgage-free properties because there is no occupant to notice and no lender monitoring the title. A risk score is computed from multiple indicators: non-resident owner, vacant property, unencumbered, recent contact changes, and below-market listing price.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "transaction_type": [
+            "sale_listing",
+            "title_transfer",
+            "deed_recording"
+          ]
+        },
+        "filter_vacant_or_nonresident": {
+          "occupancy_status": "vacant"
+        },
+        "filter_unencumbered": {
+          "mortgage_balance|lte": 0
+        },
+        "filter_recent_contact_change": {
+          "owner_contact_updated_days|lt": 90
+        },
+        "condition": "selection AND (filter_vacant_or_nonresident OR owner_address_mismatch) AND filter_unencumbered AND filter_recent_contact_change\n"
+      },
+      "logsource": {
+        "product": "real_estate",
+        "service": "property_transactions"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "property_id",
+          "property_address",
+          "property_type",
+          "assessed_value",
+          "occupancy_status",
+          "mortgage_balance",
+          "owner_name",
+          "owner_mailing_address",
+          "transaction_type",
+          "listing_price",
+          "listing_date",
+          "seller_contact_email",
+          "seller_contact_phone"
+        ],
+        "enrichment_required": [
+          {
+            "field": "owner_contact_updated_days",
+            "source": "Days since last contact information change in county records or title company CRM"
+          },
+          {
+            "field": "owner_address_mismatch",
+            "source": "Boolean flag indicating owner mailing address differs from property address"
+          },
+          {
+            "field": "market_value_estimate",
+            "source": "AVM (Automated Valuation Model) or recent comparable sales data"
+          }
+        ],
+        "derived_fields": [
+          "risk_score",
+          "listing_to_market_ratio",
+          "days_since_last_property_activity"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for Seller Impersonation Pattern — DL-0186\n// Detects property sale by non-resident owner of vacant/unencumbered property\nPropertyTransactions\n| transaction_type = \"sale_listing\" OR transaction_type = \"title_transfer\" OR transaction_type = \"deed_recording\"\n| non_resident := if(property_address != owner_mailing_address, 1, 0)\n| unencumbered := if(mortgage_balance <= 0 OR mortgage_balance = null, 1, 0)\n| vacant := if(occupancy_status = \"vacant\", 1, 0)\n| recent_contact_change := if(owner_contact_updated_days < 90, 1, 0)\n| below_market := if(listing_price < assessed_value * 0.85, 1, 0)\n| risk_score := non_resident + unencumbered + vacant + recent_contact_change + below_market\n| risk_score >= 3\n| risk_level := if(risk_score >= 5, \"critical\", if(risk_score >= 4, \"high\", \"medium\"))\n| listing_to_market_ratio := round(listing_price / assessed_value * 100, 1)\n| sort(risk_score, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Seller Impersonation Pattern — DL-0186\")`\n`comment(\"Detects property sale by non-resident owner of vacant/unencumbered property\")`\nindex=flame_realestate sourcetype=flame:property_transactions\n  (transaction_type=\"sale_listing\" OR transaction_type=\"title_transfer\"\n   OR transaction_type=\"deed_recording\")\n| eval non_resident = if(property_address != owner_mailing_address, 1, 0)\n| eval unencumbered = if(mortgage_balance <= 0 OR isnull(mortgage_balance), 1, 0)\n| eval vacant = if(occupancy_status=\"vacant\", 1, 0)\n| eval recent_contact_change = if(owner_contact_updated_days < 90, 1, 0)\n| eval below_market = if(listing_price < assessed_value * 0.85, 1, 0)\n| eval risk_score = non_resident + unencumbered + vacant + recent_contact_change + below_market\n| where risk_score >= 3\n| eval risk_level = case(\n    risk_score >= 5, \"critical\",\n    risk_score >= 4, \"high\",\n    risk_score >= 3, \"medium\")\n| eval listing_to_market_ratio = round(listing_price / assessed_value * 100, 1)\n| table property_id, property_address, owner_name, assessed_value, listing_price,\n        listing_to_market_ratio, occupancy_status, mortgage_balance,\n        owner_contact_updated_days, non_resident, unencumbered, vacant,\n        recent_contact_change, below_market, risk_score, risk_level\n| sort - risk_score",
+        "sql": "-- SQL for Seller Impersonation Pattern Detection\n-- Property sale by non-resident owner of vacant/unencumbered property\nSELECT\n  p.property_id,\n  p.property_address,\n  p.property_type,\n  p.assessed_value,\n  p.occupancy_status,\n  p.mortgage_balance,\n  o.owner_name,\n  o.owner_mailing_address,\n  DATEDIFF(DAY, o.contact_last_updated, CURRENT_DATE) AS contact_updated_days_ago,\n  t.transaction_type,\n  t.listing_price,\n  t.listing_date,\n  ROUND(t.listing_price * 100.0 / NULLIF(p.assessed_value, 0), 1) AS listing_to_market_pct,\n  (CASE WHEN p.property_address != o.owner_mailing_address THEN 1 ELSE 0 END\n   + CASE WHEN p.mortgage_balance <= 0 OR p.mortgage_balance IS NULL THEN 1 ELSE 0 END\n   + CASE WHEN p.occupancy_status = 'vacant' THEN 1 ELSE 0 END\n   + CASE WHEN o.contact_last_updated >= DATEADD(DAY, -90, CURRENT_DATE) THEN 1 ELSE 0 END\n   + CASE WHEN t.listing_price < p.assessed_value * 0.85 THEN 1 ELSE 0 END) AS risk_score\nFROM properties p\nJOIN property_owners o ON p.property_id = o.property_id\nJOIN property_transactions t ON p.property_id = t.property_id\nWHERE t.transaction_type IN ('sale_listing', 'title_transfer', 'deed_recording')\n  AND t.listing_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND (p.occupancy_status = 'vacant' OR p.property_address != o.owner_mailing_address)\n  AND (p.mortgage_balance <= 0 OR p.mortgage_balance IS NULL)\nHAVING risk_score >= 3\nORDER BY risk_score DESC, t.listing_date DESC"
+      },
+      "references": [
+        "FBI IC3 Annual Report (2024)",
+        "First American, Title Fraud: Emerging Threats and Prevention Strategies",
+        "Virginia Deed Fraud Study (2025)",
+        "ALTA, Best Practices for Title Insurance and Settlement"
+      ],
+      "threat_path_ids": [
+        "TP-0006",
+        "TP-0073"
+      ],
+      "fraud_types": [
+        "deed-theft",
+        "seller-impersonation",
+        "title-fraud"
+      ],
+      "tags": [
+        "cfpf.phase3.positioning",
+        "flame.deed-theft",
+        "flame.seller-impersonation",
+        "flame.title-fraud"
+      ],
+      "falsepositives": [
+        "Legitimate sales of investment properties by non-resident owners",
+        "Estate sales of inherited vacant properties",
+        "Property owners with recently updated contact info due to relocation",
+        "Below-market listings for quick sales (divorce, financial hardship)",
+        "Vacant lot sales by developers or investors"
+      ]
+    },
+    {
+      "id": "abb558a9-94f0-4b94-8945-053d12e379ed",
+      "dl_id": "DL-0187",
+      "title": "Fraudulent Deed Transfer Anomaly — Deed Recording With Document Metadata Anomalies (AI Generation Indicators) on Properties With No Prior Activity",
+      "status": "experimental",
+      "description": "Detects deed recordings that exhibit document metadata anomalies indicative of AI- generated or forged documents, particularly on properties with no recent prior recording activity. The detection combines document forensic signals (AI tool signatures in PDF metadata, rapid creation timestamps, font inconsistencies) with property-level risk factors (no prior recordings in 5 years, vacant status, unencumbered, non-resident owner). Entrust reports a 40% YoY increase in deepfake-related fraud attempts (2026), with AI-forged deeds, government IDs, and notary stamps as primary vectors in real estate title fraud. Notary commission validation is a critical check -- invalid or expired notary credentials are a high-confidence fraud indicator.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "recording_type": [
+            "deed_transfer",
+            "quitclaim_deed",
+            "warranty_deed",
+            "grant_deed"
+          ]
+        },
+        "filter_document_anomaly": {
+          "document_metadata_risk_score|gte": 40
+        },
+        "filter_no_prior_activity": {
+          "prior_recordings_5yr|lte": 0
+        },
+        "condition": "selection AND (filter_document_anomaly OR filter_no_prior_activity)\n"
+      },
+      "logsource": {
+        "product": "real_estate",
+        "service": "deed_recordings"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "recording_id",
+          "property_id",
+          "property_address",
+          "recording_type",
+          "recording_date",
+          "grantor_name",
+          "grantee_name",
+          "notary_name",
+          "notary_commission_number",
+          "notary_state",
+          "document_page_count"
+        ],
+        "enrichment_required": [
+          {
+            "field": "document_metadata_risk_score",
+            "source": "AI document forensics analysis of PDF metadata, font consistency, image artifacts, and creation timestamps"
+          },
+          {
+            "field": "prior_recordings_5yr",
+            "source": "Count of recordings against the property in the prior 5 years from county recorder database"
+          },
+          {
+            "field": "notary_commission_valid",
+            "source": "State notary commission database validation"
+          },
+          {
+            "field": "property_occupancy_status",
+            "source": "Property data enrichment (county assessor, USPS vacancy data)"
+          }
+        ],
+        "derived_fields": [
+          "composite_risk_score",
+          "ai_generation_indicators",
+          "notary_validation_result"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for Fraudulent Deed Transfer Anomaly — DL-0187\n// Detects deed recording with AI generation indicators on inactive properties\nDeedRecordings\n| recording_type = \"deed_transfer\" OR recording_type = \"quitclaim_deed\" OR recording_type = \"warranty_deed\" OR recording_type = \"grant_deed\"\n| notary_invalid := if(commission_status != \"active\" OR commission_expiry < now(), 1, 0)\n| no_prior_activity := if(prior_recordings_5yr <= 0, 1, 0)\n| vacant := if(property_occupancy_status = \"vacant\", 1, 0)\n| unencumbered := if(property_mortgage_balance <= 0 OR property_mortgage_balance = null, 1, 0)\n| ai_metadata_flag := if(document_metadata_risk_score >= 40, 1, 0)\n| rapid_creation := if(document_creation_to_modification_sec < 60, 1, 0)\n| composite_risk_score := (notary_invalid * 40) + (ai_metadata_flag * 30) + (no_prior_activity * 20) + (vacant * 15) + (unencumbered * 10) + (rapid_creation * 15)\n| composite_risk_score >= 40\n| risk_level := if(composite_risk_score >= 80, \"critical\", if(composite_risk_score >= 60, \"high\", \"medium\"))\n| recommendation := if(composite_risk_score >= 60, \"HOLD_RECORDING\", \"MANUAL_REVIEW\")\n| sort(composite_risk_score, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Fraudulent Deed Transfer Anomaly — DL-0187\")`\n`comment(\"Detects deed recording with AI generation indicators on inactive properties\")`\nindex=flame_realestate sourcetype=flame:deed_recordings\n  (recording_type=\"deed_transfer\" OR recording_type=\"quitclaim_deed\"\n   OR recording_type=\"warranty_deed\" OR recording_type=\"grant_deed\")\n| lookup notary_commission_db notary_commission_number, notary_state\n    OUTPUT commission_status, commission_expiry\n| eval notary_invalid = if(commission_status != \"active\"\n    OR commission_expiry < now(), 1, 0)\n| eval no_prior_activity = if(prior_recordings_5yr <= 0, 1, 0)\n| eval vacant = if(property_occupancy_status=\"vacant\", 1, 0)\n| eval unencumbered = if(property_mortgage_balance <= 0\n    OR isnull(property_mortgage_balance), 1, 0)\n| eval ai_metadata_flag = if(document_metadata_risk_score >= 40, 1, 0)\n| eval rapid_creation = if(document_creation_to_modification_sec < 60, 1, 0)\n| eval composite_risk_score = (notary_invalid * 40)\n    + (ai_metadata_flag * 30)\n    + (no_prior_activity * 20)\n    + (vacant * 15)\n    + (unencumbered * 10)\n    + (rapid_creation * 15)\n| where composite_risk_score >= 40\n| eval risk_level = case(\n    composite_risk_score >= 80, \"critical\",\n    composite_risk_score >= 60, \"high\",\n    composite_risk_score >= 40, \"medium\")\n| eval recommendation = if(composite_risk_score >= 60, \"HOLD_RECORDING\", \"MANUAL_REVIEW\")\n| table recording_id, property_id, property_address, recording_type,\n        recording_date, grantor_name, grantee_name, notary_name,\n        notary_commission_number, commission_status, notary_invalid,\n        document_metadata_risk_score, ai_metadata_flag, rapid_creation,\n        prior_recordings_5yr, property_occupancy_status,\n        composite_risk_score, risk_level, recommendation\n| sort - composite_risk_score",
+        "sql": "-- SQL for Fraudulent Deed Transfer Anomaly Detection\n-- Detects deed recording with AI generation indicators on properties with no prior activity\nSELECT\n  r.recording_id,\n  r.property_id,\n  r.property_address,\n  r.recording_type,\n  r.recording_date,\n  r.grantor_name,\n  r.grantee_name,\n  r.notary_name,\n  r.notary_commission_number,\n  n.commission_status,\n  n.commission_expiry,\n  r.document_metadata_risk_score,\n  COALESCE(h.prior_recording_count, 0) AS prior_recordings_5yr,\n  p.occupancy_status,\n  p.mortgage_balance,\n  (CASE WHEN n.commission_status != 'active' OR n.commission_expiry < CURRENT_DATE THEN 40 ELSE 0 END\n   + CASE WHEN r.document_metadata_risk_score >= 40 THEN 30 ELSE 0 END\n   + CASE WHEN COALESCE(h.prior_recording_count, 0) = 0 THEN 20 ELSE 0 END\n   + CASE WHEN p.occupancy_status = 'vacant' THEN 15 ELSE 0 END\n   + CASE WHEN p.mortgage_balance <= 0 OR p.mortgage_balance IS NULL THEN 10 ELSE 0 END\n   + CASE WHEN r.document_creation_to_modification_sec < 60 THEN 15 ELSE 0 END\n  ) AS composite_risk_score\nFROM deed_recordings r\nLEFT JOIN notary_commission_db n ON r.notary_commission_number = n.commission_number\n                                 AND r.notary_state = n.state\nLEFT JOIN (\n  SELECT property_id, COUNT(*) AS prior_recording_count\n  FROM deed_recordings\n  WHERE recording_date >= DATEADD(YEAR, -5, CURRENT_DATE)\n  GROUP BY property_id\n) h ON r.property_id = h.property_id\nLEFT JOIN properties p ON r.property_id = p.property_id\nWHERE r.recording_type IN ('deed_transfer', 'quitclaim_deed',\n                            'warranty_deed', 'grant_deed')\n  AND r.recording_date >= DATEADD(DAY, -7, CURRENT_DATE)\nHAVING composite_risk_score >= 40\nORDER BY composite_risk_score DESC"
+      },
+      "references": [
+        "Entrust, Identity Fraud Report (2026)",
+        "HousingWire, Deed Fraud on the Rise: AI-Powered Property Theft (2025)",
+        "First American, Title Fraud: Emerging Threats and Prevention Strategies",
+        "Virginia Deed Fraud Study (2025)"
+      ],
+      "threat_path_ids": [
+        "TP-0073"
+      ],
+      "fraud_types": [
+        "appraisal-fraud",
+        "deed-theft",
+        "title-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.ai-forged-documents",
+        "flame.deed-theft",
+        "flame.title-fraud"
+      ],
+      "falsepositives": [
+        "Legitimate property transfers on long-held family properties with no recent activity",
+        "Estate transfers after death of long-term owner",
+        "Quitclaim deeds between family members for estate planning",
+        "Properties in rural areas with infrequent recording activity",
+        "Documents scanned or digitized from paper originals (may trigger metadata anomalies)"
+      ]
+    },
+    {
+      "id": "bcc27641-0525-4513-aff2-e32bbeae8da9",
+      "dl_id": "DL-0188",
+      "title": "Ghost Broker Policy Pattern — Multiple Policies with Disposable Contacts and Below-Market Premiums",
+      "status": "experimental",
+      "description": "Detects ghost broker activity by identifying intermediaries submitting multiple insurance policies using disposable contact details (temporary email addresses, prepaid phone numbers) with premiums significantly below market rates. Ghost broking victims increased 93% in 2025, with organized operators selling fake or fraudulently obtained policies at 30-60% below market rates. The combination of high policy volume, rotating disposable contacts, and below-market pricing is the hallmark pattern of ghost broker operations. City of London Police made arrests in May 2025 and IFED designated February 2026 as a ghost broking intensification month.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "policy_type": [
+            "motor",
+            "vehicle"
+          ]
+        },
+        "filter_intermediary_volume": {
+          "intermediary_policy_count_90d|gte": 5
+        },
+        "filter_premium": {
+          "premium_pct_of_market|lt": 70
+        },
+        "filter_disposable_contacts": {
+          "disposable_contact_indicator|gte": 3
+        },
+        "timeframe": "90d",
+        "condition": "selection AND filter_intermediary_volume AND filter_premium AND filter_disposable_contacts\n"
+      },
+      "logsource": {
+        "product": "insurance",
+        "service": "policy_management"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "policy_id",
+          "intermediary_id",
+          "intermediary_name",
+          "contact_email",
+          "contact_phone",
+          "premium_amount",
+          "policy_type",
+          "issue_date"
+        ],
+        "enrichment_required": [
+          {
+            "field": "premium_pct_of_market",
+            "source": "Market average premium by risk category from actuarial benchmarks"
+          },
+          {
+            "field": "disposable_contact_indicator",
+            "source": "Count of policies with disposable email domains or prepaid phone numbers"
+          },
+          {
+            "field": "intermediary_policy_count_90d",
+            "source": "Rolling 90-day policy count per intermediary"
+          }
+        ],
+        "derived_fields": [
+          "premium_discount_pct",
+          "distinct_contact_count",
+          "disposable_email_ratio"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for Ghost Broker Policy Pattern Detection — DL-0188\n// Identifies intermediaries with high policy volume, disposable contacts, below-market premiums\nInsurancePolicies\n| policy_type = \"motor\" OR policy_type = \"vehicle\"\n| issue_date >= now() - 90d\n| premium_pct_of_market := round(premium_amount / market_avg_premium * 100, 1)\n| premium_pct_of_market < 70\n| is_disposable := if(match(contact_email, \"(protonmail|guerrillamail|tempmail|throwaway|yopmail)\"), 1, 0)\n| groupBy([intermediary_id, intermediary_name],\n    function=[count() as policy_count,\n              countDistinct(contact_email) as distinct_emails,\n              countDistinct(contact_phone) as distinct_phones,\n              avg(premium_amount) as avg_premium,\n              sum(is_disposable) as disposable_email_count])\n| policy_count >= 5\n| distinct_emails > policy_count * 0.8 OR disposable_email_count >= 3\n| sort(policy_count, order=desc)",
+        "sql": "-- SQL: Ghost Broker Policy Pattern Detection\n-- Multiple policies with same intermediary, disposable contacts, below-market premiums\nSELECT\n  p.intermediary_id,\n  p.intermediary_name,\n  COUNT(DISTINCT p.policy_id) AS policy_count,\n  COUNT(DISTINCT p.contact_email) AS distinct_emails,\n  COUNT(DISTINCT p.contact_phone) AS distinct_phones,\n  AVG(p.premium_amount) AS avg_premium,\n  m.market_avg_premium,\n  ROUND(AVG(p.premium_amount) / m.market_avg_premium * 100, 1) AS premium_pct_of_market,\n  COUNT(DISTINCT CASE WHEN p.contact_email LIKE '%@protonmail%'\n    OR p.contact_email LIKE '%@guerrillamail%'\n    OR p.contact_email LIKE '%@tempmail%'\n    OR p.contact_email LIKE '%@throwaway%'\n    OR p.contact_email LIKE '%@yopmail%'\n    THEN p.policy_id END) AS disposable_email_policies\nFROM insurance_policies p\nJOIN market_premium_benchmarks m ON p.risk_category = m.risk_category\nWHERE p.issue_date >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND p.policy_type IN ('motor', 'vehicle')\n  AND p.premium_amount < (m.market_avg_premium * 0.70)\nGROUP BY p.intermediary_id, p.intermediary_name, m.market_avg_premium\nHAVING COUNT(DISTINCT p.policy_id) >= 5\n  AND (COUNT(DISTINCT p.contact_email) > COUNT(DISTINCT p.policy_id) * 0.8\n       OR disposable_email_policies >= 3)\nORDER BY policy_count DESC",
+        "splunk": "`comment(\"Splunk SPL: Ghost Broker Policy Pattern Detection\")`\n`comment(\"Identifies intermediaries with high policy volume, disposable contacts, below-market premiums\")`\nindex=flame_insurance sourcetype=flame:policy_management\n  (policy_type=\"motor\" OR policy_type=\"vehicle\")\n| lookup market_premium_lookup risk_category OUTPUT market_avg_premium\n| eval premium_pct_of_market = round(premium_amount / market_avg_premium * 100, 1)\n| where premium_pct_of_market < 70\n| eval is_disposable = if(match(contact_email, \"(protonmail|guerrillamail|tempmail|throwaway|yopmail)\"), 1, 0)\n| stats count AS policy_count,\n        dc(contact_email) AS distinct_emails,\n        dc(contact_phone) AS distinct_phones,\n        avg(premium_amount) AS avg_premium,\n        sum(is_disposable) AS disposable_email_count,\n        values(market_avg_premium) AS market_avg\n  BY intermediary_id, intermediary_name\n| where policy_count >= 5\n  AND (distinct_emails > policy_count * 0.8 OR disposable_email_count >= 3)\n| eval premium_discount = round((1 - avg_premium / market_avg) * 100, 1)\n| sort - policy_count"
+      },
+      "references": [
+        "Aviva, Ghost broking: the scale and impact of fake insurance (November 2025)",
+        "City of London Police / IFED, Ghost broking enforcement activity (May 2025)",
+        "ABI, Annual Fraud Report 2024 (2025) — UK fraud topped GBP 1B",
+        "Insurance Times, Ghost portals: the next evolution in insurance fraud (2025)"
+      ],
+      "threat_path_ids": [
+        "TP-0074"
+      ],
+      "fraud_types": [
+        "ghost-broking",
+        "insurance-policy-fraud",
+        "unlicensed-insurance"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.ghost-broking",
+        "flame.insurance-fraud",
+        "flame.unlicensed-intermediary"
+      ],
+      "falsepositives": [
+        "Legitimate high-volume intermediaries with diverse client bases",
+        "Intermediaries serving privacy-conscious customers who use privacy email services",
+        "Seasonal fluctuations in premium pricing (promotional periods)"
+      ]
+    },
+    {
+      "id": "6f42a153-689b-4197-84cd-51f0d6a2a61b",
+      "dl_id": "DL-0189",
+      "title": "Ghost Portal Infrastructure Detection — Fake Insurance Verification on Recently Registered Domains",
+      "status": "experimental",
+      "description": "Detects ghost portal infrastructure — fraudulent insurance verification websites deployed on recently registered domains that return valid-looking but unverifiable policy numbers. Ghost portals represent the evolution of ghost broking into a fraud-as-a-service model, where operators build and sell fake insurance verification platforms to other fraudsters. These portals are typically deployed on domains registered within the past 90 days, use insurance-related keywords, and mimic legitimate insurer verification workflows. Detection focuses on DNS queries and web traffic to recently registered domains containing insurance verification terminology.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "query|contains": [
+            "insurance-verify",
+            "policy-check",
+            "insurance-confirm",
+            "motor-verify",
+            "cover-check",
+            "insure-validate"
+          ]
+        },
+        "filter_domain_age": {
+          "domain_age_days|lt": 90
+        },
+        "filter_volume": {
+          "query_count|gte": 10
+        },
+        "timeframe": "7d",
+        "condition": "selection AND filter_domain_age AND filter_volume\n"
+      },
+      "logsource": {
+        "product": "network",
+        "service": "dns_proxy"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "query_domain",
+          "src_ip",
+          "query_timestamp",
+          "response_code"
+        ],
+        "enrichment_required": [
+          {
+            "field": "domain_age_days",
+            "source": "Domain WHOIS registration date lookup"
+          },
+          {
+            "field": "domain_registrar",
+            "source": "WHOIS registrar information"
+          },
+          {
+            "field": "ssl_issuer",
+            "source": "SSL certificate transparency log"
+          }
+        ],
+        "derived_fields": [
+          "unique_requestor_count",
+          "query_frequency"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for Ghost Portal Infrastructure Detection — DL-0189\n// Insurance verification portals on recently registered domains\nDnsQueries\n| query_domain = /insurance.*verify|policy.*check|insurance.*confirm|motor.*verify|cover.*check|insure.*valid/\n| query_timestamp >= now() - 7d\n| domain_age_days < 90\n| groupBy([domain_name, registered_date, registrar, ssl_issuer],\n    function=[count() as query_count,\n              countDistinct(source_ip) as unique_requestors,\n              min(query_timestamp) as first_seen,\n              max(query_timestamp) as last_seen])\n| query_count >= 10\n| sort(query_count, order=desc)",
+        "splunk": "`comment(\"Splunk SPL: Ghost Portal Infrastructure Detection\")`\n`comment(\"Insurance verification portals on recently registered domains\")`\nindex=flame_web sourcetype=flame:dns_proxy\n  (query=\"*insurance*verify*\" OR query=\"*policy*check*\" OR query=\"*insurance*confirm*\"\n   OR query=\"*motor*verify*\" OR query=\"*cover*check*\" OR query=\"*insure*valid*\")\n| lookup domain_age_lookup domain AS query OUTPUT domain_registered_date\n| eval domain_age_days = round((now() - strptime(domain_registered_date, \"%Y-%m-%d\")) / 86400)\n| where domain_age_days < 90\n| stats count AS query_count, dc(src_ip) AS unique_requestors,\n        values(query) AS domains, min(_time) AS first_seen, max(_time) AS last_seen\n  BY domain_registered_date\n| where query_count >= 10\n| eval days_active = round((last_seen - first_seen) / 86400, 1)\n| sort - query_count",
+        "sql": "-- SQL: Ghost Portal Infrastructure Detection\n-- Recently registered domains mimicking insurance verification portals\nSELECT\n  d.domain_name,\n  d.registered_date,\n  DATEDIFF(DAY, d.registered_date, CURRENT_DATE) AS domain_age_days,\n  d.registrar,\n  COUNT(*) AS query_count,\n  COUNT(DISTINCT q.source_ip) AS unique_requestors,\n  MIN(q.query_timestamp) AS first_seen,\n  MAX(q.query_timestamp) AS last_seen,\n  d.ssl_issuer\nFROM dns_queries q\nJOIN domain_registry d ON q.query_domain = d.domain_name\nWHERE (q.query_domain LIKE '%insurance%verify%'\n  OR q.query_domain LIKE '%policy%check%'\n  OR q.query_domain LIKE '%insurance%confirm%'\n  OR q.query_domain LIKE '%motor%verify%'\n  OR q.query_domain LIKE '%cover%check%'\n  OR q.query_domain LIKE '%insure%valid%')\n  AND DATEDIFF(DAY, d.registered_date, CURRENT_DATE) < 90\n  AND q.query_timestamp >= DATEADD(DAY, -7, CURRENT_DATE)\nGROUP BY d.domain_name, d.registered_date, d.registrar, d.ssl_issuer\nHAVING COUNT(*) >= 10\nORDER BY query_count DESC"
+      },
+      "references": [
+        "Insurance Times, Ghost portals: the next evolution in insurance fraud (2025)",
+        "FraudOps, Insurance fraud threat landscape (2026)",
+        "Aviva, Ghost broking intelligence (November 2025)",
+        "City of London Police / IFED (2025)"
+      ],
+      "threat_path_ids": [
+        "TP-0074"
+      ],
+      "fraud_types": [
+        "ghost-broking",
+        "ghost-portal",
+        "insurance-policy-fraud"
+      ],
+      "tags": [
+        "cfpf.phase3.positioning",
+        "flame.ghost-broking",
+        "flame.ghost-portal",
+        "flame.insurance-fraud"
+      ],
+      "falsepositives": [
+        "Newly launched legitimate insurance comparison or verification services",
+        "Insurance technology startups with recently registered domains",
+        "Internal testing of insurance verification APIs on new domains"
+      ]
+    },
+    {
+      "id": "305ce6c8-0d2e-4701-b114-c045437ac340",
+      "dl_id": "DL-0190",
+      "title": "Chargeback Velocity Pattern — Serial Dispute Filing Across Merchants with Confirmed Delivery",
+      "status": "experimental",
+      "description": "Detects friendly fraud chargeback abuse by identifying cardholders with 3 or more chargebacks filed within a 90-day window across different merchants where delivery was confirmed for the original transactions. Friendly fraud represents 36% of all fraud, with 337 million chargebacks projected for 2026 costing USD 15.3 billion in the US. Chargeback abuse surged 233% between Q1 and Q3 2025. The combination of multi-merchant dispute filing with contradicting delivery evidence is a high-confidence indicator of first-party chargeback abuse rather than legitimate disputes. Merchants lose USD 4.61 for every USD 1.00 of friendly fraud.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "dispute_type": [
+            "chargeback",
+            "pre-arbitration"
+          ]
+        },
+        "filter_velocity": {
+          "cardholder_dispute_count_90d|gte": 3
+        },
+        "filter_cross_merchant": {
+          "distinct_merchant_count_90d|gte": 2
+        },
+        "filter_delivery": {
+          "delivery_confirmed": true
+        },
+        "timeframe": "90d",
+        "condition": "selection AND filter_velocity AND filter_cross_merchant AND filter_delivery\n"
+      },
+      "logsource": {
+        "product": "payments",
+        "service": "dispute_management"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "dispute_id",
+          "cardholder_id",
+          "merchant_id",
+          "dispute_amount",
+          "dispute_date",
+          "dispute_reason_code",
+          "original_transaction_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "delivery_confirmed",
+            "source": "Shipping carrier delivery confirmation (signed, GPS, photo)"
+          },
+          {
+            "field": "cardholder_dispute_count_90d",
+            "source": "Rolling 90-day dispute count per cardholder from payment network data"
+          },
+          {
+            "field": "distinct_merchant_count_90d",
+            "source": "Rolling 90-day distinct merchant dispute count per cardholder"
+          }
+        ],
+        "derived_fields": [
+          "total_disputed_amount",
+          "avg_days_to_dispute",
+          "confirmed_delivery_dispute_ratio"
+        ]
+      },
+      "queries": {
+        "sql": "-- SQL: Chargeback Velocity Pattern Detection\n-- 3+ chargebacks in 90 days across multiple merchants with confirmed delivery\nSELECT\n  c.cardholder_id,\n  c.cardholder_name,\n  COUNT(DISTINCT d.dispute_id) AS dispute_count,\n  COUNT(DISTINCT d.merchant_id) AS merchant_count,\n  SUM(d.dispute_amount) AS total_disputed,\n  COUNT(DISTINCT CASE WHEN t.delivery_confirmed = 1 THEN d.dispute_id END)\n    AS confirmed_delivery_disputes,\n  ROUND(AVG(DATEDIFF(DAY, t.transaction_date, d.dispute_date)), 1)\n    AS avg_days_to_dispute,\n  MIN(d.dispute_date) AS first_dispute,\n  MAX(d.dispute_date) AS last_dispute\nFROM chargebacks d\nJOIN cardholders c ON d.cardholder_id = c.cardholder_id\nJOIN transactions t ON d.original_transaction_id = t.transaction_id\nWHERE d.dispute_date >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND t.delivery_confirmed = 1\nGROUP BY c.cardholder_id, c.cardholder_name\nHAVING COUNT(DISTINCT d.dispute_id) >= 3\n  AND COUNT(DISTINCT d.merchant_id) >= 2\nORDER BY dispute_count DESC",
+        "splunk": "`comment(\"Splunk SPL: Chargeback Velocity Pattern Detection\")`\n`comment(\"Identifies serial chargeback abusers across multiple merchants\")`\nindex=flame_payments sourcetype=flame:dispute_management\n  (dispute_type=\"chargeback\" OR dispute_type=\"pre-arbitration\")\n| lookup delivery_lookup original_transaction_id OUTPUT delivery_confirmed, delivery_date\n| where delivery_confirmed=\"true\"\n| stats count AS dispute_count,\n        dc(merchant_id) AS merchant_count,\n        sum(dispute_amount) AS total_disputed,\n        min(dispute_date) AS first_dispute,\n        max(dispute_date) AS last_dispute,\n        values(dispute_reason_code) AS reason_codes\n  BY cardholder_id, cardholder_name\n| where dispute_count >= 3 AND merchant_count >= 2\n| eval dispute_window_days = round((strptime(last_dispute, \"%Y-%m-%d\") - strptime(first_dispute, \"%Y-%m-%d\")) / 86400, 0)\n| sort - dispute_count",
+        "cql": "// CrowdStrike CQL: Chargeback Velocity Pattern\n// 3+ disputes in 90 days across 2+ merchants with delivery confirmed\ndispute_type=\"chargeback\" OR dispute_type=\"pre-arbitration\"\ndelivery_confirmed=\"true\"\n| groupBy(cardholder_id, function=[\n    count(as=dispute_count),\n    collect([cardholder_name, dispute_amount, merchant_id, dispute_reason_code]),\n    countDistinct(field=merchant_id, as=merchant_count),\n    sum(field=dispute_amount, as=total_disputed)\n  ])\n| dispute_count >= 3\n| merchant_count >= 2\n| sort(dispute_count, order=desc)"
+      },
+      "references": [
+        "Chargebacks911, State of Chargebacks 2026 — 337M projection, USD 15.3B impact",
+        "Chargeflow, Friendly Fraud Statistics 2025 — 233% surge, 84% simplicity preference",
+        "Payscout, The True Cost of Chargebacks (2025) — USD 4.61 multiplier",
+        "Chargeback.io, Chargeback Industry Trends 2026 — 36% of all fraud"
+      ],
+      "threat_path_ids": [
+        "TP-0075"
+      ],
+      "fraud_types": [
+        "chargeback-abuse",
+        "first-party-misuse",
+        "friendly-fraud"
+      ],
+      "tags": [
+        "cfpf.phase5.monetization",
+        "flame.chargeback-abuse",
+        "flame.first-party-misuse",
+        "flame.friendly-fraud"
+      ],
+      "falsepositives": [
+        "Cardholders who are genuine victims of multiple merchant fraud incidents",
+        "Cardholders disputing recurring subscription charges from multiple services",
+        "Shared household cards where multiple family members file independent disputes"
+      ]
+    },
+    {
+      "id": "67fbbbd3-ac75-49dd-8d8a-432c717d05eb",
+      "dl_id": "DL-0191",
+      "title": "First-Party Dispute Anomaly — Chargeback with Delivery Confirmation, Device Match, and No Merchant Contact",
+      "status": "experimental",
+      "description": "Detects high-confidence friendly fraud by identifying chargebacks where three independent indicators contradict the dispute claim: (1) delivery was confirmed for the original order, (2) the device fingerprint filing the dispute matches the device used for the original purchase, and (3) no merchant contact was attempted before the chargeback was filed. The triple correlation of delivery evidence, device match, and merchant bypass is a strong signal that the cardholder is the original purchaser who received the goods and chose to file a chargeback rather than a legitimate return. 84% of consumers find chargebacks simpler than contacting merchants, creating systemic abuse of the dispute mechanism.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "dispute_type": [
+            "chargeback"
+          ]
+        },
+        "filter_delivery": {
+          "delivery_confirmed": true
+        },
+        "filter_device_match": {
+          "device_fingerprint_match": true
+        },
+        "filter_no_merchant_contact": {
+          "merchant_contact_prior": false
+        },
+        "timeframe": "30d",
+        "condition": "selection AND filter_delivery AND filter_device_match AND filter_no_merchant_contact\n"
+      },
+      "logsource": {
+        "product": "payments",
+        "service": "dispute_management"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "dispute_id",
+          "cardholder_id",
+          "merchant_id",
+          "dispute_amount",
+          "dispute_reason_code",
+          "dispute_date",
+          "original_transaction_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "delivery_confirmed",
+            "source": "Shipping carrier delivery confirmation (signed, GPS-verified, photo proof)"
+          },
+          {
+            "field": "device_fingerprint_match",
+            "source": "Comparison of device fingerprint at dispute filing vs. original purchase"
+          },
+          {
+            "field": "merchant_contact_prior",
+            "source": "Merchant CRM/support records — any contact from cardholder between transaction and dispute"
+          }
+        ],
+        "derived_fields": [
+          "days_from_delivery_to_dispute",
+          "dispute_device_ip",
+          "purchase_device_ip"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for First-Party Dispute Anomaly Detection — DL-0191\n// Triple-correlated friendly fraud: delivery + device match + no merchant contact\nChargebacks\n| dispute_type = \"chargeback\"\n| dispute_date >= now() - 30d\n| delivery_confirmed = true\n| device_fingerprint_match = true\n| merchant_contact_prior = false OR merchant_contact_prior = null\n| days_delivery_to_dispute := round((dispute_date - delivery_date) / 86400, 0)\n| sort(dispute_amount, order=desc)",
+        "sql": "-- SQL: First-Party Dispute Anomaly Detection\n-- Chargeback with delivery confirmation, device match, no merchant contact\nSELECT\n  d.dispute_id,\n  d.cardholder_id,\n  d.merchant_id,\n  d.dispute_amount,\n  d.dispute_reason_code,\n  d.dispute_date,\n  t.transaction_date,\n  t.delivery_confirmed,\n  t.delivery_date,\n  DATEDIFF(DAY, t.delivery_date, d.dispute_date) AS days_delivery_to_dispute,\n  t.device_fingerprint AS purchase_device,\n  d.device_fingerprint AS dispute_device,\n  CASE WHEN t.device_fingerprint = d.device_fingerprint THEN 1 ELSE 0 END\n    AS device_match,\n  mc.last_contact_date AS merchant_contact_date\nFROM chargebacks d\nJOIN transactions t ON d.original_transaction_id = t.transaction_id\nLEFT JOIN merchant_contacts mc ON d.cardholder_id = mc.customer_id\n  AND d.merchant_id = mc.merchant_id\n  AND mc.contact_date BETWEEN t.transaction_date AND d.dispute_date\nWHERE d.dispute_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND t.delivery_confirmed = 1\n  AND t.device_fingerprint = d.device_fingerprint\n  AND mc.contact_id IS NULL\nORDER BY d.dispute_amount DESC",
+        "splunk": "`comment(\"Splunk SPL: First-Party Dispute Anomaly Detection\")`\n`comment(\"Triple-correlated friendly fraud: delivery + device match + no merchant contact\")`\nindex=flame_payments sourcetype=flame:dispute_management\n  dispute_type=\"chargeback\"\n| lookup delivery_lookup original_transaction_id\n    OUTPUT delivery_confirmed, delivery_date\n| lookup device_lookup original_transaction_id\n    OUTPUT purchase_device_fingerprint\n| lookup merchant_contact_lookup cardholder_id, merchant_id\n    OUTPUT merchant_contact_prior\n| where delivery_confirmed=\"true\"\n  AND dispute_device_fingerprint=purchase_device_fingerprint\n  AND (merchant_contact_prior=\"false\" OR isnull(merchant_contact_prior))\n| eval days_delivery_to_dispute = round(\n    (strptime(dispute_date, \"%Y-%m-%d\") - strptime(delivery_date, \"%Y-%m-%d\")) / 86400, 0)\n| table dispute_id, cardholder_id, merchant_id, dispute_amount,\n        dispute_reason_code, dispute_date, delivery_date,\n        days_delivery_to_dispute, purchase_device_fingerprint\n| sort - dispute_amount"
+      },
+      "references": [
+        "Chargebacks911, State of Chargebacks 2026",
+        "Chargeflow, Friendly Fraud Statistics 2025 — 84% simplicity preference",
+        "Visa, Visa Acquirer Monitoring Program (VAMP) (April 2025)",
+        "Alloy, First-party fraud detection strategies"
+      ],
+      "threat_path_ids": [
+        "TP-0075"
+      ],
+      "fraud_types": [
+        "chargeback-abuse",
+        "dispute-fraud",
+        "friendly-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.chargeback-abuse",
+        "flame.dispute-fraud",
+        "flame.friendly-fraud"
+      ],
+      "falsepositives": [
+        "Legitimate disputes where the product was defective but cardholder did not contact merchant",
+        "Shared devices where a different household member made the purchase",
+        "Delivery marked as confirmed but actually misdelivered (e.g., left at wrong address)"
+      ]
+    },
+    {
+      "id": "d5d5dab6-9dcd-4ed1-877f-9d6b687d691c",
+      "dl_id": "DL-0192",
+      "title": "Cookie Stuffing Detection — Affiliate Cookies Set Without Corresponding Click Events",
+      "status": "experimental",
+      "description": "Detects cookie stuffing — the most prevalent affiliate fraud technique (approximately 60% of cases) — by identifying affiliates that set tracking cookies in user browsers without corresponding user click events. Cookie stuffing uses hidden iframes, 1x1 pixel images, or JavaScript injection to drop affiliate cookies without the user's knowledge or intent. This steals attribution credit from legitimate affiliates and organic traffic, inflating the fraudulent affiliate's commission payments. Detection relies on the cookie-to-click ratio: legitimate affiliates typically have a ratio near 1:1, while cookie stuffers exhibit ratios of 5:1 or higher, or set cookies with zero associated clicks entirely. Global ad fraud is projected at USD 71 billion in 2025.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "event_type": [
+            "cookie_set",
+            "affiliate_attribution"
+          ]
+        },
+        "filter_no_click": {
+          "associated_click_count": 0,
+          "cookie_count|gte": 50
+        },
+        "filter_high_ratio": {
+          "cookie_to_click_ratio|gte": 5.0
+        },
+        "timeframe": "7d",
+        "condition": "selection AND (filter_no_click OR filter_high_ratio)\n"
+      },
+      "logsource": {
+        "product": "advertising",
+        "service": "affiliate_tracking"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "affiliate_id",
+          "cookie_id",
+          "session_id",
+          "cookie_set_timestamp",
+          "cookie_source"
+        ],
+        "enrichment_required": [
+          {
+            "field": "associated_click_count",
+            "source": "Click event log correlated by session_id and affiliate_id"
+          },
+          {
+            "field": "cookie_to_click_ratio",
+            "source": "Computed ratio of cookies set to clicks recorded per affiliate over timeframe"
+          },
+          {
+            "field": "cookie_source",
+            "source": "DOM element that triggered the cookie (iframe, pixel, script, link)"
+          }
+        ],
+        "derived_fields": [
+          "hidden_element_cookie_count",
+          "sessions_with_multiple_affiliate_cookies"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for Cookie Stuffing Detection — DL-0192\n// Affiliates setting cookies without corresponding user click events\nAffiliateCookies\n| cookie_set_timestamp >= now() - 7d\n| groupBy([affiliate_id, affiliate_name],\n    function=[count() as cookies_set,\n              countDistinct(session_id) as sessions,\n              countDistinct(cookie_id) as unique_cookies,\n              sum(if(cookie_source = \"iframe\" OR cookie_source = \"pixel\" OR cookie_source = \"script\", 1, 0)) as hidden_cookies,\n              countDistinct(associated_click_id) as clicks_recorded])\n| (clicks_recorded = 0 AND cookies_set >= 50) OR (cookies_set / max(clicks_recorded, 1)) >= 5.0\n| sort(cookies_set, order=desc)",
+        "sql": "-- SQL: Cookie Stuffing Detection\n-- Affiliate cookies set without corresponding user click events\nSELECT\n  a.affiliate_id,\n  a.affiliate_name,\n  COUNT(DISTINCT c.cookie_id) AS cookies_set,\n  COUNT(DISTINCT cl.click_id) AS clicks_recorded,\n  CASE WHEN COUNT(DISTINCT cl.click_id) = 0 THEN 999.99\n       ELSE ROUND(COUNT(DISTINCT c.cookie_id) * 1.0\n                  / COUNT(DISTINCT cl.click_id), 2)\n  END AS cookie_to_click_ratio,\n  COUNT(DISTINCT c.session_id) AS sessions_with_cookies,\n  COUNT(DISTINCT CASE WHEN c.cookie_source IN ('iframe', 'pixel', 'script')\n    THEN c.cookie_id END) AS hidden_element_cookies,\n  COUNT(DISTINCT CASE WHEN sc.multi_affiliate_cookie = 1\n    THEN c.session_id END) AS multi_cookie_sessions\nFROM affiliate_cookies c\nLEFT JOIN affiliate_clicks cl ON c.session_id = cl.session_id\n  AND c.affiliate_id = cl.affiliate_id\nJOIN affiliates a ON c.affiliate_id = a.affiliate_id\nLEFT JOIN (\n  SELECT session_id,\n    CASE WHEN COUNT(DISTINCT affiliate_id) > 1 THEN 1 ELSE 0 END\n      AS multi_affiliate_cookie\n  FROM affiliate_cookies\n  WHERE cookie_set_timestamp >= DATEADD(DAY, -7, CURRENT_DATE)\n  GROUP BY session_id\n) sc ON c.session_id = sc.session_id\nWHERE c.cookie_set_timestamp >= DATEADD(DAY, -7, CURRENT_DATE)\nGROUP BY a.affiliate_id, a.affiliate_name\nHAVING (COUNT(DISTINCT cl.click_id) = 0 AND COUNT(DISTINCT c.cookie_id) >= 50)\n  OR (ROUND(COUNT(DISTINCT c.cookie_id) * 1.0\n      / NULLIF(COUNT(DISTINCT cl.click_id), 0), 2) >= 5.0)\nORDER BY cookies_set DESC",
+        "splunk": "`comment(\"Splunk SPL: Cookie Stuffing Detection\")`\n`comment(\"Affiliates setting cookies without corresponding click events\")`\nindex=flame_advertising sourcetype=flame:affiliate_tracking\n  event_type=\"cookie_set\"\n| stats count AS cookies_set,\n        dc(session_id) AS sessions,\n        dc(cookie_id) AS unique_cookies,\n        sum(if(cookie_source=\"iframe\" OR cookie_source=\"pixel\"\n               OR cookie_source=\"script\", 1, 0)) AS hidden_cookies\n  BY affiliate_id, affiliate_name\n| join type=left affiliate_id [\n    search index=flame_advertising sourcetype=flame:affiliate_tracking\n      event_type=\"click\"\n    | stats dc(click_id) AS clicks_recorded BY affiliate_id\n  ]\n| fillnull value=0 clicks_recorded\n| where (clicks_recorded=0 AND cookies_set >= 50)\n  OR (cookies_set / max(clicks_recorded, 1)) >= 5.0\n| sort - cookies_set"
+      },
+      "references": [
+        "BluePear, Affiliate Compliance Monitoring Report (2025) — cookie stuffing prevalence",
+        "Tapper, Affiliate Fraud Trends 2025 — 60% of affiliate fraud cases",
+        "TrafficGuard, Ad Fraud Report 2025",
+        "Juniper Research, Ad Fraud Market Analysis 2025 — USD 71B projection"
+      ],
+      "threat_path_ids": [
+        "TP-0076"
+      ],
+      "fraud_types": [
+        "ad-fraud",
+        "affiliate-fraud",
+        "cookie-stuffing"
+      ],
+      "tags": [
+        "cfpf.phase3.positioning",
+        "flame.ad-fraud",
+        "flame.affiliate-fraud",
+        "flame.cookie-stuffing"
+      ],
+      "falsepositives": [
+        "Affiliates using legitimate pre-click tracking (e.g., impression-based cookies for attribution modeling)",
+        "Browser extensions that pre-load affiliate cookies with user consent",
+        "Testing and QA activity generating cookies without production click events"
+      ]
+    },
+    {
+      "id": "43afbb0b-32af-4f8e-8fdf-396ba36ed8bb",
+      "dl_id": "DL-0193",
+      "title": "Bot Traffic Behavioral Anomaly — Mechanical Consistency in Affiliate Session Metrics",
+      "status": "experimental",
+      "description": "Detects bot-generated affiliate traffic by identifying sessions with mechanical behavioral consistency — identical session durations, linear scroll patterns, and zero mouse movement variance — that indicate automated rather than human browsing. Bot networks account for approximately 40% of all click fraud, and AI-powered bots increasingly mimic individual human sessions. However, bot traffic still exhibits statistically detectable patterns at the population level: genuine human traffic has natural variance in behavioral metrics, while bot traffic — even sophisticated AI bots — produces distributions with anomalously low standard deviation. This rule analyzes session-level behavioral distributions per affiliate to detect mechanical consistency at the aggregate level.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "traffic_source": [
+            "affiliate"
+          ]
+        },
+        "filter_volume": {
+          "session_count|gte": 100
+        },
+        "filter_mechanical": {
+          "session_duration_stddev|lt": 1.0
+        },
+        "filter_scroll": {
+          "scroll_depth_stddev|lt": 2.0
+        },
+        "filter_mouse": {
+          "zero_mouse_ratio|gte": 0.5
+        },
+        "timeframe": "7d",
+        "condition": "selection AND filter_volume AND (filter_mechanical OR filter_scroll OR filter_mouse)\n"
+      },
+      "logsource": {
+        "product": "advertising",
+        "service": "web_analytics"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "session_id",
+          "affiliate_id",
+          "session_duration_sec",
+          "scroll_depth_pct",
+          "mouse_movement_pixels",
+          "page_views",
+          "src_ip"
+        ],
+        "enrichment_required": [
+          {
+            "field": "session_duration_stddev",
+            "source": "Standard deviation of session durations per affiliate over timeframe"
+          },
+          {
+            "field": "scroll_depth_stddev",
+            "source": "Standard deviation of scroll depth per affiliate over timeframe"
+          },
+          {
+            "field": "zero_mouse_ratio",
+            "source": "Ratio of sessions with zero mouse movement to total sessions per affiliate"
+          }
+        ],
+        "derived_fields": [
+          "behavioral_anomaly_score",
+          "datacenter_ip_ratio"
+        ]
+      },
+      "queries": {
+        "sql": "-- SQL: Bot Traffic Behavioral Anomaly Detection\n-- Affiliate traffic with mechanical consistency indicating automated activity\nSELECT\n  a.affiliate_id,\n  a.affiliate_name,\n  COUNT(*) AS session_count,\n  ROUND(AVG(s.session_duration_sec), 2) AS avg_session_duration,\n  ROUND(STDDEV(s.session_duration_sec), 2) AS session_duration_stddev,\n  ROUND(AVG(s.scroll_depth_pct), 2) AS avg_scroll_depth,\n  ROUND(STDDEV(s.scroll_depth_pct), 2) AS scroll_depth_stddev,\n  ROUND(AVG(s.mouse_movement_pixels), 2) AS avg_mouse_movement,\n  ROUND(STDDEV(s.mouse_movement_pixels), 2) AS mouse_movement_stddev,\n  COUNT(CASE WHEN s.mouse_movement_pixels = 0 THEN 1 END) AS zero_mouse_sessions,\n  ROUND(COUNT(CASE WHEN s.mouse_movement_pixels = 0 THEN 1 END) * 1.0\n        / COUNT(*), 3) AS zero_mouse_ratio,\n  COUNT(DISTINCT s.src_ip) AS distinct_ips,\n  ROUND(AVG(s.page_views), 2) AS avg_page_views\nFROM affiliate_sessions s\nJOIN affiliates a ON s.affiliate_id = a.affiliate_id\nWHERE s.session_date >= DATEADD(DAY, -7, CURRENT_DATE)\n  AND s.traffic_source = 'affiliate'\nGROUP BY a.affiliate_id, a.affiliate_name\nHAVING COUNT(*) >= 100\n  AND (STDDEV(s.session_duration_sec) < 1.0\n       OR STDDEV(s.scroll_depth_pct) < 2.0\n       OR (COUNT(CASE WHEN s.mouse_movement_pixels = 0 THEN 1 END) * 1.0\n           / COUNT(*)) > 0.5)\nORDER BY session_count DESC",
+        "splunk": "`comment(\"Splunk SPL: Bot Traffic Behavioral Anomaly Detection\")`\n`comment(\"Detects mechanical consistency in affiliate session behavioral metrics\")`\nindex=flame_advertising sourcetype=flame:web_analytics\n  traffic_source=\"affiliate\"\n| stats count AS session_count,\n        avg(session_duration_sec) AS avg_duration,\n        stdev(session_duration_sec) AS duration_stddev,\n        avg(scroll_depth_pct) AS avg_scroll,\n        stdev(scroll_depth_pct) AS scroll_stddev,\n        avg(mouse_movement_pixels) AS avg_mouse,\n        stdev(mouse_movement_pixels) AS mouse_stddev,\n        sum(if(mouse_movement_pixels=0, 1, 0)) AS zero_mouse_sessions,\n        dc(src_ip) AS distinct_ips\n  BY affiliate_id, affiliate_name\n| where session_count >= 100\n  AND (duration_stddev < 1.0 OR scroll_stddev < 2.0\n       OR (zero_mouse_sessions / session_count) > 0.5)\n| sort - session_count",
+        "cql": "// CrowdStrike CQL: Bot Traffic Behavioral Anomaly\n// Mechanical consistency in affiliate session metrics\ntraffic_source=\"affiliate\"\n| groupBy(affiliate_id, function=[\n    count(as=session_count),\n    avg(field=session_duration_sec, as=avg_duration),\n    stddev(field=session_duration_sec, as=duration_stddev),\n    avg(field=scroll_depth_pct, as=avg_scroll),\n    stddev(field=scroll_depth_pct, as=scroll_stddev),\n    avg(field=mouse_movement_pixels, as=avg_mouse),\n    stddev(field=mouse_movement_pixels, as=mouse_stddev)\n  ])\n| session_count >= 100\n| duration_stddev < 1.0 OR scroll_stddev < 2.0\n| sort(session_count, order=desc)"
+      },
+      "references": [
+        "Anura, Invalid Traffic Report 2025 — 40% bot traffic",
+        "TrafficGuard, Ad Fraud Report 2025 — bot network analysis",
+        "Tapper, Affiliate Fraud Trends 2026 — AI bot evolution",
+        "Juniper Research, Ad Fraud Market Analysis 2025 — USD 71B projection"
+      ],
+      "threat_path_ids": [
+        "TP-0076"
+      ],
+      "fraud_types": [
+        "affiliate-fraud",
+        "click-fraud",
+        "invalid-traffic"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.affiliate-fraud",
+        "flame.bot-detection",
+        "flame.click-fraud",
+        "flame.invalid-traffic"
+      ],
+      "falsepositives": [
+        "Legitimate automated testing or monitoring tools generating uniform traffic patterns",
+        "Accessibility tools that produce consistent browsing patterns (screen readers, keyboard-only navigation)",
+        "Embedded browser views in mobile apps with constrained interaction patterns"
+      ]
+    },
+    {
+      "id": "0bd06774-5b44-44ea-8ed7-61db1df6ecd4",
+      "dl_id": "DL-0194",
+      "title": "AI-Generated Claims Document Detection — Metadata Anomalies and Generation Tool Signatures",
+      "status": "experimental",
+      "description": "Detects AI-generated or AI-altered insurance claims documents by analyzing metadata anomalies including GAN artifacts, inconsistent EXIF data, and AI generation tool signatures. An estimated 25-30% of insurance claims now involve some form of GenAI-altered content. This rule targets the document forensics layer: photos submitted without legitimate camera metadata, documents with AI tool signatures in creation metadata, images with frequency domain anomalies characteristic of GAN generation, and GPS coordinates that contradict the claimed loss location. The insurance fraud detection market is growing from USD 7.5B to USD 9.13B reflecting industry investment in these countermeasures. Debener et al. (2023) demonstrate that XGBoost and isolation forests provide complementary detection approaches for anomalous claims.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "document_type": [
+            "photo",
+            "invoice",
+            "medical_record",
+            "repair_estimate",
+            "police_report"
+          ]
+        },
+        "filter_missing_camera": {
+          "exif_camera_model": null,
+          "document_type": "photo"
+        },
+        "filter_ai_tool": {
+          "creation_tool|contains": [
+            "stable diffusion",
+            "midjourney",
+            "dall-e",
+            "comfyui",
+            "automatic1111"
+          ]
+        },
+        "filter_gan_artifacts": {
+          "gan_artifact_score|gte": 0.7
+        },
+        "filter_frequency_anomaly": {
+          "frequency_domain_anomaly_score|gte": 0.8
+        },
+        "filter_gps_mismatch": {
+          "exif_gps_loss_location_match": false
+        },
+        "timeframe": "30d",
+        "condition": "selection AND (filter_missing_camera OR filter_ai_tool OR filter_gan_artifacts OR filter_frequency_anomaly OR filter_gps_mismatch)\n"
+      },
+      "logsource": {
+        "product": "insurance",
+        "service": "claims_processing"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "claim_id",
+          "claimant_id",
+          "document_id",
+          "document_type",
+          "file_name",
+          "submission_date",
+          "claim_amount"
+        ],
+        "enrichment_required": [
+          {
+            "field": "exif_camera_model",
+            "source": "EXIF metadata extraction from submitted photo files"
+          },
+          {
+            "field": "creation_tool",
+            "source": "Document metadata extraction (PDF creator, image software tag)"
+          },
+          {
+            "field": "gan_artifact_score",
+            "source": "GAN artifact detection model (pixel-level frequency domain analysis)"
+          },
+          {
+            "field": "frequency_domain_anomaly_score",
+            "source": "Fourier transform analysis for synthetic image fingerprints"
+          },
+          {
+            "field": "exif_gps_loss_location_match",
+            "source": "Comparison of photo GPS coordinates with claimed loss location"
+          }
+        ],
+        "derived_fields": [
+          "anomaly_type",
+          "combined_forensic_score",
+          "documents_flagged_per_claim"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for AI-Generated Claims Document Detection — DL-0194\n// Flags claims documents with AI generation metadata anomalies\nClaimDocuments\n| document_type = \"photo\" OR document_type = \"invoice\" OR document_type = \"medical_record\" OR document_type = \"repair_estimate\"\n| submission_date >= now() - 30d\n| anomaly_type := if(document_type = \"photo\" AND exif_camera_model = null, \"missing_camera_metadata\", if(match(creation_tool, \"(?i)(stable.diffusion|midjourney|dall-e|comfyui)\"), \"ai_tool_signature\", if(gan_artifact_score > 0.7, \"gan_artifacts\", if(frequency_domain_anomaly_score > 0.8, \"frequency_anomaly\", if(exif_gps_coordinates != null AND exif_gps_loss_location_match = false, \"gps_mismatch\", null)))))\n| anomaly_type != null\n| groupBy([claim_id, claimant_id, claim_type],\n    function=[count() as flagged_documents,\n              collect(anomaly_type) as anomaly_types,\n              sum(claim_amount) as total_claim_value,\n              countDistinct(document_id) as unique_documents])\n| sort(flagged_documents, order=desc)",
+        "sql": "-- SQL: AI-Generated Claims Document Detection\n-- Claims documents with metadata anomalies indicating AI generation\nSELECT\n  c.claim_id,\n  c.claimant_id,\n  c.claim_type,\n  c.claim_amount,\n  d.document_id,\n  d.document_type,\n  d.file_name,\n  d.exif_camera_model,\n  d.exif_gps_coordinates,\n  d.creation_tool,\n  d.gan_artifact_score,\n  d.frequency_domain_anomaly_score,\n  CASE\n    WHEN d.exif_camera_model IS NULL AND d.document_type = 'photo'\n      THEN 'missing_camera_metadata'\n    WHEN d.creation_tool LIKE '%stable%diffusion%'\n      OR d.creation_tool LIKE '%midjourney%'\n      OR d.creation_tool LIKE '%dall-e%'\n      OR d.creation_tool LIKE '%comfyui%'\n      THEN 'ai_tool_signature'\n    WHEN d.gan_artifact_score > 0.7 THEN 'gan_artifacts'\n    WHEN d.frequency_domain_anomaly_score > 0.8 THEN 'frequency_anomaly'\n    WHEN d.exif_gps_coordinates IS NOT NULL\n      AND d.exif_gps_loss_location_match = 0 THEN 'gps_mismatch'\n    ELSE 'multiple_indicators'\n  END AS anomaly_type,\n  COUNT(*) OVER (PARTITION BY c.claim_id) AS flagged_docs_per_claim,\n  COUNT(*) OVER (PARTITION BY c.claimant_id) AS flagged_docs_per_claimant\nFROM claims c\nJOIN claim_documents d ON c.claim_id = d.claim_id\nWHERE d.submission_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND (\n    (d.document_type = 'photo' AND d.exif_camera_model IS NULL)\n    OR d.creation_tool LIKE '%stable%diffusion%'\n    OR d.creation_tool LIKE '%midjourney%'\n    OR d.creation_tool LIKE '%dall-e%'\n    OR d.creation_tool LIKE '%comfyui%'\n    OR d.gan_artifact_score > 0.7\n    OR d.frequency_domain_anomaly_score > 0.8\n    OR (d.exif_gps_coordinates IS NOT NULL\n        AND d.exif_gps_loss_location_match = 0)\n  )\nORDER BY d.gan_artifact_score DESC, c.claim_amount DESC",
+        "splunk": "`comment(\"Splunk SPL: AI-Generated Claims Document Detection\")`\n`comment(\"Flags claims documents with AI generation metadata anomalies\")`\nindex=flame_insurance sourcetype=flame:claims_processing\n  (document_type=\"photo\" OR document_type=\"invoice\"\n   OR document_type=\"medical_record\" OR document_type=\"repair_estimate\")\n| eval anomaly_type = case(\n    document_type=\"photo\" AND isnull(exif_camera_model), \"missing_camera_metadata\",\n    match(creation_tool, \"(?i)(stable.diffusion|midjourney|dall-e|comfyui)\"),\n      \"ai_tool_signature\",\n    gan_artifact_score > 0.7, \"gan_artifacts\",\n    frequency_domain_anomaly_score > 0.8, \"frequency_anomaly\",\n    isnotnull(exif_gps_coordinates) AND exif_gps_loss_location_match=\"false\",\n      \"gps_mismatch\",\n    1=1, null())\n| where isnotnull(anomaly_type)\n| stats count AS flagged_documents,\n        values(anomaly_type) AS anomaly_types,\n        sum(claim_amount) AS total_claim_value,\n        dc(document_id) AS unique_documents\n  BY claim_id, claimant_id, claim_type\n| sort - flagged_documents"
+      },
+      "references": [
+        "Shift Technology, AI-Powered Insurance Fraud Detection (2025)",
+        "Insurance Journal, The AI Arms Race in Insurance Claims Fraud (2026)",
+        "Debener et al. (2023), Detecting Insurance Fraud Using Supervised and Unsupervised Machine Learning, J. Risk & Insurance, doi:10.1111/jori.12427",
+        "USI, Insurance Fraud Landscape 2025"
+      ],
+      "threat_path_ids": [
+        "TP-0077"
+      ],
+      "fraud_types": [
+        "ai-generated-claims",
+        "document-fraud",
+        "insurance-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.ai-generated-claims",
+        "flame.document-fraud",
+        "flame.genai-detection",
+        "flame.insurance-fraud"
+      ],
+      "falsepositives": [
+        "Screenshots or screen captures submitted as evidence (no camera EXIF)",
+        "Photos transferred via messaging apps that strip EXIF metadata",
+        "Scanned documents that lose original creation metadata",
+        "Legitimate use of photo editing software flagged by creation tool detection"
+      ]
+    },
+    {
+      "id": "500cc4b7-67c5-4055-9aa8-935e16e322e0",
+      "dl_id": "DL-0195",
+      "title": "Deepfake Vehicle Damage Photo Pattern — Pixel Artifacts, Lighting Inconsistencies, and AI Generation Indicators",
+      "status": "experimental",
+      "description": "Detects deepfake vehicle damage photos in insurance claims by analyzing pixel-level artifacts, lighting and shadow inconsistencies, and metadata indicating AI image generation tools. AI-generated vehicle damage photos represent an acute threat to auto insurance claims processing, as generative AI can produce realistic collision, hail, and vandalism damage images that bypass visual inspection by claims adjusters. Detection relies on computer vision analysis: GAN-generated images exhibit characteristic pixel artifacts at damage boundaries, physically impossible lighting/shadow combinations, and frequency domain signatures distinct from camera-captured photos. This rule targets vehicle-specific claims (collision, comprehensive, vandalism) and correlates image forensics scores with claim characteristics.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "claim_type": [
+            "vehicle_collision",
+            "vehicle_comprehensive",
+            "vehicle_vandalism"
+          ],
+          "document_type": "photo"
+        },
+        "filter_pixel_artifacts": {
+          "pixel_artifact_score|gte": 0.8
+        },
+        "filter_lighting": {
+          "lighting_consistency_score|lt": 0.3
+        },
+        "filter_shadow": {
+          "shadow_consistency_score|lt": 0.3
+        },
+        "filter_ai_probability": {
+          "ai_generation_probability|gte": 0.75
+        },
+        "filter_metadata_anomaly": {
+          "exif_camera_model": null,
+          "exif_software|re": ".+"
+        },
+        "timeframe": "30d",
+        "condition": "selection AND (filter_pixel_artifacts OR filter_lighting OR filter_shadow OR filter_ai_probability OR filter_metadata_anomaly)\n"
+      },
+      "logsource": {
+        "product": "insurance",
+        "service": "claims_processing"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "claim_id",
+          "claimant_id",
+          "claim_type",
+          "claim_amount",
+          "vehicle_vin",
+          "photo_id",
+          "file_name",
+          "submission_date"
+        ],
+        "enrichment_required": [
+          {
+            "field": "pixel_artifact_score",
+            "source": "Computer vision model analyzing pixel patterns at damage boundaries for GAN artifacts"
+          },
+          {
+            "field": "lighting_consistency_score",
+            "source": "Physics-based lighting analysis model (0=inconsistent, 1=consistent)"
+          },
+          {
+            "field": "shadow_consistency_score",
+            "source": "Shadow direction analysis model (0=inconsistent, 1=consistent)"
+          },
+          {
+            "field": "ai_generation_probability",
+            "source": "Ensemble model combining frequency domain, pixel, and metadata analysis"
+          },
+          {
+            "field": "exif_camera_model",
+            "source": "EXIF metadata extraction"
+          },
+          {
+            "field": "exif_software",
+            "source": "EXIF software tag extraction"
+          }
+        ],
+        "derived_fields": [
+          "primary_detection_indicator",
+          "combined_deepfake_score",
+          "claimant_flagged_photo_count"
+        ]
+      },
+      "queries": {
+        "cql": "// CQL for Deepfake Vehicle Damage Photo Pattern Detection — DL-0195\n// Detects AI-generated vehicle damage photos via pixel and metadata analysis\nClaimPhotos\n| claim_type = \"vehicle_collision\" OR claim_type = \"vehicle_comprehensive\" OR claim_type = \"vehicle_vandalism\"\n| document_type = \"photo\"\n| submission_date >= now() - 30d\n| pixel_artifact_score > 0.8 OR lighting_consistency_score < 0.3 OR shadow_consistency_score < 0.3 OR ai_generation_probability > 0.75 OR (exif_camera_model = null AND exif_software != null)\n| primary_indicator := if(pixel_artifact_score > 0.8, \"high_pixel_artifacts\", if(lighting_consistency_score < 0.3, \"inconsistent_lighting\", if(shadow_consistency_score < 0.3, \"inconsistent_shadows\", if(ai_generation_probability > 0.75, \"high_ai_probability\", if(exif_camera_model = null AND exif_software != null, \"metadata_anomaly\", \"multiple_indicators\")))))\n| combined_score := round((coalesce(pixel_artifact_score, 0) * 0.3) + ((1 - coalesce(lighting_consistency_score, 1)) * 0.2) + ((1 - coalesce(shadow_consistency_score, 1)) * 0.2) + (coalesce(ai_generation_probability, 0) * 0.3), 3)\n| groupBy([claim_id, claimant_id, claim_type, vehicle_vin],\n    function=[count() as flagged_photos,\n              collect(primary_indicator) as indicators,\n              max(combined_score) as max_deepfake_score,\n              sum(claim_amount) as total_claim_value])\n| sort(max_deepfake_score, order=desc)",
+        "sql": "-- SQL: Deepfake Vehicle Damage Photo Pattern Detection\n-- Claims photos with pixel artifacts, lighting/shadow inconsistencies, AI indicators\nSELECT\n  c.claim_id,\n  c.claimant_id,\n  c.claim_type,\n  c.claim_amount,\n  c.vehicle_vin,\n  p.photo_id,\n  p.file_name,\n  p.pixel_artifact_score,\n  p.lighting_consistency_score,\n  p.shadow_consistency_score,\n  p.ai_generation_probability,\n  p.exif_camera_model,\n  p.exif_software,\n  p.exif_creation_date,\n  CASE\n    WHEN p.pixel_artifact_score > 0.8 THEN 'high_pixel_artifacts'\n    WHEN p.lighting_consistency_score < 0.3 THEN 'inconsistent_lighting'\n    WHEN p.shadow_consistency_score < 0.3 THEN 'inconsistent_shadows'\n    WHEN p.ai_generation_probability > 0.75 THEN 'high_ai_probability'\n    WHEN p.exif_camera_model IS NULL AND p.exif_software IS NOT NULL\n      THEN 'metadata_anomaly'\n    ELSE 'multiple_indicators'\n  END AS primary_indicator,\n  (COALESCE(p.pixel_artifact_score, 0) * 0.3\n   + (1 - COALESCE(p.lighting_consistency_score, 1)) * 0.2\n   + (1 - COALESCE(p.shadow_consistency_score, 1)) * 0.2\n   + COALESCE(p.ai_generation_probability, 0) * 0.3\n  ) AS combined_deepfake_score,\n  COUNT(*) OVER (PARTITION BY c.claimant_id) AS claimant_total_flagged_photos\nFROM claims c\nJOIN claim_photos p ON c.claim_id = p.claim_id\nWHERE c.claim_type IN ('vehicle_collision', 'vehicle_comprehensive', 'vehicle_vandalism')\n  AND p.submission_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND (\n    p.pixel_artifact_score > 0.8\n    OR p.lighting_consistency_score < 0.3\n    OR p.shadow_consistency_score < 0.3\n    OR p.ai_generation_probability > 0.75\n    OR (p.exif_camera_model IS NULL AND p.exif_software IS NOT NULL)\n  )\nORDER BY combined_deepfake_score DESC, c.claim_amount DESC",
+        "splunk": "`comment(\"Splunk SPL: Deepfake Vehicle Damage Photo Pattern Detection\")`\n`comment(\"Detects AI-generated vehicle damage photos via pixel and metadata analysis\")`\nindex=flame_insurance sourcetype=flame:claims_processing\n  (claim_type=\"vehicle_collision\" OR claim_type=\"vehicle_comprehensive\"\n   OR claim_type=\"vehicle_vandalism\")\n  document_type=\"photo\"\n| eval is_flagged = case(\n    pixel_artifact_score > 0.8, 1,\n    lighting_consistency_score < 0.3, 1,\n    shadow_consistency_score < 0.3, 1,\n    ai_generation_probability > 0.75, 1,\n    isnull(exif_camera_model) AND isnotnull(exif_software), 1,\n    1=1, 0)\n| where is_flagged=1\n| eval primary_indicator = case(\n    pixel_artifact_score > 0.8, \"high_pixel_artifacts\",\n    lighting_consistency_score < 0.3, \"inconsistent_lighting\",\n    shadow_consistency_score < 0.3, \"inconsistent_shadows\",\n    ai_generation_probability > 0.75, \"high_ai_probability\",\n    isnull(exif_camera_model) AND isnotnull(exif_software), \"metadata_anomaly\",\n    1=1, \"multiple_indicators\")\n| eval combined_score = round(\n    (coalesce(pixel_artifact_score, 0) * 0.3)\n    + ((1 - coalesce(lighting_consistency_score, 1)) * 0.2)\n    + ((1 - coalesce(shadow_consistency_score, 1)) * 0.2)\n    + (coalesce(ai_generation_probability, 0) * 0.3), 3)\n| stats count AS flagged_photos,\n        values(primary_indicator) AS indicators,\n        max(combined_score) AS max_deepfake_score,\n        sum(claim_amount) AS total_claim_value\n  BY claim_id, claimant_id, claim_type, vehicle_vin\n| sort - max_deepfake_score"
+      },
+      "references": [
+        "Shift Technology, AI-Powered Insurance Fraud Detection (2025)",
+        "Insurance Journal, The AI Arms Race in Insurance Claims Fraud (2026)",
+        "Debener et al. (2023), Detecting Insurance Fraud Using Supervised and Unsupervised Machine Learning, J. Risk & Insurance, doi:10.1111/jori.12427",
+        "Utah Insurance Department — regulatory perspective on AI-generated claims"
+      ],
+      "threat_path_ids": [
+        "TP-0077"
+      ],
+      "fraud_types": [
+        "ai-generated-claims",
+        "deepfake-claims",
+        "insurance-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.ai-generated-claims",
+        "flame.deepfake-claims",
+        "flame.insurance-fraud",
+        "flame.vehicle-damage-deepfake"
+      ],
+      "falsepositives": [
+        "Photos taken with heavy HDR processing or aggressive camera filters",
+        "Photos of actual damage that has been legitimately enhanced for visibility",
+        "Low-quality camera phones producing artifacts similar to GAN generation",
+        "Photos compressed or resized by messaging apps introducing compression artifacts"
       ]
     }
   ]
