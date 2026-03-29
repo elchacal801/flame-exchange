@@ -2,14 +2,16 @@
   "tp_id": "TP-0057",
   "rules": [
     {
-      "type": "spl",
-      "content": "index=endpoint sourcetype=sysmon EventCode=1\n| search (process_name=\"obs*\" OR process_name=\"*deepface*\" OR process_name=\"*manycam*\" OR process_name=\"*virtual*cam*\" OR process_name=\"*snap*camera*\")\n| join host [search index=network sourcetype=proxy dest_domain IN (\"*.zoom.us\", \"*.teams.microsoft.com\", \"*.webex.com\", \"*.meet.google.com\")]\n| stats count by host, process_name, user, dest_domain\n| where count > 0",
-      "title": "Virtual Camera Driver Detection During Sensitive Sessions (Splunk SPL)"
+      "type": "sigma",
+      "content": "title: DaaS Platform Transaction Pattern\nstatus: experimental\ndescription: Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or \nlogsource:\n    product: crypto\n    category: blockchain_analytics\n    service: blockchain_analytics\ndetection:\n    selection_recurring:\n        payment_type: \"recurring\"\n        recurring_payment_amount|gte: 100\n        recurring_payment_amount|lte: 1000\n        recurring_payment_currency: \"USD\"\n        recurring_payment_interval: \"monthly\"\n        destination_wallet_flag|contains:\n            - \"deepfake_service\"\n            - \"daas_provider\"\n    selection_onetime:\n        payment_type: \"one-time\"\n        transaction_amount|gte: 50\n        transaction_amount|lte: 500\n        destination_wallet_flag|contains:\n            - \"deepfake_service\"\n            - \"daas_provider\"\n    condition: selection_recurring or selection_onetime\nlevel: medium",
+      "title": "DL-0115: DaaS Platform Transaction Pattern (Sigma)",
+      "source_rule": "DL-0115"
     },
     {
-      "type": "sql",
-      "content": "SELECT c.call_id, c.caller_id, c.call_timestamp,\n       v.spectral_score, v.prosody_score, v.response_latency_ms,\n       v.background_noise_consistency\nFROM call_recordings c\nJOIN voice_analysis v ON c.call_id = v.call_id\nWHERE v.spectral_score < 0.7\n  OR v.prosody_score < 0.6\n  OR v.response_latency_ms > 200\n  AND c.call_type = 'wire_authorization'\nORDER BY c.call_timestamp DESC;",
-      "title": "Voice Synthesis Anomaly Detection (SQL)"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Real-Time Face/Voice Changer Detection During Video Interview\")`\n`comment(\"Native query required - audio/video analysis cannot be expressed in Sigma\")`\nindex=flame_collaboration sourcetype=flame:video_conferencing\n(camera_driver_name=\"*OBS Virtual*\" OR camera_driver_name=\"*ManyCam*\" OR camera_driver_name=\"*DeepFace*\" OR camera_driver_name=\"*FaceSwap*\")\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| eval risk_score=case(\n    camera_driver_name LIKE \"%DeepFace%\" OR camera_driver_name LIKE \"%FaceSwap%\", 90,\n    camera_driver_name LIKE \"%OBS Virtual%\" OR camera_driver_name LIKE \"%ManyCam%\", 50,\n    audio_analysis_score>0.75, 80,\n    lip_sync_delta_ms>200, 70)\n| where risk_score>=50\n| stats count values(camera_driver_name) as cameras values(audio_analysis_score) as audio_scores max(lip_sync_delta_ms) as max_lip_delta by user_id session_id",
+      "title": "DL-0116: Real-Time Face/Voice Changer Detection During Video Interview (SPLUNK)",
+      "source_rule": "DL-0116"
     }
   ]
 }

@@ -2524,7 +2524,8 @@
       "DL-0039",
       "DL-0040",
       "DL-0041",
-      "DL-0043"
+      "DL-0043",
+      "DL-0179"
     ],
     "related_tps": [
       {
@@ -4113,7 +4114,8 @@
     "detection_rule_ids": [
       "DL-0075",
       "DL-0076",
-      "DL-0077"
+      "DL-0077",
+      "DL-0177"
     ],
     "related_tps": [
       {
@@ -5589,7 +5591,8 @@
     "detection_rule_ids": [
       "DL-0110",
       "DL-0111",
-      "DL-0112"
+      "DL-0112",
+      "DL-0178"
     ],
     "related_tps": [
       {
@@ -6670,7 +6673,7 @@
     "category": "ThreatPath",
     "date": "2026-03-20",
     "author": "FLAME Project",
-    "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319",
+    "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319, Group-IB Cloud Phones 2026",
     "tlp": "WHITE",
     "summary": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account system...",
     "confidence_score": 75,
@@ -6703,7 +6706,8 @@
       "unodc-organized-fraud-2024",
       "mule-herding",
       "velocity-anomaly",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "cloud-phone"
     ],
     "cfpf_phases": [
       "P1",
@@ -6751,7 +6755,8 @@
     ],
     "detection_rule_ids": [
       "DL-0118",
-      "DL-0119"
+      "DL-0119",
+      "DL-0179"
     ],
     "related_tps": [
       {
@@ -6771,7 +6776,7 @@
         "relationship": "enables"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 5
   },
   {
     "id": "TP-0060",
@@ -6961,7 +6966,8 @@
       "BL-0036"
     ],
     "detection_rule_ids": [
-      "DL-0123"
+      "DL-0123",
+      "DL-0178"
     ],
     "related_tps": [
       {

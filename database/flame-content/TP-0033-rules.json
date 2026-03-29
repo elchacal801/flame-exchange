@@ -2,19 +2,10 @@
   "tp_id": "TP-0033",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT\n    s.student_id,\n    s.enrollment_date,\n    s.institution_id,\n    fa.total_disbursed,\n    fa.disbursement_date,\n    COALESCE(lms.total_logins, 0) AS lms_logins,\n    COALESCE(lms.assignments_submitted, 0) AS assignments,\n    COALESCE(att.classes_attended, 0) AS attendance_count\nFROM students s\nJOIN financial_aid fa ON s.student_id = fa.student_id\nLEFT JOIN lms_activity lms ON s.student_id = lms.student_id\n    AND lms.term = fa.term\nLEFT JOIN attendance att ON s.student_id = att.student_id\n    AND att.term = fa.term\nWHERE fa.disbursement_status = 'COMPLETED'\n  AND fa.term = CURRENT_TERM()\n  AND COALESCE(lms.total_logins, 0) = 0\n  AND COALESCE(lms.assignments_submitted, 0) = 0\n  AND COALESCE(att.classes_attended, 0) = 0\nORDER BY fa.total_disbursed DESC;",
-      "title": "SQL — Ghost Student Identification: Zero Academic Activity with Active Financial Aid (Phase 4)"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Enrollment Portal - Bot-Driven Application Submission\nstatus: experimental\ndescription: Detects enrollment applications submitted with characteristics indicating automated bot submission - datacenter IP sources, sub-human completion times, or device fingerprint clustering.\nlogsource:\n    product: admissions_portal\n    service: application\ndetection:\n    selection:\n        event_type: \"application_submit\"\n    filter_bot_indicators:\n        form_completion_seconds|lte: 60\n    condition: selection and filter_bot_indicators\nlevel: high\ntags:\n    - fraud.ghost_student\n    - cfpf.phase2.initial_access\n---\ntitle: Enrollment Portal - Application Cluster from Shared Infrastructure\nstatus: experimental\ndescription: Detects clusters of enrollment applications sharing device fingerprints, IP subnets, or address patterns indicating coordinated mass application submission.\nlogsource:\n    product: admissions_portal\n    service: application\ndetection:\n    selection:\n        event_type: \"application_submit\"\n    aggregation:\n        count|gte: 5\n        groupby: device_fingerprint\n        timeframe: 24h\n    condition: selection and aggregation\nlevel: high\ntags:\n    - fraud.ghost_student\n    - cfpf.phase2.initial_access",
-      "title": "Sigma — Bot-Driven Enrollment Application Detection (Phase 2)"
-    },
-    {
       "type": "spl",
-      "content": "index=financial_aid sourcetype=disbursements\n| stats count AS student_count, sum(amount) AS total_disbursed, values(student_id) AS students BY bank_routing_number, bank_account_number\n| where student_count > 1\n| eval risk_level = case(student_count > 5, \"CRITICAL\", student_count > 2, \"HIGH\", 1=1, \"MEDIUM\")\n| table bank_routing_number, bank_account_number, student_count, total_disbursed, students, risk_level\n| sort - student_count",
-      "title": "Splunk — Disbursement Account Anomaly Detection (Phase 3-4)"
+      "content": "`comment(\"Splunk SPL for Ghost Student Financial Aid Fraud — Shared Device Detection\")`\n`comment(\"Detects multiple FAFSA applications from same device fingerprint\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  application_source=\"fafsa\"\n| stats dc(student_id) AS distinct_students, count AS application_count,\n    values(student_id) AS student_ids, values(source_ip) AS source_ips,\n    values(institution_id) AS institutions\n    by device_fingerprint\n| where distinct_students >= 3\n| eval risk_level = case(\n    distinct_students > 10, \"critical\",\n    distinct_students > 5, \"high\",\n    1=1, \"medium\")\n| sort - distinct_students\n\n`comment(\"Splunk SPL for Ghost Student Financial Aid Fraud — Shared Bank Account Detection\")`\n`comment(\"Detects multiple student IDs disbursing to the same bank account\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  disbursement_type=\"financial_aid\"\n| stats dc(student_id) AS distinct_students, sum(disbursement_amount) AS total_disbursed,\n    values(student_id) AS student_ids, values(disbursement_date) AS disbursement_dates,\n    values(institution_id) AS institutions\n    by bank_routing_number, bank_account_number\n| where distinct_students >= 2\n| eval risk_level = case(\n    distinct_students > 5, \"critical\",\n    distinct_students > 2, \"high\",\n    1=1, \"medium\")\n| sort - distinct_students",
+      "title": "DL-0169: Ghost Student Financial Aid Fraud — Multi-Signal Botnet Enrollment Detection (SPLUNK)",
+      "source_rule": "DL-0169"
     }
   ]
 }

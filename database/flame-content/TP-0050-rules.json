@@ -3,18 +3,9 @@
   "rules": [
     {
       "type": "spl",
-      "content": "index=email sourcetype=email_gateway\n| where attachment_type=\"text/calendar\" OR attachment_extension=\".ics\"\n| lookup domain_age_feed sender_domain OUTPUT domain_age_days\n| where domain_age_days < 30\n| stats count by sender_domain, recipient, subject, domain_age_days\n| where count > 5\n| sort -count",
-      "title": "Email Gateway — .ics from Newly-Registered Domains (Splunk SPL)"
-    },
-    {
-      "type": "sql",
-      "content": "SELECT ce.event_id, ce.organizer_email, ce.title, ce.created_at,\n       d.domain_name, d.registration_date, d.tld\nFROM calendar_events ce\nJOIN domain_intel d ON ce.organizer_domain = d.domain_name\nWHERE ce.organizer_is_external = TRUE\nAND ce.auto_accepted = TRUE\nAND d.registration_date > CURRENT_DATE - INTERVAL '30 days'\nAND d.tld IN ('.cyou', '.sbs', '.click', '.biz', '.top', '.xyz')\nORDER BY ce.created_at DESC;",
-      "title": "Calendar Event Injection Detection (SQL)"
-    },
-    {
-      "type": "sql",
-      "content": "SELECT domain_label,\n       LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n       NULLIF(LENGTH(domain_label), 0) AS consonant_ratio,\n       tld, registration_date\nFROM zone_file_domains\nWHERE registration_date > CURRENT_DATE - INTERVAL '7 days'\nAND tld IN ('.cyou', '.sbs', '.click')\nAND LENGTH(REGEXP_REPLACE(domain_label, '[aeiou]', '', 'gi'))::FLOAT /\n    NULLIF(LENGTH(domain_label), 0) > 0.75\nORDER BY registration_date DESC;",
-      "title": "RDGA Sender Domain Consonant Ratio Detection (SQL)"
+      "content": "`comment(\"Splunk SPL for Calendar Invite Injection Phishing Detection\")`\n`comment(\"Detects mass external calendar invites from recently-registered domains\")`\nindex=flame_m365 sourcetype=flame:exchange\n  (event_type=\"calendar_invite_received\" OR event_type=\"ics_attachment_processed\")\n  organizer_is_external=\"true\"\n| lookup domain_age_feed organizer_domain OUTPUT domain_age_days, domain_tld\n| where domain_age_days < 30\n| where match(event_body, \"https?://\")\n| bin _time span=24h\n| stats dc(recipient_email) AS distinct_recipients, count AS invite_count,\n    values(organizer_email) AS organizers, values(event_title) AS event_titles,\n    values(domain_age_days) AS domain_age, values(domain_tld) AS tlds\n    by organizer_domain, _time\n| where distinct_recipients >= 5\n| eval risk_level = case(\n    domain_age_days < 7 AND distinct_recipients > 50, \"critical\",\n    domain_age_days < 7 OR distinct_recipients > 20, \"high\",\n    1=1, \"medium\")\n| eval high_abuse_tld = if(match(domain_tld, \"cyou|sbs|click|top|xyz|biz\"), \"true\", \"false\")\n| sort - distinct_recipients",
+      "title": "DL-0170: Calendar Invite Injection Phishing — Mass External Calendar Event Creation from New Domains (SPLUNK)",
+      "source_rule": "DL-0170"
     }
   ]
 }

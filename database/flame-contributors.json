@@ -3,10 +3,10 @@
     {
       "name": "FLAME Project",
       "threat_paths": 53,
-      "detection_rules": 95,
+      "detection_rules": 96,
       "baselines": 22,
       "emulation_playbooks": 14,
-      "total": 184
+      "total": 185
     },
     {
       "name": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
@@ -19,10 +19,10 @@
     {
       "name": "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)",
       "threat_paths": 5,
-      "detection_rules": 14,
+      "detection_rules": 15,
       "baselines": 0,
       "emulation_playbooks": 0,
-      "total": 19
+      "total": 20
     },
     {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Infoblox DNS Intelligence)",
@@ -41,18 +41,18 @@
       "total": 6
     },
     {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, OFAC, CISA)",
+      "threat_paths": 1,
+      "detection_rules": 4,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 6
+    },
+    {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs, OFAC)",
       "threat_paths": 1,
       "detection_rules": 4,
       "baselines": 0,
-      "emulation_playbooks": 0,
-      "total": 5
-    },
-    {
-      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, OFAC, CISA)",
-      "threat_paths": 1,
-      "detection_rules": 3,
-      "baselines": 1,
       "emulation_playbooks": 0,
       "total": 5
     },
@@ -185,5 +185,5 @@
       "total": 1
     }
   ],
-  "generated_at": "2026-03-28T23:09:19.501600+00:00"
+  "generated_at": "2026-03-29T03:18:15.784759+00:00"
 }

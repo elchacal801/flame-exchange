@@ -2,9 +2,28 @@
   "tp_id": "TP-0016",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT \n    c.customer_id, \n    c.account_id, \n    c.credit_limit, \n    SUM(t.amount) as total_drawn,\n    (SUM(t.amount) / c.credit_limit) as utilization_ratio\nFROM credit_accounts c\nJOIN transactions t ON c.account_id = t.account_id\nWHERE t.transaction_date >= CURRENT_DATE - INTERVAL '3 days'\nGROUP BY 1, 2, 3\nHAVING SUM(t.amount) / c.credit_limit > 0.85 \n   AND c.account_age_days > 180 -- Established accounts\n   AND c.historical_avg_utilization < 0.30; -- Previously low-balance",
-      "title": "SQL — Rapid Utilization Spike (Bust-Out Indicator)"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Synthetic Identity Credit Utilization Spike\")`\n`comment(\"Detects 6+ months low utilization followed by rapid spike to >80%\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  trailing_6m_avg_utilization_pct<35\n  current_utilization_pct>=80\n  previous_month_utilization_pct<50\n| eval utilization_jump = current_utilization_pct - previous_month_utilization_pct\n| eval risk_score = case(\n    utilization_jump > 70 AND trailing_6m_avg_utilization_pct < 20, \"critical\",\n    utilization_jump > 50, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, trailing_6m_avg_utilization_pct,\n        previous_month_utilization_pct, utilization_jump,\n        account_open_date, risk_score\n| sort - utilization_jump",
+      "title": "DL-0151: Synthetic Identity Credit Utilization Spike — Low-and-Slow Buildup Followed by Bust-Out (SPLUNK)",
+      "source_rule": "DL-0151"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for First-Party Credit Buildup and Sudden Spike\")`\n`comment(\"Detects 6+ months good payments followed by utilization spike and missed payment\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  on_time_payment_months>=6\n  previous_avg_utilization_pct<40\n  current_utilization_pct>=85\n  days_since_first_missed_payment<=60\n  days_since_utilization_spike<=60\n| eval utilization_jump = current_utilization_pct - previous_avg_utilization_pct\n| eval risk_score = case(\n    utilization_jump > 60 AND on_time_payment_months >= 12, \"critical\",\n    utilization_jump > 45, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, previous_avg_utilization_pct,\n        utilization_jump, on_time_payment_months,\n        days_since_first_missed_payment, account_open_date, risk_score\n| sort - utilization_jump",
+      "title": "DL-0155: First-Party Credit Buildup and Sudden Spike (SPLUNK)",
+      "source_rule": "DL-0155"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Never-Pay Pattern\")`\n`comment(\"Detects new accounts with immediate high utilization and zero payments\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  account_age_days<=90\n  current_utilization_pct>=75\n  total_payments_made=0\n  billing_cycles_elapsed>=1\n| eval spend_velocity = round(current_balance / account_age_days, 2)\n| eval risk_score = case(\n    current_utilization_pct >= 95 AND billing_cycles_elapsed >= 2, \"critical\",\n    current_utilization_pct >= 85, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, account_age_days, billing_cycles_elapsed,\n        spend_velocity, account_open_date, risk_score\n| sort - current_utilization_pct",
+      "title": "DL-0156: Never-Pay Pattern — Immediate Max Utilization with Zero Payments (SPLUNK)",
+      "source_rule": "DL-0156"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Rapid Authorized User Addition\")`\n`comment(\"Detects same individual added as authorized user on 3+ accounts in 30 days\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  event_type=\"authorized_user_added\"\n  earliest=-30d@d latest=now\n| stats dc(account_id) as distinct_account_count,\n        values(account_id) as accounts,\n        values(primary_account_holder_id) as primary_holders,\n        min(event_date) as first_addition,\n        max(event_date) as last_addition\n  by authorized_user_id, authorized_user_name\n| where distinct_account_count >= 3\n| eval addition_span_days = round((strptime(last_addition, \"%Y-%m-%d\") - strptime(first_addition, \"%Y-%m-%d\")) / 86400, 0)\n| eval risk_score = case(\n    distinct_account_count >= 5, \"critical\",\n    distinct_account_count >= 4, \"high\",\n    1=1, \"medium\")\n| table authorized_user_id, authorized_user_name, distinct_account_count,\n        accounts, primary_holders, first_addition, last_addition,\n        addition_span_days, risk_score\n| sort - distinct_account_count",
+      "title": "DL-0157: Rapid Authorized User Addition Across Multiple Accounts (SPLUNK)",
+      "source_rule": "DL-0157"
     }
   ]
 }

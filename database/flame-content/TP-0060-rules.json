@@ -2,14 +2,22 @@
   "tp_id": "TP-0060",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT d.domain, d.registration_date, d.registrar,\n       dns.ttl, dns.query_count_24h,\n       LENGTH(SPLIT_PART(d.domain, '.', 1)) AS label_length,\n       r.redirect_depth, r.final_destination\nFROM domains d\nJOIN dns_records dns ON d.domain = dns.domain\nLEFT JOIN redirect_chains r ON d.domain = r.intermediate_domain\nWHERE d.registration_date > CURRENT_DATE - INTERVAL '30 days'\n  AND dns.ttl < 300\n  AND dns.query_count_24h > 100\n  AND LENGTH(SPLIT_PART(d.domain, '.', 1)) > 10\n  AND (r.final_destination LIKE '%invest%' OR r.final_destination LIKE '%trade%' OR r.final_destination LIKE '%broker%')\nORDER BY dns.query_count_24h DESC;",
-      "title": "RDGA Domain Investment Infrastructure Detection (SQL)"
+      "type": "sigma",
+      "content": "title: Investment TDS Geo-Routing to Legitimate Platform\nstatus: experimental\ndescription: Detect Traffic Distribution System (TDS) geo-routing patterns used in investment scam infrastructure: (1) same domain resolving to different IP addresses based on requester geography, (2) US-based vis\nlogsource:\n    product: dns\n    category: dns_analytics\n    service: passive_dns\ndetection:\n    selection_geo_variance:\n        domain_ip_geo_variance: true\n        unique_resolution_ips|gte: 3\n        geo_routing_detected: true\n    selection_legitimate_redirect:\n        redirect_target|contains:\n            - \"etoro.com\"\n            - \"coinbase.com\"\n            - \"robinhood.com\"\n            - \"fidelity.com\"\n        source_geo: \"US\"\n    selection_cname_tds:\n        cname_chain_length|gte: 2\n        cname_target_domain_age_days|lt: 30\n        cname_routing_pattern: true\n    selection_domain_age:\n        domain_registration_age_days|lt: 30\n        non_us_redirect_target: true\n    condition: (selection_geo_variance and selection_legitimate_redirect) or (selection_cname_tds and selection_domain_age)\nlevel: medium",
+      "title": "DL-0120: Investment TDS Geo-Routing to Legitimate Platform (Sigma)",
+      "source_rule": "DL-0120"
     },
     {
       "type": "spl",
-      "content": "index=proxy sourcetype=web_traffic\n| eval redirect_count=mvcount(redirect_chain)\n| where redirect_count > 3\n| eval final_domain=mvindex(redirect_chain, -1)\n| lookup domain_age_feed final_domain OUTPUT domain_age_days\n| where domain_age_days < 60\n| search final_url=\"*invest*\" OR final_url=\"*trade*\" OR final_url=\"*broker*\" OR final_url=\"*capital*\"\n| stats count dc(src_ip) AS unique_visitors values(redirect_chain) AS full_chain by final_domain\n| sort -count",
-      "title": "Cloaked Investment Ad Redirect Detection (Splunk SPL)"
+      "content": "`comment(\"Splunk SPL for Keitaro/Binom TDS Abuse Infrastructure Detection\")`\n`comment(\"HTTP redirect chain analysis for TDS abuse patterns\")`\nindex=flame_proxy sourcetype=flame:http_log\n(url_query=\"*click_id=*\" OR url_query=\"*campaign_id=*\" OR url_query=\"*keitaro*\" OR url_query=\"*binom*\" OR url_query=\"*cnv_id=*\")\nOR (url_path=\"*/tracker/*\" OR url_path=\"*/click/*\" OR url_path=\"*/go/*\" OR url_path=\"*/click.php*\")\n| transaction session_id maxspan=30s\n| where eventcount>=3\n| eval redirect_chain=mvjoin(url, \" -> \")\n| eval has_keitaro=if(like(url_query, \"%keitaro%\") OR like(url_path, \"%/tracker/%\"), 1, 0)\n| eval has_binom=if(like(url_query, \"%binom%\") OR like(url_path, \"%/click.php%\"), 1, 0)\n| where has_keitaro=1 OR has_binom=1\n| stats count values(redirect_chain) as chains values(final_destination) as destinations by src_ip session_id",
+      "title": "DL-0122: Keitaro/Binom TDS Abuse Infrastructure Detection (SPLUNK)",
+      "source_rule": "DL-0122"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for TDS URL Parameter Fingerprint Tracking\")`\n`comment(\"Identifies consistent TDS parameter patterns across rotating domains\")`\nindex=flame_proxy sourcetype=flame:http_log http_status IN (301, 302, 307)\n(url_query=\"*?u=*&o=*\" OR url_query=\"*aff_id=*&click_id=*\" OR url_query=\"*subid=*&source=*&clickid=*\" OR url_query=\"*pid=*&offer_id=*\")\n| rex field=url_query \"(?<param_pattern>[a-z_]+=)[^&]*(&[a-z_]+=)[^&]*\"\n| eval param_fingerprint=param_pattern\n| lookup domain_age_feed dest_domain OUTPUT domain_age_days\n| where domain_age_days < 90 OR isnull(domain_age_days)\n| stats dc(dest_domain) AS unique_domains\n        values(dest_domain) AS domains\n        dc(src_ip) AS unique_visitors\n        count AS total_hits\n        earliest(_time) AS first_seen\n        latest(_time) AS last_seen\n    by param_fingerprint\n| where unique_domains >= 3\n| sort -unique_domains",
+      "title": "DL-0127: TDS URL Parameter Fingerprint Tracking Across Rotating Domains (SPLUNK)",
+      "source_rule": "DL-0127"
     }
   ]
 }

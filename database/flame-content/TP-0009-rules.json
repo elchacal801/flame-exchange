@@ -2,9 +2,10 @@
   "tp_id": "TP-0009",
   "rules": [
     {
-      "type": "sql",
-      "content": "SELECT d.account_id, d.device_fingerprint, d.check_amount,\n       COUNT(*) OVER (PARTITION BY d.device_fingerprint) as deposits_from_device,\n       a.account_open_date, DATEDIFF(day, a.account_open_date, d.deposit_date) as account_age_days\nFROM mobile_deposits d\nJOIN accounts a ON d.account_id = a.account_id\nWHERE d.check_amount > 1000\n  AND DATEDIFF(day, a.account_open_date, d.deposit_date) < 30\n  AND deposits_from_device > 3\nORDER BY d.device_fingerprint, d.deposit_date;",
-      "title": "SQL — Suspicious Mobile Deposit Patterns"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Check Washing — Altered Check Mobile Deposit\")`\n`comment(\"Detects duplicate check deposits or MICR line inconsistencies on mobile deposits to new accounts\")`\nindex=flame_banking sourcetype=flame:check_processing\n  (deposit_channel=\"mobile\" OR deposit_channel=\"remote_deposit_capture\")\n| eval account_age_days = round((now() - strptime(account_open_date, \"%Y-%m-%d\")) / 86400)\n| where account_age_days < 30\n| stats count AS deposit_count dc(depositing_institution_id) AS institution_count\n    values(check_amount) AS amounts values(depositing_institution_id) AS institutions\n    values(device_fingerprint) AS devices\n    BY check_number\n| eval amount_micr_delta = check_amount - micr_encoded_amount\n| eval risk_score = case(\n    institution_count > 1 AND abs(amount_micr_delta) > 0, \"critical\",\n    institution_count > 1, \"high\",\n    abs(amount_micr_delta) > 500, \"high\",\n    1=1, \"medium\")\n| where deposit_count > 1 OR abs(amount_micr_delta) > 0\n| table check_number, deposit_count, institution_count, amounts,\n        institutions, devices, amount_micr_delta, risk_score\n| sort - risk_score",
+      "title": "DL-0162: Check Washing — Altered Check Mobile Deposit with Duplicate or MICR Inconsistency (SPLUNK)",
+      "source_rule": "DL-0162"
     }
   ]
 }

@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-29T03:18:15.429059+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "d0367dd3-178c-4710-a3cb-f24b9dd30081",
+    "dl_id": "DL-0177",
+    "title": "Magecart WebSocket Card Data Exfiltration — Payment Page to Recently Registered Domain",
+    "status": "experimental",
+    "description": "Detects Magecart-style card data exfiltration via WebSocket connections from e-commerce checkout or payment pages to recently registered domains (< 90 days) that masquerade as legitimate services (analytics, CDN, jQuery). The ANY.RUN \"Banks Magecart Campaign\" (March 2026) documented a 24+ month campaign across 100+ domains targeting the Redsys payment system (Spain), PayPlug SAS, and generic Visa/Mastercard flows. The attack uses a multi-stage injection model: (1) obfuscated loader injected into site scripts, (2) rotating domains deliver secondary payloads, (3) DOM monitoring conceals legitimate payment buttons and injects fake payment interfaces, (4) WebSocket connections (wss://<c2>/?token=<base64>) exfiltrate full card data (BIN, PAN, expiry, CVV). WebSocket is chosen specifically to reduce visibility in traditional HTTP-based security monitoring. Detection combines three signals: WebSocket connection from a payment/checkout page context, destination domain registered within 90 days, and domain name pattern masquerading as a legitimate service (analytics, CDN, jQuery, caching). The confirmed IOC domain list from the campaign uses registrar NICENIC INTERNATIONAL GROUP, identified by Silent Push as a bulletproof registrar.\n",
+    "cfpf_phase": "P4",
+    "level": "critical",
+    "detection": {
+      "selection_websocket": {
+        "connection_type": "websocket",
+        "request_url|startswith": "wss://",
+        "referer_url|contains": [
+          "checkout",
+          "payment",
+          "billing",
+          "cart/complete",
+          "redsys",
+          "payplug"
+        ]
+      },
+      "filter_domain_age": {
+        "destination_domain_age_days|lte": 90
+      },
+      "filter_masquerade_pattern": {
+        "destination_domain|contains": [
+          "analytics",
+          "cache",
+          "cdn",
+          "jquery",
+          "bootstrap",
+          "bundle",
+          "assets",
+          "hotjar",
+          "doubleclick",
+          "captcha",
+          "secure",
+          "referrer",
+          "wishlist",
+          "feedback",
+          "explorer",
+          "redsys"
+        ]
+      },
+      "filter_base64_token": {
+        "request_url|contains": "token="
+      },
+      "filter_legitimate": {
+        "destination_domain|contains": [
+          "stripe.com",
+          "paypal.com",
+          "braintreegateway.com",
+          "adyen.com",
+          "authorize.net",
+          "redsys.es",
+          "payplug.com",
+          "google-analytics.com",
+          "hotjar.com",
+          "jquery.com",
+          "bootstrapcdn.com"
+        ]
+      },
+      "timeframe": "1h",
+      "condition": "selection_websocket AND filter_domain_age AND (filter_masquerade_pattern OR filter_base64_token) AND NOT filter_legitimate\n"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "web_security"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "connection_type",
+        "request_url",
+        "referer_url",
+        "destination_domain",
+        "destination_ip",
+        "user_agent",
+        "session_id",
+        "timestamp"
+      ],
+      "enrichment_required": [
+        {
+          "field": "destination_domain_age_days",
+          "source": "WHOIS domain registration date lookup; days since domain creation"
+        },
+        {
+          "field": "destination_domain_registrar",
+          "source": "WHOIS registrar name for bulletproof registrar correlation"
+        },
+        {
+          "field": "destination_domain_tls_issuer",
+          "source": "TLS certificate issuer for free/automated CA detection (Let's Encrypt prevalence in campaign)"
+        }
+      ],
+      "derived_fields": [
+        "websocket_payload_entropy",
+        "base64_token_decoded_length",
+        "session_payment_page_dwell_time"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL — Magecart WebSocket Card Data Exfiltration Detection\n// Detects WebSocket connections from payment pages to recently registered masquerading domains\nconnection_type=\"websocket\" request_url=\"wss://*\"\n| referer_page_type := case {\n    match(referer_url, /checkout|payment|billing|cart\\/complete|redsys|payplug/) => \"payment_page\" ;\n    * => \"other\" ;\n  }\n| where referer_page_type == \"payment_page\"\n| where destination_domain != \"stripe.com\"\n    AND destination_domain != \"paypal.com\"\n    AND destination_domain != \"braintreegateway.com\"\n    AND destination_domain != \"adyen.com\"\n    AND destination_domain != \"authorize.net\"\n    AND destination_domain != \"redsys.es\"\n    AND destination_domain != \"payplug.com\"\n    AND destination_domain != \"google-analytics.com\"\n    AND destination_domain != \"hotjar.com\"\n    AND destination_domain != \"jquery.com\"\n    AND destination_domain != \"bootstrapcdn.com\"\n| masquerade_match := match(destination_domain, /analytics|cache|cdn|jquery|bootstrap|bundle|assets|hotjar|doubleclick|captcha|secure|referrer|wishlist|feedback|explorer|redsys/)\n| token_match := match(request_url, /token=/)\n| where (masquerade_match OR token_match)\n    AND destination_domain_age_days <= 90\n| ioc_match := in(destination_domain, values=[\n    \"bundle-feedback.com\", \"doubleclickcache.com\", \"analyticsgctm.com\",\n    \"hotjarcdn.com\", \"firefoxcaptcha.com\", \"solutionjquery.com\",\n    \"jquerybootstrap.com\", \"assetsbundle.com\", \"bundle-referrer.com\",\n    \"categorywishlist.com\", \"cachesecure.com\", \"securedata-ns.com\",\n    \"analysiscache.com\", \"newassetspro.com\", \"explorerpros.com\", \"redsysgate.com\"\n  ])\n| risk_level := case {\n    ioc_match => \"critical\" ;\n    destination_domain_age_days <= 30 AND masquerade_match AND token_match => \"critical\" ;\n    destination_domain_age_days <= 30 => \"high\" ;\n    * => \"high\" ;\n  }\n| groupBy(destination_domain, function=[\n    count(as=connection_count),\n    collect([referer_url, request_url, destination_ip, destination_domain_age_days,\n             destination_domain_registrar, ioc_match, risk_level, session_id])\n  ])\n| sort(connection_count, order=desc)",
+      "splunk": "`comment(\"Splunk SPL — Magecart WebSocket Card Data Exfiltration Detection\")`\n`comment(\"Detects WebSocket exfiltration from payment pages to recently registered masquerading domains\")`\nindex=flame_web_security sourcetype=flame:web_security\n  connection_type=\"websocket\" request_url=\"wss://*\"\n| eval referer_page_type = if(match(referer_url, \"(checkout|payment|billing|cart/complete|redsys|payplug)\"), \"payment_page\", \"other\")\n| where referer_page_type=\"payment_page\"\n| where NOT match(destination_domain, \"(stripe\\.com|paypal\\.com|braintreegateway\\.com|adyen\\.com|authorize\\.net|redsys\\.es|payplug\\.com|google-analytics\\.com|hotjar\\.com|jquery\\.com|bootstrapcdn\\.com)\")\n| eval masquerade_match = if(match(destination_domain, \"(analytics|cache|cdn|jquery|bootstrap|bundle|assets|hotjar|doubleclick|captcha|secure|referrer|wishlist|feedback|explorer|redsys)\"), 1, 0)\n| eval token_match = if(match(request_url, \"token=\"), 1, 0)\n| where (masquerade_match=1 OR token_match=1) AND destination_domain_age_days <= 90\n| eval ioc_match = if(destination_domain IN (\n    \"bundle-feedback.com\", \"doubleclickcache.com\", \"analyticsgctm.com\",\n    \"hotjarcdn.com\", \"firefoxcaptcha.com\", \"solutionjquery.com\",\n    \"jquerybootstrap.com\", \"assetsbundle.com\", \"bundle-referrer.com\",\n    \"categorywishlist.com\", \"cachesecure.com\", \"securedata-ns.com\",\n    \"analysiscache.com\", \"newassetspro.com\", \"explorerpros.com\", \"redsysgate.com\"), 1, 0)\n| eval risk_level = case(\n    ioc_match=1, \"critical\",\n    destination_domain_age_days <= 30 AND masquerade_match=1 AND token_match=1, \"critical\",\n    destination_domain_age_days <= 30, \"high\",\n    1=1, \"high\")\n| stats count AS connection_count,\n        values(referer_url) AS referer_urls,\n        values(request_url) AS request_urls,\n        values(destination_ip) AS dest_ips,\n        values(destination_domain_age_days) AS domain_age,\n        values(destination_domain_registrar) AS registrar,\n        max(ioc_match) AS is_known_ioc,\n        values(risk_level) AS risk_level,\n        dc(session_id) AS unique_sessions\n  BY destination_domain\n| sort - connection_count"
+    },
+    "references": [
+      "ANY.RUN, Banks Magecart Campaign: Multi-Stage Injection and WebSocket Exfiltration (March 2026)",
+      "Recorded Future, Annual Payment Fraud Intelligence Report 2025 — e-skimmer telemetry and blockchain C2",
+      "Silent Push — NICENIC INTERNATIONAL GROUP bulletproof registrar analysis"
+    ],
+    "threat_path_ids": [
+      "TP-0035"
+    ],
+    "fraud_types": [
+      "card-not-present-fraud",
+      "data-theft",
+      "e-skimmer"
+    ],
+    "tags": [
+      "attack.t1036",
+      "attack.t1041",
+      "cfpf.phase4.execution",
+      "flame.magecart",
+      "flame.web-skimmer"
+    ],
+    "falsepositives": [
+      "Legitimate third-party payment or analytics services using WebSocket connections from checkout pages that happen to have recently registered domains",
+      "Development or staging environments using test domains with WebSocket connections for payment flow testing",
+      "Newly deployed legitimate payment integration partners with recently registered service domains"
+    ]
+  }
+}

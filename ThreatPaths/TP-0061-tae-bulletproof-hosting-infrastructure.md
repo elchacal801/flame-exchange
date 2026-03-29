@@ -253,6 +253,51 @@ index=dns sourcetype=passive_dns
 
 ---
 
+## Named BPH Providers and Detection Indicators (Silent Push, 2025)
+
+### Tracked BPH ASNs with Red Flags
+
+| ASN | Name | Red Flags | Abuse Response |
+|-----|------|-----------|----------------|
+| AS152194 | CTGSERVERLIMITED-AS-AP | Heavy DGA usage, Spamhaus blocklist | 24-day |
+| AS214351 | FEMOIT GB | UK shell company, Ukrainian operator, Proton abuse email | 26-day |
+| AS213194 | NECHAEVDS-AS RU | Russia, TutaMail abuse email, 100% DGA domains | Unknown |
+| AS215789 | Karina Rashkovska | Dormant, Gmail abuse email | N/A |
+| AS214943 | RAILNET | Gmail abuse email, investment scams | 7-day |
+| AS34985 | NETINNOVATIONLLC-AS-AP | Gmail abuse email, DGA usage | 18-day |
+| AS48589 | SOW-A-AS (Tiger Net) | Ukraine, Gmail, DGA | Unknown |
+| AS49217 | HOSTYPE US | Wyoming shell company, Gmail, DGA | 30-day |
+| AS214940 | KPROHOST LLC | Gmail, 100% malicious content | 11-day |
+| AS140224 | STARCLOUD GLOBAL SG | Triad Nexus infrastructure, residential Colorado address | 4-day |
+
+### Self-Declared BPH Providers
+
+| Provider | ASN | Country | Key Indicator |
+|----------|-----|---------|---------------|
+| AlexHost | AS200019 | Moldova | "Offshore DMCA Ignored Hosting" — 10,000 active IPs, 400+ malicious domains in 8-day sample |
+| Phanes Networks | AS49042 | Netherlands | "Bulletproof" in marketing, 4-day abuse response, single peering partner (SpectraIP) |
+| Shinjiru | AS45839 | Malaysia | 12-day abuse response, 10-day grace period for abuse complaints, ignores DMCA |
+| Abolly Web Solutions | — | Unknown | "100% anonymous and DMCA ignored Offshore server" |
+
+### Bulletproof Registrar: NiceNIC
+
+NiceNIC (`nicenic[.]net`) has become the domain registrar of choice for numerous threat actors including Scattered Spider and The Com. Key characteristic: requires a **Power of Attorney (POA)** over a brand to submit a takedown request — a provision virtually unheard of elsewhere. This means domains registered on NiceNIC remain online far longer than those on other registrars. **Note**: The NICENIC INTERNATIONAL GROUP registrar used in the Banks Magecart campaign (TP-0035) is the same entity.
+
+### Dynamic DNS Abuse
+
+Dynamic DNS providers (e.g., `afraid[.]org` with 22,000+ domains for rent) create BPH-like networks. Notable APT usage: TA406, APT10, APT28 (Fancy Bear), APT29, APT33, Scattered Spider, Gamaredon, DDGroup, Gallium.
+
+### BPH Identification Criteria
+
+1. Disposable/free email addresses (Gmail, Proton, TutaMail) in WHOIS abuse records
+2. Low IP density (< 200 IPs)
+3. Few peering partners (1-2 ASNs)
+4. High DGA domain density
+5. Corporate registration in permissive jurisdictions (Wyoming, Delaware, Panama, Seychelles)
+6. Self-declared "bulletproof," "offshore," or "DMCA ignored" marketing
+
+---
+
 ## Operational Evidence
 
 ### EV-TP0061-2026-001: Recorded Future TAE Provider Analysis
@@ -276,6 +321,7 @@ index=dns sourcetype=passive_dns
 - Recorded Future, *CTA-2026-0319: Criminal Exploitation of Fraud-Enabling Infrastructure*, March 2026 — TAE provider identification (Virtualine, Stark Industries, AEZA, Aurologic), infrastructure rotation, abuse resistance patterns
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — Operation Shadow Storm, fraud-enabling infrastructure enforcement
 - Shadowserver Foundation, *Bulletproof Hosting Ecosystem Analysis*, 2025 — TAE provider network topology, transit provider relationships
+- Silent Push, "Shining a Light on the Global Bulletproof Hosting Ecosystem" (2025)
 
 ---
 

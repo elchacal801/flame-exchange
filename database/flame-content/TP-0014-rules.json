@@ -2,9 +2,10 @@
   "tp_id": "TP-0014",
   "rules": [
     {
-      "type": "sigma",
-      "content": "title: Anomalous Internal Account Access Volume\nstatus: experimental\ndescription: Detects when an employee accesses 3x their baseline account volume within 24 hours\nlogsource:\n    product: core_banking\n    service: ueba\ndetection:\n    selection:\n        action: \"account_view\"\n    timeframe: 24h\n    condition: selection | count(distinct account_id) by employee_id > 3 * baseline_volume_24h\nlevel: high\ntags:\n    - cfpf.phase2.initial_access\n    - insider.threat",
-      "title": "UEBA — Employee Access Anomaly Scoring"
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Insider-Enabled Account Fraud — Employee Access Anomaly\")`\n`comment(\"Detects out-of-portfolio account access with anomalous timing/volume followed by modifications\")`\nindex=flame_banking sourcetype=flame:employee_audit\n  (event_type=\"account_view\" OR event_type=\"account_detail_access\" OR event_type=\"account_modification\")\n  account_in_employee_portfolio=\"false\"\n| eval hour = strftime(_time, \"%H\")\n| eval after_hours = if(hour < 8 OR hour > 18, 1, 0)\n| stats dc(account_id) AS unique_accounts count AS total_events\n    sum(after_hours) AS after_hours_events\n    values(modification_type) AS modifications\n    values(account_id) AS accounts_accessed\n    BY employee_id, employee_role, employee_branch\n| where unique_accounts > 10 OR after_hours_events > 0\n| lookup employee_baseline employee_id OUTPUT baseline_daily_access\n| eval deviation_multiple = unique_accounts / baseline_daily_access\n| where deviation_multiple >= 3 OR after_hours_events > 0\n| eval risk_score = case(\n    deviation_multiple >= 5 AND after_hours_events > 3 AND isnotnull(modifications), \"critical\",\n    deviation_multiple >= 3 AND isnotnull(modifications), \"high\",\n    after_hours_events > 0 AND isnotnull(modifications), \"high\",\n    1=1, \"medium\")\n| table employee_id, employee_role, employee_branch, unique_accounts,\n        deviation_multiple, after_hours_events, modifications,\n        accounts_accessed, risk_score\n| sort - risk_score",
+      "title": "DL-0164: Insider-Enabled Account Fraud — Employee Access Anomaly with Subsequent Account Changes (SPLUNK)",
+      "source_rule": "DL-0164"
     }
   ]
 }

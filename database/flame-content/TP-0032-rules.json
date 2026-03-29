@@ -2,19 +2,10 @@
   "tp_id": "TP-0032",
   "rules": [
     {
-      "type": "sql",
-      "content": "-- Detect unlimited token approvals to contracts not in verified/whitelist\nSELECT\n    tx_hash,\n    block_timestamp,\n    from_address AS victim_wallet,\n    to_address AS token_contract,\n    CAST(CONV(SUBSTRING(input_data, 75, 64), 16, 10) AS DECIMAL) AS approval_amount,\n    CONCAT('0x', SUBSTRING(input_data, 35, 40)) AS spender_address\nFROM ethereum.transactions\nWHERE SUBSTRING(input_data, 1, 10) = '0x095ea7b3'  -- approve() function selector\n  AND SUBSTRING(input_data, 75, 64) = 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'  -- unlimited approval\n  AND CONCAT('0x', SUBSTRING(input_data, 35, 40)) NOT IN (SELECT address FROM verified_contracts)\n  AND block_timestamp >= DATE_SUB(NOW(), INTERVAL 24 HOUR)\nORDER BY block_timestamp DESC;",
-      "title": "On-Chain Query — Unlimited ERC-20 Approval to Unverified Contract (Phase 2)"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Permit2 Batch Transfer Following New Permit Signature\nstatus: experimental\ndescription: Detects batch token transfers via Permit2 contract that follow a newly submitted permit signature, indicative of wallet drainer execution.\nlogsource:\n    product: blockchain_monitoring\n    service: ethereum\ndetection:\n    selection_permit2:\n        contract_address: \"0x000000000022d473030f116ddee9f6b43ac78ba3\"  # Canonical Permit2\n        method: \"permitBatchTransferFrom\"\n    filter_value:\n        total_value_usd|gte: 1000\n    condition: selection_permit2 and filter_value\nlevel: critical\ntags:\n    - fraud.wallet_drainer\n    - cfpf.phase4.execution",
-      "title": "Sigma — Permit2 Batch Transfer Anomaly (Phase 4)"
-    },
-    {
       "type": "spl",
-      "content": "index=domain_monitoring sourcetype=cert_transparency\n| search domain=\"*airdrop*\" OR domain=\"*claim*\" OR domain=\"*mint*\" OR domain=\"*drop*\"\n| eval age_hours=round((now() - registration_epoch) / 3600, 1)\n| where age_hours < 48\n| lookup verified_web3_domains domain AS domain OUTPUT is_legitimate\n| where isnull(is_legitimate) OR is_legitimate=\"false\"\n| table domain, registration_date, age_hours, registrar, hosting_ip, ssl_issuer\n| sort age_hours",
-      "title": "Splunk — Phishing Domain Detection for Web3 Projects (Phase 1)"
+      "content": "`comment(\"Splunk SPL for Web3 Wallet Drainer Approval Detection\")`\n`comment(\"Detects malicious token approvals to drainer contracts or suspicious new contracts\")`\nindex=flame_blockchain sourcetype=flame:chain_monitoring\n  (method_selector=\"0x095ea7b3\" OR method_selector=\"0x39509351\" OR method_selector=\"0x30f28b7a\")\n| lookup known_drainer_contracts spender_address AS spender_address OUTPUT is_known_drainer\n| eval is_unlimited = if(approval_amount=\"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\", 1, 0)\n| eval is_new_unverified = if(spender_contract_age_hours<=48 AND spender_contract_verified=\"false\", 1, 0)\n| eval drainer_match = if(is_known_drainer=\"true\", 1, 0)\n| bin _time span=10m\n| stats count AS approval_count,\n    dc(token_contract_address) AS distinct_tokens,\n    values(token_contract_address) AS tokens_approved,\n    values(tx_hash) AS tx_hashes,\n    max(drainer_match) AS has_drainer_match,\n    max(is_unlimited) AS has_unlimited,\n    max(is_new_unverified) AS has_new_unverified\n    by from_address, spender_address, _time\n| where has_drainer_match=1 OR (has_unlimited=1 AND has_new_unverified=1) OR distinct_tokens>=3\n| eval risk_level = case(\n    has_drainer_match=1, \"critical\",\n    distinct_tokens>=5, \"critical\",\n    has_unlimited=1 AND has_new_unverified=1, \"high\",\n    distinct_tokens>=3, \"high\",\n    1=1, \"medium\")\n| sort - risk_level",
+      "title": "DL-0168: Web3 Wallet Drainer — Malicious Token Approval to Drainer Contract (SPLUNK)",
+      "source_rule": "DL-0168"
     }
   ]
 }

@@ -154,6 +154,31 @@ Actors contact victims impersonating bank fraud departments, tech support (Micro
 | REPORT | Level 3 (Established) | SAR filing with APP fraud and impersonation indicators; reporting to carrier fraud teams on spoofed number patterns; internal escalation from frontline staff to fraud team for suspected in-progress APP scams |
 | IMPROVE | Level 3 (Established) | Post-incident analysis of APP fraud cases to refine real-time intervention triggers; review of customer warning effectiveness and branch intervention success rates; tracking of evolving impersonation vectors (physical collection, grandparent scams, AI voice cloning) |
 
+## Live Support / Remote Access Scam Infrastructure (2026)
+
+urlscan.io (March 2026) identified four distinct technical clusters used in live support scam campaigns targeting banking customers:
+
+### Kit Cluster Analysis
+
+| Cluster | Technique | Key Fingerprint |
+|---------|-----------|-----------------|
+| index/config.js | Paired `index.js` + `config.js` with OS detection via `navigator.platform` | Exports `WIN_DOWNLOAD_LINK` / `MAC_DOWNLOAD_LINK` |
+| OSName | Inspects `navigator.appVersion` for OS detection | Links directly to `download.anydesk.com` |
+| Direct-link | Static HTML templates linking to official AnyDesk downloads | Simplest implementation; easiest to identify |
+| "Killer" (most sophisticated) | Supabase backend with geo-filtering and custom allowlists | Token naming: brand shortcodes (e.g., `anzkiller`); config exports `ENTRY_FILE`, `ACCESS_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` |
+
+### Targeted Brands
+
+Chase, Bank of America, American Express, PayPal, Barclays, Santander, ANZ Bank, Westpac, Lloyds, Metro Bank, Revolut, Scotiabank, Comerica, Huntington Bank, US Bank, Bank of Ireland, Bank of Scotland, NAB, Virgin Money, Coinbase, Ledger, HaveIBeenPwned.
+
+### Key Evasion
+
+Activity originates from the victim's own device and browser after remote access tool installation (AnyDesk, TeamViewer, ConnectWise/ScreenConnect), making fraudulent transactions indistinguishable from normal user behavior to fraud detection systems.
+
+### Geographic Targeting
+
+Primary: Australia, UK, US.
+
 ## Detection Approaches
 
 **Real-Time Transaction Risk Scoring**
@@ -204,6 +229,7 @@ AND c.call_end >= t.timestamp;
 - FTC: Consumer Sentinel Data — Impersonation Scams. [Link](https://www.ftc.gov/enforcement/consumer-sentinel-network)
 - Which?: "Authorized Push Payment Scam" investigation
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents evolution of impersonation fraud from remote calls to physical theft in Eastern Asia (doorstep cash collection by accomplices); reports surge in "grandparent scams" / "shock calls" across Caribbean and Europe involving fabricated family emergencies
+- urlscan.io, "LiveSupportScams" (March 25, 2026) — four technical clusters of remote access scam kits targeting banking customers
 
 ## Revision History
 
@@ -212,3 +238,4 @@ AND c.call_end >= t.timestamp;
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — physical impersonation evolution and grandparent scam surge |
+| 2026-03-27 | FLAME Project | urlscan.io enrichment — four live support / remote access scam kit clusters targeting banking customers |

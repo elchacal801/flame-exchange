@@ -18,6 +18,12 @@
       "content": "title: CNAME Clustering for DGA Domain Networks\nstatus: experimental\ndescription: Detect anomalous CNAME record density where hundreds or thousands of apparently unrelated domains share CNAME chains terminating at a small number of infrastructure endpoints. Indicates centrally mana\nlogsource:\n    product: dns_intelligence\n    category: cname_analysis\n    service: passive_dns\ndetection:\n    selection:\n        cname_chain_endpoint_count|gt: \"threshold\"\n        unique_domain_count|gt: 500\n        cname_chain_depth|gte: 2\n    condition: selection\nlevel: medium",
       "title": "DL-0112: CNAME Clustering for DGA Domain Networks (Sigma)",
       "source_rule": "DL-0112"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for BPH ASN Connection Correlation\")`\n`comment(\"Detects traffic to known BPH ASNs, NiceNIC domains, or Dynamic DNS abuse\")`\nindex=flame_network sourcetype=flame:dns_monitoring\n| lookup bph_asn_watchlist destination_asn OUTPUT bph_provider_name, bph_risk_level\n| eval bph_asn_match = if(isnotnull(bph_provider_name), 1, 0)\n| eval nicenic_match = if(like(domain_registrar, \"%nicenic%\"), 1, 0)\n| eval dyndns_match = if(\n    match(query, \"\\.(afraid\\.org|mooo\\.com|hopto\\.org|zapto\\.org|sytes\\.net)$\"), 1, 0)\n| where bph_asn_match=1 OR nicenic_match=1 OR dyndns_match=1\n| eval match_type = case(\n    bph_asn_match=1, \"bph_asn\",\n    nicenic_match=1, \"nicenic_registrar\",\n    dyndns_match=1, \"dynamic_dns\")\n| eval risk_category = case(\n    bph_asn_match=1 AND nicenic_match=1, \"high\",\n    bph_asn_match=1, \"medium\",\n    nicenic_match=1, \"medium\",\n    dyndns_match=1, \"low\")\n| stats count AS connection_count dc(src_ip) AS unique_sources\n        values(query) AS domains values(destination_asn) AS asns\n        values(bph_provider_name) AS bph_providers\n        values(match_type) AS match_types\n  by src_ip\n| sort - connection_count",
+      "title": "DL-0178: Bulletproof Hosting ASN Connection Correlation — Traffic to Known BPH Networks (SPLUNK)",
+      "source_rule": "DL-0178"
     }
   ]
 }

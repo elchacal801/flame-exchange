@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-29T03:18:15.447364+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "521452a6-9a6d-4c8f-8948-f67fa2a5c528",
+    "dl_id": "DL-0179",
+    "title": "Cloud Phone Behavioral Anomaly — Device-Environment Decorrelation Detection",
+    "status": "experimental",
+    "description": "Detects cloud phone behavioral anomalies indicative of industrial-scale dropper/mule account creation. Cloud phones — remote-access Android devices running genuine firmware on ARM hardware in data centers — pass hardware attestation and present authentic device signals, making them invisible to traditional emulator detection. This rule uses a composite scoring approach combining device-environment decorrelation signals: perpetual full battery, absence of accelerometer motion during active sessions, presence of VPN/proxy and vendor management apps, unusually high banking app density, and recent device first-seen dates. Group-IB reports cloud phone rental from $0.10/hour with pre-verified dropper accounts selling for $50–200 on darknet markets. UK APP fraud losses reached £485.2M in 2023 with dropper accounts as the top contributing factor.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "device_platform": "android"
+      },
+      "filter_battery": {
+        "battery_level": 100
+      },
+      "filter_motion": {
+        "accelerometer_motion_events": 0
+      },
+      "filter_vpn": {
+        "vpn_proxy_app_installed": true
+      },
+      "filter_banking_density": {
+        "banking_app_count|gte": 3
+      },
+      "filter_vendor_app": {
+        "vendor_management_app_present": [
+          "LDC Store",
+          "LD Assistant"
+        ]
+      },
+      "filter_new_device": {
+        "device_first_seen_days|lt": 30
+      },
+      "timeframe": "session",
+      "condition": "selection AND filter_battery AND filter_motion during active session AND (filter_vpn OR filter_vendor_app) AND filter_banking_density AND filter_new_device\n",
+      "composite_score": "Assign weighted score: battery_level=100 (+20), accelerometer_motion_events=0 during active session (+25), vpn_proxy_app_installed (+15), banking_app_count >= 3 (+15), vendor_management_app_present (+20), device_first_seen < 30 days (+5). Alert threshold: score >= 60.\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "mobile_device_telemetry"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "device_id",
+        "device_platform",
+        "battery_level",
+        "accelerometer_motion_events",
+        "session_start_time",
+        "session_end_time",
+        "installed_apps_list",
+        "banking_app_count",
+        "vpn_proxy_app_installed",
+        "vendor_management_app_present",
+        "device_first_seen_date",
+        "ip_address",
+        "ip_geolocation",
+        "device_timezone"
+      ],
+      "enrichment_required": [
+        {
+          "field": "device_first_seen_days",
+          "source": "Days since device first appeared in telemetry"
+        },
+        {
+          "field": "ip_timezone_match",
+          "source": "Comparison of IP geolocation timezone vs device-reported timezone"
+        }
+      ],
+      "derived_fields": [
+        "cloud_phone_risk_score",
+        "device_environment_decorrelation_flag"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Cloud Phone Behavioral Anomaly Detection\n// Detects device-environment decorrelation signals indicative of cloud phone infrastructure\ndevice_platform=\"android\"\nbattery_level=100\naccelerometer_motion_events=0\n(vpn_proxy_app_installed=\"true\" OR vendor_management_app_present IN [\"LDC Store\", \"LD Assistant\"])\nbanking_app_count>=3\n| device_first_seen_days := dateDiff(now(), device_first_seen_date, unit=days)\n| cloud_phone_risk_score := (\n    if(battery_level=100, 20, 0)\n    + if(accelerometer_motion_events=0, 25, 0)\n    + if(vpn_proxy_app_installed=\"true\", 15, 0)\n    + if(banking_app_count>=3, 15, 0)\n    + if(vendor_management_app_present=*, 20, 0)\n    + if(device_first_seen_days<30, 5, 0)\n  )\n| cloud_phone_risk_score >= 60\n| groupBy(device_id, function=[\n    collect([battery_level, accelerometer_motion_events, banking_app_count,\n             vpn_proxy_app_installed, vendor_management_app_present,\n             device_first_seen_date, ip_address, ip_geolocation,\n             device_timezone, cloud_phone_risk_score])\n  ])\n| sort(cloud_phone_risk_score, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Cloud Phone Behavioral Anomaly Detection\")`\n`comment(\"Detects device-environment decorrelation signals from cloud phone infrastructure\")`\nindex=flame_banking sourcetype=flame:mobile_device_telemetry\n  device_platform=\"android\"\n  battery_level=100\n  accelerometer_motion_events=0\n  (vpn_proxy_app_installed=\"true\" OR vendor_management_app_present IN (\"LDC Store\", \"LD Assistant\"))\n  banking_app_count>=3\n| eval device_first_seen_days = round((now() - strptime(device_first_seen_date, \"%Y-%m-%d\")) / 86400, 0)\n| where device_first_seen_days < 30\n| eval score_battery = if(battery_level=100, 20, 0)\n| eval score_motion = if(accelerometer_motion_events=0, 25, 0)\n| eval score_vpn = if(vpn_proxy_app_installed=\"true\", 15, 0)\n| eval score_banking = if(banking_app_count>=3, 15, 0)\n| eval score_vendor = if(isnotnull(vendor_management_app_present), 20, 0)\n| eval score_newdevice = if(device_first_seen_days<30, 5, 0)\n| eval cloud_phone_risk_score = score_battery + score_motion + score_vpn + score_banking + score_vendor + score_newdevice\n| where cloud_phone_risk_score >= 60\n| table device_id, battery_level, accelerometer_motion_events, banking_app_count,\n        vpn_proxy_app_installed, vendor_management_app_present,\n        device_first_seen_date, device_first_seen_days, ip_address,\n        ip_geolocation, device_timezone, cloud_phone_risk_score\n| sort - cloud_phone_risk_score",
+      "sql": "-- SQL for Cloud Phone Behavioral Anomaly Detection\n-- Detects device-environment decorrelation signals from cloud phone infrastructure\nSELECT\n  d.device_id,\n  d.battery_level,\n  d.accelerometer_motion_events,\n  d.banking_app_count,\n  d.vpn_proxy_app_installed,\n  d.vendor_management_app_present,\n  d.device_first_seen_date,\n  DATEDIFF(DAY, d.device_first_seen_date, CURRENT_DATE) AS device_first_seen_days,\n  d.ip_address,\n  d.ip_geolocation,\n  d.device_timezone,\n  (CASE WHEN d.battery_level = 100 THEN 20 ELSE 0 END\n   + CASE WHEN d.accelerometer_motion_events = 0 THEN 25 ELSE 0 END\n   + CASE WHEN d.vpn_proxy_app_installed = TRUE THEN 15 ELSE 0 END\n   + CASE WHEN d.banking_app_count >= 3 THEN 15 ELSE 0 END\n   + CASE WHEN d.vendor_management_app_present IS NOT NULL THEN 20 ELSE 0 END\n   + CASE WHEN DATEDIFF(DAY, d.device_first_seen_date, CURRENT_DATE) < 30 THEN 5 ELSE 0 END\n  ) AS cloud_phone_risk_score\nFROM mobile_device_telemetry d\nWHERE d.device_platform = 'android'\n  AND d.battery_level = 100\n  AND d.accelerometer_motion_events = 0\n  AND (d.vpn_proxy_app_installed = TRUE\n       OR d.vendor_management_app_present IN ('LDC Store', 'LD Assistant'))\n  AND d.banking_app_count >= 3\n  AND DATEDIFF(DAY, d.device_first_seen_date, CURRENT_DATE) < 30\nHAVING cloud_phone_risk_score >= 60\nORDER BY cloud_phone_risk_score DESC"
+    },
+    "references": [
+      "Group-IB, Cloud Phones: The Invisible Threat (March 25, 2026)",
+      "UK Finance, Annual Fraud Report 2023 — APP Fraud Losses",
+      "UK PSR, Mandatory Reimbursement for APP Fraud (October 2024)"
+    ],
+    "threat_path_ids": [
+      "TP-0022",
+      "TP-0059"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "automated-mule-accounts",
+      "cloud-phone-fraud",
+      "money-mule"
+    ],
+    "tags": [
+      "attack.t1078",
+      "attack.t1583",
+      "cfpf.phase2.initial_access",
+      "flame.cloud-phone"
+    ],
+    "falsepositives": [
+      "Devices in static charging cradles",
+      "Accessibility-configured tablets used for banking"
+    ]
+  }
+}

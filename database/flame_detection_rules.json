@@ -13009,5 +13009,348 @@
       "Fulfillment centers or warehouses that legitimately receive high volumes of shipments to a single address",
       "Seasonal sellers (holiday, event-specific) with naturally short account lifespans and high volume"
     ]
+  },
+  {
+    "id": "d0367dd3-178c-4710-a3cb-f24b9dd30081",
+    "dl_id": "DL-0177",
+    "title": "Magecart WebSocket Card Data Exfiltration — Payment Page to Recently Registered Domain",
+    "status": "experimental",
+    "description": "Detects Magecart-style card data exfiltration via WebSocket connections from e-commerce checkout or payment pages to recently registered domains (< 90 days) that masquerade as legitimate services (analytics, CDN, jQuery). The ANY.RUN \"Banks Magecart Campaign\" (March 2026) documented a 24+ month campaign across 100+ domains targeting the Redsys payment system (Spain), PayPlug SAS, and generic Visa/Mastercard flows. The attack uses a multi-stage injection model: (1) obfuscated loader injected into site scripts, (2) rotating domains deliver secondary payloads, (3) DOM monitoring conceals legitimate payment buttons and injects fake payment interfaces, (4) WebSocket connections (wss://<c2>/?token=<base64>) exfiltrate full card data (BIN, PAN, expiry, CVV). WebSocket is chosen specifically to reduce visibility in traditional HTTP-based security monitoring. Detection combines three signals: WebSocket connection from a payment/checkout page context, destination domain registered within 90 days, and domain name pattern masquerading as a legitimate service (analytics, CDN, jQuery, caching). The confirmed IOC domain list from the campaign uses registrar NICENIC INTERNATIONAL GROUP, identified by Silent Push as a bulletproof registrar.\n",
+    "cfpf_phase": "P4",
+    "level": "critical",
+    "detection": {
+      "selection_websocket": {
+        "connection_type": "websocket",
+        "request_url|startswith": "wss://",
+        "referer_url|contains": [
+          "checkout",
+          "payment",
+          "billing",
+          "cart/complete",
+          "redsys",
+          "payplug"
+        ]
+      },
+      "filter_domain_age": {
+        "destination_domain_age_days|lte": 90
+      },
+      "filter_masquerade_pattern": {
+        "destination_domain|contains": [
+          "analytics",
+          "cache",
+          "cdn",
+          "jquery",
+          "bootstrap",
+          "bundle",
+          "assets",
+          "hotjar",
+          "doubleclick",
+          "captcha",
+          "secure",
+          "referrer",
+          "wishlist",
+          "feedback",
+          "explorer",
+          "redsys"
+        ]
+      },
+      "filter_base64_token": {
+        "request_url|contains": "token="
+      },
+      "filter_legitimate": {
+        "destination_domain|contains": [
+          "stripe.com",
+          "paypal.com",
+          "braintreegateway.com",
+          "adyen.com",
+          "authorize.net",
+          "redsys.es",
+          "payplug.com",
+          "google-analytics.com",
+          "hotjar.com",
+          "jquery.com",
+          "bootstrapcdn.com"
+        ]
+      },
+      "timeframe": "1h",
+      "condition": "selection_websocket AND filter_domain_age AND (filter_masquerade_pattern OR filter_base64_token) AND NOT filter_legitimate\n"
+    },
+    "logsource": {
+      "product": "ecommerce",
+      "service": "web_security"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "connection_type",
+        "request_url",
+        "referer_url",
+        "destination_domain",
+        "destination_ip",
+        "user_agent",
+        "session_id",
+        "timestamp"
+      ],
+      "enrichment_required": [
+        {
+          "field": "destination_domain_age_days",
+          "source": "WHOIS domain registration date lookup; days since domain creation"
+        },
+        {
+          "field": "destination_domain_registrar",
+          "source": "WHOIS registrar name for bulletproof registrar correlation"
+        },
+        {
+          "field": "destination_domain_tls_issuer",
+          "source": "TLS certificate issuer for free/automated CA detection (Let's Encrypt prevalence in campaign)"
+        }
+      ],
+      "derived_fields": [
+        "websocket_payload_entropy",
+        "base64_token_decoded_length",
+        "session_payment_page_dwell_time"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL — Magecart WebSocket Card Data Exfiltration Detection\n// Detects WebSocket connections from payment pages to recently registered masquerading domains\nconnection_type=\"websocket\" request_url=\"wss://*\"\n| referer_page_type := case {\n    match(referer_url, /checkout|payment|billing|cart\\/complete|redsys|payplug/) => \"payment_page\" ;\n    * => \"other\" ;\n  }\n| where referer_page_type == \"payment_page\"\n| where destination_domain != \"stripe.com\"\n    AND destination_domain != \"paypal.com\"\n    AND destination_domain != \"braintreegateway.com\"\n    AND destination_domain != \"adyen.com\"\n    AND destination_domain != \"authorize.net\"\n    AND destination_domain != \"redsys.es\"\n    AND destination_domain != \"payplug.com\"\n    AND destination_domain != \"google-analytics.com\"\n    AND destination_domain != \"hotjar.com\"\n    AND destination_domain != \"jquery.com\"\n    AND destination_domain != \"bootstrapcdn.com\"\n| masquerade_match := match(destination_domain, /analytics|cache|cdn|jquery|bootstrap|bundle|assets|hotjar|doubleclick|captcha|secure|referrer|wishlist|feedback|explorer|redsys/)\n| token_match := match(request_url, /token=/)\n| where (masquerade_match OR token_match)\n    AND destination_domain_age_days <= 90\n| ioc_match := in(destination_domain, values=[\n    \"bundle-feedback.com\", \"doubleclickcache.com\", \"analyticsgctm.com\",\n    \"hotjarcdn.com\", \"firefoxcaptcha.com\", \"solutionjquery.com\",\n    \"jquerybootstrap.com\", \"assetsbundle.com\", \"bundle-referrer.com\",\n    \"categorywishlist.com\", \"cachesecure.com\", \"securedata-ns.com\",\n    \"analysiscache.com\", \"newassetspro.com\", \"explorerpros.com\", \"redsysgate.com\"\n  ])\n| risk_level := case {\n    ioc_match => \"critical\" ;\n    destination_domain_age_days <= 30 AND masquerade_match AND token_match => \"critical\" ;\n    destination_domain_age_days <= 30 => \"high\" ;\n    * => \"high\" ;\n  }\n| groupBy(destination_domain, function=[\n    count(as=connection_count),\n    collect([referer_url, request_url, destination_ip, destination_domain_age_days,\n             destination_domain_registrar, ioc_match, risk_level, session_id])\n  ])\n| sort(connection_count, order=desc)",
+      "splunk": "`comment(\"Splunk SPL — Magecart WebSocket Card Data Exfiltration Detection\")`\n`comment(\"Detects WebSocket exfiltration from payment pages to recently registered masquerading domains\")`\nindex=flame_web_security sourcetype=flame:web_security\n  connection_type=\"websocket\" request_url=\"wss://*\"\n| eval referer_page_type = if(match(referer_url, \"(checkout|payment|billing|cart/complete|redsys|payplug)\"), \"payment_page\", \"other\")\n| where referer_page_type=\"payment_page\"\n| where NOT match(destination_domain, \"(stripe\\.com|paypal\\.com|braintreegateway\\.com|adyen\\.com|authorize\\.net|redsys\\.es|payplug\\.com|google-analytics\\.com|hotjar\\.com|jquery\\.com|bootstrapcdn\\.com)\")\n| eval masquerade_match = if(match(destination_domain, \"(analytics|cache|cdn|jquery|bootstrap|bundle|assets|hotjar|doubleclick|captcha|secure|referrer|wishlist|feedback|explorer|redsys)\"), 1, 0)\n| eval token_match = if(match(request_url, \"token=\"), 1, 0)\n| where (masquerade_match=1 OR token_match=1) AND destination_domain_age_days <= 90\n| eval ioc_match = if(destination_domain IN (\n    \"bundle-feedback.com\", \"doubleclickcache.com\", \"analyticsgctm.com\",\n    \"hotjarcdn.com\", \"firefoxcaptcha.com\", \"solutionjquery.com\",\n    \"jquerybootstrap.com\", \"assetsbundle.com\", \"bundle-referrer.com\",\n    \"categorywishlist.com\", \"cachesecure.com\", \"securedata-ns.com\",\n    \"analysiscache.com\", \"newassetspro.com\", \"explorerpros.com\", \"redsysgate.com\"), 1, 0)\n| eval risk_level = case(\n    ioc_match=1, \"critical\",\n    destination_domain_age_days <= 30 AND masquerade_match=1 AND token_match=1, \"critical\",\n    destination_domain_age_days <= 30, \"high\",\n    1=1, \"high\")\n| stats count AS connection_count,\n        values(referer_url) AS referer_urls,\n        values(request_url) AS request_urls,\n        values(destination_ip) AS dest_ips,\n        values(destination_domain_age_days) AS domain_age,\n        values(destination_domain_registrar) AS registrar,\n        max(ioc_match) AS is_known_ioc,\n        values(risk_level) AS risk_level,\n        dc(session_id) AS unique_sessions\n  BY destination_domain\n| sort - connection_count"
+    },
+    "references": [
+      "ANY.RUN, Banks Magecart Campaign: Multi-Stage Injection and WebSocket Exfiltration (March 2026)",
+      "Recorded Future, Annual Payment Fraud Intelligence Report 2025 — e-skimmer telemetry and blockchain C2",
+      "Silent Push — NICENIC INTERNATIONAL GROUP bulletproof registrar analysis"
+    ],
+    "threat_path_ids": [
+      "TP-0035"
+    ],
+    "fraud_types": [
+      "card-not-present-fraud",
+      "data-theft",
+      "e-skimmer"
+    ],
+    "tags": [
+      "attack.t1036",
+      "attack.t1041",
+      "cfpf.phase4.execution",
+      "flame.magecart",
+      "flame.web-skimmer"
+    ],
+    "falsepositives": [
+      "Legitimate third-party payment or analytics services using WebSocket connections from checkout pages that happen to have recently registered domains",
+      "Development or staging environments using test domains with WebSocket connections for payment flow testing",
+      "Newly deployed legitimate payment integration partners with recently registered service domains"
+    ]
+  },
+  {
+    "id": "73d4e9e5-5fd8-4c20-9710-2f75189023ac",
+    "dl_id": "DL-0178",
+    "title": "Bulletproof Hosting ASN Connection Correlation — Traffic to Known BPH Networks",
+    "status": "experimental",
+    "description": "Detects DNS resolution or network connections to IP addresses within known bulletproof hosting (BPH) Autonomous System Number (ASN) ranges, domains registered via the NiceNIC registrar, or domains using Dynamic DNS providers such as afraid.org. Silent Push (2025) documented 200+ BPH providers controlling approximately 1 million IP addresses globally. This rule correlates network traffic against a curated list of BPH ASNs identified through abuse pattern analysis, including providers with high DGA domain density, disposable abuse contact emails, shell company registrations in permissive jurisdictions, and self-declared bulletproof hosting marketing. Additionally, the rule flags domains registered through NiceNIC — a registrar favored by threat actors (including Scattered Spider and The Com) due to its requirement for a Power of Attorney to process takedown requests — and domains leveraging Dynamic DNS services that create BPH-like abuse-resistant infrastructure. Any match warrants investigation for potential fraud-enabling infrastructure, C2 communication, or criminal hosting activity.\n",
+    "cfpf_phase": "P1",
+    "level": "medium",
+    "detection": {
+      "selection_bph_asn": {
+        "destination_asn": [
+          "AS152194",
+          "AS214351",
+          "AS213194",
+          "AS214943",
+          "AS34985",
+          "AS48589",
+          "AS49217",
+          "AS214940",
+          "AS140224",
+          "AS200019",
+          "AS49042",
+          "AS45839"
+        ]
+      },
+      "selection_nicenic_registrar": {
+        "domain_registrar|contains": "nicenic"
+      },
+      "selection_dynamic_dns": {
+        "query|endswith": [
+          ".afraid.org",
+          ".mooo.com",
+          ".hopto.org",
+          ".zapto.org",
+          ".sytes.net"
+        ]
+      },
+      "condition": "selection_bph_asn OR selection_nicenic_registrar OR selection_dynamic_dns",
+      "timeframe": "24h"
+    },
+    "logsource": {
+      "product": "network",
+      "service": "dns_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "src_ip",
+        "dst_ip",
+        "destination_asn",
+        "query",
+        "answer",
+        "domain_registrar",
+        "dns_record_type"
+      ],
+      "enrichment_required": [
+        {
+          "field": "destination_asn",
+          "source": "MaxMind GeoIP or IP-to-ASN mapping database for resolved IP addresses"
+        },
+        {
+          "field": "domain_registrar",
+          "source": "WHOIS/RDAP lookup for queried domains"
+        },
+        {
+          "field": "bph_asn_list",
+          "source": "Curated BPH ASN watchlist maintained from Silent Push, Spamhaus, and threat intelligence feeds"
+        }
+      ],
+      "derived_fields": [
+        "bph_match_type",
+        "risk_category"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for BPH ASN Connection Correlation\n// Detects traffic to known BPH ASNs, NiceNIC-registered domains, or Dynamic DNS abuse\n#event_simpleName=DnsRequest OR #event_simpleName=NetworkConnectIP4\n| bph_asn_match := destination_asn IN [\n    \"AS152194\", \"AS214351\", \"AS213194\", \"AS214943\", \"AS34985\",\n    \"AS48589\", \"AS49217\", \"AS214940\", \"AS140224\",\n    \"AS200019\", \"AS49042\", \"AS45839\"\n  ]\n| nicenic_match := domain_registrar = /nicenic/i\n| dyndns_match := DomainName = /\\.(afraid\\.org|mooo\\.com|hopto\\.org|zapto\\.org|sytes\\.net)$/i\n| where bph_asn_match OR nicenic_match OR dyndns_match\n| match_type := case {\n    bph_asn_match | \"bph_asn\";\n    nicenic_match | \"nicenic_registrar\";\n    dyndns_match  | \"dynamic_dns\";\n  }\n| groupBy([ComputerName, DomainName, destination_asn, match_type], function=[\n    count(aid, as=connection_count),\n    collect([src_ip, dst_ip, answer])\n  ])\n| sort(connection_count, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for BPH ASN Connection Correlation\")`\n`comment(\"Detects traffic to known BPH ASNs, NiceNIC domains, or Dynamic DNS abuse\")`\nindex=flame_network sourcetype=flame:dns_monitoring\n| lookup bph_asn_watchlist destination_asn OUTPUT bph_provider_name, bph_risk_level\n| eval bph_asn_match = if(isnotnull(bph_provider_name), 1, 0)\n| eval nicenic_match = if(like(domain_registrar, \"%nicenic%\"), 1, 0)\n| eval dyndns_match = if(\n    match(query, \"\\.(afraid\\.org|mooo\\.com|hopto\\.org|zapto\\.org|sytes\\.net)$\"), 1, 0)\n| where bph_asn_match=1 OR nicenic_match=1 OR dyndns_match=1\n| eval match_type = case(\n    bph_asn_match=1, \"bph_asn\",\n    nicenic_match=1, \"nicenic_registrar\",\n    dyndns_match=1, \"dynamic_dns\")\n| eval risk_category = case(\n    bph_asn_match=1 AND nicenic_match=1, \"high\",\n    bph_asn_match=1, \"medium\",\n    nicenic_match=1, \"medium\",\n    dyndns_match=1, \"low\")\n| stats count AS connection_count dc(src_ip) AS unique_sources\n        values(query) AS domains values(destination_asn) AS asns\n        values(bph_provider_name) AS bph_providers\n        values(match_type) AS match_types\n  by src_ip\n| sort - connection_count"
+    },
+    "references": [
+      "Silent Push, Shining a Light on the Global Bulletproof Hosting Ecosystem (2025) — 200+ BPH providers, infrastructure laundering, sanctions timeline",
+      "CISA Advisory — Increased Use of Bulletproof Hosting Against Critical Infrastructure (2025)",
+      "Recorded Future, CTA-2026-0319: Criminal Exploitation of Fraud-Enabling Infrastructure, March 2026"
+    ],
+    "threat_path_ids": [
+      "TP-0048",
+      "TP-0061"
+    ],
+    "fraud_types": [
+      "bph-migration",
+      "bulletproof-hosting",
+      "fraud-enabling-infrastructure"
+    ],
+    "tags": [
+      "attack.t1583.001",
+      "attack.t1583.003",
+      "cfpf.phase1.recon",
+      "flame.bph",
+      "flame.infrastructure"
+    ],
+    "falsepositives": [
+      "Legitimate websites incidentally hosted on BPH ASNs",
+      "Security researchers investigating BPH infrastructure"
+    ]
+  },
+  {
+    "id": "521452a6-9a6d-4c8f-8948-f67fa2a5c528",
+    "dl_id": "DL-0179",
+    "title": "Cloud Phone Behavioral Anomaly — Device-Environment Decorrelation Detection",
+    "status": "experimental",
+    "description": "Detects cloud phone behavioral anomalies indicative of industrial-scale dropper/mule account creation. Cloud phones — remote-access Android devices running genuine firmware on ARM hardware in data centers — pass hardware attestation and present authentic device signals, making them invisible to traditional emulator detection. This rule uses a composite scoring approach combining device-environment decorrelation signals: perpetual full battery, absence of accelerometer motion during active sessions, presence of VPN/proxy and vendor management apps, unusually high banking app density, and recent device first-seen dates. Group-IB reports cloud phone rental from $0.10/hour with pre-verified dropper accounts selling for $50–200 on darknet markets. UK APP fraud losses reached £485.2M in 2023 with dropper accounts as the top contributing factor.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "device_platform": "android"
+      },
+      "filter_battery": {
+        "battery_level": 100
+      },
+      "filter_motion": {
+        "accelerometer_motion_events": 0
+      },
+      "filter_vpn": {
+        "vpn_proxy_app_installed": true
+      },
+      "filter_banking_density": {
+        "banking_app_count|gte": 3
+      },
+      "filter_vendor_app": {
+        "vendor_management_app_present": [
+          "LDC Store",
+          "LD Assistant"
+        ]
+      },
+      "filter_new_device": {
+        "device_first_seen_days|lt": 30
+      },
+      "timeframe": "session",
+      "condition": "selection AND filter_battery AND filter_motion during active session AND (filter_vpn OR filter_vendor_app) AND filter_banking_density AND filter_new_device\n",
+      "composite_score": "Assign weighted score: battery_level=100 (+20), accelerometer_motion_events=0 during active session (+25), vpn_proxy_app_installed (+15), banking_app_count >= 3 (+15), vendor_management_app_present (+20), device_first_seen < 30 days (+5). Alert threshold: score >= 60.\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "mobile_device_telemetry"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "device_id",
+        "device_platform",
+        "battery_level",
+        "accelerometer_motion_events",
+        "session_start_time",
+        "session_end_time",
+        "installed_apps_list",
+        "banking_app_count",
+        "vpn_proxy_app_installed",
+        "vendor_management_app_present",
+        "device_first_seen_date",
+        "ip_address",
+        "ip_geolocation",
+        "device_timezone"
+      ],
+      "enrichment_required": [
+        {
+          "field": "device_first_seen_days",
+          "source": "Days since device first appeared in telemetry"
+        },
+        {
+          "field": "ip_timezone_match",
+          "source": "Comparison of IP geolocation timezone vs device-reported timezone"
+        }
+      ],
+      "derived_fields": [
+        "cloud_phone_risk_score",
+        "device_environment_decorrelation_flag"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Cloud Phone Behavioral Anomaly Detection\n// Detects device-environment decorrelation signals indicative of cloud phone infrastructure\ndevice_platform=\"android\"\nbattery_level=100\naccelerometer_motion_events=0\n(vpn_proxy_app_installed=\"true\" OR vendor_management_app_present IN [\"LDC Store\", \"LD Assistant\"])\nbanking_app_count>=3\n| device_first_seen_days := dateDiff(now(), device_first_seen_date, unit=days)\n| cloud_phone_risk_score := (\n    if(battery_level=100, 20, 0)\n    + if(accelerometer_motion_events=0, 25, 0)\n    + if(vpn_proxy_app_installed=\"true\", 15, 0)\n    + if(banking_app_count>=3, 15, 0)\n    + if(vendor_management_app_present=*, 20, 0)\n    + if(device_first_seen_days<30, 5, 0)\n  )\n| cloud_phone_risk_score >= 60\n| groupBy(device_id, function=[\n    collect([battery_level, accelerometer_motion_events, banking_app_count,\n             vpn_proxy_app_installed, vendor_management_app_present,\n             device_first_seen_date, ip_address, ip_geolocation,\n             device_timezone, cloud_phone_risk_score])\n  ])\n| sort(cloud_phone_risk_score, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Cloud Phone Behavioral Anomaly Detection\")`\n`comment(\"Detects device-environment decorrelation signals from cloud phone infrastructure\")`\nindex=flame_banking sourcetype=flame:mobile_device_telemetry\n  device_platform=\"android\"\n  battery_level=100\n  accelerometer_motion_events=0\n  (vpn_proxy_app_installed=\"true\" OR vendor_management_app_present IN (\"LDC Store\", \"LD Assistant\"))\n  banking_app_count>=3\n| eval device_first_seen_days = round((now() - strptime(device_first_seen_date, \"%Y-%m-%d\")) / 86400, 0)\n| where device_first_seen_days < 30\n| eval score_battery = if(battery_level=100, 20, 0)\n| eval score_motion = if(accelerometer_motion_events=0, 25, 0)\n| eval score_vpn = if(vpn_proxy_app_installed=\"true\", 15, 0)\n| eval score_banking = if(banking_app_count>=3, 15, 0)\n| eval score_vendor = if(isnotnull(vendor_management_app_present), 20, 0)\n| eval score_newdevice = if(device_first_seen_days<30, 5, 0)\n| eval cloud_phone_risk_score = score_battery + score_motion + score_vpn + score_banking + score_vendor + score_newdevice\n| where cloud_phone_risk_score >= 60\n| table device_id, battery_level, accelerometer_motion_events, banking_app_count,\n        vpn_proxy_app_installed, vendor_management_app_present,\n        device_first_seen_date, device_first_seen_days, ip_address,\n        ip_geolocation, device_timezone, cloud_phone_risk_score\n| sort - cloud_phone_risk_score",
+      "sql": "-- SQL for Cloud Phone Behavioral Anomaly Detection\n-- Detects device-environment decorrelation signals from cloud phone infrastructure\nSELECT\n  d.device_id,\n  d.battery_level,\n  d.accelerometer_motion_events,\n  d.banking_app_count,\n  d.vpn_proxy_app_installed,\n  d.vendor_management_app_present,\n  d.device_first_seen_date,\n  DATEDIFF(DAY, d.device_first_seen_date, CURRENT_DATE) AS device_first_seen_days,\n  d.ip_address,\n  d.ip_geolocation,\n  d.device_timezone,\n  (CASE WHEN d.battery_level = 100 THEN 20 ELSE 0 END\n   + CASE WHEN d.accelerometer_motion_events = 0 THEN 25 ELSE 0 END\n   + CASE WHEN d.vpn_proxy_app_installed = TRUE THEN 15 ELSE 0 END\n   + CASE WHEN d.banking_app_count >= 3 THEN 15 ELSE 0 END\n   + CASE WHEN d.vendor_management_app_present IS NOT NULL THEN 20 ELSE 0 END\n   + CASE WHEN DATEDIFF(DAY, d.device_first_seen_date, CURRENT_DATE) < 30 THEN 5 ELSE 0 END\n  ) AS cloud_phone_risk_score\nFROM mobile_device_telemetry d\nWHERE d.device_platform = 'android'\n  AND d.battery_level = 100\n  AND d.accelerometer_motion_events = 0\n  AND (d.vpn_proxy_app_installed = TRUE\n       OR d.vendor_management_app_present IN ('LDC Store', 'LD Assistant'))\n  AND d.banking_app_count >= 3\n  AND DATEDIFF(DAY, d.device_first_seen_date, CURRENT_DATE) < 30\nHAVING cloud_phone_risk_score >= 60\nORDER BY cloud_phone_risk_score DESC"
+    },
+    "references": [
+      "Group-IB, Cloud Phones: The Invisible Threat (March 25, 2026)",
+      "UK Finance, Annual Fraud Report 2023 — APP Fraud Losses",
+      "UK PSR, Mandatory Reimbursement for APP Fraud (October 2024)"
+    ],
+    "threat_path_ids": [
+      "TP-0022",
+      "TP-0059"
+    ],
+    "fraud_types": [
+      "account-takeover",
+      "automated-mule-accounts",
+      "cloud-phone-fraud",
+      "money-mule"
+    ],
+    "tags": [
+      "attack.t1078",
+      "attack.t1583",
+      "cfpf.phase2.initial_access",
+      "flame.cloud-phone"
+    ],
+    "falsepositives": [
+      "Devices in static charging cradles",
+      "Accessibility-configured tablets used for banking"
+    ]
   }
 ]

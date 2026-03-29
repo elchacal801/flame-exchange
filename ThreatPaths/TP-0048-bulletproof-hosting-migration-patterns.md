@@ -391,6 +391,32 @@ This cloud abuse pattern effectively launders IP reputation, creating a detectio
 
 ---
 
+## BPH Ecosystem Scale and Infrastructure Laundering (2025–2026)
+
+Silent Push (2025) documented the global BPH ecosystem at unprecedented scale: 200+ tracked providers controlling approximately 1 million individual IP addresses. Fewer than half host active websites; the majority support C2 servers or illicit proxy/VPN services.
+
+### Infrastructure Laundering
+
+A growing criminal practice where threat actors rent IP addresses from mainstream cloud providers (AWS, Azure) and map them via CNAME to criminal client websites. This ensures malicious sites aren't mapped to suspicious BPH ASNs, load faster for target audiences, and complicate takedown efforts. The process:
+
+1. Threat actors acquire "account mules" — illicitly obtained cloud hosting accounts
+2. IPs from legitimate providers are mapped via CNAME into malicious domain infrastructure
+3. Cloud providers face continuous whack-a-mole as accounts are created faster than they're disabled
+4. Criminal websites appear to be hosted on reputable infrastructure
+
+### Sanctions Timeline (2022–2025)
+
+| Date | Target | Action | Outcome |
+|------|--------|--------|---------|
+| July 2022 | "Virus" (BPH operator) | US extradition | Prosecution for BPH operations |
+| August 2023 | LolekHosted | DOJ indictment | Admin indicted after decade of operations; hosted NetWalker ransomware |
+| February 2025 | Zservers/Xhost (Russia) | US/Australia/UK joint sanctions | 127 servers seized; ransomware and botnet operations |
+| May 2025 | FUNNULL CDN (Philippines) | US Treasury sanctions | Infrastructure laundering; $200M+ defrauded ($150K avg per victim) |
+| May 2025 | Stark Industries | EU Council sanctions | Enabling Russian state-sponsored actors |
+| July 2025 | Aeza Group | US Treasury sanctions | Supporting global criminal activity |
+
+---
+
 ## Detection Approaches
 
 ### DL-0110: BGP Re-Advertisement Monitoring
@@ -454,6 +480,7 @@ This cloud abuse pattern effectively launders IP reputation, creating a detectio
 10. Krebs, B. — "Media Land: The Russian Hosting Service Behind Ransomware Campaigns" (2025). [Link](https://krebsonsecurity.com/)
 11. Chainalysis — "Sanctions Evasion and Cryptocurrency Infrastructure" (2026). [Link](https://www.chainalysis.com/blog/crypto-crime-midyear-2025/)
 12. TRM Labs — "Infrastructure Lifecycle of Sanctioned Hosting Entities" (2026). [Link](https://www.trmlabs.com/report/illicit-crypto-ecosystem)
+13. Silent Push, "Shining a Light on the Global Bulletproof Hosting Ecosystem" (2025) — 200+ BPH providers, infrastructure laundering, sanctions timeline
 
 ---
 

@@ -2719,5 +2719,36 @@
         <category>purchase-scam</category>
         <category>severity-high</category>
     </item>
+    <item>
+      <title>[DL-0177] Magecart WebSocket Card Data Exfiltration — Payment Page to Recently Registered Domain</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0177</guid>
+      <description>Detects Magecart-style card data exfiltration via WebSocket connections from e-commerce checkout or payment pages to recently registered domains (&lt; 90 days) that masquerade as legitimate services (ana</description>
+        <category>card-not-present-fraud</category>
+        <category>data-theft</category>
+        <category>e-skimmer</category>
+        <category>severity-critical</category>
+    </item>
+    <item>
+      <title>[DL-0178] Bulletproof Hosting ASN Connection Correlation — Traffic to Known BPH Networks</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0178</guid>
+      <description>Detects DNS resolution or network connections to IP addresses within known bulletproof hosting (BPH) Autonomous System Number (ASN) ranges, domains registered via the NiceNIC registrar, or domains usi</description>
+        <category>bph-migration</category>
+        <category>bulletproof-hosting</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>severity-medium</category>
+    </item>
+    <item>
+      <title>[DL-0179] Cloud Phone Behavioral Anomaly — Device-Environment Decorrelation Detection</title>
+      <link>https://flameintel.org</link>
+      <guid isPermaLink="false">flame-dl-DL-0179</guid>
+      <description>Detects cloud phone behavioral anomalies indicative of industrial-scale dropper/mule account creation. Cloud phones — remote-access Android devices running genuine firmware on ARM hardware in data cen</description>
+        <category>account-takeover</category>
+        <category>automated-mule-accounts</category>
+        <category>cloud-phone-fraud</category>
+        <category>money-mule</category>
+        <category>severity-high</category>
+    </item>
   </channel>
 </rss>

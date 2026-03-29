@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-28T23:08:38.350700+00:00",
+    "generated_at": "2026-03-29T03:18:13.409071+00:00",
     "total": 69
   },
   "data": [
@@ -2530,7 +2530,8 @@
         "DL-0039",
         "DL-0040",
         "DL-0041",
-        "DL-0043"
+        "DL-0043",
+        "DL-0179"
       ],
       "related_tps": [
         {
@@ -4119,7 +4120,8 @@
       "detection_rule_ids": [
         "DL-0075",
         "DL-0076",
-        "DL-0077"
+        "DL-0077",
+        "DL-0177"
       ],
       "related_tps": [
         {
@@ -5595,7 +5597,8 @@
       "detection_rule_ids": [
         "DL-0110",
         "DL-0111",
-        "DL-0112"
+        "DL-0112",
+        "DL-0178"
       ],
       "related_tps": [
         {
@@ -6676,7 +6679,7 @@
       "category": "ThreatPath",
       "date": "2026-03-20",
       "author": "FLAME Project",
-      "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319",
+      "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319, Group-IB Cloud Phones 2026",
       "tlp": "WHITE",
       "summary": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account systems integrated into scam compound laundering operations. Recorded Future identifies automated KYC circumvention toolkits on dark web marketplaces that combine synthetic identity documents, liveness check bypass tools, and device emulators to open accounts across multiple financial institutions simultaneously. INTERPOL reports mule networks comprising thousands of accounts per operation, enabling rapid layering of fraud proceeds across jurisdictions.\n\n**Distinction from TP-0049**: TP-0049 covers the downstream cryptocurrency laundering techniques; TP-0059 covers the upstream automated infrastructure that creates and manages the mule accounts used as the first layer of laundering.\n\nThe geographic distribution of money mule networks aligns with WCI (Bruce et al., PLoS ONE 2024) cash-out/money laundering scores: the US (26.63/100) and UK (21.63) rank as the top Western cash-out jurisdictions, reflecting their role as primary mule account destinations rather than fraud production hubs. Note: WCI data was collected in 2021.",
       "confidence_score": 75,
@@ -6709,7 +6712,8 @@
         "unodc-organized-fraud-2024",
         "mule-herding",
         "velocity-anomaly",
-        "wci-geographic-attribution"
+        "wci-geographic-attribution",
+        "cloud-phone"
       ],
       "cfpf_phases": [
         "P1",
@@ -6757,7 +6761,8 @@
       ],
       "detection_rule_ids": [
         "DL-0118",
-        "DL-0119"
+        "DL-0119",
+        "DL-0179"
       ],
       "related_tps": [
         {
@@ -6777,7 +6782,7 @@
           "relationship": "enables"
         }
       ],
-      "evidence_count": 4
+      "evidence_count": 5
     },
     {
       "id": "TP-0060",
@@ -6967,7 +6972,8 @@
         "BL-0036"
       ],
       "detection_rule_ids": [
-        "DL-0123"
+        "DL-0123",
+        "DL-0178"
       ],
       "related_tps": [
         {
