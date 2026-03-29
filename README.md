@@ -2,7 +2,7 @@
 [![License: MIT](https://img.shields.io/github/license/elchacal801/flame-fraud)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![Threat Paths](https://img.shields.io/badge/threat_paths-69-0078D4)](ThreatPaths/)
-[![Detection Rules](https://img.shields.io/badge/detection_rules-150-2ea44f)](DetectionLogic/)
+[![Detection Rules](https://img.shields.io/badge/detection_rules-176-2ea44f)](DetectionLogic/)
 [![STIX 2.1](https://img.shields.io/badge/STIX-2.1-6c757d)](docs/STIX-FRAUD-EXTENSION.md)
 [![MCP Server](https://img.shields.io/badge/MCP-server-8A2BE2)](mcp_server/)
 
@@ -10,7 +10,7 @@
 
 **Everyone built the dictionary. Nobody built the library.**
 
-FLAME is an open-source, community-driven platform for sharing structured fraud detection intelligence across organizational and framework boundaries. Every submission maps simultaneously to **6 fraud frameworks**, exports to **STIX 2.1 / MISP / TAXII / Sigma**, and is browsable through a zero-dependency web interface with D3-powered visualizations, AI-assisted intake, and an MCP server for conversational fraud intelligence.
+FLAME is an open-source, community-driven platform for sharing structured fraud detection intelligence across organizational and framework boundaries. Every submission maps simultaneously to **6 fraud frameworks**, exports to **STIX 2.1 / MISP / TAXII / Sigma / CQL**, and is browsable through a zero-dependency web interface with D3-powered visualizations, AI-assisted intake, and an MCP server for conversational fraud intelligence.
 
 > **[Explore FLAME Live &rarr;](https://flameintel.org/)**
 
@@ -21,17 +21,17 @@ FLAME is an open-source, community-driven platform for sharing structured fraud 
 | Metric | Count |
 |--------|-------|
 | **Threat Paths** | 69 (TP-0001 -- TP-0069) |
-| **Detection Logic Rules** | 150 (Sigma-based; exported to SPL, EQL, KQL) |
-| **Baselines** | 35 environmental profiling benchmarks |
-| **Emulation Playbooks** | 7 adversary simulation scripts |
-| **Fraud Types** | 101 in master taxonomy |
+| **Detection Logic Rules** | 176 (Sigma-based; exported to SPL, EQL, KQL, CQL) |
+| **Baselines** | 35 (47/69 TPs linked via `baseline_ids`) |
+| **Emulation Playbooks** | 14 adversary simulation scripts |
+| **Fraud Types** | 117 in master taxonomy |
 | **Sectors Covered** | 19 |
-| **Framework Cross-Mappings** | 6 (CFPF, ATT&CK, Group-IB FM, Stripe FT3, UCFF, MITRE F3) |
+| **Framework Cross-Mappings** | 6 (CFPF, ATT&CK, Group-IB FM, Stripe FT3, UCFF, Regulatory) |
 | **Regulatory Requirements** | 29 across 7 jurisdictions |
-| **Export Formats** | 7 (STIX, MISP, TAXII, Sigma/SPL, Sigma/EQL, Sigma/KQL, RSS) |
+| **Export Formats** | 8 (STIX, MISP, TAXII, Sigma/SPL, Sigma/EQL, Sigma/KQL, CQL, RSS) |
 | **MCP Server Tools** | 7 |
 | **CI/CD Workflows** | 7 |
-| **Test Modules** | 12 (pytest) |
+| **Tests** | 258 (pytest) |
 
 ---
 
@@ -43,7 +43,7 @@ Between April 2025 and February 2026, five organizations independently concluded
 |---|:---:|:---:|:---:|:---:|:---:|
 | Open source | Yes | No | Paper only | Abandoned | TBD |
 | Community contributed | Yes | No | No platform | No | TBD |
-| Structured detection logic | 145 rules | Mobile-heavy | No | No | TBD |
+| Structured detection logic | 176 rules | Mobile-heavy | No | No | TBD |
 | Multi-taxonomy mapping | 6 frameworks | Own only | Own only | Own only | TBD |
 | TIP interop (STIX/MISP/TAXII) | Yes | No | No | No | TBD |
 | AI-assisted intake | Yes | No | No | No | No |
@@ -145,15 +145,15 @@ graph TD
 
 ```
 ThreatPaths/           69 fraud scheme lifecycle mappings (TP-XXXX.md)
-DetectionLogic/        150 Sigma-based detection rules (DL-XXXX.yml)
-Baselines/             34 environmental profiling benchmarks (BL-XXXX.md)
-EmulationPlaybooks/    7 adversary simulation playbooks (EP-XXXX.json)
+DetectionLogic/        176 Sigma-based detection rules (DL-XXXX.yml)
+Baselines/             35 environmental profiling benchmarks (BL-XXXX.md)
+EmulationPlaybooks/    14 adversary simulation playbooks (EP-XXXX.json)
 Templates/             Submission templates (TP, DL, BL, EP)
 config/                Regulatory requirements and source configs
 scripts/               Build, validation, and export scripts (22 modules)
   regulatory/          6-source regulatory data fetchers
 mcp_server/            FastMCP server exposing 7 fraud intelligence tools
-tests/                 13 pytest test modules
+tests/                 258 tests across pytest test modules
 database/              Generated artifacts (auto-built by CI)
   flame-index.json           Metadata-only index (fast frontend load)
   flame-content/             Individual TP content files (lazy-loaded)
@@ -161,7 +161,7 @@ database/              Generated artifacts (auto-built by CI)
   flame-contributors.json    Contributor leaderboard data
   flame_stix_bundle.json     STIX 2.1 bundle with fraud extensions
   flame_detection_rules.json Aggregated detection rules
-  sigma-exports/             Sigma packs (SPL, EQL, KQL)
+  sigma-exports/             Sigma packs (SPL, EQL, KQL, CQL)
   misp-feed/                 Per-TP MISP event files + manifest
   regulatory-alerts.json     Automated regulatory alert feed (6 sources)
   feed.xml                   RSS 2.0 feed
@@ -179,7 +179,7 @@ docs/                  Project documentation and specifications
 
 ## Threat Path Collection
 
-FLAME ships with **69 threat paths** covering **105 fraud types** across **19 sectors**.
+FLAME ships with **69 threat paths** covering **117 fraud types** across **19 sectors**.
 
 | ID | Scheme | Key Fraud Types |
 |----|--------|-----------------|
@@ -272,21 +272,24 @@ See [ThreatPaths/INDEX.md](ThreatPaths/INDEX.md) for full cross-reference tables
 
 ## Detection Logic
 
-FLAME ships **150 detection rules** as Sigma-compatible YAML, exported to three SIEM query languages:
+FLAME ships **176 detection rules** (100% TP coverage) as Sigma-compatible YAML, exported to four SIEM query languages:
 
 - **Splunk SPL** -- `database/sigma-exports/splunk/`
 - **Elasticsearch EQL** -- `database/sigma-exports/elastic/`
 - **Microsoft Sentinel KQL** -- `database/sigma-exports/sentinel/`
+- **CrowdStrike CQL** -- native query implementations in `queries:` blocks
 
-95 rules are pure Sigma (boolean selection logic). 55 rules requiring aggregation or correlation include native query implementations with SIEM-specific guidance in `queries:` blocks (CrowdStrike CQL, Splunk SPL, Elasticsearch).
+Rules using aggregation or correlation include native query implementations with SIEM-specific guidance in `queries:` blocks (CrowdStrike CQL, Splunk SPL, Elasticsearch).
 
 Rules are organized by severity level (`informational`, `low`, `medium`, `high`, `critical`) and linked to specific threat paths via `threat_paths:` frontmatter. Each rule maps to a single CFPF phase.
+
+**Audit tooling:** `scripts/audit_queries.py` validates detection rule coverage and query correctness across the full TP inventory. `scripts/sync_tp_rules.py` synchronizes threat path rule references with actual detection logic files.
 
 ---
 
 ## Emulation Playbooks
 
-FLAME includes **7 adversary emulation playbooks** -- CFPF phase-mapped simulation scripts for testing detection coverage against specific fraud schemes.
+FLAME includes **14 adversary emulation playbooks** -- CFPF phase-mapped simulation scripts for testing detection coverage against specific fraud schemes.
 
 | ID | Playbook | Linked TPs |
 |----|----------|------------|
@@ -297,6 +300,13 @@ FLAME includes **7 adversary emulation playbooks** -- CFPF phase-mapped simulati
 | EP-0005 | A2A Payment Exploitation | TP-0024 |
 | EP-0006 | RDGA Campaign Simulation | TP-0041 |
 | EP-0007 | TDS Chain Exploitation Simulation | TP-0042 |
+| EP-0008 | Treasury Management ATO | TP-0001 |
+| EP-0009 | Deepfake Voice Authorization | TP-0007 |
+| EP-0010 | First-Party Fraud Bust-Out | TP-0016 |
+| EP-0011 | Pig Butchering Romance/Investment | TP-0017 |
+| EP-0012 | DPRK IT Worker Infiltration | TP-0034 |
+| EP-0013 | Agentic Commerce Fraud | TP-0039 |
+| EP-0014 | BNPL Multi-Provider Stacking | TP-0040 |
 
 Playbooks follow a structured JSON schema with execution steps mapped to CFPF phases (P1--P5), cross-references to detection rules (DL-XXXX), and testability scoring. See `Templates/emulation-playbook-template.json` for the schema.
 
@@ -361,13 +371,13 @@ Static TAXII 2.1-compatible files at `api/taxii/` with 3 collections:
 
 1. Threat paths (as attack-pattern SDOs)
 2. Detection rules (as course-of-action SDOs)
-3. Baselines (for benchmarking)
+3. Baselines (linked to TPs via `baseline_ids` for benchmarking)
 
 Compatible with MISP, OpenCTI, ThreatConnect, and other TIPs. Configure your TIP with the TAXII root at `api/taxii/discovery.json`.
 
 ### Sigma Detection Packs
 
-150 detection rules exported to **Splunk SPL**, **Elasticsearch EQL**, and **Microsoft Sentinel KQL** via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance. Per-TP packs available in `database/sigma-exports/packs/`.
+176 detection rules exported to **Splunk SPL**, **Elasticsearch EQL**, **Microsoft Sentinel KQL**, and **CrowdStrike CQL** via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance. Per-TP packs available in `database/sigma-exports/packs/`.
 
 ### RSS Feed
 
@@ -467,6 +477,8 @@ FLAME uses 7 GitHub Actions workflows for full automation:
 | `fetch-regulatory.yml` | 2x daily (6 AM + 6 PM UTC weekdays) | Fetch alerts from 6 government regulatory sources |
 | `update-database.yml` | On demand | Force database rebuild with latest regulatory data |
 
+**Security scanning:** The CI pipeline includes Bandit SAST (static application security testing), pip-audit (dependency vulnerability scanning), and Ruff (linting and code quality). These run on every PR and push to main.
+
 ---
 
 ## Quick Start
@@ -545,7 +557,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines, frontmatter requirem
 
 ## Testing
 
-FLAME includes 12 pytest test modules covering the full pipeline:
+FLAME includes **258 tests** across the full pipeline:
 
 ```bash
 pytest tests/ -v
@@ -569,8 +581,11 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 
 ## Documentation
 
+- [Architecture](docs/ARCHITECTURE.md) -- System architecture, data flow, and component overview
 - [STIX Fraud Extension](docs/STIX-FRAUD-EXTENSION.md) -- Custom SDO specification (4 SDOs, 5 relationship types)
-- [Taxonomy Reference](docs/TAXONOMY.md) -- 105 fraud types, 19 sectors, CFPF phases, cross-framework mappings
+- [Taxonomy Reference](docs/TAXONOMY.md) -- 117 fraud types, 19 sectors, CFPF phases, cross-framework mappings
+- [OpenAPI Specification](docs/openapi.yaml) -- REST API schema for programmatic integration
+- [MCP Tools Reference](docs/MCP-TOOLS.md) -- MCP server tool documentation and usage examples
 - [Competitive Landscape](docs/COMPETITIVE-LANDSCAPE.md) -- How FLAME relates to Group-IB, MITRE, Stripe, FS-ISAC
 - [Changelog](CHANGELOG.md) -- Release history (v0.1.0 through v0.8.0)
 - [Contributing Guide](CONTRIBUTING.md) -- Submission guidelines and quality standards
