@@ -1,0 +1,149 @@
+title: Calendar Invite Injection Phishing — Mass External Calendar Event Creation from New Domains
+id: 0c0ab169-2d7e-43cc-8d6a-6fd7e15088ee
+status: experimental
+description: >
+  Detects calendar injection phishing by identifying mass calendar invite creation from
+  external sources targeting internal users, where the event body contains URLs and the
+  organizer domain is recently registered (under 30 days) or on a high-abuse TLD. Attackers
+  send emails containing .ics calendar attachments or Google Calendar invite links that
+  auto-populate on victim calendars, bypassing email gateway filtering that focuses on
+  message body and attachment analysis. An observed March 2026 campaign delivered 6,000+
+  emails across 10 sender domains (9 RDGA-generated on .cyou/.sbs/.click TLDs) with
+  antivirus renewal and meeting invite lures. Calendar events persist after email deletion
+  and re-surface via reminder notifications, creating a delayed-action social engineering
+  vector. Recently created organizer accounts (under 7 days) sending calendar invites to
+  5+ internal recipients are additionally flagged as high-confidence indicators.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "Malwarebytes Labs, Calendar Phishing Campaign Analysis (February 2026)"
+  - "Google Workspace Security, Advisory on External Calendar Invite Auto-Accept Settings"
+  - "Infoblox, RDGA Domain Analysis and Zone File Monitoring Methodology"
+  - "FBI IC3, Tech Support Scam PSAs — downstream calendar phishing impact"
+threat_paths:
+  - TP-0050
+cfpf_phase: P2
+fraud_types:
+  - calendar-phishing
+  - social-engineering
+logsource:
+  product: m365
+  service: exchange
+detection:
+  selection_external_invite:
+    event_type:
+      - calendar_invite_received
+      - ics_attachment_processed
+    organizer_is_external: true
+  filter_new_domain:
+    organizer_domain_age_days|lte: 30
+  filter_urls_in_body:
+    event_body_contains_url: true
+  filter_mass_targeting:
+    distinct_internal_recipients|gte: 5
+    timeframe: 24h
+  condition: >
+    selection_external_invite AND filter_new_domain
+    AND filter_urls_in_body AND filter_mass_targeting
+data_sources:
+  native_fields:
+    - event_id
+    - organizer_email
+    - organizer_domain
+    - recipient_email
+    - event_title
+    - event_body
+    - event_created_timestamp
+    - attachment_type
+    - auto_accepted
+  enrichment_required:
+    - field: organizer_domain_age_days
+      source: Domain age lookup from WHOIS/domain intelligence feed
+    - field: organizer_domain_tld
+      source: Top-level domain extracted from organizer email domain
+    - field: event_body_contains_url
+      source: Boolean flag indicating presence of http/https URLs in calendar event description
+    - field: organizer_account_age_days
+      source: Days since organizer Google/Microsoft account was created (if available from admin logs)
+  derived_fields:
+    - distinct_internal_recipients
+    - urls_extracted_from_body
+    - high_abuse_tld_flag
+    - rdga_consonant_ratio
+queries:
+  cql: |-
+    // CrowdStrike CQL for Calendar Invite Injection Phishing Detection
+    // Detects mass external calendar invites from new domains with URLs in event body
+    (event_type="calendar_invite_received" OR event_type="ics_attachment_processed")
+    organizer_is_external=true
+    organizer_domain_age_days<=30
+    event_body_contains_url=true
+    | groupBy(organizer_domain, span=24h, function=[
+        count(distinct=recipient_email, as=distinct_recipients),
+        count(event_id, as=invite_count),
+        collect([organizer_email, event_title, organizer_domain_age_days])
+      ])
+    | distinct_recipients >= 5
+    | sort(distinct_recipients, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for Calendar Invite Injection Phishing Detection")`
+    `comment("Detects mass external calendar invites from recently-registered domains")`
+    index=flame_m365 sourcetype=flame:exchange
+      (event_type="calendar_invite_received" OR event_type="ics_attachment_processed")
+      organizer_is_external="true"
+    | lookup domain_age_feed organizer_domain OUTPUT domain_age_days, domain_tld
+    | where domain_age_days < 30
+    | where match(event_body, "https?://")
+    | bin _time span=24h
+    | stats dc(recipient_email) AS distinct_recipients, count AS invite_count,
+        values(organizer_email) AS organizers, values(event_title) AS event_titles,
+        values(domain_age_days) AS domain_age, values(domain_tld) AS tlds
+        by organizer_domain, _time
+    | where distinct_recipients >= 5
+    | eval risk_level = case(
+        domain_age_days < 7 AND distinct_recipients > 50, "critical",
+        domain_age_days < 7 OR distinct_recipients > 20, "high",
+        1=1, "medium")
+    | eval high_abuse_tld = if(match(domain_tld, "cyou|sbs|click|top|xyz|biz"), "true", "false")
+    | sort - distinct_recipients
+  sql: |-
+    -- SQL for Calendar Invite Injection Phishing Detection
+    -- Detects mass external calendar invites from newly-registered domains with URLs
+    SELECT
+      ce.organizer_domain,
+      d.domain_age_days,
+      d.tld AS domain_tld,
+      COUNT(DISTINCT ce.recipient_email) AS distinct_recipients,
+      COUNT(*) AS invite_count,
+      STRING_AGG(DISTINCT ce.organizer_email, ', ') AS organizer_emails,
+      STRING_AGG(DISTINCT ce.event_title, ', ') AS event_titles,
+      MIN(ce.event_created_timestamp) AS first_invite,
+      MAX(ce.event_created_timestamp) AS last_invite,
+      CASE
+        WHEN d.domain_age_days < 7 AND COUNT(DISTINCT ce.recipient_email) > 50 THEN 'critical'
+        WHEN d.domain_age_days < 7 OR COUNT(DISTINCT ce.recipient_email) > 20 THEN 'high'
+        ELSE 'medium'
+      END AS risk_level,
+      CASE
+        WHEN d.tld IN ('.cyou', '.sbs', '.click', '.top', '.xyz', '.biz') THEN TRUE
+        ELSE FALSE
+      END AS high_abuse_tld
+    FROM calendar_events ce
+    JOIN domain_intelligence d ON ce.organizer_domain = d.domain_name
+    WHERE ce.organizer_is_external = TRUE
+      AND ce.event_created_timestamp >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)
+      AND d.domain_age_days <= 30
+      AND ce.event_body LIKE '%http%'
+    GROUP BY ce.organizer_domain, d.domain_age_days, d.tld
+    HAVING COUNT(DISTINCT ce.recipient_email) >= 5
+    ORDER BY distinct_recipients DESC
+falsepositives:
+  - Legitimate external event organizers (conference providers, webinar platforms) using newly registered event-specific domains
+  - Marketing partners sending calendar invites for scheduled meetings or product demos
+  - Automated meeting scheduling tools (Calendly, HubSpot) from new customer domains
+level: medium
+tags:
+  - attack.t1566
+  - cfpf.phase2.initial_access
+  - flame.calendar-phishing
+  - flame.invite-injection

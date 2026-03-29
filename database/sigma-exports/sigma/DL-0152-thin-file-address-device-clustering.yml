@@ -1,0 +1,116 @@
+title: Thin-File Identity Clustering — Shared Address, Phone, or Device Across New Applicants
+id: 350fa872-c970-4e6c-ae97-8317fe269e9d
+status: experimental
+description: >
+  Detects clusters of thin-file credit applicants sharing physical addresses, phone numbers,
+  or device fingerprints — a hallmark indicator of synthetic identity ring activity. Fraud
+  rings fabricate multiple synthetic identities that share infrastructure (mailing addresses,
+  burner phones, devices used for applications). When 3+ new applicants with thin credit
+  files (< 12 months history, < 3 tradelines) share an address, phone, or device within a
+  180-day window, this indicates coordinated identity fabrication rather than coincidental
+  overlap. The Federal Reserve identifies address and device clustering as primary synthetic
+  identity detection signals.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)"
+  - "OCC, Comptroller's Handbook: Credit Card Lending — Address Clustering"
+  - "Socure, Synthetic Identity Detection via Graph Analytics (2025)"
+threat_paths:
+  - TP-0003
+  - TP-0029
+cfpf_phase: P2
+fraud_types:
+  - synthetic-identity
+  - application-fraud
+logsource:
+  product: banking
+  service: account_onboarding
+detection:
+  selection_thin_file:
+    credit_history_months|lt: 12
+    tradeline_count|lt: 3
+  condition: >
+    count(distinct applicant_id) by shared_attribute >= 3
+    where shared_attribute in (address, phone, device_fingerprint)
+    within 180 days AND selection_thin_file
+data_sources:
+  native_fields:
+    - applicant_id
+    - application_date
+    - address
+    - phone
+    - device_fingerprint
+    - ssn_hash
+    - email
+  enrichment_required:
+    - field: credit_history_months
+      source: Credit bureau inquiry — months since oldest tradeline
+    - field: tradeline_count
+      source: Credit bureau inquiry — number of active tradelines
+  derived_fields:
+    - cluster_size
+    - shared_attribute_type
+    - days_between_applications
+queries:
+  cql: |-
+    // CrowdStrike CQL for Thin-File Identity Clustering
+    // Detects 3+ thin-file applicants sharing address/phone/device within 180 days
+    credit_history_months<12 tradeline_count<3
+    | groupBy(address, function=[
+        count(field=applicant_id, distinct=true, as=applicant_count),
+        collect([applicant_id, phone, device_fingerprint, application_date, ssn_hash])
+      ], span=180d)
+    | applicant_count >= 3
+    | shared_attribute_type := "address"
+    | sort(applicant_count, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for Thin-File Identity Clustering")`
+    `comment("Detects 3+ thin-file applicants sharing address, phone, or device")`
+    index=flame_banking sourcetype=flame:account_onboarding
+      credit_history_months<12 tradeline_count<3
+    | stats dc(applicant_id) AS applicant_count,
+            values(applicant_id) AS applicants,
+            values(phone) AS phones,
+            values(device_fingerprint) AS devices,
+            values(ssn_hash) AS ssn_hashes,
+            min(application_date) AS first_app,
+            max(application_date) AS last_app
+      BY address
+    | where applicant_count >= 3
+    | eval days_span = round((strptime(last_app, "%Y-%m-%d") - strptime(first_app, "%Y-%m-%d")) / 86400)
+    | where days_span <= 180
+    | eval shared_attribute = "address"
+    | table address, applicant_count, applicants, phones, devices,
+            ssn_hashes, first_app, last_app, days_span
+    | sort - applicant_count
+  sql: |-
+    -- SQL for Thin-File Identity Clustering
+    -- Detects 3+ thin-file applicants sharing address within 180 days
+    SELECT
+      a.address,
+      COUNT(DISTINCT a.applicant_id) AS applicant_count,
+      STRING_AGG(a.applicant_id, ', ') AS applicants,
+      STRING_AGG(DISTINCT a.phone, ', ') AS phones,
+      STRING_AGG(DISTINCT a.device_fingerprint, ', ') AS devices,
+      MIN(a.application_date) AS first_application,
+      MAX(a.application_date) AS last_application,
+      DATEDIFF(DAY, MIN(a.application_date), MAX(a.application_date)) AS days_span
+    FROM credit_applications a
+    WHERE a.credit_history_months < 12
+      AND a.tradeline_count < 3
+      AND a.application_date >= DATEADD(DAY, -180, CURRENT_DATE)
+    GROUP BY a.address
+    HAVING COUNT(DISTINCT a.applicant_id) >= 3
+    ORDER BY applicant_count DESC
+falsepositives:
+  - Shared housing (college dormitories, military barracks, assisted living facilities)
+  - Family members with thin credit files applying from the same household
+  - New immigrants sharing temporary housing while establishing credit
+level: high
+tags:
+  - attack.t1589
+  - attack.t1583.001
+  - cfpf.phase2.initial_access
+  - flame.synthetic-identity
+  - flame.clustering

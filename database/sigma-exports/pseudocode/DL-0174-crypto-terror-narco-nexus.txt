@@ -1,0 +1,77 @@
+# ======================================================================
+# FLAME Detection Rule: Crypto Fraud-Terrorism/Narco Financing Nexus — Sanctions-Exposed Wallets and Peel Chain Patterns Through Mixing Services
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: critical
+# CFPF Phase: P5
+# Threat Paths: TP-0055
+#
+# Description:
+#   Detects the crypto-terror/narco financing nexus pattern where
+#   transactions flow to wallets with known OFAC/sanctions exposure, or
+#   exhibit peel chain patterns through cryptocurrency mixing services
+#   followed by consolidation to designated entity-linked addresses.
+#   INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two
+#   confirmed manifestations: (1) a USD 150 million cryptocurrency fraud
+#   scheme linked to Tren de Aragua laundering drug trafficking and
+#   extortion proceeds across Chile, Colombia, Venezuela, and the Iberian
+#   Peninsula; and (2) Operation Catalyst, which uncovered a USD 562
+#   million crypto Ponzi scheme affecting 100,000+ victims across 17
+#   countries with wallet-level links to terrorism financing in Central
+#   Africa. The detection logic targets three signatures: direct
+#   transactions to OFAC SDN-listed wallet addresses within 2 hops, peel
+#   chain patterns where funds are split into decreasingly small amounts
+#   through mixing services before reconsolidation, and co-mingling
+#   indicators where platform wallets receive both retail investor deposits
+#   and large round-number inflows from high-risk wallet clusters. This
+#   rule operates at critical severity given the terrorism and narcotics
+#   financing implications and associated OFAC blocking obligations.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: crypto
+#   service: chain_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     transaction_type:
+#     - crypto_transfer
+#     - crypto_deposit
+#     - crypto_withdrawal
+#     amount_usd|gte: 1000
+#   filter_sanctions_proximity:
+#     sdn_hop_distance|lte: 2
+#   filter_mixing_service:
+#     mixing_service_interaction: true
+#     hours_to_mix|lte: 24
+#   filter_peel_chain:
+#     peel_chain_detected: true
+#     consolidation_wallet_risk_score|gte: 80
+#   timeframe: 90d
+#   condition: 'selection AND (filter_sanctions_proximity OR (filter_mixing_service AND
+#     filter_peel_chain))
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate crypto transactions to wallets that share cluster membership with SDN-listed addresses due to prior commingling on large exchanges
+#   - Privacy-conscious users routing transactions through mixing services for personal privacy without illicit intent
+#   - False positive wallet clustering where blockchain analytics incorrectly associates unrelated wallets
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

@@ -1,0 +1,74 @@
+# ======================================================================
+# FLAME Detection Rule: Deepfake Vehicle Damage Photo Pattern — Pixel Artifacts, Lighting Inconsistencies, and AI Generation Indicators
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0077
+#
+# Description:
+#   Detects deepfake vehicle damage photos in insurance claims by analyzing
+#   pixel-level artifacts, lighting and shadow inconsistencies, and
+#   metadata indicating AI image generation tools. AI-generated vehicle
+#   damage photos represent an acute threat to auto insurance claims
+#   processing, as generative AI can produce realistic collision, hail, and
+#   vandalism damage images that bypass visual inspection by claims
+#   adjusters. Detection relies on computer vision analysis: GAN-generated
+#   images exhibit characteristic pixel artifacts at damage boundaries,
+#   physically impossible lighting/shadow combinations, and frequency
+#   domain signatures distinct from camera-captured photos. This rule
+#   targets vehicle-specific claims (collision, comprehensive, vandalism)
+#   and correlates image forensics scores with claim characteristics.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: insurance
+#   service: claims_processing
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     claim_type:
+#     - vehicle_collision
+#     - vehicle_comprehensive
+#     - vehicle_vandalism
+#     document_type: photo
+#   filter_pixel_artifacts:
+#     pixel_artifact_score|gte: 0.8
+#   filter_lighting:
+#     lighting_consistency_score|lt: 0.3
+#   filter_shadow:
+#     shadow_consistency_score|lt: 0.3
+#   filter_ai_probability:
+#     ai_generation_probability|gte: 0.75
+#   filter_metadata_anomaly:
+#     exif_camera_model: null
+#     exif_software|re: .+
+#   timeframe: 30d
+#   condition: 'selection AND (filter_pixel_artifacts OR filter_lighting OR filter_shadow
+#     OR filter_ai_probability OR filter_metadata_anomaly)
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Photos taken with heavy HDR processing or aggressive camera filters
+#   - Photos of actual damage that has been legitimately enhanced for visibility
+#   - Low-quality camera phones producing artifacts similar to GAN generation
+#   - Photos compressed or resized by messaging apps introducing compression artifacts
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

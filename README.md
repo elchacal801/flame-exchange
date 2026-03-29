@@ -1,8 +1,8 @@
 [![Build & Deploy](https://github.com/elchacal801/flame-fraud/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/elchacal801/flame-fraud/actions/workflows/build-and-deploy.yml)
 [![License: MIT](https://img.shields.io/github/license/elchacal801/flame-fraud)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
-[![Threat Paths](https://img.shields.io/badge/threat_paths-69-0078D4)](ThreatPaths/)
-[![Detection Rules](https://img.shields.io/badge/detection_rules-176-2ea44f)](DetectionLogic/)
+[![Threat Paths](https://img.shields.io/badge/threat_paths-77-0078D4)](ThreatPaths/)
+[![Detection Rules](https://img.shields.io/badge/detection_rules-195-2ea44f)](DetectionLogic/)
 [![STIX 2.1](https://img.shields.io/badge/STIX-2.1-6c757d)](docs/STIX-FRAUD-EXTENSION.md)
 [![MCP Server](https://img.shields.io/badge/MCP-server-8A2BE2)](mcp_server/)
 
@@ -20,12 +20,12 @@ FLAME is an open-source, community-driven platform for sharing structured fraud 
 
 | Metric | Count |
 |--------|-------|
-| **Threat Paths** | 69 (TP-0001 -- TP-0069) |
-| **Detection Logic Rules** | 176 (Sigma-based; exported to SPL, EQL, KQL, CQL) |
-| **Baselines** | 35 (47/69 TPs linked via `baseline_ids`) |
+| **Threat Paths** | 77 (TP-0001 -- TP-0077) |
+| **Detection Logic Rules** | 195 (Sigma-based; exported to SPL, EQL, KQL, CQL) |
+| **Baselines** | 35 (47/77 TPs linked via `baseline_ids`) |
 | **Emulation Playbooks** | 14 adversary simulation scripts |
-| **Fraud Types** | 117 in master taxonomy |
-| **Sectors Covered** | 19 |
+| **Fraud Types** | 144 in master taxonomy |
+| **Sectors Covered** | 21 |
 | **Framework Cross-Mappings** | 6 (CFPF, ATT&CK, Group-IB FM, Stripe FT3, UCFF, Regulatory) |
 | **Regulatory Requirements** | 29 across 7 jurisdictions |
 | **Export Formats** | 8 (STIX, MISP, TAXII, Sigma/SPL, Sigma/EQL, Sigma/KQL, CQL, RSS) |
@@ -43,7 +43,7 @@ Between April 2025 and February 2026, five organizations independently concluded
 |---|:---:|:---:|:---:|:---:|:---:|
 | Open source | Yes | No | Paper only | Abandoned | TBD |
 | Community contributed | Yes | No | No platform | No | TBD |
-| Structured detection logic | 176 rules | Mobile-heavy | No | No | TBD |
+| Structured detection logic | 195 rules | Mobile-heavy | No | No | TBD |
 | Multi-taxonomy mapping | 6 frameworks | Own only | Own only | Own only | TBD |
 | TIP interop (STIX/MISP/TAXII) | Yes | No | No | No | TBD |
 | AI-assisted intake | Yes | No | No | No | No |
@@ -56,10 +56,10 @@ Between April 2025 and February 2026, five organizations independently concluded
 
 | Framework | Status |
 |-----------|--------|
-| FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 69 TPs mapped |
+| FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 77 TPs mapped |
 | MITRE ATT&CK | Supplementary mapping where applicable |
 | Group-IB Fraud Matrix 2.0 | Cross-reference mapping (stage names) |
-| Stripe FT3 | Mapped (63/69 TPs) via `ft3_mapper.py` |
+| Stripe FT3 | Mapped (71/77 TPs) via `ft3_mapper.py` |
 | Group-IB UCFF | Defense-side maturity alignment (7 domains) |
 | MITRE F3 | Placeholder (will map when shipped) |
 
@@ -144,8 +144,8 @@ graph TD
 ## Repository Structure
 
 ```
-ThreatPaths/           69 fraud scheme lifecycle mappings (TP-XXXX.md)
-DetectionLogic/        176 Sigma-based detection rules (DL-XXXX.yml)
+ThreatPaths/           77 fraud scheme lifecycle mappings (TP-XXXX.md)
+DetectionLogic/        195 Sigma-based detection rules (DL-XXXX.yml)
 Baselines/             35 environmental profiling benchmarks (BL-XXXX.md)
 EmulationPlaybooks/    14 adversary simulation playbooks (EP-XXXX.json)
 Templates/             Submission templates (TP, DL, BL, EP)
@@ -179,7 +179,7 @@ docs/                  Project documentation and specifications
 
 ## Threat Path Collection
 
-FLAME ships with **69 threat paths** covering **117 fraud types** across **19 sectors**.
+FLAME ships with **77 threat paths** covering **144 fraud types** across **21 sectors**.
 
 | ID | Scheme | Key Fraud Types |
 |----|--------|-----------------|
@@ -217,6 +217,14 @@ FLAME ships with **69 threat paths** covering **117 fraud types** across **19 se
 | TP-0067 | AiTM Phishing Kit Infrastructure and Session Token Hijacking | aitm-phishing, account-takeover, fraud-as-a-service |
 | TP-0068 | Gift Card Fraud Lifecycle — Generation, Tampering, and Monetization | gift-card-fraud, gift-card-tampering, loyalty-point-fraud |
 | TP-0069 | Smishing PhaaS Ecosystem — Darcula, Smishing Triad | smishing, card-not-present-fraud, fraud-as-a-service |
+| TP-0070 | Travel Booking Fraud & Fake OTA Networks | travel-booking-fraud, buy-for-you-fraud, fake-ota |
+| TP-0071 | IRSF & Telecom Revenue Share Fraud | irsf, premium-rate-fraud, wangiri |
+| TP-0072 | Telecom Subscription & Billing Fraud | subscription-fraud, telecom-billing-fraud |
+| TP-0073 | Real Estate Title Fraud & Deed Theft | title-fraud, deed-theft, seller-impersonation |
+| TP-0074 | Ghost Broking & Unauthorized Insurance Portals | ghost-broking, ghost-portal, unlicensed-insurance |
+| TP-0075 | Friendly Fraud & Chargeback Abuse | friendly-fraud, chargeback-abuse, dispute-fraud |
+| TP-0076 | Affiliate Network Fraud & Invalid Traffic | affiliate-fraud, click-fraud, cookie-stuffing |
+| TP-0077 | AI-Generated Insurance Claims Fraud | ai-generated-claims, deepfake-claims, document-fraud |
 
 <details>
 <summary><strong>View TP-0011 through TP-0050</strong></summary>
@@ -272,7 +280,7 @@ See [ThreatPaths/INDEX.md](ThreatPaths/INDEX.md) for full cross-reference tables
 
 ## Detection Logic
 
-FLAME ships **176 detection rules** (100% TP coverage) as Sigma-compatible YAML, exported to four SIEM query languages:
+FLAME ships **195 detection rules** (100% TP coverage) as Sigma-compatible YAML, exported to four SIEM query languages:
 
 - **Splunk SPL** -- `database/sigma-exports/splunk/`
 - **Elasticsearch EQL** -- `database/sigma-exports/elastic/`

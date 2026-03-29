@@ -1,0 +1,76 @@
+# ======================================================================
+# FLAME Detection Rule: Vehicle Export Financing Fraud — Auto Loan Followed by Rapid Title Transfer or Export with Active Lien
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0053
+#
+# Description:
+#   Detects the vehicle export financing fraud pattern where an auto loan
+#   application is approved and the financed vehicle undergoes rapid title
+#   transfer or appears in export documentation while the loan remains
+#   active and the lien is outstanding. INTERPOL's 2026 Global Financial
+#   Fraud Threat Assessment documents this as a growing transnational fraud
+#   scheme first detected in North America in early 2024, where criminal
+#   networks use identity theft and straw buyers to obtain auto loans for
+#   high-value vehicles, then export them overseas before lenders detect
+#   fraud. The critical detection window is the period between vehicle
+#   delivery and export — often as short as 7-21 days. Key indicators
+#   include high-value vehicles (>$30,000) with high LTV ratios, fewer than
+#   3 loan payments made, title transfer events within 60 days of
+#   origination, and GPS telematics showing vehicle departure from the
+#   borrower's stated area toward port cities or border crossings. The
+#   structural delay between loan default and fraud detection is the
+#   primary vulnerability exploited by these networks.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: auto_lending
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     loan_type: auto
+#     vehicle_value|gte: 30000
+#   filter_title_event:
+#     title_transfer_days_since_origination|lte: 60
+#   filter_loan_status:
+#     loan_status:
+#     - active
+#     - delinquent
+#     - default
+#     payments_made|lte: 3
+#   filter_vehicle_category:
+#     vehicle_category:
+#     - pickup_truck
+#     - suv
+#     - luxury
+#   timeframe: 60d
+#   condition: 'selection AND filter_title_event AND filter_loan_status AND filter_vehicle_category
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate vehicle sale by borrower who pays off loan balance at title transfer
+#   - Fleet vehicle purchase by business with rapid deployment to multiple locations
+#   - Military member transferring vehicle to overseas duty station with proper lender notification
+#   - Borrower legitimately relocating near a port city or border area shortly after purchase
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

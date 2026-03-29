@@ -1,0 +1,60 @@
+# ======================================================================
+# FLAME Detection Rule: Rapid Authorized User Addition Across Multiple Accounts
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P3
+# Threat Paths: TP-0016, TP-0003
+#
+# Description:
+#   Detects the same individual being added as an authorized user across 3
+#   or more credit accounts within 30 days. This technique is used in
+#   first-party bust-out and synthetic identity schemes to rapidly build
+#   credit history or gain access to multiple credit lines for coordinated
+#   bust-out. Authorized user tradelines inherit the primary account's
+#   payment history, allowing fraudsters to artificially inflate credit
+#   scores in weeks rather than months. When combined with subsequent high
+#   utilization, this pattern is a strong leading indicator of coordinated
+#   bust-out activity. The "piggybacking" of authorized user status is a
+#   well-documented credit manipulation technique exploited by both
+#   first-party fraudsters and synthetic identity rings.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: credit_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     event_type: authorized_user_added
+#   aggregation:
+#     group_by: authorized_user_id
+#     count_distinct: account_id
+#     count_distinct|gte: 3
+#   timeframe: 30d
+#   condition: 'selection AND aggregation
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate family financial management (parent adding child to multiple accounts)
+#   - Business owners adding trusted employees across corporate credit accounts
+#   - Credit repair services using authorized user tradeline strategies (legal but monitored)
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

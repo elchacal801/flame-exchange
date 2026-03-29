@@ -12,6 +12,7 @@ Detection rules mapped to **Government Program Fraud (Unemployment/Tax)**.
 | DL-0040 | Crypto Off-Ramp After Wire or ACH Receipt | high | P5 |
 | DL-0041 | Peer-to-Peer Transfer Chain (Smurfing Pattern) | medium | P5 |
 | DL-0043 | Rapid Fund Layering Through Shell Accounts | high | P5 |
+| DL-0179 | Cloud Phone Behavioral Anomaly — Device-Environment Decorrelation Detection | high | P2 |
 
 ## Formats
 

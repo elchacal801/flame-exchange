@@ -1,0 +1,59 @@
+# ======================================================================
+# FLAME Detection Rule: AI Document Template Cluster — Identical Formatting Patterns Across Applications
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P2
+# Threat Paths: TP-0029
+#
+# Description:
+#   Detects clusters of submitted ID documents sharing identical formatting
+#   artifacts, template structures, or AI generation signatures. AI
+#   document generators produce documents with consistent pixel-level
+#   artifacts, font embedding patterns, and template metadata even when the
+#   identity details differ. When 3+ documents from different applicants
+#   show template_similarity_score > 0.85, this indicates a common AI
+#   generator. Underground forgery services like OnlyFake successors use a
+#   limited number of document templates per jurisdiction, creating
+#   detectable clustering when multiple synthetic identities are onboarded
+#   through the same forgery pipeline. Template similarity analysis across
+#   the document corpus reveals these clusters even when individual
+#   documents pass automated verification checks.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: document_verification
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_document_submission:
+#     event_type: DOCUMENT_SUBMISSION
+#   filter_template_cluster:
+#     template_similarity_score|gt: 0.85
+#   condition: 'selection_document_submission AND template_similarity_score > 0.85 across
+#     3+ documents from different applicant_name/ssn_hash combinations within 90 days
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate documents from the same jurisdiction and issuance period sharing standard government templates
+#   - Documents scanned by the same institutional scanner producing consistent compression artifacts
+#   - Batch submissions from legitimate corporate onboarding processes
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

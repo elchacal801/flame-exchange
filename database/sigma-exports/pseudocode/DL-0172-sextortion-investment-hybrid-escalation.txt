@@ -1,0 +1,70 @@
+# ======================================================================
+# FLAME Detection Rule: Sextortion-Investment Hybrid Fraud — Small Payment Escalation to Crypto Addresses with Communication Pattern Shift
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0052
+#
+# Description:
+#   Detects the sextortion-investment hybrid fraud pattern where a victim
+#   makes initial small payments followed by escalating amounts to
+#   cryptocurrency addresses, with the communication pattern showing a
+#   transition from social/romantic interaction to financial urgency.
+#   INTERPOL's 2026 Global Financial Fraud Threat Assessment documents this
+#   as a globally escalating pattern where scam centre operators
+#   systematically pivot from romance/investment scripts to sextortion as a
+#   scripted operational fallback. The hallmark behavioral signature is a
+#   first-ever crypto transaction within 30 days of a new social media
+#   contact, followed by rapid escalation in both payment frequency and
+#   amount, often accompanied by messaging patterns shifting from
+#   casual/romantic to urgent/threatening language. The hybrid structure
+#   maximizes total extraction while suppressing victim reporting through
+#   shame and blackmail leverage.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     payment_type:
+#     - cryptocurrency
+#     - crypto_deposit
+#     - wire_to_crypto_exchange
+#   filter_escalation_pattern:
+#     transaction_count_30d|gte: 3
+#     amount_increase_ratio_last_vs_first|gte: 3.0
+#   filter_first_crypto:
+#     is_first_crypto_period: true
+#     days_since_account_first_crypto|lte: 60
+#   filter_communication_shift:
+#     social_contact_recency_days|lte: 30
+#   timeframe: 30d
+#   condition: 'selection AND filter_escalation_pattern AND filter_first_crypto AND filter_communication_shift
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate new cryptocurrency investor making progressively larger purchases as they gain confidence
+#   - Customer gradually converting savings to crypto for planned overseas relocation or property purchase
+#   - Recurring crypto purchases via dollar-cost-averaging strategy that happen to coincide with new social media activity
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

@@ -9,6 +9,7 @@ Detection rules mapped to **Magecart E-Skimmer Data Compromise**.
 | DL-0075 | E-Skimmer Script Injection on Payment Pages | critical | P3 |
 | DL-0076 | Blockchain C2 and WebSocket Exfiltration from Payment Pages | high | P4 |
 | DL-0077 | Unauthorized Checkout Page DOM Modification | high | P3 |
+| DL-0177 | Magecart WebSocket Card Data Exfiltration — Payment Page to Recently Registered Domain | critical | P4 |
 
 ## Formats
 
