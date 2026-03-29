@@ -3,15 +3,18 @@
   "rules": [
     {
       "type": "spl",
-      "content": "`comment(\"Splunk SPL for AI-Generated Content Scoring\")`\n`comment(\"Requires Splunk DSDL with NLP model deployed\")`\nindex=email sourcetype=email:content\n| apply stylometric_phishing_model\n| where stylometric_score > 0.75\n| where urgency_marker_count > 3 OR authority_indicator_count > 2\n| table _time, sender, recipient, subject, stylometric_score,\n        imperative_verb_ratio, urgency_marker_count, authority_indicator_count",
-      "title": "DL-0139: AI-Generated Phishing Content Stylometric Detection (SPLUNK)",
-      "source_rule": "DL-0139"
+      "content": "index=transactions payment_type IN (\"wire\", \"zelle\", \"ach\", \"crypto_purchase\")\n| eval recipient_key=account_id.\"_\".recipient_category\n| sort 0 account_id _time\n| streamstats count as payment_seq values(amount) as amount_history by recipient_key\n| where payment_seq >= 3\n| eval avg_amount=avg(amount_history)\n| eval latest_amount=amount\n| eval escalation_ratio=latest_amount/avg_amount\n| where escalation_ratio > 1.5\n| eval days_span=round((_time - min(_time))/86400, 1)\n| where days_span > 7 AND days_span < 180\n| table account_id, recipient_key, payment_seq, latest_amount, avg_amount, escalation_ratio, days_span\n| sort - escalation_ratio",
+      "title": "Splunk — Progressive Payment Escalation to New Recipients (Phase 3-4)"
     },
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Cialdini Persuasion Scoring\")`\n`comment(\"Requires NLP scoring service via DSDL or API\")`\nindex=communications sourcetype=fraud:communications\n| apply cialdini_scoring_model\n| where cialdini_principles_detected >= 3\n| where max_principle_score > 0.7\n| table _time, channel, sender, recipient,\n        reciprocity_score, consistency_score, social_proof_score,\n        authority_score, liking_score, scarcity_score,\n        cialdini_principles_detected",
-      "title": "DL-0140: Cialdini Persuasion Principle Scoring in Fraud Communications (SPLUNK)",
-      "source_rule": "DL-0140"
+      "type": "sigma",
+      "content": "title: Multi-Channel Payments to Related Recipients - Romance Fraud Indicator\nstatus: experimental\ndescription: Detects accounts sending payments through multiple channels (wire, Zelle, crypto) to related recipients within a compressed timeframe, consistent with romance scam payment diversification.\nlogsource:\n    product: payment_system\n    service: transactions\ndetection:\n    selection:\n        payment_type:\n            - 'wire'\n            - 'zelle'\n            - 'ach'\n            - 'crypto_purchase'\n            - 'gift_card'\n    timeframe: 30d\n    condition: selection | count(distinct payment_type) by account_id > 2 AND sum(amount) by account_id > 10000\nlevel: high\ntags:\n    - fraud.romance_scam\n    - fraud.app_fraud\n    - cfpf.phase4.execution",
+      "title": "Sigma — Multi-Channel Payment Diversification (Phase 4)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT\n    ci.account_id,\n    ci.interaction_date,\n    ci.interaction_type,\n    ci.transcript_flags,\n    t.total_payments_30d,\n    t.total_amount_30d,\n    t.distinct_recipients_30d\nFROM call_center_interactions ci\nJOIN (\n    SELECT account_id,\n           COUNT(*) as total_payments_30d,\n           SUM(amount) as total_amount_30d,\n           COUNT(DISTINCT recipient_id) as distinct_recipients_30d\n    FROM transactions\n    WHERE transaction_date > DATEADD(DAY, -30, GETDATE())\n    GROUP BY account_id\n) t ON ci.account_id = t.account_id\nWHERE ci.transcript_flags LIKE '%coached_response%'\n   OR ci.transcript_flags LIKE '%defensive_about_recipient%'\n   OR ci.transcript_flags LIKE '%refused_fraud_education%'\nORDER BY t.total_amount_30d DESC;",
+      "title": "SQL — Coached Customer Response Detection (Phase 3)"
     }
   ]
 }

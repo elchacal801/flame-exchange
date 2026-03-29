@@ -3,9 +3,18 @@
   "rules": [
     {
       "type": "spl",
-      "content": "`comment(\"Splunk SPL for QR Code Payment Fraud (Quishing) Detection\")`\n`comment(\"Detects emails with QR codes resolving to new/suspicious domains\")`\nindex=flame_email sourcetype=flame:content_analysis\n  attachment_contains_qr_code=\"true\"\n| lookup domain_age_feed qr_destination_fqdn AS fqdn OUTPUT domain_age_days\n| lookup url_shortener_list qr_destination_fqdn AS fqdn OUTPUT is_shortener\n| lookup domain_age_feed redirect_final_fqdn AS fqdn OUTPUT domain_age_days AS redirect_domain_age\n| eval is_new_domain = if(domain_age_days < 30, 1, 0)\n| eval is_shortener_to_new = if(is_shortener=\"true\" AND redirect_domain_age < 30, 1, 0)\n| eval is_brand_impersonation = if(\n    match(qr_destination_fqdn, \"(?i)(post|mail|parcel|bank|login|secure|verify)\")\n    AND qr_destination_domain_is_legitimate=\"false\", 1, 0)\n| where is_new_domain=1 OR is_shortener_to_new=1 OR is_brand_impersonation=1\n| eval detection_reason = case(\n    is_brand_impersonation=1, \"brand_impersonation\",\n    is_shortener_to_new=1, \"shortener_redirect_to_new_domain\",\n    is_new_domain=1, \"new_domain\")\n| eval risk_level = case(\n    is_brand_impersonation=1 AND domain_age_days < 7, \"critical\",\n    is_brand_impersonation=1, \"high\",\n    is_shortener_to_new=1, \"high\",\n    1=1, \"medium\")\n| stats dc(recipient_email) AS distinct_recipients, count AS message_count,\n    values(sender_email) AS senders, values(subject) AS subjects,\n    values(qr_destination_url) AS qr_urls, values(detection_reason) AS detection_reasons\n    by qr_destination_fqdn, risk_level\n| sort - distinct_recipients",
-      "title": "DL-0171: QR Code Payment Fraud (Quishing) — Malicious QR Destination to Credential Harvesting Infrastructure (SPLUNK)",
-      "source_rule": "DL-0171"
+      "content": "index=web_proxy sourcetype=proxy_logs\n| where url_category=\"qr-scan\" OR referrer_category=\"qr-scan\"\n| rex field=url \"https?://(?P<fqdn>[^/]+)\"\n| lookup domain_age_feed fqdn OUTPUT domain_age_days, domain_registrar\n| where domain_age_days < 30\n| stats count by fqdn, domain_age_days, src_ip, user\n| where count > 1\n| sort -domain_age_days",
+      "title": "QR Code Destination URL — Newly-Registered Domain Detection (Splunk SPL)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT a.account_id, a.auth_timestamp, a.auth_ip, a.auth_device_id,\n       e.enrollment_timestamp, e.enrolled_device_id, e.enrollment_ip,\n       DATEDIFF('minute', a.auth_timestamp, e.enrollment_timestamp) AS minutes_to_enrollment\nFROM auth_events a\nJOIN mfa_device_enrollments e ON a.account_id = e.account_id\nWHERE e.enrollment_timestamp > a.auth_timestamp\nAND DATEDIFF('minute', a.auth_timestamp, e.enrollment_timestamp) < 10\nAND a.auth_device_id != e.enrolled_device_id\nAND a.auth_ip != e.enrollment_ip\nORDER BY minutes_to_enrollment ASC;",
+      "title": "New 2FA Device Enrollment Following Recent Authentication (SQL)"
+    },
+    {
+      "type": "sql",
+      "content": "SELECT t.account_id, t.transfer_timestamp, t.beneficiary_account_id,\n       t.amount, t.currency, e.enrollment_timestamp,\n       DATEDIFF('minute', e.enrollment_timestamp, t.transfer_timestamp) AS minutes_post_enrollment\nFROM transactions t\nJOIN mfa_device_enrollments e ON t.account_id = e.account_id\nWHERE t.transfer_type IN ('mobile_money', 'faster_payment', 'wire')\nAND t.beneficiary_is_new = TRUE\nAND t.transfer_timestamp > e.enrollment_timestamp\nAND DATEDIFF('minute', e.enrollment_timestamp, t.transfer_timestamp) < 60\nAND t.amount > 1000\nORDER BY t.amount DESC;",
+      "title": "Mobile Money Transfer Velocity Post-New-Device-Auth (SQL)"
     }
   ]
 }

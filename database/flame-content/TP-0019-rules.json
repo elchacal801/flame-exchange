@@ -2,10 +2,9 @@
   "tp_id": "TP-0019",
   "rules": [
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Business Identity Takeover\")`\n`comment(\"Detects clustered signer, address, and banking detail changes on established commercial accounts\")`\nindex=flame_banking sourcetype=flame:commercial_account_management\n  (account_type=\"commercial\" OR account_type=\"business_checking\"\n   OR account_type=\"business_savings\" OR account_type=\"commercial_line_of_credit\")\n| eval account_age_months = round((now() - strptime(account_open_date, \"%Y-%m-%d\")) / 2592000)\n| where account_age_months >= 12\n| eval change_category = case(\n    modification_type IN (\"authorized_signer_add\", \"authorized_signer_remove\", \"authorized_signer_change\"), \"signer\",\n    modification_type IN (\"business_address_change\", \"mailing_address_change\", \"registered_address_change\"), \"address\",\n    modification_type IN (\"routing_number_change\", \"wire_instruction_change\", \"beneficiary_change\", \"account_link_change\"), \"banking_detail\",\n    1=1, \"other\")\n| where change_category IN (\"signer\", \"address\", \"banking_detail\")\n| stats dc(change_category) AS change_types\n    min(_time) AS first_change max(_time) AS last_change\n    values(modification_type) AS all_modifications\n    values(modified_by_user) AS modifying_users\n    values(modification_channel) AS channels\n    BY account_id, business_name, tax_id\n| eval window_days = round((last_change - first_change) / 86400)\n| where change_types >= 3 AND window_days <= 14\n| eval risk_score = case(\n    window_days <= 3 AND isnotnull(mvfind(channels, \"online|api\")), \"critical\",\n    window_days <= 7, \"high\",\n    1=1, \"high\")\n| table account_id, business_name, tax_id, change_types, window_days,\n        all_modifications, modifying_users, channels, risk_score\n| sort - risk_score window_days",
-      "title": "DL-0165: Business Identity Takeover — Rapid Signer, Address, and Banking Detail Changes on Established Account (SPLUNK)",
-      "source_rule": "DL-0165"
+      "type": "sql",
+      "content": "SELECT \n    a.application_id, \n    a.business_name, \n    a.applicant_email,\n    d.domain_age_days,\n    s.days_since_last_amendment\nFROM commercial_applications a\nLEFT JOIN domain_intel d ON SPLIT_PART(a.applicant_email, '@', 2) = d.domain_name\nLEFT JOIN sos_data s ON a.tax_id = s.tax_id\nWHERE d.domain_age_days < 180 \n  AND s.days_since_last_amendment < 60\n  AND a.loan_amount_requested > 50000;",
+      "title": "SQL — High-Risk Commercial Application (Recent Filing + Young Domain)"
     }
   ]
 }
