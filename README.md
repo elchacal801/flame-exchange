@@ -50,6 +50,8 @@ Between April 2025 and February 2026, five organizations independently concluded
 
 **Taxonomies define the language. FLAME is where practitioners share what actually works.**
 
+The ACAMS International Anti-Fraud and Technology Task Force [confirmed in March 2026](docs/COMPETITIVE-LANDSCAPE.md#cross-sector-information-sharing-landscape-acams-2026) that cross-sector fraud intelligence sharing is the #1 industry priority — yet remains systemically blocked by siloed data, incompatible formats, and lack of structured typologies. FLAME directly addresses each of these barriers through open-source structured threat paths, standardized exports (STIX/MISP/TAXII/Sigma), and a common taxonomy spanning 144 fraud types across 21 sectors.
+
 ---
 
 ## Supported Frameworks
