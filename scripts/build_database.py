@@ -1373,8 +1373,8 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
 
     # --- Threat Path items ---
     cur = conn.execute(
-        "SELECT id, title, summary, date FROM submissions "
-        "WHERE lower(category) = 'threatpath' ORDER BY id"
+        "SELECT id, title, summary, date, confidence_score, source_reliability "
+        "FROM submissions WHERE lower(category) = 'threatpath' ORDER BY id"
     )
     columns = [desc[0] for desc in cur.description]
     for row in cur.fetchall():
@@ -1382,8 +1382,10 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
         tp_id = entry["id"]
         title = entry.get("title", "")
         summary = entry.get("summary", "") or ""
-        desc_text = _xml_escape(summary[:200])
+        desc_text = _xml_escape(summary)  # Full summary, not truncated
         link = f"{BASE_URL}/#detail/{tp_id}"
+        confidence = entry.get("confidence_score") or ""
+        reliability = entry.get("source_reliability") or ""
 
         # RFC 822 pubDate
         pub_date = ""
@@ -1409,12 +1411,33 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
             "WHERE submission_id = ? ORDER BY phase",
             (tp_id,),
         ).fetchall()
+        # Category tags: sectors
+        sector_rows = conn.execute(
+            "SELECT sector FROM submission_sectors "
+            "WHERE submission_id = ? ORDER BY sector",
+            (tp_id,),
+        ).fetchall()
+        # Category tags: mitre_attack
+        mitre_rows = conn.execute(
+            "SELECT technique_id FROM submission_mitre_attack "
+            "WHERE submission_id = ? ORDER BY technique_id",
+            (tp_id,),
+        ).fetchall()
+        # Detection rule count
+        dl_count = conn.execute(
+            "SELECT COUNT(*) FROM detection_rule_threat_paths WHERE tp_id = ?",
+            (tp_id,),
+        ).fetchone()[0]
 
         cats = []
         for (ft,) in ft_rows:
             cats.append(f"        <category>{_xml_escape(ft)}</category>")
         for (ph,) in phase_rows:
             cats.append(f"        <category>CFPF-{_xml_escape(ph)}</category>")
+        for (sec,) in sector_rows:
+            cats.append(f"        <category>sector-{_xml_escape(sec)}</category>")
+        for (tech,) in mitre_rows:
+            cats.append(f"        <category>attack-{_xml_escape(tech)}</category>")
 
         parts = []
         parts.append("    <item>")
@@ -1424,13 +1447,19 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
         parts.append(f"      <description>{desc_text}</description>")
         if pub_date:
             parts.append(f"      <pubDate>{pub_date}</pubDate>")
+        if confidence:
+            parts.append(f"      <flame:confidence>{confidence}</flame:confidence>")
+        if reliability:
+            parts.append(f"      <flame:sourceReliability>{_xml_escape(str(reliability))}</flame:sourceReliability>")
+        if dl_count:
+            parts.append(f"      <flame:detectionRuleCount>{dl_count}</flame:detectionRuleCount>")
         parts.extend(cats)
         parts.append("    </item>")
         items_xml.append("\n".join(parts))
 
     # --- Detection Logic items ---
     dl_cur = conn.execute(
-        "SELECT id, dl_id, title, description, level "
+        "SELECT id, dl_id, title, description, level, cfpf_phase "
         "FROM detection_rules ORDER BY dl_id"
     )
     dl_columns = [desc[0] for desc in dl_cur.description]
@@ -1440,13 +1469,21 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
         dl_id = entry["dl_id"]
         title = entry.get("title", "")
         desc_raw = entry.get("description", "") or ""
-        desc_text = _xml_escape(desc_raw[:200])
+        desc_text = _xml_escape(desc_raw)  # Full description, not truncated
         level = entry.get("level", "")
+        cfpf_phase = entry.get("cfpf_phase", "")
+        dl_link = f"{BASE_URL}/#rules/{dl_id}"
 
         # Fraud types for DL rule
         ft_rows = conn.execute(
             "SELECT fraud_type FROM detection_rule_fraud_types "
             "WHERE rule_id = ? ORDER BY fraud_type",
+            (rule_id,),
+        ).fetchall()
+        # Linked threat paths
+        tp_rows = conn.execute(
+            "SELECT tp_id FROM detection_rule_threat_paths "
+            "WHERE rule_id = ? ORDER BY tp_id",
             (rule_id,),
         ).fetchall()
 
@@ -1455,11 +1492,15 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
             cats.append(f"        <category>{_xml_escape(ft)}</category>")
         if level:
             cats.append(f"        <category>severity-{_xml_escape(level)}</category>")
+        if cfpf_phase:
+            cats.append(f"        <category>CFPF-{_xml_escape(cfpf_phase)}</category>")
+        for (tp_id,) in tp_rows:
+            cats.append(f"        <category>linked-{_xml_escape(tp_id)}</category>")
 
         parts = []
         parts.append("    <item>")
         parts.append(f"      <title>{_xml_escape(f'[{dl_id}] {title}')}</title>")
-        parts.append(f"      <link>{_xml_escape(BASE_URL)}</link>")
+        parts.append(f"      <link>{_xml_escape(dl_link)}</link>")
         parts.append(f'      <guid isPermaLink="false">flame-dl-{_xml_escape(dl_id)}</guid>')
         parts.append(f"      <description>{desc_text}</description>")
         parts.extend(cats)
@@ -1469,7 +1510,7 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
     # --- Assemble feed ---
     header_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
-        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">',
+        '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:flame="https://flameintel.org/ns/1.0">',
         "  <channel>",
         "    <title>FLAME Intelligence Feed</title>",
         f"    <link>{BASE_URL}</link>",
