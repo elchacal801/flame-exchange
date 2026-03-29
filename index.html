@@ -111,6 +111,15 @@
     </header>
 
     <!-- ================================================================ -->
+    <!-- Navigation Tabs                                                  -->
+    <!-- ================================================================ -->
+    <nav class="main-nav" id="main-nav">
+        <a href="#browse" class="nav-tab active" data-view="browse">Threat Paths</a>
+        <a href="#rules" class="nav-tab" data-view="rules">Detection Rules</a>
+        <a href="#baselines" class="nav-tab" data-view="baselines">Baselines</a>
+    </nav>
+
+    <!-- ================================================================ -->
     <!-- Main Layout                                                      -->
     <!-- ================================================================ -->
     <main class="app-layout" id="app-layout">
@@ -184,6 +193,47 @@
                 <div class="detail-content" id="detail-content">
                     <!-- Populated by JS -->
                 </div>
+            </div>
+
+            <!-- Rules View -->
+            <div class="rules-view" id="rules-view" style="display:none;">
+                <div class="rules-header">
+                    <h2>Detection Rules</h2>
+                    <div class="rules-search">
+                        <input type="text" id="rules-search-input" placeholder="Search rules...">
+                    </div>
+                    <div class="rules-filters" id="rules-filters">
+                        <select id="rules-filter-level">
+                            <option value="">All Levels</option>
+                            <option value="critical">Critical</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                            <option value="informational">Informational</option>
+                        </select>
+                        <select id="rules-filter-phase">
+                            <option value="">All Phases</option>
+                            <option value="P1">P1 - Recon</option>
+                            <option value="P2">P2 - Initial Access</option>
+                            <option value="P3">P3 - Positioning</option>
+                            <option value="P4">P4 - Execution</option>
+                            <option value="P5">P5 - Monetization</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="rules-results" id="rules-results">Loading detection rules...</div>
+                <div class="rules-grid" id="rules-grid"></div>
+            </div>
+
+            <!-- Baselines View -->
+            <div class="baselines-view" id="baselines-view" style="display:none;">
+                <div class="baselines-header">
+                    <h2>Baselines</h2>
+                    <div class="baselines-search">
+                        <input type="text" id="baselines-search-input" placeholder="Search baselines...">
+                    </div>
+                </div>
+                <div class="baselines-grid" id="baselines-grid"></div>
             </div>
 
         </div>

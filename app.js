@@ -41,7 +41,7 @@
     };
     let searchQuery = '';
     let activeTaxonomy = 'cfpf';
-    let viewState = 'browse'; // 'browse' | 'detail'
+    let viewState = 'browse'; // 'browse' | 'detail' | 'rules' | 'baselines'
 
     // -----------------------------------------------------------------------
     // DOM References
@@ -103,6 +103,16 @@
         dom.ucffExportBtn = document.getElementById('ucff-export-btn');
         dom.ucffImportBtn = document.getElementById('ucff-import-btn');
         dom.ucffFileInput = document.getElementById('ucff-file-input');
+        dom.rulesView = document.getElementById('rules-view');
+        dom.rulesGrid = document.getElementById('rules-grid');
+        dom.rulesResults = document.getElementById('rules-results');
+        dom.rulesSearchInput = document.getElementById('rules-search-input');
+        dom.rulesFilterLevel = document.getElementById('rules-filter-level');
+        dom.rulesFilterPhase = document.getElementById('rules-filter-phase');
+        dom.baselinesView = document.getElementById('baselines-view');
+        dom.baselinesGrid = document.getElementById('baselines-grid');
+        dom.baselinesSearchInput = document.getElementById('baselines-search-input');
+        dom.mainNav = document.getElementById('main-nav');
     }
 
     // -----------------------------------------------------------------------
@@ -297,6 +307,30 @@
         document.getElementById('nav-export-svg').addEventListener('click', exportNavigatorSVG);
         document.getElementById('nav-export-json').addEventListener('click', exportNavigatorATTCKJSON);
 
+        // Rules view search and filters
+        if (dom.rulesSearchInput) {
+            dom.rulesSearchInput.addEventListener('input', debounce(function() {
+                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
+            }, 200));
+        }
+        if (dom.rulesFilterLevel) {
+            dom.rulesFilterLevel.addEventListener('change', function() {
+                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
+            });
+        }
+        if (dom.rulesFilterPhase) {
+            dom.rulesFilterPhase.addEventListener('change', function() {
+                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
+            });
+        }
+        if (dom.baselinesSearchInput) {
+            dom.baselinesSearchInput.addEventListener('input', debounce(function() {
+                if (viewState === 'baselines') {
+                    FlameData.loadBaselines().then(renderBaselinesGrid);
+                }
+            }, 200));
+        }
+
         // Hash routing
         window.addEventListener('hashchange', handleRoute);
     }
@@ -314,33 +348,60 @@
     // -----------------------------------------------------------------------
 
     function handleRoute() {
-        const hash = window.location.hash || '#browse';
+        var hash = window.location.hash || '#browse';
         if (hash.startsWith('#detail/')) {
-            const tpId = hash.replace('#detail/', '');
-            showDetailView(tpId);
+            showDetailView(hash.replace('#detail/', ''));
+        } else if (hash === '#rules' || hash.startsWith('#rules/')) {
+            var dlId = hash.startsWith('#rules/') ? hash.replace('#rules/', '') : null;
+            showRulesView(dlId);
+        } else if (hash === '#baselines') {
+            showBaselinesView();
         } else {
             showBrowseView();
         }
+        updateNavTabs(hash);
     }
 
-    function navigateTo(target, tpId) {
+    function navigateTo(target, id) {
         if (target === 'browse') {
             window.location.hash = '#browse';
-        } else if (target === 'detail' && tpId) {
-            window.location.hash = '#detail/' + tpId;
+        } else if (target === 'detail' && id) {
+            window.location.hash = '#detail/' + id;
+        } else if (target === 'rules') {
+            window.location.hash = id ? '#rules/' + id : '#rules';
+        } else if (target === 'baselines') {
+            window.location.hash = '#baselines';
         }
+    }
+
+    function updateNavTabs(hash) {
+        if (!dom.mainNav) return;
+        dom.mainNav.querySelectorAll('.nav-tab').forEach(function(tab) {
+            tab.classList.remove('active');
+            var view = tab.getAttribute('data-view');
+            if ((hash === '#browse' || hash.startsWith('#detail/')) && view === 'browse') tab.classList.add('active');
+            else if (hash.startsWith('#rules') && view === 'rules') tab.classList.add('active');
+            else if (hash.startsWith('#baselines') && view === 'baselines') tab.classList.add('active');
+        });
+    }
+
+    function hideAllViews() {
+        dom.browseView.style.display = 'none';
+        dom.detailView.style.display = 'none';
+        if (dom.rulesView) dom.rulesView.style.display = 'none';
+        if (dom.baselinesView) dom.baselinesView.style.display = 'none';
     }
 
     function showBrowseView() {
         viewState = 'browse';
+        hideAllViews();
         dom.browseView.style.display = 'block';
-        dom.detailView.style.display = 'none';
         dom.filterPanel.classList.remove('detail-active');
     }
 
     function showDetailView(tpId) {
         viewState = 'detail';
-        dom.browseView.style.display = 'none';
+        hideAllViews();
         dom.detailView.style.display = 'block';
         dom.filterPanel.classList.add('detail-active');
 
@@ -628,6 +689,13 @@
         }
         html += '</div>';
 
+        // Export bar
+        html += '<div class="detail-export-bar">';
+        html += '<a href="api/v1/threat-paths/' + escapeHtml(item.id) + '.json" download class="export-btn">Export JSON</a>';
+        html += '<a href="database/sigma-exports/packs/' + escapeHtml(item.id) + '/" class="export-btn" target="_blank">Sigma Pack</a>';
+        html += '<button class="export-btn" id="export-stix-btn">Export STIX</button>';
+        html += '</div>';
+
         // Attack flow diagram
         html += '<div class="attack-flow-section" id="attack-flow-section">';
         html += '<div class="attack-flow-container" id="attack-flow-container"></div>';
@@ -753,6 +821,12 @@
         addCopyButtons();
         highlightLookLeftRight();
         loadAndRenderDetectionRules(item.id);
+
+        // Bind STIX export
+        var stixBtn = document.getElementById('export-stix-btn');
+        if (stixBtn) {
+            stixBtn.addEventListener('click', function () { exportStix(item.id); });
+        }
 
         // Render attack flow diagram
         if (item.body) {
@@ -2079,6 +2153,310 @@
         };
         reader.readAsText(file);
         e.target.value = '';
+    }
+
+    // -----------------------------------------------------------------------
+    // Rules View
+    // -----------------------------------------------------------------------
+
+    var _cachedAllRules = null;
+
+    function showRulesView(dlId) {
+        viewState = 'rules';
+        hideAllViews();
+        dom.rulesView.style.display = 'block';
+        dom.filterPanel.classList.add('detail-active');
+
+        FlameData.loadAllDetectionRules().then(function(rules) {
+            _cachedAllRules = rules;
+            if (dlId) {
+                var rule = rules.find(function(r) { return r.dl_id === dlId; });
+                if (rule) {
+                    renderRuleDetail(rule);
+                    return;
+                }
+            }
+            renderRulesGrid(rules);
+        });
+    }
+
+    function filterRules(rules) {
+        var query = (dom.rulesSearchInput && dom.rulesSearchInput.value || '').trim().toLowerCase();
+        var levelFilter = dom.rulesFilterLevel ? dom.rulesFilterLevel.value : '';
+        var phaseFilter = dom.rulesFilterPhase ? dom.rulesFilterPhase.value : '';
+
+        return rules.filter(function(rule) {
+            if (query) {
+                var haystack = ((rule.dl_id || '') + ' ' + (rule.title || '') + ' ' + (rule.description || '')).toLowerCase();
+                if (haystack.indexOf(query) === -1) return false;
+            }
+            if (levelFilter && (rule.level || '').toLowerCase() !== levelFilter) return false;
+            if (phaseFilter && (!rule.cfpf_phase || rule.cfpf_phase !== phaseFilter)) return false;
+            return true;
+        });
+    }
+
+    function renderRulesGrid(rules) {
+        var filtered = filterRules(rules);
+        if (dom.rulesResults) {
+            dom.rulesResults.textContent = filtered.length + ' of ' + rules.length + ' detection rules';
+        }
+
+        if (filtered.length === 0) {
+            dom.rulesGrid.innerHTML = '<div class="empty-state">No matching detection rules found.</div>';
+            return;
+        }
+
+        // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
+        var html = '';
+        filtered.forEach(function(rule) {
+            var levelClass = (rule.level || '').toLowerCase();
+            var tpCount = (rule.threat_path_ids || []).length;
+            html += '<div class="rule-card" data-dl-id="' + escapeHtml(rule.dl_id || '') + '">';
+            html += '<div class="rule-card-header">';
+            html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || '') + '</span>';
+            html += '<span class="rule-level-badge rule-level-' + escapeHtml(levelClass) + '">' + escapeHtml(rule.level || '') + '</span>';
+            html += '</div>';
+            html += '<h3 class="rule-card-title">' + escapeHtml(rule.title || '') + '</h3>';
+            html += '<p class="rule-card-desc">' + escapeHtml(truncate(rule.description || '', 120)) + '</p>';
+            html += '<div class="rule-card-meta">';
+            if (rule.cfpf_phase) {
+                var phaseInfo = PHASE_INFO[rule.cfpf_phase];
+                html += '<span class="rule-phase-tag" style="--chip-color: ' + (phaseInfo ? phaseInfo.color : 'var(--color-text-muted)') + '">' + escapeHtml(rule.cfpf_phase) + '</span>';
+            }
+            html += '<span class="rule-tp-count">' + tpCount + ' threat path' + (tpCount !== 1 ? 's' : '') + '</span>';
+            html += '</div>';
+            html += '</div>';
+        });
+        dom.rulesGrid.innerHTML = html;
+
+        // Bind card clicks
+        dom.rulesGrid.querySelectorAll('.rule-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                navigateTo('rules', card.dataset.dlId);
+            });
+        });
+    }
+
+    function renderRuleDetail(rule) {
+        // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
+        var html = '';
+        html += '<a href="#rules" class="back-link rules-back-link">';
+        html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
+        html += '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/>';
+        html += '</svg> All Detection Rules</a>';
+
+        html += '<div class="rule-detail">';
+        html += '<div class="rule-detail-header">';
+        html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || '') + '</span>';
+        var levelClass = (rule.level || '').toLowerCase();
+        html += '<span class="rule-level-badge rule-level-' + escapeHtml(levelClass) + '">' + escapeHtml(rule.level || '') + '</span>';
+        html += '</div>';
+        html += '<h2 class="rule-detail-title">' + escapeHtml(rule.title || '') + '</h2>';
+
+        if (rule.description) {
+            html += '<p class="rule-detail-desc">' + escapeHtml(rule.description) + '</p>';
+        }
+
+        // Detection logic
+        if (rule.detection) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>Detection Logic</h3>';
+            var yamlStr = formatDetectionYaml(rule.detection);
+            html += '<div class="dl-code-wrapper">';
+            html += '<pre class="dl-code"><code>' + escapeHtml(yamlStr) + '</code></pre>';
+            html += '<button class="dl-copy-btn" data-code="' + escapeHtml(yamlStr).replace(/"/g, '&quot;') + '">Copy</button>';
+            html += '</div>';
+            html += '</div>';
+        }
+
+        // Native queries
+        if (rule.native_queries) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>Native Queries</h3>';
+            Object.keys(rule.native_queries).forEach(function(platform) {
+                html += '<h4 class="query-platform">' + escapeHtml(platform.toUpperCase()) + '</h4>';
+                var queryStr = rule.native_queries[platform];
+                html += '<div class="dl-code-wrapper">';
+                html += '<pre class="dl-code"><code>' + escapeHtml(queryStr) + '</code></pre>';
+                html += '<button class="dl-copy-btn" data-code="' + escapeHtml(queryStr).replace(/"/g, '&quot;') + '">Copy</button>';
+                html += '</div>';
+            });
+            html += '</div>';
+        }
+
+        // Linked threat paths
+        var tpIds = rule.threat_path_ids || [];
+        if (tpIds.length > 0) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>Linked Threat Paths</h3>';
+            html += '<div class="rule-tp-links">';
+            tpIds.forEach(function(tpId) {
+                html += '<a href="#detail/' + escapeHtml(tpId) + '" class="rule-tp-link">' + escapeHtml(tpId) + '</a>';
+            });
+            html += '</div>';
+            html += '</div>';
+        }
+
+        // False positives
+        if (rule.false_positives && rule.false_positives.length > 0) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>False Positives</h3>';
+            html += '<ul class="rule-fp-list">';
+            rule.false_positives.forEach(function(fp) {
+                html += '<li>' + escapeHtml(fp) + '</li>';
+            });
+            html += '</ul>';
+            html += '</div>';
+        }
+
+        // References
+        if (rule.references && rule.references.length > 0) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>References</h3>';
+            html += '<ul class="rule-ref-list">';
+            rule.references.forEach(function(ref) {
+                if (ref.startsWith('http')) {
+                    html += '<li><a href="' + escapeHtml(ref) + '" target="_blank" rel="noopener">' + escapeHtml(truncate(ref, 80)) + '</a></li>';
+                } else {
+                    html += '<li>' + escapeHtml(ref) + '</li>';
+                }
+            });
+            html += '</ul>';
+            html += '</div>';
+        }
+
+        // Tags
+        if (rule.tags && rule.tags.length > 0) {
+            html += '<div class="rule-detail-section">';
+            html += '<div class="dl-rule-tags">';
+            rule.tags.forEach(function(t) {
+                html += '<span class="dl-tag">' + escapeHtml(t) + '</span>';
+            });
+            html += '</div>';
+            html += '</div>';
+        }
+
+        html += '</div>';
+
+        dom.rulesGrid.innerHTML = html;
+        if (dom.rulesResults) dom.rulesResults.textContent = '';
+
+        // Bind copy buttons
+        dom.rulesGrid.querySelectorAll('.dl-copy-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var code = btn.getAttribute('data-code').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+                navigator.clipboard.writeText(code).then(function() {
+                    btn.textContent = 'Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(function() {
+                        btn.textContent = 'Copy';
+                        btn.classList.remove('copied');
+                    }, 2000);
+                });
+            });
+        });
+
+        window.scrollTo(0, 0);
+    }
+
+    // -----------------------------------------------------------------------
+    // Baselines View
+    // -----------------------------------------------------------------------
+
+    function showBaselinesView() {
+        viewState = 'baselines';
+        hideAllViews();
+        dom.baselinesView.style.display = 'block';
+        dom.filterPanel.classList.add('detail-active');
+
+        FlameData.loadBaselines().then(function(baselines) {
+            renderBaselinesGrid(baselines);
+        });
+    }
+
+    function renderBaselinesGrid(baselines) {
+        var query = (dom.baselinesSearchInput && dom.baselinesSearchInput.value || '').trim().toLowerCase();
+        var filtered = baselines;
+        if (query) {
+            filtered = baselines.filter(function(b) {
+                var haystack = ((b.id || '') + ' ' + (b.title || '') + ' ' + (b.description || '') + ' ' + (b.tags || []).join(' ')).toLowerCase();
+                return haystack.indexOf(query) !== -1;
+            });
+        }
+
+        if (filtered.length === 0) {
+            dom.baselinesGrid.innerHTML = '<div class="empty-state">No baselines found.</div>';
+            return;
+        }
+
+        // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
+        var html = '';
+        filtered.forEach(function(b) {
+            var tpCount = (b.threat_path_ids || []).length;
+            html += '<div class="baseline-card" data-id="' + escapeHtml(b.id || '') + '">';
+            html += '<div class="baseline-card-header">';
+            html += '<span class="baseline-id">' + escapeHtml(b.id || '') + '</span>';
+            html += '</div>';
+            html += '<h3 class="baseline-card-title">' + escapeHtml(b.title || '') + '</h3>';
+            if (b.description) {
+                html += '<p class="baseline-card-desc">' + escapeHtml(truncate(b.description, 120)) + '</p>';
+            }
+            html += '<div class="baseline-card-meta">';
+            if (b.tags && b.tags.length > 0) {
+                b.tags.slice(0, 4).forEach(function(t) {
+                    html += '<span class="baseline-tag">' + escapeHtml(t) + '</span>';
+                });
+                if (b.tags.length > 4) {
+                    html += '<span class="baseline-tag more-tag">+' + (b.tags.length - 4) + '</span>';
+                }
+            }
+            html += '<span class="baseline-tp-count">' + tpCount + ' TP' + (tpCount !== 1 ? 's' : '') + '</span>';
+            html += '</div>';
+            html += '</div>';
+        });
+        dom.baselinesGrid.innerHTML = html;
+    }
+
+    // -----------------------------------------------------------------------
+    // STIX Export
+    // -----------------------------------------------------------------------
+
+    function exportStix(tpId) {
+        fetch('database/flame_stix_bundle.json')
+            .then(function(response) {
+                if (!response.ok) throw new Error('STIX bundle not available');
+                return response.json();
+            })
+            .then(function(bundle) {
+                var filtered = (bundle.objects || []).filter(function(obj) {
+                    if (!obj.external_references) return false;
+                    return obj.external_references.some(function(ref) {
+                        return ref.external_id === tpId || (ref.source_name && ref.source_name.indexOf(tpId) !== -1);
+                    });
+                });
+
+                var exportBundle = {
+                    type: 'bundle',
+                    id: 'bundle--' + tpId + '-export',
+                    spec_version: bundle.spec_version || '2.1',
+                    objects: filtered
+                };
+
+                var blob = new Blob([JSON.stringify(exportBundle, null, 2)], { type: 'application/json' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = tpId + '_stix_bundle.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            })
+            .catch(function(err) {
+                console.warn('STIX export failed:', err.message);
+                alert('STIX bundle not available for export.');
+            });
     }
 
     // -----------------------------------------------------------------------

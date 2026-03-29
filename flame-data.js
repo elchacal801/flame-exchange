@@ -186,6 +186,42 @@ const FlameData = (function () {
     }
 
     /**
+     * Load all detection rules without filtering.
+     */
+    async function loadAllDetectionRules() {
+        if (!_allDetectionRules) {
+            try {
+                var response = await fetch(DETECTION_RULES_URL);
+                if (!response.ok) throw new Error('DL rules load failed: ' + response.status);
+                _allDetectionRules = await response.json();
+            } catch (err) {
+                console.warn('Detection rules not available:', err.message);
+                _allDetectionRules = [];
+            }
+        }
+        return _allDetectionRules;
+    }
+
+    /**
+     * Load baselines data.
+     */
+    var _baselines = null;
+    async function loadBaselines() {
+        if (!_baselines) {
+            try {
+                var response = await fetch('api/v1/baselines.json');
+                if (!response.ok) throw new Error('Baselines load failed: ' + response.status);
+                var result = await response.json();
+                _baselines = result.data || result;
+            } catch (err) {
+                console.warn('Baselines not available:', err.message);
+                _baselines = [];
+            }
+        }
+        return _baselines;
+    }
+
+    /**
      * Load all standalone detection rules (one-time), then filter by TP.
      */
     async function loadDetectionRules(tpId) {
@@ -215,5 +251,7 @@ const FlameData = (function () {
         loadSearchIndex: loadSearchIndex,
         search: search,
         loadDetectionRules: loadDetectionRules,
+        loadAllDetectionRules: loadAllDetectionRules,
+        loadBaselines: loadBaselines,
     };
 })();
