@@ -8,74 +8,8 @@
     },
     {
       "type": "sigma",
-<<<<<<< HEAD
       "content": "title: Suspicious Inbox Rule Creation\nstatus: experimental\ndescription: Detects the creation of inbox rules looking for real estate keywords like wire, closing, escrow to suppress legitimate communication.\nlogsource:\n    product: m365\n    service: exchange\ndetection:\n    selection:\n        ActionType: 'New-InboxRule'\n        RuleParameters|contains:\n            - 'wire'\n            - 'closing'\n            - 'escrow'\n    condition: selection",
       "title": "Email — Suspicious Inbox Rule Creation (M365)"
-=======
-      "content": "title: Wire Beneficiary Name Mismatch\nstatus: experimental\ndescription: Detects when the wire beneficiary name provided by the originator does not match the account holder name at the receiving institution. Name mismatches on wire transfers are a strong indicator of payme\nlogsource:\n    product: banking\n    service: wire_system\ndetection:\n    selection:\n        event_type: \"WIRE_INITIATION\"\n        beneficiary_name_match: false\n        transaction_amount|gte: 1000\n    filter_known_dba:\n        beneficiary_account_type: \"DBA\"\n    condition: selection and not filter_known_dba\nlevel: high",
-      "title": "DL-0024: Wire Beneficiary Name Mismatch (Sigma)",
-      "source_rule": "DL-0024"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Power of Attorney or Authorized Signer Change\nstatus: experimental\ndescription: Detects changes to power of attorney designations or authorized signers on commercial and business accounts. Fraudsters may socially engineer or forge POA documents to gain control of business account\nlogsource:\n    product: banking\n    service: core_banking\ndetection:\n    selection:\n        event_type:\n            - \"POA_ADD\"\n            - \"POA_MODIFY\"\n            - \"AUTHORIZED_SIGNER_ADD\"\n            - \"AUTHORIZED_SIGNER_MODIFY\"\n        account_type:\n            - \"commercial\"\n            - \"business\"\n            - \"corporate\"\n            - \"trust\"\n    selection_high_value:\n        account_balance|gte: 50000\n    condition: selection and selection_high_value\nlevel: high",
-      "title": "DL-0025: Power of Attorney or Authorized Signer Change (Sigma)",
-      "source_rule": "DL-0025"
-    },
-    {
-      "type": "sigma",
-      "content": "title: First-Time International Wire to New Country\nstatus: experimental\ndescription: Detects international wire transfers sent to a country that has no prior transaction history for the originating account. First-time international wires, especially to high-risk corridors, are a key i\nlogsource:\n    product: banking\n    service: wire_system\ndetection:\n    selection:\n        event_type: \"WIRE_INITIATION\"\n        wire_type: \"international\"\n        beneficiary_country_first_time: true\n        transaction_amount|gte: 5000\n    filter_known_correspondent:\n        beneficiary_bank_relationship: \"established\"\n    condition: selection and not filter_known_correspondent\nlevel: high",
-      "title": "DL-0027: First-Time International Wire to New Country (Sigma)",
-      "source_rule": "DL-0027"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Split Transfer Chain Detection\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2\")`\nindex=flame_banking sourcetype=flame:wire_system\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=25000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER\")\ntransaction_amount<10000\n| stats dc(beneficiary_id) as unique_beneficiary_id by account_id\n| where unique_beneficiary_id > 2",
-      "title": "DL-0029: Split Transfer Chain Detection (SPLUNK)",
-      "source_rule": "DL-0029"
-    },
-    {
-      "type": "sigma",
-      "content": "title: After-Hours Wire Transfer Initiation\nstatus: experimental\ndescription: Detects wire transfers initiated outside the account's established normal business hours. Attackers often execute unauthorized wires during evenings, weekends, or holidays when fraud detection staff a\nlogsource:\n    product: banking\n    service: wire_system\ndetection:\n    selection:\n        event_type: \"WIRE_INITIATION\"\n        transaction_amount|gte: 5000\n        initiated_outside_business_hours: true\n    selection_channel:\n        channel:\n            - \"online_banking\"\n            - \"mobile_app\"\n            - \"api\"\n    filter_pre_authorized:\n        wire_status: \"pre_authorized_recurring\"\n    condition: selection and selection_channel and not filter_pre_authorized\nlevel: high",
-      "title": "DL-0030: After-Hours Wire Transfer Initiation (Sigma)",
-      "source_rule": "DL-0030"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Rapid Outbound Wire After Large Inbound\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=10000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\ntransaction_amount>=8000\n| transaction account_id maxspan=6h\n| where eventcount >= 2",
-      "title": "DL-0031: Rapid Outbound Wire After Large Inbound (SPLUNK)",
-      "source_rule": "DL-0031"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Beneficiary Country Mismatch with Business Profile\nstatus: experimental\ndescription: Detects wire transfers to countries where the account holder has no established business relationship or prior transaction history. Combined with other indicators, this can reveal business email compr\nlogsource:\n    product: banking\n    service: wire_system\ndetection:\n    selection:\n        event_type: \"WIRE_INITIATION\"\n        wire_type: \"international\"\n        beneficiary_country_in_business_profile: false\n        transaction_amount|gte: 5000\n    filter_consumer_remittance:\n        account_type: \"personal\"\n        transaction_amount|lt: 3000\n    condition: selection and not filter_consumer_remittance\nlevel: high",
-      "title": "DL-0032: Beneficiary Country Mismatch with Business Profile (Sigma)",
-      "source_rule": "DL-0032"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Round-Dollar Wire Amount Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by account_id > 4\")`\nindex=flame_banking sourcetype=flame:wire_system\nevent_type=\"WIRE_INITIATION\"\ntransaction_amount>=1000\ntransaction_amount_is_round=true\n| stats count as event_count by account_id\n| where event_count > 4",
-      "title": "DL-0033: Round-Dollar Wire Amount Pattern (SPLUNK)",
-      "source_rule": "DL-0033"
-    },
-    {
-      "type": "sigma",
-      "content": "title: Wire to FATF High-Risk Jurisdiction\nstatus: experimental\ndescription: Detects wire transfers to jurisdictions on the FATF high-risk or increased monitoring lists. While not inherently fraudulent, wires to these jurisdictions combined with other risk factors (new benefic\nlogsource:\n    product: banking\n    service: wire_system\ndetection:\n    selection:\n        event_type: \"WIRE_INITIATION\"\n        wire_type: \"international\"\n        beneficiary_country:\n            - \"MM\"\n            - \"KP\"\n            - \"IR\"\n            - \"YE\"\n            - \"SY\"\n            - \"HT\"\n            - \"VU\"\n            - \"PH\"\n            - \"NG\"\n            - \"SS\"\n        transaction_amount|gte: 1000\n    filter_established_relationship:\n        beneficiary_relationship_days|gte: 365\n        prior_transaction_count|gte: 10\n    condition: selection and not filter_established_relationship\nlevel: high",
-      "title": "DL-0035: Wire to FATF High-Risk Jurisdiction (Sigma)",
-      "source_rule": "DL-0035"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Payment Instruction Velocity Spike\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count() by session_id > 5\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_BATCH_SUBMIT\" OR event_type=\"INTERNAL_TRANSFER\" OR event_type=\"PAYMENT_INSTRUCTION\")\naggregate=\"sum(transaction_amount) by account_id\"\nthreshold_multiplier=\"3.0\"\n| stats count as event_count by session_id\n| where event_count > 5",
-      "title": "DL-0036: Payment Instruction Velocity Spike (SPLUNK)",
-      "source_rule": "DL-0036"
-    },
-    {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL for Seller Impersonation Pattern — DL-0186\")`\n`comment(\"Detects property sale by non-resident owner of vacant/unencumbered property\")`\nindex=flame_realestate sourcetype=flame:property_transactions\n  (transaction_type=\"sale_listing\" OR transaction_type=\"title_transfer\"\n   OR transaction_type=\"deed_recording\")\n| eval non_resident = if(property_address != owner_mailing_address, 1, 0)\n| eval unencumbered = if(mortgage_balance <= 0 OR isnull(mortgage_balance), 1, 0)\n| eval vacant = if(occupancy_status=\"vacant\", 1, 0)\n| eval recent_contact_change = if(owner_contact_updated_days < 90, 1, 0)\n| eval below_market = if(listing_price < assessed_value * 0.85, 1, 0)\n| eval risk_score = non_resident + unencumbered + vacant + recent_contact_change + below_market\n| where risk_score >= 3\n| eval risk_level = case(\n    risk_score >= 5, \"critical\",\n    risk_score >= 4, \"high\",\n    risk_score >= 3, \"medium\")\n| eval listing_to_market_ratio = round(listing_price / assessed_value * 100, 1)\n| table property_id, property_address, owner_name, assessed_value, listing_price,\n        listing_to_market_ratio, occupancy_status, mortgage_balance,\n        owner_contact_updated_days, non_resident, unencumbered, vacant,\n        recent_contact_change, below_market, risk_score, risk_level\n| sort - risk_score",
-      "title": "DL-0186: Seller Impersonation Pattern — Property Sale Initiated by Non-Resident Owner of Vacant/Unencumbered Property With Recent Contact Info Changes (SPLUNK)",
-      "source_rule": "DL-0186"
->>>>>>> 1b22404 (feat: 8 new threat paths across 6 fraud categories + 16 detection rules)
     }
   ]
 }

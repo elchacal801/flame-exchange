@@ -2,16 +2,14 @@
   "tp_id": "TP-0076",
   "rules": [
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL: Cookie Stuffing Detection\")`\n`comment(\"Affiliates setting cookies without corresponding click events\")`\nindex=flame_advertising sourcetype=flame:affiliate_tracking\n  event_type=\"cookie_set\"\n| stats count AS cookies_set,\n        dc(session_id) AS sessions,\n        dc(cookie_id) AS unique_cookies,\n        sum(if(cookie_source=\"iframe\" OR cookie_source=\"pixel\"\n               OR cookie_source=\"script\", 1, 0)) AS hidden_cookies\n  BY affiliate_id, affiliate_name\n| join type=left affiliate_id [\n    search index=flame_advertising sourcetype=flame:affiliate_tracking\n      event_type=\"click\"\n    | stats dc(click_id) AS clicks_recorded BY affiliate_id\n  ]\n| fillnull value=0 clicks_recorded\n| where (clicks_recorded=0 AND cookies_set >= 50)\n  OR (cookies_set / max(clicks_recorded, 1)) >= 5.0\n| sort - cookies_set",
-      "title": "DL-0192: Cookie Stuffing Detection — Affiliate Cookies Set Without Corresponding Click Events (SPLUNK)",
-      "source_rule": "DL-0192"
+      "type": "sql",
+      "content": "-- SQL: Cookie Stuffing Detection (DL-0192)\n-- Affiliate cookies set without corresponding user click events\nSELECT\n  a.affiliate_id,\n  a.affiliate_name,\n  COUNT(DISTINCT c.cookie_id) AS cookies_set,\n  COUNT(DISTINCT cl.click_id) AS clicks_recorded,\n  CASE WHEN COUNT(DISTINCT cl.click_id) = 0 THEN 999.99\n       ELSE ROUND(COUNT(DISTINCT c.cookie_id) * 1.0 / COUNT(DISTINCT cl.click_id), 2)\n  END AS cookie_to_click_ratio,\n  COUNT(DISTINCT c.session_id) AS sessions_with_cookies,\n  COUNT(DISTINCT CASE WHEN c.cookie_source = 'iframe' OR c.cookie_source = 'pixel'\n    THEN c.cookie_id END) AS hidden_element_cookies\nFROM affiliate_cookies c\nLEFT JOIN affiliate_clicks cl ON c.session_id = cl.session_id\n  AND c.affiliate_id = cl.affiliate_id\nJOIN affiliates a ON c.affiliate_id = a.affiliate_id\nWHERE c.cookie_set_date >= DATEADD(DAY, -7, CURRENT_DATE)\nGROUP BY a.affiliate_id, a.affiliate_name\nHAVING (COUNT(DISTINCT cl.click_id) = 0 AND COUNT(DISTINCT c.cookie_id) >= 50)\n  OR (cookie_to_click_ratio > 5.0)\nORDER BY cookies_set DESC",
+      "title": "Queries / Rules"
     },
     {
-      "type": "spl",
-      "content": "`comment(\"Splunk SPL: Bot Traffic Behavioral Anomaly Detection\")`\n`comment(\"Detects mechanical consistency in affiliate session behavioral metrics\")`\nindex=flame_advertising sourcetype=flame:web_analytics\n  traffic_source=\"affiliate\"\n| stats count AS session_count,\n        avg(session_duration_sec) AS avg_duration,\n        stdev(session_duration_sec) AS duration_stddev,\n        avg(scroll_depth_pct) AS avg_scroll,\n        stdev(scroll_depth_pct) AS scroll_stddev,\n        avg(mouse_movement_pixels) AS avg_mouse,\n        stdev(mouse_movement_pixels) AS mouse_stddev,\n        sum(if(mouse_movement_pixels=0, 1, 0)) AS zero_mouse_sessions,\n        dc(src_ip) AS distinct_ips\n  BY affiliate_id, affiliate_name\n| where session_count >= 100\n  AND (duration_stddev < 1.0 OR scroll_stddev < 2.0\n       OR (zero_mouse_sessions / session_count) > 0.5)\n| sort - session_count",
-      "title": "DL-0193: Bot Traffic Behavioral Anomaly — Mechanical Consistency in Affiliate Session Metrics (SPLUNK)",
-      "source_rule": "DL-0193"
+      "type": "sql",
+      "content": "-- SQL: Bot Traffic Behavioral Anomaly Detection (DL-0193)\n-- Affiliate traffic with mechanical consistency indicating bot activity\nSELECT\n  a.affiliate_id,\n  a.affiliate_name,\n  COUNT(*) AS session_count,\n  ROUND(STDDEV(s.session_duration_sec), 2) AS session_duration_stddev,\n  ROUND(AVG(s.session_duration_sec), 2) AS avg_session_duration,\n  ROUND(STDDEV(s.scroll_depth_pct), 2) AS scroll_depth_stddev,\n  ROUND(STDDEV(s.mouse_movement_pixels), 2) AS mouse_movement_stddev,\n  ROUND(AVG(s.mouse_movement_pixels), 2) AS avg_mouse_movement,\n  COUNT(DISTINCT CASE WHEN s.mouse_movement_pixels = 0 THEN s.session_id END) AS zero_mouse_sessions\nFROM affiliate_sessions s\nJOIN affiliates a ON s.affiliate_id = a.affiliate_id\nWHERE s.session_date >= DATEADD(DAY, -7, CURRENT_DATE)\nGROUP BY a.affiliate_id, a.affiliate_name\nHAVING COUNT(*) >= 100\n  AND (session_duration_stddev < 1.0\n       OR scroll_depth_stddev < 2.0\n       OR (zero_mouse_sessions * 1.0 / COUNT(*)) > 0.5)\nORDER BY session_count DESC",
+      "title": "TP-0076 detection rule (sql)"
     }
   ]
 }
