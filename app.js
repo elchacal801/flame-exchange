@@ -376,11 +376,13 @@
                     btn.classList.add('active');
                 }
                 updateFilterBadge();
-                // If on rules view, re-render with severity filter
+                // Re-render current view with severity filter
                 if (viewState === 'rules') {
                     FlameData.loadAllDetectionRules().then(function(rules) {
                         renderRulesGrid(rules);
                     });
+                } else if (viewState === 'browse') {
+                    applyFilters();
                 }
             });
         });
@@ -1170,8 +1172,6 @@
         var tp = stats.total || 0;
         var sec = stats.sectors || 0;
         var ft = stats.fraudTypes || 0;
-        var phases = stats.phaseCoverage || {};
-        var phaseCount = Object.keys(phases).length;
 
         var html = '';
 
@@ -1179,7 +1179,6 @@
         html += '<div class="about-hero">';
         html += '<span class="about-logo-icon">&#x1F525;</span>';
         html += '<span class="about-title">FLAME</span>';
-        html += '<span class="about-version">v1.0 BEACON</span>';
         html += '<p class="about-tagline">Fraud Lifecycle Analysis &amp; Mitigation Exchange</p>';
         html += '</div>';
 
@@ -1188,63 +1187,100 @@
         html += '<div class="about-stat"><span class="about-stat-value">' + tp + '</span><span class="about-stat-label">Threat Paths</span></div>';
         html += '<div class="about-stat"><span class="about-stat-value">' + ft + '</span><span class="about-stat-label">Fraud Types</span></div>';
         html += '<div class="about-stat"><span class="about-stat-value">' + sec + '</span><span class="about-stat-label">Sectors</span></div>';
-        html += '<div class="about-stat"><span class="about-stat-value">' + phaseCount + '</span><span class="about-stat-label">CFPF Phases</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">195</span><span class="about-stat-label">Detection Rules</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">14</span><span class="about-stat-label">Playbooks</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">6</span><span class="about-stat-label">Frameworks</span></div>';
         html += '</div>';
 
         // Overview
         html += '<div class="about-section">';
-        html += '<p>FLAME is an open-source, community-driven platform for sharing structured fraud detection intelligence. ';
-        html += 'Each threat path maps fraud schemes across multi-framework lifecycles with detection rules, baselines, and confidence scoring &mdash; ';
-        html += 'built by practitioners, for practitioners.</p>';
+        html += '<p>FLAME is an open-source, community-driven platform for sharing structured fraud detection intelligence across organizational and framework boundaries. ';
+        html += 'Every threat path maps simultaneously to <strong>6 fraud frameworks</strong>, exports to <strong>STIX 2.1 / MISP / TAXII / Sigma / CQL</strong>, and includes ';
+        html += 'detection rules deployable to CrowdStrike NGSIEM, Splunk, Microsoft Sentinel, and Elasticsearch.</p>';
         html += '</div>';
 
-        // Features grid
+        // Features grid — each card is clickable and expands inline
         html += '<h3>Platform Capabilities</h3>';
+        html += '<p style="color:#888;font-size:13px;margin-top:-8px;">Click any capability to learn more.</p>';
         html += '<div class="about-features-grid">';
 
         var features = [
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
-                title: 'STIX 2.1 Extension',
-                desc: '4 fraud-specific SDOs with TAXII 2.1 endpoints for TIP integration'
+                title: 'Threat Paths',
+                desc: tp + ' structured fraud scheme analyses with CFPF lifecycle mapping',
+                detail: 'Each threat path documents a complete fraud scheme across the 5-phase CFPF lifecycle (Recon, Initial Access, Positioning, Execution, Monetization). ' +
+                    'Includes: threat hypothesis, confidence scoring (Admiralty Code), operational evidence, detection approaches with executable queries, controls & mitigations, ' +
+                    'UCFF maturity alignment, and analyst notes. Browse via the <strong>Threat Paths</strong> tab or use the sidebar filters to narrow by sector, fraud type, or CFPF phase.'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+                title: 'Detection Rules',
+                desc: '195 Sigma-based rules exported to CQL, SPL, KQL, and EQL',
+                detail: 'Each detection rule includes a Sigma-compatible detection block plus native query implementations for CrowdStrike CQL, Splunk SPL, Microsoft Sentinel KQL, and Elasticsearch EQL. ' +
+                    'Rules are linked to specific threat paths and CFPF phases. Browse all rules via the <strong>Detection Rules</strong> tab, or view per-TP rules on any threat path detail page. ' +
+                    'Export Sigma packs per threat path from the detail view export buttons.'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>',
                 title: 'MCP Server',
-                desc: '7 AI-agent tools for querying fraud intelligence via Claude, Cursor, etc.'
+                desc: '7 AI-agent tools for conversational fraud intelligence',
+                detail: 'The FLAME MCP server (Model Context Protocol) exposes 7 tools for LLM integration: <strong>search_threat_paths</strong>, <strong>get_threat_path</strong>, ' +
+                    '<strong>get_detection_rules</strong>, <strong>map_framework</strong>, <strong>assess_coverage</strong>, <strong>get_baseline</strong>, and <strong>look_left_right</strong>. ' +
+                    'Works with Claude Code, Cursor, and any MCP-compatible client. See <a href="https://github.com/elchacal801/flame-fraud/blob/main/docs/MCP-TOOLS.md" target="_blank">MCP-TOOLS.md</a> for full documentation.'
             },
             {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-                title: 'MISP Galaxy & Feed',
-                desc: 'Subscribable MISP galaxy with 40 cluster entries and per-TP event feed'
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+                title: 'STIX 2.1 / MISP / TAXII',
+                desc: 'Full TIP integration with 4 custom fraud SDOs and subscribable feeds',
+                detail: 'FLAME exports to three threat intelligence platform formats: <strong>STIX 2.1</strong> with 4 custom SDOs (x-flame-fraud-scheme, x-flame-financial-transaction, ' +
+                    'x-flame-mule-network, x-flame-fraud-actor-profile), <strong>MISP</strong> galaxy with per-TP event feed, and <strong>TAXII 2.1</strong> static endpoints with 3 collections. ' +
+                    'Download from the Resources section below or from the export buttons on each threat path detail page.'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><line x1="8" y1="12" x2="16" y2="5"/><line x1="8" y1="12" x2="16" y2="19"/></svg>',
                 title: 'Relationship Graph',
-                desc: 'D3.js force-directed visualization of cross-TP relationships'
-            },
-            {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
-                title: 'Regulatory Mapping',
-                desc: '15 regulations (PSD3, FFIEC, FATF, etc.) mapped to threat paths'
+                desc: 'Interactive D3.js visualization of cross-TP relationships',
+                detail: 'The relationship graph visualizes typed connections between threat paths: <em>feeds-into</em>, <em>enables</em>, <em>shares-infrastructure</em>, ' +
+                    '<em>provides-mules-for</em>, <em>escalates-from</em>, <em>variant-of</em>, and <em>related-to</em>. Click the graph icon in the header to open. ' +
+                    'Nodes are color-coded by primary sector; hover to see connections. Also available: the <strong>Look Left / Look Right</strong> analysis on each TP detail page.'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>',
                 title: 'Framework Navigator',
-                desc: 'Cross-framework coverage matrix across CFPF, FT3, Group-IB, and ATT&CK'
+                desc: 'Cross-framework coverage matrix across CFPF, FT3, Group-IB, and ATT&CK',
+                detail: 'The framework navigator shows a heat map of detection rule coverage across four frameworks simultaneously. Click the grid icon in the header to open. ' +
+                    'Switch between CFPF, FT3, Group-IB Fraud Matrix, and MITRE ATT&CK tabs to see which techniques have detection rules and which are gaps. Export as SVG or ATT&CK Navigator JSON.'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
+                title: 'Coverage Assessment',
+                desc: 'Organizational gap analysis by sector and fraud type',
+                detail: 'Select your organization\'s sectors and fraud types to generate a coverage gap analysis. The tool shows which CFPF phases have detection coverage, ' +
+                    'which fraud types lack threat paths, and recommends detection rules to deploy. Click the checkmark icon in the header to open. Results include a confidence-weighted coverage score.'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
                 title: 'Regulatory Pulse',
-                desc: '6-source live feed (OFAC, FinCEN, SEC, OCC, FBI IC3, CFPB) with TP mapping and severity triage'
+                desc: '6-source live feed (OFAC, FinCEN, SEC, OCC, FBI IC3, CFPB)',
+                detail: 'The regulatory pulse is a live feed of fraud-relevant regulatory actions from 6 US sources, automatically fetched and mapped to threat paths by category. ' +
+                    'Click the pulse icon (bottom-right corner) to view. Each alert shows source, date, severity, and linked threat paths. Feed refreshes via CI/CD automation.'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>',
+                title: 'Coverage Heat Map',
+                desc: 'Fraud type vs CFPF phase detection density visualization',
+                detail: 'The heat map shows a matrix of fraud types (rows) against CFPF phases (columns), colored by the number of threat paths covering each cell. ' +
+                    'Darker cells indicate stronger detection coverage; lighter cells indicate gaps. Click the grid icon in the header to open.'
             }
         ];
 
-        features.forEach(function (f) {
-            html += '<div class="about-feature-card">';
+        features.forEach(function (f, idx) {
+            html += '<div class="about-feature-card about-feature-expandable" data-feature-idx="' + idx + '">';
             html += '<div class="about-feature-icon">' + f.icon + '</div>';
-            html += '<div class="about-feature-title">' + f.title + '</div>';
+            html += '<div class="about-feature-title">' + f.title + ' <span class="about-feature-expand-arrow">&#9662;</span></div>';
             html += '<div class="about-feature-desc">' + f.desc + '</div>';
+            html += '<div class="about-feature-detail" id="about-feature-detail-' + idx + '" style="display:none;">' + f.detail + '</div>';
             html += '</div>';
         });
         html += '</div>';
@@ -1253,7 +1289,7 @@
         html += '<h3>Supported Frameworks</h3>';
         html += '<div class="about-frameworks">';
         var frameworks = [
-            { name: 'CFPF', color: 'var(--color-p2)' },
+            { name: 'FS-ISAC CFPF', color: 'var(--color-p2)' },
             { name: 'MITRE ATT&CK', color: 'var(--color-mitre)' },
             { name: 'Group-IB Fraud Matrix', color: 'var(--color-groupib)' },
             { name: 'Stripe FT3', color: 'var(--color-ft3)' },
@@ -1265,73 +1301,52 @@
         });
         html += '</div>';
 
-        // Roadmap
-        html += '<h3>Roadmap</h3>';
-        html += '<div class="about-roadmap">';
-        var phases = [
-            { name: 'Phase 1: IGNITE', desc: 'Core platform, search, detection logic, heat map', status: 'done' },
-            { name: 'Phase 2: FORGE', desc: 'API, MCP server, Sigma export, graph, confidence scoring', status: 'done' },
-            { name: 'Phase 3: SIGNAL', desc: 'STIX extension, MISP galaxy, TAXII feeds, regulatory mapping, framework navigator', status: 'done' },
-            { name: 'Phase 4: BEACON', desc: 'Community contributions, intake pipeline, RSS/webhook feeds, production hardening', status: 'done' },
-            { name: 'Phase 5: SIGNAL-RF', desc: 'Recorded Future 2025 integration — 5 new TPs (e-skimmer, purchase scam, digital wallet, card testing, agentic commerce), 12 detection rules, 5 baselines', status: 'done' },
-            { name: 'Phase 6: SIGNAL-LNRS', desc: 'LexisNexis 2026 integration — BNPL multi-provider fraud TP, 5 detection rules, 1 baseline, 5 existing TP enhancements', status: 'done' },
-            { name: 'Phase 7: Infrastructure Intelligence', desc: 'TAX-01/02 expansion, TP-0041–0043 (AI-accelerated fraud infrastructure, financial institution impersonation, cross-border money mule), DL-0092–100, BL-0021–23', status: 'done' },
-            { name: 'Phase 8: Geopolitical Context', desc: 'TAX-03–05 expansion, TP-0044–0046 (state-criminal convergence, sanctions evasion routing, geopolitically timed campaigns), DL-0101–07, BL-0024–25', status: 'done' },
-            { name: 'Phase 9: Emerging Threats', desc: 'TAX-06 expansion, TP-0047–0049 (human trafficking–linked fraud, TDS chain exploitation, crypto laundering infrastructure), DL-0108–14, BL-0026–27, EP-0006–07', status: 'done' },
-            { name: 'Phase 10: Regulatory Pulse', desc: '6-source automated feed (OFAC, FinCEN, SEC, OCC, FBI IC3, CFPB), program-based TP mapping, twice-daily CI/CD refresh, reference quality audit', status: 'current' }
-        ];
-        phases.forEach(function (p) {
-            html += '<div class="about-roadmap-item about-roadmap-' + p.status + '">';
-            html += '<span class="about-roadmap-dot"></span>';
-            html += '<div>';
-            html += '<strong>' + p.name + '</strong>';
-            html += '<span class="about-roadmap-desc"> &mdash; ' + p.desc + '</span>';
-            html += '</div>';
-            html += '</div>';
-        });
-        html += '</div>';
-
-        // Changelog
-        html += '<h3>Recent Milestones</h3>';
-        html += '<div class="about-changelog">';
-        var changelog = [
-            { date: '2026-03', text: 'Phase 10: Regulatory Pulse — OFAC program-based TP mapping, 6-source category mapping, twice-daily CI/CD, CFPB enabled, reference audit' },
-            { date: '2026-03', text: 'Phase 9: Emerging Threats — TP-0047–0049, DL-0108–14, BL-0026–27, EP-0006–07 (human trafficking, TDS exploitation, crypto laundering)' },
-            { date: '2026-03', text: 'Phase 8: Geopolitical Context — TP-0044–0046, DL-0101–07, BL-0024–25 (state-criminal convergence, sanctions evasion, geo-timed campaigns)' },
-            { date: '2026-03', text: 'Phase 7: Infrastructure Intelligence — TP-0041–0043, DL-0092–100, BL-0021–23 (AI fraud infrastructure, FI impersonation, cross-border mules)' },
-            { date: '2026-03', text: 'Phase 6 SIGNAL-LNRS: LexisNexis 2026 integration — TP-0040 BNPL fraud, 5 detection rules, 5 TP enhancements' },
-            { date: '2026-03', text: 'Phase 5 SIGNAL-RF: Recorded Future 2025 integration — TP-0035–0039, 12 new detection rules, 5 baselines, 4 new fraud types' },
-            { date: '2026-03', text: 'Phase 4 BEACON: RSS feed, 5 emulation playbooks, contributor leaderboard, peer review workflow' },
-            { date: '2026-03', text: 'STIX 2.1 fraud extension with 4 custom SDOs, TAXII 2.1, MISP galaxy' },
-            { date: '2026-03', text: 'Regulatory mapping (15 regulations, 6 jurisdictions), Framework Navigator' },
-            { date: '2026-03', text: 'MCP server, static JSON API, Sigma export pipeline' },
-            { date: '2026-02', text: 'D3.js relationship graph, coverage assessment, confidence scoring' }
-        ];
-        changelog.forEach(function (c) {
-            html += '<div class="about-changelog-item">';
-            html += '<span class="about-changelog-date">' + c.date + '</span>';
-            html += '<span class="about-changelog-text">' + c.text + '</span>';
-            html += '</div>';
+        // Export formats
+        html += '<h3>Export Formats</h3>';
+        html += '<div class="about-frameworks">';
+        ['STIX 2.1', 'MISP', 'TAXII 2.1', 'Sigma/SPL', 'Sigma/EQL', 'Sigma/KQL', 'CrowdStrike CQL', 'RSS 2.0', 'JSON API'].forEach(function(fmt) {
+            html += '<span class="about-fw-badge" style="border-color: #555; color: #aaa;">' + fmt + '</span>';
         });
         html += '</div>';
 
         // Links
-        html += '<h3>Resources</h3>';
+        html += '<h3>Resources &amp; Downloads</h3>';
         html += '<div class="about-links">';
-        html += '<a href="https://github.com/elchacal801/flame-fraud" target="_blank" rel="noopener" class="about-link-btn">GitHub</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud" target="_blank" rel="noopener" class="about-link-btn">GitHub Repository</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noopener" class="about-link-btn">Architecture Docs</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud/blob/main/docs/openapi.yaml" target="_blank" rel="noopener" class="about-link-btn">OpenAPI Spec</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud/blob/main/docs/MCP-TOOLS.md" target="_blank" rel="noopener" class="about-link-btn">MCP Tool Reference</a>';
         html += '<a href="api/v1/threat-paths.json" target="_blank" rel="noopener" class="about-link-btn">JSON API</a>';
-        html += '<a href="api/taxii/discovery.json" target="_blank" rel="noopener" class="about-link-btn">TAXII Feed</a>';
+        html += '<a href="api/taxii/discovery.json" target="_blank" rel="noopener" class="about-link-btn">TAXII Discovery</a>';
         html += '<a href="data/misp/flame-galaxy.json" target="_blank" rel="noopener" class="about-link-btn">MISP Galaxy</a>';
         html += '<a href="database/flame_stix_bundle.json" target="_blank" rel="noopener" class="about-link-btn">STIX Bundle</a>';
         html += '<a href="database/feed.xml" target="_blank" rel="noopener" class="about-link-btn">RSS Feed</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="about-link-btn">Contributing Guide</a>';
         html += '</div>';
 
         // License
         html += '<div class="about-license">';
-        html += 'MIT License &middot; Built by practitioners, for practitioners.';
+        html += 'MIT License &middot; Open source &middot; TLP:WHITE &middot; Built by practitioners, for practitioners.';
         html += '</div>';
 
         dom.aboutBody.innerHTML = html;
+
+        // Wire up feature card expand/collapse
+        dom.aboutBody.querySelectorAll('.about-feature-expandable').forEach(function(card) {
+            card.addEventListener('click', function() {
+                var idx = card.getAttribute('data-feature-idx');
+                var detail = document.getElementById('about-feature-detail-' + idx);
+                if (!detail) return;
+                var isOpen = detail.style.display !== 'none';
+                // Close all others
+                dom.aboutBody.querySelectorAll('.about-feature-detail').forEach(function(d) { d.style.display = 'none'; });
+                dom.aboutBody.querySelectorAll('.about-feature-expandable').forEach(function(c) { c.classList.remove('about-feature-open'); });
+                if (!isOpen) {
+                    detail.style.display = 'block';
+                    card.classList.add('about-feature-open');
+                }
+            });
+        });
     }
 
     // -----------------------------------------------------------------------

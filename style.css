@@ -4121,3 +4121,43 @@ h4 {
     background: rgba(59, 130, 246, 0.3);
     color: #93bbfc;
 }
+
+/* About modal — expandable feature cards */
+.about-feature-expandable {
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+.about-feature-expandable:hover {
+    border-color: #444;
+    background: rgba(255,255,255,0.03);
+}
+.about-feature-expandable.about-feature-open {
+    border-color: #555;
+    background: rgba(255,255,255,0.05);
+}
+.about-feature-expand-arrow {
+    font-size: 10px;
+    color: #666;
+    transition: transform 0.2s ease;
+}
+.about-feature-open .about-feature-expand-arrow {
+    transform: rotate(180deg);
+}
+.about-feature-detail {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #1f2937;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #bbb;
+}
+.about-feature-detail a {
+    color: #60a5fa;
+}
+.about-feature-detail strong {
+    color: #ddd;
+}
+.about-feature-detail em {
+    color: #aaa;
+    font-style: italic;
+}
