@@ -531,11 +531,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/RelatedTP"
-        evidence:
-          type: array
-          items:
-            type: object
-          description: Supporting evidence objects (may be empty)
         evidence_count:
           type: integer
           description: Number of evidence items
@@ -543,10 +538,17 @@ components:
 
     ThreatPathFull:
       description: |
-        Complete threat path object including the full markdown body.
-        Extends ThreatPathSummary with the `body` field.
+        Complete threat path object including the full markdown body and evidence.
+        Extends ThreatPathSummary with `body` and `evidence` fields.
       allOf:
         - $ref: "#/components/schemas/ThreatPathSummary"
+        - type: object
+          properties:
+            evidence:
+              type: array
+              items:
+                type: object
+              description: Supporting evidence objects (available on individual TP endpoints only)
         - type: object
           properties:
             body:
