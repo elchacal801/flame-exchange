@@ -382,7 +382,11 @@
                         renderRulesGrid(rules);
                     });
                 } else if (viewState === 'browse') {
-                    applyFilters();
+                    // Need detection rules loaded to map severity → TPs
+                    FlameData.loadAllDetectionRules().then(function(rules) {
+                        _buildTPSeverityMap(rules);
+                        applyFilters();
+                    });
                 }
             });
         });
@@ -573,6 +577,20 @@
     // Filtering & Rendering Cards
     // -----------------------------------------------------------------------
 
+    // Cache: TP ID → set of severity levels from its detection rules
+    var _tpSeverityMap = null;
+
+    function _buildTPSeverityMap(rules) {
+        _tpSeverityMap = {};
+        (rules || []).forEach(function(rule) {
+            var level = (rule.level || '').toLowerCase();
+            (rule.threat_path_ids || []).forEach(function(tpId) {
+                if (!_tpSeverityMap[tpId]) _tpSeverityMap[tpId] = new Set();
+                _tpSeverityMap[tpId].add(level);
+            });
+        });
+    }
+
     function applyFilters() {
         // If lunr search is available and query is present, get ranked results
         var lunrMatchIds = null;
@@ -630,6 +648,17 @@
                     if (ft.indexOf(f) !== -1) ftMatch = true;
                 });
                 if (!ftMatch) return false;
+            }
+
+            // Detection rule severity — filter TPs that have at least one rule at selected severity
+            if (activeFilters.severity.size > 0 && _tpSeverityMap) {
+                var tpSevs = _tpSeverityMap[item.id];
+                if (!tpSevs) return false;
+                var sevMatch = false;
+                activeFilters.severity.forEach(function (s) {
+                    if (tpSevs.has(s)) sevMatch = true;
+                });
+                if (!sevMatch) return false;
             }
 
             return true;
