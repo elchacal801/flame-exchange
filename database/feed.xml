@@ -1514,7 +1514,7 @@ Notably, traditional narcotics-producing and terrorism-financing jurisdictions (
       <pubDate>Tue, 17 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>78</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+      <flame:detectionRuleCount>3</flame:detectionRuleCount>
         <category>crypto-laundering</category>
         <category>investment-scam</category>
         <category>money-mule</category>
@@ -2162,6 +2162,40 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
         <category>attack-T1589</category>
     </item>
     <item>
+      <title>[TP-0078] Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines</title>
+      <link>https://flameintel.org/#detail/TP-0078</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0078</guid>
+      <description>Criminal conglomerates are operating industrialized cryptocurrency laundering services that process hundreds of millions of dollars through centralized exchange (CEX) hot wallet pipelines. Unlike the narco-terror Ponzi convergence model documented in TP-0055, this threat path describes a distinct operational model: a criminal organization that builds and operates a full-service laundering infrastructure — issuing its own stablecoin, running its own exchange, and routing proceeds through major centralized exchanges via traceable deposit-to-hot-wallet sweep patterns.
+
+The Huione Group, a Cambodian financial conglomerate designated by FinCEN as a primary money laundering concern in May 2025, is the paradigm case. ICIJ&apos;s year-long &quot;Coin Laundry&quot; investigation documented at least $408 million flowing from Huione-controlled TRON addresses to Binance and at least $226 million to OKX over approximately one year (July 2024 to July 2025). The group operated Huione Pay (a cryptocurrency exchange) and issued its own stablecoin (USDH) deployed across four major blockchains: Ethereum, TRON, Binance Smart Chain, and Solana. TRON/USDT was identified as the dominant rail for Southeast Asian fraud compound money laundering due to speed and low transaction fees.
+
+Critically, neither Binance nor OKX demonstrably curtailed their transaction volume with Huione following their own DOJ plea agreements (Binance: November 2023; OKX: February 2025), indicating that plea-deal compliance commitments did not immediately translate into effective flow interdiction.
+
+The convergence of this laundering infrastructure with offshore shell company opacity (see DL-0198) and unlicensed crypto-to-cash desk operations (see DL-0197) creates a complete end-to-end pipeline from illicit proceeds to usable physical currency.
+
+**Key Distinction from TP-0055**: TP-0055 covers narco-terror organizations using crypto Ponzi schemes to launder drug/extortion proceeds — the criminal actors *using* crypto as a laundering tool. TP-0078 covers the *industrialized laundering service provider* model — a criminal conglomerate offering laundering-as-a-service at scale via its own stablecoin and exchange infrastructure, serving multiple criminal actor types including SE Asian scam compounds.
+
+**Key Distinction from TP-0049**: TP-0049 covers cryptocurrency laundering infrastructure broadly. TP-0078 provides the specific operational pattern of the stablecoin-to-CEX hot wallet pipeline, including the 2-hop attribution methodology and Proof-of-Reserves cross-referencing technique.</description>
+      <pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>82</flame:confidence>
+      <flame:sourceReliability>B</flame:sourceReliability>
+      <flame:detectionRuleCount>5</flame:detectionRuleCount>
+        <category>crypto-laundering</category>
+        <category>crypto-laundering-infrastructure</category>
+        <category>money-laundering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>sector-crypto</category>
+        <category>attack-T1036</category>
+        <category>attack-T1583.001</category>
+        <category>attack-T1657</category>
+    </item>
+    <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
       <link>https://flameintel.org/#rules/DL-0001</link>
       <guid isPermaLink="false">flame-dl-DL-0001</guid>
@@ -2692,6 +2726,7 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
         <category>CFPF-P5</category>
         <category>linked-TP-0002</category>
         <category>linked-TP-0022</category>
+        <category>linked-TP-0078</category>
     </item>
     <item>
       <title>[DL-0041] Peer-to-Peer Transfer Chain (Smurfing Pattern)</title>
@@ -4396,6 +4431,7 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
         <category>severity-critical</category>
         <category>CFPF-P5</category>
         <category>linked-TP-0055</category>
+        <category>linked-TP-0078</category>
     </item>
     <item>
       <title>[DL-0175] Organized Insurance Claims Fraud — Shared Professional Enablers and Claim Timing Clustering Around Policy Inception</title>
@@ -4677,6 +4713,44 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
         <category>severity-high</category>
         <category>CFPF-P4</category>
         <category>linked-TP-0077</category>
+    </item>
+    <item>
+      <title>[DL-0196] Stablecoin Flow to CEX via Hot Wallet Sweep Pattern</title>
+      <link>https://flameintel.org/#rules/DL-0196</link>
+      <guid isPermaLink="false">flame-dl-DL-0196</guid>
+      <description>Detects the 2-hop hot wallet sweep pattern used in industrialized stablecoin laundering pipelines: illicit or high-risk funds flow from a flagged/suspicious address to a centralized exchange (CEX) deposit address (hop 1), which is then automatically swept into the exchange institutional hot wallet (hop 2). Confirming both hops confirms the exchange relationship and receipt of flagged funds. This pattern was documented by ICIJ in the Huione Group investigation, where at least $408 million flowed to Binance and $226 million to OKX via TRON/USDT through this exact mechanism. The detection leverages publicly available exchange Proof-of-Reserves (PoR) address lists and Arkham Intelligence illicit wallet tags to attribute both source risk and destination exchange. TRON/USDT is the primary monitoring surface given its dominance as the SE Asian fraud compound laundering rail.
+</description>
+        <category>crypto-laundering</category>
+        <category>crypto-laundering-infrastructure</category>
+        <category>severity-critical</category>
+        <category>CFPF-P5</category>
+        <category>linked-TP-0055</category>
+        <category>linked-TP-0078</category>
+    </item>
+    <item>
+      <title>[DL-0197] Crypto-to-Cash Desk — Ephemeral Wallet and Unlicensed OTC Indicators</title>
+      <link>https://flameintel.org/#rules/DL-0197</link>
+      <guid isPermaLink="false">flame-dl-DL-0197</guid>
+      <description>Detects crypto-to-cash desk operations that convert USDT to physical currency with minimal or no KYC, generating fresh wallet addresses per transaction to defeat blockchain tracing. These unlicensed OTC operations represent the final monetization layer in stablecoin laundering pipelines, bridging the gap between on-chain cryptocurrency and usable physical cash. ICIJ investigators documented such operations in Dubai and Eastern European cities during the Coin Laundry investigation, with one desk processing $2 million in volume over 10 days on the TRON network alone — and critically, that desk did not appear in any major blockchain analytics provider attribution database (Chainalysis, TRM, Elliptic). The detection targets ephemeral wallets (&lt; 7 days old, &lt; 3 prior transactions) receiving USDT from multiple distinct sources on TRON, where the destination wallet is not attributed in any known analytics or exchange Proof-of-Reserves database.
+</description>
+        <category>crypto-laundering</category>
+        <category>money-laundering</category>
+        <category>severity-high</category>
+        <category>CFPF-P5</category>
+        <category>linked-TP-0078</category>
+    </item>
+    <item>
+      <title>[DL-0198] Shell Company Address Concentration as Fraud Infrastructure Indicator</title>
+      <link>https://flameintel.org/#rules/DL-0198</link>
+      <guid isPermaLink="false">flame-dl-DL-0198</guid>
+      <description>Detects abnormal concentration of corporate registrations at a single registered address as an indicator of shell company infrastructure used for fraud, money laundering, or beneficial ownership obfuscation. The ICIJ/OpenCorporates investigation of Wyoming documented that 40% of all Wyoming LLCs are registered to just two buildings in Sheridan, WY, with a 30% spike in LLC registrations in 2023 alone. Wyoming now surpasses Delaware in companies registered per capita. Wyoming LLC services are actively marketed in Cyprus, Singapore, and other offshore jurisdictions as tax avoidance and asset-shielding vehicles. Millions in PPP loan fraud were traced to shell companies registered at a single Wyoming storefront address. The Corporate Transparency Act beneficial ownership registry — catalyzed by the FinCEN Files investigation — was effectively gutted in 2025 when the Trump Administration suspended all enforcement and deleted previously submitted data, removing the primary countermeasure against shell company opacity in the United States. This rule targets the recon phase (P1) where fraud infrastructure is established through mass corporate registration at concentrated addresses.
+</description>
+        <category>money-laundering</category>
+        <category>shell-company-fraud</category>
+        <category>severity-medium</category>
+        <category>CFPF-P1</category>
+        <category>linked-TP-0055</category>
+        <category>linked-TP-0078</category>
     </item>
   </channel>
 </rss>

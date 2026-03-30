@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-30T02:16:46.379480+00:00",
-    "total": 77
+    "generated_at": "2026-03-30T07:04:12.821413+00:00",
+    "total": 78
   },
   "data": [
     {
@@ -6334,7 +6334,9 @@
         "BL-0036"
       ],
       "detection_rule_ids": [
-        "DL-0174"
+        "DL-0174",
+        "DL-0196",
+        "DL-0198"
       ],
       "related_tps": [
         {
@@ -8543,6 +8545,112 @@
         }
       ],
       "evidence_count": 3
+    },
+    {
+      "id": "TP-0078",
+      "title": "Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines",
+      "category": "ThreatPath",
+      "date": "2026-03-30",
+      "author": "FLAME Project",
+      "source": "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026)",
+      "tlp": "WHITE",
+      "summary": "Criminal conglomerates are operating industrialized cryptocurrency laundering services that process hundreds of millions of dollars through centralized exchange (CEX) hot wallet pipelines. Unlike the narco-terror Ponzi convergence model documented in TP-0055, this threat path describes a distinct operational model: a criminal organization that builds and operates a full-service laundering infrastructure — issuing its own stablecoin, running its own exchange, and routing proceeds through major centralized exchanges via traceable deposit-to-hot-wallet sweep patterns.\n\nThe Huione Group, a Cambodian financial conglomerate designated by FinCEN as a primary money laundering concern in May 2025, is the paradigm case. ICIJ's year-long \"Coin Laundry\" investigation documented at least $408 million flowing from Huione-controlled TRON addresses to Binance and at least $226 million to OKX over approximately one year (July 2024 to July 2025). The group operated Huione Pay (a cryptocurrency exchange) and issued its own stablecoin (USDH) deployed across four major blockchains: Ethereum, TRON, Binance Smart Chain, and Solana. TRON/USDT was identified as the dominant rail for Southeast Asian fraud compound money laundering due to speed and low transaction fees.\n\nCritically, neither Binance nor OKX demonstrably curtailed their transaction volume with Huione following their own DOJ plea agreements (Binance: November 2023; OKX: February 2025), indicating that plea-deal compliance commitments did not immediately translate into effective flow interdiction.\n\nThe convergence of this laundering infrastructure with offshore shell company opacity (see DL-0198) and unlicensed crypto-to-cash desk operations (see DL-0197) creates a complete end-to-end pipeline from illicit proceeds to usable physical currency.\n\n**Key Distinction from TP-0055**: TP-0055 covers narco-terror organizations using crypto Ponzi schemes to launder drug/extortion proceeds — the criminal actors *using* crypto as a laundering tool. TP-0078 covers the *industrialized laundering service provider* model — a criminal conglomerate offering laundering-as-a-service at scale via its own stablecoin and exchange infrastructure, serving multiple criminal actor types including SE Asian scam compounds.\n\n**Key Distinction from TP-0049**: TP-0049 covers cryptocurrency laundering infrastructure broadly. TP-0078 provides the specific operational pattern of the stablecoin-to-CEX hot wallet pipeline, including the 2-hop attribution methodology and Proof-of-Reserves cross-referencing technique.",
+      "confidence_score": 82,
+      "source_reliability": "B",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "crypto",
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "crypto-laundering-infrastructure",
+        "money-laundering"
+      ],
+      "tags": [
+        "stablecoin-laundering",
+        "tron-usdt",
+        "hot-wallet-sweep",
+        "cex-pipeline",
+        "huione-group",
+        "proof-of-reserves",
+        "crypto-to-cash",
+        "exchange-attribution",
+        "laundering-as-a-service",
+        "icij-coin-laundry",
+        "fincen-311",
+        "shell-company-convergence",
+        "beneficial-ownership-gap"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1657",
+        "T1583.001",
+        "T1036"
+      ],
+      "ft3_tactics": [
+        "FTA007",
+        "FTA003"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Initial Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-AML",
+        "REG-FATF-R16",
+        "REG-FINCEN-HUIONE-311",
+        "REG-OFAC-CRYPTO-2021"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0040",
+        "DL-0174",
+        "DL-0196",
+        "DL-0197",
+        "DL-0198"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0045",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0049",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0055",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0058",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 4
     }
   ]
 }

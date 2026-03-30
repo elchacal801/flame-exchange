@@ -273207,6 +273207,20 @@
     ]
   },
   {
+    "alert_id": "fincen-0000",
+    "source": "fincen",
+    "title": "Aviso de FinCEN FIN-2025-A003",
+    "date": "2026-01-13",
+    "category": "money-laundering",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/aviso-de-fincen-fin-2025-a003",
+    "summary": "Aviso de FinCEN: Uso de Redes Chinas de Lavado de Dinero por Organizaciones Criminales Transnacionales con Base en México para Lavar Ganancias Ilícitas",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0003"
+    ]
+  },
+  {
     "alert_id": "sec-0052",
     "source": "sec",
     "title": "SEC Litigation: Guy Robert Elliott\n\nRelease No.\nLR-26459\n\n\nSee Also: \n\n\nJoint Stipulation to Dismiss and Release",
@@ -273844,6 +273858,196 @@
     "summary": "SEC Enforcement Action / Litigation Release",
     "mapped_tp_ids": [
       "TP-0031"
+    ]
+  },
+  {
+    "alert_id": "fincen-0001",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2025-A003",
+    "date": "2025-08-28",
+    "category": "money-laundering",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2025-a003",
+    "summary": "FinCEN Advisory on the Use of Chinese Money Laundering Networks by Mexico-Based Transnational Criminal Organizations to Launder Illicit Proceeds",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "fincen-0002",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2025-A002",
+    "date": "2025-06-06",
+    "category": "sanctions-evasion",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2025-a002",
+    "summary": "FinCEN Advisory on the Iranian Regime’s Illicit Oil  Smuggling Activities, Shadow Banking Networks, and  Weapons Procurement Efforts",
+    "mapped_tp_ids": [
+      "TP-0044",
+      "TP-0045"
+    ]
+  },
+  {
+    "alert_id": "fincen-0003",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2025-A001",
+    "date": "2025-04-01",
+    "category": "terrorism-financing",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2025-a001",
+    "summary": "FinCEN Advisory on the Financing of the Islamic State of Iraq and Syria (ISIS) and its Global Affiliates",
+    "mapped_tp_ids": [
+      "TP-0055"
+    ]
+  },
+  {
+    "alert_id": "fincen-0004",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2024-A002",
+    "date": "2024-06-20",
+    "category": "synthetic-identity",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2024-a002",
+    "summary": "Supplemental Advisory on the Procurement of Precursor Chemicals and Manufacturing Equipment Used for the Synthesis of Illicit Fentanyl and Other Synthetic Opioids",
+    "mapped_tp_ids": [
+      "TP-0012",
+      "TP-0034"
+    ]
+  },
+  {
+    "alert_id": "fincen-0005",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2024-A001",
+    "date": "2024-05-08",
+    "category": "terrorism-financing",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2024-a001",
+    "summary": "Advisory to Counter the Financing of Iran-Backed Terrorist Organizations",
+    "mapped_tp_ids": [
+      "TP-0055"
+    ]
+  },
+  {
+    "alert_id": "fincen-0006",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2022-A002",
+    "date": "2022-06-15",
+    "category": "elder-fraud",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2022-a002",
+    "summary": "Advisory on Elder Financial Exploitation",
+    "mapped_tp_ids": [
+      "TP-0027"
+    ]
+  },
+  {
+    "alert_id": "fincen-0007",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2022-A001",
+    "date": "2022-04-14",
+    "category": "corruption",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2022-a001",
+    "summary": "Advisory on Kleptocracy and Foreign Public Corruption",
+    "mapped_tp_ids": [
+      "TP-0044"
+    ]
+  },
+  {
+    "alert_id": "fincen-0008",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2021-A004",
+    "date": "2021-11-08",
+    "category": "ransomware",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2021-a004",
+    "summary": "Advisory on Ransomware and the Use of the Financial System to Facilitate Ransom Payments",
+    "mapped_tp_ids": [
+      "TP-0020"
+    ]
+  },
+  {
+    "alert_id": "fincen-0009",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2021-A003",
+    "date": "2021-03-11",
+    "category": "money-laundering",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2021-a003",
+    "summary": "Advisory on the Financial Action Task Force-Identified Jurisdictions with Anti-Money Laundering and Combating the Financing of Terrorism and Counter-Proliferation Deficiencies",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "fincen-0010",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2021-A002",
+    "date": "2021-02-24",
+    "category": "Advisory",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2021-a002",
+    "summary": "Advisory on Financial Crimes Targeting COVID-19 Economic Impact Payments",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "fincen-0011",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2021-A001",
+    "date": "2021-02-02",
+    "category": "Advisory",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2021-a001",
+    "summary": "Advisory on COVID-19 Health Insurance- and Health Care-Related Fraud",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "fincen-0012",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2020-A009",
+    "date": "2020-11-06",
+    "category": "money-laundering",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2020-a009",
+    "summary": "Advisory on the Financial Action Task Force-Identified Jurisdictions with Anti-Money Laundering, Combating the Financing of Terrorism, and Proliferation Deficiencies",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "fincen-0013",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2020-A008",
+    "date": "2020-10-15",
+    "category": "human-trafficking",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2020-a008",
+    "summary": "Supplemental Advisory on Identifying and Reporting Human Trafficking and Related Activity",
+    "mapped_tp_ids": [
+      "TP-0047"
+    ]
+  },
+  {
+    "alert_id": "fincen-0014",
+    "source": "fincen",
+    "title": "FinCEN Advisory FIN-2020-A007",
+    "date": "2020-10-13",
+    "category": "Advisory",
+    "severity": "high",
+    "url": "https://www.fincen.gov/resources/advisories/fincen-advisory-fin-2020-a007",
+    "summary": "Advisory on Unemployment Insurance Fraud During Covid 19 Pandemic",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0003"
     ]
   },
   {

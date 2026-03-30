@@ -1,5 +1,5 @@
 {
-  "total": 77,
+  "total": 78,
   "fraudTypes": 136,
   "fraudTypeList": [
     "BEC",
@@ -165,11 +165,11 @@
     "web3"
   ],
   "phaseCoverage": {
-    "P1": 74,
-    "P2": 73,
-    "P3": 76,
-    "P4": 75,
-    "P5": 75
+    "P1": 75,
+    "P2": 74,
+    "P3": 77,
+    "P4": 76,
+    "P5": 76
   },
   "topTags": [
     {
@@ -217,6 +217,10 @@
       "count": 4
     },
     {
+      "tag": "huione-group",
+      "count": 4
+    },
+    {
       "tag": "nrf-rft",
       "count": 4
     },
@@ -246,10 +250,6 @@
     },
     {
       "tag": "evilginx",
-      "count": 3
-    },
-    {
-      "tag": "huione-group",
       "count": 3
     }
   ],
@@ -690,24 +690,24 @@
     {
       "fraud_type": "crypto-laundering",
       "phases": {
-        "P1": 8,
-        "P2": 8,
-        "P3": 8,
-        "P4": 8,
-        "P5": 8
+        "P1": 9,
+        "P2": 9,
+        "P3": 9,
+        "P4": 9,
+        "P5": 9
       },
-      "total_tps": 8
+      "total_tps": 9
     },
     {
       "fraud_type": "crypto-laundering-infrastructure",
       "phases": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 1,
-        "P4": 1,
-        "P5": 1
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
       },
-      "total_tps": 1
+      "total_tps": 2
     },
     {
       "fraud_type": "data-theft",
@@ -1232,13 +1232,13 @@
     {
       "fraud_type": "money-laundering",
       "phases": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 1,
-        "P4": 1,
-        "P5": 1
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
       },
-      "total_tps": 1
+      "total_tps": 2
     },
     {
       "fraud_type": "money-mule",
@@ -1722,19 +1722,20 @@
     }
   ],
   "regulatoryAlerts": {
-    "total": 18918,
+    "total": 18933,
     "bySeverity": {
-      "high": 18813,
+      "high": 18828,
       "medium": 105
     },
     "bySource": {
       "cfpb": 100,
       "fbi_ic3": 6,
+      "fincen": 15,
       "occ": 5,
       "ofac": 18707,
       "sec": 100
     },
     "lastUpdated": "2026-03-30"
   },
-  "generatedAt": "2026-03-30T02:16:46.259819+00:00"
+  "generatedAt": "2026-03-30T07:04:12.692986+00:00"
 }

@@ -6328,7 +6328,9 @@
       "BL-0036"
     ],
     "detection_rule_ids": [
-      "DL-0174"
+      "DL-0174",
+      "DL-0196",
+      "DL-0198"
     ],
     "related_tps": [
       {
@@ -8537,5 +8539,111 @@
       }
     ],
     "evidence_count": 3
+  },
+  {
+    "id": "TP-0078",
+    "title": "Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines",
+    "category": "ThreatPath",
+    "date": "2026-03-30",
+    "author": "FLAME Project",
+    "source": "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026)",
+    "tlp": "WHITE",
+    "summary": "Criminal conglomerates are operating industrialized cryptocurrency laundering services that process hundreds of millions of dollars through centralized exchange (CEX) hot wallet pipelines. Unlike the ...",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "crypto",
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "crypto-laundering-infrastructure",
+      "money-laundering"
+    ],
+    "tags": [
+      "stablecoin-laundering",
+      "tron-usdt",
+      "hot-wallet-sweep",
+      "cex-pipeline",
+      "huione-group",
+      "proof-of-reserves",
+      "crypto-to-cash",
+      "exchange-attribution",
+      "laundering-as-a-service",
+      "icij-coin-laundry",
+      "fincen-311",
+      "shell-company-convergence",
+      "beneficial-ownership-gap"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1657",
+      "T1583.001",
+      "T1036"
+    ],
+    "ft3_tactics": [
+      "FTA007",
+      "FTA003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-AML",
+      "REG-FATF-R16",
+      "REG-FINCEN-HUIONE-311",
+      "REG-OFAC-CRYPTO-2021"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0040",
+      "DL-0174",
+      "DL-0196",
+      "DL-0197",
+      "DL-0198"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0045",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0055",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0058",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 4
   }
 ]

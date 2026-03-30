@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-30T02:16:47.413004+00:00",
-    "total": 195
+    "generated_at": "2026-03-30T07:04:13.983891+00:00",
+    "total": 198
   },
   "data": [
     {
@@ -2500,10 +2500,11 @@
             "Coinbase",
             "Binance",
             "Kraken",
-            "FTX",
+            "OKX",
             "Gemini",
             "Crypto.com",
-            "Bitfinex"
+            "Bitfinex",
+            "Bybit"
           ]
         },
         "timeframe": "24h",
@@ -2525,15 +2526,17 @@
       },
       "queries": {
         "cql": "// CrowdStrike CQL for Crypto Off-Ramp After Wire or ACH Receipt\n// Repository: flame-banking-transaction-monitoring\n// Correlates inbound fiat with outbound transfer to crypto exchange within 24h\n((event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\") AND transaction_amount>=1000)\nOR ((event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\") AND\n  beneficiary_category=\"crypto_exchange\")\n| selfJoinFilter(account_id, where=[\n    {event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\"}\n    {beneficiary_category=\"crypto_exchange\"}\n  ])\n| groupBy(account_id, function=[\n    count(as=event_count),\n    collect([event_type, transaction_amount, beneficiary_name, @timestamp])\n  ], span=24h)\n| event_count >= 2",
-        "splunk": "`comment(\"Splunk SPL for Crypto Off-Ramp After Wire or ACH Receipt\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_crypto_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=1000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\nbeneficiary_category=\"crypto_exchange\"\n(beneficiary_name=\"Coinbase\" OR beneficiary_name=\"Binance\" OR beneficiary_name=\"Kraken\" OR beneficiary_name=\"FTX\" OR beneficiary_name=\"Gemini\")\n| transaction account_id maxspan=24h\n| where eventcount >= 2"
+        "splunk": "`comment(\"Splunk SPL for Crypto Off-Ramp After Wire or ACH Receipt\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | near selection_crypto_outbound by account_id\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\")\ntransaction_amount>=1000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\")\nbeneficiary_category=\"crypto_exchange\"\n(beneficiary_name=\"Coinbase\" OR beneficiary_name=\"Binance\" OR beneficiary_name=\"Kraken\" OR beneficiary_name=\"OKX\" OR beneficiary_name=\"Gemini\" OR beneficiary_name=\"Bybit\")\n| transaction account_id maxspan=24h\n| where eventcount >= 2"
       },
       "references": [
         "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf",
-        "https://www.fincen.gov/sites/default/files/shared/FIN-2019-A003.pdf"
+        "https://www.fincen.gov/sites/default/files/shared/FIN-2019-A003.pdf",
+        "ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026) — exchange off-ramp patterns documented in Huione Group investigation"
       ],
       "threat_path_ids": [
         "TP-0002",
-        "TP-0022"
+        "TP-0022",
+        "TP-0078"
       ],
       "fraud_types": [
         "crypto-laundering",
@@ -12092,7 +12095,8 @@
         "ScamSniffer, 2024 Web3 Phishing Report — $494M stolen via wallet drainers",
         "Chainalysis, 2025 Crypto Crime Report — $16.1B in CMLN processing",
         "Elliptic, Drainer-as-a-Service Research — DaaS smart contract architecture",
-        "Forta Network, On-Chain Threat Detection — wallet drainer alert feeds"
+        "Forta Network, On-Chain Threat Detection — wallet drainer alert feeds",
+        "Arkham Intelligence illicit wallet tag database (intel.arkm.com/tags/suspicious) — open-source drainer wallet address attribution and flagging"
       ],
       "threat_path_ids": [
         "TP-0032"
@@ -12751,10 +12755,15 @@
         "OFAC, Sanctions Compliance Guidance for the Virtual Currency Industry, October 2021",
         "FinCEN, Advisory on Illicit Activity Involving Convertible Virtual Currency, May 2019",
         "FATF Recommendation 16 — Wire Transfer Rule",
-        "UNODC, Organized Fraud Issue Paper (Vienna, 2024)"
+        "UNODC, Organized Fraud Issue Paper (Vienna, 2024)",
+        "Arkham Intelligence illicit wallet tag database (intel.arkm.com/tags/suspicious) — open-source wallet attribution starting point for sanctions-exposed and illicit wallet identification",
+        "Florida FOIA records — unredacted cryptocurrency wallet addresses in police reports and AG consumer complaints provide victim-linked address ground truth",
+        "Exchange Proof-of-Reserves CSVs (Binance, OKX, Bybit) — publicly available exchange address attribution resource for confirming exchange relationships",
+        "ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026) — OSINT methodology for wallet attribution without proprietary analytics access"
       ],
       "threat_path_ids": [
-        "TP-0055"
+        "TP-0055",
+        "TP-0078"
       ],
       "fraud_types": [
         "crypto-laundering",
@@ -14927,6 +14936,346 @@
         "Photos of actual damage that has been legitimately enhanced for visibility",
         "Low-quality camera phones producing artifacts similar to GAN generation",
         "Photos compressed or resized by messaging apps introducing compression artifacts"
+      ]
+    },
+    {
+      "id": "a7e3b1c4-2d9f-4a8e-b6c1-5f0e8d2a7b39",
+      "dl_id": "DL-0196",
+      "title": "Stablecoin Flow to CEX via Hot Wallet Sweep Pattern",
+      "status": "experimental",
+      "description": "Detects the 2-hop hot wallet sweep pattern used in industrialized stablecoin laundering pipelines: illicit or high-risk funds flow from a flagged/suspicious address to a centralized exchange (CEX) deposit address (hop 1), which is then automatically swept into the exchange institutional hot wallet (hop 2). Confirming both hops confirms the exchange relationship and receipt of flagged funds. This pattern was documented by ICIJ in the Huione Group investigation, where at least $408 million flowed to Binance and $226 million to OKX via TRON/USDT through this exact mechanism. The detection leverages publicly available exchange Proof-of-Reserves (PoR) address lists and Arkham Intelligence illicit wallet tags to attribute both source risk and destination exchange. TRON/USDT is the primary monitoring surface given its dominance as the SE Asian fraud compound laundering rail.\n",
+      "cfpf_phase": "P5",
+      "level": "critical",
+      "detection": {
+        "selection": {
+          "token_symbol": [
+            "USDT",
+            "USDC"
+          ],
+          "chain": [
+            "TRON",
+            "ETH",
+            "BSC"
+          ],
+          "amount_usd|gte": 10000
+        },
+        "filter_por_match": {
+          "destination_in_por_dataset": true
+        },
+        "filter_hot_wallet_sweep": {
+          "sweep_to_hot_wallet": true,
+          "hours_to_sweep|lte": 24
+        },
+        "filter_source_risk": {
+          "source_risk_score|gte": 70
+        },
+        "filter_source_tagged": {
+          "source_illicit_tag": true
+        },
+        "condition": "selection AND (filter_por_match OR filter_hot_wallet_sweep) AND (filter_source_risk OR filter_source_tagged)",
+        "timeframe": "30d"
+      },
+      "logsource": {
+        "product": "crypto",
+        "service": "chain_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "transaction_hash",
+          "from_address",
+          "to_address",
+          "amount_usd",
+          "amount_crypto",
+          "token_symbol",
+          "chain",
+          "block_number",
+          "block_timestamp"
+        ],
+        "enrichment_required": [
+          {
+            "field": "destination_in_por_dataset",
+            "source": "Cross-reference destination address against collected exchange Proof-of-Reserves CSV datasets (Binance, OKX, Bybit, Kraken). Updated quarterly."
+          },
+          {
+            "field": "sweep_to_hot_wallet",
+            "source": "Blockchain analytics — true if destination address subsequently transfers full balance to a known exchange hot wallet within 24 hours"
+          },
+          {
+            "field": "hours_to_sweep",
+            "source": "Time in hours between initial deposit transaction and the sweep transaction to the exchange hot wallet"
+          },
+          {
+            "field": "source_risk_score",
+            "source": "Composite risk score (0-100) from blockchain analytics platform (Arkham Intelligence, Chainalysis, or equivalent) for the source wallet address"
+          },
+          {
+            "field": "source_illicit_tag",
+            "source": "Arkham Intelligence illicit/suspicious tag database — true if source wallet is tagged as illicit, suspicious, OFAC-sanctioned, or involved in known criminal activity"
+          },
+          {
+            "field": "exchange_name",
+            "source": "Exchange name derived from PoR dataset match or hot wallet attribution"
+          }
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Stablecoin Flow to CEX via Hot Wallet Sweep\n// Detects 2-hop pattern: flagged source -> deposit address -> hot wallet\n(token_symbol=\"USDT\" OR token_symbol=\"USDC\")\n(chain=\"TRON\" OR chain=\"ETH\" OR chain=\"BSC\")\namount_usd>=10000\n(source_risk_score>=70 OR source_illicit_tag=\"true\")\n| match(to_address, file=\"exchange_por_addresses.csv\", field=\"address\", strict=false)\n  OR sweep_to_hot_wallet=\"true\"\n| groupBy(from_address, function=[\n    collect([transaction_hash, to_address, amount_usd, token_symbol, chain,\n             source_risk_score, source_illicit_tag, exchange_name,\n             sweep_to_hot_wallet, hours_to_sweep, @timestamp]),\n    sum(amount_usd, as=total_volume)\n  ])\n| sort(total_volume, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Stablecoin Flow to CEX via Hot Wallet Sweep\")`\n`comment(\"Detects 2-hop pattern: flagged source -> deposit address -> hot wallet\")`\nindex=flame_blockchain sourcetype=flame:chain_monitoring\n  (token_symbol=\"USDT\" OR token_symbol=\"USDC\")\n  (chain=\"TRON\" OR chain=\"ETH\" OR chain=\"BSC\")\n  amount_usd>=10000\n  (source_risk_score>=70 OR source_illicit_tag=\"true\")\n| lookup exchange_por_addresses to_address AS to_address OUTPUT exchange_name AS por_exchange\n| where isnotnull(por_exchange) OR sweep_to_hot_wallet=\"true\"\n| eval detection_method = case(\n    isnotnull(por_exchange), \"por_match\",\n    sweep_to_hot_wallet=\"true\", \"hot_wallet_sweep\",\n    1=1, \"unknown\")\n| stats sum(amount_usd) AS total_volume,\n        count AS transaction_count,\n        dc(to_address) AS unique_deposit_addresses,\n        values(exchange_name) AS exchanges,\n        values(detection_method) AS methods\n  BY from_address\n| sort - total_volume",
+        "sql": "-- SQL for Stablecoin Flow to CEX via Hot Wallet Sweep\n-- Detects 2-hop pattern: flagged source -> deposit address -> hot wallet\nWITH flagged_deposits AS (\n  SELECT\n    t.transaction_hash AS deposit_tx,\n    t.from_address AS source_wallet,\n    t.to_address AS deposit_address,\n    t.amount_usd,\n    t.token_symbol,\n    t.chain,\n    t.block_timestamp AS deposit_time,\n    w.risk_score AS source_risk_score,\n    w.illicit_tag AS source_illicit_tag\n  FROM transactions t\n  JOIN wallet_risk w ON t.from_address = w.wallet_address\n  WHERE t.token_symbol IN ('USDT', 'USDC')\n    AND t.chain IN ('TRON', 'ETH', 'BSC')\n    AND t.amount_usd >= 10000\n    AND (w.risk_score >= 70 OR w.illicit_tag = TRUE)\n    AND t.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '30 days'\n),\nsweep_events AS (\n  SELECT\n    t2.from_address AS deposit_address,\n    t2.to_address AS hot_wallet,\n    t2.block_timestamp AS sweep_time,\n    hw.exchange_name\n  FROM transactions t2\n  JOIN exchange_hot_wallets hw ON t2.to_address = hw.wallet_address\n  WHERE t2.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '30 days'\n)\nSELECT\n  fd.source_wallet,\n  fd.deposit_address,\n  se.hot_wallet,\n  se.exchange_name,\n  fd.amount_usd,\n  fd.token_symbol,\n  fd.chain,\n  fd.source_risk_score,\n  fd.source_illicit_tag,\n  fd.deposit_time,\n  se.sweep_time,\n  EXTRACT(EPOCH FROM (se.sweep_time - fd.deposit_time))/3600 AS hours_to_sweep\nFROM flagged_deposits fd\nJOIN sweep_events se ON fd.deposit_address = se.deposit_address\nWHERE se.sweep_time > fd.deposit_time\n  AND se.sweep_time < fd.deposit_time + INTERVAL '24 hours'\nORDER BY fd.amount_usd DESC"
+      },
+      "references": [
+        "ICIJ Coin Laundry Investigation (2024-2025) — Huione Group tracing methodology",
+        "ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026)",
+        "FinCEN Section 311 Designation of Huione Group (May 2025)",
+        "Exchange Proof-of-Reserves publications (Binance, OKX, Bybit)",
+        "Arkham Intelligence illicit wallet tag database (intel.arkm.com/tags/suspicious)"
+      ],
+      "threat_path_ids": [
+        "TP-0055",
+        "TP-0078"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "crypto-laundering-infrastructure"
+      ],
+      "tags": [
+        "TP-0055",
+        "TP-0078",
+        "attack.t1657",
+        "cex-pipeline",
+        "cfpf.phase5.monetization",
+        "exchange-attribution",
+        "hot-wallet-sweep",
+        "huione-group",
+        "proof-of-reserves",
+        "stablecoin-laundering",
+        "tron-usdt"
+      ],
+      "falsepositives": [
+        "Legitimate high-value crypto transfers from institutional investors to exchanges",
+        "OTC trading desks with high volume that happen to receive from wallets with elevated risk scores due to indirect associations",
+        "Market makers rebalancing positions across exchanges"
+      ]
+    },
+    {
+      "id": "b8f4c2d5-3e0a-4b9f-c7d2-6a1f9e3b8c4a",
+      "dl_id": "DL-0197",
+      "title": "Crypto-to-Cash Desk — Ephemeral Wallet and Unlicensed OTC Indicators",
+      "status": "experimental",
+      "description": "Detects crypto-to-cash desk operations that convert USDT to physical currency with minimal or no KYC, generating fresh wallet addresses per transaction to defeat blockchain tracing. These unlicensed OTC operations represent the final monetization layer in stablecoin laundering pipelines, bridging the gap between on-chain cryptocurrency and usable physical cash. ICIJ investigators documented such operations in Dubai and Eastern European cities during the Coin Laundry investigation, with one desk processing $2 million in volume over 10 days on the TRON network alone — and critically, that desk did not appear in any major blockchain analytics provider attribution database (Chainalysis, TRM, Elliptic). The detection targets ephemeral wallets (< 7 days old, < 3 prior transactions) receiving USDT from multiple distinct sources on TRON, where the destination wallet is not attributed in any known analytics or exchange Proof-of-Reserves database.\n",
+      "cfpf_phase": "P5",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "token_symbol": "USDT",
+          "chain": "TRON",
+          "amount_usd|gte": 500
+        },
+        "filter_ephemeral_wallet": {
+          "destination_wallet_age_days|lte": 7,
+          "destination_wallet_tx_count|lt": 3
+        },
+        "filter_desk_aggregation": {
+          "destination_unique_senders_72h|gte": 5
+        },
+        "filter_unattributed": {
+          "destination_in_por_dataset": false,
+          "destination_in_analytics_db": false
+        },
+        "condition": "selection AND filter_ephemeral_wallet AND (filter_desk_aggregation OR filter_unattributed)",
+        "timeframe": "7d"
+      },
+      "logsource": {
+        "product": "crypto",
+        "service": "chain_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "transaction_hash",
+          "from_address",
+          "to_address",
+          "amount_usd",
+          "amount_crypto",
+          "token_symbol",
+          "chain",
+          "block_number",
+          "block_timestamp"
+        ],
+        "enrichment_required": [
+          {
+            "field": "destination_wallet_age_days",
+            "source": "Blockchain analytics — days since first transaction involving the destination wallet address"
+          },
+          {
+            "field": "destination_wallet_tx_count",
+            "source": "Blockchain analytics — total transaction count for the destination wallet address at time of current transaction"
+          },
+          {
+            "field": "destination_unique_senders_72h",
+            "source": "Blockchain analytics — count of distinct source wallet addresses that have sent to the destination wallet in the preceding 72 hours"
+          },
+          {
+            "field": "destination_in_por_dataset",
+            "source": "Cross-reference destination address against collected exchange Proof-of-Reserves CSV datasets. False if address does not appear in any PoR dataset."
+          },
+          {
+            "field": "destination_in_analytics_db",
+            "source": "Cross-reference destination address against Chainalysis, TRM, Elliptic, or Arkham Intelligence attribution databases. False if address is unattributed in all checked databases."
+          }
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Crypto-to-Cash Desk Ephemeral Wallet Detection\n// Detects unlicensed OTC desk patterns on TRON: ephemeral wallets receiving from multiple sources\ntoken_symbol=\"USDT\" chain=\"TRON\" amount_usd>=500\ndestination_wallet_age_days<=7\ndestination_wallet_tx_count<3\n| groupBy(to_address, function=[\n    count(distinct=from_address, as=unique_senders),\n    sum(amount_usd, as=total_volume),\n    collect([transaction_hash, from_address, amount_usd, @timestamp])\n  ], span=72h)\n| unique_senders >= 5\n| match(to_address, file=\"exchange_por_addresses.csv\", field=\"address\", strict=false, include=false)\n| match(to_address, file=\"arkham_attributed.csv\", field=\"address\", strict=false, include=false)\n| sort(total_volume, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Crypto-to-Cash Desk Ephemeral Wallet Detection\")`\n`comment(\"Detects unlicensed OTC desk patterns on TRON\")`\nindex=flame_blockchain sourcetype=flame:chain_monitoring\n  token_symbol=\"USDT\" chain=\"TRON\" amount_usd>=500\n  destination_wallet_age_days<=7\n  destination_wallet_tx_count<3\n| lookup exchange_por_addresses to_address AS to_address OUTPUT exchange_name AS por_match\n| lookup arkham_attributions to_address AS to_address OUTPUT entity_name AS arkham_match\n| where isnull(por_match) AND isnull(arkham_match)\n| bin _time span=72h\n| stats dc(from_address) AS unique_senders,\n        sum(amount_usd) AS total_volume,\n        count AS tx_count,\n        values(from_address) AS source_wallets\n  BY to_address, _time\n| where unique_senders >= 5\n| sort - total_volume",
+        "sql": "-- SQL for Crypto-to-Cash Desk Ephemeral Wallet Detection\n-- Detects unlicensed OTC desk patterns: ephemeral wallets receiving from multiple sources\nSELECT\n  t.to_address AS desk_wallet,\n  COUNT(DISTINCT t.from_address) AS unique_senders,\n  SUM(t.amount_usd) AS total_volume_usd,\n  MIN(t.block_timestamp) AS first_tx,\n  MAX(t.block_timestamp) AS last_tx,\n  w.first_seen_date,\n  w.total_transaction_count\nFROM transactions t\nJOIN wallet_metadata w ON t.to_address = w.wallet_address\nLEFT JOIN proof_of_reserves por ON t.to_address = por.wallet_address\nLEFT JOIN arkham_attributions ark ON t.to_address = ark.wallet_address\nWHERE t.token_symbol = 'USDT'\n  AND t.chain = 'TRON'\n  AND t.amount_usd >= 500\n  AND t.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '7 days'\n  AND w.total_transaction_count < 3\n  AND w.first_seen_date > CURRENT_DATE - 7\n  AND por.wallet_address IS NULL\n  AND ark.wallet_address IS NULL\nGROUP BY t.to_address, w.first_seen_date, w.total_transaction_count\nHAVING COUNT(DISTINCT t.from_address) >= 5\nORDER BY total_volume_usd DESC"
+      },
+      "references": [
+        "ICIJ Coin Laundry Investigation (2024-2025) — field visits to crypto-to-cash desks in Dubai and Eastern Europe",
+        "ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026) — $2M volume from single unattributed TRON desk in 10 days",
+        "FinCEN Advisory on Illicit Activity Involving Convertible Virtual Currency (May 2019)"
+      ],
+      "threat_path_ids": [
+        "TP-0078"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "money-laundering"
+      ],
+      "tags": [
+        "TP-0078",
+        "attack.t1657",
+        "attribution-gap",
+        "cfpf.phase5.monetization",
+        "crypto-to-cash",
+        "ephemeral-wallet",
+        "otc-desk",
+        "physical-layer",
+        "tron-usdt",
+        "unlicensed-exchange"
+      ],
+      "falsepositives": [
+        "Newly created wallets for legitimate P2P trading on LocalBitcoins or Paxful",
+        "Payment processor wallets during initial operational period",
+        "DeFi protocol wallets receiving from multiple depositors shortly after deployment"
+      ]
+    },
+    {
+      "id": "c9a5d3e6-4f1b-4caa-d8e3-7b2a0f4c9d5b",
+      "dl_id": "DL-0198",
+      "title": "Shell Company Address Concentration as Fraud Infrastructure Indicator",
+      "status": "experimental",
+      "description": "Detects abnormal concentration of corporate registrations at a single registered address as an indicator of shell company infrastructure used for fraud, money laundering, or beneficial ownership obfuscation. The ICIJ/OpenCorporates investigation of Wyoming documented that 40% of all Wyoming LLCs are registered to just two buildings in Sheridan, WY, with a 30% spike in LLC registrations in 2023 alone. Wyoming now surpasses Delaware in companies registered per capita. Wyoming LLC services are actively marketed in Cyprus, Singapore, and other offshore jurisdictions as tax avoidance and asset-shielding vehicles. Millions in PPP loan fraud were traced to shell companies registered at a single Wyoming storefront address. The Corporate Transparency Act beneficial ownership registry — catalyzed by the FinCEN Files investigation — was effectively gutted in 2025 when the Trump Administration suspended all enforcement and deleted previously submitted data, removing the primary countermeasure against shell company opacity in the United States. This rule targets the recon phase (P1) where fraud infrastructure is established through mass corporate registration at concentrated addresses.\n",
+      "cfpf_phase": "P1",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "entity_type": [
+            "LLC",
+            "corporation",
+            "limited_partnership"
+          ],
+          "event_type": "registration"
+        },
+        "filter_address_concentration": {
+          "address_active_entity_count|gte": 50
+        },
+        "filter_opacity_jurisdiction": {
+          "registration_jurisdiction": [
+            "Wyoming",
+            "Nevada",
+            "Delaware",
+            "South Dakota",
+            "New Mexico",
+            "BVI",
+            "Seychelles",
+            "Cayman Islands",
+            "Panama"
+          ]
+        },
+        "filter_agent_velocity": {
+          "agent_registrations_90d|gte": 10
+        },
+        "condition": "selection AND filter_address_concentration AND (filter_opacity_jurisdiction OR filter_agent_velocity)",
+        "timeframe": "90d"
+      },
+      "logsource": {
+        "product": "corporate_registry",
+        "service": "registration_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "entity_name",
+          "entity_type",
+          "registration_date",
+          "registered_address",
+          "registered_agent",
+          "registration_jurisdiction",
+          "entity_status"
+        ],
+        "enrichment_required": [
+          {
+            "field": "address_active_entity_count",
+            "source": "OpenCorporates bulk data or state registry API — count of active entities currently registered at the same address"
+          },
+          {
+            "field": "agent_registrations_90d",
+            "source": "OpenCorporates bulk data or state registry API — count of new registrations by the same registered agent in the preceding 90 days"
+          },
+          {
+            "field": "beneficial_owner_filed",
+            "source": "FinCEN BOI registry lookup — whether beneficial ownership information has been filed for this entity (NOTE status as of 2025 — enforcement suspended, data deleted)"
+          },
+          {
+            "field": "international_marketing_flag",
+            "source": "OSINT — whether the registered agent or formation service is marketed in offshore jurisdictions (Cyprus, Singapore, UAE)"
+          }
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Shell Company Address Concentration Detection\n// Detects abnormal registration concentration at single addresses in opacity jurisdictions\nentity_type IN [\"LLC\", \"corporation\", \"limited_partnership\"]\nevent_type=\"registration\"\n| groupBy(registered_address, function=[\n    count(as=entity_count),\n    count(distinct=entity_name, as=unique_entities),\n    collect([entity_name, registration_date, registered_agent, registration_jurisdiction])\n  ])\n| entity_count >= 50\n| registration_jurisdiction IN [\"Wyoming\", \"Nevada\", \"Delaware\", \"South Dakota\",\n    \"New Mexico\", \"BVI\", \"Seychelles\", \"Cayman Islands\", \"Panama\"]\n  OR agent_registrations_90d >= 10\n| sort(entity_count, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Shell Company Address Concentration Detection\")`\n`comment(\"Detects abnormal corporate registration concentration at single addresses\")`\nindex=flame_corporate sourcetype=flame:entity_monitoring\n  (entity_type=\"LLC\" OR entity_type=\"corporation\" OR entity_type=\"limited_partnership\")\n  event_type=\"registration\"\n| stats count AS entity_count,\n        dc(entity_name) AS unique_entities,\n        values(registration_jurisdiction) AS jurisdictions,\n        values(registered_agent) AS agents,\n        min(registration_date) AS earliest_reg,\n        max(registration_date) AS latest_reg\n  BY registered_address\n| where entity_count >= 50\n| eval is_opacity_jurisdiction = if(\n    match(jurisdictions, \"Wyoming|Nevada|Delaware|South Dakota|New Mexico|BVI|Seychelles|Cayman|Panama\"),\n    1, 0)\n| where is_opacity_jurisdiction=1\n| sort - entity_count",
+        "sql": "-- SQL for Shell Company Address Concentration Detection\n-- Detects abnormal registration concentration at single addresses\nSELECT\n  e.registered_address,\n  COUNT(*) AS entity_count,\n  COUNT(DISTINCT e.entity_name) AS unique_entities,\n  e.registration_jurisdiction,\n  e.registered_agent,\n  MIN(e.registration_date) AS earliest_registration,\n  MAX(e.registration_date) AS latest_registration,\n  COUNT(CASE WHEN e.registration_date >= CURRENT_DATE - INTERVAL '90 days'\n        THEN 1 END) AS registrations_last_90d\nFROM corporate_entities e\nWHERE e.entity_type IN ('LLC', 'corporation', 'limited_partnership')\n  AND e.entity_status = 'active'\nGROUP BY e.registered_address, e.registration_jurisdiction, e.registered_agent\nHAVING COUNT(*) >= 50\n  AND (e.registration_jurisdiction IN ('Wyoming', 'Nevada', 'Delaware',\n       'South Dakota', 'New Mexico', 'BVI', 'Seychelles', 'Cayman Islands', 'Panama')\n    OR COUNT(CASE WHEN e.registration_date >= CURRENT_DATE - INTERVAL '90 days'\n             THEN 1 END) >= 10)\nORDER BY entity_count DESC"
+      },
+      "references": [
+        "ICIJ/OpenCorporates Wyoming investigation — 40% of Wyoming LLCs at 2 Sheridan buildings",
+        "ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026)",
+        "OpenCorporates bulk data analysis methodology (PostgreSQL fuzzy address matching)",
+        "FinCEN Files investigation (2020) — catalyzed Corporate Transparency Act",
+        "Corporate Transparency Act — beneficial ownership reporting (enforcement suspended 2025)",
+        "PPP loan fraud traced to Wyoming shell company storefronts"
+      ],
+      "threat_path_ids": [
+        "TP-0055",
+        "TP-0078"
+      ],
+      "fraud_types": [
+        "money-laundering",
+        "shell-company-fraud"
+      ],
+      "tags": [
+        "TP-0055",
+        "TP-0078",
+        "address-concentration",
+        "beneficial-ownership",
+        "cfpf.phase1.recon",
+        "corporate-opacity",
+        "cta-suspended",
+        "fraud-infrastructure",
+        "opencorporates",
+        "registered-agent",
+        "shell-company",
+        "wyoming-llc"
+      ],
+      "falsepositives": [
+        "Legitimate registered agent services (CT Corporation, CSC Global) that maintain large client portfolios at a single address",
+        "Coworking spaces and business incubators with many tenant companies",
+        "Law firm registered agent services with high-volume but legitimate client bases"
       ]
     }
   ]

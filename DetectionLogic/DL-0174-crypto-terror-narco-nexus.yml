@@ -26,8 +26,13 @@ references:
   - "FinCEN, Advisory on Illicit Activity Involving Convertible Virtual Currency, May 2019"
   - "FATF Recommendation 16 — Wire Transfer Rule"
   - "UNODC, Organized Fraud Issue Paper (Vienna, 2024)"
+  - "Arkham Intelligence illicit wallet tag database (intel.arkm.com/tags/suspicious) — open-source wallet attribution starting point for sanctions-exposed and illicit wallet identification"
+  - "Florida FOIA records — unredacted cryptocurrency wallet addresses in police reports and AG consumer complaints provide victim-linked address ground truth"
+  - "Exchange Proof-of-Reserves CSVs (Binance, OKX, Bybit) — publicly available exchange address attribution resource for confirming exchange relationships"
+  - "ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026) — OSINT methodology for wallet attribution without proprietary analytics access"
 threat_paths:
   - TP-0055
+  - TP-0078
 cfpf_phase: P5
 fraud_types:
   - crypto-laundering

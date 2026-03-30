@@ -1228,5 +1228,45 @@
     "domain_count": "",
     "confidence": "High (peer-reviewed)",
     "cfpf_phase_coverage": "P4"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-001",
+    "tp_id": "TP-0078",
+    "title": "Huione Group — ICIJ Coin Laundry Investigation",
+    "source": "ICIJ \"Coin Laundry\" investigation series (published November 2024 onwards); ICIJ/OpenCorporates \"The Modern Money Trail\" webinar (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High (ICIJ methodology: Tronscan/Arkham API tracing, Proof-of-Reserves cross-referencing, hot wallet sweep confirmation, independent expert reproduction prior to publication)",
+    "cfpf_phase_coverage": "P1, P2, P3, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-002",
+    "tp_id": "TP-0078",
+    "title": "FinCEN Huione Group 311 Designation",
+    "source": "FinCEN, Designation of Huione Group as Primary Money Laundering Concern under Section 311 of the USA PATRIOT Act (May 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High (formal government designation)",
+    "cfpf_phase_coverage": "P5 (regulatory response)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-003",
+    "tp_id": "TP-0078",
+    "title": "Post-Plea Compliance Gap",
+    "source": "ICIJ analysis of transaction volumes pre- and post-DOJ plea agreements",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High (volume analysis based on blockchain data; compliance implementation timelines may involve lag)",
+    "cfpf_phase_coverage": "P4 (compliance failure enabling continued pipeline operation)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-004",
+    "tp_id": "TP-0078",
+    "title": "Crypto-to-Cash Physical Layer",
+    "source": "ICIJ field visits to crypto-to-cash exchange desks in Dubai and Eastern European cities",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High (direct ICIJ observation; single operation documented)",
+    "cfpf_phase_coverage": "P5 (monetization via physical cash conversion)"
   }
 ]
