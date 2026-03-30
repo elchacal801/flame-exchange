@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f97316">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FLAME">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     <title>FLAME — Fraud Lifecycle Analysis & Mitigation Exchange</title>
     <meta name="description"
         content="FLAME is an open-source, community-driven platform for structured fraud detection intelligence. Browse threat paths mapped across CFPF, MITRE ATT&CK, Group-IB Fraud Matrix, and more.">
@@ -116,6 +122,13 @@
     <!-- Navigation Tabs                                                  -->
     <!-- ================================================================ -->
     <nav class="main-nav" id="main-nav">
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
         <a href="#browse" class="nav-tab active" data-view="browse">Threat Paths</a>
         <a href="#rules" class="nav-tab" data-view="rules">Detection Rules</a>
         <a href="#baselines" class="nav-tab" data-view="baselines">Baselines</a>

@@ -199,6 +199,20 @@
             navigateTo('browse');
         });
 
+        // Hamburger menu
+        var hamburger = document.getElementById('nav-hamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', function() {
+                dom.mainNav.classList.toggle('nav-open');
+            });
+            // Close menu when a tab is clicked
+            dom.mainNav.querySelectorAll('.nav-tab').forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    dom.mainNav.classList.remove('nav-open');
+                });
+            });
+        }
+
         // Mobile filter toggle
         dom.filterToggle.addEventListener('click', function () {
             dom.filterPanel.classList.toggle('open');
@@ -2605,6 +2619,17 @@
                 console.warn('STIX export failed:', err.message);
                 alert('STIX bundle not available for export.');
             });
+    }
+
+    // -----------------------------------------------------------------------
+    // Register Service Worker for PWA
+    // -----------------------------------------------------------------------
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(function(reg) { console.log('SW registered:', reg.scope); })
+                .catch(function(err) { console.log('SW registration failed:', err); });
+        });
     }
 
     // -----------------------------------------------------------------------
