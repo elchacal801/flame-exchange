@@ -4021,6 +4021,46 @@ h4 {
     background: #1f2937;
 }
 
+/* ---------------------------------------------------------------
+   Mobile Override — must come AFTER sidebar enhancements above
+   so position: fixed overrides position: relative from line 3973
+   --------------------------------------------------------------- */
+@media (max-width: 900px) {
+    .filter-panel {
+        position: fixed !important;
+        top: var(--header-height);
+        left: 0;
+        bottom: 0;
+        width: 280px;
+        z-index: 80;
+        transform: translateX(-100%);
+        transition: transform 0.3s var(--ease);
+        box-shadow: none;
+    }
+    .filter-panel.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+    }
+    .filter-panel.collapsed {
+        width: 280px !important;
+        min-width: 280px !important;
+        opacity: 1;
+        padding: 0 !important;
+        transform: translateX(-100%);
+    }
+    .sidebar-collapse-btn,
+    .sidebar-expand-btn {
+        display: none !important;
+    }
+    .content-area {
+        width: 100%;
+        padding: var(--space-sm);
+    }
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Collapsible filter groups */
 .filter-group-collapsible {
     cursor: pointer;
@@ -4183,6 +4223,9 @@ h4 {
         text-align: left;
         padding: 12px 16px;
     }
+    .main-nav {
+        position: relative;
+    }
     .main-nav.nav-open {
         flex-direction: column;
         background: #111827;
@@ -4192,6 +4235,8 @@ h4 {
         right: 0;
         z-index: 100;
         border-bottom: 1px solid #333;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        padding: var(--space-xs) 0;
     }
 }
 
