@@ -60,8 +60,7 @@ related_tps:
 regulatory_refs:
   - REG-FINCEN-AML
   - REG-FATF-R16
-  - REG-FINCEN-HUIONE-311
-  - REG-OFAC-CRYPTO-2021
+  - REG-OFAC-SDN
 baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
