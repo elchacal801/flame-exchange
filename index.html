@@ -25,10 +25,12 @@
     <header class="site-header" id="site-header">
         <div class="header-inner">
             <div class="header-brand">
-                <h1 class="logo">
-                    <span class="logo-icon">🔥</span>
-                    <span class="logo-text">FLAME</span>
-                </h1>
+                <a href="#browse" class="logo-link" title="Home">
+                    <h1 class="logo">
+                        <span class="logo-icon">🔥</span>
+                        <span class="logo-text">FLAME</span>
+                    </h1>
+                </a>
                 <p class="tagline">Fraud Lifecycle Analysis &amp; Mitigation Exchange</p>
             </div>
             <div class="header-stats" id="header-stats">
@@ -127,6 +129,14 @@
         <!-- Filter Sidebar -->
         <aside class="filter-panel" id="filter-panel">
             <div class="filter-panel-inner">
+                <!-- Sidebar Collapse Button -->
+                <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" title="Collapse sidebar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </button>
+
                 <!-- Search -->
                 <div class="search-box">
                     <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -150,19 +160,43 @@
                     <div class="filter-chips" id="filter-cfpf-phases"></div>
                 </div>
 
+                <!-- Severity Level -->
+                <div class="filter-group">
+                    <h3 class="filter-group-title">Severity Level</h3>
+                    <div class="filter-chips" id="filter-severity">
+                        <button class="chip" data-severity="critical">Critical</button>
+                        <button class="chip" data-severity="high">High</button>
+                        <button class="chip" data-severity="medium">Medium</button>
+                        <button class="chip" data-severity="low">Low</button>
+                        <button class="chip" data-severity="informational">Info</button>
+                    </div>
+                </div>
+
                 <!-- Sectors -->
                 <div class="filter-group">
-                    <h3 class="filter-group-title">Sectors</h3>
-                    <div class="filter-chips" id="filter-sectors"></div>
+                    <h3 class="filter-group-title filter-group-collapsible" id="sectors-toggle">Sectors <span class="collapse-arrow">&#9662;</span></h3>
+                    <div class="filter-chips-scroll" id="filter-sectors-wrapper">
+                        <div class="filter-chips" id="filter-sectors"></div>
+                    </div>
                 </div>
 
                 <!-- Fraud Types -->
                 <div class="filter-group">
-                    <h3 class="filter-group-title">Fraud Types</h3>
-                    <div class="filter-chips" id="filter-fraud-types"></div>
+                    <h3 class="filter-group-title filter-group-collapsible" id="fraud-types-toggle">Fraud Types <span class="collapse-arrow">&#9662;</span></h3>
+                    <div class="filter-chips-scroll" id="filter-fraud-types-wrapper">
+                        <div class="filter-chips" id="filter-fraud-types"></div>
+                    </div>
                 </div>
             </div>
         </aside>
+
+        <!-- Sidebar Expand Button (visible when collapsed) -->
+        <button class="sidebar-expand-btn" id="sidebar-expand-btn" title="Show filters" style="display:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+            </svg>
+        </button>
 
         <!-- Mobile Filter Toggle -->
         <button class="filter-toggle" id="filter-toggle" aria-label="Toggle filters">

@@ -3955,3 +3955,117 @@ h4 {
         grid-template-columns: 1fr;
     }
 }
+
+/* ===================================================================
+   Sidebar Enhancements
+   =================================================================== */
+
+/* Logo as home link */
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+}
+.logo-link:hover .logo-text {
+    opacity: 0.8;
+}
+
+/* Sidebar collapse/expand */
+.filter-panel {
+    position: relative;
+    transition: width 0.3s ease, min-width 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+}
+.filter-panel.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.sidebar-collapse-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    padding: 4px 6px;
+    z-index: 10;
+    line-height: 1;
+}
+.sidebar-collapse-btn:hover {
+    color: #fff;
+    border-color: #555;
+    background: rgba(255,255,255,0.1);
+}
+
+.sidebar-expand-btn {
+    position: fixed;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #111827;
+    border: 1px solid #333;
+    border-radius: 0 6px 6px 0;
+    color: #888;
+    cursor: pointer;
+    padding: 12px 6px;
+    z-index: 100;
+    line-height: 1;
+}
+.sidebar-expand-btn:hover {
+    color: #fff;
+    border-color: #555;
+    background: #1f2937;
+}
+
+/* Collapsible filter groups */
+.filter-group-collapsible {
+    cursor: pointer;
+    user-select: none;
+}
+.filter-group-collapsible:hover {
+    color: #fff;
+}
+.filter-group-collapsible .collapse-arrow {
+    float: right;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+.filter-group-collapsible.collapsed .collapse-arrow {
+    transform: rotate(-90deg);
+}
+
+.filter-chips-scroll {
+    max-height: 180px;
+    overflow-y: auto;
+    transition: max-height 0.3s ease;
+}
+.filter-chips-scroll.collapsed {
+    max-height: 0;
+    overflow: hidden;
+}
+.filter-chips-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+.filter-chips-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+.filter-chips-scroll::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px;
+}
+
+/* Severity chips color coding */
+#filter-severity .chip[data-severity="critical"] { border-color: #ef4444; }
+#filter-severity .chip[data-severity="critical"].active { background: #ef4444; color: #fff; }
+#filter-severity .chip[data-severity="high"] { border-color: #f97316; }
+#filter-severity .chip[data-severity="high"].active { background: #f97316; color: #fff; }
+#filter-severity .chip[data-severity="medium"] { border-color: #eab308; }
+#filter-severity .chip[data-severity="medium"].active { background: #eab308; color: #000; }
+#filter-severity .chip[data-severity="low"] { border-color: #3b82f6; }
+#filter-severity .chip[data-severity="low"].active { background: #3b82f6; color: #fff; }
+#filter-severity .chip[data-severity="informational"] { border-color: #64748b; }
+#filter-severity .chip[data-severity="informational"].active { background: #64748b; color: #fff; }

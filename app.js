@@ -331,6 +331,38 @@
             }, 200));
         }
 
+        // Sidebar collapse/expand
+        var collapseBtn = document.getElementById('sidebar-collapse-btn');
+        var expandBtn = document.getElementById('sidebar-expand-btn');
+        if (collapseBtn) {
+            collapseBtn.addEventListener('click', function() {
+                dom.filterPanel.classList.add('collapsed');
+                if (expandBtn) expandBtn.style.display = 'block';
+            });
+        }
+        if (expandBtn) {
+            expandBtn.addEventListener('click', function() {
+                dom.filterPanel.classList.remove('collapsed');
+                expandBtn.style.display = 'none';
+            });
+        }
+
+        // Collapsible filter groups (Fraud Types, Sectors)
+        ['fraud-types-toggle', 'sectors-toggle'].forEach(function(toggleId) {
+            var toggle = document.getElementById(toggleId);
+            if (toggle) {
+                toggle.addEventListener('click', function() {
+                    toggle.classList.toggle('collapsed');
+                    var wrapperId = toggleId.replace('-toggle', '') + '-wrapper';
+                    // Map to correct wrapper ID
+                    if (toggleId === 'fraud-types-toggle') wrapperId = 'filter-fraud-types-wrapper';
+                    if (toggleId === 'sectors-toggle') wrapperId = 'filter-sectors-wrapper';
+                    var wrapper = document.getElementById(wrapperId);
+                    if (wrapper) wrapper.classList.toggle('collapsed');
+                });
+            }
+        });
+
         // Hash routing
         window.addEventListener('hashchange', handleRoute);
     }
@@ -2364,6 +2396,21 @@
     // Baselines View
     // -----------------------------------------------------------------------
 
+    var _baselineToTPs = null;
+
+    function _buildBaselineToTPMap() {
+        if (_baselineToTPs) return _baselineToTPs;
+        _baselineToTPs = {};
+        var tpData = FlameData.getData() || [];
+        tpData.forEach(function(tp) {
+            (tp.baseline_ids || []).forEach(function(blId) {
+                if (!_baselineToTPs[blId]) _baselineToTPs[blId] = [];
+                _baselineToTPs[blId].push(tp.id);
+            });
+        });
+        return _baselineToTPs;
+    }
+
     function showBaselinesView() {
         viewState = 'baselines';
         hideAllViews();
@@ -2390,10 +2437,13 @@
             return;
         }
 
+        var blToTP = _buildBaselineToTPMap();
+
         // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
         var html = '';
         filtered.forEach(function(b) {
-            var tpCount = (b.threat_path_ids || []).length;
+            var linkedTPs = blToTP[b.id] || [];
+            var tpCount = linkedTPs.length;
             html += '<div class="baseline-card" data-id="' + escapeHtml(b.id || '') + '">';
             html += '<div class="baseline-card-header">';
             html += '<span class="baseline-id">' + escapeHtml(b.id || '') + '</span>';
