@@ -15,6 +15,27 @@ from regulatory.models import RegulatoryAlert
 
 logger = logging.getLogger(__name__)
 
+PRODUCT_CATEGORY_MAP = {
+    "Credit reporting": "credit-reporting",
+    "Debt collection": "debt-collection",
+    "Mortgage": "mortgage-fraud",
+    "Credit card": "credit-card-fraud",
+    "Checking or savings account": "account-fraud",
+    "Money transfer": "wire-fraud",
+    "Student loan": "student-loan",
+    "Vehicle loan": "auto-loan",
+    "Payday loan": "payday-loan",
+    "Prepaid card": "prepaid-card",
+}
+
+
+def _normalize_product(product):
+    """Map raw CFPB product names to config-friendly category keys."""
+    for prefix, cat in PRODUCT_CATEGORY_MAP.items():
+        if product.startswith(prefix):
+            return cat
+    return "consumer-complaint"
+
 
 class CFPBSource(RegulatorySource):
     """Consumer Financial Protection Bureau — Consumer Complaints API."""
@@ -50,7 +71,8 @@ class CFPBSource(RegulatorySource):
             issue = src.get("issue", "")
             narrative = src.get("complaint_what_happened", "")
 
-            tp_ids = self.map_category_to_tps(product)
+            category = _normalize_product(product)
+            tp_ids = self.map_category_to_tps(category)
 
             alerts.append(
                 RegulatoryAlert(
@@ -58,7 +80,7 @@ class CFPBSource(RegulatorySource):
                     alert_id=f"cfpb-{complaint_id}",
                     title=issue,
                     date=date_received,
-                    category=product,
+                    category=category,
                     mapped_tp_ids=tp_ids,
                     url="",
                     severity="medium",

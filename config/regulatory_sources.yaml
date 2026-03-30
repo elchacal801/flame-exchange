@@ -38,16 +38,36 @@ sources:
     enabled: true
     api_url: "https://www.consumerfinance.gov/data-research/consumer-complaints/search/api/v1/"
     category_mapping:
+      credit-reporting:
+        - TP-0003
+      debt-collection:
+        - TP-0062
+      mortgage-fraud:
+        - TP-0006
+        - TP-0073
+      credit-card-fraud:
+        - TP-0035
+        - TP-0038
+      account-fraud:
+        - TP-0001
+        - TP-0016
+      wire-fraud:
+        - TP-0001
+        - TP-0002
+      student-loan:
+        - TP-0012
+      auto-loan:
+        - TP-0016
+      payday-loan:
+        - TP-0012
+      prepaid-card:
+        - TP-0035
+      consumer-complaint:
+        - TP-0012
       elder-fraud:
         - TP-0005
       identity-theft:
         - TP-0012
-      mortgage-fraud:
-        - TP-0002
-      debt-collection:
-        - TP-0050
-      credit-reporting:
-        - TP-0051
       fair-lending:
         - TP-0052
 
@@ -70,6 +90,12 @@ sources:
         - TP-0012
       cryptocurrency-fraud:
         - TP-0033
+      # Fallback: parser sets category='Industry Alert' for all scraped entries
+      Industry Alert:
+        - TP-0001
+        - TP-0002
+        - TP-0012
+        - TP-0067
 
   occ:
     enabled: true
@@ -92,6 +118,10 @@ sources:
       Bulletin:
         - TP-0001
         - TP-0060
+      Enforcement Action:
+        - TP-0001
+        - TP-0014
+        - TP-0016
 
   sec:
     enabled: true
@@ -102,13 +132,13 @@ sources:
       investment-fraud:
         - TP-0031
       insider-trading:
-        - TP-0070
+        - TP-0014
       market-manipulation:
-        - TP-0071
+        - TP-0076
       ponzi-scheme:
-        - TP-0072
+        - TP-0017
       accounting-fraud:
-        - TP-0073
+        - TP-0064
       cryptocurrency-fraud:
         - TP-0033
       # Fallback: parser sets category='Litigation Release' for all entries
@@ -121,14 +151,21 @@ sources:
     base_url: "https://ofac.treasury.gov"
     category_mapping:
       sanctions-evasion:
-        - TP-0001
-        - TP-0080
+        - TP-0044
+        - TP-0045
+        - TP-0055
       terrorism-financing:
-        - TP-0081
+        - TP-0055
       narcotics-trafficking:
-        - TP-0082
+        - TP-0049
+        - TP-0055
       weapons-proliferation:
-        - TP-0083
+        - TP-0044
       cyber-sanctions:
-        - TP-0020
-        - TP-0084
+        - TP-0048
+        - TP-0061
+        - TP-0067
+      # Fallback: unmapped SDN entries
+      SDN List Addition:
+        - TP-0044
+        - TP-0045
