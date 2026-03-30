@@ -22,13 +22,18 @@ sources:
       identity-theft:
         - TP-0012
       elder-fraud:
-        - TP-0005
+        - TP-0027
       ransomware:
         - TP-0020
       human-trafficking:
-        - TP-0040
+        - TP-0047
       corruption:
-        - TP-0041
+        - TP-0044
+      terrorism-financing:
+        - TP-0055
+      sanctions-evasion:
+        - TP-0044
+        - TP-0045
       # Fallback: parser sets category='Advisory' for all scraped entries
       Advisory:
         - TP-0001
@@ -65,7 +70,7 @@ sources:
       consumer-complaint:
         - TP-0012
       elder-fraud:
-        - TP-0005
+        - TP-0027
       identity-theft:
         - TP-0012
       fair-lending:
