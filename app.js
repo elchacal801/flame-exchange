@@ -38,6 +38,7 @@
         cfpf_phases: new Set(),
         sectors: new Set(),
         fraud_types: new Set(),
+        severity: new Set(),
     };
     let searchQuery = '';
     let activeTaxonomy = 'cfpf';
@@ -363,6 +364,43 @@
             }
         });
 
+        // Severity filter chips
+        document.querySelectorAll('#filter-severity .chip').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var sev = btn.getAttribute('data-severity');
+                if (activeFilters.severity.has(sev)) {
+                    activeFilters.severity.delete(sev);
+                    btn.classList.remove('active');
+                } else {
+                    activeFilters.severity.add(sev);
+                    btn.classList.add('active');
+                }
+                updateFilterBadge();
+                // If on rules view, re-render with severity filter
+                if (viewState === 'rules') {
+                    FlameData.loadAllDetectionRules().then(function(rules) {
+                        renderRulesGrid(rules);
+                    });
+                }
+            });
+        });
+
+        // Search-within for sidebar filter sections
+        ['filter-sectors-search', 'filter-fraud-types-search'].forEach(function(inputId) {
+            var input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('input', function() {
+                    var query = input.value.trim().toLowerCase();
+                    var chipsContainer = input.parentElement.querySelector('.filter-chips');
+                    if (!chipsContainer) return;
+                    chipsContainer.querySelectorAll('.chip').forEach(function(chip) {
+                        var text = (chip.textContent || '').toLowerCase();
+                        chip.style.display = text.indexOf(query) !== -1 ? '' : 'none';
+                    });
+                });
+            }
+        });
+
         // Hash routing
         window.addEventListener('hashchange', handleRoute);
     }
@@ -504,6 +542,7 @@
         activeFilters.cfpf_phases.clear();
         activeFilters.sectors.clear();
         activeFilters.fraud_types.clear();
+        activeFilters.severity.clear();
         searchQuery = '';
         dom.searchInput.value = '';
 
@@ -516,7 +555,7 @@
     }
 
     function updateFilterBadge() {
-        const count = activeFilters.cfpf_phases.size + activeFilters.sectors.size + activeFilters.fraud_types.size;
+        const count = activeFilters.cfpf_phases.size + activeFilters.sectors.size + activeFilters.fraud_types.size + activeFilters.severity.size;
         if (count > 0) {
             dom.filterActions.style.display = 'flex';
             dom.filterCount.textContent = count;
@@ -2224,6 +2263,11 @@
             }
             if (levelFilter && (rule.level || '').toLowerCase() !== levelFilter) return false;
             if (phaseFilter && (!rule.cfpf_phase || rule.cfpf_phase !== phaseFilter)) return false;
+            // Severity filter from sidebar chips
+            if (activeFilters.severity.size > 0) {
+                var ruleLevel = (rule.level || '').toLowerCase();
+                if (!activeFilters.severity.has(ruleLevel)) return false;
+            }
             return true;
         });
     }
@@ -2461,8 +2505,18 @@
                     html += '<span class="baseline-tag more-tag">+' + (b.tags.length - 4) + '</span>';
                 }
             }
-            html += '<span class="baseline-tp-count">' + tpCount + ' TP' + (tpCount !== 1 ? 's' : '') + '</span>';
             html += '</div>';
+            if (linkedTPs.length > 0) {
+                html += '<div class="baseline-linked-tps">';
+                html += '<span class="baseline-tp-label">' + tpCount + ' Linked TP' + (tpCount !== 1 ? 's' : '') + ':</span> ';
+                linkedTPs.forEach(function(tpId, i) {
+                    html += '<a href="#detail/' + escapeHtml(tpId) + '" class="baseline-tp-link">' + escapeHtml(tpId) + '</a>';
+                    if (i < linkedTPs.length - 1) html += ' ';
+                });
+                html += '</div>';
+            } else {
+                html += '<div class="baseline-linked-tps"><span class="baseline-tp-label">No linked TPs</span></div>';
+            }
             html += '</div>';
         });
         dom.baselinesGrid.innerHTML = html;
