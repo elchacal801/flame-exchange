@@ -58,7 +58,7 @@ related_tps:
   - id: TP-0036
     relationship: related-to
 baseline_ids: []
-geopolitical_timing: seasonal
+geopolitical_timing: seasonal-political
 nation_state_nexus: none
 regulatory_refs:
   - REG-INTERPOL-GFFTA
