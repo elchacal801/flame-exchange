@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flame-v1';
+const CACHE_NAME = 'flame-v2';
 const STATIC_ASSETS = [
     '/',
     '/index.html',
