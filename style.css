@@ -4059,6 +4059,21 @@ h4 {
     .card-grid {
         grid-template-columns: 1fr;
     }
+    /* Compact header: hide text buttons, keep icons only */
+    .header-inner {
+        padding: 0 var(--space-sm);
+        gap: var(--space-sm);
+    }
+    .header-actions {
+        gap: var(--space-xs);
+        flex-shrink: 1;
+    }
+    .header-actions .about-btn {
+        display: none;
+    }
+    .header-stats {
+        gap: var(--space-sm);
+    }
 }
 
 /* Collapsible filter groups */
