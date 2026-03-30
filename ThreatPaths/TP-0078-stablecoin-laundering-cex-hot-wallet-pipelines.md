@@ -7,7 +7,7 @@ title: "Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines"
 category: ThreatPath
 date: 2026-03-30
 author: "FLAME Project"
-source: "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026)"
+source: "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026); Cybercrime Diaries — 'From Dirty Crypto to Clean Money' (Oleg, June 2025)"
 tlp: WHITE
 infrastructure_generation_method: manual
 fraud_types:
@@ -78,6 +78,16 @@ tags:
   - fincen-311
   - shell-company-convergence
   - beneficial-ownership-gap
+  - russophone-laundering-tradecraft
+  - coinjoin
+  - chain-hopping
+  - temporal-dilution
+  - liquidity-buffering
+  - income-legalization
+  - lockbitsupp-laundering
+  - black-basta-laundering
+  - infostealer-intelligence
+  - cybercrime-diaries
 ---
 ```
 
@@ -213,6 +223,47 @@ The convergence of this laundering infrastructure with offshore shell company op
 | Shell company registrant | Provides corporate vehicles for exchange accounts and ownership obfuscation | High (Wyoming/BVI/Seychelles formation services widely available) | USD 500-5,000 per entity |
 | Crypto-to-cash desk operator | Converts USDT to physical currency at unlicensed OTC locations | Medium (Dubai, Eastern Europe, SE Asia hubs) | 3-8% commission |
 | Exchange account facilitator | Provides verified exchange accounts or KYC documentation for account opening | Medium | USD 200-2,000 per account |
+
+### Russophone Crypto Laundering Tradecraft
+
+Based on Cybercrime Diaries research (June 2025), cryptocurrency laundering operates as a two-phase process with distinct service providers and risk profiles:
+
+**Phase 1: Cryptocurrency Obfuscation (the "easier" step)**
+
+At least 44 active crypto-cleaning/cashout services were catalogued on XSS, Exploit, and DarkMoney forums as of May 2025. These same services appear on dozens of additional forums (RuTor, Probiv, LolzTeam). To operate on major forums, services must deposit escrow guarantees ranging from $4,000 to $300,000 (typical average ~$100,000 / ~1 BTC).
+
+Undercover contact with a leading exchange service revealed the fee structure for converting 10 BTC from ransomware proceeds:
+
+| Method | Base Fee | "Dirty Funds" Surcharge | AML Red-Flag Surcharge |
+|--------|----------|------------------------|----------------------|
+| Card transfers (from 30,000 RUB) | ~3.5% | +4% | — |
+| Courier delivery of cash (from 3M RUB / $30,000) | ~2.8% | +4% | — |
+| Tinkoff QR code (from 400,000 RUB) | ~8.5% | +4% | — |
+| Funds with high-risk/red-tag AML flags | Base rate | +4% | +10% |
+
+Cash courier delivery uses a banknote photo (serial number visible) as proof of identity for anonymous handoffs.
+
+**Technical obfuscation methods** (beyond simple mixing):
+- **CoinJoin**: Combines UTXOs from multiple users into a single transaction (Wasabi wallet). Research suggests sophisticated analysis can still trace patterns; US government-linked entities have reportedly cracked Wasabi anonymity in some cases
+- **Chain hopping**: BTC → XMR (Monero, fully private) → ETH crosses multiple blockchains, breaking transaction history. Flagged by US Treasury DeFi risk assessments as primary money-laundering methodology
+- **OTC brokers**: Over-the-counter trades of "dirty" coins to unwitting buyers for "clean" funds; effective in jurisdictions with weak KYC
+- **Temporal dilution**: Letting cryptocurrency "age" for months before converting, reducing proximity-to-crime AML scores
+- **Liquidity buffering**: Service delivers "clean" crypto from a pre-filled buffer immediately; "dirty" coins are recycled slowly through multiple channels to reduce velocity-based AML detection
+
+**Phase 2: Income Legalization (the "hard" step)**
+
+LockBitSupp (Dmitry Khoroshev) wrote on XSS in November 2022: "the most important, long and nasty thing — legalization... as soon as you start spending unlegalized money, you stick your ears out of the crowd."
+
+Legalization is primarily a concern for elite actors: RaaS operators, malware developers, marketplace administrators, top-tier affiliates, and BPH owners. Common techniques discussed on forums (rarely in detail — successful launderers protect methods as competitive advantage):
+
+| Technique | Description | Risk Level |
+|-----------|-------------|------------|
+| NFT sales | Creating and "selling" digital art to a self-controlled anonymous wallet | Medium — tax authorities increasingly monitor NFT markets |
+| Casino winnings | Partnering with casino operators to process illicit funds as gambling winnings | High — requires sharing sensitive information with casino administrators |
+| Real estate (Middle East) | Cash/crypto property purchases in jurisdictions with minimal documentation; property sold after one year with proceeds considered "clean" locally | Medium — justifying origin in other countries remains problematic |
+| Sole proprietorship | Service-sector business unrelated to IT; best for lower-income operators | Low — but limited throughput |
+| Business fronts | Creating businesses with real operations but falsified accounting to inject illicit funds as apparent revenue | Low-Medium — most commonly endorsed for high earners; most complex |
+| Inheritance claims | Fraudulently documenting discovery of cash at a deceased relative's residence | High — one-time use, legal exposure |
 
 ### Intelligence Sources
 - ICIJ, "Coin Laundry" investigation series (2024-2025)
@@ -401,6 +452,27 @@ ORDER BY total_volume_usd DESC;
 - **CFPF Phase Coverage**: P5 (monetization via physical cash conversion)
 - **Confidence**: Medium-High (direct ICIJ observation; single operation documented)
 
+### EV-TP0078-2026-005: LockBitSupp (Khoroshev) — Laundering via Legitimate Business
+
+- **Source**: Cybercrime Diaries, "From Dirty Crypto to Clean Money" (Oleg, June 2025); Russian business registry analysis post-May 2024 law enforcement identification
+- **Key Finding**: Following Dmitry Khoroshev's identification as LockBitSupp in May 2024, Russian business registry examination revealed: (1) operated as a sole proprietor in "online advertising" — a service-sector business with minimal overhead and hard-to-audit revenue; (2) founded an e-commerce clothing store, officially closed September 30, 2022; (3) Russian tax authorities flagged the clothing company's registry entry with "Information is unreliable — results of a verification of the accuracy of the data about the legal entity," indicating identification as a possible shell entity. Even the world's most notorious ransomware operator had laundering infrastructure that was partially detected by Russian domestic tax authorities.
+- **CFPF Phase Coverage**: P5 (monetization/legalization)
+- **Confidence**: High — based on public Russian business registry records post-identification
+
+### EV-TP0078-2026-006: Black Basta (Nefedov/Tramp) — Restaurant Business Laundering
+
+- **Source**: Cybercrime Diaries, "From Dirty Crypto to Clean Money" (Oleg, June 2025); Black Basta chat leak (February 2025)
+- **Key Finding**: Oleg Nefedov (alias Tramp, leader of Black Basta) operated multiple restaurant-related businesses in Moscow alongside his cybercriminal empire. His wife also owns restaurant businesses — consistent with a common pattern where cybercriminals' family members "suddenly develop a taste for entrepreneurship." Nefedov maintained well-established connections to illicit cryptocurrency exchanges operating in Moscow, enabling efficient large-scale cashout operations. This illustrates the integration of the physical criminal economy (restaurants, exchanges) with the digital cybercriminal ecosystem.
+- **CFPF Phase Coverage**: P5 (monetization/legalization)
+- **Confidence**: Medium-High — derived from authenticated internal chat leak and public business registry data
+
+### EV-TP0078-2026-007: Infostealer Logs as Crypto Exchange Intelligence
+
+- **Source**: Cybercrime Diaries, "From Dirty Crypto to Clean Money" (Oleg, June 2025); Flare.io infostealer log analysis
+- **Key Finding**: Users of illicit cryptocurrency exchange services are themselves vulnerable to infostealer malware. Flare's database contains logs from infected computers where those users had credentials and session cookies for illicit exchange services. This creates an intelligence opportunity to: (a) map relationships between exchange users and specific threat actors, (b) identify which obfuscation services are used by which actors, and (c) potentially de-anonymize operators — using the criminal ecosystem's own tools against them. This is a novel collection methodology for cryptocurrency laundering intelligence.
+- **CFPF Phase Coverage**: P3, P4, P5
+- **Confidence**: Medium — methodology described by Flare CTI analyst; specific case data not publicly disclosed
+
 ---
 
 ## References
@@ -415,6 +487,8 @@ ORDER BY total_volume_usd DESC;
 - FinCEN, Advisory on Illicit Activity Involving Convertible Virtual Currency (May 2019)
 - OFAC, Sanctions Compliance Guidance for the Virtual Currency Industry (October 2021)
 - ICIJ, "Crypto Giants Moved Billions Linked to Money Launderers, Drug Traffickers and North Korean Hackers" — Spencer Woodman, Agustin Armendariz, Miguel Fiandor Gutierrez, Sam Ellefson
+- Cybercrime Diaries (cybercrimediaries.com), "From Dirty Crypto to Clean Money — The Laundering Playbook of Russophone Cybercriminals" (June 2025) — two-phase laundering model, fee structures, obfuscation methods, legalization techniques, LockBitSupp/Nefedov case studies
+- TRM Labs, "2025 Crypto Crime Report" — $45 billion illicit transactions (2024), ransomware $813 million (35% decline)
 
 ---
 
@@ -428,6 +502,8 @@ ORDER BY total_volume_usd DESC;
 
 **Regulatory Deterioration Context**: The US regulatory environment for crypto AML is degrading: IRS crypto supervision staff (8031 unit) cut during 2024-2025 DOGE-era reductions; Corporate Transparency Act beneficial ownership enforcement suspended and data deleted; crypto exchanges classified as money transmitters (not banks) leaving them outside OCC/Fed/FDIC oversight. Detection systems must compensate for weakening supervisory capacity. EU AMLA (Frankfurt, direct supervision from 2028) represents a contrasting trajectory.
 
+**Income Legalization as Intelligence Opportunity**: Cybercrime Diaries research demonstrates that income legalization is the cybercriminal's greatest vulnerability, not their greatest strength. At the moment of engaging with financial systems, tax authorities, and business registries, even the most technically sophisticated actors must interact with the legal world — creating traceable records, auditable transactions, and exposure to financial intelligence. The LockBitSupp case (flagged by Russian tax authorities) and Black Basta's restaurant businesses (discoverable in public registries) demonstrate that following the money through business registries and real estate records — not blockchain analysis alone — is a high-yield investigation methodology for the most sophisticated operators.
+
 **Cross-Reference TP-0058**: Scam compound operational infrastructure (TP-0058) feeds directly into this laundering pipeline. Proceeds from pig butchering, investment scams, and romance fraud operations run through scam compounds are the primary predicate fraud types flowing through the Huione-style laundering service.
 
 ---
@@ -437,3 +513,4 @@ ORDER BY total_volume_usd DESC;
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-30 | FLAME Project | Initial submission — sourced from ICIJ Coin Laundry investigation and ICIJ/OpenCorporates "Modern Money Trail" webinar analysis |
+| 2026-03-30 | FLAME Project | Enrichment: Russophone crypto laundering tradecraft (two-phase model, fee structures, obfuscation methods, legalization techniques), LockBitSupp/Nefedov laundering case studies (EV-005/006), infostealer-as-intelligence methodology (EV-007) — sourced from Cybercrime Diaries |

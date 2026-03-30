@@ -1229,7 +1229,9 @@
       "human-trafficking",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "drops-recruitment",
+      "forum-recruitment"
     ],
     "cfpf_phases": [
       "P1",
@@ -5147,7 +5149,9 @@
       "operation-redcard",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "probiv-lookup-services",
+      "insider-database-access"
     ],
     "cfpf_phases": [
       "P1",
@@ -5695,7 +5699,8 @@
     "detection_rule_ids": [
       "DL-0113",
       "DL-0114",
-      "DL-0142"
+      "DL-0142",
+      "DL-0203"
     ],
     "related_tps": [
       {
@@ -6898,10 +6903,10 @@
     "category": "ThreatPath",
     "date": "2026-03-20",
     "author": "FLAME Project",
-    "source": "Recorded Future CTA-2026-0319, INTERPOL GFFTA 2026",
+    "source": "Recorded Future CTA-2026-0319, INTERPOL GFFTA 2026; Flare Academy BPH Webinar (Oleg O, 2026); Cybercrime Diaries — BPH Landscape and Black Basta Chat Leak posts (2024-2025)",
     "tlp": "WHITE",
     "summary": "Bulletproof hosting (BPH) providers and abuse-resistant infrastructure services that enable fraud operations by providing hosting that resists takedown requests, law enforcement cooperation, and abuse...",
-    "confidence_score": 68,
+    "confidence_score": 72,
     "source_reliability": "B",
     "info_credibility": 2,
     "infrastructure_generation_method": "manual",
@@ -6930,7 +6935,16 @@
       "fraud-infrastructure",
       "hosting-complicity",
       "recorded-future",
-      "interpol-shadow-storm"
+      "interpol-shadow-storm",
+      "lots-living-off-trusted-services",
+      "bearhost",
+      "chang-way",
+      "monolithic-vs-non-monolithic",
+      "tae-ecosystem",
+      "vpskov",
+      "black-basta-infrastructure",
+      "cybercrime-diaries",
+      "forum-intelligence"
     ],
     "cfpf_phases": [
       "P1",
@@ -6971,7 +6985,9 @@
     ],
     "detection_rule_ids": [
       "DL-0123",
-      "DL-0178"
+      "DL-0178",
+      "DL-0199",
+      "DL-0200"
     ],
     "related_tps": [
       {
@@ -6995,7 +7011,7 @@
         "relationship": "enables"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 5
   },
   {
     "id": "TP-0062",
@@ -7503,7 +7519,7 @@
     "category": "ThreatPath",
     "date": "2026-03-22",
     "author": "FLAME Project",
-    "source": "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)",
+    "source": "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026); Bluekit PhaaS Threat Intelligence Report (CrimsonVector, March 2026)",
     "tlp": "WHITE",
     "summary": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim se...",
     "confidence_score": 82,
@@ -7547,7 +7563,11 @@
       "sessionshark",
       "darcula",
       "smishing-triad",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "bluekit",
+      "phaas-market-fragmentation",
+      "vacuum-effect",
+      "antibot-cloaking"
     ],
     "cfpf_phases": [
       "P1",
@@ -7606,7 +7626,10 @@
       "DL-0146",
       "DL-0147",
       "DL-0148",
-      "DL-0150"
+      "DL-0150",
+      "DL-0200",
+      "DL-0201",
+      "DL-0202"
     ],
     "related_tps": [
       {
@@ -7626,7 +7649,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 5
   },
   {
     "id": "TP-0068",
@@ -7766,7 +7789,12 @@
       "phaas",
       "toll-scam",
       "card-not-present",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "phaas-market-fragmentation",
+      "vacuum-effect",
+      "bluekit",
+      "kratos",
+      "evilTokens"
     ],
     "cfpf_phases": [
       "P1",
@@ -7815,7 +7843,8 @@
     },
     "baseline_ids": [],
     "detection_rule_ids": [
-      "DL-0149"
+      "DL-0149",
+      "DL-0201"
     ],
     "related_tps": [
       {
@@ -7831,7 +7860,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 3
   },
   {
     "id": "TP-0070",
@@ -8546,7 +8575,7 @@
     "category": "ThreatPath",
     "date": "2026-03-30",
     "author": "FLAME Project",
-    "source": "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026)",
+    "source": "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026); Cybercrime Diaries — 'From Dirty Crypto to Clean Money' (Oleg, June 2025)",
     "tlp": "WHITE",
     "summary": "Criminal conglomerates are operating industrialized cryptocurrency laundering services that process hundreds of millions of dollars through centralized exchange (CEX) hot wallet pipelines. Unlike the ...",
     "confidence_score": 82,
@@ -8578,7 +8607,17 @@
       "icij-coin-laundry",
       "fincen-311",
       "shell-company-convergence",
-      "beneficial-ownership-gap"
+      "beneficial-ownership-gap",
+      "russophone-laundering-tradecraft",
+      "coinjoin",
+      "chain-hopping",
+      "temporal-dilution",
+      "liquidity-buffering",
+      "income-legalization",
+      "lockbitsupp-laundering",
+      "black-basta-laundering",
+      "infostealer-intelligence",
+      "cybercrime-diaries"
     ],
     "cfpf_phases": [
       "P1",
@@ -8623,7 +8662,8 @@
       "DL-0174",
       "DL-0196",
       "DL-0197",
-      "DL-0198"
+      "DL-0198",
+      "DL-0203"
     ],
     "related_tps": [
       {
@@ -8643,6 +8683,6 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 7
   }
 ]

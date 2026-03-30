@@ -3,10 +3,10 @@
     {
       "name": "FLAME Project",
       "threat_paths": 62,
-      "detection_rules": 115,
+      "detection_rules": 119,
       "baselines": 22,
       "emulation_playbooks": 14,
-      "total": 213
+      "total": 217
     },
     {
       "name": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
@@ -59,10 +59,10 @@
     {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs)",
       "threat_paths": 1,
-      "detection_rules": 2,
+      "detection_rules": 3,
       "baselines": 1,
       "emulation_playbooks": 0,
-      "total": 4
+      "total": 5
     },
     {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, Atlantic Council)",
@@ -185,5 +185,5 @@
       "total": 1
     }
   ],
-  "generated_at": "2026-03-30T07:25:50.207483+00:00"
+  "generated_at": "2026-03-30T17:52:52.316447+00:00"
 }

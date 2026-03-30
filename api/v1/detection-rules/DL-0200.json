@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-03-30T17:52:52.160969+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "c4f8b2d5-ae30-4f9b-b7d2-8a1f9e4b0c52",
+    "dl_id": "DL-0200",
+    "title": "Infrastructure Rotation Velocity — Rapid DNS IP Changes Within BPH Networks",
+    "status": "experimental",
+    "description": "Detects domains exhibiting rapid IP address rotation characteristic of bulletproof hosting infrastructure management. BPH operators rotate IP addresses every 24-72 hours to evade blocklists, with emergency rotation following IOC publication. A domain resolving to 4+ unique IPs within 7 days — particularly when those IPs span multiple TAE provider ASNs — is a strong indicator of managed BPH infrastructure rotation. This detection complements static IP blocklists by identifying the rotation behavior itself. Sourced from Flare Academy BPH Webinar and Cybercrime Diaries BPH landscape analysis.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "record_type": "A"
+      },
+      "timeframe": "7d",
+      "condition": "selection | stats dc(answer) as unique_ips by query | unique_ips >= 4",
+      "note": "Requires passive DNS data feed. Threshold of 4+ unique IPs in 7 days excludes legitimate CDN/load-balancer rotation (which typically resolves to consistent IP pools) while catching BPH rotation patterns (which traverse distinct /24 blocks or ASNs). Cross-reference resolved IPs against TAE ASN ranges for high-confidence alerts.\n"
+    },
+    "logsource": {
+      "product": "dns_intelligence",
+      "service": "dns_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "queries": {
+      "splunk": "index=dns sourcetype=passive_dns\n| stats dc(answer) AS unique_ips values(answer) AS ip_list\n  earliest(_time) AS first_seen latest(_time) AS last_seen by query\n| where unique_ips >= 4\n| eval days_active=round((last_seen-first_seen)/86400, 1)\n| where days_active <= 7\n| mvexpand ip_list\n| lookup tae_asn_ranges ip_list OUTPUT asn_name\n| stats dc(asn_name) AS distinct_asns values(asn_name) AS asn_list\n  values(ip_list) AS all_ips by query\n| where distinct_asns >= 2\n| sort -distinct_asns",
+      "cql": "#event_simpleName=DnsRequest\n| groupBy([DomainName], function=[\n    count(ResponseIP, distinct=true, as=unique_ips),\n    collect([ResponseIP])\n  ], span=7d)\n| unique_ips >= 4"
+    },
+    "references": [
+      "Flare Academy BPH Webinar — infrastructure rotation detection methodology",
+      "Cybercrime Diaries BPH Landscape Analysis (2025)"
+    ],
+    "threat_path_ids": [
+      "TP-0061",
+      "TP-0067"
+    ],
+    "fraud_types": [
+      "bph-migration",
+      "bulletproof-hosting",
+      "infrastructure-rotation"
+    ],
+    "tags": [
+      "TP-0061",
+      "TP-0067",
+      "attack.t1583.001",
+      "bulletproof-hosting",
+      "cfpf.p2.infrastructure",
+      "dns-rotation",
+      "flame.shared",
+      "infrastructure-rotation"
+    ],
+    "falsepositives": [
+      "Legitimate CDN services rotating edge IPs (Cloudflare, Akamai, Fastly)",
+      "Round-robin DNS load balancing",
+      "Dynamic DNS services with frequent IP updates",
+      "Cloud auto-scaling events changing IP assignments"
+    ]
+  }
+}

@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-30T07:21:39.150987+00:00",
-    "total": 198
+    "generated_at": "2026-03-30T17:52:51.192692+00:00",
+    "total": 203
   },
   "data": [
     {
@@ -15276,6 +15276,306 @@
         "Legitimate registered agent services (CT Corporation, CSC Global) that maintain large client portfolios at a single address",
         "Coworking spaces and business incubators with many tenant companies",
         "Law firm registered agent services with high-volume but legitimate client bases"
+      ]
+    },
+    {
+      "id": "b3e7a1c4-9d2f-4e8a-a6c1-7f0e8d3a9b41",
+      "dl_id": "DL-0199",
+      "title": "ASN Reputation Clustering — High Abuse-Density Autonomous Systems",
+      "status": "experimental",
+      "description": "Detects network traffic to or from IP addresses within autonomous systems (ASNs) that exhibit high abuse density — defined as a concentration of abuse reports, malware hosting, and fraud-associated domains relative to total IP allocation. BPH operators concentrate on ASNs with high abuse-to-IP ratios due to their resistance to takedown. ASN-level reputation clustering is more resilient to infrastructure rotation than individual IP blocking, as operators rotate IPs within the same ASN. Sourced from Flare Academy BPH Webinar and Recorded Future TAE provider intelligence.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "dst_ip|cidr": "%tae_asn_ip_ranges%"
+        },
+        "condition": "selection",
+        "note": "Requires maintained lookup table of IP ranges associated with high-abuse ASNs. Populate from Spamhaus ASN-DROP list, AbuseIPDB high-confidence reports, and Recorded Future TAE provider ASN database. Key indicators: disposable/free email in WHOIS abuse records, low IP density (<200 IPs), few peering partners (1-2 ASNs), high DGA domain density, shell company registration in permissive jurisdictions.\n"
+      },
+      "logsource": {
+        "product": "telecom",
+        "service": "firewall"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "queries": {
+        "splunk": "index=firewall\n| lookup tae_asn_ranges dst_ip OUTPUT asn_name abuse_density_score\n| where isnotnull(asn_name) AND abuse_density_score > 0.7\n| stats count dc(src_ip) AS internal_hosts values(dst_ip) AS external_ips\n  values(asn_name) AS asn_names by src_ip\n| sort -count",
+        "cql": "#event_simpleName=NetworkConnectIP4\n| RemoteAddressIP4=*\n| lookup tae_asn_ranges RemoteAddressIP4 OUTPUT asn_name abuse_density_score\n| abuse_density_score > 0.7\n| groupBy([RemoteAddressIP4, asn_name], function=[count(aid), dc(aid)])\n| sort(_count, order=desc)"
+      },
+      "references": [
+        "Flare Academy BPH Webinar — TAE provider ASN concentration analysis",
+        "Recorded Future TAE Provider Intelligence Report",
+        "Spamhaus ASN-DROP List (https://www.spamhaus.org/drop/asndrop.json)",
+        "AbuseIPDB high-confidence IP abuse reports (abuseipdb.com)"
+      ],
+      "threat_path_ids": [
+        "TP-0061"
+      ],
+      "fraud_types": [
+        "bulletproof-hosting",
+        "fraud-enabling-infrastructure",
+        "infrastructure-rotation"
+      ],
+      "tags": [
+        "TP-0061",
+        "asn-reputation",
+        "attack.t1583.003",
+        "bulletproof-hosting",
+        "cfpf.p2.infrastructure",
+        "flame.shared",
+        "infrastructure-rotation"
+      ],
+      "falsepositives": [
+        "Legitimate services hosted on shared infrastructure within flagged ASNs",
+        "CDN edge nodes co-located with flagged IP ranges",
+        "VPN exit nodes within flagged ASN ranges"
+      ]
+    },
+    {
+      "id": "c4f8b2d5-ae30-4f9b-b7d2-8a1f9e4b0c52",
+      "dl_id": "DL-0200",
+      "title": "Infrastructure Rotation Velocity — Rapid DNS IP Changes Within BPH Networks",
+      "status": "experimental",
+      "description": "Detects domains exhibiting rapid IP address rotation characteristic of bulletproof hosting infrastructure management. BPH operators rotate IP addresses every 24-72 hours to evade blocklists, with emergency rotation following IOC publication. A domain resolving to 4+ unique IPs within 7 days — particularly when those IPs span multiple TAE provider ASNs — is a strong indicator of managed BPH infrastructure rotation. This detection complements static IP blocklists by identifying the rotation behavior itself. Sourced from Flare Academy BPH Webinar and Cybercrime Diaries BPH landscape analysis.\n",
+      "cfpf_phase": "P2",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "record_type": "A"
+        },
+        "timeframe": "7d",
+        "condition": "selection | stats dc(answer) as unique_ips by query | unique_ips >= 4",
+        "note": "Requires passive DNS data feed. Threshold of 4+ unique IPs in 7 days excludes legitimate CDN/load-balancer rotation (which typically resolves to consistent IP pools) while catching BPH rotation patterns (which traverse distinct /24 blocks or ASNs). Cross-reference resolved IPs against TAE ASN ranges for high-confidence alerts.\n"
+      },
+      "logsource": {
+        "product": "dns_intelligence",
+        "service": "dns_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "queries": {
+        "splunk": "index=dns sourcetype=passive_dns\n| stats dc(answer) AS unique_ips values(answer) AS ip_list\n  earliest(_time) AS first_seen latest(_time) AS last_seen by query\n| where unique_ips >= 4\n| eval days_active=round((last_seen-first_seen)/86400, 1)\n| where days_active <= 7\n| mvexpand ip_list\n| lookup tae_asn_ranges ip_list OUTPUT asn_name\n| stats dc(asn_name) AS distinct_asns values(asn_name) AS asn_list\n  values(ip_list) AS all_ips by query\n| where distinct_asns >= 2\n| sort -distinct_asns",
+        "cql": "#event_simpleName=DnsRequest\n| groupBy([DomainName], function=[\n    count(ResponseIP, distinct=true, as=unique_ips),\n    collect([ResponseIP])\n  ], span=7d)\n| unique_ips >= 4"
+      },
+      "references": [
+        "Flare Academy BPH Webinar — infrastructure rotation detection methodology",
+        "Cybercrime Diaries BPH Landscape Analysis (2025)"
+      ],
+      "threat_path_ids": [
+        "TP-0061",
+        "TP-0067"
+      ],
+      "fraud_types": [
+        "bph-migration",
+        "bulletproof-hosting",
+        "infrastructure-rotation"
+      ],
+      "tags": [
+        "TP-0061",
+        "TP-0067",
+        "attack.t1583.001",
+        "bulletproof-hosting",
+        "cfpf.p2.infrastructure",
+        "dns-rotation",
+        "flame.shared",
+        "infrastructure-rotation"
+      ],
+      "falsepositives": [
+        "Legitimate CDN services rotating edge IPs (Cloudflare, Akamai, Fastly)",
+        "Round-robin DNS load balancing",
+        "Dynamic DNS services with frequent IP updates",
+        "Cloud auto-scaling events changing IP assignments"
+      ]
+    },
+    {
+      "id": "548082ea-f953-4ab5-b9ff-0aba4be689b7",
+      "dl_id": "DL-0201",
+      "title": "AiTM Antibot Cloaking Detection — Divergent Content by Client Type",
+      "status": "experimental",
+      "description": "Detects phishing pages that serve different content to automated scanners versus human visitors — a key evasion technique used by PhaaS platforms including Bluekit, Tycoon 2FA, and NakedPages. Antibot cloaking typically returns benign content (blank pages, Wikipedia redirects, legitimate-looking sites) to known scanner User-Agents, IP ranges associated with security vendors, and headless browsers, while serving the actual phishing page to real victims. Detection compares HTTP responses for the same URL across different client profiles. Sourced from Bluekit PhaaS TI report (CrimsonVector, March 2026).\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_redirect": {
+          "response_code": [
+            301,
+            302,
+            307
+          ],
+          "response_location|contains": [
+            "wikipedia.org",
+            "google.com",
+            "youtube.com",
+            "rickroll"
+          ]
+        },
+        "selection_suspicious_domain": {
+          "request_url|re": ".*login.*|.*verify.*|.*secure.*|.*account.*"
+        },
+        "condition": "selection_redirect and selection_suspicious_domain",
+        "note": "Primary detection vector: URL with login/authentication keywords that redirects to Wikipedia, Google, or YouTube — characteristic of Evilginx rickroll redirect, NakedPages Wikipedia redirect, and Bluekit antibot cloaking. Secondary detection: same URL returning different Content-Length for different User-Agents within the same time window (requires web proxy logs with response size). Bluekit's March 2026 changelog specifically added \"improved security system that will work against safebrowsing red alert\" — targeting Google Safe Browsing detection.\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "proxy_logs"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "queries": {
+        "splunk": "index=proxy\n| where match(url, \"(?i)(login|verify|secure|account|signin|auth)\")\n| where response_code IN (301, 302, 307)\n| where match(response_location, \"(?i)(wikipedia|google\\.com|youtube|rickroll)\")\n| stats count values(response_location) AS redirect_targets\n  values(user_agent) AS user_agents by url, src_ip\n| sort -count",
+        "cql": "#event_simpleName=HttpRequest\n| HttpUrl=/(?i)(login|verify|secure|account|signin|auth)/\n| HttpResponseCode IN [301, 302, 307]\n| HttpResponseLocation=/(?i)(wikipedia|google\\.com|youtube|rickroll)/\n| groupBy([HttpUrl, SourceIP], function=[count(aid), collect([HttpResponseLocation, UserAgent])])"
+      },
+      "references": [
+        "Bluekit PhaaS TI Report — CrimsonVector, March 2026",
+        "Tycoon 2FA PhaaS antibot cloaking analysis",
+        "NakedPages Wikipedia redirect cloaking technique",
+        "Evilginx rickroll redirect detection methodology"
+      ],
+      "threat_path_ids": [
+        "TP-0067",
+        "TP-0069"
+      ],
+      "fraud_types": [
+        "aitm-phishing",
+        "cloaking",
+        "fraud-as-a-service",
+        "phishing"
+      ],
+      "tags": [
+        "TP-0067",
+        "TP-0069",
+        "aitm-phishing",
+        "antibot-cloaking",
+        "attack.t1027",
+        "attack.t1566.002",
+        "bluekit",
+        "cfpf.p2.initial_access",
+        "flame.shared",
+        "phaas"
+      ],
+      "falsepositives": [
+        "Legitimate URL shorteners redirecting to Wikipedia/Google",
+        "A/B testing platforms serving different content to different users",
+        "Geo-restricted content redirecting non-target users"
+      ]
+    },
+    {
+      "id": "2d69ef69-d629-4359-89ce-a0b6847c651d",
+      "dl_id": "DL-0202",
+      "title": "Browser Fingerprint Spoofing — User-Agent Inconsistency in Authentication Flow",
+      "status": "experimental",
+      "description": "Detects authentication sessions where the User-Agent string changes between sequential authentication steps — a strong indicator of AiTM proxy-based session hijacking. Bluekit advertises \"full 2FA support with emulation/spoofing of geolocation and browser information,\" and Sneaky 2FA exhibits an \"impossible device shift\" where Safari/iOS is used for login but Edge/Windows for session resume. When a legitimate user authenticates, the User-Agent remains consistent throughout the flow. AiTM proxies may inject different User-Agents at different stages due to proxy architecture or deliberate fingerprint spoofing. Sourced from Bluekit PhaaS TI report and Sekoia TDR Sneaky 2FA analysis.\n",
+      "cfpf_phase": "P3",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "ResultType": 0
+        },
+        "timeframe": "10m",
+        "condition": "selection | group by CorrelationId | where dc(UserAgent) >= 2\n",
+        "note": "Correlate on CorrelationId (same authentication flow) rather than SessionId. A CorrelationId with 2+ distinct User-Agents within 10 minutes is abnormal — legitimate users do not change browsers mid-authentication. Strongest signal: mobile UA (Safari, Chrome-iOS) for initial login + desktop UA (Edge, Chrome-Win) for session resume. This is the Sneaky 2FA \"impossible device shift\" pattern. Bluekit's geolocation spoofing may also cause geographic inconsistencies between authentication steps.\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "signinlogs"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "queries": {
+        "sentinel": "SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UAs = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n| project UserPrincipalName, CorrelationId, UACount, UAs, IPs, MinTime, MaxTime",
+        "cql": "#event_simpleName=UserLogon\n| CorrelationId=*\n| groupBy([CorrelationId, UserPrincipalName], function=[\n    count(UserAgent, distinct=true, as=ua_count),\n    collect([UserAgent, RemoteAddressIP4])\n  ], span=10m)\n| ua_count >= 2"
+      },
+      "references": [
+        "Bluekit PhaaS TI Report — CrimsonVector, March 2026",
+        "Sekoia TDR Sneaky 2FA Analysis — impossible device shift pattern",
+        "Microsoft Entra ID Sign-in Logs schema documentation"
+      ],
+      "threat_path_ids": [
+        "TP-0067"
+      ],
+      "fraud_types": [
+        "account-takeover",
+        "aitm-phishing",
+        "credential-stuffing"
+      ],
+      "tags": [
+        "TP-0067",
+        "account-takeover",
+        "aitm-phishing",
+        "attack.t1550.004",
+        "attack.t1557",
+        "bluekit",
+        "browser-fingerprinting",
+        "cfpf.p3.positioning",
+        "flame.shared",
+        "sneaky-2fa"
+      ],
+      "falsepositives": [
+        "Browser updates applied between authentication steps (rare within 10min window)",
+        "Corporate proxy rewriting User-Agent strings inconsistently",
+        "Embedded browser views (WebView) in mobile apps"
+      ]
+    },
+    {
+      "id": "70c9cb43-a468-41b9-9040-d91d8ec70394",
+      "dl_id": "DL-0203",
+      "title": "Crypto Laundering Service Fee Pattern — Percentage-Based Deduction on Transfers",
+      "status": "experimental",
+      "description": "Detects cryptocurrency transfer patterns consistent with laundering service fee structures. Illicit crypto exchange services charge 2.8%-8.5% base fees plus a 4% \"dirty funds\" surcharge, resulting in outbound amounts that are consistently 93-97% of inbound amounts. When a wallet receives cryptocurrency and forwards approximately 93-97% to another address within 24 hours — retaining 3-7% as a service fee — this is a strong indicator of a crypto mixing or cashout service. The retained percentage serves as the service operator's commission. Sourced from Cybercrime Diaries undercover exchange contact research (June 2025).\n",
+      "cfpf_phase": "P4",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "token_symbol": [
+            "USDT",
+            "USDC",
+            "BTC"
+          ],
+          "amount_usd|gte": 5000
+        },
+        "timeframe": "24h",
+        "condition": "selection | group by to_address | where outbound_amount / inbound_amount between 0.93 and 0.97 and outbound_count >= 1 and inbound_count >= 1\n",
+        "note": "The 93-97% forwarding ratio reflects documented fee structures: ~3.5% base + 4% dirty surcharge = 7.5% (93% forwarded) on the high end; ~2.8% base + 0% surcharge = 2.8% (97% forwarded) on the low end for \"clean\" funds. The pattern is strongest when: (a) inbound and outbound occur within 24h, (b) the receiving wallet has < 30 days of history, (c) the wallet performs this pattern across multiple distinct source wallets, and (d) the retained percentage is consistent across transactions (service fee, not random). Cross-reference with DL-0197 ephemeral wallet detection.\n"
+      },
+      "logsource": {
+        "product": "crypto",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "queries": {
+        "sql": "WITH wallet_flows AS (\n  SELECT\n    wallet_address,\n    SUM(CASE WHEN direction = 'inbound' THEN amount_usd ELSE 0 END) AS total_inbound,\n    SUM(CASE WHEN direction = 'outbound' THEN amount_usd ELSE 0 END) AS total_outbound,\n    COUNT(CASE WHEN direction = 'inbound' THEN 1 END) AS inbound_count,\n    COUNT(CASE WHEN direction = 'outbound' THEN 1 END) AS outbound_count,\n    MIN(first_seen) AS wallet_age_start\n  FROM blockchain_transactions\n  WHERE token_symbol IN ('USDT', 'USDC', 'BTC')\n    AND amount_usd >= 5000\n    AND block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '7 days'\n  GROUP BY wallet_address\n)\nSELECT\n  wallet_address,\n  total_inbound,\n  total_outbound,\n  ROUND(total_outbound / NULLIF(total_inbound, 0), 4) AS forwarding_ratio,\n  ROUND((1 - total_outbound / NULLIF(total_inbound, 0)) * 100, 2) AS retained_pct,\n  inbound_count,\n  outbound_count,\n  wallet_age_start\nFROM wallet_flows\nWHERE total_inbound > 0\n  AND total_outbound > 0\n  AND (total_outbound / total_inbound) BETWEEN 0.93 AND 0.97\n  AND inbound_count >= 1\n  AND outbound_count >= 1\nORDER BY total_inbound DESC"
+      },
+      "references": [
+        "Cybercrime Diaries undercover exchange contact research (June 2025)",
+        "FATF Guidance on Virtual Assets and Virtual Asset Service Providers",
+        "Chainalysis Crypto Crime Report 2025 — mixer/tumbler fee structures"
+      ],
+      "threat_path_ids": [
+        "TP-0049",
+        "TP-0078"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "crypto-laundering-infrastructure",
+        "money-laundering"
+      ],
+      "tags": [
+        "TP-0049",
+        "TP-0078",
+        "attack.t1657",
+        "cfpf.p4.execution",
+        "crypto-laundering",
+        "fee-pattern",
+        "flame.shared",
+        "illicit-exchange",
+        "money-laundering"
+      ],
+      "falsepositives": [
+        "Payment processors forwarding funds minus legitimate transaction fees",
+        "DEX aggregators routing trades with slippage/fees",
+        "Legitimate escrow services releasing funds minus commission"
       ]
     }
   ]

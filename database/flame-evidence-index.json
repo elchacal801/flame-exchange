@@ -850,6 +850,36 @@
     "cfpf_phase_coverage": "P1, P3"
   },
   {
+    "evidence_id": "EV-TP0061-2026-003",
+    "tp_id": "TP-0061",
+    "title": "BearHost / Chang Way Technologies OSINT Investigation",
+    "source": "Flare Academy BPH Webinar (Oleg O, Flare.io/cybercrimediaries.com), 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High — OSINT-derived from public records, forum data, and passive DNS; corporate attribution confirmed via Russian company registry",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0061-2026-004",
+    "tp_id": "TP-0061",
+    "title": "BPH Market Landscape — 40 Active Providers (2024)",
+    "source": "Cybercrime Diaries, \"50 Shades of Bulletproof Hosting\" (Oleg, July 2024)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium — practitioner analysis from direct forum research",
+    "cfpf_phase_coverage": "P1, P2"
+  },
+  {
+    "evidence_id": "EV-TP0061-2026-005",
+    "tp_id": "TP-0061",
+    "title": "Black Basta Infrastructure Procurement Model",
+    "source": "Cybercrime Diaries, \"Black Basta Chat Leak\" (Oleg, March 2025); ExploitWhispers leak (196,045 internal messages)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High — derived from authenticated internal chat leak (196,045 messages); infrastructure details cross-referenced with public hosting data",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
     "evidence_id": "EV-TP0062-2026-001",
     "tp_id": "TP-0062",
     "title": "UNODC Organized Fraud Typology — Recovery Fraud",
@@ -950,6 +980,16 @@
     "cfpf_phase_coverage": "P2"
   },
   {
+    "evidence_id": "EV-TP0067-2026-005",
+    "tp_id": "TP-0067",
+    "title": "Bluekit PhaaS Platform Emergence",
+    "source": "OSINT analysis — Reza Abasi (LinkedIn), Cracked/OGUsers/Patched forum posts, Telegram channel monitoring, bluekit[.]cc analysis",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium — OSINT-derived from forum posts and public Telegram; platform is newly launched with limited operational history",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
     "evidence_id": "EV-TP0068-2026-001",
     "tp_id": "TP-0068",
     "title": "NRF Retail Fraud Taxonomy v1.0 Gift Card Fraud Scheme",
@@ -978,6 +1018,16 @@
     "domain_count": "",
     "confidence": "High",
     "cfpf_phase_coverage": "P1–P3"
+  },
+  {
+    "evidence_id": "EV-TP0069-2026-003",
+    "tp_id": "TP-0069",
+    "title": "PhaaS Ecosystem Growth and Market Fragmentation",
+    "source": "Barracuda Networks PhaaS threat review (January 2026); KnowBe4 \"The Rise of Kratos\" (February 2026); CrowdStrike Tycoon2FA post-takedown analysis (March 2026); Bluekit PhaaS TI report (CrimsonVector, March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — multi-source vendor telemetry (CrowdStrike, Barracuda, KnowBe4, Sekoia)",
+    "cfpf_phase_coverage": "P1 (market landscape)"
   },
   {
     "evidence_id": "EV-TP0070-2026-001",
@@ -1268,5 +1318,35 @@
     "domain_count": "",
     "confidence": "Medium-High (direct ICIJ observation; single operation documented)",
     "cfpf_phase_coverage": "P5 (monetization via physical cash conversion)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-005",
+    "tp_id": "TP-0078",
+    "title": "LockBitSupp (Khoroshev) — Laundering via Legitimate Business",
+    "source": "Cybercrime Diaries, \"From Dirty Crypto to Clean Money\" (Oleg, June 2025); Russian business registry analysis post-May 2024 law enforcement identification",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — based on public Russian business registry records post-identification",
+    "cfpf_phase_coverage": "P5 (monetization/legalization)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-006",
+    "tp_id": "TP-0078",
+    "title": "Black Basta (Nefedov/Tramp) — Restaurant Business Laundering",
+    "source": "Cybercrime Diaries, \"From Dirty Crypto to Clean Money\" (Oleg, June 2025); Black Basta chat leak (February 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High — derived from authenticated internal chat leak and public business registry data",
+    "cfpf_phase_coverage": "P5 (monetization/legalization)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-007",
+    "tp_id": "TP-0078",
+    "title": "Infostealer Logs as Crypto Exchange Intelligence",
+    "source": "Cybercrime Diaries, \"From Dirty Crypto to Clean Money\" (Oleg, June 2025); Flare.io infostealer log analysis",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium — methodology described by Flare CTI analyst; specific case data not publicly disclosed",
+    "cfpf_phase_coverage": "P3, P4, P5"
   }
 ]

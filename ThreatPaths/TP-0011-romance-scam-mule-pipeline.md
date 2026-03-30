@@ -68,6 +68,8 @@ tags:
   - unodc
   - unodc-organized-fraud-2024
   - wci-geographic-attribution
+  - drops-recruitment
+  - forum-recruitment
 ---
 ```
 
@@ -276,6 +278,8 @@ This threat path is the connective tissue of fraud. Mule networks recruited thro
 
 **Cross-FLAME connections**: TP-0001 (treasury ATO) → funds wire to mule from this pipeline. TP-0002 (BEC) → mule account receives diverted invoice payment. TP-0006 (real estate wire) → mule account receives closing funds. TP-0009 (check fraud) → mule account opened by recruited mule.
 
+**"Drops" Recruitment Ecosystem**: Cybercrime Diaries' analysis of 94 active Russian-language cybercriminal forums (January 2024) found that "drops" — individuals who lend or sell their identities (bank accounts, IDs, addresses) for financial operations — are heavily recruited across virtually all forums. Drops serve as the physical human layer connecting digital fraud to real-world financial extraction: they receive stolen funds, forward packages, open accounts, and provide identity documents. For romance scam mule pipelines, drops recruited on forums like DarkMoney and LolzTeam represent a professionalized alternative to the unwitting victims traditionally recruited through romance manipulation — these are knowing participants operating as commoditized infrastructure. Detection should distinguish between unwitting mules (romance scam victims who believe they are helping a romantic partner) and professional drops (forum-recruited participants who understand the criminal nature of their role), as behavioral patterns and intervention strategies differ fundamentally.
+
 ### Mule Network Operational Scale — LNRS 2026
 
 The average mule network consists of 15 mules moving money among 3.4 banks. The largest documented network involved 543 mules and moved more than £130 million. In the UK alone, mules launder an estimated £10 billion annually.
@@ -305,6 +309,7 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 - Group-IB Fraud Intelligence: "Evolving Mule Tactics" report (6-stage mule evolution analysis, META region Q4 2023 – Q1 2025, detection methodology)
 - **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Mule network operational scale data, Gen Z recruitment statistics, enforcement action summaries.
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents MENA region victims coerced into money mule roles via investment fraud schemes; European re-victimization patterns where fraud victims are recruited as mules through "recovery" scams
+- Cybercrime Diaries (cybercrimediaries.com), "Russian Language Cybercriminal Forums — Steep Investments And Hefty Profits" (January 2024) — drops recruitment across 94 forums
 
 ## Revision History
 
@@ -313,3 +318,4 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Underground Ecosystem Context, IC3 2024 loss figures |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — MENA and European mule recruitment patterns |
+| 2026-03-30 | FLAME Project | Enrichment: drops recruitment ecosystem context — sourced from Cybercrime Diaries forum analysis |

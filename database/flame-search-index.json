@@ -1656,6 +1656,36 @@
     "text": "Detects abnormal concentration of corporate registrations at a single registered address as an indicator of shell company infrastructure used for fraud, money laundering, or beneficial ownership obfuscation. The ICIJ/OpenCorporates investigation of Wyoming documented that 40% of all Wyoming LLCs are registered to just two buildings in Sheridan, WY, with a 30% spike in LLC registrations in 2023 alone. Wyoming now surpasses Delaware in companies registered per capita. Wyoming LLC services are actively marketed in Cyprus, Singapore, and other offshore jurisdictions as tax avoidance and asset-shielding vehicles. Millions in PPP loan fraud were traced to shell companies registered at a single Wyoming storefront address. The Corporate Transparency Act beneficial ownership registry — catalyzed by the FinCEN Files investigation — was effectively gutted in 2025 when the Trump Administration suspended all enforcement and deleted previously submitted data, removing the primary countermeasure against shell company opacity in the United States. This rule targets the recon phase (P1) where fraud infrastructure is established through mass corporate registration at concentrated addresses.\n"
   },
   {
+    "id": "DL-0199",
+    "type": "detection_rule",
+    "title": "ASN Reputation Clustering — High Abuse-Density Autonomous Systems",
+    "text": "Detects network traffic to or from IP addresses within autonomous systems (ASNs) that exhibit high abuse density — defined as a concentration of abuse reports, malware hosting, and fraud-associated domains relative to total IP allocation. BPH operators concentrate on ASNs with high abuse-to-IP ratios due to their resistance to takedown. ASN-level reputation clustering is more resilient to infrastructure rotation than individual IP blocking, as operators rotate IPs within the same ASN. Sourced from Flare Academy BPH Webinar and Recorded Future TAE provider intelligence.\n"
+  },
+  {
+    "id": "DL-0200",
+    "type": "detection_rule",
+    "title": "Infrastructure Rotation Velocity — Rapid DNS IP Changes Within BPH Networks",
+    "text": "Detects domains exhibiting rapid IP address rotation characteristic of bulletproof hosting infrastructure management. BPH operators rotate IP addresses every 24-72 hours to evade blocklists, with emergency rotation following IOC publication. A domain resolving to 4+ unique IPs within 7 days — particularly when those IPs span multiple TAE provider ASNs — is a strong indicator of managed BPH infrastructure rotation. This detection complements static IP blocklists by identifying the rotation behavior itself. Sourced from Flare Academy BPH Webinar and Cybercrime Diaries BPH landscape analysis.\n"
+  },
+  {
+    "id": "DL-0201",
+    "type": "detection_rule",
+    "title": "AiTM Antibot Cloaking Detection — Divergent Content by Client Type",
+    "text": "Detects phishing pages that serve different content to automated scanners versus human visitors — a key evasion technique used by PhaaS platforms including Bluekit, Tycoon 2FA, and NakedPages. Antibot cloaking typically returns benign content (blank pages, Wikipedia redirects, legitimate-looking sites) to known scanner User-Agents, IP ranges associated with security vendors, and headless browsers, while serving the actual phishing page to real victims. Detection compares HTTP responses for the same URL across different client profiles. Sourced from Bluekit PhaaS TI report (CrimsonVector, March 2026).\n"
+  },
+  {
+    "id": "DL-0202",
+    "type": "detection_rule",
+    "title": "Browser Fingerprint Spoofing — User-Agent Inconsistency in Authentication Flow",
+    "text": "Detects authentication sessions where the User-Agent string changes between sequential authentication steps — a strong indicator of AiTM proxy-based session hijacking. Bluekit advertises \"full 2FA support with emulation/spoofing of geolocation and browser information,\" and Sneaky 2FA exhibits an \"impossible device shift\" where Safari/iOS is used for login but Edge/Windows for session resume. When a legitimate user authenticates, the User-Agent remains consistent throughout the flow. AiTM proxies may inject different User-Agents at different stages due to proxy architecture or deliberate fingerprint spoofing. Sourced from Bluekit PhaaS TI report and Sekoia TDR Sneaky 2FA analysis.\n"
+  },
+  {
+    "id": "DL-0203",
+    "type": "detection_rule",
+    "title": "Crypto Laundering Service Fee Pattern — Percentage-Based Deduction on Transfers",
+    "text": "Detects cryptocurrency transfer patterns consistent with laundering service fee structures. Illicit crypto exchange services charge 2.8%-8.5% base fees plus a 4% \"dirty funds\" surcharge, resulting in outbound amounts that are consistently 93-97% of inbound amounts. When a wallet receives cryptocurrency and forwards approximately 93-97% to another address within 24 hours — retaining 3-7% as a service fee — this is a strong indicator of a crypto mixing or cashout service. The retained percentage serves as the service operator's commission. Sourced from Cybercrime Diaries undercover exchange contact research (June 2025).\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",

@@ -1349,7 +1349,7 @@ The World Cybercrime Index (Bruce et al., PLoS ONE 2024) reveals that cash-out/m
       <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>85</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>3</flame:detectionRuleCount>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
         <category>cmln-operations</category>
         <category>crypto-laundering-infrastructure</category>
         <category>CFPF-P1</category>
@@ -1693,9 +1693,9 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
 
 **Distinction from TP-0044**: TP-0044 covers the broader state-criminal infrastructure convergence pattern; TP-0061 focuses specifically on the commercial bulletproof hosting providers that sell abuse-resistant infrastructure to fraud operators as a business model.</description>
       <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
-      <flame:confidence>68</flame:confidence>
+      <flame:confidence>72</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>2</flame:detectionRuleCount>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
         <category>bulletproof-hosting</category>
         <category>fraud-enabling-infrastructure</category>
         <category>hosting-provider-complicity</category>
@@ -1864,7 +1864,7 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
       <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>82</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>6</flame:detectionRuleCount>
+      <flame:detectionRuleCount>9</flame:detectionRuleCount>
         <category>account-takeover</category>
         <category>aitm-phishing</category>
         <category>credential-stuffing</category>
@@ -1928,7 +1928,7 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
       <pubDate>Mon, 23 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>80</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+      <flame:detectionRuleCount>2</flame:detectionRuleCount>
         <category>card-not-present-fraud</category>
         <category>fraud-as-a-service</category>
         <category>identity-theft</category>
@@ -2179,7 +2179,7 @@ The convergence of this laundering infrastructure with offshore shell company op
       <pubDate>Mon, 30 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>82</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>5</flame:detectionRuleCount>
+      <flame:detectionRuleCount>6</flame:detectionRuleCount>
         <category>crypto-laundering</category>
         <category>crypto-laundering-infrastructure</category>
         <category>money-laundering</category>
@@ -4750,6 +4750,75 @@ The convergence of this laundering infrastructure with offshore shell company op
         <category>severity-medium</category>
         <category>CFPF-P1</category>
         <category>linked-TP-0055</category>
+        <category>linked-TP-0078</category>
+    </item>
+    <item>
+      <title>[DL-0199] ASN Reputation Clustering — High Abuse-Density Autonomous Systems</title>
+      <link>https://flameintel.org/#rules/DL-0199</link>
+      <guid isPermaLink="false">flame-dl-DL-0199</guid>
+      <description>Detects network traffic to or from IP addresses within autonomous systems (ASNs) that exhibit high abuse density — defined as a concentration of abuse reports, malware hosting, and fraud-associated domains relative to total IP allocation. BPH operators concentrate on ASNs with high abuse-to-IP ratios due to their resistance to takedown. ASN-level reputation clustering is more resilient to infrastructure rotation than individual IP blocking, as operators rotate IPs within the same ASN. Sourced from Flare Academy BPH Webinar and Recorded Future TAE provider intelligence.
+</description>
+        <category>bulletproof-hosting</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>infrastructure-rotation</category>
+        <category>severity-medium</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0061</category>
+    </item>
+    <item>
+      <title>[DL-0200] Infrastructure Rotation Velocity — Rapid DNS IP Changes Within BPH Networks</title>
+      <link>https://flameintel.org/#rules/DL-0200</link>
+      <guid isPermaLink="false">flame-dl-DL-0200</guid>
+      <description>Detects domains exhibiting rapid IP address rotation characteristic of bulletproof hosting infrastructure management. BPH operators rotate IP addresses every 24-72 hours to evade blocklists, with emergency rotation following IOC publication. A domain resolving to 4+ unique IPs within 7 days — particularly when those IPs span multiple TAE provider ASNs — is a strong indicator of managed BPH infrastructure rotation. This detection complements static IP blocklists by identifying the rotation behavior itself. Sourced from Flare Academy BPH Webinar and Cybercrime Diaries BPH landscape analysis.
+</description>
+        <category>bph-migration</category>
+        <category>bulletproof-hosting</category>
+        <category>infrastructure-rotation</category>
+        <category>severity-medium</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0061</category>
+        <category>linked-TP-0067</category>
+    </item>
+    <item>
+      <title>[DL-0201] AiTM Antibot Cloaking Detection — Divergent Content by Client Type</title>
+      <link>https://flameintel.org/#rules/DL-0201</link>
+      <guid isPermaLink="false">flame-dl-DL-0201</guid>
+      <description>Detects phishing pages that serve different content to automated scanners versus human visitors — a key evasion technique used by PhaaS platforms including Bluekit, Tycoon 2FA, and NakedPages. Antibot cloaking typically returns benign content (blank pages, Wikipedia redirects, legitimate-looking sites) to known scanner User-Agents, IP ranges associated with security vendors, and headless browsers, while serving the actual phishing page to real victims. Detection compares HTTP responses for the same URL across different client profiles. Sourced from Bluekit PhaaS TI report (CrimsonVector, March 2026).
+</description>
+        <category>aitm-phishing</category>
+        <category>cloaking</category>
+        <category>fraud-as-a-service</category>
+        <category>phishing</category>
+        <category>severity-high</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0067</category>
+        <category>linked-TP-0069</category>
+    </item>
+    <item>
+      <title>[DL-0202] Browser Fingerprint Spoofing — User-Agent Inconsistency in Authentication Flow</title>
+      <link>https://flameintel.org/#rules/DL-0202</link>
+      <guid isPermaLink="false">flame-dl-DL-0202</guid>
+      <description>Detects authentication sessions where the User-Agent string changes between sequential authentication steps — a strong indicator of AiTM proxy-based session hijacking. Bluekit advertises &quot;full 2FA support with emulation/spoofing of geolocation and browser information,&quot; and Sneaky 2FA exhibits an &quot;impossible device shift&quot; where Safari/iOS is used for login but Edge/Windows for session resume. When a legitimate user authenticates, the User-Agent remains consistent throughout the flow. AiTM proxies may inject different User-Agents at different stages due to proxy architecture or deliberate fingerprint spoofing. Sourced from Bluekit PhaaS TI report and Sekoia TDR Sneaky 2FA analysis.
+</description>
+        <category>account-takeover</category>
+        <category>aitm-phishing</category>
+        <category>credential-stuffing</category>
+        <category>severity-high</category>
+        <category>CFPF-P3</category>
+        <category>linked-TP-0067</category>
+    </item>
+    <item>
+      <title>[DL-0203] Crypto Laundering Service Fee Pattern — Percentage-Based Deduction on Transfers</title>
+      <link>https://flameintel.org/#rules/DL-0203</link>
+      <guid isPermaLink="false">flame-dl-DL-0203</guid>
+      <description>Detects cryptocurrency transfer patterns consistent with laundering service fee structures. Illicit crypto exchange services charge 2.8%-8.5% base fees plus a 4% &quot;dirty funds&quot; surcharge, resulting in outbound amounts that are consistently 93-97% of inbound amounts. When a wallet receives cryptocurrency and forwards approximately 93-97% to another address within 24 hours — retaining 3-7% as a service fee — this is a strong indicator of a crypto mixing or cashout service. The retained percentage serves as the service operator&apos;s commission. Sourced from Cybercrime Diaries undercover exchange contact research (June 2025).
+</description>
+        <category>crypto-laundering</category>
+        <category>crypto-laundering-infrastructure</category>
+        <category>money-laundering</category>
+        <category>severity-medium</category>
+        <category>CFPF-P4</category>
+        <category>linked-TP-0049</category>
         <category>linked-TP-0078</category>
     </item>
   </channel>
