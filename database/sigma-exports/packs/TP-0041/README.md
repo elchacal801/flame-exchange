@@ -10,6 +10,7 @@ Detection rules mapped to **RDGA-Based Infrastructure Campaigns**.
 | DL-0093 | RDGA Nameserver Clustering Anomaly | high | P2 |
 | DL-0094 | RDGA Registrar Concentration Anomaly | medium | P2 |
 | DL-0100 | Zone File Daily Diff Anomaly Detection | high | P2 |
+| DL-0208 | New gTLD Domain Registration Burst with Phishing Characteristics | high | P1 |
 
 ## Formats
 

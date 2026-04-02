@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-30T17:52:50.201295+00:00",
-    "total": 78
+    "generated_at": "2026-04-02T04:13:08.267999+00:00",
+    "total": 81
   },
   "data": [
     {
@@ -3872,7 +3872,7 @@
       "category": "ThreatPath",
       "date": "2026-03-03",
       "author": "FLAME Project",
-      "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)",
+      "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, CrowdStrike 2026 GTR, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026), FATF 2026 Stablecoin Report",
       "tlp": "WHITE",
       "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use stolen or synthetic American identities to fraudulently obtain remote employment at Western technology companies. The program generates revenue for the North Korean regime in violation of international sanctions, while simultaneously creating insider threat vectors for credential theft, source code exfiltration, and post-termination data extortion. The DOJ has documented 136+ compromised U.S. companies with $2.2M+ in direct salary revenue from a single case, while CrowdStrike has observed 304 incidents. The threat has escalated since mid-2024 from pure salary extraction to active data exfiltration and ransom demands, representing a convergence of state-sponsored espionage, employment fraud, and cyber extortion. The operation relies on organized facilitator networks spanning the U.S. and Ukraine that provide stolen identities, proxy laptop hosting at U.S. addresses, and financial laundering infrastructure.\n\nThe World Cybercrime Index (Bruce et al., PLoS ONE 2024) provides independent academic corroboration: North Korea ranks #7 globally (WCI 10.61/100) with a pronounced attacks/extortion specialization (25.33 — 2.4x its overall score), while scoring minimally on scams (2.17) and cash-out (3.88). This asymmetric profile reflects a state-directed cybercrime apparatus focused on high-impact attacks rather than the broad-spectrum fraud production seen in other top-ranked countries. Note: WCI data was collected in 2021, before the IT worker fraud campaign reached its current documented scale.\n\n---",
       "confidence_score": 85,
@@ -3917,7 +3917,13 @@
         "beavertail",
         "invisibleferret",
         "purplebravo",
-        "purpledelta"
+        "purpledelta",
+        "pressure-chollima",
+        "famous-chollima",
+        "stardust-chollima",
+        "bybit-theft",
+        "crowdstrike-gtr-2026",
+        "fatf-stablecoin-2026"
       ],
       "cfpf_phases": [
         "P1",
@@ -3971,7 +3977,9 @@
         "REG-FBI-IC3",
         "REG-UNODC-EMERGING-THREATS",
         "REG-RF-CTA-2026-0319",
-        "REG-WCI-2024"
+        "REG-WCI-2024",
+        "REG-CROWDSTRIKE-GTR-2026",
+        "REG-FATF-STABLECOIN-2026"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -4022,9 +4030,13 @@
         {
           "id": "TP-0057",
           "relationship": "related-to"
+        },
+        {
+          "id": "TP-0080",
+          "relationship": "feeds-into"
         }
       ],
-      "evidence_count": 4
+      "evidence_count": 6
     },
     {
       "id": "TP-0035",
@@ -4834,7 +4846,8 @@
         "DL-0093",
         "DL-0094",
         "DL-0099",
-        "DL-0100"
+        "DL-0100",
+        "DL-0208"
       ],
       "related_tps": [
         {
@@ -5157,7 +5170,10 @@
         "unodc-organized-fraud-2024",
         "wci-geographic-attribution",
         "probiv-lookup-services",
-        "insider-database-access"
+        "insider-database-access",
+        "pressure-chollima",
+        "bybit-theft",
+        "crowdstrike-gtr-2026"
       ],
       "cfpf_phases": [
         "P1",
@@ -5193,7 +5209,8 @@
         "REG-INTERPOL-SHADOW-STORM",
         "REG-RF-CTA-2026-0319",
         "REG-UNODC-ORGANIZED-FRAUD-2024",
-        "REG-WCI-2024"
+        "REG-WCI-2024",
+        "REG-CROWDSTRIKE-GTR-2026"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -5210,7 +5227,8 @@
       ],
       "detection_rule_ids": [
         "DL-0101",
-        "DL-0123"
+        "DL-0123",
+        "DL-0206"
       ],
       "related_tps": [
         {
@@ -5226,7 +5244,7 @@
           "relationship": "related-to"
         }
       ],
-      "evidence_count": 2
+      "evidence_count": 5
     },
     {
       "id": "TP-0045",
@@ -5661,7 +5679,11 @@
         "unodc",
         "unodc-organized-fraud-2024",
         "ai-evasion",
-        "wci-geographic-attribution"
+        "wci-geographic-attribution",
+        "fatf-stablecoin-2026",
+        "bybit-laundering",
+        "p2p-laundering",
+        "unhosted-wallet"
       ],
       "cfpf_phases": [
         "P1",
@@ -5686,7 +5708,8 @@
         "REG-INTERPOL-GFFTA",
         "REG-UNODC-EMERGING-THREATS",
         "REG-UNODC-ORGANIZED-FRAUD-2024",
-        "REG-WCI-2024"
+        "REG-WCI-2024",
+        "REG-FATF-STABLECOIN-2026"
       ],
       "ucff_domains": {
         "commit": "Level 4",
@@ -5706,7 +5729,10 @@
         "DL-0113",
         "DL-0114",
         "DL-0142",
-        "DL-0203"
+        "DL-0203",
+        "DL-0204",
+        "DL-0205",
+        "DL-0206"
       ],
       "related_tps": [
         {
@@ -5720,9 +5746,13 @@
         {
           "id": "TP-0047",
           "relationship": "related-to"
+        },
+        {
+          "id": "TP-0080",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 3
+      "evidence_count": 7
     },
     {
       "id": "TP-0050",
@@ -6291,7 +6321,10 @@
         "operation-catalyst",
         "unodc",
         "unodc-organized-fraud-2024",
-        "wci-geographic-attribution"
+        "wci-geographic-attribution",
+        "irgc-stablecoin",
+        "isil-stablecoin",
+        "fatf-stablecoin-2026"
       ],
       "cfpf_phases": [
         "P1",
@@ -6323,7 +6356,8 @@
         "REG-FATF-R16",
         "REG-INTERPOL-GFFTA",
         "REG-UNODC-ORGANIZED-FRAUD-2024",
-        "REG-WCI-2024"
+        "REG-WCI-2024",
+        "REG-FATF-STABLECOIN-2026"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -6341,7 +6375,8 @@
       "detection_rule_ids": [
         "DL-0174",
         "DL-0196",
-        "DL-0198"
+        "DL-0198",
+        "DL-0207"
       ],
       "related_tps": [
         {
@@ -6355,9 +6390,13 @@
         {
           "id": "TP-0049",
           "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0080",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 4
+      "evidence_count": 8
     },
     {
       "id": "TP-0056",
@@ -7573,7 +7612,11 @@
         "bluekit",
         "phaas-market-fragmentation",
         "vacuum-effect",
-        "antibot-cloaking"
+        "antibot-cloaking",
+        "imperial-kitten",
+        "shinyhunters",
+        "cozy-bear",
+        "crowdstrike-gtr-2026"
       ],
       "cfpf_phases": [
         "P1",
@@ -7614,7 +7657,8 @@
       "regulatory_refs": [
         "REG-INTERPOL-GFFTA",
         "REG-STIX-FCI",
-        "REG-WCI-2024"
+        "REG-WCI-2024",
+        "REG-CROWDSTRIKE-GTR-2026"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -7635,7 +7679,8 @@
         "DL-0150",
         "DL-0200",
         "DL-0201",
-        "DL-0202"
+        "DL-0202",
+        "DL-0209"
       ],
       "related_tps": [
         {
@@ -7653,9 +7698,13 @@
         {
           "id": "TP-0069",
           "relationship": "related-to"
+        },
+        {
+          "id": "TP-0079",
+          "relationship": "related-to"
         }
       ],
-      "evidence_count": 5
+      "evidence_count": 9
     },
     {
       "id": "TP-0068",
@@ -7800,7 +7849,11 @@
         "vacuum-effect",
         "bluekit",
         "kratos",
-        "evilTokens"
+        "evilTokens",
+        "interisle-2025",
+        "xinxin-lucid",
+        "dominet-hk",
+        "xin-tld"
       ],
       "cfpf_phases": [
         "P1",
@@ -7866,7 +7919,7 @@
           "relationship": "related-to"
         }
       ],
-      "evidence_count": 3
+      "evidence_count": 4
     },
     {
       "id": "TP-0070",
@@ -8690,6 +8743,300 @@
         }
       ],
       "evidence_count": 7
+    },
+    {
+      "id": "TP-0079",
+      "title": "Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale",
+      "category": "ThreatPath",
+      "date": "2026-04-01",
+      "author": "FLAME Project",
+      "source": "Interisle Consulting Group — Phishing Landscape 2025 (September 2025)",
+      "tlp": "WHITE",
+      "summary": "Phishing infrastructure has undergone a structural shift toward cheap new generic top-level domains (gTLDs) and free Platform-as-a-Service (PaaS) subdomains as the dominant delivery mechanism for credential harvesting, brand impersonation, and fraud-enabling infrastructure at global scale. Interisle Consulting Group's Phishing Landscape 2025 report, covering May 2024 through April 2025, documented approximately 2 million phishing attacks worldwide across more than 1.5 million unique domains — with 77% of phishing domains identified as maliciously registered (a 36% year-over-year increase).\n\nThe defining finding is the dramatic asymmetry between new gTLD market share and phishing concentration: new gTLDs hold only 11% of the global domain market but accounted for 51% of all phishing domains during the reporting period. This represents a significant escalation from 21% in 2021, indicating that threat actors have systematically migrated to new gTLDs as their preferred registration namespace. The economic driver is clear: 18 new gTLDs offered registrations under $2, and sub-$2 pricing correlates directly with the highest phishing abuse scores.\n\nSimultaneously, PaaS subdomain abuse has emerged as a parallel infrastructure channel. Cloudflare pages.dev saw a 157% increase in phishing attacks (43,800 attacks), Webflow's webflow.io surged 980% (33,400 attacks), Vercel's vercel.app grew 279% (21,400 attacks), and GitBook's gitbook.io appeared as a new vector with 22,000 attacks. These platforms provide free hosting with legitimate SSL certificates and trusted domain reputations, enabling phishers to bypass email security filters and browser warnings.\n\nA specific campaign — the \"Unpaid Toll Scam\" — illustrates the convergence of these techniques: 37,000 domains were registered via Dominet (HK) registrar across the .XIN and .TOP TLDs, operated by the Chinese PhaaS provider XinXin/LUCID, and hosted on Tencent (AS132203), Alibaba (AS45102), and Cloudflare (AS13335) infrastructure. IDN homograph attacks further compound the threat, with 2,655 domains targeting cryptocurrency brands through internationalized domain name spoofing (e.g., xn--btpay-b4a.com rendering as bitpay.com).\n\nCloudflare AS13335 has been the number one hosting network for phishing attacks for four consecutive years, with 540,000 attacks during the reporting period, largely because its reverse proxy architecture obscures the true hosting location of phishing pages from investigators and automated takedown systems.",
+      "confidence_score": 90,
+      "source_reliability": "A",
+      "info_credibility": 1,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "cross-sector",
+        "banking",
+        "crypto",
+        "payments",
+        "government"
+      ],
+      "fraud_types": [
+        "phishing",
+        "brand-impersonation",
+        "credential-harvesting",
+        "fraud-enabling-infrastructure",
+        "paas-subdomain-abuse"
+      ],
+      "tags": [
+        "gtld-abuse",
+        "bulk-registration",
+        "paas-subdomain",
+        "cloudflare-proxy",
+        "phishing-infrastructure",
+        "interisle-2025",
+        "idn-homograph",
+        "unpaid-toll-scam",
+        "xinxin-lucid",
+        "dominet-hk",
+        "webflow-abuse",
+        "vercel-abuse",
+        "domain-pricing"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1583.003",
+        "T1566.002",
+        "T1608.005"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Initial Access",
+        "Perform Fraud"
+      ],
+      "regulatory_refs": [
+        "REG-INTERPOL-GFFTA"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0208",
+        "DL-0209",
+        "DL-0210"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0041",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0048",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0067",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0069",
+          "relationship": "enables"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0080",
+      "title": "Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges",
+      "category": "ThreatPath",
+      "date": "2026-04-01",
+      "author": "FLAME Project",
+      "source": "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026); CrowdStrike 2026 Global Threat Report; Chainalysis 2026 Crypto Crime Report",
+      "tlp": "WHITE",
+      "summary": "State-sponsored threat actors and transnational criminal organizations have developed a systematic methodology to evade stablecoin issuer freeze capabilities by converting centrally issued stablecoins (USDT, USDC) into decentralized alternatives (DAI, sDAI, LUSD, RAI) and wrapped token variants that decouple the original issuer's administrative controls. This threat path exploits a fundamental architectural gap: when a centrally issued stablecoin is \"wrapped\" through a bridge protocol or swapped for a decentralized stablecoin, the issuer's freeze function — the primary compliance enforcement mechanism — becomes inoperable against the resulting tokens.\n\nThe FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026) quantifies the scale: stablecoins accounted for 84% of the $154 billion in illicit virtual asset transaction volume observed in 2025 (Chainalysis data). This dominance reflects stablecoins' utility as a stable-value transfer mechanism for illicit actors who cannot tolerate the price volatility of BTC or ETH during multi-stage laundering operations.\n\nTwo confirmed nation-state programs demonstrate this threat path at operational scale. The IRGC shifted procurement financing from USDT to DAI following mid-2025 Tether freeze actions, using decentralized stablecoins to purchase drone components and weapons systems through front companies. Billions in IRGC-associated addresses were identified across 2024-2025. Separately, the DPRK's Lazarus Group laundered proceeds from the $1.46 billion Bybit theft (February 2025) through mixers, cross-chain bridges, and 125,000+ Ethereum wallets before converting to USDT on TRON for OTC cash-out — with the 221 General Bureau using USDT for military equipment procurement including munitions-grade copper.\n\nBeyond state actors, drug trafficking organizations are using USDT on TRON and USDC on Ethereum for synthetic drug precursor procurement and settlement. ISIL and Al-Qaeda affiliates have solicited stablecoin donations via encrypted messaging platforms, employing rotating wallet addresses, micro-splitting, and multi-hop transfers to evade tracing.\n\nThe convergence of P2P transactions via unhosted wallets (no AML/CFT intermediary), cross-chain bridge fragmentation of transaction trails, and decentralized stablecoin adoption creates a compounding evasion capability that existing compliance frameworks — designed around centralized issuer controls — are structurally unable to address.\n\n**Key Distinction from TP-0078**: TP-0078 documents the industrialized laundering-as-a-service pipeline model (Huione Group, CEX hot wallet sweep patterns). TP-0080 documents the upstream evasion technique: how illicit actors defeat the freeze capability that is supposed to prevent stablecoins from being used in the TP-0078 pipeline in the first place. TP-0080 feeds into TP-0078 — once freeze-evasion is achieved, the resulting funds flow through the CEX off-ramp infrastructure documented in TP-0078.\n\n**Key Distinction from TP-0049**: TP-0049 covers cryptocurrency laundering infrastructure broadly. TP-0080 specifically addresses the exploitation of stablecoin architectural design — the gap between centralized issuance with freeze capabilities and decentralized/wrapped circulation without them — as a deliberate sanctions and law enforcement evasion technique.",
+      "confidence_score": 85,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "sanctions-response",
+      "nation_state_nexus": "confirmed",
+      "sectors": [
+        "crypto",
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "stablecoin-freeze-evasion",
+        "sanctions-evasion-infrastructure",
+        "money-laundering"
+      ],
+      "tags": [
+        "stablecoin-freeze-evasion",
+        "wrapped-stablecoin",
+        "cross-chain-bridge",
+        "dai-evasion",
+        "unhosted-wallet",
+        "p2p-laundering",
+        "irgc-procurement",
+        "dprk-bybit",
+        "fatf-stablecoin-2026",
+        "otc-broker",
+        "tron-usdt",
+        "chain-hopping"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1657",
+        "T1036"
+      ],
+      "ft3_tactics": [
+        "FTA007"
+      ],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Resource Development",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-FATF-STABLECOIN-2026",
+        "REG-FATF-R16",
+        "REG-FINCEN-AML",
+        "REG-OFAC-SDN"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 4",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0204",
+        "DL-0205",
+        "DL-0206",
+        "DL-0207"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0045",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0049",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0055",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0078",
+          "relationship": "feeds-into"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0081",
+      "title": "Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud",
+      "category": "ThreatPath",
+      "date": "2026-04-01",
+      "author": "FLAME Project",
+      "source": "CrowdStrike 2026 Global Threat Report",
+      "tlp": "WHITE",
+      "summary": "Voice phishing (vishing) has emerged as the dominant initial access vector for identity-based intrusions, with adversaries combining real-time phone-based social engineering with technical exploitation chains to achieve account takeover at unprecedented speed. The CrowdStrike 2026 Global Threat Report documents a convergence of vishing, fake CAPTCHA campaigns, help desk impersonation, and GenAI-enabled persona creation that collectively represent a paradigm shift away from malware-centric attack models. 82% of CrowdStrike-observed detections in 2025 were malware-free, relying instead on valid credentials, native tools, and administrative functions.\n\nCHATTY SPIDER exemplifies the operational tempo: in a documented incident against a law firm, the adversary achieved a 4-minute breakout from initial vishing contact to active data exfiltration. Fake CAPTCHA campaigns surged 563% in 2025, with threat actors (BRASH SPIDER, COOKIE SPIDER) tricking victims into executing clipboard-delivered PowerShell payloads. SCATTERED SPIDER continues to social-engineer help desk personnel into performing password resets on SSO and cloud accounts, exploiting hybrid identity infrastructure (Entra ID, AD FS) for lateral movement. Average eCrime breakout time has collapsed to 29 minutes (down 65% from 48 minutes in 2024; fastest observed: 27 seconds), making real-time detection and response essential.\n\nAI-enabled adversary attacks rose 89%, with GenAI used to create convincing voice personas, synthetic identities for fraudulent employment (FAMOUS CHOLLIMA, +109% in fake personas), and multi-day social engineering campaigns (COZY BEAR leveraging instant messaging, email, video conferencing, and OAuth 2.0 device code phishing). Financial services accounted for 11% of interactive intrusion targets, with technology at 23%.\n\n**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure and session token hijacking via reverse proxy platforms. TP-0081 focuses on the voice-based and hybrid social engineering attack surface — vishing, help desk manipulation, fake CAPTCHA campaigns, and RMM tool abuse — where the human operator, not a phishing kit, is the primary attack instrument. The two threat paths frequently chain: vishing provides initial access that enables AiTM-style session capture downstream.",
+      "confidence_score": 82,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "cross-sector",
+        "technology",
+        "insurance"
+      ],
+      "fraud_types": [
+        "vishing",
+        "account-takeover",
+        "social-engineering",
+        "BEC",
+        "fake-captcha-fraud"
+      ],
+      "tags": [
+        "vishing",
+        "chatty-spider",
+        "scattered-spider",
+        "fake-captcha",
+        "helpdesk-impersonation",
+        "rmm-tooling",
+        "social-engineering",
+        "crowdstrike-gtr-2026",
+        "genai-personas",
+        "hybrid-identity",
+        "breakout-time"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.004",
+        "T1078",
+        "T1219",
+        "T1567"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Social Engineering",
+        "Initial Access",
+        "Lateral Movement",
+        "Perform Fraud"
+      ],
+      "regulatory_refs": [
+        "REG-CROWDSTRIKE-GTR-2026"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0211"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0002",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0067",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
     }
   ]
 }

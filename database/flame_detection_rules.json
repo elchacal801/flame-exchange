@@ -15571,5 +15571,409 @@
       "DEX aggregators routing trades with slippage/fees",
       "Legitimate escrow services releasing funds minus commission"
     ]
+  },
+  {
+    "id": "e8c8e659-16cd-424b-82e1-9dfdd791d64d",
+    "dl_id": "DL-0204",
+    "title": "Stablecoin-to-Decentralized-Stablecoin Swap Velocity",
+    "status": "experimental",
+    "description": "Detects when a wallet receives USDT/USDC and swaps to decentralized stablecoins (DAI, sDAI, LUSD, RAI) via a DEX within 24 hours, particularly when the source wallet has elevated risk scores. The IRGC's documented USDT-to-DAI shift after mid-2025 Tether freezes is the direct intelligence basis. Centralized stablecoins can be frozen by issuers; swapping to decentralized alternatives defeats this control.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "token_in|re": "USDT|USDC",
+        "token_out|re": "DAI|sDAI|LUSD|RAI",
+        "swap_venue_type": "DEX",
+        "time_receive_to_swap_hours|lte": 24
+      },
+      "filter_institutional": {
+        "wallet_address|in": "%institutional_rebalancing_allowlist%"
+      },
+      "condition": "selection and not filter_institutional"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "blockchain_analytics"
+    },
+    "references": [
+      "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
+    ],
+    "threat_path_ids": [
+      "TP-0049",
+      "TP-0080"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "stablecoin-freeze-evasion"
+    ],
+    "tags": [
+      "cfpf.phase3.positioning",
+      "flame.crypto",
+      "flame.shared"
+    ],
+    "falsepositives": [
+      "DeFi yield farming strategies that routinely swap between stablecoin types",
+      "Institutional portfolio rebalancing across stablecoin allocations",
+      "Stablecoin arbitrage trading exploiting minor depegs"
+    ]
+  },
+  {
+    "id": "ed008fcb-2d08-47a4-818d-0b7d5ce6465e",
+    "dl_id": "DL-0205",
+    "title": "Wrapped Stablecoin Bridge Transfer from High-Risk Source",
+    "status": "experimental",
+    "description": "Detects stablecoin bridge transactions where USDT/USDC is wrapped through bridge protocols to create wrapped representations (wUSDT, wUSDC) on destination chains, and the source address has elevated risk indicators or recent exposure to sanctioned addresses. Bridging defeats the original issuer's freeze capability on the destination chain, making this a key laundering technique for sanctioned actors.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "bridge_protocol": "*",
+        "source_chain": "*",
+        "destination_chain": "*",
+        "wrapped_token|re": "wUSDT|wUSDC",
+        "source_risk_score|gte": 70,
+        "amount_usd|gte": 10000
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "bridge_monitoring"
+    },
+    "references": [
+      "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
+    ],
+    "threat_path_ids": [
+      "TP-0049",
+      "TP-0080"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "money-laundering"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.crypto",
+      "flame.shared"
+    ],
+    "falsepositives": [
+      "Cross-chain DeFi operations moving stablecoins between chains for yield optimization",
+      "Legitimate multi-chain treasury management by DAOs or protocols"
+    ]
+  },
+  {
+    "id": "3842538a-7ffb-4c3e-a690-e2de5d80c507",
+    "dl_id": "DL-0206",
+    "title": "Rapid Wallet Fan-Out Exceeding 100 Wallets Post-Theft",
+    "status": "experimental",
+    "description": "Detects when a single wallet or cluster distributes funds across 100+ new wallets within 48 hours following a large-value transfer (>$1M). Directly models the DPRK Bybit laundering pattern where PRESSURE CHOLLIMA distributed stolen funds across 125,000+ Ethereum wallets. Existing DL-0196 and DL-0197 cover CEX off-ramp detection; this rule covers the upstream distancing and layering phase.\n",
+    "cfpf_phase": "P4",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "source_wallet": "*",
+        "unique_destination_count|gte": 100,
+        "timeframe_hours|lte": 48,
+        "total_amount_usd|gte": 1000000
+      },
+      "aggregation": {
+        "operation": "count(distinct destination_wallet) by source_wallet_cluster",
+        "timeframe": "48h"
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "blockchain_analytics"
+    },
+    "references": [
+      "CrowdStrike 2026 Global Threat Report (PRESSURE CHOLLIMA Bybit case)",
+      "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
+    ],
+    "threat_path_ids": [
+      "TP-0044",
+      "TP-0049",
+      "TP-0080"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.critical",
+      "flame.crypto"
+    ],
+    "falsepositives": [
+      "Exchange hot wallet distributions to customer withdrawal addresses",
+      "Airdrop campaigns distributing tokens to large recipient lists",
+      "Payroll distributions from corporate treasury wallets"
+    ]
+  },
+  {
+    "id": "cd27c179-9ba2-4221-812e-f85b0d95a506",
+    "dl_id": "DL-0207",
+    "title": "Micro-Splitting Stablecoin Donations to Rotating Wallets",
+    "status": "experimental",
+    "description": "Detect patterns of small-value stablecoin transfers ($10-$500) sent to wallets that are used only once or twice before rotating to new addresses. Models the ISIL/Al-Qaeda donation solicitation pattern: rotating wallet addresses, micro-splitting, and multi-hop transfers designed to evade transaction monitoring thresholds.\n",
+    "cfpf_phase": "P5",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "amount_usd|gte": 10,
+        "amount_usd|lte": 500,
+        "token_type|re": "USDT|USDC|DAI",
+        "destination_wallet_lifetime_tx_count|lte": 2,
+        "destination_wallet_age_hours|lte": 168
+      },
+      "aggregation": {
+        "function": "count()",
+        "group_by": "sender_cluster",
+        "timeframe": "7d",
+        "threshold|gte": 5
+      },
+      "condition": "selection and aggregation"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "transaction_monitoring"
+    },
+    "references": [
+      "https://www.fatf-gafi.org/en/publications/Methodsandtrends/targeted-report-stablecoins-unhosted-wallets-2026.html"
+    ],
+    "threat_path_ids": [
+      "TP-0055",
+      "TP-0080"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "money-laundering"
+    ],
+    "tags": [
+      "cfpf.phase5.monetization",
+      "flame.crypto",
+      "flame.tf"
+    ],
+    "falsepositives": [
+      "Micro-task platforms distributing small payments to many workers",
+      "Small-value airdrops to new wallet addresses",
+      "Legitimate P2P transfers between individuals"
+    ]
+  },
+  {
+    "id": "12723c28-6172-41ec-a45a-038daa320751",
+    "dl_id": "DL-0208",
+    "title": "New gTLD Domain Registration Burst with Phishing Characteristics",
+    "status": "experimental",
+    "description": "Detect bulk domain registrations (5+ in 24h from same registrant/nameserver) on high-abuse gTLDs (.TOP, .BOND, .XYZ, .SHOP, .XIN, .CFD, .LOL) with brand-keyword presence, domain age < 7 days, and low registration cost. Interisle found 37% of phishing domains were bulk-registered and new gTLDs accounted for 51% of all phishing domains.\n",
+    "cfpf_phase": "P1",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "tld|re": "TOP|BOND|XYZ|SHOP|XIN|CFD|LOL",
+        "domain_age_days|lte": 7,
+        "registration_count_24h|gte": 5,
+        "shared_nameserver": true
+      },
+      "filter": {
+        "brand_keyword_match": true,
+        "random_string_pattern": true
+      },
+      "condition": "selection and (1 of filter)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "domain_intelligence"
+    },
+    "references": [
+      "https://interisle.net/PhishingLandscape2025.pdf"
+    ],
+    "threat_path_ids": [
+      "TP-0041",
+      "TP-0079"
+    ],
+    "fraud_types": [
+      "brand-impersonation",
+      "fraud-enabling-infrastructure",
+      "phishing"
+    ],
+    "tags": [
+      "cfpf.phase1.recon",
+      "flame.infrastructure",
+      "flame.shared"
+    ],
+    "falsepositives": [
+      "Domain portfolio investors acquiring multiple domains",
+      "Corporate brand protection bulk registrations",
+      "Legitimate product launches registering multiple TLD variants"
+    ]
+  },
+  {
+    "id": "d4ed8c8c-500a-4030-ac6b-225104c0ebb6",
+    "dl_id": "DL-0209",
+    "title": "Legitimate PaaS Subdomain Hosting Phishing Content",
+    "status": "experimental",
+    "description": "Detect URLs hosted on known PaaS free subdomain services (*.pages.dev, *.webflow.io, *.vercel.app, *.github.io, *.gitbook.io, *.workers.dev, *.r2.dev) that contain financial brand keywords or trigger phishing heuristics. These subdomains inherit the PaaS provider's domain reputation, bypassing domain-age and reputation filters commonly used in fraud detection.\n",
+    "cfpf_phase": "P2",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "url_domain|endswith": [
+          ".pages.dev",
+          ".webflow.io",
+          ".vercel.app",
+          ".github.io",
+          ".gitbook.io",
+          ".workers.dev",
+          ".r2.dev"
+        ],
+        "url_contains_brand_keyword": true
+      },
+      "brand_keywords": [
+        "login",
+        "verify",
+        "secure",
+        "account",
+        "update",
+        "confirm",
+        "bank",
+        "paypal",
+        "coinbase",
+        "metamask",
+        "pancakeswap"
+      ],
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "web_proxy"
+    },
+    "references": [
+      "https://interisle.net/PhishingLandscape2025.pdf"
+    ],
+    "threat_path_ids": [
+      "TP-0067",
+      "TP-0079"
+    ],
+    "fraud_types": [
+      "credential-harvesting",
+      "paas-subdomain-abuse",
+      "phishing"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.infrastructure",
+      "flame.shared"
+    ],
+    "falsepositives": [
+      "Legitimate developer projects hosted on PaaS platforms",
+      "Documentation sites using brand names in context",
+      "Testing and staging environments on free-tier subdomains"
+    ]
+  },
+  {
+    "id": "6b55f1b4-557c-40b2-949b-a910f9af13ca",
+    "dl_id": "DL-0210",
+    "title": "IDN Homograph Domain Targeting Crypto Brands",
+    "status": "experimental",
+    "description": "Detect DNS queries or URL accesses to internationalized domain names (IDN/punycode with xn-- prefix) that visually resemble crypto brand domains (bitpay, coinbase, metamask, phantom, pancakeswap, uniswap, etc.). Interisle documented 2,655 IDN homograph phishing domains with significant crypto brand targeting.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "domain|startswith": "xn--",
+        "resolved_visual_domain|contains": [
+          "bitpay",
+          "coinbase",
+          "metamask",
+          "phantom",
+          "pancakeswap",
+          "uniswap",
+          "opensea",
+          "kraken",
+          "binance",
+          "ledger"
+        ]
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "dns_monitoring"
+    },
+    "references": [
+      "https://interisle.net/PhishingLandscape2025.pdf"
+    ],
+    "threat_path_ids": [
+      "TP-0079"
+    ],
+    "fraud_types": [
+      "brand-impersonation",
+      "phishing",
+      "wallet-drainer"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.crypto",
+      "flame.infrastructure"
+    ],
+    "falsepositives": [
+      "Legitimate internationalized domain names in non-Latin scripts",
+      "Localized crypto service providers using native-language domains"
+    ]
+  },
+  {
+    "id": "c2823f3b-4a85-4689-89eb-e54984aefae1",
+    "dl_id": "DL-0211",
+    "title": "Fake CAPTCHA Campaign Redirect Chain Detection",
+    "status": "experimental",
+    "description": "Detect web access patterns consistent with fake CAPTCHA campaigns: user visits a page with CAPTCHA verification UI, is instructed to copy/execute clipboard content (PowerShell, cmd, mshta), which triggers malware or stealer download. CrowdStrike documented a +563% increase in fake CAPTCHA campaigns in 2025. Used by BRASH SPIDER (Doshell Stealer) and COOKIE SPIDER (SHAMOS).\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "process_parent|re": "chrome.exe|firefox.exe|msedge.exe|brave.exe|opera.exe",
+        "process_child|re": "powershell.exe|cmd.exe|mshta.exe",
+        "referrer_page|contains": [
+          "captcha",
+          "verify",
+          "check",
+          "human"
+        ]
+      },
+      "temporal_correlation": {
+        "max_seconds": 60,
+        "sequence": [
+          "browser_visit_suspicious_page",
+          "clipboard_execution"
+        ]
+      },
+      "condition": "selection and temporal_correlation"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "endpoint_monitoring"
+    },
+    "references": [
+      "https://www.crowdstrike.com/en-us/global-threat-report/"
+    ],
+    "threat_path_ids": [
+      "TP-0081"
+    ],
+    "fraud_types": [
+      "credential-harvesting",
+      "fake-captcha-fraud",
+      "social-engineering"
+    ],
+    "tags": [
+      "attack.t1204",
+      "cfpf.phase2.initial_access",
+      "flame.endpoint"
+    ],
+    "falsepositives": [
+      "Legitimate CAPTCHA services followed by coincidental command execution",
+      "Developer workflows involving browser-based tools and terminal commands"
+    ]
   }
 ]

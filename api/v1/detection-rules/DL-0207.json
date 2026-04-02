@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-02T04:13:13.370844+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "cd27c179-9ba2-4221-812e-f85b0d95a506",
+    "dl_id": "DL-0207",
+    "title": "Micro-Splitting Stablecoin Donations to Rotating Wallets",
+    "status": "experimental",
+    "description": "Detect patterns of small-value stablecoin transfers ($10-$500) sent to wallets that are used only once or twice before rotating to new addresses. Models the ISIL/Al-Qaeda donation solicitation pattern: rotating wallet addresses, micro-splitting, and multi-hop transfers designed to evade transaction monitoring thresholds.\n",
+    "cfpf_phase": "P5",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "amount_usd|gte": 10,
+        "amount_usd|lte": 500,
+        "token_type|re": "USDT|USDC|DAI",
+        "destination_wallet_lifetime_tx_count|lte": 2,
+        "destination_wallet_age_hours|lte": 168
+      },
+      "aggregation": {
+        "function": "count()",
+        "group_by": "sender_cluster",
+        "timeframe": "7d",
+        "threshold|gte": 5
+      },
+      "condition": "selection and aggregation"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "transaction_monitoring"
+    },
+    "references": [
+      "https://www.fatf-gafi.org/en/publications/Methodsandtrends/targeted-report-stablecoins-unhosted-wallets-2026.html"
+    ],
+    "threat_path_ids": [
+      "TP-0055",
+      "TP-0080"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "money-laundering"
+    ],
+    "tags": [
+      "cfpf.phase5.monetization",
+      "flame.crypto",
+      "flame.tf"
+    ],
+    "falsepositives": [
+      "Micro-task platforms distributing small payments to many workers",
+      "Small-value airdrops to new wallet addresses",
+      "Legitimate P2P transfers between individuals"
+    ]
+  }
+}

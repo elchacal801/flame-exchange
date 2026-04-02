@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "d9222565-4ec7-53cc-b3c0-4b378cd559d1",
+    "info": "FLAME: Calendar/Invite Injection Phishing",
+    "date": "2026-03-10",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "c4b81ea9-f576-5184-b541-c4e916069fc4",
+        "type": "text",
+        "category": "Other",
+        "value": "calendar-phishing",
+        "comment": "Fraud type for TP-0050"
+      },
+      {
+        "uuid": "1381dee6-2589-54c9-a312-26f11274b1f1",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0050"
+      },
+      {
+        "uuid": "787f7c78-ba6f-5f83-9156-81ba98d33eeb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0050"
+      },
+      {
+        "uuid": "da1ce7a4-ac85-593c-854e-7e609fd7e3ed",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0050"
+      },
+      {
+        "uuid": "e9ba9d9b-439b-5415-b8d2-e2609836a10b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0050"
+      },
+      {
+        "uuid": "e29a4baa-340f-5c78-afa4-4e174c38e623",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0050"
+      },
+      {
+        "uuid": "a804f78c-a9c5-591d-b767-400fcfdedd7c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0050"
+      }
+    ]
+  }
+}

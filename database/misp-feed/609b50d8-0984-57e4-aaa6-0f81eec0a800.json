@@ -1,0 +1,98 @@
+{
+  "Event": {
+    "uuid": "609b50d8-0984-57e4-aaa6-0f81eec0a800",
+    "info": "FLAME: Long-Firm and Organized Business Credit Fraud",
+    "date": "2026-03-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "eee03af3-ea61-50b1-a406-19924c0d94b2",
+        "type": "text",
+        "category": "Other",
+        "value": "long-firm-fraud",
+        "comment": "Fraud type for TP-0064"
+      },
+      {
+        "uuid": "52fea4c8-1c6e-5c9f-a4dc-17e78158002f",
+        "type": "text",
+        "category": "Other",
+        "value": "bust-out",
+        "comment": "Fraud type for TP-0064"
+      },
+      {
+        "uuid": "94ebfe91-58ea-507f-a391-d888bb6c88c3",
+        "type": "text",
+        "category": "Other",
+        "value": "application-fraud",
+        "comment": "Fraud type for TP-0064"
+      },
+      {
+        "uuid": "405ed446-73fe-5c80-a25b-59a7c1d3a832",
+        "type": "text",
+        "category": "Other",
+        "value": "loan-fraud",
+        "comment": "Fraud type for TP-0064"
+      },
+      {
+        "uuid": "11e4b258-f132-5fce-a55e-cbbb1cd53c13",
+        "type": "text",
+        "category": "Other",
+        "value": "invoice-fraud",
+        "comment": "Fraud type for TP-0064"
+      },
+      {
+        "uuid": "2d46a286-74c7-5532-8c99-f8f4a257d199",
+        "type": "text",
+        "category": "Other",
+        "value": "documentary-fraud",
+        "comment": "Fraud type for TP-0064"
+      },
+      {
+        "uuid": "f6f7345b-31d1-568f-a54f-45bfe272cb95",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0064"
+      },
+      {
+        "uuid": "b5b341cb-8498-58fc-bf26-10d32006c993",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0064"
+      },
+      {
+        "uuid": "5edef56b-a3bc-5d8e-9a2d-5d049accce0c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0064"
+      },
+      {
+        "uuid": "bb2a56f2-1549-5bf2-bcf2-63009b53d33b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0064"
+      },
+      {
+        "uuid": "3c361bf4-6a50-5fe1-916e-9cb9a54d6415",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0064"
+      }
+    ]
+  }
+}

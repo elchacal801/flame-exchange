@@ -1,0 +1,37 @@
+title: Wrapped Stablecoin Bridge Transfer from High-Risk Source
+id: ed008fcb-2d08-47a4-818d-0b7d5ce6465e
+status: experimental
+description: >
+  Detects stablecoin bridge transactions where USDT/USDC is wrapped through bridge protocols to create
+  wrapped representations (wUSDT, wUSDC) on destination chains, and the source address has elevated risk
+  indicators or recent exposure to sanctioned addresses. Bridging defeats the original issuer's freeze
+  capability on the destination chain, making this a key laundering technique for sanctioned actors.
+references:
+  - "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
+threat_paths:
+  - TP-0080
+  - TP-0049
+cfpf_phase: P4
+fraud_types:
+  - crypto-laundering
+  - money-laundering
+logsource:
+  product: crypto
+  service: bridge_monitoring
+detection:
+  selection:
+    bridge_protocol: "*"
+    source_chain: "*"
+    destination_chain: "*"
+    wrapped_token|re: "wUSDT|wUSDC"
+    source_risk_score|gte: 70
+    amount_usd|gte: 10000
+  condition: selection
+falsepositives:
+  - "Cross-chain DeFi operations moving stablecoins between chains for yield optimization"
+  - "Legitimate multi-chain treasury management by DAOs or protocols"
+level: high
+tags:
+  - cfpf.phase4.execution
+  - flame.crypto
+  - flame.shared

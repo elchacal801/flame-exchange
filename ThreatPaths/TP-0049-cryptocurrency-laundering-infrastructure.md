@@ -50,11 +50,14 @@ related_tps:
     relationship: shares-infrastructure
   - id: TP-0047
     relationship: related-to
+  - id: TP-0080
+    relationship: related-to
 regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-EMERGING-THREATS
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+  - REG-FATF-STABLECOIN-2026
 baseline_ids:
   - BL-0027
   - BL-0034
@@ -75,6 +78,10 @@ tags:
   - unodc-organized-fraud-2024
   - ai-evasion
   - wci-geographic-attribution
+  - fatf-stablecoin-2026
+  - bybit-laundering
+  - p2p-laundering
+  - unhosted-wallet
 ---
 ```
 
@@ -406,6 +413,16 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
 - Monitor for funds flowing from known pig butchering victim wallets into CMLN-associated wallet clusters
 - Track the 10%+ of pig butchering proceeds entering CMLN infrastructure as a correlation point between upstream fraud and downstream laundering
 
+### FATF Annex A Risk Indicators (Stablecoin-Specific)
+
+FATF's 2026 Stablecoin Report (Annex A) defines 39 risk indicators for stablecoin-related money laundering. The following are most operationally relevant to CMLN detection:
+
+- **Rapid cross-border stablecoin movements inconsistent with customer profile**: Stablecoin transfers that are geographically dispersed, high-velocity, and inconsistent with the customer's stated business activity or transaction history. Particularly relevant for detecting OTC broker and money movement service operations that settle across multiple jurisdictions in compressed timeframes.
+- **Stablecoin transfers to unhosted wallets multiple hops from Travel Rule-covered wallets**: Transfers where stablecoins move from a regulated VASP to an unhosted wallet, then through one or more additional unhosted wallet hops before reaching a destination -- each hop increasing the distance from Travel Rule-obligated intermediaries and reducing the availability of originator/beneficiary information.
+- **Cross-chain transfers across multiple blockchains in short periods with high cumulative amounts**: Patterns where stablecoins are bridged across two or more blockchains (e.g., Ethereum to TRON to Solana) within hours or days, with cumulative transfer amounts that exceed typical retail user behavior. This is a primary chain-hopping indicator consistent with DPRK distancing phase and Black U service operations.
+- **Progressively bridging stablecoins across chains (TRON to Ethereum to Solana) with wrap/unwrap prior to off-ramp**: A specific chain-hopping pattern where stablecoins are wrapped into a bridgeable token, transferred cross-chain, unwrapped, and then off-ramped -- with the wrap/unwrap steps adding an additional layer of obfuscation that complicates transaction graph tracing.
+- **Off-ramping stablecoins in jurisdictions with weak AML/CFT controls**: Stablecoin-to-fiat conversion occurring through VASPs or P2P platforms in jurisdictions that FATF has identified as having strategic deficiencies in AML/CFT frameworks. This indicator is particularly relevant for detecting the final off-ramping stage of CMLN operations, where laundered stablecoins are converted to fiat in regulatory havens.
+
 ---
 
 ## References
@@ -425,6 +442,9 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
 13. FLAME Project. "BL-0027: Cryptocurrency Transaction Velocity Baseline." FLAME Baseline Library, 2026 — internal reference
 14. UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter IV, Money-laundering (cryptocurrency subsection)
 15. "Organized fraud detection in 2026: a technical landscape report" — Specific fraud category detection: Cryptocurrency rug pulls
+16. FATF. "Targeted Update on Implementation of the FATF Standards on Virtual Assets and Virtual Asset Service Providers: Stablecoins." FATF, 2026. [Link](https://www.fatf-gafi.org/)
+17. CrowdStrike. "2026 Global Threat Report." CrowdStrike, 2026. [Link](https://www.crowdstrike.com/global-threat-report/)
+18. FLAME Project. "TP-0080: Stablecoin Freeze-Evasion." FLAME Threat Path Library, 2026.
 
 ---
 
@@ -453,6 +473,34 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
 - **Confidence**: High
 - **Summary**: Cryptocurrency rug pulls constituted 68% of all crypto scams in 2025, with 350+ documented cases in 2024. Academic detection methods include: Uniswap trading/liquidity feature engineering with gradient boosting (Mazorra et al., 2022), EVM bytecode balance-flow heuristics (Yu & Lee, 2025), and temporal graph learning via TokenScout (Wu et al., 2024). ChainAware achieves 68% detection rate across Ethereum, BSC, Polygon, and Solana. Critical finding: OSINT signals (social media sentiment shifts, Telegram channel activity drops) precede on-chain anomalies by days or weeks — suggesting social monitoring should be prioritized for early warning. RPHunter combines semantic risk code graphs from bytecode with token-flow behavior graphs from transaction traces.
 
+### EV-TP0049-2026-004: Stablecoin Dominance in Illicit VA Volume (2025)
+
+- **Source**: FATF Stablecoin Report 2026 (citing Chainalysis data); CrowdStrike 2026 Global Threat Report
+- **CFPF Phase Coverage**: P2, P3
+- **Confidence**: High
+- **Summary**: Chainalysis (via FATF 2026) reports stablecoins accounted for 84% of $154B in illicit virtual asset transaction volume in 2025, surpassing Bitcoin as the dominant asset class for on-chain crime. Stablecoin market capitalization reached $316B in October 2025 across 259 stablecoins, of which 90% are centralized, 95% fiat-backed, and 97% USD-pegged. USDT on TRON remains the dominant illicit rail. This confirms that stablecoins have become the primary value transfer mechanism within CMLN infrastructure, displacing Bitcoin-centric laundering patterns documented in earlier cycles.
+
+### EV-TP0049-2026-005: DPRK Bybit Laundering Pattern (Feb 2025)
+
+- **Source**: FATF Stablecoin Report 2026; CrowdStrike 2026 Global Threat Report
+- **CFPF Phase Coverage**: P1–P4
+- **Confidence**: High
+- **Summary**: In February 2025, DPRK-affiliated actors stole $1.46B from Bybit via a Safe{Wallet} supply chain compromise. The laundering sequence followed a structured multi-stage pattern: (1) mixing services to obscure initial fund flows, (2) cross-chain bridge transfers to fragment the transaction trail, (3) distribution across 125,000+ Ethereum wallets to create an unprecedented wallet fan-out distancing technique, (4) conversion to USDT on TRON, and (5) cash-out via OTC brokers and P2P platforms. The 125K+ wallet fan-out represents a significant escalation in distancing complexity compared to previously documented DPRK laundering cycles (see DPRK 45-Day Laundering Cycle above), indicating that DPRK laundering operations are scaling their infrastructure to overwhelm blockchain analytics tracing capacity.
+
+### EV-TP0049-2026-006: P2P Unhosted Wallet Vulnerability
+
+- **Source**: FATF Stablecoin Report 2026
+- **CFPF Phase Coverage**: P2, P3, P5
+- **Confidence**: High
+- **Summary**: FATF identifies peer-to-peer (P2P) transfers via unhosted wallets as the key structural vulnerability in the stablecoin ecosystem. P2P transfers occur without AML/CFT intermediary involvement, creating a fundamental gap in the regulatory framework. Stablecoins' price stability and high liquidity make them significantly more likely to be used for P2P transfers than volatile crypto assets, as both parties can transact without exchange rate risk. This structural characteristic means that stablecoins are disproportionately attractive for CMLN off-ramping via P2P channels, where neither the sender nor the receiver is subject to Travel Rule obligations or transaction monitoring.
+
+### EV-TP0049-2026-007: Professional Money Laundering Techniques via Stablecoins
+
+- **Source**: FATF Stablecoin Report 2026
+- **CFPF Phase Coverage**: P2, P3
+- **Confidence**: High
+- **Summary**: FATF documents an expanding set of professional money laundering techniques leveraging stablecoins: chain-hopping (moving value across multiple blockchain networks to fragment the transaction trail), smurfing (splitting transactions into smaller amounts to evade monitoring thresholds), cross-chain transfers (bridging between blockchains in rapid succession), underground banking settlements using stablecoins as the settlement layer, and exploitation of high-volume online gambling platforms. A notable technique involves merchant refund loops where goods purchased with stolen identities are returned for stablecoin refunds to third-party wallets -- effectively converting identity fraud proceeds into laundered stablecoin balances. These techniques extend the CMLN service taxonomy documented above, particularly the Black U and gambling platform service categories.
+
 ---
 
 ## Analyst Notes
@@ -472,3 +520,4 @@ The CMLN underground ecosystem operates as a mature, stratified marketplace with
 |---|---|---|---|
 | 2026-03-05 | 1.0 | FLAME Project | Initial publication based on CrimsonVector Strategic Intelligence Report, Chainalysis, and TRM Labs data |
 | 2026-03-20 | | FLAME Project | Enriched with INTERPOL/UNODC intelligence on AI-enabled laundering evasion and crypto off-ramping professionalization |
+| 2026-04-01 | | FLAME Project | Enriched with FATF 2026 Stablecoin Report and CrowdStrike 2026 GTR intelligence: stablecoin dominance in illicit VA volume, DPRK Bybit $1.46B laundering pattern, P2P unhosted wallet vulnerability, professional laundering techniques, FATF Annex A risk indicators; added TP-0080 relationship |

@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-02T04:13:13.348974+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "e8c8e659-16cd-424b-82e1-9dfdd791d64d",
+    "dl_id": "DL-0204",
+    "title": "Stablecoin-to-Decentralized-Stablecoin Swap Velocity",
+    "status": "experimental",
+    "description": "Detects when a wallet receives USDT/USDC and swaps to decentralized stablecoins (DAI, sDAI, LUSD, RAI) via a DEX within 24 hours, particularly when the source wallet has elevated risk scores. The IRGC's documented USDT-to-DAI shift after mid-2025 Tether freezes is the direct intelligence basis. Centralized stablecoins can be frozen by issuers; swapping to decentralized alternatives defeats this control.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "token_in|re": "USDT|USDC",
+        "token_out|re": "DAI|sDAI|LUSD|RAI",
+        "swap_venue_type": "DEX",
+        "time_receive_to_swap_hours|lte": 24
+      },
+      "filter_institutional": {
+        "wallet_address|in": "%institutional_rebalancing_allowlist%"
+      },
+      "condition": "selection and not filter_institutional"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "blockchain_analytics"
+    },
+    "references": [
+      "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
+    ],
+    "threat_path_ids": [
+      "TP-0049",
+      "TP-0080"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "stablecoin-freeze-evasion"
+    ],
+    "tags": [
+      "cfpf.phase3.positioning",
+      "flame.crypto",
+      "flame.shared"
+    ],
+    "falsepositives": [
+      "DeFi yield farming strategies that routinely swap between stablecoin types",
+      "Institutional portfolio rebalancing across stablecoin allocations",
+      "Stablecoin arbitrage trading exploiting minor depegs"
+    ]
+  }
+}

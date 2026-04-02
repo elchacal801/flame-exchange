@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "63dcd1a7-39dd-539e-9858-d5fb8d7020b3",
+    "info": "FLAME: State-Criminal Infrastructure Convergence",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "d887cab8-8a53-53ae-9df0-65832b7fa45d",
+        "type": "text",
+        "category": "Other",
+        "value": "state-criminal-convergence",
+        "comment": "Fraud type for TP-0044"
+      },
+      {
+        "uuid": "1fbe0abc-7af6-5813-958b-a55b74ef0cb9",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0044"
+      },
+      {
+        "uuid": "21880c46-d028-5ac6-a3a6-2b5755a70541",
+        "type": "text",
+        "category": "Other",
+        "value": "malware",
+        "comment": "Fraud type for TP-0044"
+      },
+      {
+        "uuid": "572cadce-a81a-5ccc-a26a-4c3310077d54",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0044"
+      },
+      {
+        "uuid": "2a0e7a6f-0bd6-5b15-86ab-ab383722d317",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0044"
+      },
+      {
+        "uuid": "99ececb5-62ae-5fc6-be7a-cba8856c635e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0044"
+      },
+      {
+        "uuid": "bd0a17d6-3c38-5ec2-92fe-402227cf9282",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0044"
+      },
+      {
+        "uuid": "e00b5d91-24e7-562a-88f3-25b24e5d1534",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0044"
+      }
+    ]
+  }
+}

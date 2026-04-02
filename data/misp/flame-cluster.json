@@ -314,7 +314,7 @@
           "P4",
           "P5"
         ],
-        "confidence_score": 68,
+        "confidence_score": 75,
         "refs": [
           "https://flameintel.org/?tp=TP-0007"
         ]
@@ -827,20 +827,48 @@
         "fraud_types": [
           "healthcare-fraud",
           "phantom-billing",
-          "upcoding"
+          "upcoding",
+          "hospice-fraud",
+          "aba-therapy-fraud",
+          "provider-fraud",
+          "money-mule"
         ],
         "sectors": [],
         "cfpf_phases": [
+          "P1",
+          "P2",
           "P3",
           "P4",
           "P5"
         ],
-        "confidence_score": 82,
+        "confidence_score": 85,
         "refs": [
           "https://flameintel.org/?tp=TP-0021"
         ]
       },
-      "related": []
+      "related": [
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
     },
     {
       "value": "Government Program Fraud (Unemployment/Tax)",
@@ -1212,7 +1240,10 @@
           "healthcare-fraud",
           "phantom-billing",
           "provider-fraud",
-          "synthetic-medical-fraud"
+          "synthetic-medical-fraud",
+          "deepfake",
+          "money-mule",
+          "crypto-laundering"
         ],
         "sectors": [],
         "cfpf_phases": [
@@ -1222,7 +1253,7 @@
           "P4",
           "P5"
         ],
-        "confidence_score": 85,
+        "confidence_score": 90,
         "refs": [
           "https://flameintel.org/?tp=TP-0028"
         ]
@@ -1251,6 +1282,13 @@
         },
         {
           "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "fdccc5fd-0d5c-59fe-b5e5-0004bbefdf6d",
           "tags": [
             "estimative-language:likelihood-probability=\"likely\""
           ],
@@ -1874,7 +1912,10 @@
           "autonomous-ai-fraud",
           "social-engineering",
           "account-takeover",
-          "unauthorized-transaction"
+          "unauthorized-transaction",
+          "gift-card-fraud",
+          "returns-fraud",
+          "refunding-as-a-service"
         ],
         "sectors": [],
         "cfpf_phases": [
@@ -1884,7 +1925,7 @@
           "P4",
           "P5"
         ],
-        "confidence_score": 55,
+        "confidence_score": 65,
         "refs": [
           "https://flameintel.org/?tp=TP-0039"
         ]
@@ -1969,6 +2010,2405 @@
         },
         {
           "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "RDGA-Based Infrastructure Campaigns",
+      "description": "Registered Domain Generation Algorithms (RDGAs) represent a fundamentally different infrastructure threat from traditional embedded Domain Generation Algorithms (DGAs). In a traditional DGA, a malware...",
+      "uuid": "67da8047-ac0e-5380-b5b8-7fa9b72b1190",
+      "meta": {
+        "fraud_types": [
+          "rdga-infrastructure"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0041"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "5dbd0b0e-a405-57cd-8a2e-094cb03cdc08",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4eb7c0c6-82b6-5ade-9b1d-6c2c9f020906",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c39038a1-0738-5785-87de-0319c7362cbb",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Traffic Distribution System (TDS) Chain Exploitation",
+      "description": "Traffic Distribution Systems (TDS) represent a critical infrastructure layer in the modern cybercrime ecosystem, functioning as the routing fabric that connects victim traffic to downstream fraud camp...",
+      "uuid": "2857e2b7-ffdd-59fe-85a6-2a5acf3cbbc3",
+      "meta": {
+        "fraud_types": [
+          "tds-exploitation",
+          "malvertising",
+          "phishing"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 90,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0042"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4436f05f-1845-5081-9d03-c4bc8b9da86e",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "9a853054-949b-5b68-beab-95de12a4ba45",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f1bdbbfe-272b-5931-870f-5583acc9001d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4eb7c0c6-82b6-5ade-9b1d-6c2c9f020906",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "AI-Accelerated Fraud Infrastructure Generation",
+      "description": "Generative AI has fundamentally collapsed the economics of fraud infrastructure generation. What previously required 16 hours of skilled human effort \u2014 crafting phishing emails, building credential ha...",
+      "uuid": "19614faa-8b4e-57d4-8001-f55dfe55954b",
+      "meta": {
+        "fraud_types": [
+          "ai-accelerated-fraud-infrastructure",
+          "phishing",
+          "brand-impersonation"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0043"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4b4350c1-4b4d-5a5a-a26a-6ee713521c9a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4bd24a18-4c14-5a96-b855-ab47f9c37e54",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "ab7476ad-2be0-5b03-a946-c8eb312181d1",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "7f547cc0-0bee-51d3-883a-c76c3a0c7f64",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4436f05f-1845-5081-9d03-c4bc8b9da86e",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "State-Criminal Infrastructure Convergence",
+      "description": "State-sponsored threat actors and criminal cyber organizations are converging into hybrid operational structures that share infrastructure, tooling, and monetization networks. This convergence represe...",
+      "uuid": "5be85643-f7d5-5bcd-83dc-cc867c6676f1",
+      "meta": {
+        "fraud_types": [
+          "state-criminal-convergence",
+          "crypto-laundering",
+          "malware"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0044"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e02671e7-b6f5-5485-bdb7-a2c0f9774a35",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "d81339d2-0198-5d6a-8e60-c8579417740f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e99db8de-c863-53be-a9f8-09fd52d9c660",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "b714be71-1a1a-5900-b75b-1950c69aa201",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4eb7c0c6-82b6-5ade-9b1d-6c2c9f020906",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Sanctions Evasion via Fraud Infrastructure",
+      "description": "Sanctions evasion has evolved from a compliance challenge into a distinct infrastructure threat path, driven by the convergence of bulletproof hosting (BPH), purpose-built stablecoins, and rapid entit...",
+      "uuid": "43f38192-57fb-550f-91e7-5b3a7d2d90a7",
+      "meta": {
+        "fraud_types": [
+          "sanctions-evasion-infrastructure",
+          "crypto-laundering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 85,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0045"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "a556cf41-3d05-515b-aafa-59ef35d4d444",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4eb7c0c6-82b6-5ade-9b1d-6c2c9f020906",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c02079f7-091b-5308-bde8-21781d919a19",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Geopolitically-Timed Fraud Campaigns",
+      "description": "Geopolitically-timed fraud campaigns represent a structurally distinct threat category in which financially-motivated and ideologically-motivated threat actors deliberately synchronize attack operatio...",
+      "uuid": "0b80b9d1-6633-5629-987f-bddb8565e5eb",
+      "meta": {
+        "fraud_types": [
+          "state-criminal-convergence"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 75,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0046"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "01dedfb5-7553-54aa-85d6-de21217c43c3",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "8fbb2f57-ffc8-5a9d-9e54-8ec8d4936c92",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4b4350c1-4b4d-5a5a-a26a-6ee713521c9a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c9995cea-8449-5a82-9265-27cc991ebe09",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Human Trafficking-Linked Fraud Infrastructure",
+      "description": "> **Scope Limitation**: This threat path documents the fraud infrastructure that is operationally dependent on or intersects with human trafficking networks in Southeast Asia. It does not attempt to d...",
+      "uuid": "826257ea-a2b4-5afb-b317-bb5a8faf1f88",
+      "meta": {
+        "fraud_types": [
+          "human-trafficking-facilitation",
+          "scam-compound-operations",
+          "crypto-laundering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0047"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4b4350c1-4b4d-5a5a-a26a-6ee713521c9a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4eb7c0c6-82b6-5ade-9b1d-6c2c9f020906",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c02079f7-091b-5308-bde8-21781d919a19",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Bulletproof Hosting Migration Patterns",
+      "description": "Bulletproof hosting (BPH) providers represent one of the most critical enablers of modern cybercrime and fraud infrastructure. Unlike legitimate hosting services that comply with abuse reports and law...",
+      "uuid": "c19b2845-84f5-5d95-88d1-75e8908966d7",
+      "meta": {
+        "fraud_types": [
+          "bph-migration",
+          "sanctions-evasion-infrastructure"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0048"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f2087e55-4554-59be-bbc1-3d97f38e5275",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "a556cf41-3d05-515b-aafa-59ef35d4d444",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "12b05992-4308-5049-bdc6-d0133b40c780",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Cryptocurrency Laundering Infrastructure",
+      "description": "Cryptocurrency Money Laundering Networks (CMLNs) have emerged as the dominant infrastructure layer enabling the monetization of virtually every category of crypto-enabled fraud and cybercrime. In 2025...",
+      "uuid": "3fff6904-ca76-5b43-b498-44ea2358cc37",
+      "meta": {
+        "fraud_types": [
+          "crypto-laundering-infrastructure",
+          "cmln-operations"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 85,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0049"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4eb7c0c6-82b6-5ade-9b1d-6c2c9f020906",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c02079f7-091b-5308-bde8-21781d919a19",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "3c436049-0ee2-523b-a94f-2e871f2b1170",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Calendar/Invite Injection Phishing",
+      "description": "Phishing campaigns that abuse calendar invite protocols (Google Calendar, Outlook/Exchange) to bypass email gateway filtering. Attackers send emails containing .ics calendar invitations that auto-popu...",
+      "uuid": "a4828ba6-dac9-5d13-8d4f-861eb9687873",
+      "meta": {
+        "fraud_types": [
+          "calendar-phishing",
+          "social-engineering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0050"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "83bfe9c1-18a7-511f-b143-07807b33b580",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c0e8e151-8491-522b-b32b-eaf6737d516b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c43ce12c-c4f8-5970-ba54-7396a18c70f7",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "QR Code Payment Fraud / Quishing",
+      "description": "QR code payment fraud \u2014 colloquially termed \"quishing\" \u2014 exploits consumer trust in QR technology by distributing malicious codes via email, SMS, public posters, digital ads, and online marketplaces. ...",
+      "uuid": "116f4781-52a3-5022-9c75-f5b5cc56799a",
+      "meta": {
+        "fraud_types": [
+          "quishing",
+          "credential-stuffing",
+          "account-takeover",
+          "social-engineering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0051"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c0e8e151-8491-522b-b32b-eaf6737d516b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "329192ef-7faa-5739-a740-40b7004807ea",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Sextortion-Investment Hybrid Fraud",
+      "description": "Sextortion-investment hybrid fraud combines AI-generated deepfake intimate imagery or coerced image sharing with fraudulent investment scheme mechanics. INTERPOL's 2026 Threat Assessment identifies th...",
+      "uuid": "21d00ae4-c367-56d1-8b45-201409009ee0",
+      "meta": {
+        "fraud_types": [
+          "sextortion",
+          "investment-scam",
+          "deepfake",
+          "social-engineering",
+          "romance-scam"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0052"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "83bfe9c1-18a7-511f-b143-07807b33b580",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Vehicle Export Financing Fraud",
+      "description": "Vehicle export financing fraud is a transnational organized crime scheme first detected in North America in early 2024 and assessed by INTERPOL as spreading to other regions. Criminal networks use ide...",
+      "uuid": "7f010f4e-79b9-5c25-9770-2fa52df87b3e",
+      "meta": {
+        "fraud_types": [
+          "vehicle-export-fraud",
+          "identity-theft",
+          "application-fraud",
+          "loan-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0053"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "d81339d2-0198-5d6a-8e60-c8579417740f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Fraud-as-a-Service (FaaS) Platforms",
+      "description": "GenAI-powered \"Fraud-as-a-Service\" (FaaS) platforms that provide subscription-based access to professional-grade fraud toolkits. INTERPOL's Global Financial Fraud Threat Assessment 2026 documents the ...",
+      "uuid": "1302c668-feac-5cb4-ae34-62814c5d59bd",
+      "meta": {
+        "fraud_types": [
+          "fraud-as-a-service",
+          "ai-accelerated-fraud-infrastructure",
+          "phishing",
+          "brand-impersonation"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 75,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0054"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "fdccc5fd-0d5c-59fe-b5e5-0004bbefdf6d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4b4350c1-4b4d-5a5a-a26a-6ee713521c9a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Crypto Fraud\u2013Terrorism/Narco Financing Nexus",
+      "description": "Criminal syndicates traditionally linked to drug trafficking, arms trafficking, and organized violence are establishing cryptocurrency Ponzi and investment schemes to launder illicit proceeds and fund...",
+      "uuid": "a24c0321-a6f2-58d3-8674-f9d30d88d52c",
+      "meta": {
+        "fraud_types": [
+          "crypto-laundering",
+          "investment-scam",
+          "state-criminal-convergence",
+          "money-mule"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0055"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Insurance Claims Fraud (Motor/Medical)",
+      "description": "Motor and medical insurance claims fraud involving staged accidents, fabricated medical events, and forged documentation. Perpetrators \u2014 ranging from individual opportunists to organized fraud rings \u2014...",
+      "uuid": "9edd7a1e-9e3c-548e-b872-3112aa084632",
+      "meta": {
+        "fraud_types": [
+          "insurance-fraud",
+          "fraudulent-claim",
+          "identity-theft",
+          "documentary-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 72,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0056"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Deepfake-as-a-Service Marketplace Ecosystem",
+      "description": "Deepfake-as-a-Service (DaaS) platforms operating on dark web marketplaces and Telegram that provide subscription-based access to deepfake generation tools \u2014 voice cloning, real-time face swapping, AI ...",
+      "uuid": "58dcfb38-6c36-53e2-bd76-16f187f0fe07",
+      "meta": {
+        "fraud_types": [
+          "deepfake-as-a-service",
+          "deepfake-fraud",
+          "ai-face-voice-changer",
+          "fraud-as-a-service",
+          "impersonation"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 72,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0057"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "fdccc5fd-0d5c-59fe-b5e5-0004bbefdf6d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c0e8e151-8491-522b-b32b-eaf6737d516b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Scam Compound Operational Infrastructure",
+      "description": "Operational fraud mechanics inside industrialized scam compounds. UNODC documents $40B annual profits from scam compound operations, with multilingual AI chatbots deployed for automated victim engagem...",
+      "uuid": "1b6c650a-e4c4-5052-9e16-199bd8be3f55",
+      "meta": {
+        "fraud_types": [
+          "scam-compound-operations",
+          "chatbot-enabled-fraud",
+          "social-engineering",
+          "romance-scam",
+          "investment-scam",
+          "sextortion",
+          "human-trafficking-facilitation"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0058"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c0e8e151-8491-522b-b32b-eaf6737d516b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "3292a037-6c71-5688-9b35-ebcc048e18df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Automated Mule Account Infrastructure",
+      "description": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account system...",
+      "uuid": "faf675d9-a00e-58c8-9ed7-8c6c982517f3",
+      "meta": {
+        "fraud_types": [
+          "automated-mule-accounts",
+          "money-laundering",
+          "bot-driven-account-opening",
+          "kyc-circumvention"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 75,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0059"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "dde31e90-beae-520b-9f09-5b80257e2266",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "3d301c20-f283-5717-bd8c-78f554b51308",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Investment Fraud TDS Pipeline",
+      "description": "Traffic Distribution Systems (TDS) weaponized specifically for investment fraud delivery \u2014 routing potential victims from legitimate advertising platforms through multi-hop cloaking chains to fraudule...",
+      "uuid": "ac79ad1c-2eec-5009-84b0-334135677cfa",
+      "meta": {
+        "fraud_types": [
+          "traffic-distribution-system",
+          "investment-fraud",
+          "cloaking",
+          "geo-routing",
+          "rdga-infrastructure"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 70,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0060"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c583d8bf-a72e-5ae9-8fc7-7eecb836946e",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "5dbd0b0e-a405-57cd-8a2e-094cb03cdc08",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Threat Actor Enabling Bulletproof Hosting Infrastructure",
+      "description": "Bulletproof hosting (BPH) providers and abuse-resistant infrastructure services that enable fraud operations by providing hosting that resists takedown requests, law enforcement cooperation, and abuse...",
+      "uuid": "27c84a98-1e48-5caf-8c8e-8bfc0dafd7e1",
+      "meta": {
+        "fraud_types": [
+          "bulletproof-hosting",
+          "fraud-enabling-infrastructure",
+          "hosting-provider-complicity",
+          "infrastructure-rotation"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3"
+        ],
+        "confidence_score": 72,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0061"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f2087e55-4554-59be-bbc1-3d97f38e5275",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "844dd724-1ad8-5288-bc3c-788b3597d24b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "a556cf41-3d05-515b-aafa-59ef35d4d444",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Recovery Fraud \u2014 Double-Dip Re-victimization",
+      "description": "Recovery fraud is an organized crime model in which victims of prior fraud (investment scams, romance fraud, pig butchering) are systematically re-contacted by actors posing as asset recovery agents, ...",
+      "uuid": "2a65bb38-8181-5033-8964-4092acc368c0",
+      "meta": {
+        "fraud_types": [
+          "recovery-fraud",
+          "impersonation",
+          "advance-fee-fraud",
+          "social-engineering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 72,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0062"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Organized Counterfeit Goods and Non-Delivery Fraud Networks",
+      "description": "Organized criminal groups operate networks of fraudulent e-commerce websites, fake sellers on legitimate auction platforms, and counterfeit goods supply chains to defraud consumers at scale. The UNODC...",
+      "uuid": "0c81f65d-0b26-5480-a33f-812b7e22da9f",
+      "meta": {
+        "fraud_types": [
+          "purchase-scam",
+          "auction-fraud",
+          "brand-impersonation",
+          "identity-theft",
+          "money-mule"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 75,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0063"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e99db8de-c863-53be-a9f8-09fd52d9c660",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Long-Firm and Organized Business Credit Fraud",
+      "description": "Long-firm fraud and organized financial statement fraud involve OCGs establishing or acquiring legitimate businesses, building creditworthiness over months or years, then exploiting that trust to defr...",
+      "uuid": "bb630675-bc0c-568a-b736-537532c945ec",
+      "meta": {
+        "fraud_types": [
+          "long-firm-fraud",
+          "bust-out",
+          "application-fraud",
+          "loan-fraud",
+          "invoice-fraud",
+          "documentary-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 70,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0064"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "a73a34ca-be62-54e3-8fb4-00d6200404b8",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "ab7476ad-2be0-5b03-a946-c8eb312181d1",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Organized Mass-Marketing Fraud Infrastructure (Boiler Rooms & Lead Lists)",
+      "description": "Organized mass-marketing fraud infrastructure encompasses the boiler room operations, lead list ecosystems, robodialling infrastructure, and SIM farm devices that serve as the shared demand-generation...",
+      "uuid": "05802d25-76b8-57e6-8135-eff9f8675fc1",
+      "meta": {
+        "fraud_types": [
+          "social-engineering",
+          "impersonation",
+          "vishing",
+          "robodialling-fraud",
+          "advance-fee-fraud",
+          "investment-scam",
+          "fraud-as-a-service"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0065"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "83bfe9c1-18a7-511f-b143-07807b33b580",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Crash-for-Cash and Organized Insurance Fraud Rings",
+      "description": "Crash-for-cash fraud involves organized criminal groups that systematically stage or cause vehicle accidents to generate fraudulent insurance claims. The UNODC identifies this as a distinct organized ...",
+      "uuid": "510b099c-acf0-568b-915a-1a53c3d786d4",
+      "meta": {
+        "fraud_types": [
+          "crash-for-cash",
+          "insurance-fraud",
+          "fraudulent-claim",
+          "collusion",
+          "documentary-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 72,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0066"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "AiTM Phishing Kit Infrastructure and Session Token Hijacking",
+      "description": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim se...",
+      "uuid": "201bb94d-2db6-5fac-94bb-2f38c5a72819",
+      "meta": {
+        "fraud_types": [
+          "aitm-phishing",
+          "phishing",
+          "account-takeover",
+          "credential-stuffing",
+          "fraud-as-a-service"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0067"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "52e50039-c741-5845-becc-dfc928196e12",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f9213ee3-dd73-575c-9367-52e7feefd6ec",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "7eae5b43-e538-5313-adc8-dc02e1d2822b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "343f48fe-2a27-5023-ab88-e9876992e31f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1c123a74-389e-5f10-9ab4-c4a8f9216bd8",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "951da908-964a-5eae-9fa2-9804c7370d79",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "72a4bb37-08b5-5830-b31c-65d0c1b20ecc",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "637a926f-b984-52a0-a591-4870015623eb",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "d2b679e1-357b-53ae-a611-d69b58d400d4",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "46d65ffb-97fa-50b5-b772-21e910fa3d4f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Gift Card Fraud Lifecycle \u2014 Generation, Tampering, and Monetization",
+      "description": "Gift card fraud encompasses a comprehensive attack lifecycle documented by the NRF Retail Fraud Taxonomy: brute-force number generation or purchase of stolen card numbers, automated balance probing to...",
+      "uuid": "0dac4a54-6ac1-5a1f-b955-14c641c145f9",
+      "meta": {
+        "fraud_types": [
+          "gift-card-fraud",
+          "gift-card-tampering",
+          "loyalty-point-fraud",
+          "social-engineering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0068"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "360d40c3-55c1-5d1f-a6e9-fc70cc7f4952",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "823e5625-bfa5-5f00-8435-cd56a0f2d16b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Smishing PhaaS Ecosystem \u2014 Darcula, Smishing Triad, and Mass-Messaging Credential Harvest",
+      "description": "The Smishing PhaaS Ecosystem is a loosely federated Chinese-speaking cybercrime network \u2014 collectively known as the Smishing Triad \u2014 that operates industrialized smishing infrastructure at unprecedent...",
+      "uuid": "e72abe5b-63fe-5558-818d-e70d24f07f09",
+      "meta": {
+        "fraud_types": [
+          "smishing",
+          "phishing",
+          "card-not-present-fraud",
+          "identity-theft",
+          "fraud-as-a-service"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0069"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4bd24a18-4c14-5a96-b855-ab47f9c37e54",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f9213ee3-dd73-575c-9367-52e7feefd6ec",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Travel Booking Fraud & Fake OTA Networks",
+      "description": "Travel booking fraud and fake Online Travel Agency (OTA) networks represent a rapidly growing fraud category, with estimated global losses reaching $37 billion through Buy-for-You (B4U) services alone...",
+      "uuid": "435a4022-3696-5861-a7e1-22916a989c9b",
+      "meta": {
+        "fraud_types": [
+          "travel-booking-fraud",
+          "buy-for-you-fraud",
+          "fake-ota",
+          "loyalty-point-laundering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0070"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4bd24a18-4c14-5a96-b855-ab47f9c37e54",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e99db8de-c863-53be-a9f8-09fd52d9c660",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "IRSF & Telecom Revenue Share Fraud",
+      "description": "International Revenue Share Fraud (IRSF) is the single largest category of telecommunications fraud, generating $10.76 billion in annual losses according to the CFCA/TNS Global Fraud Loss Survey (2026...",
+      "uuid": "cfa4da92-4130-5702-9aec-451dee8079e3",
+      "meta": {
+        "fraud_types": [
+          "irsf",
+          "premium-rate-fraud",
+          "telecom-revenue-fraud",
+          "wangiri"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0071"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "7a717f2a-93a4-51c9-8ac7-14e643893a50",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e99db8de-c863-53be-a9f8-09fd52d9c660",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "8d9cb449-237f-56df-bab1-2b23623bb121",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1f8c8368-c790-558a-a45f-f8b10d480486",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Telecom Subscription & Billing Fraud",
+      "description": "Telecom subscription and billing fraud encompasses the use of stolen, synthetic, or manipulated identities to fraudulently obtain telecom services, devices, and credit -- combined with unauthorized bi...",
+      "uuid": "135ffa2e-2380-5667-a37f-384022a825d1",
+      "meta": {
+        "fraud_types": [
+          "subscription-fraud",
+          "telecom-billing-fraud",
+          "premium-sms-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 75,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0072"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "73d74945-7ac2-5e7a-8d15-06946b231d18",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "3292a037-6c71-5688-9b35-ebcc048e18df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0972ce72-1c3e-50e7-a371-cd7c8e068c06",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Real Estate Title Fraud & Deed Theft",
+      "description": "Real estate title fraud and deed theft represent a growing category of property-related fraud, with FBI data reporting $16.6 billion in total real estate fraud losses in 2024. The core scheme involves...",
+      "uuid": "c94455fa-550b-56f6-b940-c8b9e3e41b27",
+      "meta": {
+        "fraud_types": [
+          "title-fraud",
+          "deed-theft",
+          "seller-impersonation",
+          "appraisal-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0073"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0972ce72-1c3e-50e7-a371-cd7c8e068c06",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "73d74945-7ac2-5e7a-8d15-06946b231d18",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Ghost Broking & Unauthorized Insurance Portals",
+      "description": "Ghost broking is a rapidly growing insurance fraud typology where unlicensed individuals or organized crime groups sell fraudulent, forged, or illegitimately obtained motor insurance policies to unsus...",
+      "uuid": "7e467887-db64-5ffd-b51b-18f2f8f3e05a",
+      "meta": {
+        "fraud_types": [
+          "ghost-broking",
+          "ghost-portal",
+          "insurance-policy-fraud",
+          "unlicensed-insurance"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0074"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f26a9c46-1371-508c-9088-ec84cc50df02",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Friendly Fraud & Chargeback Abuse",
+      "description": "Friendly fraud \u2014 where legitimate cardholders dispute genuine transactions to obtain refunds while retaining goods or services \u2014 has become the single largest fraud category in payment networks, repre...",
+      "uuid": "bc6f020c-4d77-5c2f-831e-1823e21574a1",
+      "meta": {
+        "fraud_types": [
+          "friendly-fraud",
+          "chargeback-abuse",
+          "first-party-misuse",
+          "dispute-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 85,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0075"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Affiliate Network Fraud & Invalid Traffic",
+      "description": "Affiliate network fraud encompasses a range of techniques where fraudulent affiliates generate fake clicks, impressions, leads, or conversions to earn illegitimate commissions from advertiser programs...",
+      "uuid": "ea837402-8e55-5974-a878-02b2116add4e",
+      "meta": {
+        "fraud_types": [
+          "affiliate-fraud",
+          "click-fraud",
+          "ad-fraud",
+          "cookie-stuffing",
+          "invalid-traffic"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 75,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0076"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "52e0575a-7b3b-5987-93f5-a61aaf5830f5",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e99db8de-c863-53be-a9f8-09fd52d9c660",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "8d9cb449-237f-56df-bab1-2b23623bb121",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "AI-Generated Insurance Claims Fraud",
+      "description": "Generative AI is transforming insurance claims fraud by enabling fraudsters to create highly convincing fabricated or altered evidence \u2014 including deepfake vehicle damage photos, forged medical record...",
+      "uuid": "02ebc1e5-6caf-5c83-a876-f51e96292076",
+      "meta": {
+        "fraud_types": [
+          "ai-generated-claims",
+          "deepfake-claims",
+          "document-fraud",
+          "insurance-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0077"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "ce912d2f-22d0-5b85-973e-7512f692bd09",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "46d65ffb-97fa-50b5-b772-21e910fa3d4f",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f26a9c46-1371-508c-9088-ec84cc50df02",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines",
+      "description": "Criminal conglomerates are operating industrialized cryptocurrency laundering services that process hundreds of millions of dollars through centralized exchange (CEX) hot wallet pipelines. Unlike the ...",
+      "uuid": "7fb3ec52-1e78-5f72-877c-ac5b4a840865",
+      "meta": {
+        "fraud_types": [
+          "crypto-laundering",
+          "crypto-laundering-infrastructure",
+          "money-laundering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0078"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale",
+      "description": "Phishing infrastructure has undergone a structural shift toward cheap new generic top-level domains (gTLDs) and free Platform-as-a-Service (PaaS) subdomains as the dominant delivery mechanism for cred...",
+      "uuid": "8f43034a-0457-5eff-9c8e-14b3a3fd1915",
+      "meta": {
+        "fraud_types": [
+          "phishing",
+          "brand-impersonation",
+          "credential-harvesting",
+          "fraud-enabling-infrastructure",
+          "paas-subdomain-abuse"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 90,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0079"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4436f05f-1845-5081-9d03-c4bc8b9da86e",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges",
+      "description": "State-sponsored threat actors and transnational criminal organizations have developed a systematic methodology to evade stablecoin issuer freeze capabilities by converting centrally issued stablecoins...",
+      "uuid": "b9cba21c-5e06-56f0-b6e8-01a0a871bfc0",
+      "meta": {
+        "fraud_types": [
+          "crypto-laundering",
+          "stablecoin-freeze-evasion",
+          "sanctions-evasion-infrastructure",
+          "money-laundering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 85,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0080"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f380d3db-7d95-5e57-86ff-f64e2a22f9df",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud",
+      "description": "Voice phishing (vishing) has emerged as the dominant initial access vector for identity-based intrusions, with adversaries combining real-time phone-based social engineering with technical exploitatio...",
+      "uuid": "dad9c84e-0e7c-5f8b-8359-9d8826c417da",
+      "meta": {
+        "fraud_types": [
+          "vishing",
+          "account-takeover",
+          "social-engineering",
+          "BEC",
+          "fake-captcha-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0081"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "915c28af-1ce9-5d96-a279-5e75d06c2fda",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "217e3871-b522-516a-a577-14c0192871f2",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "7a707873-76f6-5a68-972e-53ccb2b7654b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "1a829213-98f8-5ebe-a7f5-892963ab717c",
           "tags": [
             "estimative-language:likelihood-probability=\"likely\""
           ],

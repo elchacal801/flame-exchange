@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(process_parent matches regex "chrome.exe|firefox.exe|msedge.exe|brave.exe|opera.exe" and process_child matches regex "powershell.exe|cmd.exe|mshta.exe" and (referrer_page contains "captcha" or referrer_page contains "verify" or referrer_page contains "check" or referrer_page contains "human")) and (max_seconds == 60 and (sequence in~ ("browser_visit_suspicious_page", "clipboard_execution")))

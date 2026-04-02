@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "97f9686d-8a94-5610-9d87-ec30a06ae26e",
+    "info": "FLAME: AI-Accelerated Fraud Infrastructure Generation",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "fa724b60-0347-57e8-9a98-6a67f4e968a6",
+        "type": "text",
+        "category": "Other",
+        "value": "ai-accelerated-fraud-infrastructure",
+        "comment": "Fraud type for TP-0043"
+      },
+      {
+        "uuid": "baf7e9db-cba4-53f9-b2bb-45421a8ca703",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0043"
+      },
+      {
+        "uuid": "9e17c9c3-bcc5-5ab3-a7e3-c7db2c46f67f",
+        "type": "text",
+        "category": "Other",
+        "value": "brand-impersonation",
+        "comment": "Fraud type for TP-0043"
+      },
+      {
+        "uuid": "2cd9a8dd-7b7c-54eb-8591-46414ed6dace",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0043"
+      },
+      {
+        "uuid": "62f0df2c-7404-5fbb-9a7f-6e6ed6203169",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0043"
+      },
+      {
+        "uuid": "fc5f69ce-3223-58fa-9e65-19a3e9e06df4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0043"
+      },
+      {
+        "uuid": "669de252-c33b-57cc-97d3-aeb78f85702e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0043"
+      },
+      {
+        "uuid": "9646d1f6-2a16-5ece-806f-77d4931f4b22",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0043"
+      }
+    ]
+  }
+}

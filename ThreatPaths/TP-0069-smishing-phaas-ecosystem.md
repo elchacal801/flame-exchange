@@ -90,6 +90,10 @@ tags:
   - bluekit
   - kratos
   - evilTokens
+  - interisle-2025
+  - xinxin-lucid
+  - dominet-hk
+  - xin-tld
 ---
 ```
 
@@ -365,6 +369,21 @@ ORDER BY sc.customer_id, ct.transaction_timestamp
 - **CFPF Phase Coverage**: P1 (market landscape)
 - **Confidence**: High — multi-source vendor telemetry (CrowdStrike, Barracuda, KnowBe4, Sekoia)
 
+### EV-TP0069-2026-004: Unpaid Toll Scam at Global Scale (Interisle 2025)
+
+- **Source**: Interisle Consulting Group, "Phishing Landscape 2025" (September 2025)
+- **Geography**: United States, global
+- **CFPF Phase Coverage**: P1, P2
+- **Confidence**: High — independent quantitative domain analysis
+- **Summary**: Interisle's September 2025 analysis confirms the toll scam as the most audacious phishing campaign of the period, identifying 37,000 scam domains containing strings such as EZ-pass, EZpass, EZdrive, and SunPass. Attribution points to Chinese PhaaS group XinXin operating the LUCID platform, offering weekly subscription licenses via Telegram. Attacks are delivered via Apple iMessage and Android RCS, by design bypassing telecom SMS filtering. Key infrastructure findings:
+  - 24,000 domains registered at Dominet (HK) registrar (IANA ID 3775, formerly Alibaba Singapore)
+  - 18,500 domains in .XIN TLD (Elegant Leader / HiChina / Alibaba Group) — .XIN had an unprecedented phishing score of 10,810.2
+  - 5,500 domains in .TOP (Jiangsu Bangning, which received an ICANN breach letter in July 2024)
+  - Hosting: 12,300 on Tencent (AS132203), 2,100 on Alibaba (AS45102), 7,600 behind Cloudflare (AS13335)
+  - XinXin also uses the Darcula PhaaS platform and offers subscribers weekly licenses via Telegram
+
+  This validates and extends the existing LUCID/Darcula content documented in EV-TP0069-2026-001 and EV-TP0069-2026-002 at massive quantitative scale, confirming the toll scam as a dominant global smishing vector and providing registrar-level and TLD-level attribution for infrastructure takedown targeting.
+
 ---
 
 ## References
@@ -381,6 +400,7 @@ ORDER BY sc.customer_id, ct.transaction_timestamp
 - KnowBe4, "The Rise of Kratos" (February 2026) — 90% credential compromise prediction
 - CrowdStrike, "Tycoon2FA Phishing-as-a-Service Platform Persists After Takedown" (March 2026) — post-takedown resilience, vacuum effect analysis
 - Sekoia TDR, "New widespread EvilTokens kit" (30 March 2026) — device code phishing, parallel market fragmentation
+- Interisle Consulting Group, "Phishing Landscape 2025" (September 2025) — 37,000 toll-scam domains, XinXin/LUCID attribution, Dominet/HK registrar, .XIN TLD abuse, hosting infrastructure breakdown
 
 ---
 
@@ -402,3 +422,4 @@ The ecosystem's pricing structure reveals its accessibility: $88/week for Lighth
 |------|--------|--------|
 | 2026-03-23 | FLAME Project | Initial submission — sourced from phishing kits and AiTM platforms threat intelligence reference (2026) |
 | 2026-03-30 | FLAME Project | Enrichment: PhaaS market fragmentation analysis, vacuum effect pattern, post-Tycoon2FA market dynamics (EV-TP0069-2026-003) — sourced from Barracuda, KnowBe4, CrowdStrike, Bluekit TI report |
+| 2026-04-01 | FLAME Project | Enrichment: Interisle 2025 toll-scam quantitative analysis — 37K domains, XinXin/LUCID attribution, Dominet registrar, .XIN TLD abuse (EV-TP0069-2026-004) |

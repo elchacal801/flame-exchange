@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "d03e43df-af96-5e7b-aea9-0a54d1cad73b",
+    "info": "FLAME: Organized Counterfeit Goods and Non-Delivery Fraud Networks",
+    "date": "2026-03-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "ac8d0851-4d9d-5f6f-86f3-568659026a3e",
+        "type": "text",
+        "category": "Other",
+        "value": "purchase-scam",
+        "comment": "Fraud type for TP-0063"
+      },
+      {
+        "uuid": "ad10a402-ddb8-540e-beab-f943c938ed70",
+        "type": "text",
+        "category": "Other",
+        "value": "auction-fraud",
+        "comment": "Fraud type for TP-0063"
+      },
+      {
+        "uuid": "50b6764d-478f-52fa-990a-b3b298aa3c25",
+        "type": "text",
+        "category": "Other",
+        "value": "brand-impersonation",
+        "comment": "Fraud type for TP-0063"
+      },
+      {
+        "uuid": "b40b4e55-4659-5689-aa81-392e0b3cfdb5",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0063"
+      },
+      {
+        "uuid": "6515bbe8-93bd-5738-9af5-488b8fc584f9",
+        "type": "text",
+        "category": "Other",
+        "value": "money-mule",
+        "comment": "Fraud type for TP-0063"
+      },
+      {
+        "uuid": "08b38c3f-93b4-51c2-bee2-571999ffe919",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0063"
+      },
+      {
+        "uuid": "fa06cf8b-4f9b-5a59-9fe3-f64abe14d1b1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0063"
+      },
+      {
+        "uuid": "c41a00cc-79cf-5ebb-b9c5-4b29a8759549",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0063"
+      },
+      {
+        "uuid": "8e138586-13ef-5895-89c9-591646967c27",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0063"
+      },
+      {
+        "uuid": "a5b3913d-c548-5518-a7b6-bd259f8a696f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0063"
+      }
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "Event": {
+    "uuid": "38bc46c0-f25b-56e8-87db-66cdac384240",
+    "info": "FLAME: Scam Compound Operational Infrastructure",
+    "date": "2026-03-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "a8179d2d-dc46-5143-9141-47a29ac7470b",
+        "type": "text",
+        "category": "Other",
+        "value": "scam-compound-operations",
+        "comment": "Fraud type for TP-0058"
+      },
+      {
+        "uuid": "ecca1b17-c7ae-5240-878c-315f2cea1b48",
+        "type": "text",
+        "category": "Other",
+        "value": "chatbot-enabled-fraud",
+        "comment": "Fraud type for TP-0058"
+      },
+      {
+        "uuid": "acebcbb7-13bf-562e-b430-f792dbd467ce",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0058"
+      },
+      {
+        "uuid": "3fe459c8-b2da-5095-a4d0-03ec5327520f",
+        "type": "text",
+        "category": "Other",
+        "value": "romance-scam",
+        "comment": "Fraud type for TP-0058"
+      },
+      {
+        "uuid": "b6ea85fc-a77f-5a25-8e2f-970cdb9f83ec",
+        "type": "text",
+        "category": "Other",
+        "value": "investment-scam",
+        "comment": "Fraud type for TP-0058"
+      },
+      {
+        "uuid": "3009f3ab-b29b-575f-9507-0aa4a21ca06e",
+        "type": "text",
+        "category": "Other",
+        "value": "sextortion",
+        "comment": "Fraud type for TP-0058"
+      },
+      {
+        "uuid": "065f5164-a65c-5252-a509-8e4622af7aaf",
+        "type": "text",
+        "category": "Other",
+        "value": "human-trafficking-facilitation",
+        "comment": "Fraud type for TP-0058"
+      },
+      {
+        "uuid": "d2367882-c3d4-5276-8a87-7541ad931f56",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0058"
+      },
+      {
+        "uuid": "eaaf3851-8a2d-5327-9223-dcbbf47d820b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0058"
+      },
+      {
+        "uuid": "6e6f40bf-137e-5de4-ba0e-f3698780e1a6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0058"
+      },
+      {
+        "uuid": "6eef4b89-1b00-57c3-ad3e-4aff2865b973",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0058"
+      },
+      {
+        "uuid": "faf3223e-6eb0-521c-b78c-646d2ca9f0cb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0058"
+      }
+    ]
+  }
+}

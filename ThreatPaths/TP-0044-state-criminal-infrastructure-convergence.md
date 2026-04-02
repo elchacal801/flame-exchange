@@ -69,6 +69,7 @@ regulatory_refs:
   - REG-RF-CTA-2026-0319
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+  - REG-CROWDSTRIKE-GTR-2026
 baseline_ids:
   - BL-0024
   - BL-0036
@@ -95,6 +96,9 @@ tags:
   - wci-geographic-attribution
   - probiv-lookup-services
   - insider-database-access
+  - pressure-chollima
+  - bybit-theft
+  - crowdstrike-gtr-2026
 ---
 ```
 
@@ -144,6 +148,10 @@ The following data points are drawn from the CrimsonVector Strategic Intelligenc
 | WCI Attacks/Extortion — North Korea | 25.33/100 (#7 overall, #4 in attacks) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 | WCI Overall Score — China (cybercrime production) | 27.86/100 (#3 globally) | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
 | Countries nominated by experts as cybercrime producers | 97 distinct countries | World Cybercrime Index (Bruce et al. 2024) | 2021 data |
+| PRESSURE CHOLLIMA Bybit theft (single incident) | $1.46 billion | CrowdStrike Global Threat Report 2026 | February 2025 |
+| Average eCrime breakout time | 29 minutes (down from 98 min in 2021) | CrowdStrike Global Threat Report 2026 | 2025 |
+| Fastest observed eCrime breakout | 27 seconds | CrowdStrike Global Threat Report 2026 | 2025 |
+| New adversaries tracked by CrowdStrike in 2025 | 24 (281 total) | CrowdStrike Global Threat Report 2026 | 2025 |
 
 ---
 
@@ -545,6 +553,7 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents arrest of suspect linked to Tren de Aragua in connection with USD 150 million cryptocurrency fraud scheme used to launder proceeds from drug trafficking and extortion across Chile, Colombia, Venezuela and the Iberian Peninsula; highlights convergence of financial fraud and organized crime in South America
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter I, Organized Criminal Groups; Chapter III, Regional fraud concentrations
 - Cybercrime Diaries (cybercrimediaries.com), "Russian Language Cybercriminal Forums — Analyzing The Most Active And Renowned Communities" (February 2024) — Probiv lookup services, insider-enabled database access
+- CrowdStrike, "Global Threat Report 2026" — PRESSURE CHOLLIMA $1.46B Bybit theft, eCrime breakout time compression, DPRK operational diversification (FAMOUS/STARDUST/PRESSURE CHOLLIMA)
 
 ---
 
@@ -573,6 +582,31 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 - **Confidence**: High
 - **Summary**: UNODC documents diverse organized criminal group structures across regions, noting that "the emergence of organized crime in different regions reflects the contingent relationships between different global settings, the capacity of would-be fraudsters to identify and act on criminal opportunities and the controls put in place by the State or others to prevent these crimes." Key findings: (1) organized criminal groups in some regions offer "protection and security to insulate local fraud offenders from the threat of local law enforcement"; (2) regional concentrations documented — romance fraud from West Africa, lottery fraud from Jamaica, cybercrime from Eastern Europe, scam compounds in South-East Asia; (3) some OCGs leverage corruption to "challenge or undermine the authority and systems of the State and legitimate sectors."
 
+### EV-TP0044-2026-003: PRESSURE CHOLLIMA Bybit Theft — Largest Single State-Criminal Convergence Incident (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: Global (supply chain compromise); DPRK-attributed
+- **Amount**: USD 1.46 billion — largest cryptocurrency theft in history
+- **CFPF Phase Coverage**: P2, P3, P4, P5
+- **Confidence**: High
+- **Summary**: In February 2025, DPRK-nexus adversary PRESSURE CHOLLIMA executed the largest cryptocurrency theft in history via supply chain compromise of Safe{Wallet}. Attack chain: compromised developer machine via trojanized Python project, credential exfiltration, cloud infrastructure pivot, malicious JavaScript injection into Bybit-specific transaction flow, $1.46B redirected to adversary wallet, code immediately restored to evade detection. This represents the most significant single-incident evidence of state-criminal convergence, combining nation-state sophistication (supply chain compromise, targeted code injection, post-exploitation cleanup) with criminal financial motivation at unprecedented scale. The attack demonstrates that state actors can achieve single-operation financial theft exceeding the combined annual output of many criminal ransomware ecosystems.
+
+### EV-TP0044-2026-004: Operational Tempo Acceleration (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: Global
+- **CFPF Phase Coverage**: P2, P3, P4
+- **Confidence**: High
+- **Summary**: CrowdStrike reports average eCrime breakout time fell to 29 minutes in 2025 (from 98 minutes in 2021 and 48 minutes in 2024). The fastest observed breakout was 27 seconds. This compression of operational tempo applies across state-criminal convergence operations — state actors adopting criminal infrastructure benefit from the same breakout speed optimizations that criminal operators have refined over years of ransomware and data theft operations. The 27-second floor demonstrates that automated tooling has eliminated human decision-making latency from the initial lateral movement phase.
+
+### EV-TP0044-2026-005: DPRK Operational Diversification (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: Global; DPRK-attributed
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: High
+- **Summary**: CrowdStrike now tracks 24 new adversaries in 2025 (281 total). The DPRK cluster has diversified across multiple operational modes: FAMOUS CHOLLIMA (fraudulent employment schemes, activity doubled in 2025), STARDUST CHOLLIMA (increased operational tempo across financial targets), and PRESSURE CHOLLIMA (direct financial theft including the $1.46B Bybit heist). CrowdStrike assesses that DPRK-nexus adversaries will pose an acute threat to fintech, technology, and Western defense entities in 2026. This diversification — simultaneous operations across employment fraud, direct theft, and ransomware — represents a structural evolution in state-criminal convergence: DPRK is no longer a single-vector threat but a multi-domain adversary operating across the full spectrum of financial crime.
+
 ---
 
 ## Analyst Notes
@@ -597,3 +631,4 @@ DPRK cryptocurrency theft proceeds are systematically laundered through Chinese 
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — Tren de Aragua narco-crypto convergence case |
 | 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 enforcement data (54% Notice rise, Operations Shadow Storm/RED CARD/HAECHI VI) and Recorded Future TAE convergence intelligence (Stark Industries, aurologic, Aeza sanctions evasion patterns) |
 | 2026-03-30 | FLAME Project | Enrichment: Probiv insider-lookup services context — sourced from Cybercrime Diaries forum analysis |
+| 2026-04-01 | FLAME Project | Enrichment: CrowdStrike GTR 2026 — PRESSURE CHOLLIMA $1.46B Bybit theft (largest state-criminal convergence incident), eCrime breakout time compression (29 min avg / 27 sec fastest), DPRK operational diversification across FAMOUS/STARDUST/PRESSURE CHOLLIMA clusters |

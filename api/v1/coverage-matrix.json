@@ -1,20 +1,20 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-30T17:52:52.208577+00:00",
-    "total": 136
+    "generated_at": "2026-04-02T04:13:13.481374+00:00",
+    "total": 140
   },
   "data": [
     {
       "fraud_type": "BEC",
       "phases": {
-        "P1": 4,
-        "P2": 4,
-        "P3": 4,
-        "P4": 4,
-        "P5": 4
+        "P1": 5,
+        "P2": 5,
+        "P3": 5,
+        "P4": 5,
+        "P5": 5
       },
-      "total_tps": 4
+      "total_tps": 5
     },
     {
       "fraud_type": "aba-therapy-fraud",
@@ -30,13 +30,13 @@
     {
       "fraud_type": "account-takeover",
       "phases": {
-        "P1": 15,
-        "P2": 15,
-        "P3": 15,
-        "P4": 15,
-        "P5": 15
+        "P1": 16,
+        "P2": 16,
+        "P3": 16,
+        "P4": 16,
+        "P5": 16
       },
-      "total_tps": 15
+      "total_tps": 16
     },
     {
       "fraud_type": "ad-fraud",
@@ -248,13 +248,13 @@
     {
       "fraud_type": "brand-impersonation",
       "phases": {
-        "P1": 4,
-        "P2": 4,
-        "P3": 4,
-        "P4": 4,
-        "P5": 4
+        "P1": 5,
+        "P2": 5,
+        "P3": 5,
+        "P4": 5,
+        "P5": 5
       },
-      "total_tps": 4
+      "total_tps": 5
     },
     {
       "fraud_type": "bulletproof-hosting",
@@ -428,6 +428,17 @@
       "total_tps": 1
     },
     {
+      "fraud_type": "credential-harvesting",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
       "fraud_type": "credential-stuffing",
       "phases": {
         "P1": 3,
@@ -441,13 +452,13 @@
     {
       "fraud_type": "crypto-laundering",
       "phases": {
-        "P1": 9,
-        "P2": 9,
-        "P3": 9,
-        "P4": 9,
-        "P5": 9
+        "P1": 10,
+        "P2": 10,
+        "P3": 10,
+        "P4": 10,
+        "P5": 10
       },
-      "total_tps": 9
+      "total_tps": 10
     },
     {
       "fraud_type": "crypto-laundering-infrastructure",
@@ -608,6 +619,17 @@
       "total_tps": 1
     },
     {
+      "fraud_type": "fake-captcha-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
       "fraud_type": "fake-ota",
       "phases": {
         "P1": 1,
@@ -651,11 +673,13 @@
     {
       "fraud_type": "fraud-enabling-infrastructure",
       "phases": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 1
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 1,
+        "P5": 1
       },
-      "total_tps": 1
+      "total_tps": 2
     },
     {
       "fraud_type": "fraudulent-claim",
@@ -983,13 +1007,13 @@
     {
       "fraud_type": "money-laundering",
       "phases": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 2,
-        "P4": 2,
-        "P5": 2
+        "P1": 3,
+        "P2": 3,
+        "P3": 3,
+        "P4": 3,
+        "P5": 3
       },
-      "total_tps": 2
+      "total_tps": 3
     },
     {
       "fraud_type": "money-mule",
@@ -1015,6 +1039,17 @@
     },
     {
       "fraud_type": "nfc-relay",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
+      "fraud_type": "paas-subdomain-abuse",
       "phases": {
         "P1": 1,
         "P2": 1,
@@ -1060,13 +1095,13 @@
     {
       "fraud_type": "phishing",
       "phases": {
-        "P1": 8,
-        "P2": 8,
-        "P3": 8,
-        "P4": 8,
-        "P5": 8
+        "P1": 9,
+        "P2": 9,
+        "P3": 9,
+        "P4": 9,
+        "P5": 9
       },
-      "total_tps": 8
+      "total_tps": 9
     },
     {
       "fraud_type": "premium-diversion",
@@ -1202,13 +1237,13 @@
     {
       "fraud_type": "sanctions-evasion-infrastructure",
       "phases": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 2,
-        "P4": 2,
-        "P5": 2
+        "P1": 3,
+        "P2": 3,
+        "P3": 3,
+        "P4": 3,
+        "P5": 3
       },
-      "total_tps": 2
+      "total_tps": 3
     },
     {
       "fraud_type": "scam-compound-operations",
@@ -1257,13 +1292,24 @@
     {
       "fraud_type": "social-engineering",
       "phases": {
-        "P1": 14,
-        "P2": 14,
-        "P3": 14,
-        "P4": 14,
-        "P5": 14
+        "P1": 15,
+        "P2": 15,
+        "P3": 15,
+        "P4": 15,
+        "P5": 15
       },
-      "total_tps": 14
+      "total_tps": 15
+    },
+    {
+      "fraud_type": "stablecoin-freeze-evasion",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
     },
     {
       "fraud_type": "state-criminal-convergence",
@@ -1441,13 +1487,13 @@
     {
       "fraud_type": "vishing",
       "phases": {
-        "P1": 3,
-        "P2": 3,
-        "P3": 3,
-        "P4": 3,
-        "P5": 3
+        "P1": 4,
+        "P2": 4,
+        "P3": 4,
+        "P4": 4,
+        "P5": 4
       },
-      "total_tps": 3
+      "total_tps": 4
     },
     {
       "fraud_type": "wangiri",

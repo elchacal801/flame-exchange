@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "cb011e22-9dfe-5d54-b826-23d743052536",
+    "info": "FLAME: Gift Card Fraud Lifecycle \u2014 Generation, Tampering, and Monetization",
+    "date": "2026-03-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "df60059c-e6ab-54a6-aefd-5f94da85d1eb",
+        "type": "text",
+        "category": "Other",
+        "value": "gift-card-fraud",
+        "comment": "Fraud type for TP-0068"
+      },
+      {
+        "uuid": "38c73290-9a07-584e-b514-1b67d6e8d84d",
+        "type": "text",
+        "category": "Other",
+        "value": "gift-card-tampering",
+        "comment": "Fraud type for TP-0068"
+      },
+      {
+        "uuid": "6cebf464-29c7-5625-b9a6-49550971a95d",
+        "type": "text",
+        "category": "Other",
+        "value": "loyalty-point-fraud",
+        "comment": "Fraud type for TP-0068"
+      },
+      {
+        "uuid": "0ed1049d-df61-52a2-807e-02a8e7bcc9e9",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0068"
+      },
+      {
+        "uuid": "f6109b6a-95fc-58e5-bf4b-01178964398e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0068"
+      },
+      {
+        "uuid": "001228c8-c223-5d5a-a45d-6911f88a147d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0068"
+      },
+      {
+        "uuid": "feab4580-dd40-59b0-a5d4-74c926247423",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0068"
+      },
+      {
+        "uuid": "8592f168-3a85-509e-af9d-6c601932ceeb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0068"
+      },
+      {
+        "uuid": "1722d9e4-9f4b-5132-bd4c-870dfed00346",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0068"
+      }
+    ]
+  }
+}

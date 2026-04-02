@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "4ec08002-755a-518c-b72d-f9ad92ddfc71",
+    "info": "FLAME: Threat Actor Enabling Bulletproof Hosting Infrastructure",
+    "date": "2026-03-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "ed66269b-3d83-5d00-9cb6-ff346c04b571",
+        "type": "text",
+        "category": "Other",
+        "value": "bulletproof-hosting",
+        "comment": "Fraud type for TP-0061"
+      },
+      {
+        "uuid": "d3c77ca5-aac2-51a4-9883-5e6f1f3fdc64",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-enabling-infrastructure",
+        "comment": "Fraud type for TP-0061"
+      },
+      {
+        "uuid": "a963ab1f-4e7b-5571-a834-c43443572bd4",
+        "type": "text",
+        "category": "Other",
+        "value": "hosting-provider-complicity",
+        "comment": "Fraud type for TP-0061"
+      },
+      {
+        "uuid": "c1cd9f53-dc91-5076-82e3-c785c5d68132",
+        "type": "text",
+        "category": "Other",
+        "value": "infrastructure-rotation",
+        "comment": "Fraud type for TP-0061"
+      },
+      {
+        "uuid": "e3b8531b-ba8b-5e8f-9b4a-c07f10b9d9f2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0061"
+      },
+      {
+        "uuid": "7da891d2-1303-56e5-82f7-70405bd89fdb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0061"
+      },
+      {
+        "uuid": "bece0e46-f901-5760-a5c1-297ed655094b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0061"
+      }
+    ]
+  }
+}

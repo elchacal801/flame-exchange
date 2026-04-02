@@ -7,6 +7,8 @@ Detection rules mapped to **Cryptocurrency Laundering Infrastructure**.
 | Rule ID | Title | Level | Phase |
 |---------|-------|-------|-------|
 | DL-0142 | Crypto Token Rug Pull Early Warning — On-Chain and OSINT Indicators | high | P4 |
+| DL-0205 | Wrapped Stablecoin Bridge Transfer from High-Risk Source | high | P4 |
+| DL-0206 | Rapid Wallet Fan-Out Exceeding 100 Wallets Post-Theft | critical | P4 |
 
 ## Formats
 

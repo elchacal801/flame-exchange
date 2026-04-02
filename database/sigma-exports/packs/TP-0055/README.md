@@ -7,6 +7,7 @@ Detection rules mapped to **Crypto Fraud–Terrorism/Narco Financing Nexus**.
 | Rule ID | Title | Level | Phase |
 |---------|-------|-------|-------|
 | DL-0174 | Crypto Fraud-Terrorism/Narco Financing Nexus — Sanctions-Exposed Wallets and Peel Chain Patterns Through Mixing Services | critical | P5 |
+| DL-0207 | Micro-Splitting Stablecoin Donations to Rotating Wallets | medium | P5 |
 
 ## Formats
 

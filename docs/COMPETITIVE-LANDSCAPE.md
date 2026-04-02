@@ -238,12 +238,12 @@ The paper documents a consistent pattern across US, European, and APAC stakehold
 
 | ACAMS Identified Need | FLAME's Solution |
 |---|---|
-| "A common fraud typology taxonomy that translates across sectors" | 144 fraud types mapped across 6 frameworks (CFPF, ATT&CK, Group-IB, FT3, UCFF, Regulatory) |
+| "A common fraud typology taxonomy that translates across sectors" | 160 fraud types mapped across 6 frameworks (CFPF, ATT&CK, Group-IB, FT3, UCFF, Regulatory) |
 | "Confidence and quality indicators for shared intelligence" | Admiralty Code confidence scoring (0-100) + source reliability ratings (A-F) on every threat path |
-| "Fraud typology alerts" as #1 priority low-friction sharing type | 77 structured threat paths with CFPF lifecycle mapping, detection approaches, and operational evidence |
+| "Fraud typology alerts" as #1 priority low-friction sharing type | 81 structured threat paths with CFPF lifecycle mapping, detection approaches, and operational evidence |
 | "API specifications for bilateral sharing" | OpenAPI 3.0 spec, STIX 2.1 export, MISP feed, TAXII 2.1 endpoints, MCP server |
 | "Descriptions of current fraud schemes, tactics, and targeting patterns" | Entire FLAME knowledge base — structured for consumption, not locked in PDFs |
-| "Infrastructure indicators for blocking and takedown" | 195 detection rules with CQL/SPL/KQL/Sigma query implementations |
+| "Infrastructure indicators for blocking and takedown" | 211 detection rules with CQL/SPL/KQL/Sigma query implementations |
 
 ### Operational Models FLAME Complements
 

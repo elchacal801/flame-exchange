@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "df7c070c-0229-5f75-9f39-5220eca70bac",
+    "info": "FLAME: Crypto Fraud\u2013Terrorism/Narco Financing Nexus",
+    "date": "2026-03-17",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "02c85564-729c-5140-a178-89ce598563e0",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0055"
+      },
+      {
+        "uuid": "f2b8f754-0135-568d-b1d6-46cab50731f2",
+        "type": "text",
+        "category": "Other",
+        "value": "investment-scam",
+        "comment": "Fraud type for TP-0055"
+      },
+      {
+        "uuid": "446983d4-62b4-57fa-a260-506b3fc98f26",
+        "type": "text",
+        "category": "Other",
+        "value": "state-criminal-convergence",
+        "comment": "Fraud type for TP-0055"
+      },
+      {
+        "uuid": "dc9b350a-638e-5b57-a7e9-24f24e25e94c",
+        "type": "text",
+        "category": "Other",
+        "value": "money-mule",
+        "comment": "Fraud type for TP-0055"
+      },
+      {
+        "uuid": "94d544cc-420f-5e31-8272-5951f6e7f25c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0055"
+      },
+      {
+        "uuid": "88a0e366-ccc9-51a6-94a5-1d8f7361856f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0055"
+      },
+      {
+        "uuid": "95c54400-ffc2-5207-9a23-2692eff961ba",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0055"
+      },
+      {
+        "uuid": "0c313217-a710-5b15-a0b9-c6b22c024e81",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0055"
+      },
+      {
+        "uuid": "56050fcc-d779-5835-92a2-bb8d91608609",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0055"
+      }
+    ]
+  }
+}

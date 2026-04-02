@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "4e8203db-aeae-5032-a9b3-5b6b38a32fed",
+    "info": "FLAME: Deepfake-as-a-Service Marketplace Ecosystem",
+    "date": "2026-03-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "42de69e8-8e84-550b-b522-7564fa96bcc1",
+        "type": "text",
+        "category": "Other",
+        "value": "deepfake-as-a-service",
+        "comment": "Fraud type for TP-0057"
+      },
+      {
+        "uuid": "5cd805d5-1574-5897-a6e5-25252d49e01a",
+        "type": "text",
+        "category": "Other",
+        "value": "deepfake-fraud",
+        "comment": "Fraud type for TP-0057"
+      },
+      {
+        "uuid": "fc7823ea-b6c6-591e-95c0-e9487c783152",
+        "type": "text",
+        "category": "Other",
+        "value": "ai-face-voice-changer",
+        "comment": "Fraud type for TP-0057"
+      },
+      {
+        "uuid": "33636890-6a2a-5c76-b395-777883ce52d8",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-as-a-service",
+        "comment": "Fraud type for TP-0057"
+      },
+      {
+        "uuid": "d50f3ee1-1feb-5f08-abc1-8ead82c77639",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0057"
+      },
+      {
+        "uuid": "8c8f92e1-4fa3-5c7b-b6e2-535e150ede96",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0057"
+      },
+      {
+        "uuid": "19098f74-aba0-566c-a35d-9879e053e824",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0057"
+      },
+      {
+        "uuid": "f94c8ef7-3a84-5443-b6da-f705dd8538b5",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0057"
+      },
+      {
+        "uuid": "4dea8961-6737-5df3-a454-6acdb8acf7ea",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0057"
+      },
+      {
+        "uuid": "da3e16c9-f2a1-560a-8d2b-9e8dff41e096",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0057"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "ca06a852-49f3-59d0-aa2f-51146a45d199",
+    "info": "FLAME: Human Trafficking-Linked Fraud Infrastructure",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "7d5dd1b5-c9f4-58ad-8dcc-591310f3d21d",
+        "type": "text",
+        "category": "Other",
+        "value": "human-trafficking-facilitation",
+        "comment": "Fraud type for TP-0047"
+      },
+      {
+        "uuid": "aa1ee182-5ea2-57d0-8b50-16b86d99489d",
+        "type": "text",
+        "category": "Other",
+        "value": "scam-compound-operations",
+        "comment": "Fraud type for TP-0047"
+      },
+      {
+        "uuid": "bba40a81-de3b-5dcb-bbea-a3bcd2e222ac",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0047"
+      },
+      {
+        "uuid": "d9bd555e-94f3-5059-b6de-cc695c6421fc",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0047"
+      },
+      {
+        "uuid": "360ba956-14cd-5546-97c1-34e9c64e0e46",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0047"
+      },
+      {
+        "uuid": "235d11f3-9030-50e6-84b8-1bd8a8334340",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0047"
+      },
+      {
+        "uuid": "ebb00c85-436d-59f0-ab2b-1140d5e56239",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0047"
+      },
+      {
+        "uuid": "8c8fef8b-5a1b-52bc-bde5-8d1689191402",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0047"
+      }
+    ]
+  }
+}

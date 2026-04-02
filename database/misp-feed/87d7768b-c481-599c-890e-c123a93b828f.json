@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "87d7768b-c481-599c-890e-c123a93b828f",
+    "info": "FLAME: Telecom Subscription & Billing Fraud",
+    "date": "2026-03-29",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "43d5a8a1-f7c3-5712-a851-a2a1c7d2695d",
+        "type": "text",
+        "category": "Other",
+        "value": "subscription-fraud",
+        "comment": "Fraud type for TP-0072"
+      },
+      {
+        "uuid": "92890cd8-e276-5f53-832a-b2a89b0b5383",
+        "type": "text",
+        "category": "Other",
+        "value": "telecom-billing-fraud",
+        "comment": "Fraud type for TP-0072"
+      },
+      {
+        "uuid": "86ee994d-283e-5e25-afe1-258a41cc0a9b",
+        "type": "text",
+        "category": "Other",
+        "value": "premium-sms-fraud",
+        "comment": "Fraud type for TP-0072"
+      },
+      {
+        "uuid": "da2bd675-9299-59fc-a9b5-7a134d36f072",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0072"
+      },
+      {
+        "uuid": "a7ddc44c-fc91-5f36-8aea-82945dae147f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0072"
+      },
+      {
+        "uuid": "6034ff7a-6d1d-5152-9b32-34b4280bc2d8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0072"
+      },
+      {
+        "uuid": "bb40bdef-2cf8-51de-830e-dcd0853ec02d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0072"
+      }
+    ]
+  }
+}

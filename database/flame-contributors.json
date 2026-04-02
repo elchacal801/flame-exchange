@@ -2,11 +2,11 @@
   "contributors": [
     {
       "name": "FLAME Project",
-      "threat_paths": 62,
-      "detection_rules": 119,
+      "threat_paths": 65,
+      "detection_rules": 123,
       "baselines": 22,
       "emulation_playbooks": 14,
-      "total": 217
+      "total": 224
     },
     {
       "name": "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)",
@@ -27,10 +27,18 @@
     {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Infoblox DNS Intelligence)",
       "threat_paths": 2,
-      "detection_rules": 13,
+      "detection_rules": 14,
       "baselines": 0,
       "emulation_playbooks": 0,
-      "total": 15
+      "total": 16
+    },
+    {
+      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs)",
+      "threat_paths": 1,
+      "detection_rules": 5,
+      "baselines": 1,
+      "emulation_playbooks": 0,
+      "total": 7
     },
     {
       "name": "FLAME Project (sourced from LexisNexis Risk Solutions, Experian, ACI Worldwide, MRC, CFPB, FCA, ASIC research)",
@@ -57,20 +65,12 @@
       "total": 5
     },
     {
-      "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs)",
-      "threat_paths": 1,
-      "detection_rules": 3,
-      "baselines": 1,
-      "emulation_playbooks": 0,
-      "total": 5
-    },
-    {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, Atlantic Council)",
       "threat_paths": 1,
-      "detection_rules": 2,
+      "detection_rules": 3,
       "baselines": 0,
       "emulation_playbooks": 0,
-      "total": 3
+      "total": 4
     },
     {
       "name": "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Finance Derivative 2026, Radware, Orange Cyberdefense)",
@@ -185,5 +185,5 @@
       "total": 1
     }
   ],
-  "generated_at": "2026-03-30T18:05:16.547285+00:00"
+  "generated_at": "2026-04-02T04:13:13.782813+00:00"
 }

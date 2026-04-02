@@ -1230,7 +1230,7 @@
         html += '<div class="about-stat"><span class="about-stat-value">' + tp + '</span><span class="about-stat-label">Threat Paths</span></div>';
         html += '<div class="about-stat"><span class="about-stat-value">' + ft + '</span><span class="about-stat-label">Fraud Types</span></div>';
         html += '<div class="about-stat"><span class="about-stat-value">' + sec + '</span><span class="about-stat-label">Sectors</span></div>';
-        html += '<div class="about-stat"><span class="about-stat-value">195</span><span class="about-stat-label">Detection Rules</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">211</span><span class="about-stat-label">Detection Rules</span></div>';
         html += '<div class="about-stat"><span class="about-stat-value">14</span><span class="about-stat-label">Playbooks</span></div>';
         html += '<div class="about-stat"><span class="about-stat-value">6</span><span class="about-stat-label">Frameworks</span></div>';
         html += '</div>';
@@ -1259,7 +1259,7 @@
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
                 title: 'Detection Rules',
-                desc: '195 Sigma-based rules exported to CQL, SPL, KQL, and EQL',
+                desc: '211 Sigma-based rules exported to CQL, SPL, KQL, and EQL',
                 detail: 'Each detection rule includes a Sigma-compatible detection block plus native query implementations for CrowdStrike CQL, Splunk SPL, Microsoft Sentinel KQL, and Elasticsearch EQL. ' +
                     'Rules are linked to specific threat paths and CFPF phases. Browse all rules via the <strong>Detection Rules</strong> tab, or view per-TP rules on any threat path detail page. ' +
                     'Export Sigma packs per threat path from the detail view export buttons.'

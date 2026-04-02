@@ -12,6 +12,7 @@ Detection rules mapped to **AiTM Phishing Kit Infrastructure and Session Token H
 | DL-0147 | Sneaky 2FA Impossible Device Shift — User-Agent Mismatch per Auth Step | critical | P2 |
 | DL-0148 | Rockstar 2FA / FlowerStorm Application ID and User-Agent Detection | critical | P2 |
 | DL-0150 | Post-AiTM Inbox Rule Manipulation — New Rules from Risky Sign-In | high | P3 |
+| DL-0209 | Legitimate PaaS Subdomain Hosting Phishing Content | medium | P2 |
 
 ## Formats
 

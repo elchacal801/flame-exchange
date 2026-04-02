@@ -350,6 +350,26 @@
     "cfpf_phase_coverage": "P1 (infrastructure provisioning), P2 (malware delivery via developer lures), P3-P4 (credential access, data exfiltration via InvisibleFerret)"
   },
   {
+    "evidence_id": "EV-TP0034-2026-005",
+    "tp_id": "TP-0034",
+    "title": "CrowdStrike 2026 Global Threat Report — DPRK Adversary Group Operations",
+    "source": "CrowdStrike 2026 Global Threat Report (GTR-2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Very High",
+    "cfpf_phase_coverage": "P1 (GenAI persona fabrication, npm supply chain), P2 (AI-assisted embedding), P3-P4 (credential theft, supply chain compromise), P5 (cryptocurrency theft)"
+  },
+  {
+    "evidence_id": "EV-TP0034-2026-006",
+    "tp_id": "TP-0034",
+    "title": "FATF 2026 Stablecoin Report — DPRK 221 General Bureau Procurement",
+    "source": "FATF 2026 Stablecoin Report (FATF-STABLECOIN-2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Very High",
+    "cfpf_phase_coverage": "P5 (monetization — stablecoin conversion for procurement)"
+  },
+  {
     "evidence_id": "EV-TP0039-2026-002",
     "tp_id": "TP-0039",
     "title": "INTERPOL Confirmation of Agentic AI Fraud",
@@ -440,6 +460,36 @@
     "cfpf_phase_coverage": "P1–P5"
   },
   {
+    "evidence_id": "EV-TP0044-2026-003",
+    "tp_id": "TP-0044",
+    "title": "PRESSURE CHOLLIMA Bybit Theft — Largest Single State-Criminal Convergence Incident (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0044-2026-004",
+    "tp_id": "TP-0044",
+    "title": "Operational Tempo Acceleration (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3, P4"
+  },
+  {
+    "evidence_id": "EV-TP0044-2026-005",
+    "tp_id": "TP-0044",
+    "title": "DPRK Operational Diversification (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
     "evidence_id": "EV-TP0047-2026-003",
     "tp_id": "TP-0047",
     "title": "UNODC/INTERPOL Compound Operations Intelligence",
@@ -488,6 +538,46 @@
     "domain_count": "",
     "confidence": "High",
     "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-004",
+    "tp_id": "TP-0049",
+    "title": "Stablecoin Dominance in Illicit VA Volume (2025)",
+    "source": "FATF Stablecoin Report 2026 (citing Chainalysis data); CrowdStrike 2026 Global Threat Report",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-005",
+    "tp_id": "TP-0049",
+    "title": "DPRK Bybit Laundering Pattern (Feb 2025)",
+    "source": "FATF Stablecoin Report 2026; CrowdStrike 2026 Global Threat Report",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P4"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-006",
+    "tp_id": "TP-0049",
+    "title": "P2P Unhosted Wallet Vulnerability",
+    "source": "FATF Stablecoin Report 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3, P5"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-007",
+    "tp_id": "TP-0049",
+    "title": "Professional Money Laundering Techniques via Stablecoins",
+    "source": "FATF Stablecoin Report 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3"
   },
   {
     "evidence_id": "EV-TP0050-2026-001",
@@ -668,6 +758,46 @@
     "domain_count": "",
     "confidence": "High",
     "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0055-2026-003",
+    "tp_id": "TP-0055",
+    "title": "IRGC Stablecoin Procurement (FATF 2026)",
+    "source": "FATF, \"Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses\" (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0055-2026-004",
+    "tp_id": "TP-0055",
+    "title": "ISIL/Al-Qaeda Stablecoin Donations (FATF 2026)",
+    "source": "FATF, \"Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses\" (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P2, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0055-2026-005",
+    "tp_id": "TP-0055",
+    "title": "Drug Trafficking Stablecoin Use (FATF 2026)",
+    "source": "FATF, \"Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses\" (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0055-2026-006",
+    "tp_id": "TP-0055",
+    "title": "Southeast Asia Scam Compound Stablecoin Remittance (FATF India Case Study)",
+    "source": "FATF, \"Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses\" (2026) — FIU India case study",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4, P5"
   },
   {
     "evidence_id": "EV-TP0056-2026-001",
@@ -990,6 +1120,46 @@
     "cfpf_phase_coverage": "P1–P5"
   },
   {
+    "evidence_id": "EV-TP0067-2026-006",
+    "tp_id": "TP-0067",
+    "title": "IMPERIAL KITTEN EvilGinx2 Campaign (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-007",
+    "tp_id": "TP-0067",
+    "title": "ShinyHunters CRM SaaS Targeting (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3, P4"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-008",
+    "tp_id": "TP-0067",
+    "title": "COZY BEAR OAuth 2.0 Device Code Phishing (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-009",
+    "tp_id": "TP-0067",
+    "title": "PaaS Subdomain Hosting for AiTM Pages (Interisle 2025)",
+    "source": "Interisle Consulting Group, \"Phishing Landscape 2025\" (September 2025); cross-reference TP-0079",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1"
+  },
+  {
     "evidence_id": "EV-TP0068-2026-001",
     "tp_id": "TP-0068",
     "title": "NRF Retail Fraud Taxonomy v1.0 Gift Card Fraud Scheme",
@@ -1028,6 +1198,16 @@
     "domain_count": "",
     "confidence": "High — multi-source vendor telemetry (CrowdStrike, Barracuda, KnowBe4, Sekoia)",
     "cfpf_phase_coverage": "P1 (market landscape)"
+  },
+  {
+    "evidence_id": "EV-TP0069-2026-004",
+    "tp_id": "TP-0069",
+    "title": "Unpaid Toll Scam at Global Scale (Interisle 2025)",
+    "source": "Interisle Consulting Group, \"Phishing Landscape 2025\" (September 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — independent quantitative domain analysis",
+    "cfpf_phase_coverage": "P1, P2"
   },
   {
     "evidence_id": "EV-TP0070-2026-001",

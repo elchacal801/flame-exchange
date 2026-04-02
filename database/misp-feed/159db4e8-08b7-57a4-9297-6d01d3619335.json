@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "159db4e8-08b7-57a4-9297-6d01d3619335",
+    "info": "FLAME: Real Estate Title Fraud & Deed Theft",
+    "date": "2026-03-29",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "dfea549e-2a91-5dee-824f-22700aec2664",
+        "type": "text",
+        "category": "Other",
+        "value": "title-fraud",
+        "comment": "Fraud type for TP-0073"
+      },
+      {
+        "uuid": "8204abf8-2f93-5e34-9e2a-24cda5712caa",
+        "type": "text",
+        "category": "Other",
+        "value": "deed-theft",
+        "comment": "Fraud type for TP-0073"
+      },
+      {
+        "uuid": "d2890348-71f5-5872-a3bf-c6bc94f5a911",
+        "type": "text",
+        "category": "Other",
+        "value": "seller-impersonation",
+        "comment": "Fraud type for TP-0073"
+      },
+      {
+        "uuid": "0c361da3-d5c8-534b-bf08-ef6b6a5e1525",
+        "type": "text",
+        "category": "Other",
+        "value": "appraisal-fraud",
+        "comment": "Fraud type for TP-0073"
+      },
+      {
+        "uuid": "bf3838a5-ba38-50d0-97d4-bfbd6b1bf193",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0073"
+      },
+      {
+        "uuid": "fdb182c3-19b7-509d-ab5d-05d927b28005",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0073"
+      },
+      {
+        "uuid": "b1930f37-badc-593c-a985-09e8a2c42c65",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0073"
+      },
+      {
+        "uuid": "ab44f328-de10-5d67-9b1c-91a74137408f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0073"
+      },
+      {
+        "uuid": "917065d4-3b39-526a-8098-5d057f092aa7",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0073"
+      }
+    ]
+  }
+}

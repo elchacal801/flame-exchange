@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-02T04:13:13.356952+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "ed008fcb-2d08-47a4-818d-0b7d5ce6465e",
+    "dl_id": "DL-0205",
+    "title": "Wrapped Stablecoin Bridge Transfer from High-Risk Source",
+    "status": "experimental",
+    "description": "Detects stablecoin bridge transactions where USDT/USDC is wrapped through bridge protocols to create wrapped representations (wUSDT, wUSDC) on destination chains, and the source address has elevated risk indicators or recent exposure to sanctioned addresses. Bridging defeats the original issuer's freeze capability on the destination chain, making this a key laundering technique for sanctioned actors.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "bridge_protocol": "*",
+        "source_chain": "*",
+        "destination_chain": "*",
+        "wrapped_token|re": "wUSDT|wUSDC",
+        "source_risk_score|gte": 70,
+        "amount_usd|gte": 10000
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "bridge_monitoring"
+    },
+    "references": [
+      "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
+    ],
+    "threat_path_ids": [
+      "TP-0049",
+      "TP-0080"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "money-laundering"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.crypto",
+      "flame.shared"
+    ],
+    "falsepositives": [
+      "Cross-chain DeFi operations moving stablecoins between chains for yield optimization",
+      "Legitimate multi-chain treasury management by DAOs or protocols"
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "1cbbd393-60d5-53e6-a89e-c80f8a977307",
+    "info": "FLAME: Investment Fraud TDS Pipeline",
+    "date": "2026-03-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "66f711ea-100c-52bd-93d0-cbbadd5287f9",
+        "type": "text",
+        "category": "Other",
+        "value": "traffic-distribution-system",
+        "comment": "Fraud type for TP-0060"
+      },
+      {
+        "uuid": "82b0f33b-cfae-5394-9fdf-affd9b0113a7",
+        "type": "text",
+        "category": "Other",
+        "value": "investment-fraud",
+        "comment": "Fraud type for TP-0060"
+      },
+      {
+        "uuid": "31d6c00d-a71e-58d1-a079-11f145c11093",
+        "type": "text",
+        "category": "Other",
+        "value": "cloaking",
+        "comment": "Fraud type for TP-0060"
+      },
+      {
+        "uuid": "030f1a13-3855-56f5-a87b-1a0128c7d100",
+        "type": "text",
+        "category": "Other",
+        "value": "geo-routing",
+        "comment": "Fraud type for TP-0060"
+      },
+      {
+        "uuid": "0d7c49a7-b85f-5538-a749-02c366abf8bf",
+        "type": "text",
+        "category": "Other",
+        "value": "rdga-infrastructure",
+        "comment": "Fraud type for TP-0060"
+      },
+      {
+        "uuid": "40be79ee-c8d4-5312-8c66-89b54a41a86c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0060"
+      },
+      {
+        "uuid": "13493275-9adf-5fd8-b29d-be815585ace5",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0060"
+      },
+      {
+        "uuid": "d12bd5a2-84ba-5b3c-b5b5-df85bdd47d93",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0060"
+      },
+      {
+        "uuid": "785e3fed-0b51-586d-9aac-41f577630d9e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0060"
+      },
+      {
+        "uuid": "561d6a60-140c-520b-bc12-8ead614819d4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0060"
+      }
+    ]
+  }
+}

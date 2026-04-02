@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "63b0cd2b-138c-5d8a-8f1f-6bf80cece35d",
+    "info": "FLAME: Affiliate Network Fraud & Invalid Traffic",
+    "date": "2026-03-27",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "fed81d81-e2de-5903-a561-acd3d647e3ef",
+        "type": "text",
+        "category": "Other",
+        "value": "affiliate-fraud",
+        "comment": "Fraud type for TP-0076"
+      },
+      {
+        "uuid": "d5bd33d9-334d-5340-b116-1a056440e1c9",
+        "type": "text",
+        "category": "Other",
+        "value": "click-fraud",
+        "comment": "Fraud type for TP-0076"
+      },
+      {
+        "uuid": "49c6ec3c-17e1-5e56-a20c-51c6ef428bda",
+        "type": "text",
+        "category": "Other",
+        "value": "ad-fraud",
+        "comment": "Fraud type for TP-0076"
+      },
+      {
+        "uuid": "e4dffd26-e4d9-57e2-a5c8-3fbe63b89b01",
+        "type": "text",
+        "category": "Other",
+        "value": "cookie-stuffing",
+        "comment": "Fraud type for TP-0076"
+      },
+      {
+        "uuid": "a3e2c6d7-e853-50d5-a37f-940b72f65c9c",
+        "type": "text",
+        "category": "Other",
+        "value": "invalid-traffic",
+        "comment": "Fraud type for TP-0076"
+      },
+      {
+        "uuid": "1180a2ee-a584-5379-b9bf-fce1c9347608",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0076"
+      },
+      {
+        "uuid": "53bf5703-8539-5799-91b5-12e9450d56d9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0076"
+      },
+      {
+        "uuid": "bc5f7966-3ed1-58fd-8a7e-97c352e2378e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0076"
+      },
+      {
+        "uuid": "1a3f2d91-3a82-5000-a18b-19b981ad617d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0076"
+      },
+      {
+        "uuid": "6dc41dcf-578b-537c-8afe-49d384c18005",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0076"
+      }
+    ]
+  }
+}

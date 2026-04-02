@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "39661bce-098b-5491-bff0-63761d21ca07",
+    "info": "FLAME: Travel Booking Fraud & Fake OTA Networks",
+    "date": "2026-03-29",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "b6ea3448-f68c-516b-85fd-9fa72e4927a1",
+        "type": "text",
+        "category": "Other",
+        "value": "travel-booking-fraud",
+        "comment": "Fraud type for TP-0070"
+      },
+      {
+        "uuid": "65e7748f-fddd-5e54-bdc4-c30400d02cf9",
+        "type": "text",
+        "category": "Other",
+        "value": "buy-for-you-fraud",
+        "comment": "Fraud type for TP-0070"
+      },
+      {
+        "uuid": "a96d7aa5-2790-5e9e-ad19-f253d41865a9",
+        "type": "text",
+        "category": "Other",
+        "value": "fake-ota",
+        "comment": "Fraud type for TP-0070"
+      },
+      {
+        "uuid": "c7e9a78f-8f3c-5a56-be95-6c1eec83e4bf",
+        "type": "text",
+        "category": "Other",
+        "value": "loyalty-point-laundering",
+        "comment": "Fraud type for TP-0070"
+      },
+      {
+        "uuid": "5aeb0c9a-7539-51e8-8e86-fd582ce4ede4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0070"
+      },
+      {
+        "uuid": "28c9f571-95fb-5d54-9b04-ce0be59be9fe",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0070"
+      },
+      {
+        "uuid": "5ab7ec63-024c-5dc9-b369-b1f684fc215c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0070"
+      },
+      {
+        "uuid": "259eeccf-2321-5bdc-81d2-d41e5e333fb2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0070"
+      },
+      {
+        "uuid": "25b936d6-c35f-54dc-bb0f-e5f89b910ee4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0070"
+      }
+    ]
+  }
+}

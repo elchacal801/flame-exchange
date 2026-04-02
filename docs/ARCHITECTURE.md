@@ -17,7 +17,7 @@ FLAME is a structured repository of fraud threat intelligence designed to bridge
 - **No server-side computation** -- the entire site is deployed as static files to GitHub Pages. All "API" endpoints are pre-generated JSON files.
 - **Framework-agnostic intelligence** -- each threat path maps to multiple frameworks (CFPF, MITRE ATT&CK, Group-IB Fraud Matrix, Stripe FT3, UCFF) so consumers can view intelligence through whichever lens their organization uses.
 
-The project currently contains 69 Threat Paths, 176 Detection Rules, 35 Baselines, and 14 Emulation Playbooks.
+The project currently contains 81 Threat Paths, 211 Detection Rules, 35 Baselines, and 14 Emulation Playbooks.
 
 ---
 
@@ -220,7 +220,7 @@ All API endpoints are pre-generated JSON files served from `api/v1/`. Every resp
   "meta": {
     "version": "1.0",
     "generated_at": "2026-03-28T23:08:38Z",
-    "total": 69
+    "total": 81
   },
   "data": [ ... ]
 }

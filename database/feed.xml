@@ -1072,7 +1072,7 @@ Detection of RDGA campaigns requires a paradigm shift from signature-based and a
       <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>82</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>5</flame:detectionRuleCount>
+      <flame:detectionRuleCount>6</flame:detectionRuleCount>
         <category>rdga-infrastructure</category>
         <category>CFPF-P1</category>
         <category>CFPF-P2</category>
@@ -1178,7 +1178,7 @@ This threat path documents the mechanisms by which state and criminal actors con
       <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>78</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>2</flame:detectionRuleCount>
+      <flame:detectionRuleCount>3</flame:detectionRuleCount>
         <category>crypto-laundering</category>
         <category>malware</category>
         <category>state-criminal-convergence</category>
@@ -1349,7 +1349,7 @@ The World Cybercrime Index (Bruce et al., PLoS ONE 2024) reveals that cash-out/m
       <pubDate>Thu, 05 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>85</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>4</flame:detectionRuleCount>
+      <flame:detectionRuleCount>7</flame:detectionRuleCount>
         <category>cmln-operations</category>
         <category>crypto-laundering-infrastructure</category>
         <category>CFPF-P1</category>
@@ -1514,7 +1514,7 @@ Notably, traditional narcotics-producing and terrorism-financing jurisdictions (
       <pubDate>Tue, 17 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>78</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>3</flame:detectionRuleCount>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
         <category>crypto-laundering</category>
         <category>investment-scam</category>
         <category>money-mule</category>
@@ -1864,7 +1864,7 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
       <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>82</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>9</flame:detectionRuleCount>
+      <flame:detectionRuleCount>10</flame:detectionRuleCount>
         <category>account-takeover</category>
         <category>aitm-phishing</category>
         <category>credential-stuffing</category>
@@ -2194,6 +2194,113 @@ The convergence of this laundering infrastructure with offshore shell company op
         <category>attack-T1036</category>
         <category>attack-T1583.001</category>
         <category>attack-T1657</category>
+    </item>
+    <item>
+      <title>[TP-0079] Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale</title>
+      <link>https://flameintel.org/#detail/TP-0079</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0079</guid>
+      <description>Phishing infrastructure has undergone a structural shift toward cheap new generic top-level domains (gTLDs) and free Platform-as-a-Service (PaaS) subdomains as the dominant delivery mechanism for credential harvesting, brand impersonation, and fraud-enabling infrastructure at global scale. Interisle Consulting Group&apos;s Phishing Landscape 2025 report, covering May 2024 through April 2025, documented approximately 2 million phishing attacks worldwide across more than 1.5 million unique domains — with 77% of phishing domains identified as maliciously registered (a 36% year-over-year increase).
+
+The defining finding is the dramatic asymmetry between new gTLD market share and phishing concentration: new gTLDs hold only 11% of the global domain market but accounted for 51% of all phishing domains during the reporting period. This represents a significant escalation from 21% in 2021, indicating that threat actors have systematically migrated to new gTLDs as their preferred registration namespace. The economic driver is clear: 18 new gTLDs offered registrations under $2, and sub-$2 pricing correlates directly with the highest phishing abuse scores.
+
+Simultaneously, PaaS subdomain abuse has emerged as a parallel infrastructure channel. Cloudflare pages.dev saw a 157% increase in phishing attacks (43,800 attacks), Webflow&apos;s webflow.io surged 980% (33,400 attacks), Vercel&apos;s vercel.app grew 279% (21,400 attacks), and GitBook&apos;s gitbook.io appeared as a new vector with 22,000 attacks. These platforms provide free hosting with legitimate SSL certificates and trusted domain reputations, enabling phishers to bypass email security filters and browser warnings.
+
+A specific campaign — the &quot;Unpaid Toll Scam&quot; — illustrates the convergence of these techniques: 37,000 domains were registered via Dominet (HK) registrar across the .XIN and .TOP TLDs, operated by the Chinese PhaaS provider XinXin/LUCID, and hosted on Tencent (AS132203), Alibaba (AS45102), and Cloudflare (AS13335) infrastructure. IDN homograph attacks further compound the threat, with 2,655 domains targeting cryptocurrency brands through internationalized domain name spoofing (e.g., xn--btpay-b4a.com rendering as bitpay.com).
+
+Cloudflare AS13335 has been the number one hosting network for phishing attacks for four consecutive years, with 540,000 attacks during the reporting period, largely because its reverse proxy architecture obscures the true hosting location of phishing pages from investigators and automated takedown systems.</description>
+      <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>90</flame:confidence>
+      <flame:sourceReliability>A</flame:sourceReliability>
+      <flame:detectionRuleCount>3</flame:detectionRuleCount>
+        <category>brand-impersonation</category>
+        <category>credential-harvesting</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>paas-subdomain-abuse</category>
+        <category>phishing</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>sector-crypto</category>
+        <category>sector-government</category>
+        <category>sector-payments</category>
+        <category>attack-T1566.002</category>
+        <category>attack-T1583.001</category>
+        <category>attack-T1583.003</category>
+        <category>attack-T1608.005</category>
+    </item>
+    <item>
+      <title>[TP-0080] Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges</title>
+      <link>https://flameintel.org/#detail/TP-0080</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0080</guid>
+      <description>State-sponsored threat actors and transnational criminal organizations have developed a systematic methodology to evade stablecoin issuer freeze capabilities by converting centrally issued stablecoins (USDT, USDC) into decentralized alternatives (DAI, sDAI, LUSD, RAI) and wrapped token variants that decouple the original issuer&apos;s administrative controls. This threat path exploits a fundamental architectural gap: when a centrally issued stablecoin is &quot;wrapped&quot; through a bridge protocol or swapped for a decentralized stablecoin, the issuer&apos;s freeze function — the primary compliance enforcement mechanism — becomes inoperable against the resulting tokens.
+
+The FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026) quantifies the scale: stablecoins accounted for 84% of the $154 billion in illicit virtual asset transaction volume observed in 2025 (Chainalysis data). This dominance reflects stablecoins&apos; utility as a stable-value transfer mechanism for illicit actors who cannot tolerate the price volatility of BTC or ETH during multi-stage laundering operations.
+
+Two confirmed nation-state programs demonstrate this threat path at operational scale. The IRGC shifted procurement financing from USDT to DAI following mid-2025 Tether freeze actions, using decentralized stablecoins to purchase drone components and weapons systems through front companies. Billions in IRGC-associated addresses were identified across 2024-2025. Separately, the DPRK&apos;s Lazarus Group laundered proceeds from the $1.46 billion Bybit theft (February 2025) through mixers, cross-chain bridges, and 125,000+ Ethereum wallets before converting to USDT on TRON for OTC cash-out — with the 221 General Bureau using USDT for military equipment procurement including munitions-grade copper.
+
+Beyond state actors, drug trafficking organizations are using USDT on TRON and USDC on Ethereum for synthetic drug precursor procurement and settlement. ISIL and Al-Qaeda affiliates have solicited stablecoin donations via encrypted messaging platforms, employing rotating wallet addresses, micro-splitting, and multi-hop transfers to evade tracing.
+
+The convergence of P2P transactions via unhosted wallets (no AML/CFT intermediary), cross-chain bridge fragmentation of transaction trails, and decentralized stablecoin adoption creates a compounding evasion capability that existing compliance frameworks — designed around centralized issuer controls — are structurally unable to address.
+
+**Key Distinction from TP-0078**: TP-0078 documents the industrialized laundering-as-a-service pipeline model (Huione Group, CEX hot wallet sweep patterns). TP-0080 documents the upstream evasion technique: how illicit actors defeat the freeze capability that is supposed to prevent stablecoins from being used in the TP-0078 pipeline in the first place. TP-0080 feeds into TP-0078 — once freeze-evasion is achieved, the resulting funds flow through the CEX off-ramp infrastructure documented in TP-0078.
+
+**Key Distinction from TP-0049**: TP-0049 covers cryptocurrency laundering infrastructure broadly. TP-0080 specifically addresses the exploitation of stablecoin architectural design — the gap between centralized issuance with freeze capabilities and decentralized/wrapped circulation without them — as a deliberate sanctions and law enforcement evasion technique.</description>
+      <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>85</flame:confidence>
+      <flame:sourceReliability>A</flame:sourceReliability>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
+        <category>crypto-laundering</category>
+        <category>money-laundering</category>
+        <category>sanctions-evasion-infrastructure</category>
+        <category>stablecoin-freeze-evasion</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>sector-crypto</category>
+        <category>attack-T1036</category>
+        <category>attack-T1657</category>
+    </item>
+    <item>
+      <title>[TP-0081] Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud</title>
+      <link>https://flameintel.org/#detail/TP-0081</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0081</guid>
+      <description>Voice phishing (vishing) has emerged as the dominant initial access vector for identity-based intrusions, with adversaries combining real-time phone-based social engineering with technical exploitation chains to achieve account takeover at unprecedented speed. The CrowdStrike 2026 Global Threat Report documents a convergence of vishing, fake CAPTCHA campaigns, help desk impersonation, and GenAI-enabled persona creation that collectively represent a paradigm shift away from malware-centric attack models. 82% of CrowdStrike-observed detections in 2025 were malware-free, relying instead on valid credentials, native tools, and administrative functions.
+
+CHATTY SPIDER exemplifies the operational tempo: in a documented incident against a law firm, the adversary achieved a 4-minute breakout from initial vishing contact to active data exfiltration. Fake CAPTCHA campaigns surged 563% in 2025, with threat actors (BRASH SPIDER, COOKIE SPIDER) tricking victims into executing clipboard-delivered PowerShell payloads. SCATTERED SPIDER continues to social-engineer help desk personnel into performing password resets on SSO and cloud accounts, exploiting hybrid identity infrastructure (Entra ID, AD FS) for lateral movement. Average eCrime breakout time has collapsed to 29 minutes (down 65% from 48 minutes in 2024; fastest observed: 27 seconds), making real-time detection and response essential.
+
+AI-enabled adversary attacks rose 89%, with GenAI used to create convincing voice personas, synthetic identities for fraudulent employment (FAMOUS CHOLLIMA, +109% in fake personas), and multi-day social engineering campaigns (COZY BEAR leveraging instant messaging, email, video conferencing, and OAuth 2.0 device code phishing). Financial services accounted for 11% of interactive intrusion targets, with technology at 23%.
+
+**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure and session token hijacking via reverse proxy platforms. TP-0081 focuses on the voice-based and hybrid social engineering attack surface — vishing, help desk manipulation, fake CAPTCHA campaigns, and RMM tool abuse — where the human operator, not a phishing kit, is the primary attack instrument. The two threat paths frequently chain: vishing provides initial access that enables AiTM-style session capture downstream.</description>
+      <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>82</flame:confidence>
+      <flame:sourceReliability>A</flame:sourceReliability>
+      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+        <category>BEC</category>
+        <category>account-takeover</category>
+        <category>fake-captcha-fraud</category>
+        <category>social-engineering</category>
+        <category>vishing</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>sector-insurance</category>
+        <category>sector-technology</category>
+        <category>attack-T1078</category>
+        <category>attack-T1219</category>
+        <category>attack-T1566.004</category>
+        <category>attack-T1567</category>
     </item>
     <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
@@ -4820,6 +4927,113 @@ The convergence of this laundering infrastructure with offshore shell company op
         <category>CFPF-P4</category>
         <category>linked-TP-0049</category>
         <category>linked-TP-0078</category>
+    </item>
+    <item>
+      <title>[DL-0204] Stablecoin-to-Decentralized-Stablecoin Swap Velocity</title>
+      <link>https://flameintel.org/#rules/DL-0204</link>
+      <guid isPermaLink="false">flame-dl-DL-0204</guid>
+      <description>Detects when a wallet receives USDT/USDC and swaps to decentralized stablecoins (DAI, sDAI, LUSD, RAI) via a DEX within 24 hours, particularly when the source wallet has elevated risk scores. The IRGC&apos;s documented USDT-to-DAI shift after mid-2025 Tether freezes is the direct intelligence basis. Centralized stablecoins can be frozen by issuers; swapping to decentralized alternatives defeats this control.
+</description>
+        <category>crypto-laundering</category>
+        <category>stablecoin-freeze-evasion</category>
+        <category>severity-high</category>
+        <category>CFPF-P3</category>
+        <category>linked-TP-0049</category>
+        <category>linked-TP-0080</category>
+    </item>
+    <item>
+      <title>[DL-0205] Wrapped Stablecoin Bridge Transfer from High-Risk Source</title>
+      <link>https://flameintel.org/#rules/DL-0205</link>
+      <guid isPermaLink="false">flame-dl-DL-0205</guid>
+      <description>Detects stablecoin bridge transactions where USDT/USDC is wrapped through bridge protocols to create wrapped representations (wUSDT, wUSDC) on destination chains, and the source address has elevated risk indicators or recent exposure to sanctioned addresses. Bridging defeats the original issuer&apos;s freeze capability on the destination chain, making this a key laundering technique for sanctioned actors.
+</description>
+        <category>crypto-laundering</category>
+        <category>money-laundering</category>
+        <category>severity-high</category>
+        <category>CFPF-P4</category>
+        <category>linked-TP-0049</category>
+        <category>linked-TP-0080</category>
+    </item>
+    <item>
+      <title>[DL-0206] Rapid Wallet Fan-Out Exceeding 100 Wallets Post-Theft</title>
+      <link>https://flameintel.org/#rules/DL-0206</link>
+      <guid isPermaLink="false">flame-dl-DL-0206</guid>
+      <description>Detects when a single wallet or cluster distributes funds across 100+ new wallets within 48 hours following a large-value transfer (&gt;$1M). Directly models the DPRK Bybit laundering pattern where PRESSURE CHOLLIMA distributed stolen funds across 125,000+ Ethereum wallets. Existing DL-0196 and DL-0197 cover CEX off-ramp detection; this rule covers the upstream distancing and layering phase.
+</description>
+        <category>crypto-laundering</category>
+        <category>state-criminal-convergence</category>
+        <category>severity-critical</category>
+        <category>CFPF-P4</category>
+        <category>linked-TP-0044</category>
+        <category>linked-TP-0049</category>
+        <category>linked-TP-0080</category>
+    </item>
+    <item>
+      <title>[DL-0207] Micro-Splitting Stablecoin Donations to Rotating Wallets</title>
+      <link>https://flameintel.org/#rules/DL-0207</link>
+      <guid isPermaLink="false">flame-dl-DL-0207</guid>
+      <description>Detect patterns of small-value stablecoin transfers ($10-$500) sent to wallets that are used only once or twice before rotating to new addresses. Models the ISIL/Al-Qaeda donation solicitation pattern: rotating wallet addresses, micro-splitting, and multi-hop transfers designed to evade transaction monitoring thresholds.
+</description>
+        <category>crypto-laundering</category>
+        <category>money-laundering</category>
+        <category>severity-medium</category>
+        <category>CFPF-P5</category>
+        <category>linked-TP-0055</category>
+        <category>linked-TP-0080</category>
+    </item>
+    <item>
+      <title>[DL-0208] New gTLD Domain Registration Burst with Phishing Characteristics</title>
+      <link>https://flameintel.org/#rules/DL-0208</link>
+      <guid isPermaLink="false">flame-dl-DL-0208</guid>
+      <description>Detect bulk domain registrations (5+ in 24h from same registrant/nameserver) on high-abuse gTLDs (.TOP, .BOND, .XYZ, .SHOP, .XIN, .CFD, .LOL) with brand-keyword presence, domain age &lt; 7 days, and low registration cost. Interisle found 37% of phishing domains were bulk-registered and new gTLDs accounted for 51% of all phishing domains.
+</description>
+        <category>brand-impersonation</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>phishing</category>
+        <category>severity-high</category>
+        <category>CFPF-P1</category>
+        <category>linked-TP-0041</category>
+        <category>linked-TP-0079</category>
+    </item>
+    <item>
+      <title>[DL-0209] Legitimate PaaS Subdomain Hosting Phishing Content</title>
+      <link>https://flameintel.org/#rules/DL-0209</link>
+      <guid isPermaLink="false">flame-dl-DL-0209</guid>
+      <description>Detect URLs hosted on known PaaS free subdomain services (*.pages.dev, *.webflow.io, *.vercel.app, *.github.io, *.gitbook.io, *.workers.dev, *.r2.dev) that contain financial brand keywords or trigger phishing heuristics. These subdomains inherit the PaaS provider&apos;s domain reputation, bypassing domain-age and reputation filters commonly used in fraud detection.
+</description>
+        <category>credential-harvesting</category>
+        <category>paas-subdomain-abuse</category>
+        <category>phishing</category>
+        <category>severity-medium</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0067</category>
+        <category>linked-TP-0079</category>
+    </item>
+    <item>
+      <title>[DL-0210] IDN Homograph Domain Targeting Crypto Brands</title>
+      <link>https://flameintel.org/#rules/DL-0210</link>
+      <guid isPermaLink="false">flame-dl-DL-0210</guid>
+      <description>Detect DNS queries or URL accesses to internationalized domain names (IDN/punycode with xn-- prefix) that visually resemble crypto brand domains (bitpay, coinbase, metamask, phantom, pancakeswap, uniswap, etc.). Interisle documented 2,655 IDN homograph phishing domains with significant crypto brand targeting.
+</description>
+        <category>brand-impersonation</category>
+        <category>phishing</category>
+        <category>wallet-drainer</category>
+        <category>severity-high</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0079</category>
+    </item>
+    <item>
+      <title>[DL-0211] Fake CAPTCHA Campaign Redirect Chain Detection</title>
+      <link>https://flameintel.org/#rules/DL-0211</link>
+      <guid isPermaLink="false">flame-dl-DL-0211</guid>
+      <description>Detect web access patterns consistent with fake CAPTCHA campaigns: user visits a page with CAPTCHA verification UI, is instructed to copy/execute clipboard content (PowerShell, cmd, mshta), which triggers malware or stealer download. CrowdStrike documented a +563% increase in fake CAPTCHA campaigns in 2025. Used by BRASH SPIDER (Doshell Stealer) and COOKIE SPIDER (SHAMOS).
+</description>
+        <category>credential-harvesting</category>
+        <category>fake-captcha-fraud</category>
+        <category>social-engineering</category>
+        <category>severity-high</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0081</category>
     </item>
   </channel>
 </rss>

@@ -70,10 +70,13 @@ related_tps:
     relationship: related-to
   - id: TP-0069
     relationship: related-to
+  - id: TP-0079
+    relationship: related-to
 regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-STIX-FCI
   - REG-WCI-2024
+  - REG-CROWDSTRIKE-GTR-2026
 baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
@@ -104,6 +107,10 @@ tags:
   - phaas-market-fragmentation
   - vacuum-effect
   - antibot-cloaking
+  - imperial-kitten
+  - shinyhunters
+  - cozy-bear
+  - crowdstrike-gtr-2026
 ---
 ```
 
@@ -485,6 +492,38 @@ The strongest AiTM detection signals in Entra ID:
 - **CFPF Phase Coverage**: P1–P5
 - **Confidence**: Medium — OSINT-derived from forum posts and public Telegram; platform is newly launched with limited operational history
 
+### EV-TP0067-2026-006: IMPERIAL KITTEN EvilGinx2 Campaign (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: Israel
+- **CFPF Phase Coverage**: P1, P2, P3
+- **Confidence**: High
+- **Summary**: Iran-nexus adversary IMPERIAL KITTEN conducted credential phishing against Israeli Microsoft 365 users in November 2025 using the AiTM toolkit EvilGinx2 with Israel-themed infrastructure and English/Hebrew-language lures. This represents significant evidence of state-nexus adoption of commercial AiTM tooling — a nation-state intelligence operation leveraging the same PhaaS-grade AiTM infrastructure documented across the criminal ecosystem in this threat path.
+
+### EV-TP0067-2026-007: ShinyHunters CRM SaaS Targeting (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: Global
+- **CFPF Phase Coverage**: P2, P3, P4
+- **Confidence**: High
+- **Summary**: Between January and August 2025, ShinyHunters conducted social engineering campaigns targeting CRM instances via AiTM phishing pages. CRM emerged as a key exfiltration target in 2025, extending the AiTM threat beyond traditional email/identity provider compromise to SaaS applications containing customer data, sales pipelines, and financial records.
+
+### EV-TP0067-2026-008: COZY BEAR OAuth 2.0 Device Code Phishing (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: United States
+- **CFPF Phase Coverage**: P1, P2, P3
+- **Confidence**: High
+- **Summary**: Russia-nexus adversary COZY BEAR systematically exploited interpersonal trust to compromise US-based targets through a multi-layered trust exploitation campaign. The attack chain involved: (1) compromising or impersonating individuals from international NGOs, (2) delivering Entra ID OAuth 2.0 authorization code and device code phishing links that redirected to authentic Microsoft login pages, and (3) sustaining multi-day conversations across IM, email, and video conferencing to build rapport before delivering phishing payloads. Timeline example: Day 1 initial contact, Day 5 email access from a legitimate compromised account, Day 31 pivot to a new target. This demonstrates how state actors augment AiTM tooling with sustained social engineering to defeat user vigilance.
+
+### EV-TP0067-2026-009: PaaS Subdomain Hosting for AiTM Pages (Interisle 2025)
+
+- **Source**: Interisle Consulting Group, "Phishing Landscape 2025" (September 2025); cross-reference TP-0079
+- **Geography**: Global
+- **CFPF Phase Coverage**: P1
+- **Confidence**: High
+- **Summary**: Interisle's 2025 analysis documents explosive growth in abuse of PaaS subdomain hosting for phishing pages, including AiTM landing pages. Cloudflare pages.dev saw a +157% increase in phishing abuse, Webflow +980%, and Vercel +279%. These platforms provide attacker-controlled subdomains under high-reputation parent domains, effectively bypassing domain reputation filters and browser safelist protections. AiTM kit operators increasingly deploy reverse proxy infrastructure on these PaaS platforms rather than registering dedicated phishing domains — reducing infrastructure cost and improving evasion. See TP-0079 for the dedicated gTLD/subdomain abuse threat path.
+
 ---
 
 ## References
@@ -507,6 +546,8 @@ The strongest AiTM detection signals in Entra ID:
 - CrowdStrike, "Tycoon2FA Phishing-as-a-Service Platform Persists After Takedown" (March 2026) — post-takedown resilience analysis
 - Barracuda Networks, PhaaS threat review (January 2026) — PhaaS kit doubling statistic
 - KnowBe4, "The Rise of Kratos" (February 2026) — 90% credential compromise prediction
+- CrowdStrike, "Global Threat Report 2026" — IMPERIAL KITTEN EvilGinx2 campaign, ShinyHunters CRM targeting, COZY BEAR OAuth 2.0 device code phishing
+- Interisle Consulting Group, "Phishing Landscape 2025" (September 2025) — PaaS subdomain hosting abuse for phishing/AiTM pages (Cloudflare pages.dev, Webflow, Vercel)
 
 ---
 
@@ -539,3 +580,4 @@ Detection engineering should leverage kit-specific fingerprints: the impossible 
 | 2026-03-22 | FLAME Project | Initial submission — sourced from technical landscape report (2026) |
 | 2026-03-23 | FLAME Project | Major enrichment: added 13 kit profiles, Tycoon 2FA takedown, kit-specific detection fingerprints, Entra ID log detection, expanded MITRE ATT&CK (12 techniques), law enforcement timeline, 3 new operational evidence entries, CAE/Token Protection controls — sourced from phishing kit intelligence reference |
 | 2026-03-30 | FLAME Project | Enrichment: Bluekit PhaaS platform (EV-TP0067-2026-005), PhaaS market fragmentation analysis, evasion capabilities, post-Tycoon2FA vacuum effect — sourced from Bluekit PhaaS TI report (CrimsonVector) and CrowdStrike post-takedown analysis |
+| 2026-04-01 | FLAME Project | Enrichment: CrowdStrike GTR 2026 — IMPERIAL KITTEN EvilGinx2, ShinyHunters CRM targeting, COZY BEAR OAuth device code phishing; Interisle 2025 PaaS subdomain hosting abuse; added TP-0079 cross-reference |

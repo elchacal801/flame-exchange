@@ -934,5 +934,47 @@
     "content": "-- Detect crypto-to-cash desk patterns: ephemeral wallets receiving from multiple sources\nSELECT\n  t.to_address AS desk_wallet,\n  COUNT(DISTINCT t.from_address) AS unique_senders,\n  SUM(t.amount_usd) AS total_volume_usd,\n  MIN(t.block_timestamp) AS first_tx,\n  MAX(t.block_timestamp) AS last_tx,\n  w.first_seen_date,\n  w.total_transaction_count,\n  CASE\n    WHEN w.total_transaction_count < 3 AND w.first_seen_date > CURRENT_DATE - 7 THEN 'ephemeral'\n    ELSE 'established'\n  END AS wallet_age_class,\n  CASE\n    WHEN por.wallet_address IS NOT NULL THEN 'CEX_ATTRIBUTED'\n    WHEN ark.wallet_address IS NOT NULL THEN 'ARKHAM_ATTRIBUTED'\n    ELSE 'UNATTRIBUTED'\n  END AS attribution_status\nFROM transactions t\nJOIN wallet_metadata w ON t.to_address = w.wallet_address\nLEFT JOIN proof_of_reserves por ON t.to_address = por.wallet_address\nLEFT JOIN arkham_attributions ark ON t.to_address = ark.wallet_address\nWHERE t.token_symbol = 'USDT'\n  AND t.chain = 'TRON'\n  AND t.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '7 days'\nGROUP BY t.to_address, w.first_seen_date, w.total_transaction_count,\n         por.wallet_address, ark.wallet_address\nHAVING COUNT(DISTINCT t.from_address) >= 5\n  AND w.total_transaction_count < 3\n  AND w.first_seen_date > CURRENT_DATE - 7\n  AND por.wallet_address IS NULL\n  AND ark.wallet_address IS NULL\nORDER BY total_volume_usd DESC;",
     "title": "Ephemeral Wallet OTC Desk Detection (SQL) — DL-0197",
     "tp_id": "TP-0078"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect bulk domain registration sets targeting high-abuse gTLDs\nSELECT\n  registrar_name,\n  registrant_hash,\n  tld,\n  COUNT(DISTINCT domain_name) AS domain_count,\n  MIN(registration_date) AS first_registration,\n  MAX(registration_date) AS last_registration,\n  DATEDIFF(hour, MIN(registration_date), MAX(registration_date)) AS registration_window_hours\nFROM domain_registration_feed\nWHERE tld IN ('.top', '.bond', '.xyz', '.shop', '.xin', '.loan', '.icu', '.buzz')\n  AND registration_date >= CURRENT_TIMESTAMP - INTERVAL '7 days'\nGROUP BY registrar_name, registrant_hash, tld\nHAVING COUNT(DISTINCT domain_name) >= 20\n  AND DATEDIFF(hour, MIN(registration_date), MAX(registration_date)) <= 48\nORDER BY domain_count DESC;",
+    "title": "Bulk gTLD Registration Detection (SQL)",
+    "tp_id": "TP-0079"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect PaaS subdomains containing protected brand keywords\nSELECT\n  subdomain_fqdn,\n  paas_provider,\n  creation_timestamp,\n  ssl_cert_issued_date,\n  content_hash,\n  CASE\n    WHEN subdomain_fqdn LIKE '%pancakeswap%' THEN 'crypto-exchange'\n    WHEN subdomain_fqdn LIKE '%metamask%' THEN 'crypto-wallet'\n    WHEN subdomain_fqdn LIKE '%usps%' OR subdomain_fqdn LIKE '%toll%' THEN 'government-postal'\n    WHEN subdomain_fqdn LIKE '%paypal%' OR subdomain_fqdn LIKE '%chase%' THEN 'financial'\n    ELSE 'other'\n  END AS impersonation_category\nFROM paas_subdomain_monitor\nWHERE paas_provider IN ('pages.dev', 'webflow.io', 'vercel.app', 'gitbook.io', 'github.io')\n  AND creation_timestamp >= CURRENT_TIMESTAMP - INTERVAL '24 hours'\n  AND (\n    subdomain_fqdn REGEXP '(paypal|chase|wells.?fargo|bank.?of.?america|usps|fedex|ups|pancakeswap|uniswap|metamask|coinbase|binance|facebook|instagram|telegram|microsoft|apple)'\n  )\nORDER BY creation_timestamp DESC;",
+    "title": "PaaS Subdomain Brand Impersonation Detection (SQL)",
+    "tp_id": "TP-0079"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect punycode domain registrations targeting monitored brands\nSELECT\n  domain_name,\n  punycode_representation,\n  unicode_rendering,\n  registrar_name,\n  registration_date,\n  nameserver_provider,\n  similarity_score\nFROM idn_registration_monitor\nWHERE punycode_representation LIKE 'xn--%'\n  AND registration_date >= CURRENT_TIMESTAMP - INTERVAL '30 days'\n  AND (\n    unicode_rendering ILIKE '%bitpay%'\n    OR unicode_rendering ILIKE '%coinbase%'\n    OR unicode_rendering ILIKE '%metamask%'\n    OR unicode_rendering ILIKE '%pancakeswap%'\n    OR unicode_rendering ILIKE '%uniswap%'\n    OR similarity_score >= 0.85  -- fuzzy match against protected brand list\n  )\nORDER BY similarity_score DESC, registration_date DESC;",
+    "title": "IDN Homograph Registration Detection (SQL)",
+    "tp_id": "TP-0079"
+  },
+  {
+    "type": "sql",
+    "content": "-- CQL: Alert on new certificates for suspicious gTLD domains\nevent_simpleName=CertificateIssuance\n| search tld IN (\"top\", \"bond\", \"xyz\", \"shop\", \"xin\", \"loan\", \"icu\", \"buzz\")\n| where domain_age_hours < 48\n| stats count AS cert_count, values(domain) AS domains, dc(domain) AS unique_domains BY issuer, registrar\n| where unique_domains >= 10\n| sort -unique_domains",
+    "title": "Certificate Transparency Monitoring for New gTLD Phishing (CQL — CrowdStrike NGSIEM)",
+    "tp_id": "TP-0079"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect large USDT/USDC-to-DAI swaps from high-risk wallets (freeze-evasion indicator)\nSELECT\n  s.transaction_hash,\n  s.wallet_address AS swapper,\n  s.token_in,\n  s.token_out,\n  s.amount_in_usd,\n  s.dex_protocol,\n  s.block_timestamp AS swap_time,\n  w.risk_score,\n  w.tags AS wallet_tags,\n  w.first_seen_date,\n  CASE\n    WHEN w.risk_score >= 80 THEN 'CRITICAL'\n    WHEN w.risk_score >= 60 THEN 'HIGH'\n    ELSE 'MEDIUM'\n  END AS alert_priority\nFROM dex_swaps s\nJOIN wallet_risk w ON s.wallet_address = w.wallet_address\nWHERE s.token_in IN ('USDT', 'USDC', 'BUSD')\n  AND s.token_out IN ('DAI', 'sDAI', 'LUSD', 'RAI', 'FRAX')\n  AND s.amount_in_usd >= 50000\n  AND w.risk_score >= 60\n  AND s.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '30 days'\nORDER BY s.amount_in_usd DESC;",
+    "title": "USDT-to-DAI Freeze-Evasion Swap Detection (SQL)",
+    "tp_id": "TP-0080"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect bridge transfers from high-risk wallets (trace fragmentation indicator)\nWITH bridge_transfers AS (\n  SELECT\n    bt.transaction_hash,\n    bt.source_chain,\n    bt.destination_chain,\n    bt.bridge_protocol,\n    bt.sender_address,\n    bt.receiver_address,\n    bt.token_symbol,\n    bt.amount_usd,\n    bt.block_timestamp,\n    w.risk_score,\n    w.tags\n  FROM bridge_transactions bt\n  JOIN wallet_risk w ON bt.sender_address = w.wallet_address\n  WHERE bt.amount_usd >= 10000\n    AND w.risk_score >= 60\n    AND bt.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '30 days'\n)\nSELECT\n  bt1.sender_address,\n  bt1.source_chain AS chain_1,\n  bt1.destination_chain AS chain_2,\n  bt1.bridge_protocol AS bridge_1,\n  bt1.amount_usd,\n  bt1.risk_score,\n  bt1.tags,\n  bt1.block_timestamp AS bridge_1_time,\n  bt2.destination_chain AS chain_3,\n  bt2.bridge_protocol AS bridge_2,\n  bt2.block_timestamp AS bridge_2_time,\n  EXTRACT(EPOCH FROM (bt2.block_timestamp - bt1.block_timestamp))/3600 AS hours_between_hops\nFROM bridge_transfers bt1\nLEFT JOIN bridge_transfers bt2\n  ON bt1.receiver_address = bt2.sender_address\n  AND bt2.block_timestamp > bt1.block_timestamp\n  AND bt2.block_timestamp < bt1.block_timestamp + INTERVAL '72 hours'\nORDER BY bt1.amount_usd DESC;",
+    "title": "Cross-Chain Bridge Transfer from Flagged Wallets (SQL)",
+    "tp_id": "TP-0080"
+  },
+  {
+    "type": "sql",
+    "content": "-- Detect Lazarus-style wallet proliferation (fan-out to 50+ wallets)\nSELECT\n  t.from_address AS source_wallet,\n  COUNT(DISTINCT t.to_address) AS unique_recipients,\n  SUM(t.amount_usd) AS total_distributed_usd,\n  AVG(t.amount_usd) AS avg_transfer_usd,\n  MIN(t.block_timestamp) AS first_distribution,\n  MAX(t.block_timestamp) AS last_distribution,\n  EXTRACT(EPOCH FROM (MAX(t.block_timestamp) - MIN(t.block_timestamp)))/3600 AS distribution_window_hours,\n  w.risk_score,\n  w.tags\nFROM transactions t\nJOIN wallet_risk w ON t.from_address = w.wallet_address\nWHERE t.token_symbol IN ('USDT', 'USDC', 'DAI', 'ETH', 'WETH')\n  AND t.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '7 days'\nGROUP BY t.from_address, w.risk_score, w.tags\nHAVING COUNT(DISTINCT t.to_address) >= 50\nORDER BY unique_recipients DESC;",
+    "title": "Wallet Proliferation Fan-Out Detection (SQL)",
+    "tp_id": "TP-0080"
   }
 ]

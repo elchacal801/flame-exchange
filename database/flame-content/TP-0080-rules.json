@@ -1,0 +1,20 @@
+{
+  "tp_id": "TP-0080",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- Detect large USDT/USDC-to-DAI swaps from high-risk wallets (freeze-evasion indicator)\nSELECT\n  s.transaction_hash,\n  s.wallet_address AS swapper,\n  s.token_in,\n  s.token_out,\n  s.amount_in_usd,\n  s.dex_protocol,\n  s.block_timestamp AS swap_time,\n  w.risk_score,\n  w.tags AS wallet_tags,\n  w.first_seen_date,\n  CASE\n    WHEN w.risk_score >= 80 THEN 'CRITICAL'\n    WHEN w.risk_score >= 60 THEN 'HIGH'\n    ELSE 'MEDIUM'\n  END AS alert_priority\nFROM dex_swaps s\nJOIN wallet_risk w ON s.wallet_address = w.wallet_address\nWHERE s.token_in IN ('USDT', 'USDC', 'BUSD')\n  AND s.token_out IN ('DAI', 'sDAI', 'LUSD', 'RAI', 'FRAX')\n  AND s.amount_in_usd >= 50000\n  AND w.risk_score >= 60\n  AND s.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '30 days'\nORDER BY s.amount_in_usd DESC;",
+      "title": "USDT-to-DAI Freeze-Evasion Swap Detection (SQL)"
+    },
+    {
+      "type": "sql",
+      "content": "-- Detect bridge transfers from high-risk wallets (trace fragmentation indicator)\nWITH bridge_transfers AS (\n  SELECT\n    bt.transaction_hash,\n    bt.source_chain,\n    bt.destination_chain,\n    bt.bridge_protocol,\n    bt.sender_address,\n    bt.receiver_address,\n    bt.token_symbol,\n    bt.amount_usd,\n    bt.block_timestamp,\n    w.risk_score,\n    w.tags\n  FROM bridge_transactions bt\n  JOIN wallet_risk w ON bt.sender_address = w.wallet_address\n  WHERE bt.amount_usd >= 10000\n    AND w.risk_score >= 60\n    AND bt.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '30 days'\n)\nSELECT\n  bt1.sender_address,\n  bt1.source_chain AS chain_1,\n  bt1.destination_chain AS chain_2,\n  bt1.bridge_protocol AS bridge_1,\n  bt1.amount_usd,\n  bt1.risk_score,\n  bt1.tags,\n  bt1.block_timestamp AS bridge_1_time,\n  bt2.destination_chain AS chain_3,\n  bt2.bridge_protocol AS bridge_2,\n  bt2.block_timestamp AS bridge_2_time,\n  EXTRACT(EPOCH FROM (bt2.block_timestamp - bt1.block_timestamp))/3600 AS hours_between_hops\nFROM bridge_transfers bt1\nLEFT JOIN bridge_transfers bt2\n  ON bt1.receiver_address = bt2.sender_address\n  AND bt2.block_timestamp > bt1.block_timestamp\n  AND bt2.block_timestamp < bt1.block_timestamp + INTERVAL '72 hours'\nORDER BY bt1.amount_usd DESC;",
+      "title": "Cross-Chain Bridge Transfer from Flagged Wallets (SQL)"
+    },
+    {
+      "type": "sql",
+      "content": "-- Detect Lazarus-style wallet proliferation (fan-out to 50+ wallets)\nSELECT\n  t.from_address AS source_wallet,\n  COUNT(DISTINCT t.to_address) AS unique_recipients,\n  SUM(t.amount_usd) AS total_distributed_usd,\n  AVG(t.amount_usd) AS avg_transfer_usd,\n  MIN(t.block_timestamp) AS first_distribution,\n  MAX(t.block_timestamp) AS last_distribution,\n  EXTRACT(EPOCH FROM (MAX(t.block_timestamp) - MIN(t.block_timestamp)))/3600 AS distribution_window_hours,\n  w.risk_score,\n  w.tags\nFROM transactions t\nJOIN wallet_risk w ON t.from_address = w.wallet_address\nWHERE t.token_symbol IN ('USDT', 'USDC', 'DAI', 'ETH', 'WETH')\n  AND t.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '7 days'\nGROUP BY t.from_address, w.risk_score, w.tags\nHAVING COUNT(DISTINCT t.to_address) >= 50\nORDER BY unique_recipients DESC;",
+      "title": "Wallet Proliferation Fan-Out Detection (SQL)"
+    }
+  ]
+}

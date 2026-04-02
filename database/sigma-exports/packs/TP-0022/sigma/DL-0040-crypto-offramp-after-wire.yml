@@ -11,9 +11,11 @@ native_query_required: true
 references:
 - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 - https://www.fincen.gov/sites/default/files/shared/FIN-2019-A003.pdf
+- "ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026) — exchange off-ramp patterns documented in Huione Group investigation"
 threat_paths:
 - TP-0022
 - TP-0002
+- TP-0078
 cfpf_phase: P5
 fraud_types:
 - money-mule
@@ -36,10 +38,11 @@ detection:
     - Coinbase
     - Binance
     - Kraken
-    - FTX
+    - OKX
     - Gemini
     - Crypto.com
     - Bitfinex
+    - Bybit
   timeframe: 24h
   condition: selection_inbound and selection_crypto_outbound
 data_sources:
@@ -74,7 +77,7 @@ queries:
     transaction_amount>=1000
     (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
     beneficiary_category="crypto_exchange"
-    (beneficiary_name="Coinbase" OR beneficiary_name="Binance" OR beneficiary_name="Kraken" OR beneficiary_name="FTX" OR beneficiary_name="Gemini")
+    (beneficiary_name="Coinbase" OR beneficiary_name="Binance" OR beneficiary_name="Kraken" OR beneficiary_name="OKX" OR beneficiary_name="Gemini" OR beneficiary_name="Bybit")
     | transaction account_id maxspan=24h
     | where eventcount >= 2
 falsepositives:

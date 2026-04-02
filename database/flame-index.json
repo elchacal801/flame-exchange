@@ -3866,7 +3866,7 @@
     "category": "ThreatPath",
     "date": "2026-03-03",
     "author": "FLAME Project",
-    "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)",
+    "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, CrowdStrike 2026 GTR, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026), FATF 2026 Stablecoin Report",
     "tlp": "WHITE",
     "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use sto...",
     "confidence_score": 85,
@@ -3911,7 +3911,13 @@
       "beavertail",
       "invisibleferret",
       "purplebravo",
-      "purpledelta"
+      "purpledelta",
+      "pressure-chollima",
+      "famous-chollima",
+      "stardust-chollima",
+      "bybit-theft",
+      "crowdstrike-gtr-2026",
+      "fatf-stablecoin-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -3965,7 +3971,9 @@
       "REG-FBI-IC3",
       "REG-UNODC-EMERGING-THREATS",
       "REG-RF-CTA-2026-0319",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -4016,9 +4024,13 @@
       {
         "id": "TP-0057",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0080",
+        "relationship": "feeds-into"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 6
   },
   {
     "id": "TP-0035",
@@ -4828,7 +4840,8 @@
       "DL-0093",
       "DL-0094",
       "DL-0099",
-      "DL-0100"
+      "DL-0100",
+      "DL-0208"
     ],
     "related_tps": [
       {
@@ -5151,7 +5164,10 @@
       "unodc-organized-fraud-2024",
       "wci-geographic-attribution",
       "probiv-lookup-services",
-      "insider-database-access"
+      "insider-database-access",
+      "pressure-chollima",
+      "bybit-theft",
+      "crowdstrike-gtr-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -5187,7 +5203,8 @@
       "REG-INTERPOL-SHADOW-STORM",
       "REG-RF-CTA-2026-0319",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -5204,7 +5221,8 @@
     ],
     "detection_rule_ids": [
       "DL-0101",
-      "DL-0123"
+      "DL-0123",
+      "DL-0206"
     ],
     "related_tps": [
       {
@@ -5220,7 +5238,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 5
   },
   {
     "id": "TP-0045",
@@ -5655,7 +5673,11 @@
       "unodc",
       "unodc-organized-fraud-2024",
       "ai-evasion",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "fatf-stablecoin-2026",
+      "bybit-laundering",
+      "p2p-laundering",
+      "unhosted-wallet"
     ],
     "cfpf_phases": [
       "P1",
@@ -5680,7 +5702,8 @@
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-EMERGING-THREATS",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 4",
@@ -5700,7 +5723,10 @@
       "DL-0113",
       "DL-0114",
       "DL-0142",
-      "DL-0203"
+      "DL-0203",
+      "DL-0204",
+      "DL-0205",
+      "DL-0206"
     ],
     "related_tps": [
       {
@@ -5714,9 +5740,13 @@
       {
         "id": "TP-0047",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0080",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 3
+    "evidence_count": 7
   },
   {
     "id": "TP-0050",
@@ -6285,7 +6315,10 @@
       "operation-catalyst",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "irgc-stablecoin",
+      "isil-stablecoin",
+      "fatf-stablecoin-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -6317,7 +6350,8 @@
       "REG-FATF-R16",
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6335,7 +6369,8 @@
     "detection_rule_ids": [
       "DL-0174",
       "DL-0196",
-      "DL-0198"
+      "DL-0198",
+      "DL-0207"
     ],
     "related_tps": [
       {
@@ -6349,9 +6384,13 @@
       {
         "id": "TP-0049",
         "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0080",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 8
   },
   {
     "id": "TP-0056",
@@ -7567,7 +7606,11 @@
       "bluekit",
       "phaas-market-fragmentation",
       "vacuum-effect",
-      "antibot-cloaking"
+      "antibot-cloaking",
+      "imperial-kitten",
+      "shinyhunters",
+      "cozy-bear",
+      "crowdstrike-gtr-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -7608,7 +7651,8 @@
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
       "REG-STIX-FCI",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -7629,7 +7673,8 @@
       "DL-0150",
       "DL-0200",
       "DL-0201",
-      "DL-0202"
+      "DL-0202",
+      "DL-0209"
     ],
     "related_tps": [
       {
@@ -7647,9 +7692,13 @@
       {
         "id": "TP-0069",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0079",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 5
+    "evidence_count": 9
   },
   {
     "id": "TP-0068",
@@ -7794,7 +7843,11 @@
       "vacuum-effect",
       "bluekit",
       "kratos",
-      "evilTokens"
+      "evilTokens",
+      "interisle-2025",
+      "xinxin-lucid",
+      "dominet-hk",
+      "xin-tld"
     ],
     "cfpf_phases": [
       "P1",
@@ -7860,7 +7913,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 3
+    "evidence_count": 4
   },
   {
     "id": "TP-0070",
@@ -8684,5 +8737,299 @@
       }
     ],
     "evidence_count": 7
+  },
+  {
+    "id": "TP-0079",
+    "title": "Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "Interisle Consulting Group — Phishing Landscape 2025 (September 2025)",
+    "tlp": "WHITE",
+    "summary": "Phishing infrastructure has undergone a structural shift toward cheap new generic top-level domains (gTLDs) and free Platform-as-a-Service (PaaS) subdomains as the dominant delivery mechanism for cred...",
+    "confidence_score": 90,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "crypto",
+      "payments",
+      "government"
+    ],
+    "fraud_types": [
+      "phishing",
+      "brand-impersonation",
+      "credential-harvesting",
+      "fraud-enabling-infrastructure",
+      "paas-subdomain-abuse"
+    ],
+    "tags": [
+      "gtld-abuse",
+      "bulk-registration",
+      "paas-subdomain",
+      "cloudflare-proxy",
+      "phishing-infrastructure",
+      "interisle-2025",
+      "idn-homograph",
+      "unpaid-toll-scam",
+      "xinxin-lucid",
+      "dominet-hk",
+      "webflow-abuse",
+      "vercel-abuse",
+      "domain-pricing"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1583.003",
+      "T1566.002",
+      "T1608.005"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0208",
+      "DL-0209",
+      "DL-0210"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0041",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0048",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0067",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0069",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0080",
+    "title": "Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026); CrowdStrike 2026 Global Threat Report; Chainalysis 2026 Crypto Crime Report",
+    "tlp": "WHITE",
+    "summary": "State-sponsored threat actors and transnational criminal organizations have developed a systematic methodology to evade stablecoin issuer freeze capabilities by converting centrally issued stablecoins...",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "sanctions-response",
+    "nation_state_nexus": "confirmed",
+    "sectors": [
+      "crypto",
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "stablecoin-freeze-evasion",
+      "sanctions-evasion-infrastructure",
+      "money-laundering"
+    ],
+    "tags": [
+      "stablecoin-freeze-evasion",
+      "wrapped-stablecoin",
+      "cross-chain-bridge",
+      "dai-evasion",
+      "unhosted-wallet",
+      "p2p-laundering",
+      "irgc-procurement",
+      "dprk-bybit",
+      "fatf-stablecoin-2026",
+      "otc-broker",
+      "tron-usdt",
+      "chain-hopping"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1657",
+      "T1036"
+    ],
+    "ft3_tactics": [
+      "FTA007"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-FATF-STABLECOIN-2026",
+      "REG-FATF-R16",
+      "REG-FINCEN-AML",
+      "REG-OFAC-SDN"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0204",
+      "DL-0205",
+      "DL-0206",
+      "DL-0207"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0045",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0055",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0078",
+        "relationship": "feeds-into"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0081",
+    "title": "Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "CrowdStrike 2026 Global Threat Report",
+    "tlp": "WHITE",
+    "summary": "Voice phishing (vishing) has emerged as the dominant initial access vector for identity-based intrusions, with adversaries combining real-time phone-based social engineering with technical exploitatio...",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector",
+      "technology",
+      "insurance"
+    ],
+    "fraud_types": [
+      "vishing",
+      "account-takeover",
+      "social-engineering",
+      "BEC",
+      "fake-captcha-fraud"
+    ],
+    "tags": [
+      "vishing",
+      "chatty-spider",
+      "scattered-spider",
+      "fake-captcha",
+      "helpdesk-impersonation",
+      "rmm-tooling",
+      "social-engineering",
+      "crowdstrike-gtr-2026",
+      "genai-personas",
+      "hybrid-identity",
+      "breakout-time"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.004",
+      "T1078",
+      "T1219",
+      "T1567"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Social Engineering",
+      "Initial Access",
+      "Lateral Movement",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-CROWDSTRIKE-GTR-2026"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0211"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0002",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0067",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
   }
 ]
