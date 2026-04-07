@@ -494,6 +494,7 @@ tags:
 4. Infoblox, "Funnull Technology: 332,000 DGA Domains and the Polyfill.io Supply Chain Attack," 2025. [Link](https://blogs.infoblox.com/)
 5. CrimsonVector, "Strategic Intelligence Report: Convergent Threat Infrastructure," 2026 — no public URL (proprietary report)
 6. FinCEN, "Huione Group Designation: Primary Money Laundering Concern," 2025. [Link](https://www.fincen.gov/news/news-releases)
+7. Guardian/OCCRP, "Private jets, deserted shores and an unbuilt resort: alleged links to sanctioned scam empire revealed in Timor-Leste," April 6, 2026. [Link](https://www.theguardian.com/world/ng-interactive/2026/apr/06/prince-group-timor-leste-links-to-alleged-scam-empire)
 
 ---
 
@@ -509,6 +510,8 @@ tags:
 
 5. **BPH rebranding detection requires infrastructure-layer intelligence that most compliance teams do not possess.** Traditional sanctions screening operates on name matching and address matching. BPH rebranding detection requires BGP/ASN analysis, DNS migration tracking, and corporate registry cross-referencing — capabilities that typically reside in threat intelligence or security operations rather than compliance functions. Effective detection requires cross-functional collaboration between compliance, threat intelligence, and infrastructure security teams.
 
+6. **Guardian/OCCRP (April 2026)**: Prince Group associates used layered corporate structures across multiple jurisdictions (Cambodia, Ireland, Cayman Islands, Timor-Leste, Palau) to create structural distance from sanctioned entities. Key operator Lin Xiaofan ("Frank") was granted a Timor-Leste diplomatic passport (valid until July 2030) by President Ramos-Horta, providing customs and visa privileges — a form of diplomatic credential exploitation for sanctions evasion infrastructure. The post-sanctions pivot was swift: within days of the October 2025 OFAC designation, sanctioned individuals (Yang Jian, Yang Yanming, Shih Ting-yu) were removed from the Timor-Leste resort company records, but the project itself continued under remaining shareholders. This exemplifies the "infrastructure lifecycle" pattern: sanctions announcement → rapid entity restructuring → continued operations under new names/ownership. Cross-reference: Hu Xiaowei (sanctioned as "Chen Xiao'er" for Prince Group Palau involvement; UK government alleged involvement in Prince Group financial network in March 2026) provided private jet transportation to Lin — illustrating personal networks that survive corporate restructuring. AB DAO had announced it would host the cryptocurrency of the Trump family's firm World Liberty Financial on AB Chain, illustrating the network's ability to generate mainstream legitimacy signals even while associated individuals face sanctions.
+
 ---
 
 ## Revision History
@@ -516,3 +519,4 @@ tags:
 | Date | Version | Author | Changes |
 |------|---------|--------|---------|
 | 2026-03-05 | 1.0 | FLAME Project | Initial publication — sanctions evasion infrastructure threat path based on CrimsonVector Strategic Intelligence Report, Chainalysis 2026 crypto crime data, TRM Labs illicit finance analysis, and OFAC SDN list designations (Funnull May 2025, Aeza July 2025, Garantex/Grinex November 2025) |
+| 2026-04-06 | | FLAME Project | Enriched with Guardian/OCCRP: Prince Group sanctions evasion via Timor-Leste corporate structures and diplomatic credentials |

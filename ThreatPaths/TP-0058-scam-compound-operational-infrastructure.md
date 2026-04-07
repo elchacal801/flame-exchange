@@ -324,6 +324,7 @@ index=transactions sourcetype=wire_transfer
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — 80 nationalities, MENA expansion, Operation HAECHI VI (32,835 arrests, $439M recovered), sextortion formalization
 - INTERPOL, *Operation HAECHI VI Results*, 2025 — Largest coordinated enforcement action against compound fraud networks
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter I, Organized Criminal Groups; Chapter II, Cross-cutting references to scam compounds
+- Guardian/OCCRP, "Private jets, deserted shores and an unbuilt resort: alleged links to sanctioned scam empire revealed in Timor-Leste," April 6, 2026. [Link](https://www.theguardian.com/world/ng-interactive/2026/apr/06/prince-group-timor-leste-links-to-alleged-scam-empire)
 
 ---
 
@@ -335,6 +336,8 @@ index=transactions sourcetype=wire_transfer
 
 **Sextortion as Systematic Fallback**: INTERPOL's documentation of sextortion as a formalized compound SOP — not an opportunistic pivot but a scripted fallback for stalled investment conversions — represents a qualitative shift. This means every romance/investment scam victim is simultaneously a potential sextortion victim. Defenders and victim support services must proactively address both vectors.
 
+**Guardian/OCCRP (April 2026)** documents a specific mechanism for scam compound geographic expansion into vulnerable developing nations: a proposed "crypto resort" in Timor-Leste linked to OFAC-sanctioned Prince Group associates. The operational pattern: legitimate investment vehicle (AB Digital Technology Resort, marketed as blockchain/philanthropy) → charitable foundation donations to government (laptops, scholarships, vitamins via AB Charity Foundation) → diplomatic passport for key operator Lin Xiaofan (granted by President Ramos-Horta, valid until 2030) → sanctioned individuals placed as shareholders/workers → rapid removal only after OFAC designation. Timor-Leste was identified as an expansion target after legalizing offshore online gambling in April 2024, creating a regulatory vulnerability. The UN issued a specific warning about unnamed transnational organized crime group infiltration. Senior Timorese minister Ágio Pereira published an open letter warning that the nation risked becoming "an amusement park for transnational crime syndicates" and described "suitcases full of dirty money" being ferried into the country. The AB ecosystem illustrates layered corporate obfuscation: AB DAO (not a legal entity), AB Chain (not a legal entity), AB Foundation Ireland (co-directed by former Irish taoiseach Bertie Ahern, who denied knowledge of Timor-Leste activities), AB Foundation Cayman Islands, and the resort company in Timor-Leste — all creating structural distance from identifiable criminal infrastructure. This pattern is generalizable: Pacific Island nations (Palau, Timor-Leste), developing economies with weak regulatory frameworks, legalized online gambling jurisdictions, and countries actively seeking foreign investment are all targets for this expansion model.
+
 ---
 
 ## Revision History
@@ -342,3 +345,4 @@ index=transactions sourcetype=wire_transfer
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-20 | FLAME Project | Initial submission |
+| 2026-04-06 | FLAME Project | Enriched with Guardian/OCCRP Prince Group–Timor-Leste investigation: crypto resort expansion model |
