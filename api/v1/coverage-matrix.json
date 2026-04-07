@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-02T04:13:13.481374+00:00",
-    "total": 140
+    "generated_at": "2026-04-07T04:12:24.994233+00:00",
+    "total": 141
   },
   "data": [
     {
@@ -171,13 +171,13 @@
     {
       "fraud_type": "authorized-push-payment",
       "phases": {
-        "P1": 5,
-        "P2": 5,
-        "P3": 5,
-        "P4": 5,
-        "P5": 5
+        "P1": 8,
+        "P2": 8,
+        "P3": 9,
+        "P4": 9,
+        "P5": 9
       },
-      "total_tps": 5
+      "total_tps": 9
     },
     {
       "fraud_type": "automated-mule-accounts",
@@ -452,13 +452,13 @@
     {
       "fraud_type": "crypto-laundering",
       "phases": {
-        "P1": 10,
-        "P2": 10,
-        "P3": 10,
-        "P4": 10,
-        "P5": 10
+        "P1": 11,
+        "P2": 11,
+        "P3": 12,
+        "P4": 12,
+        "P5": 12
       },
-      "total_tps": 10
+      "total_tps": 12
     },
     {
       "fraud_type": "crypto-laundering-infrastructure",
@@ -606,6 +606,17 @@
         "P5": 1
       },
       "total_tps": 1
+    },
+    {
+      "fraud_type": "elder-exploitation",
+      "phases": {
+        "P1": 2,
+        "P2": 2,
+        "P3": 3,
+        "P4": 3,
+        "P5": 3
+      },
+      "total_tps": 3
     },
     {
       "fraud_type": "employment-fraud",
@@ -822,13 +833,13 @@
     {
       "fraud_type": "impersonation",
       "phases": {
-        "P1": 7,
-        "P2": 7,
-        "P3": 7,
-        "P4": 7,
-        "P5": 7
+        "P1": 9,
+        "P2": 9,
+        "P3": 9,
+        "P4": 9,
+        "P5": 9
       },
-      "total_tps": 7
+      "total_tps": 9
     },
     {
       "fraud_type": "infrastructure-rotation",
@@ -897,13 +908,13 @@
     {
       "fraud_type": "investment-scam",
       "phases": {
-        "P1": 6,
-        "P2": 6,
-        "P3": 6,
-        "P4": 6,
-        "P5": 6
+        "P1": 7,
+        "P2": 7,
+        "P3": 7,
+        "P4": 7,
+        "P5": 7
       },
-      "total_tps": 6
+      "total_tps": 7
     },
     {
       "fraud_type": "invoice-fraud",
@@ -1292,13 +1303,13 @@
     {
       "fraud_type": "social-engineering",
       "phases": {
-        "P1": 15,
-        "P2": 15,
-        "P3": 15,
-        "P4": 15,
-        "P5": 15
+        "P1": 18,
+        "P2": 18,
+        "P3": 18,
+        "P4": 18,
+        "P5": 18
       },
-      "total_tps": 15
+      "total_tps": 18
     },
     {
       "fraud_type": "stablecoin-freeze-evasion",

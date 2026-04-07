@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-07T04:12:24.943937+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "a5c1d64f-0b7e-4f2d-e4a6-2c9b1d5f8a07",
+    "dl_id": "DL-0215",
+    "title": "Multiple Unrelated Customers Depositing to Same Novel Beneficiary — Investment Club Pattern",
+    "status": "experimental",
+    "description": "Detects investment club scam patterns where multiple unrelated victims deposit funds to the same fraudulent beneficiary within a short time window. FBI IC3 2025 documented approximately 1,600 investment club complaints with $160 million in losses, and PSA250703 specifically warned about fraudulent investment clubs on social media and messaging apps. The cluster deposit pattern — five or more unique, unrelated customers sending to the same novel beneficiary within 14 days — distinguishes investment club scams from 1:1 pig butchering (TP-0017) where victims typically deposit to unique beneficiary accounts. The group-based nature creates a detectable convergence signal absent from individual targeting schemes.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "transaction_type": [
+          "wire_transfer",
+          "ach_credit",
+          "crypto_purchase",
+          "faster_payment"
+        ]
+      },
+      "filter_beneficiary_cluster": {
+        "unique_depositors_to_beneficiary_14d|gte": 5,
+        "depositors_in_common_payment_network": false
+      },
+      "filter_novel_beneficiary": {
+        "beneficiary_first_seen_days|lte": 90
+      },
+      "timeframe": "14d",
+      "condition": "selection AND filter_beneficiary_cluster AND filter_novel_beneficiary"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "customer_id",
+        "account_id",
+        "beneficiary_id",
+        "beneficiary_name",
+        "transaction_amount",
+        "transaction_date",
+        "transaction_type",
+        "payment_reference"
+      ],
+      "enrichment_required": [
+        {
+          "field": "unique_depositors_to_beneficiary_14d",
+          "source": "Count of unique customer IDs sending to the same beneficiary within trailing 14 days"
+        },
+        {
+          "field": "depositors_in_common_payment_network",
+          "source": "Boolean — whether any of the depositing customers have prior payment relationships with each other"
+        },
+        {
+          "field": "beneficiary_first_seen_days",
+          "source": "Days since the beneficiary first received any payment across the institution"
+        }
+      ],
+      "derived_fields": [
+        "total_cluster_amount",
+        "average_deposit_amount",
+        "deposit_frequency_acceleration"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Investment Club Group Deposit Clustering\n// Detects multiple unrelated customers depositing to same novel beneficiary\n(transaction_type=\"wire_transfer\" OR transaction_type=\"ach_credit\" OR transaction_type=\"crypto_purchase\" OR transaction_type=\"faster_payment\")\nbeneficiary_first_seen_days<=90\n| groupBy(beneficiary_id, function=[\n    collect([customer_id, transaction_amount, transaction_date, payment_reference]),\n    count(distinct=customer_id, as=unique_depositors),\n    sum(transaction_amount, as=total_cluster_amount),\n    count(transaction_id, as=total_transactions)\n  ])\n| unique_depositors >= 5\n| sort(total_cluster_amount, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Investment Club Group Deposit Clustering\")`\n`comment(\"Detects multiple unrelated customers depositing to same novel beneficiary within 14 days\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (transaction_type=\"wire_transfer\" OR transaction_type=\"ach_credit\"\n   OR transaction_type=\"crypto_purchase\" OR transaction_type=\"faster_payment\")\n  beneficiary_first_seen_days<=90\n| bin _time span=14d\n| stats dc(customer_id) AS unique_depositors, count AS total_transactions,\n    sum(transaction_amount) AS total_cluster_amount,\n    values(customer_id) AS depositor_list,\n    values(payment_reference) AS references,\n    avg(transaction_amount) AS avg_deposit\n    by beneficiary_id, beneficiary_name, _time\n| where unique_depositors >= 5\n| eval risk_score = case(\n    unique_depositors >= 10 AND total_cluster_amount > 500000, \"critical\",\n    unique_depositors >= 5 AND total_cluster_amount > 100000, \"high\",\n    1=1, \"medium\")\n| sort - total_cluster_amount"
+    },
+    "references": [
+      "FBI IC3, 2025 Internet Crime Report — Investment club scams: ~1,600 complaints, $160M losses",
+      "FBI IC3 PSA250703, July 3, 2025 — Fraudsters Target US Stock Investors through Investment Clubs",
+      "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+      "https://www.ic3.gov/PSA/2025/PSA250703"
+    ],
+    "threat_path_ids": [
+      "TP-0017",
+      "TP-0083"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "investment-scam"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.authorized-push-payment",
+      "flame.cluster-detection",
+      "flame.investment-scam"
+    ],
+    "falsepositives": [
+      "Legitimate crowdfunding or group investment platforms receiving deposits from multiple customers",
+      "Business accounts receiving payments from multiple clients",
+      "Charity or event organizers receiving donations from multiple individuals",
+      "Shared household expense accounts"
+    ]
+  }
+}

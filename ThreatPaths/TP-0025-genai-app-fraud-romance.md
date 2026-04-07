@@ -431,6 +431,10 @@ ORDER BY t.total_amount_30d DESC;
 
 - **FBI IC3 2024 Internet Crime Report**: Romance fraud and confidence schemes among top loss categories, with increasing AI enhancement documented. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 
+- **FBI IC3 2025 Internet Crime Report**: AI-enabled Romance/Confidence scams: $19M in losses, 626 complaints. Distress/grandparent scams using voice cloning technology to impersonate family members: $5M+ in losses. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
+
+- **FBI PSA250904** (September 4, 2025): ABA Foundation and FBI released deepfake scam infographic to help Americans identify deepfake-enabled fraud. [Link](https://www.ic3.gov/PSA/2025/PSA250904)
+
 - **Interpol Operation Storm Makers II (2024)**: Cross-jurisdictional disruption of scam compound operations in Southeast Asia, documenting the industrial scale of romance scam operations.
 
 - **FS-ISAC Cyber Fraud Prevention Framework (2025)**: Cross-functional investigation methodology applicable to romance fraud kill chain analysis. [Link](https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf)
@@ -473,6 +477,8 @@ This threat path represents the convergence of two major trends in financial cri
 
 **Detection arms race**: As GenAI capabilities improve, the artifacts that current deepfake detection tools rely on (spectral anomalies in voice, face boundary artifacts in video) will become increasingly subtle. Institutions investing in deepfake detection must plan for continuous model retraining and should not rely exclusively on technical detection — behavioral analytics (payment patterns, communication correlation) provide more durable detection signals.
 
+**IC3 2025 Data — AI-Enabled Romance Fraud:** The FBI IC3 2025 Internet Crime Report introduced a new AI-related fraud tracking category. AI-enabled romance/confidence scams accounted for $19M in losses from 626 complaints. Distress/grandparent scams using voice cloning technology to impersonate family members generated $5M+ in losses. PSA250904 (September 4, 2025) saw the ABA Foundation and FBI release a deepfake scam infographic to help Americans identify deepfake-enabled fraud. These figures likely represent significant underreporting given the difficulty of attributing AI enhancement in victim reports.
+
 **INTERPOL 2026 Update — FaaS Enablement**: INTERPOL confirms that "Fraud-as-a-Service" platforms powered by generative AI and large language models have enabled low-skill actors to launch professional-grade romance-variant APP campaigns with minimal effort. These platforms provide ready-made tools including automated phishing websites, fake payment gateways, and bot-generated fake testimonials that mimic legitimate communications. See TP-0054 for the full FaaS platform threat path. The democratization of these tools means that romance APP campaigns are no longer limited to sophisticated criminal organizations — individual actors with subscription access can now execute campaigns previously requiring teams.
 
 ---
@@ -483,3 +489,4 @@ This threat path represents the convergence of two major trends in financial cri
 |------|--------|--------|
 | 2026-03-02 | FLAME Project | Initial submission |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — FaaS platform enablement of romance APP campaigns |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — AI-enabled romance fraud $19M losses, voice cloning grandparent scams, PSA250904 deepfake infographic |

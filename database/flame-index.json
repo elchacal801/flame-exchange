@@ -162,7 +162,7 @@
     "author": "FLAME Project",
     "source": "FBI IC3 / FinCEN Advisory FIN-2019-A005 / multiple public reporting",
     "tlp": "WHITE",
-    "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 ...",
+    "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 ...",
     "confidence_score": 88,
     "source_reliability": "B",
     "info_credibility": 1,
@@ -261,7 +261,8 @@
       "DL-0041",
       "DL-0043",
       "DL-0137",
-      "DL-0138"
+      "DL-0138",
+      "DL-0217"
     ],
     "related_tps": [
       {
@@ -847,7 +848,8 @@
     "detection_rule_ids": [
       "DL-0050",
       "DL-0051",
-      "DL-0052"
+      "DL-0052",
+      "DL-0217"
     ],
     "related_tps": [
       {
@@ -1997,7 +1999,8 @@
     ],
     "detection_rule_ids": [
       "DL-0117",
-      "DL-0142"
+      "DL-0142",
+      "DL-0215"
     ],
     "related_tps": [
       {
@@ -3151,7 +3154,10 @@
       "BL-0005"
     ],
     "detection_rule_ids": [
-      "DL-0167"
+      "DL-0167",
+      "DL-0212",
+      "DL-0213",
+      "DL-0216"
     ],
     "related_tps": [
       {
@@ -7132,7 +7138,8 @@
     ],
     "detection_rule_ids": [
       "DL-0133",
-      "DL-0140"
+      "DL-0140",
+      "DL-0214"
     ],
     "related_tps": [
       {
@@ -9028,6 +9035,366 @@
       {
         "id": "TP-0067",
         "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0082",
+    "title": "Gold Courier Scam — Physical Precious Metal Cash-Out",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Gold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to ...",
+    "confidence_score": 78,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "social-engineering",
+      "impersonation",
+      "authorized-push-payment",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "gold-courier",
+      "physical-cashout",
+      "elder-fraud",
+      "government-impersonation",
+      "precious-metals"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-FINCEN-AML"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0213"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0027",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0084",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0085",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0083",
+    "title": "Investment Club Scam — Social Media Insider Group Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Investment club scams exploit social media and messaging platforms to create fraudulent \"insider\" trading groups that lure victims with fabricated trading success, AI-generated celebrity endorsements,...",
+    "confidence_score": 72,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "ai-assisted",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "investment",
+      "banking",
+      "crypto"
+    ],
+    "fraud_types": [
+      "investment-scam",
+      "social-engineering",
+      "authorized-push-payment",
+      "crypto-laundering"
+    ],
+    "tags": [
+      "ic3-2025",
+      "investment-club",
+      "social-media",
+      "group-fraud",
+      "social-proof",
+      "telegram",
+      "whatsapp",
+      "discord"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.003",
+      "T1656"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-SEC-SAR"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 2",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0215"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0017",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0026",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0060",
+        "relationship": "feeds-into"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0084",
+    "title": "Government Impersonation — Authority-Based Authorized Push Payment Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Government impersonation fraud uses the authority of federal and state agencies — IRS, SSA, DOJ, FBI, DEA, and state attorneys general — as a social engineering weapon to compel victims into making au...",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector",
+      "government"
+    ],
+    "fraud_types": [
+      "impersonation",
+      "authorized-push-payment",
+      "social-engineering",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "government-impersonation",
+      "authority-abuse",
+      "caller-id-spoofing",
+      "irs-impersonation",
+      "ssa-impersonation",
+      "elder-fraud",
+      "app-fraud"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-CFPB-REGE",
+      "REG-OCC-FRAUD"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0216"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0027",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0062",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0081",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0082",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0085",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0085",
+    "title": "Crypto ATM/Kiosk Directed Fraud — Physical-to-Digital Monetization Channel",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cry...",
+    "confidence_score": 80,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "crypto",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "authorized-push-payment",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "crypto-atm",
+      "kiosk-fraud",
+      "elder-fraud",
+      "physical-to-digital",
+      "monetization-channel"
+    ],
+    "cfpf_phases": [
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-FINCEN-AML"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0212"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0027",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0084",
+        "relationship": "feeds-into"
       }
     ],
     "evidence_count": 0

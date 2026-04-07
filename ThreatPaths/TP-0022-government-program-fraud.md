@@ -187,6 +187,8 @@ HAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits
 
 ## Analyst Notes
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $797.9 million in government impersonation fraud losses from 32,424 complaints — an 87% increase in complaints and 97% increase in losses from 2024. Transaction type breakdown: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier's Check 10%. Elder victims (60+) accounted for 8,628 complaints and $413.2M in losses. Note: Government impersonation APP fraud (using government authority to socially engineer payments) is distinct from the government program exploitation covered by this TP. See TP-0084 for the impersonation-based attack path.
+
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $405M in government impersonation losses. This figure captures cases where actors impersonate government agencies to extract payments from victims, which overlaps with this threat path's use of stolen identities to file fraudulent government benefit claims. IC3 also recorded over 108,000 identity theft complaints in 2024, representing the PII theft pipeline that fuels bulk fraudulent benefit filings.
 
 ---
@@ -194,6 +196,7 @@ HAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits
 ## References
 
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Government impersonation fraud: $797.9M in losses, 32,424 complaints (87% increase in complaints, 97% increase in losses from 2024). Transaction type breakdown: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier's Check 10%. Elder targeting: 8,628 complaints, $413.2M in losses from 60+ victims. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 - FLAME Project Internal Knowledge Base.
 - U.S. Secret Service Advisories on Pandemic Fraud Networks.
 
@@ -205,3 +208,4 @@ HAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits
 |------|--------|--------|
 | 2026-02-20 | FLAME Project | Initial creation |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — government impersonation $797.9M losses (97% increase), elder targeting $413.2M, TP-0084 cross-reference |

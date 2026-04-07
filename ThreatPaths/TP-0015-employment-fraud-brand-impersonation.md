@@ -204,12 +204,16 @@ Flag job postings where:
 
 ## Analyst Notes
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $362.9 million in employment fraud losses from 24,688 complaints — up from $264.2M/20,044 in 2024, representing a 37% loss increase. AI-enabled employment fraud accounted for $12.6M in losses from 691 complaints, with deepfake video used in online interviews where lip movement and auditory actions were not aligned with visual presentation. PSA250424 (April 24, 2025) warned of cyber criminals impersonating employee self-service websites to steal victim information and funds, representing a variant where the fraud targets existing employees rather than job seekers.
+
 Employment fraud has surged alongside the normalization of remote work, as job seekers are increasingly accustomed to fully digital hiring processes — making it easier for threat actors to impersonate legitimate employers without in-person interaction. The FTC reported that job scam losses exceeded $500M in 2023, with the median individual loss around $2,000 from advance-fee payments for fake equipment, training, or background checks. A notable variant involves "task scams" where victims are recruited for fake online work (product reviews, data entry) and asked to deposit their own funds as "working capital." Brand impersonation is particularly effective against large employers with distributed hiring — the victim assumes a local recruiter is legitimate because the parent brand is well-known. Companies should proactively monitor for fraudulent job postings using their brand and maintain a prominent careers-page warning about known scam patterns.
 
 ## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Employment Fraud
 - FBI IC3: Internet Crime Report 2023 — Employment/Business Fraud. [Link](https://www.ic3.gov/AnnualReport/Reports/2023_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Employment fraud: $362.9M in losses, 24,688 complaints (up from $264.2M/20,044 in 2024 — 37% loss increase). AI-enabled employment fraud: $12.6M in losses, 691 complaints. Deepfake video used in online interviews — lip movement and auditory actions not aligned with visual. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
+- FBI PSA250424 (April 24, 2025): Cyber criminals impersonating employee self-service websites to steal victim information and funds. [Link](https://www.ic3.gov/PSA/2025/PSA250424)
 - FTC: Job Scams Report (2024). [Link](https://www.ftc.gov/news-events/data-visualizations/data-spotlight/2024/08/job-scams)
 - Better Business Bureau: Employment Scam Tracker
 - Right at Home: Official careers page (for brand impersonation comparison)
@@ -224,3 +228,4 @@ Employment fraud has surged alongside the normalization of remote work, as job s
 |------|--------|--------|
 | 2026-02-19 | FLAME Project | Initial submission with DEA investigation evidence |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — employment fraud $362.9M losses (37% increase), AI-enabled $12.6M, PSA250424 self-service website impersonation |

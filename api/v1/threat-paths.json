@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-02T04:13:08.267999+00:00",
-    "total": 81
+    "generated_at": "2026-04-07T04:12:22.965113+00:00",
+    "total": 85
   },
   "data": [
     {
@@ -168,7 +168,7 @@
       "author": "FLAME Project",
       "source": "FBI IC3 / FinCEN Advisory FIN-2019-A005 / multiple public reporting",
       "tlp": "WHITE",
-      "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.",
+      "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.",
       "confidence_score": 88,
       "source_reliability": "B",
       "info_credibility": 1,
@@ -267,7 +267,8 @@
         "DL-0041",
         "DL-0043",
         "DL-0137",
-        "DL-0138"
+        "DL-0138",
+        "DL-0217"
       ],
       "related_tps": [
         {
@@ -853,7 +854,8 @@
       "detection_rule_ids": [
         "DL-0050",
         "DL-0051",
-        "DL-0052"
+        "DL-0052",
+        "DL-0217"
       ],
       "related_tps": [
         {
@@ -2003,7 +2005,8 @@
       ],
       "detection_rule_ids": [
         "DL-0117",
-        "DL-0142"
+        "DL-0142",
+        "DL-0215"
       ],
       "related_tps": [
         {
@@ -3157,7 +3160,10 @@
         "BL-0005"
       ],
       "detection_rule_ids": [
-        "DL-0167"
+        "DL-0167",
+        "DL-0212",
+        "DL-0213",
+        "DL-0216"
       ],
       "related_tps": [
         {
@@ -7138,7 +7144,8 @@
       ],
       "detection_rule_ids": [
         "DL-0133",
-        "DL-0140"
+        "DL-0140",
+        "DL-0214"
       ],
       "related_tps": [
         {
@@ -9034,6 +9041,366 @@
         {
           "id": "TP-0067",
           "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0082",
+      "title": "Gold Courier Scam — Physical Precious Metal Cash-Out",
+      "category": "ThreatPath",
+      "date": "2026-04-06",
+      "author": "FLAME Project",
+      "source": "FBI IC3, 2025 Internet Crime Report",
+      "tlp": "WHITE",
+      "summary": "Gold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to physical gold, which is then collected by couriers dispatched by the criminal network. The FBI IC3 2025 Annual Report documented 725 complaints with $311.8 million in losses, yielding an extraordinary average loss of approximately $430,000 per victim — among the highest of any IC3 crime category. The physical gold acquisition and courier collection circumvents traditional electronic transaction monitoring, making this a detection blind spot for institutions relying solely on digital payment analytics.",
+      "confidence_score": 78,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "social-engineering",
+        "impersonation",
+        "authorized-push-payment",
+        "elder-exploitation"
+      ],
+      "tags": [
+        "ic3-2025",
+        "gold-courier",
+        "physical-cashout",
+        "elder-fraud",
+        "government-impersonation",
+        "precious-metals"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656",
+        "T1598"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Social Engineering",
+        "Perform Fraud",
+        "Cash Out"
+      ],
+      "regulatory_refs": [
+        "REG-FBI-IC3",
+        "REG-FINCEN-AML"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0213"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0012",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0027",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0084",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0085",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0083",
+      "title": "Investment Club Scam — Social Media Insider Group Fraud",
+      "category": "ThreatPath",
+      "date": "2026-04-06",
+      "author": "FLAME Project",
+      "source": "FBI IC3, 2025 Internet Crime Report",
+      "tlp": "WHITE",
+      "summary": "Investment club scams exploit social media and messaging platforms to create fraudulent \"insider\" trading groups that lure victims with fabricated trading success, AI-generated celebrity endorsements, and peer pressure dynamics. The FBI IC3 2025 Annual Report documented approximately 1,600 complaints with $160 million in losses, and PSA250703 (July 3, 2025) specifically warned about investment clubs accessed on social media and messaging applications. Unlike traditional pig butchering (TP-0017) which relies on 1:1 grooming, investment club scams leverage group dynamics — social proof from other \"members\" (often shills or bots), fake trading screenshots, and the illusion of an exclusive community — to accelerate victim conversion and increase investment amounts.",
+      "confidence_score": 72,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": "ai-assisted",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "investment",
+        "banking",
+        "crypto"
+      ],
+      "fraud_types": [
+        "investment-scam",
+        "social-engineering",
+        "authorized-push-payment",
+        "crypto-laundering"
+      ],
+      "tags": [
+        "ic3-2025",
+        "investment-club",
+        "social-media",
+        "group-fraud",
+        "social-proof",
+        "telegram",
+        "whatsapp",
+        "discord"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.003",
+        "T1656"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Social Engineering",
+        "Perform Fraud",
+        "Cash Out"
+      ],
+      "regulatory_refs": [
+        "REG-FBI-IC3",
+        "REG-SEC-SAR"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 2",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0215"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0017",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0026",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0060",
+          "relationship": "feeds-into"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0084",
+      "title": "Government Impersonation — Authority-Based Authorized Push Payment Fraud",
+      "category": "ThreatPath",
+      "date": "2026-04-06",
+      "author": "FLAME Project",
+      "source": "FBI IC3, 2025 Internet Crime Report",
+      "tlp": "WHITE",
+      "summary": "Government impersonation fraud uses the authority of federal and state agencies — IRS, SSA, DOJ, FBI, DEA, and state attorneys general — as a social engineering weapon to compel victims into making authorized push payments. The FBI IC3 2025 Annual Report documented 32,424 complaints with $797.9 million in losses, representing an 87% increase in complaints and 97% increase in losses from 2024. This is fundamentally distinct from government program fraud (TP-0022) which exploits government systems for unauthorized benefit claims. Here, the government is not the victim — it is the impersonated authority used to intimidate and control the actual victim.\n\nThe payment channel distribution reveals the scheme's adaptability: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier's Check 10%. Victims aged 60+ are disproportionately targeted, accounting for 8,628 complaints and $413.2 million in losses (52% of total losses).\n\nA notable sub-variant involves scammers impersonating the FBI IC3 itself (PSA250418), exploiting victims' awareness of IC3 as a fraud reporting resource to add credibility to recovery or refund schemes.",
+      "confidence_score": 85,
+      "source_reliability": "A",
+      "info_credibility": 1,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "cross-sector",
+        "government"
+      ],
+      "fraud_types": [
+        "impersonation",
+        "authorized-push-payment",
+        "social-engineering",
+        "elder-exploitation"
+      ],
+      "tags": [
+        "ic3-2025",
+        "government-impersonation",
+        "authority-abuse",
+        "caller-id-spoofing",
+        "irs-impersonation",
+        "ssa-impersonation",
+        "elder-fraud",
+        "app-fraud"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656",
+        "T1598"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Social Engineering",
+        "Perform Fraud",
+        "Cash Out"
+      ],
+      "regulatory_refs": [
+        "REG-FBI-IC3",
+        "REG-CFPB-REGE",
+        "REG-OCC-FRAUD"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0216"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0012",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0027",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0062",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0081",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0082",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0085",
+          "relationship": "enables"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0085",
+      "title": "Crypto ATM/Kiosk Directed Fraud — Physical-to-Digital Monetization Channel",
+      "category": "ThreatPath",
+      "date": "2026-04-06",
+      "author": "FLAME Project",
+      "source": "FBI IC3, 2025 Internet Crime Report",
+      "tlp": "WHITE",
+      "summary": "Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cryptocurrency ATMs/kiosks, converting physical currency to digital assets that are immediately transferred to attacker-controlled wallets. The FBI IC3 2025 Annual Report documented 13,460 complaints with $389 million in losses — a 58% increase from 2024. The elder demographic is disproportionately impacted: victims aged 60+ accounted for 6,188 complaints (46%) and $257 million in losses (66% of total crypto ATM losses).\n\nThis TP is distinct from general cryptocurrency fraud because it focuses specifically on the physical-to-digital conversion point — the crypto ATM itself — as the execution and monetization channel. The crypto ATM serves as the critical chokepoint where detection and intervention are possible before funds become irrecoverable on-chain.",
+      "confidence_score": 80,
+      "source_reliability": "A",
+      "info_credibility": 1,
+      "infrastructure_generation_method": "manual",
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "sectors": [
+        "banking",
+        "crypto",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "crypto-laundering",
+        "authorized-push-payment",
+        "elder-exploitation"
+      ],
+      "tags": [
+        "ic3-2025",
+        "crypto-atm",
+        "kiosk-fraud",
+        "elder-fraud",
+        "physical-to-digital",
+        "monetization-channel"
+      ],
+      "cfpf_phases": [
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1656"
+      ],
+      "ft3_tactics": [],
+      "mitre_f3": [],
+      "groupib_stages": [
+        "Perform Fraud",
+        "Cash Out"
+      ],
+      "regulatory_refs": [
+        "REG-FBI-IC3",
+        "REG-FINCEN-AML"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "detection_rule_ids": [
+        "DL-0212"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0012",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0027",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0049",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0084",
+          "relationship": "feeds-into"
         }
       ],
       "evidence_count": 0

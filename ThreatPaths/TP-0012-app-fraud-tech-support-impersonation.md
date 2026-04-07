@@ -218,12 +218,15 @@ AND c.call_end >= t.timestamp;
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $1.46B in tech support scam losses, confirming it as one of the highest-loss fraud categories. Elderly victims (60+) are disproportionately impacted, contributing to $4.9B in total IC3-reported losses across all categories in 2024. Tech support and bank impersonation scams exploit the authority trust dynamic, making them particularly effective against older demographics who are more likely to respond to unsolicited phone calls.
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $2.134 billion in tech/customer support fraud losses from 47,794 complaints — a 46% increase in losses from 2024's $1.465B. Transaction type breakdown: Cryptocurrency 43%, Wire Transfer/ACH 20%, Prepaid card/Gift card 14%, Check/Cashier's Check 12%, Cash 11%. The Financial Fraud Kill Chain (FFKC) was expanded in 2025 to cover tech support fraud (previously BEC-focused). Operation Chakra (December 2025) dismantled a Noida-based transnational cybercrime network in collaboration with India, resulting in 6 arrests, 600+ US victims, and $48.7M in attributed losses. FBI San Diego EJTF identified 500+ elder victims and $40M+ in losses from an international elder scam network. AI-enabled tech support fraud accounted for $19.5M in IC3 2025 AI category losses.
+
 **INTERPOL 2026 Update — Physical Impersonation Evolution**: INTERPOL has documented a significant shift in impersonation fraud in Eastern Asia: criminals posing as law enforcement or bank representatives now instruct victims to leave cash at their doorsteps, where physical accomplices collect it. This bridges virtual deception and real-world crime, creating a hybrid threat that requires coordination between cyber fraud and physical security teams. Additionally, "grandparent scams" (fabricated family emergencies demanding immediate payment) have surged across the Caribbean and Europe, exploiting emotional vulnerability rather than technical sophistication. These variants expand the TP-0012 threat surface beyond tech support impersonation to broader authority/family impersonation vectors.
 
 ## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Fraud by Impersonation; Chapter IV, Mass-marketing
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Tech/Customer Support fraud: $2.134B in losses, 47,794 complaints (46% loss increase from 2024's $1.465B). Transaction type breakdown: Cryptocurrency 43%, Wire Transfer/ACH 20%, Prepaid card/Gift card 14%, Check/Cashier's Check 12%, Cash 11%. AI-enabled tech support fraud: $19.5M in IC3 2025 AI category losses. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 - FBI IC3: Tech Support Fraud PSAs. [Link](https://www.ic3.gov/PSA/2023/PSA231019)
 - UK Payment Systems Regulator: APP Fraud Data (annual). [Link](https://www.psr.org.uk/)
 - FTC: Consumer Sentinel Data — Impersonation Scams. [Link](https://www.ftc.gov/enforcement/consumer-sentinel-network)
@@ -239,3 +242,4 @@ AND c.call_end >= t.timestamp;
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — physical impersonation evolution and grandparent scam surge |
 | 2026-03-27 | FLAME Project | urlscan.io enrichment — four live support / remote access scam kit clusters targeting banking customers |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — tech support fraud $2.134B losses, Operation Chakra, FFKC expansion, AI-enabled losses |

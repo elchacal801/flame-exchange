@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-07T04:12:23.117128+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "TP-0082",
+    "title": "Gold Courier Scam — Physical Precious Metal Cash-Out",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Gold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to physical gold, which is then collected by couriers dispatched by the criminal network. The FBI IC3 2025 Annual Report documented 725 complaints with $311.8 million in losses, yielding an extraordinary average loss of approximately $430,000 per victim — among the highest of any IC3 crime category. The physical gold acquisition and courier collection circumvents traditional electronic transaction monitoring, making this a detection blind spot for institutions relying solely on digital payment analytics.",
+    "body": "## Summary\n\nGold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to physical gold, which is then collected by couriers dispatched by the criminal network. The FBI IC3 2025 Annual Report documented 725 complaints with $311.8 million in losses, yielding an extraordinary average loss of approximately $430,000 per victim — among the highest of any IC3 crime category. The physical gold acquisition and courier collection circumvents traditional electronic transaction monitoring, making this a detection blind spot for institutions relying solely on digital payment analytics.\n\n## Threat Path Hypothesis\n\n> **Hypothesis**: Adversaries impersonating government officials (IRS, DOJ, FBI, SSA) contact victims — primarily elderly individuals — with fabricated legal or financial threats (arrest warrants, compromised accounts, tax fraud allegations). Victims are instructed that their bank accounts are \"unsafe\" and directed to withdraw funds and purchase physical gold from authorized dealers as a \"secure\" alternative. A courier is dispatched to collect the gold from the victim's residence, after which it is fenced through precious metals dealers, pawn networks, or smelted for anonymous liquidation. The physical nature of the transaction evades wire transfer monitoring, crypto analytics, and standard AML controls.\n\n**Confidence**: High (78). Source: FBI IC3 (A reliability), corroborated by DOJ/FinCEN elder fraud advisories.\n\n**Estimated Impact**: $50,000 to $2,000,000+ per victim. Average IC3 2025 loss: ~$430,000.\n\n## CFPF Phase Mapping\n\n### Phase 1: Recon (P1)\n\nVictim targeting via data broker lists, prior victim databases, and public records. Elders with high account balances are prioritized. Phone numbers harvested from consumer databases.\n\n---\n\n### Phase 2: Initial Access (P2)\n\nGovernment impersonation cold call (IRS, DOJ, FBI, SSA). Caller ID spoofing to display legitimate government phone numbers. Urgency narrative: arrest warrants, tax liens, account compromise, identity theft requiring \"asset protection.\"\n\n---\n\n### Phase 3: Positioning (P3)\n\nVictim instructed that bank deposits are \"at risk\" and must be converted to physical gold for \"safekeeping\" or \"evidence.\" Provided with specific gold dealer names and addresses. Told not to inform bank staff of the reason for withdrawal (\"ongoing federal investigation — disclosure is a crime\").\n\n---\n\n### Phase 4: Execution (P4)\n\nVictim makes large cash withdrawal ($50K-$500K+) from bank. Purchases gold bars/coins from precious metals dealer. Courier arrives at victim's residence to collect gold, often using a fake government badge or delivery uniform. Multiple pickups may occur over days/weeks as victim is told additional \"protection\" is needed.\n\n---\n\n### Phase 5: Monetization (P5)\n\nGold fenced through precious metals dealers, pawn shops, international shipping, or smelted for anonymous bars. Proceeds laundered through mule accounts, crypto exchanges, or international wire transfers. Physical nature eliminates digital transaction trail between victim and criminal.\n\n---\n\n## Controls & Mitigations\n\n| Phase | Control | Type | Owner |\n|-------|---------|------|-------|\n| P2 | Caller ID authentication (STIR/SHAKEN) | Preventive | Telecom |\n| P3 | Bank teller training: large withdrawal + precious metals = red flag | Detective | Branch Operations |\n| P3 | Customer outreach for large unusual withdrawals from elderly accounts | Detective | Fraud Operations |\n| P4 | Precious metals dealer SAR filing for cash purchases > $10K | Detective | Compliance/FinCEN |\n| P4 | MCC-based alerts for precious metals merchants (5094, 5944) | Detective | Transaction Monitoring |\n| P5 | Gold dealer KYC and suspicious transaction reporting | Preventive | Regulatory |\n\n---\n\n## Detection Approaches\n\n- Bank-side: Large cash withdrawal from elderly account (65+) with no prior history of precious metals transactions\n- Precious metals MCC transaction from customer with no historical pattern\n- Temporal correlation: government agency phone call (CDR) + large withdrawal + precious metals purchase within 72 hours\n- Multiple large withdrawals from same account over 7-14 day period (sequential courier pickups)\n\n---\n\n## References\n\n- FBI IC3, 2025 Internet Crime Report — Gold courier scams: 725 complaints, $311.8M losses (~$430K average)\n- https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf\n- FinCEN Advisory FIN-2022-A002 — Elder Financial Exploitation red flag indicators\n\n---\n\n## Analyst Notes\n\n1. **Detection gap at the physical boundary**: The gold courier scam exploits a fundamental gap in financial institution monitoring: once funds are converted to physical precious metals, the digital transaction trail ends. Banks can detect the large withdrawal, but without context (customer intent to purchase gold for courier pickup), the withdrawal alone does not trigger fraud alerts.\n\n2. **Extraordinary per-victim losses**: The $430K average loss is extraordinary and likely reflects the targeting of high-net-worth elderly victims. This average is 20x higher than the overall IC3 average of $20,699.\n\n3. **Collaborative detection required**: Detection must be collaborative: bank teller training (behavioral red flags during withdrawal), precious metals dealer SAR filing, and law enforcement coordination (courier interdiction) all contribute to different phases of the kill chain.\n\n4. **Relationship to government impersonation APP fraud**: This TP is closely related to TP-0084 (Government Impersonation APP Fraud) — gold courier is one of several monetization paths for government impersonation social engineering.\n\n---\n\n## Revision History\n\n| Date | Author | Change |\n|------|--------|--------|\n| 2026-04-06 | FLAME Project | Initial submission from FBI IC3 2025 Annual Report |",
+    "confidence_score": 78,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "social-engineering",
+      "impersonation",
+      "authorized-push-payment",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "gold-courier",
+      "physical-cashout",
+      "elder-fraud",
+      "government-impersonation",
+      "precious-metals"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-FINCEN-AML"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0213"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0027",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0084",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0085",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence": [],
+    "evidence_count": 0
+  }
+}

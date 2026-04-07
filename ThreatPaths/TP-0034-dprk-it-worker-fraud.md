@@ -546,6 +546,8 @@ tags:
 
 **PurpleBravo/PurpleDelta infrastructure convergence creates compound risk**: Recorded Future's confirmation that DPRK developer-lure campaigns (PurpleBravo/Contagious Interview) share infrastructure with IT worker operations (PurpleDelta) means that a DPRK IT worker placement may simultaneously serve as an entry point for malware deployment targeting the employer's development environment. The BeaverTail infostealer and InvisibleFerret RAT are not just credential theft tools — they represent active, persistent backdoors that can survive the IT worker's termination.
 
+**IC3 2025 Data — Formal IC3 Tracking:** The FBI IC3 2025 Internet Crime Report formally tracks the DPRK IT worker scam. Dozens of victim companies have been identified through IC3.gov complaints. Critically, IC3 confirms that DPRK IT workers are now leveraging unlawful company network access to exfiltrate proprietary data and facilitate cyber-criminal activities — validating the escalation from salary extraction to active insider threat documented in this threat path. PSA250123 (January 23, 2025) covered data extortion, and PSA250723 (July 23, 2025) addressed broader threats to U.S. businesses.
+
 **Cross-border investigation complexity**: DPRK IT worker operations span multiple jurisdictions (DPRK, China, Russia, Ukraine, U.S., EU). Law enforcement coordination requires FBI, CISA, international partners, and private sector threat intelligence sharing. Organizations should establish pre-incident relationships with FBI field offices and CISA regional coordinators to enable rapid response when DPRK IT workers are identified.
 
 **CrowdStrike now tracks 3+ distinct DPRK adversary groups with differentiated operational patterns**: FAMOUS CHOLLIMA (IT worker fraud and GenAI-driven persona fabrication), STARDUST CHOLLIMA (increased operational tempo in 2025), and PRESSURE CHOLLIMA (high-value cryptocurrency exchange theft, including the $1.46B Bybit heist). The differentiation of these groups under separate tracking names suggests organizational separation within DPRK cyber operations — distinct units with distinct missions, TTPs, and targeting — rather than a monolithic program. This has implications for detection: indicators and behavioral patterns effective against FAMOUS CHOLLIMA IT worker placements may not detect PRESSURE CHOLLIMA supply chain compromises, and vice versa. Defenders must maintain detection coverage across all three operational profiles.
@@ -557,6 +559,10 @@ tags:
 - **FBI IC3 — North Korean IT Worker Threats to U.S. Businesses** (July 2025): Public Service Announcement detailing DPRK IT worker TTPs, indicators, and recommended mitigations. [Link](https://www.ic3.gov/PSA/2025/PSA250701)
 
 - **FBI IC3 — North Korean IT Workers Conducting Data Extortion** (January 2025): PSA documenting the escalation from salary extraction to post-termination data extortion. [Link](https://www.ic3.gov/PSA/2025/PSA250123)
+
+- **FBI IC3 — North Korean IT Worker Threats to U.S. Businesses** (July 23, 2025): PSA250723. [Link](https://www.ic3.gov/PSA/2025/PSA250723)
+
+- **FBI IC3 2025 Internet Crime Report**: DPRK IT worker scam formally tracked by IC3. Dozens of victim companies identified through IC3.gov complaints. DPRK IT workers now leveraging unlawful company network access to exfiltrate proprietary data and facilitate cyber-criminal activities. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 
 - **DOJ — Nationwide Actions to Combat Illicit North Korean Government Revenue Generation** (November 2025): Press release detailing enforcement actions against DPRK IT worker facilitator networks, including $15M+ in civil forfeitures. [Link](https://www.justice.gov/opa/pr/)
 
@@ -589,4 +595,5 @@ tags:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-03 | FLAME Project | Initial submission |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — DPRK IT worker formally tracked by IC3, data extortion escalation confirmed, PSA250123/PSA250723 |
 | 2026-03-20 | FLAME Project | Major enrichment: Added Flare/IBM X-Force intelligence (RB Site, NetkeyRegister internal platforms; Western collaborator recruitment; AI face/voice changers; 100K+ operatives, $500M/year scale); Added Recorded Future CTA-2026-0319 intelligence (PurpleBravo/PurpleDelta infrastructure overlap; BeaverTail, InvisibleFerret, GolangGhost malware families; 759 credential harvesting domains; hosting infrastructure patterns). New techniques CFPF-P1-005, CFPF-P1-006 added. New evidence blocks EV-TP0034-2026-003, EV-TP0034-2026-004. |

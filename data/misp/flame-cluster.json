@@ -67,7 +67,7 @@
     },
     {
       "value": "Business Email Compromise \u2014 Vendor Impersonation Wire Fraud",
-      "description": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 ...",
+      "description": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 ...",
       "uuid": "a632e261-0cb9-5215-98b8-c7572ded5b39",
       "meta": {
         "fraud_types": [
@@ -4409,6 +4409,160 @@
         },
         {
           "dest-uuid": "1a829213-98f8-5ebe-a7f5-892963ab717c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Gold Courier Scam \u2014 Physical Precious Metal Cash-Out",
+      "description": "Gold courier scams represent a novel physical monetization technique where victims \u2014 predominantly elderly \u2014 are deceived through government impersonation phone calls into converting bank deposits to ...",
+      "uuid": "49ad2e68-2c41-5d63-8efd-95f43d5c09c4",
+      "meta": {
+        "fraud_types": [
+          "social-engineering",
+          "impersonation",
+          "authorized-push-payment",
+          "elder-exploitation"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 78,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0082"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4bd24a18-4c14-5a96-b855-ab47f9c37e54",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Investment Club Scam \u2014 Social Media Insider Group Fraud",
+      "description": "Investment club scams exploit social media and messaging platforms to create fraudulent \"insider\" trading groups that lure victims with fabricated trading success, AI-generated celebrity endorsements,...",
+      "uuid": "bfc53206-9694-5554-8c6a-d9d366f96dea",
+      "meta": {
+        "fraud_types": [
+          "investment-scam",
+          "social-engineering",
+          "authorized-push-payment",
+          "crypto-laundering"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 72,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0083"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "83bfe9c1-18a7-511f-b143-07807b33b580",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Government Impersonation \u2014 Authority-Based Authorized Push Payment Fraud",
+      "description": "Government impersonation fraud uses the authority of federal and state agencies \u2014 IRS, SSA, DOJ, FBI, DEA, and state attorneys general \u2014 as a social engineering weapon to compel victims into making au...",
+      "uuid": "670d1fc9-996e-5ffb-b20a-2fe3e363425d",
+      "meta": {
+        "fraud_types": [
+          "impersonation",
+          "authorized-push-payment",
+          "social-engineering",
+          "elder-exploitation"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 85,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0084"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4bd24a18-4c14-5a96-b855-ab47f9c37e54",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Crypto ATM/Kiosk Directed Fraud \u2014 Physical-to-Digital Monetization Channel",
+      "description": "Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cry...",
+      "uuid": "9da1d0ee-ba85-5dbd-a001-8e64093a587a",
+      "meta": {
+        "fraud_types": [
+          "crypto-laundering",
+          "authorized-push-payment",
+          "elder-exploitation"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0085"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
           "tags": [
             "estimative-language:likelihood-probability=\"likely\""
           ],

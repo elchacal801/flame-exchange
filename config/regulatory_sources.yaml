@@ -81,20 +81,46 @@ sources:
     url: "https://www.ic3.gov/CSA"
     category_mapping:
       business-email-compromise:
-        - TP-0010
-        - TP-0011
+        - TP-0002
+        - TP-0004
+        - TP-0006
       ransomware:
         - TP-0020
       romance-scam:
-        - TP-0030
+        - TP-0011
+        - TP-0025
+        - TP-0052
       investment-fraud:
-        - TP-0031
+        - TP-0017
+        - TP-0026
+        - TP-0060
       tech-support-fraud:
-        - TP-0032
+        - TP-0012
       identity-theft:
         - TP-0012
       cryptocurrency-fraud:
-        - TP-0033
+        - TP-0049
+        - TP-0078
+        - TP-0032
+      recovery-scam:
+        - TP-0062
+      government-impersonation:
+        - TP-0084
+        - TP-0022
+      elder-fraud:
+        - TP-0027
+      account-takeover:
+        - TP-0001
+        - TP-0008
+      employment-fraud:
+        - TP-0015
+        - TP-0034
+      gold-courier:
+        - TP-0082
+      investment-club:
+        - TP-0083
+      crypto-atm:
+        - TP-0085
       # Fallback: parser sets category='Industry Alert' for all scraped entries
       Industry Alert:
         - TP-0001

@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "624105ce-b590-53ff-81bc-21513b3ef02c",
+    "info": "FLAME: Gold Courier Scam \u2014 Physical Precious Metal Cash-Out",
+    "date": "2026-04-06",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "39f17f93-02ea-5a89-8018-ad960c7d8a30",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0082"
+      },
+      {
+        "uuid": "8d1b49f0-3792-5139-b45b-155f288a426e",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0082"
+      },
+      {
+        "uuid": "9aeaf0e1-62d2-5439-aadf-dbf89c46511c",
+        "type": "text",
+        "category": "Other",
+        "value": "authorized-push-payment",
+        "comment": "Fraud type for TP-0082"
+      },
+      {
+        "uuid": "a8478bb7-f422-52b5-bc02-ccb3f576a960",
+        "type": "text",
+        "category": "Other",
+        "value": "elder-exploitation",
+        "comment": "Fraud type for TP-0082"
+      },
+      {
+        "uuid": "cdaf7790-b2e1-5284-bb5b-ba479acd211b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0082"
+      },
+      {
+        "uuid": "44a61048-fe18-55d9-a5d6-38a81955f800",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0082"
+      },
+      {
+        "uuid": "03b14734-20dd-5b4f-9647-f31b5993c09a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0082"
+      },
+      {
+        "uuid": "c7fb7e9c-9e19-5596-a541-defeb505fc24",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0082"
+      },
+      {
+        "uuid": "dd848e3a-b5ec-52d0-b5ba-1bccdd194ab7",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0082"
+      }
+    ]
+  }
+}

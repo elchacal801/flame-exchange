@@ -300,6 +300,9 @@ ORDER BY t.transaction_date DESC;
 - FBI IC3, "2023 Internet Crime Report" — recovery fraud statistics and victim patterns
 - FTC, "Consumer Sentinel Network Data Book 2023" — recovery/refund fraud complaint trends
 - INTERPOL, "Global Financial Fraud Threat Assessment, 2nd Edition" (March 2026) — organized fraud re-victimization patterns
+- FBI IC3, "2025 Internet Crime Report" — recovery fraud statistics and loss data. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
+- FBI IC3, PSA250813 (August 13, 2025) — fictitious law firms targeting cryptocurrency scam victims. [Link](https://www.ic3.gov/PSA/2025/PSA250813)
+- FBI IC3, PSA250418 (April 18, 2025) — scammers impersonating the IC3 as a recovery fraud vector. [Link](https://www.ic3.gov/PSA/2025/PSA250418)
 
 ---
 
@@ -310,6 +313,14 @@ Recovery fraud represents one of the most operationally distinctive UNODC findin
 Key operational insight: the separation between initial fraud OCGs and recovery fraud OCGs means that disrupting the initial scheme does not necessarily disrupt the recovery fraud pipeline. Separate disruption strategies are needed for the lead list ecosystem and the recovery fraud call center infrastructure.
 
 Regional patterns: UNODC documents recovery fraud operations in West Africa (targeting romance scam victims), South-East Asia (targeting pig butchering victims), and Eastern Europe (targeting investment scam victims).
+
+**FBI IC3 2025 Annual Report:** Recovery scams generated 10,516 complaints and $1.4 billion in losses, making it one of the largest IC3 loss categories. Losses may also include losses from the original scam that prompted contact with the recovery entity.
+
+**PSA250813 (August 13, 2025):** Fictitious law firms targeting cryptocurrency scam victims combine multiple exploitation tactics while offering to recover funds. [Link](https://www.ic3.gov/PSA/2025/PSA250813)
+
+**PSA250418 (April 18, 2025):** FBI warns of scammers impersonating the IC3 itself as a recovery fraud vector. [Link](https://www.ic3.gov/PSA/2025/PSA250418)
+
+Recovery scams show increasing government impersonation variants, where actors pose as federal agencies to add authority to recovery claims.
 
 ---
 

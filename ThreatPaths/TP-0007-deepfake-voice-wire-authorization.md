@@ -258,6 +258,8 @@ AND NOT EXISTS (
 
 This threat path is evolving rapidly. In 2019, deepfake voice was novel and expensive. By 2025-2026, real-time voice cloning is available through commercial APIs for under $50/month. The Arup case (2024) demonstrated a multi-person deepfake video call — the entire authorization meeting was synthetic. Controls that rely on "call them back to verify" are necessary but may not be sufficient as voice cloning improves. Organizations should move toward out-of-band verification methods that don't rely on voice.
 
+**IC3 2025 Data — AI Fraud as a Category:** The FBI IC3 2025 Internet Crime Report introduced AI-related fraud as a new tracking category, reporting 22,364 complaints and $893.3 million in losses. AI losses by crime type: Investment $632M, BEC $30M, Tech Support $19.5M, Romance $19M, Personal Data Breach $18.8M, Employment $12.6M. The investment fraud category dominates AI-related losses, but the BEC and tech support categories are directly relevant to deepfake voice authorization attacks. PSA250904 (September 4, 2025) saw the ABA Foundation and FBI release a deepfake scam infographic to help Americans identify deepfake-enabled fraud, signaling official recognition of the threat's mainstreaming.
+
 **INTERPOL 2026 Update**: The INTERPOL GFFTA 2026 confirms that BEC fraud across Asia-Pacific has evolved to include real-time deepfake audio impersonation of CEOs and CFOs during live phone calls, bypassing traditional voice-based verification protocols. This represents an escalation from pre-recorded deepfake audio to interactive, real-time voice synthesis. Fraud-as-a-Service platforms (TP-0054) are now offering deepfake voice generation as a subscription service, lowering the barrier to entry for this attack vector.
 
 ### EV-TP0007-2026-002: Multi-Source Deepfake Voice Intelligence
@@ -282,6 +284,10 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 - World Economic Forum: "Deepfake Identity Verification" (January 2026) — cross-reference with voice synthesis ecosystem and deepfake countermeasures
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents deepfake audio CEO/CFO impersonation during live BEC calls across Asia-Pacific region; notes FaaS platforms now offering deepfake voice generation tools
 
+- **FBI IC3 2025 Internet Crime Report**: AI-related fraud total: 22,364 complaints, $893.3 million in losses — a new IC3 tracking category. AI losses by crime type: Investment $632M, BEC $30M, Tech Support $19.5M, Romance $19M, Personal Data Breach $18.8M, Employment $12.6M. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
+
+- **FBI PSA250904** (September 4, 2025): ABA Foundation and FBI released deepfake scam infographic to help Americans identify deepfake-enabled fraud. [Link](https://www.ic3.gov/PSA/2025/PSA250904)
+
 - **INTERPOL GFFTA 2026**: Documents deepfake voice cloning from 10 seconds of audio, DaaS platforms on dark web, and 4.5x AI fraud profitability multiplier. [Link](https://www.interpol.int/)
 
 - **UNODC — Emerging Threats** (September 2025): Documents 600% deepfake surge and 10+ vendor ecosystem serving SE Asian groups. [Link](https://www.unodc.org/)
@@ -298,3 +304,4 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section, Underground Ecosystem Context, WEF deepfake intelligence |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — Asia-Pacific deepfake BEC intelligence |
 | 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 and UNODC Sept 2025 deepfake intelligence; confidence upgraded from 68 to 75 based on multi-source corroboration |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — AI fraud category $893.3M total losses, AI loss breakdown by crime type, PSA250904 deepfake infographic |

@@ -9,7 +9,7 @@
     "id": "TP-0002",
     "type": "threat_path",
     "title": "Business Email Compromise — Vendor Impersonation Wire Fraud",
-    "text": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later."
+    "text": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later."
   },
   {
     "id": "TP-0003",
@@ -484,6 +484,30 @@
     "type": "threat_path",
     "title": "Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud",
     "text": "Voice phishing (vishing) has emerged as the dominant initial access vector for identity-based intrusions, with adversaries combining real-time phone-based social engineering with technical exploitation chains to achieve account takeover at unprecedented speed. The CrowdStrike 2026 Global Threat Report documents a convergence of vishing, fake CAPTCHA campaigns, help desk impersonation, and GenAI-enabled persona creation that collectively represent a paradigm shift away from malware-centric attack models. 82% of CrowdStrike-observed detections in 2025 were malware-free, relying instead on valid credentials, native tools, and administrative functions.\n\nCHATTY SPIDER exemplifies the operational tempo: in a documented incident against a law firm, the adversary achieved a 4-minute breakout from initial vishing contact to active data exfiltration. Fake CAPTCHA campaigns surged 563% in 2025, with threat actors (BRASH SPIDER, COOKIE SPIDER) tricking victims into executing clipboard-delivered PowerShell payloads. SCATTERED SPIDER continues to social-engineer help desk personnel into performing password resets on SSO and cloud accounts, exploiting hybrid identity infrastructure (Entra ID, AD FS) for lateral movement. Average eCrime breakout time has collapsed to 29 minutes (down 65% from 48 minutes in 2024; fastest observed: 27 seconds), making real-time detection and response essential.\n\nAI-enabled adversary attacks rose 89%, with GenAI used to create convincing voice personas, synthetic identities for fraudulent employment (FAMOUS CHOLLIMA, +109% in fake personas), and multi-day social engineering campaigns (COZY BEAR leveraging instant messaging, email, video conferencing, and OAuth 2.0 device code phishing). Financial services accounted for 11% of interactive intrusion targets, with technology at 23%.\n\n**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure and session token hijacking via reverse proxy platforms. TP-0081 focuses on the voice-based and hybrid social engineering attack surface — vishing, help desk manipulation, fake CAPTCHA campaigns, and RMM tool abuse — where the human operator, not a phishing kit, is the primary attack instrument. The two threat paths frequently chain: vishing provides initial access that enables AiTM-style session capture downstream."
+  },
+  {
+    "id": "TP-0082",
+    "type": "threat_path",
+    "title": "Gold Courier Scam — Physical Precious Metal Cash-Out",
+    "text": "Gold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to physical gold, which is then collected by couriers dispatched by the criminal network. The FBI IC3 2025 Annual Report documented 725 complaints with $311.8 million in losses, yielding an extraordinary average loss of approximately $430,000 per victim — among the highest of any IC3 crime category. The physical gold acquisition and courier collection circumvents traditional electronic transaction monitoring, making this a detection blind spot for institutions relying solely on digital payment analytics."
+  },
+  {
+    "id": "TP-0083",
+    "type": "threat_path",
+    "title": "Investment Club Scam — Social Media Insider Group Fraud",
+    "text": "Investment club scams exploit social media and messaging platforms to create fraudulent \"insider\" trading groups that lure victims with fabricated trading success, AI-generated celebrity endorsements, and peer pressure dynamics. The FBI IC3 2025 Annual Report documented approximately 1,600 complaints with $160 million in losses, and PSA250703 (July 3, 2025) specifically warned about investment clubs accessed on social media and messaging applications. Unlike traditional pig butchering (TP-0017) which relies on 1:1 grooming, investment club scams leverage group dynamics — social proof from other \"members\" (often shills or bots), fake trading screenshots, and the illusion of an exclusive community — to accelerate victim conversion and increase investment amounts."
+  },
+  {
+    "id": "TP-0084",
+    "type": "threat_path",
+    "title": "Government Impersonation — Authority-Based Authorized Push Payment Fraud",
+    "text": "Government impersonation fraud uses the authority of federal and state agencies — IRS, SSA, DOJ, FBI, DEA, and state attorneys general — as a social engineering weapon to compel victims into making authorized push payments. The FBI IC3 2025 Annual Report documented 32,424 complaints with $797.9 million in losses, representing an 87% increase in complaints and 97% increase in losses from 2024. This is fundamentally distinct from government program fraud (TP-0022) which exploits government systems for unauthorized benefit claims. Here, the government is not the victim — it is the impersonated authority used to intimidate and control the actual victim.\n\nThe payment channel distribution reveals the scheme's adaptability: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier's Check 10%. Victims aged 60+ are disproportionately targeted, accounting for 8,628 complaints and $413.2 million in losses (52% of total losses).\n\nA notable sub-variant involves scammers impersonating the FBI IC3 itself (PSA250418), exploiting victims' awareness of IC3 as a fraud reporting resource to add credibility to recovery or refund schemes."
+  },
+  {
+    "id": "TP-0085",
+    "type": "threat_path",
+    "title": "Crypto ATM/Kiosk Directed Fraud — Physical-to-Digital Monetization Channel",
+    "text": "Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cryptocurrency ATMs/kiosks, converting physical currency to digital assets that are immediately transferred to attacker-controlled wallets. The FBI IC3 2025 Annual Report documented 13,460 complaints with $389 million in losses — a 58% increase from 2024. The elder demographic is disproportionately impacted: victims aged 60+ accounted for 6,188 complaints (46%) and $257 million in losses (66% of total crypto ATM losses).\n\nThis TP is distinct from general cryptocurrency fraud because it focuses specifically on the physical-to-digital conversion point — the crypto ATM itself — as the execution and monetization channel. The crypto ATM serves as the critical chokepoint where detection and intervention are possible before funds become irrecoverable on-chain."
   },
   {
     "id": "DL-0001",
@@ -1479,13 +1503,13 @@
     "id": "DL-0166",
     "type": "detection_rule",
     "title": "GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary",
-    "text": "Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $6.57 billion in investment fraud losses in 2024 — the single largest fraud category. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.\n"
+    "text": "Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $8.65 billion in investment fraud losses in 2025 (up from $6.57B in 2024) — the single largest fraud category. IC3 2025 data shows 72% of investment fraud payments flow through cryptocurrency, 19% via wire transfer/ACH, and 4% peer-to-peer. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.\n"
   },
   {
     "id": "DL-0167",
     "type": "detection_rule",
     "title": "Elder Financial Exploitation — New Payee Addition with Escalating Payment Amounts",
-    "text": "Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $4.885B in elder fraud losses in 2024 (43% YoY increase), with the true figure estimated at $28.3B when accounting for underreporting. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.\n"
+    "text": "Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $7.748B in elder fraud losses in 2025 (59% YoY increase from $4.885B in 2024), with 201,266 complaints from victims aged 60+. Crypto ATM/kiosk fraud disproportionately targets this cohort: 6,188 complaints and $257M in losses from 60+ victims alone. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.\n"
   },
   {
     "id": "DL-0168",
@@ -1752,6 +1776,42 @@
     "text": "Detect web access patterns consistent with fake CAPTCHA campaigns: user visits a page with CAPTCHA verification UI, is instructed to copy/execute clipboard content (PowerShell, cmd, mshta), which triggers malware or stealer download. CrowdStrike documented a +563% increase in fake CAPTCHA campaigns in 2025. Used by BRASH SPIDER (Doshell Stealer) and COOKIE SPIDER (SHAMOS).\n"
   },
   {
+    "id": "DL-0212",
+    "type": "detection_rule",
+    "title": "Elder Account — Large Cash Withdrawal with Crypto ATM Deposit Indicators",
+    "text": "Detects the elder-targeted crypto ATM fraud pattern where victims aged 60+ make large cash withdrawals with no corresponding deposit or transfer activity within 48 hours — a strong indicator that funds were deposited at a crypto ATM/kiosk under the direction of a scammer. FBI IC3 2025 data shows 6,188 crypto ATM complaints and $257 million in losses from victims aged 60+ (66% of all crypto ATM fraud losses). The 48-hour gap between bank withdrawal and lack of corresponding activity represents the detection window before funds become irrecoverable on-chain. This rule targets the P4 execution phase where bank-side intervention can still prevent loss.\n"
+  },
+  {
+    "id": "DL-0213",
+    "type": "detection_rule",
+    "title": "Unusual Large Cash Withdrawal with Precious Metals Merchant Transaction",
+    "text": "Detects the gold courier scam pattern where victims — predominantly elderly — make large cash withdrawals or wire transfers to precious metals merchants with no prior history of such transactions. FBI IC3 2025 documented 725 gold courier complaints with $311.8 million in losses, yielding an extraordinary average of ~$430,000 per victim. Victims are typically directed by government impersonation callers to purchase physical gold as \"asset protection,\" which is then collected by couriers. The precious metals MCC codes (5094 for precious stones/metals, 5944 for jewelry/watch/clock stores) serve as the primary detection signal when combined with customer age and transaction history anomalies.\n"
+  },
+  {
+    "id": "DL-0214",
+    "type": "detection_rule",
+    "title": "Post-Fraud Victim Payment to Newly Registered Legal or Recovery Entity",
+    "text": "Detects recovery fraud patterns where victims of prior fraud are targeted by fictitious law firms or recovery companies promising to retrieve lost funds. FBI IC3 2025 reported 10,516 recovery scam complaints with $1.4 billion in losses — making recovery fraud one of the largest IC3 loss categories. PSA250813 (August 2025) specifically warned about fictitious law firms targeting cryptocurrency scam victims. This rule identifies the characteristic pattern: a customer with a recent fraud complaint making payments to a newly established entity with legal or recovery terminology in the payee name. The 180-day lookback window accounts for IC3 data showing longer re-targeting timelines than previously estimated.\n"
+  },
+  {
+    "id": "DL-0215",
+    "type": "detection_rule",
+    "title": "Multiple Unrelated Customers Depositing to Same Novel Beneficiary — Investment Club Pattern",
+    "text": "Detects investment club scam patterns where multiple unrelated victims deposit funds to the same fraudulent beneficiary within a short time window. FBI IC3 2025 documented approximately 1,600 investment club complaints with $160 million in losses, and PSA250703 specifically warned about fraudulent investment clubs on social media and messaging apps. The cluster deposit pattern — five or more unique, unrelated customers sending to the same novel beneficiary within 14 days — distinguishes investment club scams from 1:1 pig butchering (TP-0017) where victims typically deposit to unique beneficiary accounts. The group-based nature creates a detectable convergence signal absent from individual targeting schemes.\n"
+  },
+  {
+    "id": "DL-0216",
+    "type": "detection_rule",
+    "title": "Government Impersonation — Multi-Channel Payment Under Duress Indicators",
+    "text": "Detects government impersonation APP fraud by identifying payments with government agency references made via crypto, wire, or prepaid channels to non-historical payees. FBI IC3 2025 reported $797.9 million in losses from 32,424 government impersonation complaints — an 87% increase in complaints and 97% increase in losses from 2024. The payment channel distribution is distinctive: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%. This rule targets payment references containing government agency names or legal terminology from customers with no prior government- related payment history, as legitimate government payments follow established patterns and channels.\n"
+  },
+  {
+    "id": "DL-0217",
+    "type": "detection_rule",
+    "title": "AI-Enhanced BEC — Payment Request Behavioral Divergence from Sender Baseline",
+    "text": "Detects AI-enhanced business email compromise by identifying wire transfer requests where the communication pattern diverges significantly from the sender's established baseline. FBI IC3 2025 reported $30 million in losses from AI-enabled BEC where chat generators created official-sounding emails mimicking company executives and voice cloning was used for wire authorization requests. AI-generated BEC content, while linguistically fluent, often lacks the sender's authentic communication patterns — writing style, formality level, time-of-day preferences, typical request amounts, and approval workflows. This rule targets Phase 3 (Positioning) where the fraudulent request is crafted and delivered, before the wire transfer is executed.\n"
+  },
+  {
     "id": "BASE-001",
     "type": "baseline",
     "title": "Commercial Wire Velocity Baseline",
@@ -1960,5 +2020,17 @@
     "type": "baseline",
     "title": "Cybercrime Geographic Origin Risk Norms",
     "text": "This baseline defines geographic cybercrime production risk tiers derived from the World Cybercrime Index (WCI), a peer-reviewed expert survey of 92 cybercrime intelligence/investigation professionals covering 97 countries across 5 cybercrime categories (Bruce et al., PLoS ONE 2024, DOI: 10.1371/journal.pone.0297312). The WCI establishes the first standardized geographic attribution framework for where cybercrime offenders are primarily based — as opposed to where attacks originate or infrastructure is hosted. These baselines support geographic risk scoring in transaction monitoring, infrastructure origin assessment, and cross-border fraud pattern detection across multiple FLAME threat paths.\n\n**Critical caveats:**\n- WCI survey data was collected March–October 2021. The SE Asian scam compound explosion (2022+) post-dates this data — Cambodia, Myanmar, and Laos are absent from WCI rankings despite being major operational bases by 2025–2026. Supplement with current intelligence for SE Asian geographic risk.\n- WCI measures cybercrime **production** (where offenders reside), not infrastructure hosting or attack transit. A country's WCI score does not indicate where attacks are launched from or where malicious infrastructure is hosted.\n- WCI is based on expert perception from 92 professionals, not measured incident rates. Expert pool skewed towards Europe and North America; South America and Africa are under-represented.\n- US (#4) and UK (#8) rankings reflect their roles as major financial centers with significant cash-out/money laundering activity, not as traditional cybercrime production hubs."
+  },
+  {
+    "id": "BL-0037",
+    "type": "baseline",
+    "title": "Crypto ATM Transaction Norms by Age Cohort",
+    "text": ""
+  },
+  {
+    "id": "BL-0038",
+    "type": "baseline",
+    "title": "Precious Metals Purchase Norms by Customer Segment",
+    "text": ""
   }
 ]

@@ -274,6 +274,8 @@ This threat path is the connective tissue of fraud. Mule networks recruited thro
 
 **Mule operation industrialization**: The Group-IB Evolving Mule Tactics report demonstrates that mule operations have moved far beyond simple "receive and forward" schemes. Modern mule networks are supply-chain operations with: dedicated recruitment teams, SIM/eSIM procurement logistics, GPS spoofing toolkits, physical device shipping infrastructure, and "commercial camouflage" backstories mimicking legitimate business partnerships. This represents a fundamentally different scale of operation than the individual mule recruitment that FLAME's original threat path assumed.
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $929.3 million in confidence/romance fraud losses from 23,159 complaints — a significant increase from $672M/17,910 in 2024. Transaction type breakdown: Cryptocurrency 31%, Wire Transfer/ACH 25%, Peer-to-Peer 21%, Debit/Credit Card 15%, Prepaid card/Gift card 8%. Elder romance fraud (60+ victims) accounted for 10,188 complaints and $584M in losses, confirming that elderly victims bear the majority of romance fraud losses. The reversal of the apparent 2024 decline suggests that the 2024 drop was indeed a reclassification artifact, not a true decline in romance scam activity.
+
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $672M in confidence/romance fraud losses, a notable decline from 2023's $1.1B+. However, this likely reflects reclassification of romance-initiated investment scams to the investment fraud category ($6.5B) rather than a true decline in romance scam activity. Elderly victims (60+) accounted for $4.9B in total IC3-reported losses in 2024, with romance scams remaining a primary vector for elder financial exploitation.
 
 **Cross-FLAME connections**: TP-0001 (treasury ATO) → funds wire to mule from this pipeline. TP-0002 (BEC) → mule account receives diverted invoice payment. TP-0006 (real estate wire) → mule account receives closing funds. TP-0009 (check fraud) → mule account opened by recruited mule.
@@ -303,6 +305,7 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Relationship and Trust Fraud
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Confidence/Romance fraud: $929.3M in losses, 23,159 complaints (up from $672M/17,910 in 2024). Transaction type breakdown: Cryptocurrency 31%, Wire Transfer/ACH 25%, Peer-to-Peer 21%, Debit/Credit Card 15%, Prepaid card/Gift card 8%. Elder romance fraud: 10,188 complaints, $584M in losses from 60+ victims. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 - FinCEN Advisory FIN-2020-A008: "Advisory on Imposter Scams and Money Mule Schemes". [Link](https://www.fincen.gov/sites/default/files/advisory/2020-07-30/Advisory-Imposter-Scams-508.pdf)
 - INTERPOL: Operation First Light (scam compound raids). [Link](https://www.interpol.int/en/News-and-Events/News/2024/INTERPOL-led-operation-targets-online-scam-networks)
 - UNODC: "Online Scam Operations in Southeast Asia". [Link](https://www.unodc.org/roseap/en/2024/08/online-fraud-southeast-asia-2024/story.html)
@@ -319,3 +322,4 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Underground Ecosystem Context, IC3 2024 loss figures |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — MENA and European mule recruitment patterns |
 | 2026-03-30 | FLAME Project | Enrichment: drops recruitment ecosystem context — sourced from Cybercrime Diaries forum analysis |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — romance fraud $929.3M losses, elder fraud $584M, transaction type breakdown |

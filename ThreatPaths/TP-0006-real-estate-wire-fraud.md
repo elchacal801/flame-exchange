@@ -190,12 +190,15 @@ detection:
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $2.8B in total BEC losses, of which real estate wire fraud is a significant subcategory. Real estate closings remain a high-value BEC target due to the time-sensitive nature and large dollar amounts involved. Elderly victims (60+) accounted for $4.9B in total IC3-reported losses across all categories in 2024, and are disproportionately targeted in real estate wire schemes.
 
+**FBI IC3 2025 Annual Report:** Real estate fraud generated $275.1 million in losses from 12,368 complaints (up from $173.6M/9,359 in 2024 — 58% increase in losses). FFKC Case Study (March 2025): Missouri senior citizen closing on property received compromised email with wire instructions for $1.3M+. RAT initiated FFKC and confirmed funds frozen. Investigation revealed recipient account owner was a victim of an overpayment scam instructed to forward $1M to Hong Kong — RAT initiated International FFKC. FFKC Case Study (August 2025): BEC/Real Estate incident, $449K wire to impersonated attorney. RAT initiated FFKC and recipient bank confirmed full amount on hold. Real estate fraud elder impact: 2,473 complaints and $123.7M in losses from 60+ victims.
+
 ## References
 
 - FBI IC3 PSA: "Real Estate Wire Fraud". [Link](https://www.ic3.gov/PSA/2024/PSA240411)
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - American Land Title Association (ALTA): Wire Fraud Prevention Best Practices
 - CertifID: Real Estate Wire Fraud Report (annual)
+- FBI IC3, "2025 Internet Crime Report" — real estate fraud statistics and FFKC case studies. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 
 ## Revision History
 

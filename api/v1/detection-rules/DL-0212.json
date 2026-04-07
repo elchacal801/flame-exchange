@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-07T04:12:24.928288+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "d2f8a31c-7e4b-4c9a-b1d3-9f6e8a2c5d74",
+    "dl_id": "DL-0212",
+    "title": "Elder Account — Large Cash Withdrawal with Crypto ATM Deposit Indicators",
+    "status": "experimental",
+    "description": "Detects the elder-targeted crypto ATM fraud pattern where victims aged 60+ make large cash withdrawals with no corresponding deposit or transfer activity within 48 hours — a strong indicator that funds were deposited at a crypto ATM/kiosk under the direction of a scammer. FBI IC3 2025 data shows 6,188 crypto ATM complaints and $257 million in losses from victims aged 60+ (66% of all crypto ATM fraud losses). The 48-hour gap between bank withdrawal and lack of corresponding activity represents the detection window before funds become irrecoverable on-chain. This rule targets the P4 execution phase where bank-side intervention can still prevent loss.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "account_holder_age|gte": 60,
+        "transaction_type": "cash_withdrawal",
+        "transaction_amount|gte": 5000
+      },
+      "filter_no_followup": {
+        "followup_deposit_or_transfer_48h": false
+      },
+      "timeframe": "48h",
+      "condition": "selection AND filter_no_followup"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "account_holder_age",
+        "transaction_type",
+        "transaction_amount",
+        "transaction_date",
+        "branch_id"
+      ],
+      "enrichment_required": [
+        {
+          "field": "followup_deposit_or_transfer_48h",
+          "source": "Boolean — whether any deposit, transfer, or payment was made from the account within 48 hours of the cash withdrawal"
+        }
+      ],
+      "derived_fields": [
+        "withdrawal_frequency_30d",
+        "average_withdrawal_amount_12m",
+        "deviation_from_baseline"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Elder Crypto ATM Deposit Pattern\n// Detects cash withdrawals by 60+ account holders with no follow-up activity\naccount_holder_age>=60\ntransaction_type=\"cash_withdrawal\"\ntransaction_amount>=5000\nfollowup_deposit_or_transfer_48h=\"false\"\n| groupBy(account_id, function=[\n    collect([account_holder_age, transaction_amount, transaction_date, branch_id]),\n    count(transaction_id, as=withdrawal_count),\n    sum(transaction_amount, as=total_withdrawn)\n  ])\n| sort(total_withdrawn, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Elder Crypto ATM Deposit Pattern\")`\n`comment(\"Detects cash withdrawals by 60+ account holders with no follow-up activity within 48h\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  transaction_type=\"cash_withdrawal\"\n  account_holder_age>=60\n  transaction_amount>=5000\n| eval withdrawal_time = _time\n| join type=left account_id\n  [search index=flame_banking sourcetype=flame:transaction_monitoring\n    (transaction_type=\"deposit\" OR transaction_type=\"transfer\" OR transaction_type=\"payment\")\n  | eval followup_time = _time\n  | where followup_time > withdrawal_time AND followup_time < (withdrawal_time + 172800)\n  | stats count AS followup_count by account_id]\n| where isnull(followup_count) OR followup_count=0\n| stats count AS withdrawal_count, sum(transaction_amount) AS total_withdrawn,\n    values(branch_id) AS branches, latest(transaction_date) AS last_withdrawal\n    by account_id, account_holder_age\n| sort - total_withdrawn"
+    },
+    "references": [
+      "FBI IC3, 2025 Internet Crime Report — Crypto ATM/kiosk fraud: 13,460 complaints, $389M losses; 60+ victims: 6,188 complaints, $257M",
+      "FinCEN guidance on money services business obligations for crypto ATM operators",
+      "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf"
+    ],
+    "threat_path_ids": [
+      "TP-0027",
+      "TP-0085"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "crypto-laundering",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.authorized-push-payment",
+      "flame.crypto-atm",
+      "flame.elder-exploitation"
+    ],
+    "falsepositives": [
+      "Elderly customers making large cash withdrawals for legitimate purposes (home purchases, estate settlements)",
+      "Snowbird customers withdrawing cash before extended travel",
+      "Cash-preferred customers with established patterns of large withdrawals",
+      "Customers withdrawing funds to deposit at another institution"
+    ]
+  }
+}

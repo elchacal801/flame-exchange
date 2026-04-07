@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-07T04:12:24.956296+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "c7e3f86b-2d9a-4b4f-a6c8-4e1d3f7b0c29",
+    "dl_id": "DL-0217",
+    "title": "AI-Enhanced BEC — Payment Request Behavioral Divergence from Sender Baseline",
+    "status": "experimental",
+    "description": "Detects AI-enhanced business email compromise by identifying wire transfer requests where the communication pattern diverges significantly from the sender's established baseline. FBI IC3 2025 reported $30 million in losses from AI-enabled BEC where chat generators created official-sounding emails mimicking company executives and voice cloning was used for wire authorization requests. AI-generated BEC content, while linguistically fluent, often lacks the sender's authentic communication patterns — writing style, formality level, time-of-day preferences, typical request amounts, and approval workflows. This rule targets Phase 3 (Positioning) where the fraudulent request is crafted and delivered, before the wire transfer is executed.\n",
+    "cfpf_phase": "P3",
+    "level": "medium",
+    "detection": {
+      "selection": {
+        "request_type": "wire_transfer_request",
+        "request_channel": "email"
+      },
+      "filter_behavioral_divergence": {
+        "sender_style_divergence_score|gte": 2.0
+      },
+      "filter_amount_anomaly": {
+        "request_amount_vs_sender_baseline_pct|gte": 200
+      },
+      "filter_timing_anomaly": {
+        "request_outside_sender_typical_hours": true
+      },
+      "condition": "selection AND (filter_behavioral_divergence OR (filter_amount_anomaly AND filter_timing_anomaly))\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "request_id",
+        "sender_email",
+        "sender_name",
+        "request_type",
+        "request_channel",
+        "request_amount",
+        "request_date",
+        "request_time",
+        "beneficiary_name",
+        "beneficiary_account"
+      ],
+      "enrichment_required": [
+        {
+          "field": "sender_style_divergence_score",
+          "source": "NLP-derived score measuring deviation in writing style (word choice, sentence length, formality, urgency markers) from sender's 90-day communication baseline. Score in standard deviations."
+        },
+        {
+          "field": "request_amount_vs_sender_baseline_pct",
+          "source": "Requested amount as percentage of sender's median wire request amount over trailing 12 months"
+        },
+        {
+          "field": "request_outside_sender_typical_hours",
+          "source": "Boolean — whether the request was sent outside the sender's established communication hours (based on 90-day pattern)"
+        }
+      ],
+      "derived_fields": [
+        "sender_request_frequency_30d",
+        "beneficiary_novelty",
+        "urgency_language_score"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for AI-Enhanced BEC Behavioral Divergence\n// Detects wire requests with communication patterns diverging from sender baseline\nrequest_type=\"wire_transfer_request\"\nrequest_channel=\"email\"\n(sender_style_divergence_score>=2.0\n OR (request_amount_vs_sender_baseline_pct>=200 AND request_outside_sender_typical_hours=\"true\"))\n| groupBy(sender_email, function=[\n    collect([request_id, request_amount, request_date, request_time,\n             beneficiary_name, sender_style_divergence_score]),\n    count(request_id, as=flagged_requests),\n    sum(request_amount, as=total_requested)\n  ])\n| sort(total_requested, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for AI-Enhanced BEC Behavioral Divergence\")`\n`comment(\"Detects wire requests with communication patterns diverging from sender baseline\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  request_type=\"wire_transfer_request\"\n  request_channel=\"email\"\n| where sender_style_divergence_score >= 2.0\n    OR (request_amount_vs_sender_baseline_pct >= 200\n        AND request_outside_sender_typical_hours=\"true\")\n| eval divergence_type = case(\n    sender_style_divergence_score >= 3.0, \"severe_style_divergence\",\n    sender_style_divergence_score >= 2.0, \"moderate_style_divergence\",\n    1=1, \"amount_timing_anomaly\")\n| stats count AS flagged_requests, sum(request_amount) AS total_requested,\n    values(beneficiary_name) AS beneficiaries,\n    values(divergence_type) AS divergence_types,\n    max(sender_style_divergence_score) AS max_divergence\n    by sender_email, sender_name\n| eval risk_score = case(\n    max_divergence >= 3.0 AND total_requested > 100000, \"critical\",\n    max_divergence >= 2.0 AND total_requested > 50000, \"high\",\n    1=1, \"medium\")\n| sort - total_requested"
+    },
+    "references": [
+      "FBI IC3, 2025 Internet Crime Report — AI-enabled BEC: $30M in losses; total BEC: $3.046B",
+      "FBI IC3, 2025 — AI-related fraud: 22,364 complaints, $893M total losses",
+      "FBI IC3 PSA250904, September 4, 2025 — ABA Foundation and FBI Deepfake Scam Infographic",
+      "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+      "https://www.ic3.gov/PSA/2025/PSA250904"
+    ],
+    "threat_path_ids": [
+      "TP-0002",
+      "TP-0007"
+    ],
+    "fraud_types": [
+      "BEC",
+      "deepfake",
+      "social-engineering",
+      "wire-fraud"
+    ],
+    "tags": [
+      "cfpf.phase3.positioning",
+      "flame.ai-fraud",
+      "flame.bec",
+      "flame.deepfake",
+      "flame.wire-fraud"
+    ],
+    "falsepositives": [
+      "Executives writing under time pressure with atypical brevity or urgency",
+      "Emails sent by executive assistants on behalf of the named sender",
+      "Automated or template-based payment requests that differ from freeform communication style",
+      "Cross-timezone communications appearing outside normal hours"
+    ]
+  }
+}

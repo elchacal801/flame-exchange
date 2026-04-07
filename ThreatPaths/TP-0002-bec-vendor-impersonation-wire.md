@@ -66,7 +66,7 @@ tags:
 
 ## Summary
 
-Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.
+Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.
 
 ## Threat Path Hypothesis
 
@@ -197,12 +197,15 @@ OfficeActivity
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $2.8B in BEC losses, making it the second-highest loss category after investment fraud. Total reported internet crime losses reached $16.6B in 2024, up 33% from 2023's $12.5B. BEC remains among the most financially damaging cybercrime categories despite a slight decline from 2023's $2.9B figure, reflecting improved corporate awareness alongside persistent attacker adaptation.
 
+**FBI IC3 2025 Annual Report:** BEC generated $3.046 billion in losses from 24,768 complaints (up from $2.77B/21,442 in 2024). Transaction type breakdown (IC3 2025): Wire Transfer/ACH 86%, Cryptocurrency 7%, Debit/Credit Card 3%, Peer-to-Peer 2%, Other 2%. AI-enabled BEC: $30 million in reported losses where AI was flagged as involved (IC3 2025 AI category). Chat generators used for CEO impersonation emails; voice cloning for wire authorization requests. FFKC expansion: The IC3 Recovery Asset Team's Financial Fraud Kill Chain process saw a rise in ATO and tech support fraud initiations in 2025, expanding beyond its traditional BEC focus. 3,900 total FFKC incidents, $679M frozen, 58% success rate. FFKC Case Study (April 2025): Oregon city government BEC incident, $6M+ loss. RAT matched the fraudulent recipient account to a prior March 2025 FFKC freeze, notified banking partners, and the originating bank issued a successful recall for the full $6M. FFKC Case Study (August 2025): BEC/Real Estate incident, $449K wire to impersonated attorney. RAT initiated FFKC and recipient bank confirmed full amount still in account and on hold.
+
 ## References
 
 - FBI IC3: \"2024 Internet Crime Report\" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - FinCEN Advisory FIN-2019-A005: \"Advisory on Business Email Compromise.\" [Link](https://www.fincen.gov/sites/default/files/advisory/2019-07-16/FinCEN%20BEC%20Advisory%20508%20FINAL.pdf)
 - Abnormal Security: Annual BEC Trends Report. [Link](https://abnormalsecurity.com/resources/state-of-email-security)
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Business Email Compromise Fraud
+- FBI IC3, "2025 Internet Crime Report" — BEC loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 
 ## Case Studies & References
 

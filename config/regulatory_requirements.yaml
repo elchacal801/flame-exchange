@@ -134,13 +134,19 @@ regulations:
       - mule-recruitment
 
   - id: REG-FBI-IC3
-    name: "FBI IC3 Recovery Asset Team"
+    name: "FBI IC3 Recovery Asset Team / Financial Fraud Kill Chain"
     jurisdiction: US
     category: recovery
-    description: "Financial Fraud Kill Chain for wire transfer recovery"
+    description: "FBI IC3 Financial Fraud Kill Chain (FFKC) for fraudulent transaction recovery. 2025 IC3 Annual Report: 1,008,597 complaints, $20.877B losses. FFKC expanded beyond BEC to cover ATO and tech support fraud; 3,900 incidents, $679M frozen, 58% success rate."
     relevant_fraud_types:
       - wire-fraud
       - BEC
+      - account-takeover
+      - tech-support-fraud
+      - investment-scam
+      - recovery-fraud
+      - government-impersonation
+      - crypto-laundering
 
   - id: REG-OFAC-SDN
     name: "OFAC Specially Designated Nationals List"

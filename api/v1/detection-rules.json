@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-02T04:13:10.748703+00:00",
-    "total": 211
+    "generated_at": "2026-04-07T04:12:23.965781+00:00",
+    "total": 217
   },
   "data": [
     {
@@ -11792,7 +11792,7 @@
       "dl_id": "DL-0166",
       "title": "GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary",
       "status": "experimental",
-      "description": "Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $6.57 billion in investment fraud losses in 2024 — the single largest fraud category. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.\n",
+      "description": "Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $8.65 billion in investment fraud losses in 2025 (up from $6.57B in 2024) — the single largest fraud category. IC3 2025 data shows 72% of investment fraud payments flow through cryptocurrency, 19% via wire transfer/ACH, and 4% peer-to-peer. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.\n",
       "cfpf_phase": "P4",
       "level": "high",
       "detection": {
@@ -11886,6 +11886,7 @@
         "sql": "-- SQL for GenAI-Enhanced APP Fraud — Investment Variant\n-- Detects escalating authorized push payments to new beneficiaries with investment references\nWITH payment_sequence AS (\n  SELECT\n    t.customer_id,\n    t.account_id,\n    t.beneficiary_id,\n    t.beneficiary_name,\n    t.transaction_amount,\n    t.transaction_date,\n    t.payment_reference,\n    t.payment_channel,\n    DATEDIFF(DAY, b.beneficiary_added_date, t.transaction_date) AS beneficiary_age_days,\n    ROW_NUMBER() OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS payment_seq,\n    FIRST_VALUE(t.transaction_amount) OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS first_payment_amount,\n    LAG(t.transaction_date) OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS prev_payment_date\n  FROM transactions t\n  JOIN beneficiaries b ON t.beneficiary_id = b.beneficiary_id AND t.customer_id = b.customer_id\n  WHERE t.transaction_type IN ('wire_transfer', 'faster_payment', 'ach_credit', 'sepa_credit', 'crypto_purchase')\n    AND t.transaction_date >= DATEADD(DAY, -60, CURRENT_DATE)\n    AND DATEDIFF(DAY, b.beneficiary_added_date, t.transaction_date) < 60\n    AND t.payment_reference LIKE '%invest%'\n     OR t.payment_reference LIKE '%trading%'\n     OR t.payment_reference LIKE '%platform%'\n     OR t.payment_reference LIKE '%crypto%'\n     OR t.payment_reference LIKE '%bitcoin%'\n     OR t.payment_reference LIKE '%forex%'\n     OR t.payment_reference LIKE '%yield%'\n     OR t.payment_reference LIKE '%fund%'\n     OR t.payment_reference LIKE '%capital%'\n     OR t.payment_reference LIKE '%broker%'\n),\nbeneficiary_summary AS (\n  SELECT\n    customer_id,\n    beneficiary_id,\n    beneficiary_name,\n    COUNT(*) AS total_payments,\n    SUM(transaction_amount) AS total_amount,\n    MIN(transaction_amount) AS min_payment,\n    MAX(transaction_amount) AS max_payment,\n    MIN(transaction_date) AS first_payment_date,\n    MAX(transaction_date) AS last_payment_date,\n    DATEDIFF(DAY, MIN(transaction_date), MAX(transaction_date)) AS payment_span_days,\n    MAX(transaction_amount) / NULLIF(MIN(transaction_amount), 0) AS escalation_ratio\n  FROM payment_sequence\n  GROUP BY customer_id, beneficiary_id, beneficiary_name\n)\nSELECT *\nFROM beneficiary_summary\nWHERE total_payments >= 3\n  AND escalation_ratio >= 3\nORDER BY total_amount DESC"
       },
       "references": [
+        "FBI IC3, 2025 Internet Crime Report — $8.65B investment fraud (72% crypto), 72,984 complaints",
         "FBI IC3, 2024 Internet Crime Report — $6.57B investment fraud, $5.8B crypto investment fraud",
         "Chainalysis, AI-Enabled Investment Scam Revenue Analysis — 4.5x revenue multiplier for AI-enhanced operations",
         "UK Payment Systems Regulator (PSR), APP Fraud Mandatory Reimbursement (2024)",
@@ -11921,7 +11922,7 @@
       "dl_id": "DL-0167",
       "title": "Elder Financial Exploitation — New Payee Addition with Escalating Payment Amounts",
       "status": "experimental",
-      "description": "Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $4.885B in elder fraud losses in 2024 (43% YoY increase), with the true figure estimated at $28.3B when accounting for underreporting. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.\n",
+      "description": "Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $7.748B in elder fraud losses in 2025 (59% YoY increase from $4.885B in 2024), with 201,266 complaints from victims aged 60+. Crypto ATM/kiosk fraud disproportionately targets this cohort: 6,188 complaints and $257M in losses from 60+ victims alone. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.\n",
       "cfpf_phase": "P4",
       "level": "high",
       "detection": {
@@ -11983,6 +11984,7 @@
         "sql": "-- SQL for Elder Exploitation — New Payee with Escalating Payments\n-- Detects escalating payment pattern from elderly account holders to new payees\nWITH payee_payments AS (\n  SELECT\n    t.account_id,\n    c.account_holder_age,\n    t.payee_id,\n    t.payee_name,\n    t.payment_amount,\n    t.payment_date,\n    t.payment_method,\n    ROW_NUMBER() OVER (PARTITION BY t.account_id, t.payee_id ORDER BY t.payment_date) AS payment_seq,\n    COUNT(*) OVER (PARTITION BY t.account_id, t.payee_id) AS payment_count,\n    SUM(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id) AS total_amount,\n    FIRST_VALUE(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id ORDER BY t.payment_date) AS first_payment,\n    MAX(t.payment_amount) OVER (PARTITION BY t.account_id, t.payee_id) AS largest_payment\n  FROM transactions t\n  JOIN customer_demographics c ON t.account_id = c.account_id\n  LEFT JOIN historical_payee_network h ON t.account_id = h.account_id AND t.payee_id = h.payee_id\n  WHERE c.account_holder_age >= 65\n    AND t.payment_date >= DATEADD(DAY, -30, CURRENT_DATE)\n    AND h.payee_id IS NULL  -- payee not in historical pattern\n)\nSELECT\n  account_id,\n  account_holder_age,\n  payee_id,\n  payee_name,\n  payment_count,\n  total_amount,\n  first_payment,\n  largest_payment,\n  ROUND(largest_payment / NULLIF(first_payment, 0), 2) AS escalation_ratio\nFROM payee_payments\nWHERE payment_seq = payment_count  -- latest row per group\n  AND payment_count >= 3\n  AND largest_payment > first_payment * 1.5\nORDER BY total_amount DESC"
       },
       "references": [
+        "FBI IC3, 2025 Internet Crime Report — $7.748B elder fraud losses, 201,266 complaints (60+), 59% YoY increase",
         "FBI IC3, 2024 Elder Fraud Report — $4.885B in losses from 101,068 complaints (60+)",
         "FinCEN Advisory FIN-2022-A002 — Elder Financial Exploitation red flag indicators",
         "CFPB, Suspicious Activity Reports on Elder Financial Exploitation (2024)",
@@ -15980,6 +15982,562 @@
       "falsepositives": [
         "Legitimate CAPTCHA services followed by coincidental command execution",
         "Developer workflows involving browser-based tools and terminal commands"
+      ]
+    },
+    {
+      "id": "d2f8a31c-7e4b-4c9a-b1d3-9f6e8a2c5d74",
+      "dl_id": "DL-0212",
+      "title": "Elder Account — Large Cash Withdrawal with Crypto ATM Deposit Indicators",
+      "status": "experimental",
+      "description": "Detects the elder-targeted crypto ATM fraud pattern where victims aged 60+ make large cash withdrawals with no corresponding deposit or transfer activity within 48 hours — a strong indicator that funds were deposited at a crypto ATM/kiosk under the direction of a scammer. FBI IC3 2025 data shows 6,188 crypto ATM complaints and $257 million in losses from victims aged 60+ (66% of all crypto ATM fraud losses). The 48-hour gap between bank withdrawal and lack of corresponding activity represents the detection window before funds become irrecoverable on-chain. This rule targets the P4 execution phase where bank-side intervention can still prevent loss.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "account_holder_age|gte": 60,
+          "transaction_type": "cash_withdrawal",
+          "transaction_amount|gte": 5000
+        },
+        "filter_no_followup": {
+          "followup_deposit_or_transfer_48h": false
+        },
+        "timeframe": "48h",
+        "condition": "selection AND filter_no_followup"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "account_holder_age",
+          "transaction_type",
+          "transaction_amount",
+          "transaction_date",
+          "branch_id"
+        ],
+        "enrichment_required": [
+          {
+            "field": "followup_deposit_or_transfer_48h",
+            "source": "Boolean — whether any deposit, transfer, or payment was made from the account within 48 hours of the cash withdrawal"
+          }
+        ],
+        "derived_fields": [
+          "withdrawal_frequency_30d",
+          "average_withdrawal_amount_12m",
+          "deviation_from_baseline"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Elder Crypto ATM Deposit Pattern\n// Detects cash withdrawals by 60+ account holders with no follow-up activity\naccount_holder_age>=60\ntransaction_type=\"cash_withdrawal\"\ntransaction_amount>=5000\nfollowup_deposit_or_transfer_48h=\"false\"\n| groupBy(account_id, function=[\n    collect([account_holder_age, transaction_amount, transaction_date, branch_id]),\n    count(transaction_id, as=withdrawal_count),\n    sum(transaction_amount, as=total_withdrawn)\n  ])\n| sort(total_withdrawn, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Elder Crypto ATM Deposit Pattern\")`\n`comment(\"Detects cash withdrawals by 60+ account holders with no follow-up activity within 48h\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  transaction_type=\"cash_withdrawal\"\n  account_holder_age>=60\n  transaction_amount>=5000\n| eval withdrawal_time = _time\n| join type=left account_id\n  [search index=flame_banking sourcetype=flame:transaction_monitoring\n    (transaction_type=\"deposit\" OR transaction_type=\"transfer\" OR transaction_type=\"payment\")\n  | eval followup_time = _time\n  | where followup_time > withdrawal_time AND followup_time < (withdrawal_time + 172800)\n  | stats count AS followup_count by account_id]\n| where isnull(followup_count) OR followup_count=0\n| stats count AS withdrawal_count, sum(transaction_amount) AS total_withdrawn,\n    values(branch_id) AS branches, latest(transaction_date) AS last_withdrawal\n    by account_id, account_holder_age\n| sort - total_withdrawn"
+      },
+      "references": [
+        "FBI IC3, 2025 Internet Crime Report — Crypto ATM/kiosk fraud: 13,460 complaints, $389M losses; 60+ victims: 6,188 complaints, $257M",
+        "FinCEN guidance on money services business obligations for crypto ATM operators",
+        "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf"
+      ],
+      "threat_path_ids": [
+        "TP-0027",
+        "TP-0085"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "crypto-laundering",
+        "elder-exploitation"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.authorized-push-payment",
+        "flame.crypto-atm",
+        "flame.elder-exploitation"
+      ],
+      "falsepositives": [
+        "Elderly customers making large cash withdrawals for legitimate purposes (home purchases, estate settlements)",
+        "Snowbird customers withdrawing cash before extended travel",
+        "Cash-preferred customers with established patterns of large withdrawals",
+        "Customers withdrawing funds to deposit at another institution"
+      ]
+    },
+    {
+      "id": "e3a9b42d-8f5c-4d0b-c2e4-0a7f9b3d6e85",
+      "dl_id": "DL-0213",
+      "title": "Unusual Large Cash Withdrawal with Precious Metals Merchant Transaction",
+      "status": "experimental",
+      "description": "Detects the gold courier scam pattern where victims — predominantly elderly — make large cash withdrawals or wire transfers to precious metals merchants with no prior history of such transactions. FBI IC3 2025 documented 725 gold courier complaints with $311.8 million in losses, yielding an extraordinary average of ~$430,000 per victim. Victims are typically directed by government impersonation callers to purchase physical gold as \"asset protection,\" which is then collected by couriers. The precious metals MCC codes (5094 for precious stones/metals, 5944 for jewelry/watch/clock stores) serve as the primary detection signal when combined with customer age and transaction history anomalies.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_withdrawal": {
+          "transaction_type": [
+            "cash_withdrawal",
+            "wire_transfer"
+          ],
+          "transaction_amount|gte": 10000
+        },
+        "selection_precious_metals": {
+          "merchant_category_code": [
+            "5094",
+            "5944"
+          ]
+        },
+        "filter_no_history": {
+          "customer_precious_metals_history_12m": false
+        },
+        "filter_age": {
+          "account_holder_age|gte": 60
+        },
+        "timeframe": "72h",
+        "condition": "(selection_withdrawal AND selection_precious_metals AND filter_no_history) OR (selection_withdrawal AND selection_precious_metals AND filter_age)\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "account_holder_age",
+          "transaction_type",
+          "transaction_amount",
+          "transaction_date",
+          "merchant_category_code",
+          "merchant_name"
+        ],
+        "enrichment_required": [
+          {
+            "field": "customer_precious_metals_history_12m",
+            "source": "Boolean — whether customer has any prior transactions with MCC 5094 or 5944 in trailing 12 months"
+          }
+        ],
+        "derived_fields": [
+          "total_precious_metals_spend_72h",
+          "withdrawal_to_purchase_gap_hours"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Gold Courier Scam Detection\n// Detects unusual precious metals purchases following large withdrawals\n(transaction_type=\"cash_withdrawal\" OR transaction_type=\"wire_transfer\")\ntransaction_amount>=10000\n(merchant_category_code=\"5094\" OR merchant_category_code=\"5944\")\n(customer_precious_metals_history_12m=\"false\" OR account_holder_age>=60)\n| groupBy(account_id, function=[\n    collect([account_holder_age, transaction_amount, transaction_date,\n             merchant_name, merchant_category_code, transaction_type]),\n    sum(transaction_amount, as=total_amount),\n    count(transaction_id, as=transaction_count)\n  ])\n| sort(total_amount, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Gold Courier Scam Detection\")`\n`comment(\"Detects unusual precious metals purchases following large withdrawals\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (transaction_type=\"cash_withdrawal\" OR transaction_type=\"wire_transfer\")\n  transaction_amount>=10000\n  (merchant_category_code=\"5094\" OR merchant_category_code=\"5944\")\n| where customer_precious_metals_history_12m=\"false\" OR account_holder_age>=60\n| stats count AS transaction_count, sum(transaction_amount) AS total_amount,\n    values(merchant_name) AS merchants, values(transaction_type) AS methods,\n    min(_time) AS first_transaction, max(_time) AS last_transaction\n    by account_id, account_holder_age\n| eval days_span = round((last_transaction - first_transaction) / 86400, 1)\n| eval risk_score = case(\n    total_amount > 100000 AND account_holder_age >= 65, \"critical\",\n    total_amount > 50000 OR account_holder_age >= 65, \"high\",\n    1=1, \"medium\")\n| sort - total_amount"
+      },
+      "references": [
+        "FBI IC3, 2025 Internet Crime Report — Gold courier scams: 725 complaints, $311.8M losses (~$430K average)",
+        "FinCEN Advisory FIN-2022-A002 — Elder Financial Exploitation red flag indicators",
+        "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf"
+      ],
+      "threat_path_ids": [
+        "TP-0027",
+        "TP-0082"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "elder-exploitation",
+        "social-engineering"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.authorized-push-payment",
+        "flame.elder-exploitation",
+        "flame.gold-courier"
+      ],
+      "falsepositives": [
+        "Collectors and investors with established precious metals purchasing patterns",
+        "Jewelry purchases for weddings, anniversaries, or estate purposes",
+        "Business customers in the precious metals industry",
+        "Gift purchases from jewelry stores"
+      ]
+    },
+    {
+      "id": "f4b0c53e-9a6d-4e1c-d3f5-1b8a0c4e7f96",
+      "dl_id": "DL-0214",
+      "title": "Post-Fraud Victim Payment to Newly Registered Legal or Recovery Entity",
+      "status": "experimental",
+      "description": "Detects recovery fraud patterns where victims of prior fraud are targeted by fictitious law firms or recovery companies promising to retrieve lost funds. FBI IC3 2025 reported 10,516 recovery scam complaints with $1.4 billion in losses — making recovery fraud one of the largest IC3 loss categories. PSA250813 (August 2025) specifically warned about fictitious law firms targeting cryptocurrency scam victims. This rule identifies the characteristic pattern: a customer with a recent fraud complaint making payments to a newly established entity with legal or recovery terminology in the payee name. The 180-day lookback window accounts for IC3 data showing longer re-targeting timelines than previously estimated.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_prior_victim": {
+          "customer_fraud_complaint_180d": true
+        },
+        "selection_legal_payee": {
+          "payee_name|contains": [
+            "law",
+            "legal",
+            "attorney",
+            "recovery",
+            "asset recovery",
+            "fund recovery",
+            "claims",
+            "restitution",
+            "litigation"
+          ]
+        },
+        "filter_new_entity": {
+          "payee_account_age_days|lte": 90
+        },
+        "condition": "selection_prior_victim AND selection_legal_payee AND filter_new_entity"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "customer_id",
+          "payee_id",
+          "payee_name",
+          "payment_amount",
+          "payment_date",
+          "payment_method"
+        ],
+        "enrichment_required": [
+          {
+            "field": "customer_fraud_complaint_180d",
+            "source": "Boolean — whether customer has filed a fraud complaint or been flagged as a fraud victim in the trailing 180 days"
+          },
+          {
+            "field": "payee_account_age_days",
+            "source": "Days since the payee account was opened at the receiving institution"
+          }
+        ],
+        "derived_fields": [
+          "total_payments_to_payee",
+          "prior_fraud_type",
+          "prior_fraud_amount"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Recovery Fraud — Fictitious Law Firm Payment\n// Detects prior fraud victims paying newly established legal/recovery entities\ncustomer_fraud_complaint_180d=\"true\"\npayee_name=/law|legal|attorney|recovery|asset.recovery|fund.recovery|claims|restitution|litigation/i\npayee_account_age_days<=90\n| groupBy(account_id, payee_id, function=[\n    collect([payee_name, payment_amount, payment_date, payment_method]),\n    count(payment_id, as=payment_count),\n    sum(payment_amount, as=total_paid)\n  ])\n| sort(total_paid, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Recovery Fraud — Fictitious Law Firm Payment\")`\n`comment(\"Detects prior fraud victims paying newly established legal/recovery entities\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  customer_fraud_complaint_180d=\"true\"\n| regex payee_name=\"(?i)(law|legal|attorney|recovery|asset.recovery|fund.recovery|claims|restitution|litigation)\"\n| where payee_account_age_days <= 90\n| stats count AS payment_count, sum(payment_amount) AS total_paid,\n    values(payee_name) AS payee_names, values(payment_method) AS methods,\n    min(_time) AS first_payment, max(_time) AS last_payment\n    by account_id, customer_id, payee_id\n| eval risk_score = case(\n    total_paid > 10000, \"critical\",\n    total_paid > 5000, \"high\",\n    1=1, \"medium\")\n| sort - total_paid"
+      },
+      "references": [
+        "FBI IC3, 2025 Internet Crime Report — Recovery scams: 10,516 complaints, $1.4B losses",
+        "FBI IC3 PSA250813, August 13, 2025 — Fictitious Law Firms Targeting Cryptocurrency Scam Victims",
+        "FBI IC3 PSA250418, April 18, 2025 — FBI Warns of Scammers Impersonating the IC3",
+        "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+        "https://www.ic3.gov/PSA/2025/PSA250813",
+        "https://www.ic3.gov/PSA/2025/PSA250418"
+      ],
+      "threat_path_ids": [
+        "TP-0062"
+      ],
+      "fraud_types": [
+        "advance-fee-fraud",
+        "impersonation",
+        "recovery-fraud"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.advance-fee-fraud",
+        "flame.impersonation",
+        "flame.recovery-fraud"
+      ],
+      "falsepositives": [
+        "Legitimate legal representation retained after a fraud incident",
+        "Insurance claim payments following documented fraud losses",
+        "Court-ordered restitution payments through established legal entities",
+        "Payments to established, long-standing law firms for legitimate services"
+      ]
+    },
+    {
+      "id": "a5c1d64f-0b7e-4f2d-e4a6-2c9b1d5f8a07",
+      "dl_id": "DL-0215",
+      "title": "Multiple Unrelated Customers Depositing to Same Novel Beneficiary — Investment Club Pattern",
+      "status": "experimental",
+      "description": "Detects investment club scam patterns where multiple unrelated victims deposit funds to the same fraudulent beneficiary within a short time window. FBI IC3 2025 documented approximately 1,600 investment club complaints with $160 million in losses, and PSA250703 specifically warned about fraudulent investment clubs on social media and messaging apps. The cluster deposit pattern — five or more unique, unrelated customers sending to the same novel beneficiary within 14 days — distinguishes investment club scams from 1:1 pig butchering (TP-0017) where victims typically deposit to unique beneficiary accounts. The group-based nature creates a detectable convergence signal absent from individual targeting schemes.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "transaction_type": [
+            "wire_transfer",
+            "ach_credit",
+            "crypto_purchase",
+            "faster_payment"
+          ]
+        },
+        "filter_beneficiary_cluster": {
+          "unique_depositors_to_beneficiary_14d|gte": 5,
+          "depositors_in_common_payment_network": false
+        },
+        "filter_novel_beneficiary": {
+          "beneficiary_first_seen_days|lte": 90
+        },
+        "timeframe": "14d",
+        "condition": "selection AND filter_beneficiary_cluster AND filter_novel_beneficiary"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "customer_id",
+          "account_id",
+          "beneficiary_id",
+          "beneficiary_name",
+          "transaction_amount",
+          "transaction_date",
+          "transaction_type",
+          "payment_reference"
+        ],
+        "enrichment_required": [
+          {
+            "field": "unique_depositors_to_beneficiary_14d",
+            "source": "Count of unique customer IDs sending to the same beneficiary within trailing 14 days"
+          },
+          {
+            "field": "depositors_in_common_payment_network",
+            "source": "Boolean — whether any of the depositing customers have prior payment relationships with each other"
+          },
+          {
+            "field": "beneficiary_first_seen_days",
+            "source": "Days since the beneficiary first received any payment across the institution"
+          }
+        ],
+        "derived_fields": [
+          "total_cluster_amount",
+          "average_deposit_amount",
+          "deposit_frequency_acceleration"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Investment Club Group Deposit Clustering\n// Detects multiple unrelated customers depositing to same novel beneficiary\n(transaction_type=\"wire_transfer\" OR transaction_type=\"ach_credit\" OR transaction_type=\"crypto_purchase\" OR transaction_type=\"faster_payment\")\nbeneficiary_first_seen_days<=90\n| groupBy(beneficiary_id, function=[\n    collect([customer_id, transaction_amount, transaction_date, payment_reference]),\n    count(distinct=customer_id, as=unique_depositors),\n    sum(transaction_amount, as=total_cluster_amount),\n    count(transaction_id, as=total_transactions)\n  ])\n| unique_depositors >= 5\n| sort(total_cluster_amount, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Investment Club Group Deposit Clustering\")`\n`comment(\"Detects multiple unrelated customers depositing to same novel beneficiary within 14 days\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (transaction_type=\"wire_transfer\" OR transaction_type=\"ach_credit\"\n   OR transaction_type=\"crypto_purchase\" OR transaction_type=\"faster_payment\")\n  beneficiary_first_seen_days<=90\n| bin _time span=14d\n| stats dc(customer_id) AS unique_depositors, count AS total_transactions,\n    sum(transaction_amount) AS total_cluster_amount,\n    values(customer_id) AS depositor_list,\n    values(payment_reference) AS references,\n    avg(transaction_amount) AS avg_deposit\n    by beneficiary_id, beneficiary_name, _time\n| where unique_depositors >= 5\n| eval risk_score = case(\n    unique_depositors >= 10 AND total_cluster_amount > 500000, \"critical\",\n    unique_depositors >= 5 AND total_cluster_amount > 100000, \"high\",\n    1=1, \"medium\")\n| sort - total_cluster_amount"
+      },
+      "references": [
+        "FBI IC3, 2025 Internet Crime Report — Investment club scams: ~1,600 complaints, $160M losses",
+        "FBI IC3 PSA250703, July 3, 2025 — Fraudsters Target US Stock Investors through Investment Clubs",
+        "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+        "https://www.ic3.gov/PSA/2025/PSA250703"
+      ],
+      "threat_path_ids": [
+        "TP-0017",
+        "TP-0083"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "investment-scam"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.authorized-push-payment",
+        "flame.cluster-detection",
+        "flame.investment-scam"
+      ],
+      "falsepositives": [
+        "Legitimate crowdfunding or group investment platforms receiving deposits from multiple customers",
+        "Business accounts receiving payments from multiple clients",
+        "Charity or event organizers receiving donations from multiple individuals",
+        "Shared household expense accounts"
+      ]
+    },
+    {
+      "id": "b6d2e75a-1c8f-4a3e-f5b7-3d0c2e6a9b18",
+      "dl_id": "DL-0216",
+      "title": "Government Impersonation — Multi-Channel Payment Under Duress Indicators",
+      "status": "experimental",
+      "description": "Detects government impersonation APP fraud by identifying payments with government agency references made via crypto, wire, or prepaid channels to non-historical payees. FBI IC3 2025 reported $797.9 million in losses from 32,424 government impersonation complaints — an 87% increase in complaints and 97% increase in losses from 2024. The payment channel distribution is distinctive: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%. This rule targets payment references containing government agency names or legal terminology from customers with no prior government- related payment history, as legitimate government payments follow established patterns and channels.\n",
+      "cfpf_phase": "P4",
+      "level": "high",
+      "detection": {
+        "selection_payment": {
+          "transaction_type": [
+            "wire_transfer",
+            "ach_credit",
+            "crypto_purchase",
+            "prepaid_card_purchase",
+            "gift_card_purchase"
+          ]
+        },
+        "selection_gov_reference": {
+          "payment_reference|contains": [
+            "IRS",
+            "SSA",
+            "Social Security",
+            "DOJ",
+            "FBI",
+            "DEA",
+            "warrant",
+            "penalty",
+            "tax lien",
+            "federal",
+            "treasury",
+            "immigration",
+            "customs",
+            "marshal"
+          ]
+        },
+        "filter_non_historical": {
+          "payee_in_historical_pattern": false
+        },
+        "condition": "selection_payment AND selection_gov_reference AND filter_non_historical"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "account_id",
+          "account_holder_age",
+          "transaction_type",
+          "transaction_amount",
+          "transaction_date",
+          "payment_reference",
+          "payee_id",
+          "payee_name"
+        ],
+        "enrichment_required": [
+          {
+            "field": "payee_in_historical_pattern",
+            "source": "Boolean — whether payee exists in 12-month historical payment network"
+          }
+        ],
+        "derived_fields": [
+          "payment_channel_diversity_72h",
+          "total_gov_reference_payments_7d"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for Government Impersonation Payment Detection\n// Detects payments with government references to non-historical payees\n(transaction_type=\"wire_transfer\" OR transaction_type=\"ach_credit\" OR transaction_type=\"crypto_purchase\" OR transaction_type=\"prepaid_card_purchase\" OR transaction_type=\"gift_card_purchase\")\npayment_reference=/IRS|SSA|Social.Security|DOJ|FBI|DEA|warrant|penalty|tax.lien|federal|treasury|immigration|customs|marshal/i\npayee_in_historical_pattern=\"false\"\n| groupBy(account_id, function=[\n    collect([account_holder_age, transaction_type, transaction_amount,\n             transaction_date, payment_reference, payee_name]),\n    count(transaction_id, as=payment_count),\n    sum(transaction_amount, as=total_amount)\n  ])\n| sort(total_amount, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for Government Impersonation Payment Detection\")`\n`comment(\"Detects payments with government references to non-historical payees\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (transaction_type=\"wire_transfer\" OR transaction_type=\"ach_credit\"\n   OR transaction_type=\"crypto_purchase\" OR transaction_type=\"prepaid_card_purchase\"\n   OR transaction_type=\"gift_card_purchase\")\n  payee_in_historical_pattern=\"false\"\n| regex payment_reference=\"(?i)(IRS|SSA|Social.Security|DOJ|FBI|DEA|warrant|penalty|tax.lien|federal|treasury|immigration|customs|marshal)\"\n| stats count AS payment_count, sum(transaction_amount) AS total_amount,\n    dc(transaction_type) AS channel_diversity,\n    values(transaction_type) AS channels,\n    values(payment_reference) AS references,\n    values(payee_name) AS payees\n    by account_id, account_holder_age\n| eval risk_score = case(\n    channel_diversity >= 2 AND total_amount > 10000, \"critical\",\n    account_holder_age >= 60 AND total_amount > 5000, \"critical\",\n    total_amount > 10000, \"high\",\n    1=1, \"medium\")\n| sort - total_amount"
+      },
+      "references": [
+        "FBI IC3, 2025 Internet Crime Report — Government impersonation: 32,424 complaints, $797.9M losses (87% increase)",
+        "FBI IC3 PSA250418, April 18, 2025 — FBI Warns of Scammers Impersonating the IC3",
+        "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+        "https://www.ic3.gov/PSA/2025/PSA250418"
+      ],
+      "threat_path_ids": [
+        "TP-0027",
+        "TP-0084"
+      ],
+      "fraud_types": [
+        "authorized-push-payment",
+        "impersonation",
+        "social-engineering"
+      ],
+      "tags": [
+        "cfpf.phase4.execution",
+        "flame.authorized-push-payment",
+        "flame.government-impersonation",
+        "flame.social-engineering"
+      ],
+      "falsepositives": [
+        "Legitimate tax payments to IRS via authorized payment processors",
+        "Attorney or legal service payments referencing government cases",
+        "Immigration service fees paid through authorized channels",
+        "Court-ordered payments referencing federal agencies"
+      ]
+    },
+    {
+      "id": "c7e3f86b-2d9a-4b4f-a6c8-4e1d3f7b0c29",
+      "dl_id": "DL-0217",
+      "title": "AI-Enhanced BEC — Payment Request Behavioral Divergence from Sender Baseline",
+      "status": "experimental",
+      "description": "Detects AI-enhanced business email compromise by identifying wire transfer requests where the communication pattern diverges significantly from the sender's established baseline. FBI IC3 2025 reported $30 million in losses from AI-enabled BEC where chat generators created official-sounding emails mimicking company executives and voice cloning was used for wire authorization requests. AI-generated BEC content, while linguistically fluent, often lacks the sender's authentic communication patterns — writing style, formality level, time-of-day preferences, typical request amounts, and approval workflows. This rule targets Phase 3 (Positioning) where the fraudulent request is crafted and delivered, before the wire transfer is executed.\n",
+      "cfpf_phase": "P3",
+      "level": "medium",
+      "detection": {
+        "selection": {
+          "request_type": "wire_transfer_request",
+          "request_channel": "email"
+        },
+        "filter_behavioral_divergence": {
+          "sender_style_divergence_score|gte": 2.0
+        },
+        "filter_amount_anomaly": {
+          "request_amount_vs_sender_baseline_pct|gte": 200
+        },
+        "filter_timing_anomaly": {
+          "request_outside_sender_typical_hours": true
+        },
+        "condition": "selection AND (filter_behavioral_divergence OR (filter_amount_anomaly AND filter_timing_anomaly))\n"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "transaction_monitoring"
+      },
+      "sigma_compatible": false,
+      "native_query_required": true,
+      "data_sources": {
+        "native_fields": [
+          "request_id",
+          "sender_email",
+          "sender_name",
+          "request_type",
+          "request_channel",
+          "request_amount",
+          "request_date",
+          "request_time",
+          "beneficiary_name",
+          "beneficiary_account"
+        ],
+        "enrichment_required": [
+          {
+            "field": "sender_style_divergence_score",
+            "source": "NLP-derived score measuring deviation in writing style (word choice, sentence length, formality, urgency markers) from sender's 90-day communication baseline. Score in standard deviations."
+          },
+          {
+            "field": "request_amount_vs_sender_baseline_pct",
+            "source": "Requested amount as percentage of sender's median wire request amount over trailing 12 months"
+          },
+          {
+            "field": "request_outside_sender_typical_hours",
+            "source": "Boolean — whether the request was sent outside the sender's established communication hours (based on 90-day pattern)"
+          }
+        ],
+        "derived_fields": [
+          "sender_request_frequency_30d",
+          "beneficiary_novelty",
+          "urgency_language_score"
+        ]
+      },
+      "queries": {
+        "cql": "// CrowdStrike CQL for AI-Enhanced BEC Behavioral Divergence\n// Detects wire requests with communication patterns diverging from sender baseline\nrequest_type=\"wire_transfer_request\"\nrequest_channel=\"email\"\n(sender_style_divergence_score>=2.0\n OR (request_amount_vs_sender_baseline_pct>=200 AND request_outside_sender_typical_hours=\"true\"))\n| groupBy(sender_email, function=[\n    collect([request_id, request_amount, request_date, request_time,\n             beneficiary_name, sender_style_divergence_score]),\n    count(request_id, as=flagged_requests),\n    sum(request_amount, as=total_requested)\n  ])\n| sort(total_requested, order=desc)",
+        "splunk": "`comment(\"Splunk SPL for AI-Enhanced BEC Behavioral Divergence\")`\n`comment(\"Detects wire requests with communication patterns diverging from sender baseline\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  request_type=\"wire_transfer_request\"\n  request_channel=\"email\"\n| where sender_style_divergence_score >= 2.0\n    OR (request_amount_vs_sender_baseline_pct >= 200\n        AND request_outside_sender_typical_hours=\"true\")\n| eval divergence_type = case(\n    sender_style_divergence_score >= 3.0, \"severe_style_divergence\",\n    sender_style_divergence_score >= 2.0, \"moderate_style_divergence\",\n    1=1, \"amount_timing_anomaly\")\n| stats count AS flagged_requests, sum(request_amount) AS total_requested,\n    values(beneficiary_name) AS beneficiaries,\n    values(divergence_type) AS divergence_types,\n    max(sender_style_divergence_score) AS max_divergence\n    by sender_email, sender_name\n| eval risk_score = case(\n    max_divergence >= 3.0 AND total_requested > 100000, \"critical\",\n    max_divergence >= 2.0 AND total_requested > 50000, \"high\",\n    1=1, \"medium\")\n| sort - total_requested"
+      },
+      "references": [
+        "FBI IC3, 2025 Internet Crime Report — AI-enabled BEC: $30M in losses; total BEC: $3.046B",
+        "FBI IC3, 2025 — AI-related fraud: 22,364 complaints, $893M total losses",
+        "FBI IC3 PSA250904, September 4, 2025 — ABA Foundation and FBI Deepfake Scam Infographic",
+        "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+        "https://www.ic3.gov/PSA/2025/PSA250904"
+      ],
+      "threat_path_ids": [
+        "TP-0002",
+        "TP-0007"
+      ],
+      "fraud_types": [
+        "BEC",
+        "deepfake",
+        "social-engineering",
+        "wire-fraud"
+      ],
+      "tags": [
+        "cfpf.phase3.positioning",
+        "flame.ai-fraud",
+        "flame.bec",
+        "flame.deepfake",
+        "flame.wire-fraud"
+      ],
+      "falsepositives": [
+        "Executives writing under time pressure with atypical brevity or urgency",
+        "Emails sent by executive assistants on behalf of the named sender",
+        "Automated or template-based payment requests that differ from freeform communication style",
+        "Cross-timezone communications appearing outside normal hours"
       ]
     }
   ]

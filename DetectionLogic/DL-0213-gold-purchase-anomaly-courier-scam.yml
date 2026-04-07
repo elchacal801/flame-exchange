@@ -1,0 +1,107 @@
+title: "Unusual Large Cash Withdrawal with Precious Metals Merchant Transaction"
+id: "e3a9b42d-8f5c-4d0b-c2e4-0a7f9b3d6e85"
+status: experimental
+description: >
+  Detects the gold courier scam pattern where victims — predominantly elderly — make
+  large cash withdrawals or wire transfers to precious metals merchants with no prior
+  history of such transactions. FBI IC3 2025 documented 725 gold courier complaints
+  with $311.8 million in losses, yielding an extraordinary average of ~$430,000 per
+  victim. Victims are typically directed by government impersonation callers to purchase
+  physical gold as "asset protection," which is then collected by couriers. The precious
+  metals MCC codes (5094 for precious stones/metals, 5944 for jewelry/watch/clock stores)
+  serve as the primary detection signal when combined with customer age and transaction
+  history anomalies.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "FBI IC3, 2025 Internet Crime Report — Gold courier scams: 725 complaints, $311.8M losses (~$430K average)"
+  - "FinCEN Advisory FIN-2022-A002 — Elder Financial Exploitation red flag indicators"
+  - "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf"
+threat_paths:
+  - TP-0082
+  - TP-0027
+cfpf_phase: P4
+fraud_types:
+  - social-engineering
+  - authorized-push-payment
+  - elder-exploitation
+logsource:
+  product: banking
+  service: transaction_monitoring
+detection:
+  selection_withdrawal:
+    transaction_type:
+      - cash_withdrawal
+      - wire_transfer
+    transaction_amount|gte: 10000
+  selection_precious_metals:
+    merchant_category_code:
+      - "5094"
+      - "5944"
+  filter_no_history:
+    customer_precious_metals_history_12m: false
+  filter_age:
+    account_holder_age|gte: 60
+  timeframe: 72h
+  condition: >
+    (selection_withdrawal AND selection_precious_metals AND filter_no_history)
+    OR (selection_withdrawal AND selection_precious_metals AND filter_age)
+data_sources:
+  native_fields:
+    - account_id
+    - account_holder_age
+    - transaction_type
+    - transaction_amount
+    - transaction_date
+    - merchant_category_code
+    - merchant_name
+  enrichment_required:
+    - field: customer_precious_metals_history_12m
+      source: Boolean — whether customer has any prior transactions with MCC 5094 or 5944 in trailing 12 months
+  derived_fields:
+    - total_precious_metals_spend_72h
+    - withdrawal_to_purchase_gap_hours
+queries:
+  cql: |-
+    // CrowdStrike CQL for Gold Courier Scam Detection
+    // Detects unusual precious metals purchases following large withdrawals
+    (transaction_type="cash_withdrawal" OR transaction_type="wire_transfer")
+    transaction_amount>=10000
+    (merchant_category_code="5094" OR merchant_category_code="5944")
+    (customer_precious_metals_history_12m="false" OR account_holder_age>=60)
+    | groupBy(account_id, function=[
+        collect([account_holder_age, transaction_amount, transaction_date,
+                 merchant_name, merchant_category_code, transaction_type]),
+        sum(transaction_amount, as=total_amount),
+        count(transaction_id, as=transaction_count)
+      ])
+    | sort(total_amount, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for Gold Courier Scam Detection")`
+    `comment("Detects unusual precious metals purchases following large withdrawals")`
+    index=flame_banking sourcetype=flame:transaction_monitoring
+      (transaction_type="cash_withdrawal" OR transaction_type="wire_transfer")
+      transaction_amount>=10000
+      (merchant_category_code="5094" OR merchant_category_code="5944")
+    | where customer_precious_metals_history_12m="false" OR account_holder_age>=60
+    | stats count AS transaction_count, sum(transaction_amount) AS total_amount,
+        values(merchant_name) AS merchants, values(transaction_type) AS methods,
+        min(_time) AS first_transaction, max(_time) AS last_transaction
+        by account_id, account_holder_age
+    | eval days_span = round((last_transaction - first_transaction) / 86400, 1)
+    | eval risk_score = case(
+        total_amount > 100000 AND account_holder_age >= 65, "critical",
+        total_amount > 50000 OR account_holder_age >= 65, "high",
+        1=1, "medium")
+    | sort - total_amount
+falsepositives:
+  - Collectors and investors with established precious metals purchasing patterns
+  - Jewelry purchases for weddings, anniversaries, or estate purposes
+  - Business customers in the precious metals industry
+  - Gift purchases from jewelry stores
+level: high
+tags:
+  - cfpf.phase4.execution
+  - flame.gold-courier
+  - flame.elder-exploitation
+  - flame.authorized-push-payment

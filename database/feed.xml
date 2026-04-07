@@ -35,11 +35,11 @@
       <title>[TP-0002] Business Email Compromise — Vendor Impersonation Wire Fraud</title>
       <link>https://flameintel.org/#detail/TP-0002</link>
       <guid isPermaLink="true">https://flameintel.org/#detail/TP-0002</guid>
-      <description>Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.</description>
+      <description>Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.</description>
       <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
       <flame:confidence>88</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>12</flame:detectionRuleCount>
+      <flame:detectionRuleCount>13</flame:detectionRuleCount>
         <category>BEC</category>
         <category>invoice-fraud</category>
         <category>payment-diversion</category>
@@ -154,7 +154,7 @@
       <pubDate>Thu, 12 Feb 2026 00:00:00 +0000</pubDate>
       <flame:confidence>75</flame:confidence>
       <flame:sourceReliability>C</flame:sourceReliability>
-      <flame:detectionRuleCount>3</flame:detectionRuleCount>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
         <category>BEC</category>
         <category>deepfake</category>
         <category>impersonation</category>
@@ -372,7 +372,7 @@
       <pubDate>Fri, 20 Feb 2026 00:00:00 +0000</pubDate>
       <flame:confidence>88</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>2</flame:detectionRuleCount>
+      <flame:detectionRuleCount>3</flame:detectionRuleCount>
         <category>authorized-push-payment</category>
         <category>investment-scam</category>
         <category>social-engineering</category>
@@ -639,7 +639,7 @@
       <pubDate>Mon, 02 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>88</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
         <category>account-takeover</category>
         <category>authorized-push-payment</category>
         <category>romance-scam</category>
@@ -1722,7 +1722,7 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
       <pubDate>Sun, 22 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>72</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>2</flame:detectionRuleCount>
+      <flame:detectionRuleCount>3</flame:detectionRuleCount>
         <category>advance-fee-fraud</category>
         <category>impersonation</category>
         <category>recovery-fraud</category>
@@ -2301,6 +2301,103 @@ AI-enabled adversary attacks rose 89%, with GenAI used to create convincing voic
         <category>attack-T1219</category>
         <category>attack-T1566.004</category>
         <category>attack-T1567</category>
+    </item>
+    <item>
+      <title>[TP-0082] Gold Courier Scam — Physical Precious Metal Cash-Out</title>
+      <link>https://flameintel.org/#detail/TP-0082</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0082</guid>
+      <description>Gold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to physical gold, which is then collected by couriers dispatched by the criminal network. The FBI IC3 2025 Annual Report documented 725 complaints with $311.8 million in losses, yielding an extraordinary average loss of approximately $430,000 per victim — among the highest of any IC3 crime category. The physical gold acquisition and courier collection circumvents traditional electronic transaction monitoring, making this a detection blind spot for institutions relying solely on digital payment analytics.</description>
+      <pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>78</flame:confidence>
+      <flame:sourceReliability>A</flame:sourceReliability>
+      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+        <category>authorized-push-payment</category>
+        <category>elder-exploitation</category>
+        <category>impersonation</category>
+        <category>social-engineering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>attack-T1598</category>
+        <category>attack-T1656</category>
+    </item>
+    <item>
+      <title>[TP-0083] Investment Club Scam — Social Media Insider Group Fraud</title>
+      <link>https://flameintel.org/#detail/TP-0083</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0083</guid>
+      <description>Investment club scams exploit social media and messaging platforms to create fraudulent &quot;insider&quot; trading groups that lure victims with fabricated trading success, AI-generated celebrity endorsements, and peer pressure dynamics. The FBI IC3 2025 Annual Report documented approximately 1,600 complaints with $160 million in losses, and PSA250703 (July 3, 2025) specifically warned about investment clubs accessed on social media and messaging applications. Unlike traditional pig butchering (TP-0017) which relies on 1:1 grooming, investment club scams leverage group dynamics — social proof from other &quot;members&quot; (often shills or bots), fake trading screenshots, and the illusion of an exclusive community — to accelerate victim conversion and increase investment amounts.</description>
+      <pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>72</flame:confidence>
+      <flame:sourceReliability>A</flame:sourceReliability>
+      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+        <category>authorized-push-payment</category>
+        <category>crypto-laundering</category>
+        <category>investment-scam</category>
+        <category>social-engineering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-crypto</category>
+        <category>sector-investment</category>
+        <category>attack-T1566.003</category>
+        <category>attack-T1656</category>
+    </item>
+    <item>
+      <title>[TP-0084] Government Impersonation — Authority-Based Authorized Push Payment Fraud</title>
+      <link>https://flameintel.org/#detail/TP-0084</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0084</guid>
+      <description>Government impersonation fraud uses the authority of federal and state agencies — IRS, SSA, DOJ, FBI, DEA, and state attorneys general — as a social engineering weapon to compel victims into making authorized push payments. The FBI IC3 2025 Annual Report documented 32,424 complaints with $797.9 million in losses, representing an 87% increase in complaints and 97% increase in losses from 2024. This is fundamentally distinct from government program fraud (TP-0022) which exploits government systems for unauthorized benefit claims. Here, the government is not the victim — it is the impersonated authority used to intimidate and control the actual victim.
+
+The payment channel distribution reveals the scheme&apos;s adaptability: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier&apos;s Check 10%. Victims aged 60+ are disproportionately targeted, accounting for 8,628 complaints and $413.2 million in losses (52% of total losses).
+
+A notable sub-variant involves scammers impersonating the FBI IC3 itself (PSA250418), exploiting victims&apos; awareness of IC3 as a fraud reporting resource to add credibility to recovery or refund schemes.</description>
+      <pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>85</flame:confidence>
+      <flame:sourceReliability>A</flame:sourceReliability>
+      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+        <category>authorized-push-payment</category>
+        <category>elder-exploitation</category>
+        <category>impersonation</category>
+        <category>social-engineering</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>sector-government</category>
+        <category>attack-T1598</category>
+        <category>attack-T1656</category>
+    </item>
+    <item>
+      <title>[TP-0085] Crypto ATM/Kiosk Directed Fraud — Physical-to-Digital Monetization Channel</title>
+      <link>https://flameintel.org/#detail/TP-0085</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0085</guid>
+      <description>Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cryptocurrency ATMs/kiosks, converting physical currency to digital assets that are immediately transferred to attacker-controlled wallets. The FBI IC3 2025 Annual Report documented 13,460 complaints with $389 million in losses — a 58% increase from 2024. The elder demographic is disproportionately impacted: victims aged 60+ accounted for 6,188 complaints (46%) and $257 million in losses (66% of total crypto ATM losses).
+
+This TP is distinct from general cryptocurrency fraud because it focuses specifically on the physical-to-digital conversion point — the crypto ATM itself — as the execution and monetization channel. The crypto ATM serves as the critical chokepoint where detection and intervention are possible before funds become irrecoverable on-chain.</description>
+      <pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>80</flame:confidence>
+      <flame:sourceReliability>A</flame:sourceReliability>
+      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+        <category>authorized-push-payment</category>
+        <category>crypto-laundering</category>
+        <category>elder-exploitation</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>sector-crypto</category>
+        <category>attack-T1656</category>
     </item>
     <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
@@ -4423,7 +4520,7 @@ AI-enabled adversary attacks rose 89%, with GenAI used to create convincing voic
       <title>[DL-0166] GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary</title>
       <link>https://flameintel.org/#rules/DL-0166</link>
       <guid isPermaLink="false">flame-dl-DL-0166</guid>
-      <description>Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $6.57 billion in investment fraud losses in 2024 — the single largest fraud category. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.
+      <description>Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $8.65 billion in investment fraud losses in 2025 (up from $6.57B in 2024) — the single largest fraud category. IC3 2025 data shows 72% of investment fraud payments flow through cryptocurrency, 19% via wire transfer/ACH, and 4% peer-to-peer. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.
 </description>
         <category>authorized-push-payment</category>
         <category>crypto-laundering</category>
@@ -4436,7 +4533,7 @@ AI-enabled adversary attacks rose 89%, with GenAI used to create convincing voic
       <title>[DL-0167] Elder Financial Exploitation — New Payee Addition with Escalating Payment Amounts</title>
       <link>https://flameintel.org/#rules/DL-0167</link>
       <guid isPermaLink="false">flame-dl-DL-0167</guid>
-      <description>Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $4.885B in elder fraud losses in 2024 (43% YoY increase), with the true figure estimated at $28.3B when accounting for underreporting. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.
+      <description>Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $7.748B in elder fraud losses in 2025 (59% YoY increase from $4.885B in 2024), with 201,266 complaints from victims aged 60+. Crypto ATM/kiosk fraud disproportionately targets this cohort: 6,188 complaints and $257M in losses from 60+ victims alone. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.
 </description>
         <category>authorized-push-payment</category>
         <category>elder-exploitation</category>
@@ -5034,6 +5131,89 @@ AI-enabled adversary attacks rose 89%, with GenAI used to create convincing voic
         <category>severity-high</category>
         <category>CFPF-P2</category>
         <category>linked-TP-0081</category>
+    </item>
+    <item>
+      <title>[DL-0212] Elder Account — Large Cash Withdrawal with Crypto ATM Deposit Indicators</title>
+      <link>https://flameintel.org/#rules/DL-0212</link>
+      <guid isPermaLink="false">flame-dl-DL-0212</guid>
+      <description>Detects the elder-targeted crypto ATM fraud pattern where victims aged 60+ make large cash withdrawals with no corresponding deposit or transfer activity within 48 hours — a strong indicator that funds were deposited at a crypto ATM/kiosk under the direction of a scammer. FBI IC3 2025 data shows 6,188 crypto ATM complaints and $257 million in losses from victims aged 60+ (66% of all crypto ATM fraud losses). The 48-hour gap between bank withdrawal and lack of corresponding activity represents the detection window before funds become irrecoverable on-chain. This rule targets the P4 execution phase where bank-side intervention can still prevent loss.
+</description>
+        <category>authorized-push-payment</category>
+        <category>crypto-laundering</category>
+        <category>elder-exploitation</category>
+        <category>severity-high</category>
+        <category>CFPF-P4</category>
+        <category>linked-TP-0027</category>
+        <category>linked-TP-0085</category>
+    </item>
+    <item>
+      <title>[DL-0213] Unusual Large Cash Withdrawal with Precious Metals Merchant Transaction</title>
+      <link>https://flameintel.org/#rules/DL-0213</link>
+      <guid isPermaLink="false">flame-dl-DL-0213</guid>
+      <description>Detects the gold courier scam pattern where victims — predominantly elderly — make large cash withdrawals or wire transfers to precious metals merchants with no prior history of such transactions. FBI IC3 2025 documented 725 gold courier complaints with $311.8 million in losses, yielding an extraordinary average of ~$430,000 per victim. Victims are typically directed by government impersonation callers to purchase physical gold as &quot;asset protection,&quot; which is then collected by couriers. The precious metals MCC codes (5094 for precious stones/metals, 5944 for jewelry/watch/clock stores) serve as the primary detection signal when combined with customer age and transaction history anomalies.
+</description>
+        <category>authorized-push-payment</category>
+        <category>elder-exploitation</category>
+        <category>social-engineering</category>
+        <category>severity-high</category>
+        <category>CFPF-P4</category>
+        <category>linked-TP-0027</category>
+        <category>linked-TP-0082</category>
+    </item>
+    <item>
+      <title>[DL-0214] Post-Fraud Victim Payment to Newly Registered Legal or Recovery Entity</title>
+      <link>https://flameintel.org/#rules/DL-0214</link>
+      <guid isPermaLink="false">flame-dl-DL-0214</guid>
+      <description>Detects recovery fraud patterns where victims of prior fraud are targeted by fictitious law firms or recovery companies promising to retrieve lost funds. FBI IC3 2025 reported 10,516 recovery scam complaints with $1.4 billion in losses — making recovery fraud one of the largest IC3 loss categories. PSA250813 (August 2025) specifically warned about fictitious law firms targeting cryptocurrency scam victims. This rule identifies the characteristic pattern: a customer with a recent fraud complaint making payments to a newly established entity with legal or recovery terminology in the payee name. The 180-day lookback window accounts for IC3 data showing longer re-targeting timelines than previously estimated.
+</description>
+        <category>advance-fee-fraud</category>
+        <category>impersonation</category>
+        <category>recovery-fraud</category>
+        <category>severity-high</category>
+        <category>CFPF-P4</category>
+        <category>linked-TP-0062</category>
+    </item>
+    <item>
+      <title>[DL-0215] Multiple Unrelated Customers Depositing to Same Novel Beneficiary — Investment Club Pattern</title>
+      <link>https://flameintel.org/#rules/DL-0215</link>
+      <guid isPermaLink="false">flame-dl-DL-0215</guid>
+      <description>Detects investment club scam patterns where multiple unrelated victims deposit funds to the same fraudulent beneficiary within a short time window. FBI IC3 2025 documented approximately 1,600 investment club complaints with $160 million in losses, and PSA250703 specifically warned about fraudulent investment clubs on social media and messaging apps. The cluster deposit pattern — five or more unique, unrelated customers sending to the same novel beneficiary within 14 days — distinguishes investment club scams from 1:1 pig butchering (TP-0017) where victims typically deposit to unique beneficiary accounts. The group-based nature creates a detectable convergence signal absent from individual targeting schemes.
+</description>
+        <category>authorized-push-payment</category>
+        <category>investment-scam</category>
+        <category>severity-high</category>
+        <category>CFPF-P4</category>
+        <category>linked-TP-0017</category>
+        <category>linked-TP-0083</category>
+    </item>
+    <item>
+      <title>[DL-0216] Government Impersonation — Multi-Channel Payment Under Duress Indicators</title>
+      <link>https://flameintel.org/#rules/DL-0216</link>
+      <guid isPermaLink="false">flame-dl-DL-0216</guid>
+      <description>Detects government impersonation APP fraud by identifying payments with government agency references made via crypto, wire, or prepaid channels to non-historical payees. FBI IC3 2025 reported $797.9 million in losses from 32,424 government impersonation complaints — an 87% increase in complaints and 97% increase in losses from 2024. The payment channel distribution is distinctive: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%. This rule targets payment references containing government agency names or legal terminology from customers with no prior government- related payment history, as legitimate government payments follow established patterns and channels.
+</description>
+        <category>authorized-push-payment</category>
+        <category>impersonation</category>
+        <category>social-engineering</category>
+        <category>severity-high</category>
+        <category>CFPF-P4</category>
+        <category>linked-TP-0027</category>
+        <category>linked-TP-0084</category>
+    </item>
+    <item>
+      <title>[DL-0217] AI-Enhanced BEC — Payment Request Behavioral Divergence from Sender Baseline</title>
+      <link>https://flameintel.org/#rules/DL-0217</link>
+      <guid isPermaLink="false">flame-dl-DL-0217</guid>
+      <description>Detects AI-enhanced business email compromise by identifying wire transfer requests where the communication pattern diverges significantly from the sender&apos;s established baseline. FBI IC3 2025 reported $30 million in losses from AI-enabled BEC where chat generators created official-sounding emails mimicking company executives and voice cloning was used for wire authorization requests. AI-generated BEC content, while linguistically fluent, often lacks the sender&apos;s authentic communication patterns — writing style, formality level, time-of-day preferences, typical request amounts, and approval workflows. This rule targets Phase 3 (Positioning) where the fraudulent request is crafted and delivered, before the wire transfer is executed.
+</description>
+        <category>BEC</category>
+        <category>deepfake</category>
+        <category>social-engineering</category>
+        <category>wire-fraud</category>
+        <category>severity-medium</category>
+        <category>CFPF-P3</category>
+        <category>linked-TP-0002</category>
+        <category>linked-TP-0007</category>
     </item>
   </channel>
 </rss>
