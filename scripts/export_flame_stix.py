@@ -138,7 +138,7 @@ def build_external_refs(tp: Dict[str, Any]) -> List[Dict[str, str]]:
         if tech_id.startswith("F"):
             ref["url"] = f"https://ctid.mitre.org/fraud#/techniques/{tech_id}/"
         else:
-            ref["url"] = f"https://attack.mitre.org/techniques/{tech_id.replace('.', '/')}/",
+            ref["url"] = f"https://attack.mitre.org/techniques/{tech_id.replace('.', '/')}/"
         refs.append(ref)
     # Add source reference if available
     source = tp.get("source", "")
