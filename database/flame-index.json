@@ -2146,9 +2146,10 @@
       "BL-0034"
     ],
     "detection_rule_ids": [
-      "DL-0117",
       "DL-0142",
-      "DL-0215"
+      "DL-0215",
+      "DL-0220",
+      "DL-0221"
     ],
     "related_tps": [
       {
@@ -4292,9 +4293,9 @@
       "DL-0072",
       "DL-0073",
       "DL-0074",
-      "DL-0116",
       "DL-0119",
-      "DL-0121"
+      "DL-0121",
+      "DL-0219"
     ],
     "related_tps": [
       {
@@ -7024,8 +7025,8 @@
       "BL-0033"
     ],
     "detection_rule_ids": [
-      "DL-0115",
-      "DL-0116"
+      "DL-0218",
+      "DL-0219"
     ],
     "related_tps": [
       {
@@ -7149,7 +7150,7 @@
     },
     "baseline_ids": [],
     "detection_rule_ids": [
-      "DL-0117"
+      "DL-0220"
     ],
     "related_tps": [
       {
@@ -7370,7 +7371,8 @@
     "detection_rule_ids": [
       "DL-0120",
       "DL-0122",
-      "DL-0127"
+      "DL-0127",
+      "DL-0221"
     ],
     "related_tps": [
       {
@@ -9362,7 +9364,9 @@
     "detection_rule_ids": [
       "DL-0208",
       "DL-0209",
-      "DL-0210"
+      "DL-0210",
+      "DL-0218",
+      "DL-0220"
     ],
     "related_tps": [
       {
@@ -9871,7 +9875,8 @@
     },
     "baseline_ids": [],
     "detection_rule_ids": [
-      "DL-0216"
+      "DL-0216",
+      "DL-0219"
     ],
     "related_tps": [
       {
@@ -9990,6 +9995,138 @@
       {
         "id": "TP-0084",
         "relationship": "feeds-into"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0086",
+    "title": "Crisis-Exploitation Fraud Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-04-09",
+    "author": "FLAME Project",
+    "source": "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report",
+    "tlp": "WHITE",
+    "summary": "Crisis-exploitation fraud infrastructure is a systematic pattern where threat actors exploit geopolitical crises, natural disasters, and emergency government program announcements to rapidly deploy ph...",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "rdga-registered",
+    "geopolitical_timing": "conflict-triggered",
+    "nation_state_nexus": "suspected",
+    "sectors": [
+      "government",
+      "banking",
+      "insurance",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "phishing",
+      "brand-impersonation",
+      "credential-harvesting",
+      "investment-scam",
+      "impersonation",
+      "fraud-enabling-infrastructure"
+    ],
+    "tags": [
+      "crisis-exploitation",
+      "domain-infrastructure",
+      "government-impersonation",
+      "subsidy-fraud",
+      "energy-scam",
+      "commodity-investment-fraud",
+      "oil-shock",
+      "rdga",
+      "nrd-abuse",
+      "cheap-gtld",
+      "pages-dev-abuse",
+      "conflict-triggered",
+      "crimsonvector"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1584.001",
+      "T1566.002",
+      "T1608.005",
+      "T1608.006",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1032",
+      "F1031",
+      "F1029",
+      "T1583.001",
+      "T1598",
+      "T1608.006",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Social Engineering",
+      "Credential Access",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-CFPB-REGE",
+      "REG-OCC-FRAUD",
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0218",
+      "DL-0219",
+      "DL-0220",
+      "DL-0221"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0041",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0043",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0046",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0060",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0067",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0079",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0084",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 0

@@ -1,11 +1,11 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-09T19:02:00.272274+00:00",
+    "generated_at": "2026-04-09T19:40:04.929886+00:00",
     "total": 1
   },
   "data": {
-    "total": 85,
+    "total": 86,
     "fraudTypes": 141,
     "fraudTypeList": [
       "BEC",
@@ -176,11 +176,11 @@
       "web3"
     ],
     "phaseCoverage": {
-      "P1": 81,
-      "P2": 80,
-      "P3": 84,
-      "P4": 83,
-      "P5": 83
+      "P1": 82,
+      "P2": 81,
+      "P3": 85,
+      "P4": 84,
+      "P5": 84
     },
     "topTags": [
       {
@@ -236,6 +236,10 @@
         "count": 4
       },
       {
+        "tag": "government-impersonation",
+        "count": 4
+      },
+      {
         "tag": "high-value",
         "count": 4
       },
@@ -258,10 +262,6 @@
       {
         "tag": "synthetic-identity",
         "count": 4
-      },
-      {
-        "tag": "affiliate-fraud",
-        "count": 3
       }
     ],
     "coverageMatrix": [
@@ -508,13 +508,13 @@
       {
         "fraud_type": "brand-impersonation",
         "phases": {
-          "P1": 5,
-          "P2": 5,
-          "P3": 5,
-          "P4": 5,
-          "P5": 5
+          "P1": 6,
+          "P2": 6,
+          "P3": 6,
+          "P4": 6,
+          "P5": 6
         },
-        "total_tps": 5
+        "total_tps": 6
       },
       {
         "fraud_type": "bulletproof-hosting",
@@ -690,13 +690,13 @@
       {
         "fraud_type": "credential-harvesting",
         "phases": {
-          "P1": 1,
-          "P2": 1,
-          "P3": 1,
-          "P4": 1,
-          "P5": 1
+          "P1": 2,
+          "P2": 2,
+          "P3": 2,
+          "P4": 2,
+          "P5": 2
         },
-        "total_tps": 1
+        "total_tps": 2
       },
       {
         "fraud_type": "credential-stuffing",
@@ -944,13 +944,13 @@
       {
         "fraud_type": "fraud-enabling-infrastructure",
         "phases": {
-          "P1": 2,
-          "P2": 2,
-          "P3": 2,
-          "P4": 1,
-          "P5": 1
+          "P1": 3,
+          "P2": 3,
+          "P3": 3,
+          "P4": 2,
+          "P5": 2
         },
-        "total_tps": 2
+        "total_tps": 3
       },
       {
         "fraud_type": "fraudulent-claim",
@@ -1093,13 +1093,13 @@
       {
         "fraud_type": "impersonation",
         "phases": {
-          "P1": 9,
-          "P2": 9,
-          "P3": 9,
-          "P4": 9,
-          "P5": 9
+          "P1": 10,
+          "P2": 10,
+          "P3": 10,
+          "P4": 10,
+          "P5": 10
         },
-        "total_tps": 9
+        "total_tps": 10
       },
       {
         "fraud_type": "infrastructure-rotation",
@@ -1168,13 +1168,13 @@
       {
         "fraud_type": "investment-scam",
         "phases": {
-          "P1": 7,
-          "P2": 7,
-          "P3": 7,
-          "P4": 7,
-          "P5": 7
+          "P1": 8,
+          "P2": 8,
+          "P3": 8,
+          "P4": 8,
+          "P5": 8
         },
-        "total_tps": 7
+        "total_tps": 8
       },
       {
         "fraud_type": "invoice-fraud",
@@ -1366,13 +1366,13 @@
       {
         "fraud_type": "phishing",
         "phases": {
-          "P1": 9,
-          "P2": 9,
-          "P3": 9,
-          "P4": 9,
-          "P5": 9
+          "P1": 10,
+          "P2": 10,
+          "P3": 10,
+          "P4": 10,
+          "P5": 10
         },
-        "total_tps": 9
+        "total_tps": 10
       },
       {
         "fraud_type": "premium-diversion",
@@ -1805,6 +1805,6 @@
       },
       "lastUpdated": "2026-04-09"
     },
-    "generatedAt": "2026-04-09T19:01:58.176484+00:00"
+    "generatedAt": "2026-04-09T19:39:55.634594+00:00"
   }
 }

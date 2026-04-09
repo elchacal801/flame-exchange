@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-09T19:01:59.289452+00:00",
-    "total": 217
+    "generated_at": "2026-04-09T19:40:01.329477+00:00",
+    "total": 218
   },
   "data": [
     {
@@ -7523,241 +7523,6 @@
       "falsepositives": [
         "Legitimate DeFi users with complex multi-protocol strategies",
         "Institutional rebalancing across multiple venues"
-      ]
-    },
-    {
-      "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
-      "dl_id": "DL-0115",
-      "title": "DaaS Platform Transaction Pattern",
-      "status": "experimental",
-      "description": "Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.\n",
-      "cfpf_phase": "P1",
-      "level": "medium",
-      "detection": {
-        "selection_recurring": {
-          "payment_type": "recurring",
-          "recurring_payment_amount|gte": 100,
-          "recurring_payment_amount|lte": 1000,
-          "recurring_payment_currency": "USD",
-          "recurring_payment_interval": "monthly",
-          "destination_wallet_flag|contains": [
-            "deepfake_service",
-            "daas_provider"
-          ]
-        },
-        "selection_onetime": {
-          "payment_type": "one-time",
-          "transaction_amount|gte": 50,
-          "transaction_amount|lte": 500,
-          "destination_wallet_flag|contains": [
-            "deepfake_service",
-            "daas_provider"
-          ]
-        },
-        "condition": "selection_recurring or selection_onetime"
-      },
-      "logsource": {
-        "product": "crypto",
-        "service": "blockchain_analytics"
-      },
-      "sigma_compatible": true,
-      "data_sources": {
-        "native_fields": [
-          "payment_type",
-          "recurring_payment_amount",
-          "recurring_payment_currency",
-          "recurring_payment_interval",
-          "transaction_amount",
-          "destination_wallet_flag"
-        ],
-        "enrichment_required": [
-          {
-            "field": "destination_wallet_flag",
-            "source": "Threat intelligence enrichment (known DaaS provider wallet attribution)"
-          }
-        ]
-      },
-      "threat_path_ids": [
-        "TP-0057"
-      ],
-      "fraud_types": [
-        "deepfake-as-a-service",
-        "fraud-as-a-service"
-      ],
-      "tags": [
-        "TP-0057",
-        "attack.t1589",
-        "cfpf.phase1.recon",
-        "daas",
-        "deepfake",
-        "fraud-as-a-service",
-        "subscription-pattern"
-      ],
-      "falsepositives": [
-        "Legitimate AI SaaS subscriptions paid in cryptocurrency",
-        "NFT art purchases from digital artists",
-        "Legitimate face-swap or avatar generation services for entertainment"
-      ]
-    },
-    {
-      "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
-      "dl_id": "DL-0116",
-      "title": "Real-Time Face/Voice Changer Detection During Video Interview",
-      "status": "experimental",
-      "description": "Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.\n",
-      "cfpf_phase": "P2",
-      "level": "high",
-      "detection": {
-        "selection_virtual_camera": {
-          "camera_driver_name|contains": [
-            "OBS Virtual",
-            "ManyCam",
-            "DeepFace",
-            "FaceSwap",
-            "Snap Camera"
-          ]
-        },
-        "selection_audio_anomaly": {
-          "audio_analysis_score|gt": 0.75,
-          "audio_formant_anomaly": true
-        },
-        "selection_lip_sync": {
-          "lip_sync_delta_ms|gt": 200
-        },
-        "condition": "selection_virtual_camera or selection_audio_anomaly or selection_lip_sync"
-      },
-      "logsource": {
-        "product": "collaboration",
-        "service": "video_conferencing"
-      },
-      "sigma_compatible": false,
-      "native_query_required": true,
-      "data_sources": {
-        "native_fields": [
-          "camera_driver_name",
-          "audio_analysis_score",
-          "audio_formant_anomaly",
-          "lip_sync_delta_ms"
-        ],
-        "enrichment_required": [
-          {
-            "field": "audio_analysis_score",
-            "source": "Audio analysis enrichment (spectral anomaly detection scoring)"
-          },
-          {
-            "field": "lip_sync_delta_ms",
-            "source": "Video analysis enrichment (lip-to-audio synchronization measurement)"
-          }
-        ]
-      },
-      "queries": {
-        "cql": "// CrowdStrike CQL for Real-Time Face/Voice Changer Detection During Video Interview\n// Repository: flame-collaboration-video-monitoring\n// Native query required - audio/video analysis cannot be expressed in Sigma\ncamera_driver_name=/OBS Virtual|ManyCam|DeepFace|FaceSwap|Snap Camera/i\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| case {\n    camera_driver_name=/DeepFace|FaceSwap/i | risk_score:=90;\n    camera_driver_name=/OBS Virtual|ManyCam/i | risk_score:=50;\n    audio_analysis_score>0.75 | risk_score:=80;\n    lip_sync_delta_ms>200 | risk_score:=70;\n    * | risk_score:=0;\n  }\n| risk_score>=50\n| groupBy([user_id, session_id], function=[count(), collect([camera_driver_name, audio_analysis_score, lip_sync_delta_ms])])",
-        "splunk": "`comment(\"Splunk SPL for Real-Time Face/Voice Changer Detection During Video Interview\")`\n`comment(\"Native query required - audio/video analysis cannot be expressed in Sigma\")`\nindex=flame_collaboration sourcetype=flame:video_conferencing\n(camera_driver_name=\"*OBS Virtual*\" OR camera_driver_name=\"*ManyCam*\" OR camera_driver_name=\"*DeepFace*\" OR camera_driver_name=\"*FaceSwap*\")\nOR audio_analysis_score>0.75\nOR lip_sync_delta_ms>200\n| eval risk_score=case(\n    camera_driver_name LIKE \"%DeepFace%\" OR camera_driver_name LIKE \"%FaceSwap%\", 90,\n    camera_driver_name LIKE \"%OBS Virtual%\" OR camera_driver_name LIKE \"%ManyCam%\", 50,\n    audio_analysis_score>0.75, 80,\n    lip_sync_delta_ms>200, 70)\n| where risk_score>=50\n| stats count values(camera_driver_name) as cameras values(audio_analysis_score) as audio_scores max(lip_sync_delta_ms) as max_lip_delta by user_id session_id"
-      },
-      "threat_path_ids": [
-        "TP-0034",
-        "TP-0057"
-      ],
-      "fraud_types": [
-        "ai-face-voice-changer",
-        "deepfake-fraud",
-        "dprk-it-worker-fraud"
-      ],
-      "tags": [
-        "TP-0034",
-        "TP-0057",
-        "attack.t1656",
-        "cfpf.phase2.initial_access",
-        "deepfake",
-        "dprk",
-        "face-changer",
-        "flame.dprk",
-        "voice-changer"
-      ],
-      "falsepositives": [
-        "Legitimate OBS usage for screen sharing or streaming",
-        "Virtual background applications using camera driver interception",
-        "Legitimate audio processing software for noise cancellation",
-        "Poor network conditions causing audio-video desynchronization"
-      ]
-    },
-    {
-      "id": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
-      "dl_id": "DL-0117",
-      "title": "Multilingual Chatbot Scam Pattern Detection",
-      "status": "experimental",
-      "description": "Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.\n",
-      "cfpf_phase": "P2",
-      "level": "medium",
-      "detection": {
-        "selection_timing": {
-          "response_time_variance_ms|lt": 2000,
-          "message_count|gte": 10
-        },
-        "selection_template": {
-          "conversation_template_match_score|gt": 0.8
-        },
-        "selection_language_switch": {
-          "language_switch_count|gte": 1,
-          "conversation_languages_count|gte": 2
-        },
-        "selection_duplicate_phrasing": {
-          "cross_instance_phrase_similarity|gt": 0.9,
-          "reported_instances|gte": 2
-        },
-        "condition": "selection_timing and (selection_template or selection_language_switch or selection_duplicate_phrasing)"
-      },
-      "logsource": {
-        "product": "messaging_platform",
-        "service": "abuse_detection"
-      },
-      "sigma_compatible": true,
-      "data_sources": {
-        "native_fields": [
-          "response_time_variance_ms",
-          "message_count",
-          "conversation_template_match_score",
-          "language_switch_count",
-          "conversation_languages_count",
-          "cross_instance_phrase_similarity",
-          "reported_instances"
-        ],
-        "enrichment_required": [
-          {
-            "field": "conversation_template_match_score",
-            "source": "NLP enrichment (conversation template matching against known scam scripts)"
-          },
-          {
-            "field": "cross_instance_phrase_similarity",
-            "source": "Cross-instance analytics enrichment (phrase similarity scoring across reports)"
-          }
-        ]
-      },
-      "threat_path_ids": [
-        "TP-0017",
-        "TP-0058"
-      ],
-      "fraud_types": [
-        "chatbot-enabled-fraud",
-        "scam-compound-operations",
-        "social-engineering"
-      ],
-      "tags": [
-        "TP-0017",
-        "TP-0058",
-        "attack.t1566",
-        "attack.t1656",
-        "cfpf.phase2.initial_access",
-        "chatbot",
-        "multilingual",
-        "scam-compound",
-        "scripted-fraud",
-        "social-engineering"
-      ],
-      "falsepositives": [
-        "Legitimate customer service chatbots with scripted responses",
-        "Auto-responders and out-of-office message systems",
-        "Language learning practice conversations"
       ]
     },
     {
@@ -16538,6 +16303,279 @@
         "Emails sent by executive assistants on behalf of the named sender",
         "Automated or template-based payment requests that differ from freeform communication style",
         "Cross-timezone communications appearing outside normal hours"
+      ]
+    },
+    {
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "dl_id": "DL-0218",
+      "title": "Crisis-Keyword Domain Registration Surge — Bulk NRD Detection within 72h Window",
+      "status": "experimental",
+      "description": "Detects bulk registration of crisis-themed domains (5+ in 72h) matching government subsidy, energy relief, and commodity investment keyword patterns on cheap gTLDs. CrimsonVector research identified 846 crisis-themed domains registered in a single peak week during the 2026 Iran War oil shock, with 48-72h lag between government program announcements and domain activation. This rule targets the P1 infrastructure build-out phase where early detection can disrupt campaigns before victim-facing deployment.\n",
+      "cfpf_phase": "P1",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "domain_name|contains": [
+            "subsidy",
+            "relief",
+            "assistance",
+            "fuel-",
+            "petrol-",
+            "energy-emergency",
+            "oil-invest",
+            "crude-trad",
+            "commodity-trad",
+            "winter-fuel",
+            "cost-of-living",
+            "energy-grant",
+            "heating-allow"
+          ]
+        },
+        "filter_cheap_tld": {
+          "tld|re": "TOP|BOND|XYZ|SHOP|XIN|CFD|LOL|CLICK|BUZ|CYOU"
+        },
+        "filter_burst": {
+          "registration_count_72h_same_registrar|gte": 5
+        },
+        "timeframe": "72h",
+        "condition": "selection AND filter_cheap_tld AND filter_burst"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "domain_intelligence"
+      },
+      "references": [
+        "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — 1,435 crisis-themed domains",
+        "Interisle Consulting Group, Phishing Landscape 2025 — Bulk registration patterns on cheap gTLDs"
+      ],
+      "threat_path_ids": [
+        "TP-0057",
+        "TP-0079",
+        "TP-0086"
+      ],
+      "fraud_types": [
+        "brand-impersonation",
+        "deepfake-as-a-service",
+        "fraud-as-a-service",
+        "fraud-enabling-infrastructure",
+        "phishing"
+      ],
+      "tags": [
+        "TP-0057",
+        "attack.t1589",
+        "cfpf.phase1.recon",
+        "cfpf.phase1.recon",
+        "daas",
+        "deepfake",
+        "flame.crisis-exploitation",
+        "flame.infrastructure",
+        "flame.shared",
+        "fraud-as-a-service",
+        "subscription-pattern"
+      ],
+      "falsepositives": [
+        "Legitimate government agencies registering official program domains",
+        "News media or advocacy organizations registering crisis-related domains",
+        "Energy companies registering product-related domains during price events"
+      ]
+    },
+    {
+      "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "dl_id": "DL-0219",
+      "title": "Government Subsidy Impersonation Domain — NRD with Agency Keyword Pattern",
+      "status": "experimental",
+      "description": "Detects newly registered domains (< 30 days) matching government agency impersonation patterns combined with subsidy/relief keywords. Targets domains like gov*-subsidy*, dwp-*, hmrc-*, irs-*, fema-*, *-relief-payment, and country-agency combinations (uk-energy-*, us-fuel-*). CrimsonVector confirmed gov.dwp-subsidy.shop as a phishing site impersonating the UK Department for Work and Pensions during the 2026 oil shock. The NRD age filter (< 30 days) eliminates legitimate government domains while catching the 48-72h post-announcement registration surge.\n",
+      "cfpf_phase": "P2",
+      "level": "critical",
+      "detection": {
+        "selection_gov_pattern": {
+          "domain_name|re": "gov[.-]|dwp[.-]|hmrc[.-]|irs[.-]|fema[.-]|ssa[.-]|centrelink[.-]|service-canada[.-]|cra[.-]"
+        },
+        "selection_subsidy_keyword": {
+          "domain_name|contains": [
+            "subsidy",
+            "relief",
+            "assistance",
+            "allowance",
+            "benefit",
+            "grant",
+            "rebate",
+            "payment"
+          ]
+        },
+        "filter_nrd": {
+          "domain_age_days|lte": 30
+        },
+        "condition": "selection_gov_pattern AND selection_subsidy_keyword AND filter_nrd"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "domain_intelligence"
+      },
+      "references": [
+        "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — gov.dwp-subsidy.shop confirmed phishing",
+        "UK NCSC, Government Impersonation Phishing Advisories",
+        "FBI IC3, 2025 Internet Crime Report — Government impersonation: $797.9M"
+      ],
+      "threat_path_ids": [
+        "TP-0034",
+        "TP-0057",
+        "TP-0084",
+        "TP-0086"
+      ],
+      "fraud_types": [
+        "ai-face-voice-changer",
+        "credential-harvesting",
+        "deepfake-fraud",
+        "dprk-it-worker-fraud",
+        "impersonation",
+        "phishing"
+      ],
+      "tags": [
+        "TP-0034",
+        "TP-0057",
+        "attack.t1656",
+        "cfpf.phase2.initial_access",
+        "cfpf.phase2.initial_access",
+        "deepfake",
+        "dprk",
+        "face-changer",
+        "flame.crisis-exploitation",
+        "flame.dprk",
+        "flame.government-impersonation",
+        "flame.infrastructure",
+        "voice-changer"
+      ],
+      "falsepositives": [
+        "Legitimate government contractor domains registered for program support",
+        "News aggregator or comparison sites covering government programs",
+        "Academic or research domains studying government policy"
+      ]
+    },
+    {
+      "id": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+      "dl_id": "DL-0220",
+      "title": "Rapid Certificate Issuance on Crisis-Themed Domain — Sub-48h Registration-to-Cert Velocity",
+      "status": "experimental",
+      "description": "Detects TLS certificate issuance within 48 hours of domain registration on crisis-themed domains. Legitimate organizations typically register domains days to weeks before certificate provisioning, while crisis-exploitation infrastructure shows a characteristic sub-48h registration-to-cert velocity as threat actors race to deploy HTTPS-credible phishing pages before awareness develops. Certificate transparency logs provide the data source. CrimsonVector documented this rapid-cert pattern across 1,435 crisis-themed domains during the 2026 oil shock, with Let's Encrypt and ZeroSSL as the primary issuers.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection_crisis_keyword": {
+          "domain_name|contains": [
+            "subsidy",
+            "relief",
+            "assistance",
+            "fuel-",
+            "petrol-",
+            "energy-emergency",
+            "oil-invest",
+            "crude-trad",
+            "commodity-trad"
+          ]
+        },
+        "filter_rapid_cert": {
+          "hours_registration_to_cert|lte": 48
+        },
+        "filter_free_ca": {
+          "certificate_issuer|contains": [
+            "Let's Encrypt",
+            "ZeroSSL",
+            "Buypass"
+          ]
+        },
+        "condition": "selection_crisis_keyword AND filter_rapid_cert AND filter_free_ca"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "domain_intelligence"
+      },
+      "references": [
+        "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — rapid cert issuance pattern",
+        "Certificate Transparency (RFC 6962) — Public CT log monitoring"
+      ],
+      "threat_path_ids": [
+        "TP-0017",
+        "TP-0058",
+        "TP-0079",
+        "TP-0086"
+      ],
+      "fraud_types": [
+        "chatbot-enabled-fraud",
+        "fraud-enabling-infrastructure",
+        "phishing",
+        "scam-compound-operations",
+        "social-engineering"
+      ],
+      "tags": [
+        "TP-0017",
+        "TP-0058",
+        "attack.t1566",
+        "attack.t1656",
+        "cfpf.phase2.initial_access",
+        "cfpf.phase2.initial_access",
+        "chatbot",
+        "flame.cert-transparency",
+        "flame.crisis-exploitation",
+        "flame.infrastructure",
+        "multilingual",
+        "scam-compound",
+        "scripted-fraud",
+        "social-engineering"
+      ],
+      "falsepositives": [
+        "Legitimate rapid-deployment sites using automated certificate provisioning",
+        "CDN-provisioned certificates on legitimate customer domains"
+      ]
+    },
+    {
+      "id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f80",
+      "dl_id": "DL-0221",
+      "title": "Commodity Investment Scam Domain — Crisis-Themed Trading Platform on Cheap gTLD",
+      "status": "experimental",
+      "description": "Detects newly registered domains on cheap gTLDs matching commodity investment scam patterns (oil-invest*, crude-trad*, commodity-trad*, petrol-fund*, energy-trad*). These domains typically deploy fake trading platforms soliciting cryptocurrency deposits during commodity price shocks. CrimsonVector identified a dual-track exploitation model during the 2026 Iran War oil shock: crisis events simultaneously generated government subsidy phishing (targeting relief seekers) and commodity investment scams (targeting opportunistic investors). The investment scam track used domains that mimicked legitimate trading platforms with fabricated profit dashboards.\n",
+      "cfpf_phase": "P2",
+      "level": "high",
+      "detection": {
+        "selection": {
+          "domain_name|re": "oil.invest|crude.trad|commodity.trad|petrol.fund|energy.trad|oil.trad|fuel.invest|gas.invest|brent.trad|wti.trad"
+        },
+        "filter_cheap_tld": {
+          "tld|re": "TOP|BOND|XYZ|SHOP|XIN|CFD|LOL|CLICK|BUZ|CYOU|COM|NET|ORG"
+        },
+        "filter_nrd": {
+          "domain_age_days|lte": 30
+        },
+        "condition": "selection AND filter_nrd"
+      },
+      "logsource": {
+        "product": "banking",
+        "service": "domain_intelligence"
+      },
+      "references": [
+        "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — dual-track exploitation model",
+        "FBI IC3, 2025 Internet Crime Report — Investment fraud: $8.65B, 72% via cryptocurrency"
+      ],
+      "threat_path_ids": [
+        "TP-0017",
+        "TP-0060",
+        "TP-0086"
+      ],
+      "fraud_types": [
+        "brand-impersonation",
+        "fraud-enabling-infrastructure",
+        "investment-scam"
+      ],
+      "tags": [
+        "cfpf.phase2.initial_access",
+        "flame.crisis-exploitation",
+        "flame.infrastructure",
+        "flame.investment-scam"
+      ],
+      "falsepositives": [
+        "Legitimate commodity trading platforms launching new domains",
+        "Financial news or analysis sites covering commodity markets",
+        "Educational resources about commodity investment"
       ]
     }
   ]

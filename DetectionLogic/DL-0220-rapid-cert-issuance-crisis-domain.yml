@@ -1,0 +1,55 @@
+title: "Rapid Certificate Issuance on Crisis-Themed Domain — Sub-48h Registration-to-Cert Velocity"
+id: "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f"
+status: experimental
+description: >
+  Detects TLS certificate issuance within 48 hours of domain registration on
+  crisis-themed domains. Legitimate organizations typically register domains
+  days to weeks before certificate provisioning, while crisis-exploitation
+  infrastructure shows a characteristic sub-48h registration-to-cert velocity
+  as threat actors race to deploy HTTPS-credible phishing pages before
+  awareness develops. Certificate transparency logs provide the data source.
+  CrimsonVector documented this rapid-cert pattern across 1,435 crisis-themed
+  domains during the 2026 oil shock, with Let's Encrypt and ZeroSSL as the
+  primary issuers.
+references:
+  - "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — rapid cert issuance pattern"
+  - "Certificate Transparency (RFC 6962) — Public CT log monitoring"
+threat_paths:
+  - TP-0086
+  - TP-0079
+cfpf_phase: P2
+fraud_types:
+  - fraud-enabling-infrastructure
+  - phishing
+logsource:
+  product: banking
+  service: domain_intelligence
+detection:
+  selection_crisis_keyword:
+    domain_name|contains:
+      - subsidy
+      - relief
+      - assistance
+      - fuel-
+      - petrol-
+      - energy-emergency
+      - oil-invest
+      - crude-trad
+      - commodity-trad
+  filter_rapid_cert:
+    hours_registration_to_cert|lte: 48
+  filter_free_ca:
+    certificate_issuer|contains:
+      - "Let's Encrypt"
+      - "ZeroSSL"
+      - "Buypass"
+  condition: selection_crisis_keyword AND filter_rapid_cert AND filter_free_ca
+falsepositives:
+  - "Legitimate rapid-deployment sites using automated certificate provisioning"
+  - "CDN-provisioned certificates on legitimate customer domains"
+level: high
+tags:
+  - cfpf.phase2.initial_access
+  - flame.infrastructure
+  - flame.crisis-exploitation
+  - flame.cert-transparency

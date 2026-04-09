@@ -372,7 +372,7 @@
       <pubDate>Fri, 20 Feb 2026 00:00:00 +0000</pubDate>
       <flame:confidence>88</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>3</flame:detectionRuleCount>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
         <category>authorized-push-payment</category>
         <category>investment-scam</category>
         <category>social-engineering</category>
@@ -1664,7 +1664,7 @@ The geographic distribution of money mule networks aligns with WCI (Bruce et al.
       <pubDate>Fri, 20 Mar 2026 00:00:00 +0000</pubDate>
       <flame:confidence>70</flame:confidence>
       <flame:sourceReliability>B</flame:sourceReliability>
-      <flame:detectionRuleCount>3</flame:detectionRuleCount>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
         <category>cloaking</category>
         <category>geo-routing</category>
         <category>investment-fraud</category>
@@ -2211,7 +2211,7 @@ Cloudflare AS13335 has been the number one hosting network for phishing attacks 
       <pubDate>Wed, 01 Apr 2026 00:00:00 +0000</pubDate>
       <flame:confidence>90</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>3</flame:detectionRuleCount>
+      <flame:detectionRuleCount>5</flame:detectionRuleCount>
         <category>brand-impersonation</category>
         <category>credential-harvesting</category>
         <category>fraud-enabling-infrastructure</category>
@@ -2361,7 +2361,7 @@ A notable sub-variant involves scammers impersonating the FBI IC3 itself (PSA250
       <pubDate>Mon, 06 Apr 2026 00:00:00 +0000</pubDate>
       <flame:confidence>85</flame:confidence>
       <flame:sourceReliability>A</flame:sourceReliability>
-      <flame:detectionRuleCount>1</flame:detectionRuleCount>
+      <flame:detectionRuleCount>2</flame:detectionRuleCount>
         <category>authorized-push-payment</category>
         <category>elder-exploitation</category>
         <category>impersonation</category>
@@ -2398,6 +2398,41 @@ This TP is distinct from general cryptocurrency fraud because it focuses specifi
         <category>sector-cross-sector</category>
         <category>sector-crypto</category>
         <category>attack-T1656</category>
+    </item>
+    <item>
+      <title>[TP-0086] Crisis-Exploitation Fraud Infrastructure</title>
+      <link>https://flameintel.org/#detail/TP-0086</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0086</guid>
+      <description>Crisis-exploitation fraud infrastructure is a systematic pattern where threat actors exploit geopolitical crises, natural disasters, and emergency government program announcements to rapidly deploy phishing, credential harvesting, and investment scam infrastructure. The attack model follows a predictable sequence: crisis event triggers a government program announcement, which generates a wave of fraudulent domain registrations within 48-72 hours, followed by deployment of phishing pages impersonating government relief portals, energy subsidy applications, and commodity investment platforms.
+
+CrimsonVector research into the 2026 Iran War oil shock identified 1,435 crisis-themed domains registered in the weeks following the conflict&apos;s escalation and associated government energy subsidy announcements. 846 domains were registered during the peak week alone. Confirmed phishing sites included `gov.dwp-subsidy.shop` impersonating the UK Department for Work and Pensions, and multiple domains targeting EU and US energy assistance programs. The infrastructure leveraged cheap gTLDs (.shop, .top, .xyz, .bond), Cloudflare Pages (pages.dev) for free hosting, and rapid Let&apos;s Encrypt certificate issuance to achieve HTTPS credibility within hours of registration.
+
+This threat path is distinct from general phishing infrastructure (TP-0079) because the attack timing is predictable — anchored to external crisis events and government announcements — and the domain keyword patterns are crisis-specific, creating a detection window during the 48-72 hour infrastructure build-out phase before victim-facing deployment.</description>
+      <pubDate>Thu, 09 Apr 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>80</flame:confidence>
+      <flame:sourceReliability>B</flame:sourceReliability>
+      <flame:detectionRuleCount>4</flame:detectionRuleCount>
+        <category>brand-impersonation</category>
+        <category>credential-harvesting</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>impersonation</category>
+        <category>investment-scam</category>
+        <category>phishing</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>sector-government</category>
+        <category>sector-insurance</category>
+        <category>attack-T1566.002</category>
+        <category>attack-T1583.001</category>
+        <category>attack-T1584.001</category>
+        <category>attack-T1598</category>
+        <category>attack-T1608.005</category>
+        <category>attack-T1608.006</category>
     </item>
     <item>
       <title>[DL-0001] Mule Account Velocity Pattern</title>
@@ -3835,46 +3870,6 @@ This TP is distinct from general cryptocurrency fraud because it focuses specifi
         <category>linked-TP-0049</category>
     </item>
     <item>
-      <title>[DL-0115] DaaS Platform Transaction Pattern</title>
-      <link>https://flameintel.org/#rules/DL-0115</link>
-      <guid isPermaLink="false">flame-dl-DL-0115</guid>
-      <description>Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.
-</description>
-        <category>deepfake-as-a-service</category>
-        <category>fraud-as-a-service</category>
-        <category>severity-medium</category>
-        <category>CFPF-P1</category>
-        <category>linked-TP-0057</category>
-    </item>
-    <item>
-      <title>[DL-0116] Real-Time Face/Voice Changer Detection During Video Interview</title>
-      <link>https://flameintel.org/#rules/DL-0116</link>
-      <guid isPermaLink="false">flame-dl-DL-0116</guid>
-      <description>Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.
-</description>
-        <category>ai-face-voice-changer</category>
-        <category>deepfake-fraud</category>
-        <category>dprk-it-worker-fraud</category>
-        <category>severity-high</category>
-        <category>CFPF-P2</category>
-        <category>linked-TP-0034</category>
-        <category>linked-TP-0057</category>
-    </item>
-    <item>
-      <title>[DL-0117] Multilingual Chatbot Scam Pattern Detection</title>
-      <link>https://flameintel.org/#rules/DL-0117</link>
-      <guid isPermaLink="false">flame-dl-DL-0117</guid>
-      <description>Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.
-</description>
-        <category>chatbot-enabled-fraud</category>
-        <category>scam-compound-operations</category>
-        <category>social-engineering</category>
-        <category>severity-medium</category>
-        <category>CFPF-P2</category>
-        <category>linked-TP-0017</category>
-        <category>linked-TP-0058</category>
-    </item>
-    <item>
       <title>[DL-0118] Automated Mule Account Creation Velocity</title>
       <link>https://flameintel.org/#rules/DL-0118</link>
       <guid isPermaLink="false">flame-dl-DL-0118</guid>
@@ -5214,6 +5209,75 @@ This TP is distinct from general cryptocurrency fraud because it focuses specifi
         <category>CFPF-P3</category>
         <category>linked-TP-0002</category>
         <category>linked-TP-0007</category>
+    </item>
+    <item>
+      <title>[DL-0218] Crisis-Keyword Domain Registration Surge — Bulk NRD Detection within 72h Window</title>
+      <link>https://flameintel.org/#rules/DL-0218</link>
+      <guid isPermaLink="false">flame-dl-DL-0218</guid>
+      <description>Detects bulk registration of crisis-themed domains (5+ in 72h) matching government subsidy, energy relief, and commodity investment keyword patterns on cheap gTLDs. CrimsonVector research identified 846 crisis-themed domains registered in a single peak week during the 2026 Iran War oil shock, with 48-72h lag between government program announcements and domain activation. This rule targets the P1 infrastructure build-out phase where early detection can disrupt campaigns before victim-facing deployment.
+</description>
+        <category>brand-impersonation</category>
+        <category>deepfake-as-a-service</category>
+        <category>fraud-as-a-service</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>phishing</category>
+        <category>severity-high</category>
+        <category>CFPF-P1</category>
+        <category>linked-TP-0057</category>
+        <category>linked-TP-0079</category>
+        <category>linked-TP-0086</category>
+    </item>
+    <item>
+      <title>[DL-0219] Government Subsidy Impersonation Domain — NRD with Agency Keyword Pattern</title>
+      <link>https://flameintel.org/#rules/DL-0219</link>
+      <guid isPermaLink="false">flame-dl-DL-0219</guid>
+      <description>Detects newly registered domains (&lt; 30 days) matching government agency impersonation patterns combined with subsidy/relief keywords. Targets domains like gov*-subsidy*, dwp-*, hmrc-*, irs-*, fema-*, *-relief-payment, and country-agency combinations (uk-energy-*, us-fuel-*). CrimsonVector confirmed gov.dwp-subsidy.shop as a phishing site impersonating the UK Department for Work and Pensions during the 2026 oil shock. The NRD age filter (&lt; 30 days) eliminates legitimate government domains while catching the 48-72h post-announcement registration surge.
+</description>
+        <category>ai-face-voice-changer</category>
+        <category>credential-harvesting</category>
+        <category>deepfake-fraud</category>
+        <category>dprk-it-worker-fraud</category>
+        <category>impersonation</category>
+        <category>phishing</category>
+        <category>severity-critical</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0034</category>
+        <category>linked-TP-0057</category>
+        <category>linked-TP-0084</category>
+        <category>linked-TP-0086</category>
+    </item>
+    <item>
+      <title>[DL-0220] Rapid Certificate Issuance on Crisis-Themed Domain — Sub-48h Registration-to-Cert Velocity</title>
+      <link>https://flameintel.org/#rules/DL-0220</link>
+      <guid isPermaLink="false">flame-dl-DL-0220</guid>
+      <description>Detects TLS certificate issuance within 48 hours of domain registration on crisis-themed domains. Legitimate organizations typically register domains days to weeks before certificate provisioning, while crisis-exploitation infrastructure shows a characteristic sub-48h registration-to-cert velocity as threat actors race to deploy HTTPS-credible phishing pages before awareness develops. Certificate transparency logs provide the data source. CrimsonVector documented this rapid-cert pattern across 1,435 crisis-themed domains during the 2026 oil shock, with Let&apos;s Encrypt and ZeroSSL as the primary issuers.
+</description>
+        <category>chatbot-enabled-fraud</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>phishing</category>
+        <category>scam-compound-operations</category>
+        <category>social-engineering</category>
+        <category>severity-high</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0017</category>
+        <category>linked-TP-0058</category>
+        <category>linked-TP-0079</category>
+        <category>linked-TP-0086</category>
+    </item>
+    <item>
+      <title>[DL-0221] Commodity Investment Scam Domain — Crisis-Themed Trading Platform on Cheap gTLD</title>
+      <link>https://flameintel.org/#rules/DL-0221</link>
+      <guid isPermaLink="false">flame-dl-DL-0221</guid>
+      <description>Detects newly registered domains on cheap gTLDs matching commodity investment scam patterns (oil-invest*, crude-trad*, commodity-trad*, petrol-fund*, energy-trad*). These domains typically deploy fake trading platforms soliciting cryptocurrency deposits during commodity price shocks. CrimsonVector identified a dual-track exploitation model during the 2026 Iran War oil shock: crisis events simultaneously generated government subsidy phishing (targeting relief seekers) and commodity investment scams (targeting opportunistic investors). The investment scam track used domains that mimicked legitimate trading platforms with fabricated profit dashboards.
+</description>
+        <category>brand-impersonation</category>
+        <category>fraud-enabling-infrastructure</category>
+        <category>investment-scam</category>
+        <category>severity-high</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0017</category>
+        <category>linked-TP-0060</category>
+        <category>linked-TP-0086</category>
     </item>
   </channel>
 </rss>

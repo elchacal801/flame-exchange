@@ -510,6 +510,12 @@
     "text": "Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cryptocurrency ATMs/kiosks, converting physical currency to digital assets that are immediately transferred to attacker-controlled wallets. The FBI IC3 2025 Annual Report documented 13,460 complaints with $389 million in losses — a 58% increase from 2024. The elder demographic is disproportionately impacted: victims aged 60+ accounted for 6,188 complaints (46%) and $257 million in losses (66% of total crypto ATM losses).\n\nThis TP is distinct from general cryptocurrency fraud because it focuses specifically on the physical-to-digital conversion point — the crypto ATM itself — as the execution and monetization channel. The crypto ATM serves as the critical chokepoint where detection and intervention are possible before funds become irrecoverable on-chain."
   },
   {
+    "id": "TP-0086",
+    "type": "threat_path",
+    "title": "Crisis-Exploitation Fraud Infrastructure",
+    "text": "Crisis-exploitation fraud infrastructure is a systematic pattern where threat actors exploit geopolitical crises, natural disasters, and emergency government program announcements to rapidly deploy phishing, credential harvesting, and investment scam infrastructure. The attack model follows a predictable sequence: crisis event triggers a government program announcement, which generates a wave of fraudulent domain registrations within 48-72 hours, followed by deployment of phishing pages impersonating government relief portals, energy subsidy applications, and commodity investment platforms.\n\nCrimsonVector research into the 2026 Iran War oil shock identified 1,435 crisis-themed domains registered in the weeks following the conflict's escalation and associated government energy subsidy announcements. 846 domains were registered during the peak week alone. Confirmed phishing sites included `gov.dwp-subsidy.shop` impersonating the UK Department for Work and Pensions, and multiple domains targeting EU and US energy assistance programs. The infrastructure leveraged cheap gTLDs (.shop, .top, .xyz, .bond), Cloudflare Pages (pages.dev) for free hosting, and rapid Let's Encrypt certificate issuance to achieve HTTPS credibility within hours of registration.\n\nThis threat path is distinct from general phishing infrastructure (TP-0079) because the attack timing is predictable — anchored to external crisis events and government announcements — and the domain keyword patterns are crisis-specific, creating a detection window during the 48-72 hour infrastructure build-out phase before victim-facing deployment."
+  },
+  {
     "id": "DL-0001",
     "type": "detection_rule",
     "title": "Mule Account Velocity Pattern",
@@ -1194,24 +1200,6 @@
     "text": "Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ramping through Chinese OTC brokers (days 20-45). Temporal pattern matching against known laundering cycle timelines.\n"
   },
   {
-    "id": "DL-0115",
-    "type": "detection_rule",
-    "title": "DaaS Platform Transaction Pattern",
-    "text": "Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.\n"
-  },
-  {
-    "id": "DL-0116",
-    "type": "detection_rule",
-    "title": "Real-Time Face/Voice Changer Detection During Video Interview",
-    "text": "Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.\n"
-  },
-  {
-    "id": "DL-0117",
-    "type": "detection_rule",
-    "title": "Multilingual Chatbot Scam Pattern Detection",
-    "text": "Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.\n"
-  },
-  {
     "id": "DL-0118",
     "type": "detection_rule",
     "title": "Automated Mule Account Creation Velocity",
@@ -1810,6 +1798,30 @@
     "type": "detection_rule",
     "title": "AI-Enhanced BEC — Payment Request Behavioral Divergence from Sender Baseline",
     "text": "Detects AI-enhanced business email compromise by identifying wire transfer requests where the communication pattern diverges significantly from the sender's established baseline. FBI IC3 2025 reported $30 million in losses from AI-enabled BEC where chat generators created official-sounding emails mimicking company executives and voice cloning was used for wire authorization requests. AI-generated BEC content, while linguistically fluent, often lacks the sender's authentic communication patterns — writing style, formality level, time-of-day preferences, typical request amounts, and approval workflows. This rule targets Phase 3 (Positioning) where the fraudulent request is crafted and delivered, before the wire transfer is executed.\n"
+  },
+  {
+    "id": "DL-0218",
+    "type": "detection_rule",
+    "title": "Crisis-Keyword Domain Registration Surge — Bulk NRD Detection within 72h Window",
+    "text": "Detects bulk registration of crisis-themed domains (5+ in 72h) matching government subsidy, energy relief, and commodity investment keyword patterns on cheap gTLDs. CrimsonVector research identified 846 crisis-themed domains registered in a single peak week during the 2026 Iran War oil shock, with 48-72h lag between government program announcements and domain activation. This rule targets the P1 infrastructure build-out phase where early detection can disrupt campaigns before victim-facing deployment.\n"
+  },
+  {
+    "id": "DL-0219",
+    "type": "detection_rule",
+    "title": "Government Subsidy Impersonation Domain — NRD with Agency Keyword Pattern",
+    "text": "Detects newly registered domains (< 30 days) matching government agency impersonation patterns combined with subsidy/relief keywords. Targets domains like gov*-subsidy*, dwp-*, hmrc-*, irs-*, fema-*, *-relief-payment, and country-agency combinations (uk-energy-*, us-fuel-*). CrimsonVector confirmed gov.dwp-subsidy.shop as a phishing site impersonating the UK Department for Work and Pensions during the 2026 oil shock. The NRD age filter (< 30 days) eliminates legitimate government domains while catching the 48-72h post-announcement registration surge.\n"
+  },
+  {
+    "id": "DL-0220",
+    "type": "detection_rule",
+    "title": "Rapid Certificate Issuance on Crisis-Themed Domain — Sub-48h Registration-to-Cert Velocity",
+    "text": "Detects TLS certificate issuance within 48 hours of domain registration on crisis-themed domains. Legitimate organizations typically register domains days to weeks before certificate provisioning, while crisis-exploitation infrastructure shows a characteristic sub-48h registration-to-cert velocity as threat actors race to deploy HTTPS-credible phishing pages before awareness develops. Certificate transparency logs provide the data source. CrimsonVector documented this rapid-cert pattern across 1,435 crisis-themed domains during the 2026 oil shock, with Let's Encrypt and ZeroSSL as the primary issuers.\n"
+  },
+  {
+    "id": "DL-0221",
+    "type": "detection_rule",
+    "title": "Commodity Investment Scam Domain — Crisis-Themed Trading Platform on Cheap gTLD",
+    "text": "Detects newly registered domains on cheap gTLDs matching commodity investment scam patterns (oil-invest*, crude-trad*, commodity-trad*, petrol-fund*, energy-trad*). These domains typically deploy fake trading platforms soliciting cryptocurrency deposits during commodity price shocks. CrimsonVector identified a dual-track exploitation model during the 2026 Iran War oil shock: crisis events simultaneously generated government subsidy phishing (targeting relief seekers) and commodity investment scams (targeting opportunistic investors). The investment scam track used domains that mimicked legitimate trading platforms with fabricated profit dashboards.\n"
   },
   {
     "id": "BASE-001",

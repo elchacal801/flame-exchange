@@ -4569,6 +4569,77 @@
           "type": "uses"
         }
       ]
+    },
+    {
+      "value": "Crisis-Exploitation Fraud Infrastructure",
+      "description": "Crisis-exploitation fraud infrastructure is a systematic pattern where threat actors exploit geopolitical crises, natural disasters, and emergency government program announcements to rapidly deploy ph...",
+      "uuid": "608364a3-e8c5-5826-be00-91b3ffd26295",
+      "meta": {
+        "fraud_types": [
+          "phishing",
+          "brand-impersonation",
+          "credential-harvesting",
+          "investment-scam",
+          "impersonation",
+          "fraud-enabling-infrastructure"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0086"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e02671e7-b6f5-5485-bdb7-a2c0f9774a35",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4436f05f-1845-5081-9d03-c4bc8b9da86e",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "9c2ff1c1-d475-5fdf-9e16-7b6e43693460",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4bd24a18-4c14-5a96-b855-ab47f9c37e54",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
     }
   ]
 }

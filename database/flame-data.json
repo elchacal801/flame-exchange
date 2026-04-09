@@ -7992,5 +7992,100 @@
       "report": "Level 2",
       "improve": "Level 2"
     }
+  },
+  {
+    "id": "TP-0086",
+    "title": "Crisis-Exploitation Fraud Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-04-09",
+    "author": "FLAME Project",
+    "source": "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report",
+    "tlp": "WHITE",
+    "summary": "Crisis-exploitation fraud infrastructure is a systematic pattern where threat actors exploit geopolitical crises, natural disasters, and emergency government program announcements to rapidly deploy phishing, credential harvesting, and investment scam infrastructure. The attack model follows a predictable sequence: crisis event triggers a government program announcement, which generates a wave of fraudulent domain registrations within 48-72 hours, followed by deployment of phishing pages impersonating government relief portals, energy subsidy applications, and commodity investment platforms.\n\nCrimsonVector research into the 2026 Iran War oil shock identified 1,435 crisis-themed domains registered in the weeks following the conflict's escalation and associated government energy subsidy announcements. 846 domains were registered during the peak week alone. Confirmed phishing sites included `gov.dwp-subsidy.shop` impersonating the UK Department for Work and Pensions, and multiple domains targeting EU and US energy assistance programs. The infrastructure leveraged cheap gTLDs (.shop, .top, .xyz, .bond), Cloudflare Pages (pages.dev) for free hosting, and rapid Let's Encrypt certificate issuance to achieve HTTPS credibility within hours of registration.\n\nThis threat path is distinct from general phishing infrastructure (TP-0079) because the attack timing is predictable — anchored to external crisis events and government announcements — and the domain keyword patterns are crisis-specific, creating a detection window during the 48-72 hour infrastructure build-out phase before victim-facing deployment.",
+    "file_path": "C:\\Users\\anon\\Documents\\anon\\repos\\flame-fraud\\ThreatPaths\\TP-0086-crisis-exploitation-fraud-infrastructure.md",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "rdga-registered",
+    "geopolitical_timing": "conflict-triggered",
+    "nation_state_nexus": "suspected",
+    "sectors": [
+      "government",
+      "banking",
+      "insurance",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "phishing",
+      "brand-impersonation",
+      "credential-harvesting",
+      "investment-scam",
+      "impersonation",
+      "fraud-enabling-infrastructure"
+    ],
+    "tags": [
+      "crisis-exploitation",
+      "domain-infrastructure",
+      "government-impersonation",
+      "subsidy-fraud",
+      "energy-scam",
+      "commodity-investment-fraud",
+      "oil-shock",
+      "rdga",
+      "nrd-abuse",
+      "cheap-gtld",
+      "pages-dev-abuse",
+      "conflict-triggered",
+      "crimsonvector"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1584.001",
+      "T1566.002",
+      "T1608.005",
+      "T1608.006",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1032",
+      "F1031",
+      "F1029",
+      "T1583.001",
+      "T1598",
+      "T1608.006",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Social Engineering",
+      "Credential Access",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-CFPB-REGE",
+      "REG-OCC-FRAUD",
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 2"
+    }
   }
 ]
