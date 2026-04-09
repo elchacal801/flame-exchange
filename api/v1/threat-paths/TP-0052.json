@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-07T05:47:17.049580+00:00",
+    "generated_at": "2026-04-09T19:01:58.399537+00:00",
     "total": 1
   },
   "data": {
@@ -64,7 +64,16 @@
       "FTA003",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1018",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Social Engineering",

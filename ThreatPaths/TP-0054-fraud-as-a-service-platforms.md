@@ -37,7 +37,7 @@ mitre_attack:
   - T1566.001  # Phishing: Spearphishing Attachment
   - T1566.002  # Phishing: Spearphishing Link
 ft3_tactics: ["FTA001", "FTA009", "FTA010", "FT016"]
-mitre_f3: []
+mitre_f3: ["T1189", "T1555", "T1557", "T1598", "T1660"]
 groupib_stages:
   - "Resource Development"
   - "Initial Access"

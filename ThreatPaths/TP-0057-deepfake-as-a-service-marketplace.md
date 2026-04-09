@@ -38,7 +38,7 @@ mitre_attack:
   - T1036       # Masquerading
   - T1204.001  # User Execution: Malicious Link
 ft3_tactics: ["FTA001", "FTA009", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1020", "F1031", "F1032", "F1040"]
 groupib_stages:
   - "Resource Development"
   - "Initial Access"

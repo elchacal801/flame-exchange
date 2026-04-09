@@ -27,7 +27,7 @@ mitre_attack:
   - T1586     # Compromise Accounts
   - T1562.012 # Impair Defenses: Disable or Modify System Firewall (Inbox Rules)
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT007.009", "FT028", "FT008.002", "FT014", "FT043", "FT003", "FT031", "FT042.001", "FT052.003", "FT011.003"]
-mitre_f3: []
+mitre_f3: ["F1005.006", "F1022", "F1025.002", "F1016", "F1031", "F1032", "F1037", "F1044", "F1046", "F1047"]
 groupib_stages:
   - "Reconnaissance"
   - "Account Access"

@@ -35,7 +35,7 @@ mitre_attack:
   - T1056.003  # Input Capture: Web Portal Capture
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FTA009", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "T1110.004", "F1020.002", "T1555", "F1004", "F1031", "F1032", "F1040", "T1185", "T1451"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

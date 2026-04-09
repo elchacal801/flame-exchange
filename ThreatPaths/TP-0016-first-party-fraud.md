@@ -22,7 +22,7 @@ cfpf_phases:
   - P5
 mitre_attack: []
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT023", "FT035", "FT022", "FT036", "FT032", "FT011", "FT016", "FT012", "FT015", "FT017"]
-mitre_f3: []
+mitre_f3: ["F1024", "F1015", "F1043"]
 groupib_stages:
   - "Reconnaissance"
   - "Perform Fraud"

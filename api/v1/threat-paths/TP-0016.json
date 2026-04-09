@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-07T05:47:16.990414+00:00",
+    "generated_at": "2026-04-09T19:01:58.336550+00:00",
     "total": 1
   },
   "data": {
@@ -62,7 +62,11 @@
       "FT015",
       "FT017"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1024",
+      "F1015",
+      "F1043"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Perform Fraud",

@@ -40,7 +40,7 @@ mitre_attack:
   - T1656      # Impersonation
   - T1539      # Steal Web Session Cookie
 ft3_tactics: ["FTA001", "FTA002", "FT007.009", "FT011.001", "FT016.001"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "F1038", "F1001", "F1012", "F1019", "F1029", "F1040", "F1048", "T1189", "T1555"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

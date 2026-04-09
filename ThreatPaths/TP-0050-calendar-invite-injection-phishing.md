@@ -32,7 +32,7 @@ mitre_attack:
   - T1036.005  # Masquerading: Match Legitimate Name/Location
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FTA009", "FTA010", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1020", "F1031", "F1032", "F1040", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

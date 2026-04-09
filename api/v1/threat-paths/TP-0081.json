@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-07T05:47:17.099443+00:00",
+    "generated_at": "2026-04-09T19:01:58.448689+00:00",
     "total": 1
   },
   "data": {
@@ -60,7 +60,18 @@
       "T1567"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1032",
+      "F1034",
+      "F1040.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1020",
+      "F1031",
+      "T1185"
+    ],
     "groupib_stages": [
       "Social Engineering",
       "Initial Access",

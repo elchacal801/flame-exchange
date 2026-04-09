@@ -35,7 +35,7 @@ mitre_attack:
   - T1656       # Impersonation
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA007", "FTA009", "FTA010", "FT003", "FT016", "FT028", "FT031"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "T1110.001", "T1555", "F1004", "F1017", "F1020", "F1031", "F1032", "F1040", "T1185"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

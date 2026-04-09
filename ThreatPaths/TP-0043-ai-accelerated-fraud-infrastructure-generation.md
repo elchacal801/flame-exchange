@@ -37,7 +37,7 @@ mitre_attack:
   - T1585.002  # Establish Accounts: Email Accounts
   - T1608.005  # Stage Capabilities: Link Target
 ft3_tactics: ["FTA005", "FTA009", "FTA010", "FT007", "FT016"]
-mitre_f3: []
+mitre_f3: ["T1189", "T1555", "T1557", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

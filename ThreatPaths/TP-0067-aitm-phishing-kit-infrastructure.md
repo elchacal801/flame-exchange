@@ -44,7 +44,7 @@ mitre_attack:
   - T1078.004  # Valid Accounts: Cloud Accounts
   - T1027      # Obfuscated Files or Information
 ft3_tactics: ["FTA001", "FT007.009", "FT011.001"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "T1110.004", "T1539", "T1555", "F1004", "F1007", "T1185", "T1189", "T1451", "T1557"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

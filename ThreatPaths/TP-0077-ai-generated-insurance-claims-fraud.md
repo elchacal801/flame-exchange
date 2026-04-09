@@ -30,7 +30,7 @@ mitre_attack:
   - T1027      # Obfuscated Files or Information
   - T1589      # Gather Victim Identity Information
 ft3_tactics: []
-mitre_f3: []
+mitre_f3: ["F1027"]
 groupib_stages:
   - "Resource Development"
   - "Perform Fraud"

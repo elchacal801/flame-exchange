@@ -485,6 +485,15 @@ def validate_file(filepath: Path) -> ValidationResult:
         if val is not None and not isinstance(val, list):
             result.error(f"Field '{field}' must be a list")
 
+    # Validate MITRE F3 IDs against known patterns
+    f3_ids = meta.get("mitre_f3", [])
+    if isinstance(f3_ids, list):
+        for fid in f3_ids:
+            if not isinstance(fid, str):
+                result.warn(f"mitre_f3 entry must be a string, got {type(fid).__name__}")
+            elif not (fid.startswith("F1") or fid.startswith("T1") or fid.startswith("FA") or fid.startswith("TA")):
+                result.warn(f"mitre_f3 entry '{fid}' does not match expected F3 ID pattern (F1xxx, T1xxx, FAxxx, TAxxx)")
+
     # UCFF domains (optional, must be a mapping if present)
     ucff = meta.get("ucff_domains")
     if ucff is not None:

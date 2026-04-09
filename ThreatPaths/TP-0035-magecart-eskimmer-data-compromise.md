@@ -32,7 +32,7 @@ mitre_attack:
   - T1041       # Exfiltration Over C2 Channel
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA007", "FTA009", "FTA010", "FT003", "FT007.009", "FT008.002", "FT016", "FT031"]
-mitre_f3: []
+mitre_f3: ["F1007.001", "F1006", "F1011", "F1029", "T1113", "T1219", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

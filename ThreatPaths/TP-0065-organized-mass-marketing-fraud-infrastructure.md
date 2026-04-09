@@ -38,7 +38,7 @@ mitre_attack:
   - T1656      # Impersonation
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FT007.009", "FT016", "FT031"]
-mitre_f3: []
+mitre_f3: ["F1032", "F1020.002", "F1031", "F1034", "F1040.002", "F1018", "F1025", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

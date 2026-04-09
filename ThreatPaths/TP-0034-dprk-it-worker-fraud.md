@@ -37,7 +37,7 @@ mitre_attack:
   - T1587.001  # Develop Capabilities: Malware
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT005.001", "FT007.009", "FT018", "FT020", "FT021", "FT031", "FT052.003"]
-mitre_f3: []
+mitre_f3: ["F1006", "F1029", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

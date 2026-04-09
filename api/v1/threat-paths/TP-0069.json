@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-07T05:47:17.080554+00:00",
+    "generated_at": "2026-04-09T19:01:58.428339+00:00",
     "total": 1
   },
   "data": {
@@ -82,7 +82,18 @@
       "FT011.001",
       "FT016.001"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1038",
+      "F1001",
+      "F1012",
+      "F1019",
+      "F1029",
+      "F1040",
+      "F1048",
+      "T1189",
+      "T1555"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",

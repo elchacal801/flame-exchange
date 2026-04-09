@@ -38,7 +38,7 @@ mitre_attack:
   - T1036       # Masquerading
   - T1098       # Account Manipulation
 ft3_tactics: ["FTA001", "FTA009", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1020.002", "F1018", "F1025", "F1031", "F1032", "F1040", "T1598", "T1660"]
 groupib_stages:
   - "Resource Development"
   - "Initial Access"

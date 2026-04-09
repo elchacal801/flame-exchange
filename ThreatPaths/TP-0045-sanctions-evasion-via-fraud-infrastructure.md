@@ -35,7 +35,7 @@ mitre_attack:
   - T1071.001
   - T1048
 ft3_tactics: []
-mitre_f3: []
+mitre_f3: ["F1018", "F1025", "F1045", "F1047"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

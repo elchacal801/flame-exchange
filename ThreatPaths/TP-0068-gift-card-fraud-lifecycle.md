@@ -32,7 +32,7 @@ mitre_attack:
   - T1110      # Brute Force
   - T1656      # Impersonation
 ft3_tactics: ["FTA001", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1017", "F1020", "F1031", "F1032", "F1040", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

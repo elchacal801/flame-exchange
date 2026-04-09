@@ -33,7 +33,7 @@ mitre_attack:
   - T1566.002  # Phishing: Spearphishing Link
   - T1589.001  # Gather Victim Identity Information: Credentials
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT003", "FT006.001", "FT007.009", "FT008.002", "FT016", "FT017", "FT028", "FT031", "FT052.003"]
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1020.002", "F1025.003", "F1018", "F1031", "F1032", "F1040", "F1045", "F1047"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

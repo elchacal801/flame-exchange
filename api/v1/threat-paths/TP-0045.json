@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-07T05:47:17.038029+00:00",
+    "generated_at": "2026-04-09T19:01:58.387089+00:00",
     "total": 1
   },
   "data": {
@@ -59,7 +59,12 @@
       "T1048"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",

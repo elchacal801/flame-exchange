@@ -30,7 +30,7 @@ mitre_attack:
   - T1657      # Financial Theft
   - T1204      # User Execution
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT003", "FT005.001", "FT006.001", "FT007.009", "FT008.002", "FT016", "FT017", "FT028"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "F1021", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

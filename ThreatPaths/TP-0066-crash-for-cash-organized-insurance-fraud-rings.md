@@ -32,7 +32,7 @@ mitre_attack:
   - T1656      # Impersonation
   - T1589.001  # Gather Victim Identity Information
 ft3_tactics: ["FTA001", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "F1027"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

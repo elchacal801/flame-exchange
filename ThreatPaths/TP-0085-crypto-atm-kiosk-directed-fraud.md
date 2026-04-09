@@ -28,7 +28,7 @@ info_credibility: 1
 mitre_attack:
   - T1656
 ft3_tactics: []
-mitre_f3: []
+mitre_f3: ["F1025.003", "F1032", "F1017", "F1018", "F1031", "F1040", "F1045", "F1047"]
 groupib_stages:
   - "Perform Fraud"
   - "Cash Out"

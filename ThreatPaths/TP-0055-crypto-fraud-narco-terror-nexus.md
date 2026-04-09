@@ -32,7 +32,7 @@ mitre_attack:
   - T1657       # Financial Theft
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FTA003", "FTA007"]
-mitre_f3: []
+mitre_f3: ["F1020.002", "F1009", "F1018", "F1025", "F1031", "F1032", "F1045", "F1047", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

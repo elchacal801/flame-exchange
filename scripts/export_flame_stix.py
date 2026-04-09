@@ -129,6 +129,17 @@ def build_external_refs(tp: Dict[str, Any]) -> List[Dict[str, str]]:
             "external_id": tech_id,
             "url": f"https://attack.mitre.org/techniques/{tech_id.replace('.', '/')}/",
         })
+    # Add MITRE F3 references
+    for tech_id in tp.get("mitre_f3", []):
+        ref = {
+            "source_name": "mitre-f3",
+            "external_id": tech_id,
+        }
+        if tech_id.startswith("F"):
+            ref["url"] = f"https://ctid.mitre.org/fraud#/techniques/{tech_id}/"
+        else:
+            ref["url"] = f"https://attack.mitre.org/techniques/{tech_id.replace('.', '/')}/",
+        refs.append(ref)
     # Add source reference if available
     source = tp.get("source", "")
     if source and source.startswith("http"):
@@ -490,6 +501,24 @@ def build_mitre_attack_pattern(tech_id: str) -> stix2.AttackPattern:
     )
 
 
+def build_f3_attack_pattern(tech_id: str) -> stix2.AttackPattern:
+    """Build a stub STIX attack-pattern for a MITRE F3 technique."""
+    url = (f"https://ctid.mitre.org/fraud#/techniques/{tech_id}/"
+           if tech_id.startswith("F")
+           else f"https://attack.mitre.org/techniques/{tech_id.replace('.', '/')}/")
+    return stix2.AttackPattern(
+        id=deterministic_id("attack-pattern", f"f3-{tech_id}"),
+        created_by_ref=FLAME_IDENTITY_ID,
+        name=f"MITRE F3 {tech_id}",
+        external_references=[{
+            "source_name": "mitre-f3",
+            "external_id": tech_id,
+            "url": url,
+        }],
+        allow_custom=True,
+    )
+
+
 def find_tp_cross_refs(body: str, own_id: str, known_ids: set) -> List[str]:
     """Find cross-references to other TPs in the body text."""
     refs = set()
@@ -592,6 +621,7 @@ def main():
     identity = build_identity()
     attack_patterns = {}  # tp_id -> AttackPattern
     mitre_patterns = {}   # tech_id -> AttackPattern
+    f3_patterns = {}      # tech_id -> AttackPattern (MITRE F3)
     all_rules = []        # Aggregated detection rules
     relationships = []
     stix_relationships = []
@@ -642,6 +672,14 @@ def main():
             rel = build_relationship(ap.id, mitre_ap.id, rel_type="uses")
             stix_relationships.append(rel)
             print(f"    [~] {tp_id} uses {tech_id}")
+
+        # Add MITRE F3 relationships
+        for tech_id in tp.get("mitre_f3", []):
+            if tech_id not in f3_patterns:
+                f3_patterns[tech_id] = build_f3_attack_pattern(tech_id)
+            f3_ap = f3_patterns[tech_id]
+            rel = build_relationship(ap.id, f3_ap.id, rel_type="uses")
+            stix_relationships.append(rel)
 
         # Extended SDOs
         fs = build_fraud_scheme(tp)
@@ -772,6 +810,7 @@ def main():
     all_objects = [identity]
     all_objects.extend(attack_patterns.values())
     all_objects.extend(mitre_patterns.values())
+    all_objects.extend(f3_patterns.values())
     all_objects.extend(fraud_schemes.values())
     all_objects.extend(fin_transactions.values())
     all_objects.extend(mule_networks.values())

@@ -29,7 +29,7 @@ mitre_attack:
   - T1417     # Input Capture
   - T1636     # Protected User Data (SMS MFA bypass)
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT011.001", "FT013", "FT003", "FT016.001", "FT006", "FT007.001", "FT008.002", "FT015", "FT018", "FT031"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "F1007.001", "T1110.001", "T1555", "F1004", "T1113", "T1185", "T1219", "T1451", "T1539"]
 groupib_stages:
   - "Resource Development"
   - "Initial Access"

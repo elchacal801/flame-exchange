@@ -28,7 +28,7 @@ info_credibility: 2
 mitre_attack:
   - T1657      # Financial Theft
 ft3_tactics: []
-mitre_f3: []
+mitre_f3: ["F1015", "F1024", "F1043"]
 groupib_stages:
   - "Perform Fraud"
   - "Monetization"

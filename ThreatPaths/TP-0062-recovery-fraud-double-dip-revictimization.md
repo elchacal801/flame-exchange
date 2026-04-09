@@ -33,7 +33,7 @@ mitre_attack:
   - T1566.002  # Phishing: Spearphishing Link
   - T1656      # Impersonation
 ft3_tactics: ["FTA001", "FT007.009", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1020.002", "F1031", "F1032", "F1025", "F1040", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Trust Abuse"

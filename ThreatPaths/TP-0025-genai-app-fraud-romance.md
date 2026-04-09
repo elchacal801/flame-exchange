@@ -32,7 +32,7 @@ mitre_attack:
   - T1583.001  # Acquire Infrastructure: Domains
   - T1585.001  # Establish Accounts: Social Media Accounts
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT003", "FT006.001", "FT007.009", "FT016", "FT017", "FT028", "FT031", "FT052.003"]
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1025.003", "F1018", "F1020", "F1031", "F1032", "F1040", "F1047", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

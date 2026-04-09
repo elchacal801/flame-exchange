@@ -34,7 +34,7 @@ mitre_attack:
 ft3_tactics:
   - FTA007     # Money Laundering
   - FTA003     # Identity/Document Fraud (shell entity formation)
-mitre_f3: []
+mitre_f3: ["F1018", "F1025", "F1045", "F1047"]
 groupib_stages:
   - "Resource Development"
   - "Initial Access"

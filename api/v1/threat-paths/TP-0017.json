@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-07T05:47:16.991964+00:00",
+    "generated_at": "2026-04-09T19:01:58.338117+00:00",
     "total": 1
   },
   "data": {
@@ -73,7 +73,17 @@
       "FT011",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1025.003",
+      "F1018",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "End-user Interaction",
