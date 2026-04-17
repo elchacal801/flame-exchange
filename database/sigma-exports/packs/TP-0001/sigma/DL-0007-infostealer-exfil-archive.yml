@@ -1,52 +1,60 @@
 title: Infostealer Exfiltration Archive Creation
 id: 95681bb1-0586-4ae0-9c7a-7de0bd359b94
 status: experimental
-description: >
-  Detects creation of archive files containing credential-related file patterns consistent with
-  infostealer packaging behavior. Stealers like RedLine and Vidar collect credentials, cookies,
-  autofill data, and crypto wallet files into a ZIP or RAR archive before exfiltrating them to
-  the C2 server.
+description: 'Detects creation of archive files containing credential-related file patterns consistent with infostealer packaging
+  behavior. Stealers like RedLine and Vidar collect credentials, cookies, autofill data, and crypto wallet files into a ZIP
+  or RAR archive before exfiltrating them to the C2 server.
+
+  '
+sigma_compatible: true
 references:
-  - https://attack.mitre.org/techniques/T1560/001/
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1560/001/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0023
-  - TP-0001
+- TP-0023
+- TP-0001
 cfpf_phase: P2
 fraud_types:
-  - data-theft
-  - malware
+- data-theft
+- malware
 logsource:
   product: banking
   service: endpoint_detection
 detection:
   selection_archive_creation:
-    event_type: 'file_create'
+    event_type: file_create
     file_extension|contains:
-      - '.zip'
-      - '.rar'
-      - '.7z'
+    - .zip
+    - .rar
+    - .7z
   selection_archive_contents:
     archive_file_list|contains:
-      - 'passwords'
-      - 'Login Data'
-      - 'Cookies'
-      - 'autofill'
-      - 'wallet.dat'
-      - 'seed'
-      - 'credit_cards'
+    - passwords
+    - Login Data
+    - Cookies
+    - autofill
+    - wallet.dat
+    - seed
+    - credit_cards
   selection_process_unsigned:
     process_signed: false
     process_path|contains:
-      - '\AppData\Local\Temp'
-      - '\Users\Public'
-      - '\ProgramData'
+    - \AppData\Local\Temp
+    - \Users\Public
+    - \ProgramData
   condition: selection_archive_creation and (selection_archive_contents or selection_process_unsigned)
+data_sources:
+  native_fields:
+  - archive_file_list
+  - event_type
+  - file_extension
+  - process_path
+  - process_signed
 falsepositives:
-  - Legitimate backup software creating archives of user profile data
-  - IT support tools collecting diagnostic bundles that include browser data
+- Legitimate backup software creating archives of user profile data
+- IT support tools collecting diagnostic bundles that include browser data
 level: high
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1560.001
-  - attack.t1005
+- cfpf.phase2.initial_access
+- attack.t1560.001
+- attack.t1005

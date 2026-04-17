@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="domain_registration" registration_source="zone_file_diff" count>=50 groupby="nameserver_fqdn" timeframe="24h" NOT (nameserver_fqdn IN ("*.registrar-servers.com", "*.domaincontrol.com", "*.cloudflare.com", "*.awsdns-", "*.googledomains.com"))

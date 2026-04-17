@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "946f5212-1ede-53cf-b623-99717acbce89",
+    "info": "FLAME: Sanctions Evasion via Fraud Infrastructure",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "e837b330-e08d-5f95-8d56-e704a8a785f0",
+        "type": "text",
+        "category": "Other",
+        "value": "sanctions-evasion-infrastructure",
+        "comment": "Fraud type for TP-0045"
+      },
+      {
+        "uuid": "0fc0f53c-41fa-5e39-a22e-fa79fcc14d5b",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0045"
+      },
+      {
+        "uuid": "f0747109-7455-5eaa-a3a0-2f778cf34555",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0045"
+      },
+      {
+        "uuid": "eee1efb1-b4b1-5ba0-bf16-2951ef215905",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0045"
+      },
+      {
+        "uuid": "467a7546-80ed-5cc6-acd8-febbfbbcf5bb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0045"
+      },
+      {
+        "uuid": "fc8da3f4-ed25-5429-a7df-625785e6585b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0045"
+      },
+      {
+        "uuid": "a713e5c2-e2f2-50db-be40-aaa6d8a2aca6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0045"
+      }
+    ]
+  }
+}

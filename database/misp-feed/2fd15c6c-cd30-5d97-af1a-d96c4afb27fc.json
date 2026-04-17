@@ -1,0 +1,63 @@
+{
+  "Event": {
+    "uuid": "2fd15c6c-cd30-5d97-af1a-d96c4afb27fc",
+    "info": "FLAME: Geopolitically-Timed Fraud Campaigns",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "1c910f27-1d6e-5a69-9339-ec9cf149c197",
+        "type": "text",
+        "category": "Other",
+        "value": "state-criminal-convergence",
+        "comment": "Fraud type for TP-0046"
+      },
+      {
+        "uuid": "ddfdfb74-45b1-59ac-a038-e83e668e26b8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0046"
+      },
+      {
+        "uuid": "9e993fcf-afd4-5adc-92bd-8d3ee079d0f0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0046"
+      },
+      {
+        "uuid": "a143c41d-ac90-54f9-8f73-313066e9f4e5",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0046"
+      },
+      {
+        "uuid": "133c2aea-41d1-59ac-b8fb-3ef9010bc5e1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0046"
+      },
+      {
+        "uuid": "c1e2f9fa-08ac-53aa-a216-1466291db99d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0046"
+      }
+    ]
+  }
+}

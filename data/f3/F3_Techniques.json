@@ -1,0 +1,1365 @@
+[
+    {
+        "ID": "F1001",
+        "name": "3DS Bypass",
+        "description": "",
+        "tactics": [
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1002",
+        "name": "Abuse of Public-Facing API",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "TA0002",
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1002.001",
+            "F1002.002"
+        ]
+    },
+    {
+        "ID": "F1002.001",
+        "name": "Abuse of Public-Facing API: Mobile API Abuse",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "TA0002",
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1002.002",
+        "name": "Abuse of Public-Facing API: Web API Abuse",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "TA0002",
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1003",
+        "name": "Abuse SMS verification",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1004",
+        "name": "Access with Stolen Session Cookie",
+        "description": "",
+        "tactics": [
+            "TA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1005",
+        "name": "Account Manipulation",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1005.001",
+            "F1005.002",
+            "F1005.003",
+            "F1005.004",
+            "F1005.005",
+            "F1005.006",
+            "F1005.007",
+            "F1005.008"
+        ]
+    },
+    {
+        "ID": "F1005.001",
+        "name": "Account Manipulation: Account Linking",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1005.002",
+        "name": "Account Manipulation: Add Authorized User",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1005.003",
+        "name": "Account Manipulation: Add Beneficiary",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1005.004",
+        "name": "Account Manipulation: Change Account Details",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1005.005",
+        "name": "Account Manipulation: Change E-Delivery or Notification Settings",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1005.006",
+        "name": "Account Manipulation: Change of Payment Details",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1005.007",
+        "name": "Account Manipulation: Enable Account Features",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1005.008",
+        "name": "Account Manipulation: Update Call Receiving Device",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1006",
+        "name": "Account Takeover",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1006.001",
+        "name": "Account Takeover: Exposed API Key",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1006.002",
+        "name": "Account Takeover: Exposed Login Credential",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1006.003",
+        "name": "Account Takeover: Password Reset",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1007",
+        "name": "Adversary-in-the-Browser",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "FA0001",
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1007.001",
+            "F1007.002",
+            "F1007.003"
+        ]
+    },
+    {
+        "ID": "F1007.001",
+        "name": "Adversary-in-the-Browser: DLL Injection",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "FA0001",
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1007.002",
+        "name": "Adversary-in-the-Browser: Malicious Browser Extension",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "FA0001",
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1007.003",
+        "name": "Adversary-in-the-Browser: Malicious JavaScript Injection",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "FA0001",
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1008",
+        "name": "ATM Manipulation",
+        "description": "",
+        "tactics": [
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1008.001",
+            "F1008.002"
+        ]
+    },
+    {
+        "ID": "F1008.001",
+        "name": "ATM Manipulation: ATM Hardware Manipulation",
+        "description": "",
+        "tactics": [
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1008.002",
+        "name": "ATM Manipulation: ATM Software Manipulation",
+        "description": "",
+        "tactics": [
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1009",
+        "name": "Bank Deposit",
+        "description": "",
+        "tactics": [
+            "TA0002",
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1009.001",
+            "F1009.002",
+            "F1009.003",
+            "F1009.004"
+        ]
+    },
+    {
+        "ID": "F1009.001",
+        "name": "Bank Deposit: ATM Deposit",
+        "description": "",
+        "tactics": [
+            "TA0002",
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1009.002",
+        "name": "Bank Deposit: Mobile Deposit",
+        "description": "",
+        "tactics": [
+            "TA0002",
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1009.003",
+        "name": "Bank Deposit: Night Deposit",
+        "description": "",
+        "tactics": [
+            "TA0002",
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1009.004",
+        "name": "Bank Deposit: Test Deposit",
+        "description": "",
+        "tactics": [
+            "TA0002",
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1010",
+        "name": "Buy Money Order",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1011",
+        "name": "Card Dump Capture",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0043"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1012",
+        "name": "Card Testing",
+        "description": "",
+        "tactics": [
+            "FA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1013",
+        "name": "Change Payroll Details",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1014",
+        "name": "Check Fraud",
+        "description": "",
+        "tactics": [
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1015",
+        "name": "Churning",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1016",
+        "name": "Compromise Payment Gateway",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1017",
+        "name": "Conversion to Physical Monetary Instruments",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1017.001",
+            "F1017.002",
+            "F1017.003"
+        ]
+    },
+    {
+        "ID": "F1017.001",
+        "name": "Conversion to Physical Monetary Instruments: Cash",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1017.002",
+        "name": "Conversion to Physical Monetary Instruments: Cashier's Check",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1017.003",
+        "name": "Conversion to Physical Monetary Instruments: Money Order",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1018",
+        "name": "Convert to Cryptocurrency",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1019",
+        "name": "Create Counterfeit Card",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1020",
+        "name": "Create Fake Materials",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1020.001",
+            "F1020.002"
+        ]
+    },
+    {
+        "ID": "F1020.001",
+        "name": "Create Fake Materials: Fake Documents",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1020.002",
+        "name": "Create Fake Materials: Fake Website",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1021",
+        "name": "Create Fraudulent Merchant Account",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1022",
+        "name": "Delete Relevant Emails",
+        "description": "",
+        "tactics": [
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1023",
+        "name": "Device Fingerprint Spoofing",
+        "description": "",
+        "tactics": [
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1024",
+        "name": "Dispute Legitimate Transaction",
+        "description": "",
+        "tactics": [
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1025",
+        "name": "Electronic Funds Transfer",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1025.001",
+            "F1025.002",
+            "F1025.003"
+        ]
+    },
+    {
+        "ID": "F1025.001",
+        "name": "Electronic Funds Transfer: Peer-to-Peer Transfer",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1025.002",
+        "name": "Electronic Funds Transfer: Regional Payment Rail",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1025.003",
+        "name": "Electronic Funds Transfer: Wire Transfer",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1026",
+        "name": "Exploitation of Gambling Platforms",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1027",
+        "name": "Falsify Business Documents",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1028",
+        "name": "Fradulent Purchasing",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1029",
+        "name": "Gather Customer Information",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1030",
+        "name": "Geolocation Spoofing",
+        "description": "",
+        "tactics": [
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1031",
+        "name": "Impersonate Account Holder",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1032",
+        "name": "Impersonate Official",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1033",
+        "name": "Insider Access Abuse",
+        "description": "",
+        "tactics": [
+            "TA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1034",
+        "name": "Interactive Voice Response Mapping",
+        "description": "",
+        "tactics": [
+            "TA0043"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1035",
+        "name": "Mail Theft",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0043"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1036",
+        "name": "New Vendor Setup",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1037",
+        "name": "NFC Payment",
+        "description": "",
+        "tactics": [
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1038",
+        "name": "PAN/CVV Generation",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1039",
+        "name": "PaReq Manipulation",
+        "description": "",
+        "tactics": [
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1040",
+        "name": "Phone Number Spoofing",
+        "description": "",
+        "tactics": [
+            "TA0005",
+            "TA0043",
+            "TA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "F1040.001",
+            "F1040.002"
+        ]
+    },
+    {
+        "ID": "F1040.001",
+        "name": "Phone Number Spoofing: Customer Phone Number Spoofing",
+        "description": "",
+        "tactics": [
+            "TA0005",
+            "TA0043",
+            "TA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1040.002",
+        "name": "Phone Number Spoofing: Official Phone Number Spoofing",
+        "description": "",
+        "tactics": [
+            "TA0005",
+            "TA0043",
+            "TA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1041",
+        "name": "PIN-code Peeking",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1042",
+        "name": "Reactivate Account",
+        "description": "",
+        "tactics": [
+            "FA0001",
+            "TA0001"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1043",
+        "name": "Reversal of Transaction",
+        "description": "",
+        "tactics": [
+            "TA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1044",
+        "name": "Scheduled Transfer",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1045",
+        "name": "Structuring",
+        "description": "",
+        "tactics": [
+            "TA0005"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1046",
+        "name": "Test Payment Thresholds",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1047",
+        "name": "Transfer of funds",
+        "description": "",
+        "tactics": [
+            "FA0002"
+        ],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "F1048",
+        "name": "Use Virtual Cards",
+        "description": "",
+        "tactics": [],
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1070",
+        "name": "Indicator Removal",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1110",
+        "name": "Brute Force",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1110.001",
+        "name": "Brute Force: Password Guessing",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1110.002",
+        "name": "Brute Force: Password Cracking",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1110.003",
+        "name": "Brute Force: Password Spraying",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1110.004",
+        "name": "Brute Force:  Credential Stuffing",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1111",
+        "name": "Multi-Factor Authentication Interception",
+        "description": "",
+        "tactics": [
+            "TA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1113",
+        "name": "Screen Capture",
+        "description": "",
+        "tactics": [
+            "FA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1185",
+        "name": "Browser Session Hijacking",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1189",
+        "name": "Drive-by Compromise",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1195",
+        "name": "Supply Chain Compromise",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1219",
+        "name": "Remote Access Tools",
+        "description": "",
+        "tactics": [
+            "FA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1451",
+        "name": "SIM Card Swap",
+        "description": "",
+        "tactics": [
+            "TA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1453",
+        "name": "Abuse Accessibility Features",
+        "description": "",
+        "tactics": [
+            "FA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1531",
+        "name": "Account Access Removal",
+        "description": "",
+        "tactics": [
+            "FA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1539",
+        "name": "Steal Web Session Cookie",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1550",
+        "name": "Use Alternate Authentication Material",
+        "description": "",
+        "tactics": [
+            "TA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "T1550.001"
+        ]
+    },
+    {
+        "ID": "T1550.001",
+        "name": "Use Alternate Authentication Material: Application Access Token",
+        "description": "",
+        "tactics": [
+            "TA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1555",
+        "name": "Credentials from Password Stores",
+        "description": "",
+        "tactics": [
+            "TA0043"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "T1555.003",
+            "T1555.005"
+        ]
+    },
+    {
+        "ID": "T1555.003",
+        "name": "Credentials from Password Stores: Credentials from Web Browsers",
+        "description": "",
+        "tactics": [
+            "TA0043"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1555.005",
+        "name": "Credentials from Password Stores: Password Managers",
+        "description": "",
+        "tactics": [
+            "TA0043"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1557",
+        "name": "Adversary-in-the-Middle",
+        "description": "",
+        "tactics": [
+            "TA0001",
+            "FA0001",
+            "TA0002"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1583",
+        "name": "Acquire Infrastructure",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08",
+        "subtechniques": [
+            "T1583.001",
+            "T1583.008",
+            "T1583.003"
+        ]
+    },
+    {
+        "ID": "T1583.001",
+        "name": "Acquire Infrastructure: Domains",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1583.003",
+        "name": "Acquire Infrastructure: Virtual Private Network or Server",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1583.008",
+        "name": "Acquire Infrastructure: Malvertising",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1585",
+        "name": "Establish Accounts",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1586",
+        "name": "Compromise Accounts",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1586.001",
+        "name": "Compromise Accounts: Social Media Accounts",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1586.002",
+        "name": "Compromise Accounts: Email Accounts",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1586.003",
+        "name": "Compromise Accounts: Cloud Accounts",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1586.004",
+        "name": "Compromise Accounts: Corporate Accounts",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1593",
+        "name": "Search Open Websites/Domains",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1593.001",
+        "name": "Search Open Websites/Domains: Social Media",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1593.002",
+        "name": "Search Open Websites/Domains: Search Engines",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1598",
+        "name": "Phishing for Information",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1608",
+        "name": "Stage Capabilities",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1608.006",
+        "name": "Stage Capabilities: SEO Poisoning",
+        "description": "",
+        "tactics": [
+            "TA0042"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1621",
+        "name": "Multi-Factor Authentication Request Generation",
+        "description": "",
+        "tactics": [
+            "TA0001"
+        ],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1650",
+        "name": "Acquire Access",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1660",
+        "name": "Phishing",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1667",
+        "name": "Email Bombing",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "T1672",
+        "name": "Email Spoofing",
+        "description": "",
+        "tactics": [],
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    }
+]

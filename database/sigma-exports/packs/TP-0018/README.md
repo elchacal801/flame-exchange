@@ -10,6 +10,7 @@ Detection rules mapped to **Deepfake Document Fraud**.
 | DL-0052 | Audio Compression Artifacts Indicative of AI-Generated Speech | critical | P4 |
 | DL-0053 | Deepfake Anomalies in Video KYC Session | high | P2 |
 | DL-0054 | AI-Generated Document Detection in Verification | high | P2 |
+| DL-0159 | Facial Liveness Failure Pattern — Iterative Deepfake Tuning | critical | P2 |
 
 ## Formats
 

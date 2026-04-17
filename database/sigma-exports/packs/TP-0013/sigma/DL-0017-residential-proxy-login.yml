@@ -1,43 +1,55 @@
 title: Residential Proxy Login Attempt
 id: 1556d369-1abb-4769-8d09-d3b952a6e3f3
 status: experimental
-description: >
-  Detects login attempts originating from known residential proxy networks. Credential stuffing
-  actors increasingly route attacks through residential proxies (Luminati/Bright Data, Oxylabs,
-  SmartProxy) to appear as legitimate home users and bypass IP-reputation blocklists. This rule
-  correlates source IPs against residential proxy threat intelligence feeds.
+description: 'Detects login attempts originating from known residential proxy networks. Credential stuffing actors increasingly
+  route attacks through residential proxies (Luminati/Bright Data, Oxylabs, SmartProxy) to appear as legitimate home users
+  and bypass IP-reputation blocklists. This rule correlates source IPs against residential proxy threat intelligence feeds.
+
+  '
+sigma_compatible: true
 references:
-  - https://attack.mitre.org/techniques/T1090/002/
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1090/002/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0013
-  - TP-0008
+- TP-0013
+- TP-0008
 cfpf_phase: P2
 fraud_types:
-  - credential-stuffing
-  - account-takeover
+- credential-stuffing
+- account-takeover
 logsource:
   product: banking
   service: auth_logs
 detection:
   selection:
     event_type|contains:
-      - 'login_attempt'
-      - 'login_success'
+    - login_attempt
+    - login_success
   selection_proxy:
     source_ip_threat_intel|contains:
-      - 'residential_proxy'
-      - 'proxy_network'
-    source_ip_category: 'residential'
-    source_asn_type: 'isp'
+    - residential_proxy
+    - proxy_network
+    source_ip_category: residential
+    source_asn_type: isp
   selection_additional:
-    auth_result: 'success'
+    auth_result: success
   condition: selection and selection_proxy and selection_additional
+data_sources:
+  native_fields:
+  - auth_result
+  - event_type
+  enrichment_required:
+  - field: source_asn_type
+    source: ASN classification enrichment (ISP, hosting, enterprise)
+  - field: source_ip_category
+    source: IP classification enrichment (ISP, datacenter, mobile, residential)
+  - field: source_ip_threat_intel
+    source: Threat intelligence feed enrichment (IP reputation, proxy/VPN classification)
 falsepositives:
-  - Legitimate users whose ISP IP ranges overlap with residential proxy exit nodes
-  - Privacy-conscious users routing through VPN services that share residential IP pools
+- Legitimate users whose ISP IP ranges overlap with residential proxy exit nodes
+- Privacy-conscious users routing through VPN services that share residential IP pools
 level: medium
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1090.002
-  - attack.t1110.004
+- cfpf.phase2.initial_access
+- attack.t1090.002
+- attack.t1110.004

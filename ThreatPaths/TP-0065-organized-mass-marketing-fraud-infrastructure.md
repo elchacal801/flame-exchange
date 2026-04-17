@@ -38,7 +38,7 @@ mitre_attack:
   - T1656      # Impersonation
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FT007.009", "FT016", "FT031"]
-mitre_f3: []
+mitre_f3: ["F1032", "F1020.002", "F1031", "F1034", "F1040.002", "F1018", "F1025", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -68,6 +68,7 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-INTERPOL-GFFTA
   - REG-WCI-2024
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -258,6 +259,20 @@ Organized mass-marketing fraud infrastructure encompasses the boiler room operat
 
 ---
 
+## Wangiri & SIM Box Fraud — Distinct Telecom Infrastructure Threats
+
+### Wangiri (One-Ring) Fraud
+
+Wangiri fraud operates on a fundamentally different model than outbound boiler room calling. Rather than initiating calls to victims, fraudsters use automated systems to make short calls terminated after one ring, enticing recipients to return the call to premium-rate numbers. The fraudster shares revenue with the premium-rate number operator. AI-powered auto-dialing now enables Wangiri at industrial scale.
+
+**Distinction from TP-0065**: TP-0065 covers outbound calling infrastructure (boiler rooms, lead lists, robodialling). Wangiri is inbound-lure fraud — the victim initiates the revenue-generating call. See TP-0071 for comprehensive IRSF/Wangiri coverage.
+
+### SIM Box Fraud
+
+SIM box fraud uses devices containing multiple prepaid SIM cards to convert international calls into local traffic, bypassing international termination rates. This deprives telecom operators of interconnect revenue. SIM boxes are distinct from SIM swap attacks (TP-0008) — SIM swap targets individual account takeover; SIM box targets carrier revenue at scale.
+
+**Global telecom fraud context**: Total losses reached $41.82 billion by 2025, nearly a $3 billion increase in just two years (CFCA).
+
 ## Detection Approaches
 
 ### Queries / Rules
@@ -317,6 +332,7 @@ level: medium
 - Europol, "Action against criminal website that offered 'spoofing' services to fraudsters: 142 arrests", 24 November 2022 (iSpoof)
 - Jienan Liu et al., "Understanding, measuring, and detecting modern technical support scams", IEEE European Symposium on Security and Privacy, 2023
 - INTERPOL, "Global Financial Fraud Threat Assessment, 2nd Edition" (March 2026) — mass-marketing and telecom abuse trends
+- TNS/CFCA, "The Telecom Fraud Landscape in 2026" (2026)
 
 ---
 

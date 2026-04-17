@@ -38,10 +38,11 @@
         cfpf_phases: new Set(),
         sectors: new Set(),
         fraud_types: new Set(),
+        severity: new Set(),
     };
     let searchQuery = '';
     let activeTaxonomy = 'cfpf';
-    let viewState = 'browse'; // 'browse' | 'detail'
+    let viewState = 'browse'; // 'browse' | 'detail' | 'rules' | 'baselines'
 
     // -----------------------------------------------------------------------
     // DOM References
@@ -103,6 +104,16 @@
         dom.ucffExportBtn = document.getElementById('ucff-export-btn');
         dom.ucffImportBtn = document.getElementById('ucff-import-btn');
         dom.ucffFileInput = document.getElementById('ucff-file-input');
+        dom.rulesView = document.getElementById('rules-view');
+        dom.rulesGrid = document.getElementById('rules-grid');
+        dom.rulesResults = document.getElementById('rules-results');
+        dom.rulesSearchInput = document.getElementById('rules-search-input');
+        dom.rulesFilterLevel = document.getElementById('rules-filter-level');
+        dom.rulesFilterPhase = document.getElementById('rules-filter-phase');
+        dom.baselinesView = document.getElementById('baselines-view');
+        dom.baselinesGrid = document.getElementById('baselines-grid');
+        dom.baselinesSearchInput = document.getElementById('baselines-search-input');
+        dom.mainNav = document.getElementById('main-nav');
     }
 
     // -----------------------------------------------------------------------
@@ -187,6 +198,20 @@
             e.preventDefault();
             navigateTo('browse');
         });
+
+        // Hamburger menu
+        var hamburger = document.getElementById('nav-hamburger');
+        if (hamburger) {
+            hamburger.addEventListener('click', function() {
+                dom.mainNav.classList.toggle('nav-open');
+            });
+            // Close menu when a tab is clicked
+            dom.mainNav.querySelectorAll('.nav-tab').forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    dom.mainNav.classList.remove('nav-open');
+                });
+            });
+        }
 
         // Mobile filter toggle
         dom.filterToggle.addEventListener('click', function () {
@@ -297,6 +322,105 @@
         document.getElementById('nav-export-svg').addEventListener('click', exportNavigatorSVG);
         document.getElementById('nav-export-json').addEventListener('click', exportNavigatorATTCKJSON);
 
+        // Rules view search and filters
+        if (dom.rulesSearchInput) {
+            dom.rulesSearchInput.addEventListener('input', debounce(function() {
+                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
+            }, 200));
+        }
+        if (dom.rulesFilterLevel) {
+            dom.rulesFilterLevel.addEventListener('change', function() {
+                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
+            });
+        }
+        if (dom.rulesFilterPhase) {
+            dom.rulesFilterPhase.addEventListener('change', function() {
+                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
+            });
+        }
+        if (dom.baselinesSearchInput) {
+            dom.baselinesSearchInput.addEventListener('input', debounce(function() {
+                if (viewState === 'baselines') {
+                    FlameData.loadBaselines().then(renderBaselinesGrid);
+                }
+            }, 200));
+        }
+
+        // Sidebar collapse/expand
+        var collapseBtn = document.getElementById('sidebar-collapse-btn');
+        var expandBtn = document.getElementById('sidebar-expand-btn');
+        if (collapseBtn) {
+            collapseBtn.addEventListener('click', function() {
+                dom.filterPanel.classList.add('collapsed');
+                if (expandBtn) expandBtn.style.display = 'block';
+            });
+        }
+        if (expandBtn) {
+            expandBtn.addEventListener('click', function() {
+                dom.filterPanel.classList.remove('collapsed');
+                expandBtn.style.display = 'none';
+            });
+        }
+
+        // Collapsible filter groups (Fraud Types, Sectors)
+        ['fraud-types-toggle', 'sectors-toggle'].forEach(function(toggleId) {
+            var toggle = document.getElementById(toggleId);
+            if (toggle) {
+                toggle.addEventListener('click', function() {
+                    toggle.classList.toggle('collapsed');
+                    var wrapperId = toggleId.replace('-toggle', '') + '-wrapper';
+                    // Map to correct wrapper ID
+                    if (toggleId === 'fraud-types-toggle') wrapperId = 'filter-fraud-types-wrapper';
+                    if (toggleId === 'sectors-toggle') wrapperId = 'filter-sectors-wrapper';
+                    var wrapper = document.getElementById(wrapperId);
+                    if (wrapper) wrapper.classList.toggle('collapsed');
+                });
+            }
+        });
+
+        // Severity filter chips
+        document.querySelectorAll('#filter-severity .chip').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var sev = btn.getAttribute('data-severity');
+                if (activeFilters.severity.has(sev)) {
+                    activeFilters.severity.delete(sev);
+                    btn.classList.remove('active');
+                } else {
+                    activeFilters.severity.add(sev);
+                    btn.classList.add('active');
+                }
+                updateFilterBadge();
+                // Re-render current view with severity filter
+                if (viewState === 'rules') {
+                    FlameData.loadAllDetectionRules().then(function(rules) {
+                        renderRulesGrid(rules);
+                    });
+                } else if (viewState === 'browse') {
+                    // Need detection rules loaded to map severity → TPs
+                    FlameData.loadAllDetectionRules().then(function(rules) {
+                        _buildTPSeverityMap(rules);
+                        applyFilters();
+                    });
+                }
+            });
+        });
+
+        // Search-within for sidebar filter sections
+        ['filter-sectors-search', 'filter-fraud-types-search'].forEach(function(inputId) {
+            var input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('input', function() {
+                    var query = input.value.trim().toLowerCase();
+                    var chipsContainer = input.parentElement.querySelector('.filter-chips');
+                    if (!chipsContainer) return;
+                    chipsContainer.querySelectorAll('.chip').forEach(function(chip) {
+                        var text = (chip.textContent || '').toLowerCase();
+                        chip.style.display = text.indexOf(query) !== -1 ? '' : 'none';
+                    });
+                });
+            }
+        });
+
         // Hash routing
         window.addEventListener('hashchange', handleRoute);
     }
@@ -314,33 +438,60 @@
     // -----------------------------------------------------------------------
 
     function handleRoute() {
-        const hash = window.location.hash || '#browse';
+        var hash = window.location.hash || '#browse';
         if (hash.startsWith('#detail/')) {
-            const tpId = hash.replace('#detail/', '');
-            showDetailView(tpId);
+            showDetailView(hash.replace('#detail/', ''));
+        } else if (hash === '#rules' || hash.startsWith('#rules/')) {
+            var dlId = hash.startsWith('#rules/') ? hash.replace('#rules/', '') : null;
+            showRulesView(dlId);
+        } else if (hash === '#baselines') {
+            showBaselinesView();
         } else {
             showBrowseView();
         }
+        updateNavTabs(hash);
     }
 
-    function navigateTo(target, tpId) {
+    function navigateTo(target, id) {
         if (target === 'browse') {
             window.location.hash = '#browse';
-        } else if (target === 'detail' && tpId) {
-            window.location.hash = '#detail/' + tpId;
+        } else if (target === 'detail' && id) {
+            window.location.hash = '#detail/' + id;
+        } else if (target === 'rules') {
+            window.location.hash = id ? '#rules/' + id : '#rules';
+        } else if (target === 'baselines') {
+            window.location.hash = '#baselines';
         }
+    }
+
+    function updateNavTabs(hash) {
+        if (!dom.mainNav) return;
+        dom.mainNav.querySelectorAll('.nav-tab').forEach(function(tab) {
+            tab.classList.remove('active');
+            var view = tab.getAttribute('data-view');
+            if ((hash === '#browse' || hash.startsWith('#detail/')) && view === 'browse') tab.classList.add('active');
+            else if (hash.startsWith('#rules') && view === 'rules') tab.classList.add('active');
+            else if (hash.startsWith('#baselines') && view === 'baselines') tab.classList.add('active');
+        });
+    }
+
+    function hideAllViews() {
+        dom.browseView.style.display = 'none';
+        dom.detailView.style.display = 'none';
+        if (dom.rulesView) dom.rulesView.style.display = 'none';
+        if (dom.baselinesView) dom.baselinesView.style.display = 'none';
     }
 
     function showBrowseView() {
         viewState = 'browse';
+        hideAllViews();
         dom.browseView.style.display = 'block';
-        dom.detailView.style.display = 'none';
         dom.filterPanel.classList.remove('detail-active');
     }
 
     function showDetailView(tpId) {
         viewState = 'detail';
-        dom.browseView.style.display = 'none';
+        hideAllViews();
         dom.detailView.style.display = 'block';
         dom.filterPanel.classList.add('detail-active');
 
@@ -411,6 +562,7 @@
         activeFilters.cfpf_phases.clear();
         activeFilters.sectors.clear();
         activeFilters.fraud_types.clear();
+        activeFilters.severity.clear();
         searchQuery = '';
         dom.searchInput.value = '';
 
@@ -423,7 +575,7 @@
     }
 
     function updateFilterBadge() {
-        const count = activeFilters.cfpf_phases.size + activeFilters.sectors.size + activeFilters.fraud_types.size;
+        const count = activeFilters.cfpf_phases.size + activeFilters.sectors.size + activeFilters.fraud_types.size + activeFilters.severity.size;
         if (count > 0) {
             dom.filterActions.style.display = 'flex';
             dom.filterCount.textContent = count;
@@ -438,6 +590,20 @@
     // -----------------------------------------------------------------------
     // Filtering & Rendering Cards
     // -----------------------------------------------------------------------
+
+    // Cache: TP ID → set of severity levels from its detection rules
+    var _tpSeverityMap = null;
+
+    function _buildTPSeverityMap(rules) {
+        _tpSeverityMap = {};
+        (rules || []).forEach(function(rule) {
+            var level = (rule.level || '').toLowerCase();
+            (rule.threat_path_ids || []).forEach(function(tpId) {
+                if (!_tpSeverityMap[tpId]) _tpSeverityMap[tpId] = new Set();
+                _tpSeverityMap[tpId].add(level);
+            });
+        });
+    }
 
     function applyFilters() {
         // If lunr search is available and query is present, get ranked results
@@ -496,6 +662,17 @@
                     if (ft.indexOf(f) !== -1) ftMatch = true;
                 });
                 if (!ftMatch) return false;
+            }
+
+            // Detection rule severity — filter TPs that have at least one rule at selected severity
+            if (activeFilters.severity.size > 0 && _tpSeverityMap) {
+                var tpSevs = _tpSeverityMap[item.id];
+                if (!tpSevs) return false;
+                var sevMatch = false;
+                activeFilters.severity.forEach(function (s) {
+                    if (tpSevs.has(s)) sevMatch = true;
+                });
+                if (!sevMatch) return false;
             }
 
             return true;
@@ -597,6 +774,7 @@
         const fraudTypes = item.fraud_types || [];
         const tags = item.tags || [];
         const ft3 = item.ft3_tactics || [];
+        const f3 = item.mitre_f3 || [];
         const ucff = item.ucff_domains || {};
 
         let html = '';
@@ -628,6 +806,13 @@
         }
         html += '</div>';
 
+        // Export bar
+        html += '<div class="detail-export-bar">';
+        html += '<a href="api/v1/threat-paths/' + escapeHtml(item.id) + '.json" download class="export-btn">Export JSON</a>';
+        html += '<a href="database/sigma-exports/packs/' + escapeHtml(item.id) + '/" class="export-btn" target="_blank">Sigma Pack</a>';
+        html += '<button class="export-btn" id="export-stix-btn">Export STIX</button>';
+        html += '</div>';
+
         // Attack flow diagram
         html += '<div class="attack-flow-section" id="attack-flow-section">';
         html += '<div class="attack-flow-container" id="attack-flow-container"></div>';
@@ -637,6 +822,7 @@
         html += '<div class="taxonomy-toggle" id="taxonomy-toggle">';
         html += '<button class="tax-btn' + (activeTaxonomy === 'cfpf' ? ' active' : '') + '" data-taxonomy="cfpf">CFPF Phases</button>';
         html += '<button class="tax-btn' + (activeTaxonomy === 'mitre' ? ' active' : '') + '" data-taxonomy="mitre">MITRE ATT&CK</button>';
+        html += '<button class="tax-btn' + (activeTaxonomy === 'f3' ? ' active' : '') + '" data-taxonomy="f3">MITRE F3</button>';
         html += '<button class="tax-btn' + (activeTaxonomy === 'groupib' ? ' active' : '') + '" data-taxonomy="groupib">Group-IB</button>';
         html += '</div>';
 
@@ -645,6 +831,8 @@
             html += renderCfpfTimeline(phases);
         } else if (activeTaxonomy === 'mitre') {
             html += renderMitreView(mitre);
+        } else if (activeTaxonomy === 'f3') {
+            html += renderMitreF3View(f3);
         } else if (activeTaxonomy === 'groupib') {
             html += renderGroupibView(groupib);
         }
@@ -675,6 +863,11 @@
         if (ft3.length > 0) {
             html += '<div class="tag-group"><h4>Stripe FT3</h4><div class="tag-list">';
             ft3.forEach(function (t) { html += '<span class="detail-tag ft3-tag">' + escapeHtml(t) + '</span>'; });
+            html += '</div></div>';
+        }
+        if (f3.length > 0 && activeTaxonomy !== 'f3') {
+            html += '<div class="tag-group"><h4>MITRE F3</h4><div class="tag-list">';
+            f3.forEach(function (t) { html += '<span class="detail-tag f3-tag">' + escapeHtml(t) + '</span>'; });
             html += '</div></div>';
         }
         // UCFF domains — render only domains with non-empty values, in lifecycle order
@@ -753,6 +946,12 @@
         addCopyButtons();
         highlightLookLeftRight();
         loadAndRenderDetectionRules(item.id);
+
+        // Bind STIX export
+        var stixBtn = document.getElementById('export-stix-btn');
+        if (stixBtn) {
+            stixBtn.addEventListener('click', function () { exportStix(item.id); });
+        }
 
         // Render attack flow diagram
         if (item.body) {
@@ -914,6 +1113,21 @@
         return html;
     }
 
+    function renderMitreF3View(techniques) {
+        if (techniques.length === 0) {
+            return '<div class="taxonomy-empty">No MITRE F3 mappings for this threat path.</div>';
+        }
+        let html = '<div class="mitre-grid">';
+        techniques.forEach(function (t) {
+            html += '<a class="mitre-card f3-card" href="https://ctid.mitre.org/fraud#/technique/' + encodeURIComponent(t) + '" target="_blank" rel="noopener">';
+            html += '<span class="mitre-id">' + escapeHtml(t) + '</span>';
+            html += '<span class="mitre-link-icon">↗</span>';
+            html += '</a>';
+        });
+        html += '</div>';
+        return html;
+    }
+
     function renderGroupibView(stages) {
         if (stages.length === 0) {
             return '<div class="taxonomy-empty">No Group-IB Fraud Matrix mappings for this threat path.</div>';
@@ -1025,8 +1239,6 @@
         var tp = stats.total || 0;
         var sec = stats.sectors || 0;
         var ft = stats.fraudTypes || 0;
-        var phases = stats.phaseCoverage || {};
-        var phaseCount = Object.keys(phases).length;
 
         var html = '';
 
@@ -1034,7 +1246,6 @@
         html += '<div class="about-hero">';
         html += '<span class="about-logo-icon">&#x1F525;</span>';
         html += '<span class="about-title">FLAME</span>';
-        html += '<span class="about-version">v1.0 BEACON</span>';
         html += '<p class="about-tagline">Fraud Lifecycle Analysis &amp; Mitigation Exchange</p>';
         html += '</div>';
 
@@ -1043,63 +1254,100 @@
         html += '<div class="about-stat"><span class="about-stat-value">' + tp + '</span><span class="about-stat-label">Threat Paths</span></div>';
         html += '<div class="about-stat"><span class="about-stat-value">' + ft + '</span><span class="about-stat-label">Fraud Types</span></div>';
         html += '<div class="about-stat"><span class="about-stat-value">' + sec + '</span><span class="about-stat-label">Sectors</span></div>';
-        html += '<div class="about-stat"><span class="about-stat-value">' + phaseCount + '</span><span class="about-stat-label">CFPF Phases</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">211</span><span class="about-stat-label">Detection Rules</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">14</span><span class="about-stat-label">Playbooks</span></div>';
+        html += '<div class="about-stat"><span class="about-stat-value">6</span><span class="about-stat-label">Frameworks</span></div>';
         html += '</div>';
 
         // Overview
         html += '<div class="about-section">';
-        html += '<p>FLAME is an open-source, community-driven platform for sharing structured fraud detection intelligence. ';
-        html += 'Each threat path maps fraud schemes across multi-framework lifecycles with detection rules, baselines, and confidence scoring &mdash; ';
-        html += 'built by practitioners, for practitioners.</p>';
+        html += '<p>FLAME is an open-source, community-driven platform for sharing structured fraud detection intelligence across organizational and framework boundaries. ';
+        html += 'Every threat path maps simultaneously to <strong>6 fraud frameworks</strong>, exports to <strong>STIX 2.1 / MISP / TAXII / Sigma / CQL</strong>, and includes ';
+        html += 'detection rules deployable to CrowdStrike NGSIEM, Splunk, Microsoft Sentinel, and Elasticsearch.</p>';
         html += '</div>';
 
-        // Features grid
+        // Features grid — each card is clickable and expands inline
         html += '<h3>Platform Capabilities</h3>';
+        html += '<p style="color:#888;font-size:13px;margin-top:-8px;">Click any capability to learn more.</p>';
         html += '<div class="about-features-grid">';
 
         var features = [
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
-                title: 'STIX 2.1 Extension',
-                desc: '4 fraud-specific SDOs with TAXII 2.1 endpoints for TIP integration'
+                title: 'Threat Paths',
+                desc: tp + ' structured fraud scheme analyses with CFPF lifecycle mapping',
+                detail: 'Each threat path documents a complete fraud scheme across the 5-phase CFPF lifecycle (Recon, Initial Access, Positioning, Execution, Monetization). ' +
+                    'Includes: threat hypothesis, confidence scoring (Admiralty Code), operational evidence, detection approaches with executable queries, controls & mitigations, ' +
+                    'UCFF maturity alignment, and analyst notes. Browse via the <strong>Threat Paths</strong> tab or use the sidebar filters to narrow by sector, fraud type, or CFPF phase.'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+                title: 'Detection Rules',
+                desc: '211 Sigma-based rules exported to CQL, SPL, KQL, and EQL',
+                detail: 'Each detection rule includes a Sigma-compatible detection block plus native query implementations for CrowdStrike CQL, Splunk SPL, Microsoft Sentinel KQL, and Elasticsearch EQL. ' +
+                    'Rules are linked to specific threat paths and CFPF phases. Browse all rules via the <strong>Detection Rules</strong> tab, or view per-TP rules on any threat path detail page. ' +
+                    'Export Sigma packs per threat path from the detail view export buttons.'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>',
                 title: 'MCP Server',
-                desc: '7 AI-agent tools for querying fraud intelligence via Claude, Cursor, etc.'
+                desc: '7 AI-agent tools for conversational fraud intelligence',
+                detail: 'The FLAME MCP server (Model Context Protocol) exposes 7 tools for LLM integration: <strong>search_threat_paths</strong>, <strong>get_threat_path</strong>, ' +
+                    '<strong>get_detection_rules</strong>, <strong>map_framework</strong>, <strong>assess_coverage</strong>, <strong>get_baseline</strong>, and <strong>look_left_right</strong>. ' +
+                    'Works with Claude Code, Cursor, and any MCP-compatible client. See <a href="https://github.com/elchacal801/flame-fraud/blob/main/docs/MCP-TOOLS.md" target="_blank">MCP-TOOLS.md</a> for full documentation.'
             },
             {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-                title: 'MISP Galaxy & Feed',
-                desc: 'Subscribable MISP galaxy with 40 cluster entries and per-TP event feed'
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+                title: 'STIX 2.1 / MISP / TAXII',
+                desc: 'Full TIP integration with 4 custom fraud SDOs and subscribable feeds',
+                detail: 'FLAME exports to three threat intelligence platform formats: <strong>STIX 2.1</strong> with 4 custom SDOs (x-flame-fraud-scheme, x-flame-financial-transaction, ' +
+                    'x-flame-mule-network, x-flame-fraud-actor-profile), <strong>MISP</strong> galaxy with per-TP event feed, and <strong>TAXII 2.1</strong> static endpoints with 3 collections. ' +
+                    'Download from the Resources section below or from the export buttons on each threat path detail page.'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><line x1="8" y1="12" x2="16" y2="5"/><line x1="8" y1="12" x2="16" y2="19"/></svg>',
                 title: 'Relationship Graph',
-                desc: 'D3.js force-directed visualization of cross-TP relationships'
-            },
-            {
-                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
-                title: 'Regulatory Mapping',
-                desc: '15 regulations (PSD3, FFIEC, FATF, etc.) mapped to threat paths'
+                desc: 'Interactive D3.js visualization of cross-TP relationships',
+                detail: 'The relationship graph visualizes typed connections between threat paths: <em>feeds-into</em>, <em>enables</em>, <em>shares-infrastructure</em>, ' +
+                    '<em>provides-mules-for</em>, <em>escalates-from</em>, <em>variant-of</em>, and <em>related-to</em>. Click the graph icon in the header to open. ' +
+                    'Nodes are color-coded by primary sector; hover to see connections. Also available: the <strong>Look Left / Look Right</strong> analysis on each TP detail page.'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>',
                 title: 'Framework Navigator',
-                desc: 'Cross-framework coverage matrix across CFPF, FT3, Group-IB, and ATT&CK'
+                desc: 'Cross-framework coverage matrix across CFPF, FT3, Group-IB, and ATT&CK',
+                detail: 'The framework navigator shows a heat map of detection rule coverage across four frameworks simultaneously. Click the grid icon in the header to open. ' +
+                    'Switch between CFPF, FT3, Group-IB Fraud Matrix, and MITRE ATT&CK tabs to see which techniques have detection rules and which are gaps. Export as SVG or ATT&CK Navigator JSON.'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>',
+                title: 'Coverage Assessment',
+                desc: 'Organizational gap analysis by sector and fraud type',
+                detail: 'Select your organization\'s sectors and fraud types to generate a coverage gap analysis. The tool shows which CFPF phases have detection coverage, ' +
+                    'which fraud types lack threat paths, and recommends detection rules to deploy. Click the checkmark icon in the header to open. Results include a confidence-weighted coverage score.'
             },
             {
                 icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
                 title: 'Regulatory Pulse',
-                desc: '6-source live feed (OFAC, FinCEN, SEC, OCC, FBI IC3, CFPB) with TP mapping and severity triage'
+                desc: '6-source live feed (OFAC, FinCEN, SEC, OCC, FBI IC3, CFPB)',
+                detail: 'The regulatory pulse is a live feed of fraud-relevant regulatory actions from 6 US sources, automatically fetched and mapped to threat paths by category. ' +
+                    'Click the pulse icon (bottom-right corner) to view. Each alert shows source, date, severity, and linked threat paths. Feed refreshes via CI/CD automation.'
+            },
+            {
+                icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>',
+                title: 'Coverage Heat Map',
+                desc: 'Fraud type vs CFPF phase detection density visualization',
+                detail: 'The heat map shows a matrix of fraud types (rows) against CFPF phases (columns), colored by the number of threat paths covering each cell. ' +
+                    'Darker cells indicate stronger detection coverage; lighter cells indicate gaps. Click the grid icon in the header to open.'
             }
         ];
 
-        features.forEach(function (f) {
-            html += '<div class="about-feature-card">';
+        features.forEach(function (f, idx) {
+            html += '<div class="about-feature-card about-feature-expandable" data-feature-idx="' + idx + '">';
             html += '<div class="about-feature-icon">' + f.icon + '</div>';
-            html += '<div class="about-feature-title">' + f.title + '</div>';
+            html += '<div class="about-feature-title">' + f.title + ' <span class="about-feature-expand-arrow">&#9662;</span></div>';
             html += '<div class="about-feature-desc">' + f.desc + '</div>';
+            html += '<div class="about-feature-detail" id="about-feature-detail-' + idx + '" style="display:none;">' + f.detail + '</div>';
             html += '</div>';
         });
         html += '</div>';
@@ -1108,7 +1356,7 @@
         html += '<h3>Supported Frameworks</h3>';
         html += '<div class="about-frameworks">';
         var frameworks = [
-            { name: 'CFPF', color: 'var(--color-p2)' },
+            { name: 'FS-ISAC CFPF', color: 'var(--color-p2)' },
             { name: 'MITRE ATT&CK', color: 'var(--color-mitre)' },
             { name: 'Group-IB Fraud Matrix', color: 'var(--color-groupib)' },
             { name: 'Stripe FT3', color: 'var(--color-ft3)' },
@@ -1120,73 +1368,52 @@
         });
         html += '</div>';
 
-        // Roadmap
-        html += '<h3>Roadmap</h3>';
-        html += '<div class="about-roadmap">';
-        var phases = [
-            { name: 'Phase 1: IGNITE', desc: 'Core platform, search, detection logic, heat map', status: 'done' },
-            { name: 'Phase 2: FORGE', desc: 'API, MCP server, Sigma export, graph, confidence scoring', status: 'done' },
-            { name: 'Phase 3: SIGNAL', desc: 'STIX extension, MISP galaxy, TAXII feeds, regulatory mapping, framework navigator', status: 'done' },
-            { name: 'Phase 4: BEACON', desc: 'Community contributions, intake pipeline, RSS/webhook feeds, production hardening', status: 'done' },
-            { name: 'Phase 5: SIGNAL-RF', desc: 'Recorded Future 2025 integration — 5 new TPs (e-skimmer, purchase scam, digital wallet, card testing, agentic commerce), 12 detection rules, 5 baselines', status: 'done' },
-            { name: 'Phase 6: SIGNAL-LNRS', desc: 'LexisNexis 2026 integration — BNPL multi-provider fraud TP, 5 detection rules, 1 baseline, 5 existing TP enhancements', status: 'done' },
-            { name: 'Phase 7: Infrastructure Intelligence', desc: 'TAX-01/02 expansion, TP-0041–0043 (AI-accelerated fraud infrastructure, financial institution impersonation, cross-border money mule), DL-0092–100, BL-0021–23', status: 'done' },
-            { name: 'Phase 8: Geopolitical Context', desc: 'TAX-03–05 expansion, TP-0044–0046 (state-criminal convergence, sanctions evasion routing, geopolitically timed campaigns), DL-0101–07, BL-0024–25', status: 'done' },
-            { name: 'Phase 9: Emerging Threats', desc: 'TAX-06 expansion, TP-0047–0049 (human trafficking–linked fraud, TDS chain exploitation, crypto laundering infrastructure), DL-0108–14, BL-0026–27, EP-0006–07', status: 'done' },
-            { name: 'Phase 10: Regulatory Pulse', desc: '6-source automated feed (OFAC, FinCEN, SEC, OCC, FBI IC3, CFPB), program-based TP mapping, twice-daily CI/CD refresh, reference quality audit', status: 'current' }
-        ];
-        phases.forEach(function (p) {
-            html += '<div class="about-roadmap-item about-roadmap-' + p.status + '">';
-            html += '<span class="about-roadmap-dot"></span>';
-            html += '<div>';
-            html += '<strong>' + p.name + '</strong>';
-            html += '<span class="about-roadmap-desc"> &mdash; ' + p.desc + '</span>';
-            html += '</div>';
-            html += '</div>';
-        });
-        html += '</div>';
-
-        // Changelog
-        html += '<h3>Recent Milestones</h3>';
-        html += '<div class="about-changelog">';
-        var changelog = [
-            { date: '2026-03', text: 'Phase 10: Regulatory Pulse — OFAC program-based TP mapping, 6-source category mapping, twice-daily CI/CD, CFPB enabled, reference audit' },
-            { date: '2026-03', text: 'Phase 9: Emerging Threats — TP-0047–0049, DL-0108–14, BL-0026–27, EP-0006–07 (human trafficking, TDS exploitation, crypto laundering)' },
-            { date: '2026-03', text: 'Phase 8: Geopolitical Context — TP-0044–0046, DL-0101–07, BL-0024–25 (state-criminal convergence, sanctions evasion, geo-timed campaigns)' },
-            { date: '2026-03', text: 'Phase 7: Infrastructure Intelligence — TP-0041–0043, DL-0092–100, BL-0021–23 (AI fraud infrastructure, FI impersonation, cross-border mules)' },
-            { date: '2026-03', text: 'Phase 6 SIGNAL-LNRS: LexisNexis 2026 integration — TP-0040 BNPL fraud, 5 detection rules, 5 TP enhancements' },
-            { date: '2026-03', text: 'Phase 5 SIGNAL-RF: Recorded Future 2025 integration — TP-0035–0039, 12 new detection rules, 5 baselines, 4 new fraud types' },
-            { date: '2026-03', text: 'Phase 4 BEACON: RSS feed, 5 emulation playbooks, contributor leaderboard, peer review workflow' },
-            { date: '2026-03', text: 'STIX 2.1 fraud extension with 4 custom SDOs, TAXII 2.1, MISP galaxy' },
-            { date: '2026-03', text: 'Regulatory mapping (15 regulations, 6 jurisdictions), Framework Navigator' },
-            { date: '2026-03', text: 'MCP server, static JSON API, Sigma export pipeline' },
-            { date: '2026-02', text: 'D3.js relationship graph, coverage assessment, confidence scoring' }
-        ];
-        changelog.forEach(function (c) {
-            html += '<div class="about-changelog-item">';
-            html += '<span class="about-changelog-date">' + c.date + '</span>';
-            html += '<span class="about-changelog-text">' + c.text + '</span>';
-            html += '</div>';
+        // Export formats
+        html += '<h3>Export Formats</h3>';
+        html += '<div class="about-frameworks">';
+        ['STIX 2.1', 'MISP', 'TAXII 2.1', 'Sigma/SPL', 'Sigma/EQL', 'Sigma/KQL', 'CrowdStrike CQL', 'RSS 2.0', 'JSON API'].forEach(function(fmt) {
+            html += '<span class="about-fw-badge" style="border-color: #555; color: #aaa;">' + fmt + '</span>';
         });
         html += '</div>';
 
         // Links
-        html += '<h3>Resources</h3>';
+        html += '<h3>Resources &amp; Downloads</h3>';
         html += '<div class="about-links">';
-        html += '<a href="https://github.com/elchacal801/flame-fraud" target="_blank" rel="noopener" class="about-link-btn">GitHub</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud" target="_blank" rel="noopener" class="about-link-btn">GitHub Repository</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noopener" class="about-link-btn">Architecture Docs</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud/blob/main/docs/openapi.yaml" target="_blank" rel="noopener" class="about-link-btn">OpenAPI Spec</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud/blob/main/docs/MCP-TOOLS.md" target="_blank" rel="noopener" class="about-link-btn">MCP Tool Reference</a>';
         html += '<a href="api/v1/threat-paths.json" target="_blank" rel="noopener" class="about-link-btn">JSON API</a>';
-        html += '<a href="api/taxii/discovery.json" target="_blank" rel="noopener" class="about-link-btn">TAXII Feed</a>';
+        html += '<a href="api/taxii/discovery.json" target="_blank" rel="noopener" class="about-link-btn">TAXII Discovery</a>';
         html += '<a href="data/misp/flame-galaxy.json" target="_blank" rel="noopener" class="about-link-btn">MISP Galaxy</a>';
         html += '<a href="database/flame_stix_bundle.json" target="_blank" rel="noopener" class="about-link-btn">STIX Bundle</a>';
         html += '<a href="database/feed.xml" target="_blank" rel="noopener" class="about-link-btn">RSS Feed</a>';
+        html += '<a href="https://github.com/elchacal801/flame-fraud/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="about-link-btn">Contributing Guide</a>';
         html += '</div>';
 
         // License
         html += '<div class="about-license">';
-        html += 'MIT License &middot; Built by practitioners, for practitioners.';
+        html += 'MIT License &middot; Open source &middot; TLP:WHITE &middot; Built by practitioners, for practitioners.';
         html += '</div>';
 
         dom.aboutBody.innerHTML = html;
+
+        // Wire up feature card expand/collapse
+        dom.aboutBody.querySelectorAll('.about-feature-expandable').forEach(function(card) {
+            card.addEventListener('click', function() {
+                var idx = card.getAttribute('data-feature-idx');
+                var detail = document.getElementById('about-feature-detail-' + idx);
+                if (!detail) return;
+                var isOpen = detail.style.display !== 'none';
+                // Close all others
+                dom.aboutBody.querySelectorAll('.about-feature-detail').forEach(function(d) { d.style.display = 'none'; });
+                dom.aboutBody.querySelectorAll('.about-feature-expandable').forEach(function(c) { c.classList.remove('about-feature-open'); });
+                if (!isOpen) {
+                    detail.style.display = 'block';
+                    card.classList.add('about-feature-open');
+                }
+            });
+        });
     }
 
     // -----------------------------------------------------------------------
@@ -2079,6 +2306,354 @@
         };
         reader.readAsText(file);
         e.target.value = '';
+    }
+
+    // -----------------------------------------------------------------------
+    // Rules View
+    // -----------------------------------------------------------------------
+
+    var _cachedAllRules = null;
+
+    function showRulesView(dlId) {
+        viewState = 'rules';
+        hideAllViews();
+        dom.rulesView.style.display = 'block';
+        dom.filterPanel.classList.add('detail-active');
+
+        FlameData.loadAllDetectionRules().then(function(rules) {
+            _cachedAllRules = rules;
+            if (dlId) {
+                var rule = rules.find(function(r) { return r.dl_id === dlId; });
+                if (rule) {
+                    renderRuleDetail(rule);
+                    return;
+                }
+            }
+            renderRulesGrid(rules);
+        });
+    }
+
+    function filterRules(rules) {
+        var query = (dom.rulesSearchInput && dom.rulesSearchInput.value || '').trim().toLowerCase();
+        var levelFilter = dom.rulesFilterLevel ? dom.rulesFilterLevel.value : '';
+        var phaseFilter = dom.rulesFilterPhase ? dom.rulesFilterPhase.value : '';
+
+        return rules.filter(function(rule) {
+            if (query) {
+                var haystack = ((rule.dl_id || '') + ' ' + (rule.title || '') + ' ' + (rule.description || '')).toLowerCase();
+                if (haystack.indexOf(query) === -1) return false;
+            }
+            if (levelFilter && (rule.level || '').toLowerCase() !== levelFilter) return false;
+            if (phaseFilter && (!rule.cfpf_phase || rule.cfpf_phase !== phaseFilter)) return false;
+            // Severity filter from sidebar chips
+            if (activeFilters.severity.size > 0) {
+                var ruleLevel = (rule.level || '').toLowerCase();
+                if (!activeFilters.severity.has(ruleLevel)) return false;
+            }
+            return true;
+        });
+    }
+
+    function renderRulesGrid(rules) {
+        var filtered = filterRules(rules);
+        if (dom.rulesResults) {
+            dom.rulesResults.textContent = filtered.length + ' of ' + rules.length + ' detection rules';
+        }
+
+        if (filtered.length === 0) {
+            dom.rulesGrid.innerHTML = '<div class="empty-state">No matching detection rules found.</div>';
+            return;
+        }
+
+        // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
+        var html = '';
+        filtered.forEach(function(rule) {
+            var levelClass = (rule.level || '').toLowerCase();
+            var tpCount = (rule.threat_path_ids || []).length;
+            html += '<div class="rule-card" data-dl-id="' + escapeHtml(rule.dl_id || '') + '">';
+            html += '<div class="rule-card-header">';
+            html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || '') + '</span>';
+            html += '<span class="rule-level-badge rule-level-' + escapeHtml(levelClass) + '">' + escapeHtml(rule.level || '') + '</span>';
+            html += '</div>';
+            html += '<h3 class="rule-card-title">' + escapeHtml(rule.title || '') + '</h3>';
+            html += '<p class="rule-card-desc">' + escapeHtml(truncate(rule.description || '', 120)) + '</p>';
+            html += '<div class="rule-card-meta">';
+            if (rule.cfpf_phase) {
+                var phaseInfo = PHASE_INFO[rule.cfpf_phase];
+                html += '<span class="rule-phase-tag" style="--chip-color: ' + (phaseInfo ? phaseInfo.color : 'var(--color-text-muted)') + '">' + escapeHtml(rule.cfpf_phase) + '</span>';
+            }
+            html += '<span class="rule-tp-count">' + tpCount + ' threat path' + (tpCount !== 1 ? 's' : '') + '</span>';
+            html += '</div>';
+            html += '</div>';
+        });
+        dom.rulesGrid.innerHTML = html;
+
+        // Bind card clicks
+        dom.rulesGrid.querySelectorAll('.rule-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                navigateTo('rules', card.dataset.dlId);
+            });
+        });
+    }
+
+    function renderRuleDetail(rule) {
+        // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
+        var html = '';
+        html += '<a href="#rules" class="back-link rules-back-link">';
+        html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
+        html += '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/>';
+        html += '</svg> All Detection Rules</a>';
+
+        html += '<div class="rule-detail">';
+        html += '<div class="rule-detail-header">';
+        html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || '') + '</span>';
+        var levelClass = (rule.level || '').toLowerCase();
+        html += '<span class="rule-level-badge rule-level-' + escapeHtml(levelClass) + '">' + escapeHtml(rule.level || '') + '</span>';
+        html += '</div>';
+        html += '<h2 class="rule-detail-title">' + escapeHtml(rule.title || '') + '</h2>';
+
+        if (rule.description) {
+            html += '<p class="rule-detail-desc">' + escapeHtml(rule.description) + '</p>';
+        }
+
+        // Detection logic
+        if (rule.detection) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>Detection Logic</h3>';
+            var yamlStr = formatDetectionYaml(rule.detection);
+            html += '<div class="dl-code-wrapper">';
+            html += '<pre class="dl-code"><code>' + escapeHtml(yamlStr) + '</code></pre>';
+            html += '<button class="dl-copy-btn" data-code="' + escapeHtml(yamlStr).replace(/"/g, '&quot;') + '">Copy</button>';
+            html += '</div>';
+            html += '</div>';
+        }
+
+        // Native queries
+        if (rule.native_queries) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>Native Queries</h3>';
+            Object.keys(rule.native_queries).forEach(function(platform) {
+                html += '<h4 class="query-platform">' + escapeHtml(platform.toUpperCase()) + '</h4>';
+                var queryStr = rule.native_queries[platform];
+                html += '<div class="dl-code-wrapper">';
+                html += '<pre class="dl-code"><code>' + escapeHtml(queryStr) + '</code></pre>';
+                html += '<button class="dl-copy-btn" data-code="' + escapeHtml(queryStr).replace(/"/g, '&quot;') + '">Copy</button>';
+                html += '</div>';
+            });
+            html += '</div>';
+        }
+
+        // Linked threat paths
+        var tpIds = rule.threat_path_ids || [];
+        if (tpIds.length > 0) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>Linked Threat Paths</h3>';
+            html += '<div class="rule-tp-links">';
+            tpIds.forEach(function(tpId) {
+                html += '<a href="#detail/' + escapeHtml(tpId) + '" class="rule-tp-link">' + escapeHtml(tpId) + '</a>';
+            });
+            html += '</div>';
+            html += '</div>';
+        }
+
+        // False positives
+        if (rule.false_positives && rule.false_positives.length > 0) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>False Positives</h3>';
+            html += '<ul class="rule-fp-list">';
+            rule.false_positives.forEach(function(fp) {
+                html += '<li>' + escapeHtml(fp) + '</li>';
+            });
+            html += '</ul>';
+            html += '</div>';
+        }
+
+        // References
+        if (rule.references && rule.references.length > 0) {
+            html += '<div class="rule-detail-section">';
+            html += '<h3>References</h3>';
+            html += '<ul class="rule-ref-list">';
+            rule.references.forEach(function(ref) {
+                if (ref.startsWith('http')) {
+                    html += '<li><a href="' + escapeHtml(ref) + '" target="_blank" rel="noopener">' + escapeHtml(truncate(ref, 80)) + '</a></li>';
+                } else {
+                    html += '<li>' + escapeHtml(ref) + '</li>';
+                }
+            });
+            html += '</ul>';
+            html += '</div>';
+        }
+
+        // Tags
+        if (rule.tags && rule.tags.length > 0) {
+            html += '<div class="rule-detail-section">';
+            html += '<div class="dl-rule-tags">';
+            rule.tags.forEach(function(t) {
+                html += '<span class="dl-tag">' + escapeHtml(t) + '</span>';
+            });
+            html += '</div>';
+            html += '</div>';
+        }
+
+        html += '</div>';
+
+        dom.rulesGrid.innerHTML = html;
+        if (dom.rulesResults) dom.rulesResults.textContent = '';
+
+        // Bind copy buttons
+        dom.rulesGrid.querySelectorAll('.dl-copy-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var code = btn.getAttribute('data-code').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+                navigator.clipboard.writeText(code).then(function() {
+                    btn.textContent = 'Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(function() {
+                        btn.textContent = 'Copy';
+                        btn.classList.remove('copied');
+                    }, 2000);
+                });
+            });
+        });
+
+        window.scrollTo(0, 0);
+    }
+
+    // -----------------------------------------------------------------------
+    // Baselines View
+    // -----------------------------------------------------------------------
+
+    var _baselineToTPs = null;
+
+    function _buildBaselineToTPMap() {
+        if (_baselineToTPs) return _baselineToTPs;
+        _baselineToTPs = {};
+        var tpData = FlameData.getData() || [];
+        tpData.forEach(function(tp) {
+            (tp.baseline_ids || []).forEach(function(blId) {
+                if (!_baselineToTPs[blId]) _baselineToTPs[blId] = [];
+                _baselineToTPs[blId].push(tp.id);
+            });
+        });
+        return _baselineToTPs;
+    }
+
+    function showBaselinesView() {
+        viewState = 'baselines';
+        hideAllViews();
+        dom.baselinesView.style.display = 'block';
+        dom.filterPanel.classList.add('detail-active');
+
+        FlameData.loadBaselines().then(function(baselines) {
+            renderBaselinesGrid(baselines);
+        });
+    }
+
+    function renderBaselinesGrid(baselines) {
+        var query = (dom.baselinesSearchInput && dom.baselinesSearchInput.value || '').trim().toLowerCase();
+        var filtered = baselines;
+        if (query) {
+            filtered = baselines.filter(function(b) {
+                var haystack = ((b.id || '') + ' ' + (b.title || '') + ' ' + (b.description || '') + ' ' + (b.tags || []).join(' ')).toLowerCase();
+                return haystack.indexOf(query) !== -1;
+            });
+        }
+
+        if (filtered.length === 0) {
+            dom.baselinesGrid.innerHTML = '<div class="empty-state">No baselines found.</div>';
+            return;
+        }
+
+        var blToTP = _buildBaselineToTPMap();
+
+        // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
+        var html = '';
+        filtered.forEach(function(b) {
+            var linkedTPs = blToTP[b.id] || [];
+            var tpCount = linkedTPs.length;
+            html += '<div class="baseline-card" data-id="' + escapeHtml(b.id || '') + '">';
+            html += '<div class="baseline-card-header">';
+            html += '<span class="baseline-id">' + escapeHtml(b.id || '') + '</span>';
+            html += '</div>';
+            html += '<h3 class="baseline-card-title">' + escapeHtml(b.title || '') + '</h3>';
+            if (b.description) {
+                html += '<p class="baseline-card-desc">' + escapeHtml(truncate(b.description, 120)) + '</p>';
+            }
+            html += '<div class="baseline-card-meta">';
+            if (b.tags && b.tags.length > 0) {
+                b.tags.slice(0, 4).forEach(function(t) {
+                    html += '<span class="baseline-tag">' + escapeHtml(t) + '</span>';
+                });
+                if (b.tags.length > 4) {
+                    html += '<span class="baseline-tag more-tag">+' + (b.tags.length - 4) + '</span>';
+                }
+            }
+            html += '</div>';
+            if (linkedTPs.length > 0) {
+                html += '<div class="baseline-linked-tps">';
+                html += '<span class="baseline-tp-label">' + tpCount + ' Linked TP' + (tpCount !== 1 ? 's' : '') + ':</span> ';
+                linkedTPs.forEach(function(tpId, i) {
+                    html += '<a href="#detail/' + escapeHtml(tpId) + '" class="baseline-tp-link">' + escapeHtml(tpId) + '</a>';
+                    if (i < linkedTPs.length - 1) html += ' ';
+                });
+                html += '</div>';
+            } else {
+                html += '<div class="baseline-linked-tps"><span class="baseline-tp-label">No linked TPs</span></div>';
+            }
+            html += '</div>';
+        });
+        dom.baselinesGrid.innerHTML = html;
+    }
+
+    // -----------------------------------------------------------------------
+    // STIX Export
+    // -----------------------------------------------------------------------
+
+    function exportStix(tpId) {
+        fetch('database/flame_stix_bundle.json')
+            .then(function(response) {
+                if (!response.ok) throw new Error('STIX bundle not available');
+                return response.json();
+            })
+            .then(function(bundle) {
+                var filtered = (bundle.objects || []).filter(function(obj) {
+                    if (!obj.external_references) return false;
+                    return obj.external_references.some(function(ref) {
+                        return ref.external_id === tpId || (ref.source_name && ref.source_name.indexOf(tpId) !== -1);
+                    });
+                });
+
+                var exportBundle = {
+                    type: 'bundle',
+                    id: 'bundle--' + tpId + '-export',
+                    spec_version: bundle.spec_version || '2.1',
+                    objects: filtered
+                };
+
+                var blob = new Blob([JSON.stringify(exportBundle, null, 2)], { type: 'application/json' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = tpId + '_stix_bundle.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            })
+            .catch(function(err) {
+                console.warn('STIX export failed:', err.message);
+                alert('STIX bundle not available for export.');
+            });
+    }
+
+    // -----------------------------------------------------------------------
+    // Register Service Worker for PWA
+    // -----------------------------------------------------------------------
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(function(reg) { console.log('SW registered:', reg.scope); })
+                .catch(function(err) { console.log('SW registration failed:', err); });
+        });
     }
 
     // -----------------------------------------------------------------------

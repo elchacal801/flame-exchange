@@ -1,0 +1,10 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+
+| rex field=hidden_text_pattern "(?<hidden_text_patternMatch>(?i)(\\$?CartMandate|cart_mandate|line.?item|recipient.?email|display.?status.*hidden))"
+| eval hidden_text_patternCondition=if(isnotnull(hidden_text_patternMatch), "true", "false")
+| rex field=hidden_text_pattern "(?<hidden_text_patternMatch2>(?i)(settlement\\.refund|order\\.return\\.verify|refund\\.instant|void-\\d+|skip.*verify))"
+| eval hidden_text_patternCondition2=if(isnotnull(hidden_text_patternMatch2), "true", "false")
+| rex field=metadata_instruction_pattern "(?<metadata_instruction_patternMatch>(?i)(system:|action:|observation:))"
+| eval metadata_instruction_patternCondition=if(isnotnull(metadata_instruction_patternMatch), "true", "false")
+| search event_type="agent_content_ingestion" (content_contains_hidden_text=true hidden_text_patternCondition="true") OR (content_contains_hidden_text=true hidden_text_patternCondition2="true") OR (invisible_span_detected=true invisible_content_length>50 invisible_content_contains_instructions=true) OR (metadata_contains_instructions=true metadata_instruction_patternCondition="true")

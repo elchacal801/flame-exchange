@@ -1,0 +1,69 @@
+# ======================================================================
+# FLAME Detection Rule: Calendar Invite Injection Phishing — Mass External Calendar Event Creation from New Domains
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: medium
+# CFPF Phase: P2
+# Threat Paths: TP-0050
+#
+# Description:
+#   Detects calendar injection phishing by identifying mass calendar invite
+#   creation from external sources targeting internal users, where the
+#   event body contains URLs and the organizer domain is recently
+#   registered (under 30 days) or on a high-abuse TLD. Attackers send
+#   emails containing .ics calendar attachments or Google Calendar invite
+#   links that auto-populate on victim calendars, bypassing email gateway
+#   filtering that focuses on message body and attachment analysis. An
+#   observed March 2026 campaign delivered 6,000+ emails across 10 sender
+#   domains (9 RDGA-generated on .cyou/.sbs/.click TLDs) with antivirus
+#   renewal and meeting invite lures. Calendar events persist after email
+#   deletion and re-surface via reminder notifications, creating a
+#   delayed-action social engineering vector. Recently created organizer
+#   accounts (under 7 days) sending calendar invites to 5+ internal
+#   recipients are additionally flagged as high-confidence indicators.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: m365
+#   service: exchange
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_external_invite:
+#     event_type:
+#     - calendar_invite_received
+#     - ics_attachment_processed
+#     organizer_is_external: true
+#   filter_new_domain:
+#     organizer_domain_age_days|lte: 30
+#   filter_urls_in_body:
+#     event_body_contains_url: true
+#   filter_mass_targeting:
+#     distinct_internal_recipients|gte: 5
+#     timeframe: 24h
+#   condition: 'selection_external_invite AND filter_new_domain AND filter_urls_in_body
+#     AND filter_mass_targeting
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate external event organizers (conference providers, webinar platforms) using newly registered event-specific domains
+#   - Marketing partners sending calendar invites for scheduled meetings or product demos
+#   - Automated meeting scheduling tools (Calendly, HubSpot) from new customer domains
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

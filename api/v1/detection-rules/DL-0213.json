@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.615006+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "e3a9b42d-8f5c-4d0b-c2e4-0a7f9b3d6e85",
+    "dl_id": "DL-0213",
+    "title": "Unusual Large Cash Withdrawal with Precious Metals Merchant Transaction",
+    "status": "experimental",
+    "description": "Detects the gold courier scam pattern where victims — predominantly elderly — make large cash withdrawals or wire transfers to precious metals merchants with no prior history of such transactions. FBI IC3 2025 documented 725 gold courier complaints with $311.8 million in losses, yielding an extraordinary average of ~$430,000 per victim. Victims are typically directed by government impersonation callers to purchase physical gold as \"asset protection,\" which is then collected by couriers. The precious metals MCC codes (5094 for precious stones/metals, 5944 for jewelry/watch/clock stores) serve as the primary detection signal when combined with customer age and transaction history anomalies.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_withdrawal": {
+        "transaction_type": [
+          "cash_withdrawal",
+          "wire_transfer"
+        ],
+        "transaction_amount|gte": 10000
+      },
+      "selection_precious_metals": {
+        "merchant_category_code": [
+          "5094",
+          "5944"
+        ]
+      },
+      "filter_no_history": {
+        "customer_precious_metals_history_12m": false
+      },
+      "filter_age": {
+        "account_holder_age|gte": 60
+      },
+      "timeframe": "72h",
+      "condition": "(selection_withdrawal AND selection_precious_metals AND filter_no_history) OR (selection_withdrawal AND selection_precious_metals AND filter_age)\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "account_holder_age",
+        "transaction_type",
+        "transaction_amount",
+        "transaction_date",
+        "merchant_category_code",
+        "merchant_name"
+      ],
+      "enrichment_required": [
+        {
+          "field": "customer_precious_metals_history_12m",
+          "source": "Boolean — whether customer has any prior transactions with MCC 5094 or 5944 in trailing 12 months"
+        }
+      ],
+      "derived_fields": [
+        "total_precious_metals_spend_72h",
+        "withdrawal_to_purchase_gap_hours"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Gold Courier Scam Detection\n// Detects unusual precious metals purchases following large withdrawals\n(transaction_type=\"cash_withdrawal\" OR transaction_type=\"wire_transfer\")\ntransaction_amount>=10000\n(merchant_category_code=\"5094\" OR merchant_category_code=\"5944\")\n(customer_precious_metals_history_12m=\"false\" OR account_holder_age>=60)\n| groupBy(account_id, function=[\n    collect([account_holder_age, transaction_amount, transaction_date,\n             merchant_name, merchant_category_code, transaction_type]),\n    sum(transaction_amount, as=total_amount),\n    count(transaction_id, as=transaction_count)\n  ])\n| sort(total_amount, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Gold Courier Scam Detection\")`\n`comment(\"Detects unusual precious metals purchases following large withdrawals\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (transaction_type=\"cash_withdrawal\" OR transaction_type=\"wire_transfer\")\n  transaction_amount>=10000\n  (merchant_category_code=\"5094\" OR merchant_category_code=\"5944\")\n| where customer_precious_metals_history_12m=\"false\" OR account_holder_age>=60\n| stats count AS transaction_count, sum(transaction_amount) AS total_amount,\n    values(merchant_name) AS merchants, values(transaction_type) AS methods,\n    min(_time) AS first_transaction, max(_time) AS last_transaction\n    by account_id, account_holder_age\n| eval days_span = round((last_transaction - first_transaction) / 86400, 1)\n| eval risk_score = case(\n    total_amount > 100000 AND account_holder_age >= 65, \"critical\",\n    total_amount > 50000 OR account_holder_age >= 65, \"high\",\n    1=1, \"medium\")\n| sort - total_amount"
+    },
+    "references": [
+      "FBI IC3, 2025 Internet Crime Report — Gold courier scams: 725 complaints, $311.8M losses (~$430K average)",
+      "FinCEN Advisory FIN-2022-A002 — Elder Financial Exploitation red flag indicators",
+      "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf"
+    ],
+    "threat_path_ids": [
+      "TP-0027",
+      "TP-0082"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "elder-exploitation",
+      "social-engineering"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.authorized-push-payment",
+      "flame.elder-exploitation",
+      "flame.gold-courier"
+    ],
+    "falsepositives": [
+      "Collectors and investors with established precious metals purchasing patterns",
+      "Jewelry purchases for weddings, anniversaries, or estate purposes",
+      "Business customers in the precious metals industry",
+      "Gift purchases from jewelry stores"
+    ]
+  }
+}

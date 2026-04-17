@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.161451+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "67fbbbd3-ac75-49dd-8d8a-432c717d05eb",
+    "dl_id": "DL-0191",
+    "title": "First-Party Dispute Anomaly — Chargeback with Delivery Confirmation, Device Match, and No Merchant Contact",
+    "status": "experimental",
+    "description": "Detects high-confidence friendly fraud by identifying chargebacks where three independent indicators contradict the dispute claim: (1) delivery was confirmed for the original order, (2) the device fingerprint filing the dispute matches the device used for the original purchase, and (3) no merchant contact was attempted before the chargeback was filed. The triple correlation of delivery evidence, device match, and merchant bypass is a strong signal that the cardholder is the original purchaser who received the goods and chose to file a chargeback rather than a legitimate return. 84% of consumers find chargebacks simpler than contacting merchants, creating systemic abuse of the dispute mechanism.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "dispute_type": [
+          "chargeback"
+        ]
+      },
+      "filter_delivery": {
+        "delivery_confirmed": true
+      },
+      "filter_device_match": {
+        "device_fingerprint_match": true
+      },
+      "filter_no_merchant_contact": {
+        "merchant_contact_prior": false
+      },
+      "timeframe": "30d",
+      "condition": "selection AND filter_delivery AND filter_device_match AND filter_no_merchant_contact\n"
+    },
+    "logsource": {
+      "product": "payments",
+      "service": "dispute_management"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "dispute_id",
+        "cardholder_id",
+        "merchant_id",
+        "dispute_amount",
+        "dispute_reason_code",
+        "dispute_date",
+        "original_transaction_id"
+      ],
+      "enrichment_required": [
+        {
+          "field": "delivery_confirmed",
+          "source": "Shipping carrier delivery confirmation (signed, GPS-verified, photo proof)"
+        },
+        {
+          "field": "device_fingerprint_match",
+          "source": "Comparison of device fingerprint at dispute filing vs. original purchase"
+        },
+        {
+          "field": "merchant_contact_prior",
+          "source": "Merchant CRM/support records — any contact from cardholder between transaction and dispute"
+        }
+      ],
+      "derived_fields": [
+        "days_from_delivery_to_dispute",
+        "dispute_device_ip",
+        "purchase_device_ip"
+      ]
+    },
+    "queries": {
+      "cql": "// CQL for First-Party Dispute Anomaly Detection — DL-0191\n// Triple-correlated friendly fraud: delivery + device match + no merchant contact\nChargebacks\n| dispute_type = \"chargeback\"\n| dispute_date >= now() - 30d\n| delivery_confirmed = true\n| device_fingerprint_match = true\n| merchant_contact_prior = false OR merchant_contact_prior = null\n| days_delivery_to_dispute := round((dispute_date - delivery_date) / 86400, 0)\n| sort(dispute_amount, order=desc)",
+      "sql": "-- SQL: First-Party Dispute Anomaly Detection\n-- Chargeback with delivery confirmation, device match, no merchant contact\nSELECT\n  d.dispute_id,\n  d.cardholder_id,\n  d.merchant_id,\n  d.dispute_amount,\n  d.dispute_reason_code,\n  d.dispute_date,\n  t.transaction_date,\n  t.delivery_confirmed,\n  t.delivery_date,\n  DATEDIFF(DAY, t.delivery_date, d.dispute_date) AS days_delivery_to_dispute,\n  t.device_fingerprint AS purchase_device,\n  d.device_fingerprint AS dispute_device,\n  CASE WHEN t.device_fingerprint = d.device_fingerprint THEN 1 ELSE 0 END\n    AS device_match,\n  mc.last_contact_date AS merchant_contact_date\nFROM chargebacks d\nJOIN transactions t ON d.original_transaction_id = t.transaction_id\nLEFT JOIN merchant_contacts mc ON d.cardholder_id = mc.customer_id\n  AND d.merchant_id = mc.merchant_id\n  AND mc.contact_date BETWEEN t.transaction_date AND d.dispute_date\nWHERE d.dispute_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND t.delivery_confirmed = 1\n  AND t.device_fingerprint = d.device_fingerprint\n  AND mc.contact_id IS NULL\nORDER BY d.dispute_amount DESC",
+      "splunk": "`comment(\"Splunk SPL: First-Party Dispute Anomaly Detection\")`\n`comment(\"Triple-correlated friendly fraud: delivery + device match + no merchant contact\")`\nindex=flame_payments sourcetype=flame:dispute_management\n  dispute_type=\"chargeback\"\n| lookup delivery_lookup original_transaction_id\n    OUTPUT delivery_confirmed, delivery_date\n| lookup device_lookup original_transaction_id\n    OUTPUT purchase_device_fingerprint\n| lookup merchant_contact_lookup cardholder_id, merchant_id\n    OUTPUT merchant_contact_prior\n| where delivery_confirmed=\"true\"\n  AND dispute_device_fingerprint=purchase_device_fingerprint\n  AND (merchant_contact_prior=\"false\" OR isnull(merchant_contact_prior))\n| eval days_delivery_to_dispute = round(\n    (strptime(dispute_date, \"%Y-%m-%d\") - strptime(delivery_date, \"%Y-%m-%d\")) / 86400, 0)\n| table dispute_id, cardholder_id, merchant_id, dispute_amount,\n        dispute_reason_code, dispute_date, delivery_date,\n        days_delivery_to_dispute, purchase_device_fingerprint\n| sort - dispute_amount"
+    },
+    "references": [
+      "Chargebacks911, State of Chargebacks 2026",
+      "Chargeflow, Friendly Fraud Statistics 2025 — 84% simplicity preference",
+      "Visa, Visa Acquirer Monitoring Program (VAMP) (April 2025)",
+      "Alloy, First-party fraud detection strategies"
+    ],
+    "threat_path_ids": [
+      "TP-0075"
+    ],
+    "fraud_types": [
+      "chargeback-abuse",
+      "dispute-fraud",
+      "friendly-fraud"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.chargeback-abuse",
+      "flame.dispute-fraud",
+      "flame.friendly-fraud"
+    ],
+    "falsepositives": [
+      "Legitimate disputes where the product was defective but cardholder did not contact merchant",
+      "Shared devices where a different household member made the purchase",
+      "Delivery marked as confirmed but actually misdelivered (e.g., left at wrong address)"
+    ]
+  }
+}

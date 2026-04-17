@@ -9,7 +9,7 @@
     "id": "TP-0002",
     "type": "threat_path",
     "title": "Business Email Compromise — Vendor Impersonation Wire Fraud",
-    "text": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later."
+    "text": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later."
   },
   {
     "id": "TP-0003",
@@ -412,6 +412,108 @@
     "type": "threat_path",
     "title": "Smishing PhaaS Ecosystem — Darcula, Smishing Triad, and Mass-Messaging Credential Harvest",
     "text": "The Smishing PhaaS Ecosystem is a loosely federated Chinese-speaking cybercrime network — collectively known as the Smishing Triad — that operates industrialized smishing infrastructure at unprecedented scale: 194,000+ malicious domains registered since January 2024, 884,000+ credit cards compromised in a seven-month period, and victims in 121+ countries. The ecosystem centers on three major Phishing-as-a-Service (PhaaS) platforms — Darcula (tracked as LARVA-246), Lucid (operated by XinXin Group / LARVA-242), and Lighthouse (developed by Wang Duo Yu / LARVA-241) — supported by independent kit developers (Chenlun), bulk SMS enablers (Oak Tel/Carrie SMS), and dedicated smishing message platforms (Panda Shop, StupidFISH). What distinguishes this threat path from traditional SMS phishing is the exploitation of Apple iMessage and Android RCS to bypass carrier-level SMS filtering, real-time character-by-character credential streaming via Magic Cat, and the integration of GenAI-powered phishing form generation (darcula-suite 3.0). FBI IC3 received 59,271 toll-scam complaints in 2024 alone, reflecting the scale of the toll/road fee lure campaign impersonating E-ZPass, SunPass, FasTrak, and I-Pass across 8+ U.S. states.\n\n**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure focused on session token hijacking and MFA bypass via reverse proxy. TP-0069 covers the smishing delivery ecosystem — the SMS/iMessage/RCS-based credential harvest pipeline, the PhaaS platforms that power it, and the supporting bulk messaging and kit development infrastructure specific to mobile messaging channels."
+  },
+  {
+    "id": "TP-0070",
+    "type": "threat_path",
+    "title": "Travel Booking Fraud & Fake OTA Networks",
+    "text": "Travel booking fraud and fake Online Travel Agency (OTA) networks represent a rapidly growing fraud category, with estimated global losses reaching $37 billion through Buy-for-You (B4U) services alone. Fraudsters operate fake travel agency websites mimicking legitimate OTAs (Booking.com, Expedia, Airbnb), with 4,344 fake travel domains identified in active campaigns. Telegram-based B4U agencies offer deeply discounted travel bookings purchased with stolen payment credentials, creating a laundering layer between cardholders and travel providers. The ecosystem encompasses fake OTA domains, vacation rental hijacking, loyalty point laundering (TP-0013), and AI-enhanced scam operations that generate convincing travel listings and customer service interactions. Seasonal peaks align with holiday booking periods, amplifying losses during Q4 and summer travel seasons."
+  },
+  {
+    "id": "TP-0071",
+    "type": "threat_path",
+    "title": "IRSF & Telecom Revenue Share Fraud",
+    "text": "International Revenue Share Fraud (IRSF) is the single largest category of telecommunications fraud, generating $10.76 billion in annual losses according to the CFCA/TNS Global Fraud Loss Survey (2026). IRSF exploits the inter-carrier settlement system where originating carriers pay terminating carriers per-minute rates for international calls. Fraudsters establish revenue-sharing agreements with premium-rate number providers in high-rate destinations, then generate artificial call traffic to those numbers using compromised PBX systems, SIM boxes, or automated dialers. Wangiri (\"one-ring\") fraud, a variant where victims are tricked into calling back premium-rate numbers, adds a social engineering dimension. The convergence of SIM box fraud (TP-0008), compromised enterprise PBX systems, and sophisticated traffic routing creates a multi-layered ecosystem that is difficult to detect in real time. Machine learning-based detection has achieved 98% accuracy in identifying IRSF traffic patterns."
+  },
+  {
+    "id": "TP-0072",
+    "type": "threat_path",
+    "title": "Telecom Subscription & Billing Fraud",
+    "text": "Telecom subscription and billing fraud encompasses the use of stolen, synthetic, or manipulated identities to fraudulently obtain telecom services, devices, and credit -- combined with unauthorized billing manipulation that charges victims for premium services they never requested. TransUnion reports that 53% of telecom executives identify subscription fraud as their top concern, driven by the increasing sophistication of synthetic identity creation (TP-0003) and GenAI-powered KYC bypass techniques. The total telecom fraud ecosystem reaches $41.82B annually (CFCA/TNS 2026), with subscription fraud as a primary entry point that enables downstream fraud including device resale, SIM swap attacks (TP-0008), and premium SMS billing schemes (cramming). GenAI tools now generate convincing synthetic identity documents that pass automated KYC checks, enabling fraudsters to open multiple telecom accounts for device acquisition at industrial scale."
+  },
+  {
+    "id": "TP-0073",
+    "type": "threat_path",
+    "title": "Real Estate Title Fraud & Deed Theft",
+    "text": "Real estate title fraud and deed theft represent a growing category of property-related fraud, with FBI data reporting $16.6 billion in total real estate fraud losses in 2024. The core scheme involves impersonating property owners -- primarily targeting vacant lots, unencumbered properties, and absentee-owner homes -- to fraudulently transfer titles or initiate sales, diverting proceeds to attacker-controlled accounts. The emergence of AI-forged documents (deeds, government IDs, notary stamps) and deepfake video notarization has dramatically lowered the barrier to executing these schemes, with Entrust reporting a 40% year-over-year increase in deepfake-related fraud attempts. Seller impersonation of vacant property owners is the most common vector, as these properties lack occupants who would notice unauthorized activity. Virginia's 2025 deed fraud legislation represents the first major legislative response, mandating enhanced identity verification for property transfers. This threat path intersects with wire fraud (TP-0006) at the monetization phase, where sale proceeds are redirected via business email compromise or fraudulent wire instructions."
+  },
+  {
+    "id": "TP-0074",
+    "type": "threat_path",
+    "title": "Ghost Broking & Unauthorized Insurance Portals",
+    "text": "Ghost broking is a rapidly growing insurance fraud typology where unlicensed individuals or organized crime groups sell fraudulent, forged, or illegitimately obtained motor insurance policies to unsuspecting consumers. Victims increased 93% in 2025, driven by cost-of-living pressures that make below-market premiums attractive. An emerging evolution is the \"ghost portal\" — fraudsters now build and sell entire fake insurance verification platforms to other criminals, creating a fraud-as-a-service layer within the insurance ecosystem. City of London Police made significant arrests in May 2025, and the Insurance Fraud Enforcement Department (IFED) designated February 2026 as a ghost broking intensification month. UK fraud losses topped GBP 1 billion in 2024, with ghost broking contributing a material share of motor insurance fraud.\n\n**Distinction from TP-0056**: TP-0056 covers claims fraud (filing false or inflated claims against legitimate policies). TP-0074 covers the upstream fraud of selling fake or unauthorized policies themselves, where the victim believes they have legitimate coverage but does not."
+  },
+  {
+    "id": "TP-0075",
+    "type": "threat_path",
+    "title": "Friendly Fraud & Chargeback Abuse",
+    "text": "Friendly fraud — where legitimate cardholders dispute genuine transactions to obtain refunds while retaining goods or services — has become the single largest fraud category in payment networks, representing 36% of all fraud and projected to reach 337 million chargebacks costing USD 15.3 billion in the US by 2026. Unlike third-party fraud, the identity is real and the transaction is legitimate, making detection fundamentally different. Chargeback abuse surged 233% between Q1 and Q3 2025, with 84% of consumers finding chargebacks simpler than contacting the merchant. The economic multiplier is severe: merchants lose USD 4.61 for every USD 1.00 of friendly fraud. Visa's VAMP (Visa Acquirer Monitoring Program) launched April 2025 to impose stricter thresholds on merchants and acquirers. Underground \"refund hack\" tutorials proliferate on forums and social platforms, teaching consumers systematic chargeback abuse techniques.\n\n**Distinction from TP-0031**: TP-0031 covers Refund-as-a-Service (RaaS) — organized refund fraud where third-party services file refunds on behalf of consumers against merchants. TP-0075 covers first-party chargeback abuse where the cardholder directly files disputes through the payment network, bypassing the merchant entirely.\n\n**Distinction from TP-0016**: TP-0016 covers first-party bust-out fraud (synthetic or real identity credit abuse). TP-0075 covers dispute-level abuse of the chargeback mechanism against individual transactions, not credit line bust-outs."
+  },
+  {
+    "id": "TP-0076",
+    "type": "threat_path",
+    "title": "Affiliate Network Fraud & Invalid Traffic",
+    "text": "Affiliate network fraud encompasses a range of techniques where fraudulent affiliates generate fake clicks, impressions, leads, or conversions to earn illegitimate commissions from advertiser programs. Global ad fraud is projected to reach USD 71 billion in 2025 (Juniper Research). Cookie stuffing accounts for approximately 60% of affiliate fraud cases, while bot networks generate 40% of all click fraud. AI-powered bots are increasingly mimicking genuine user behavior — generating realistic mouse movements, scroll patterns, and session durations — making detection significantly harder. Approximately 25% of leads generated through affiliate programs are fake, wasting advertiser spend and corrupting marketing analytics. Click injection and postback manipulation represent emerging techniques that exploit mobile attribution windows and server-side tracking vulnerabilities respectively.\n\n**Relationship to TP-0042 (TDS)**: Traffic Distribution Systems documented in TP-0042 provide infrastructure that affiliate fraudsters exploit for traffic manipulation and redirection. TP-0076 covers the affiliate fraud techniques themselves rather than the TDS infrastructure."
+  },
+  {
+    "id": "TP-0077",
+    "type": "threat_path",
+    "title": "AI-Generated Insurance Claims Fraud",
+    "text": "Generative AI is transforming insurance claims fraud by enabling fraudsters to create highly convincing fabricated or altered evidence — including deepfake vehicle damage photos, forged medical records, synthetic invoices, and AI-generated supporting documentation. An estimated 25-30% of insurance claims now involve some form of GenAI-altered content, ranging from minor photo manipulation to entirely fabricated damage scenarios. Deepfake vehicle damage photos represent a particularly acute threat, with AI-generated images of vehicle damage that can bypass visual inspection by claims adjusters. The 2025 US Healthcare Fraud Takedown (324 defendants, USD 14.6 billion in alleged fraud) demonstrated the scale of organized claims fraud that AI tools can amplify. The insurance fraud detection market is growing from USD 7.5 billion to USD 9.13 billion, reflecting industry investment in countermeasures. Academic research (Debener et al., 2023) demonstrates that XGBoost and isolation forest algorithms are complementary approaches for detecting anomalous claims patterns.\n\n**Distinction from TP-0056**: TP-0056 covers traditional claims fraud (exaggerated, staged, or fabricated claims using conventional methods). TP-0077 specifically covers the use of generative AI tools to create or alter claims evidence, which requires different detection techniques focused on digital forensics and AI artifact analysis rather than claims pattern analytics alone.\n\n**Distinction from TP-0029/TP-0018**: TP-0029 covers AI-generated synthetic identities and TP-0018 covers deepfake document fraud broadly. TP-0077 focuses on the specific application of these techniques within the insurance claims process, where the claims workflow creates unique detection opportunities."
+  },
+  {
+    "id": "TP-0078",
+    "type": "threat_path",
+    "title": "Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines",
+    "text": "Criminal conglomerates are operating industrialized cryptocurrency laundering services that process hundreds of millions of dollars through centralized exchange (CEX) hot wallet pipelines. Unlike the narco-terror Ponzi convergence model documented in TP-0055, this threat path describes a distinct operational model: a criminal organization that builds and operates a full-service laundering infrastructure — issuing its own stablecoin, running its own exchange, and routing proceeds through major centralized exchanges via traceable deposit-to-hot-wallet sweep patterns.\n\nThe Huione Group, a Cambodian financial conglomerate designated by FinCEN as a primary money laundering concern in May 2025, is the paradigm case. ICIJ's year-long \"Coin Laundry\" investigation documented at least $408 million flowing from Huione-controlled TRON addresses to Binance and at least $226 million to OKX over approximately one year (July 2024 to July 2025). The group operated Huione Pay (a cryptocurrency exchange) and issued its own stablecoin (USDH) deployed across four major blockchains: Ethereum, TRON, Binance Smart Chain, and Solana. TRON/USDT was identified as the dominant rail for Southeast Asian fraud compound money laundering due to speed and low transaction fees.\n\nCritically, neither Binance nor OKX demonstrably curtailed their transaction volume with Huione following their own DOJ plea agreements (Binance: November 2023; OKX: February 2025), indicating that plea-deal compliance commitments did not immediately translate into effective flow interdiction.\n\nThe convergence of this laundering infrastructure with offshore shell company opacity (see DL-0198) and unlicensed crypto-to-cash desk operations (see DL-0197) creates a complete end-to-end pipeline from illicit proceeds to usable physical currency.\n\n**Key Distinction from TP-0055**: TP-0055 covers narco-terror organizations using crypto Ponzi schemes to launder drug/extortion proceeds — the criminal actors *using* crypto as a laundering tool. TP-0078 covers the *industrialized laundering service provider* model — a criminal conglomerate offering laundering-as-a-service at scale via its own stablecoin and exchange infrastructure, serving multiple criminal actor types including SE Asian scam compounds.\n\n**Key Distinction from TP-0049**: TP-0049 covers cryptocurrency laundering infrastructure broadly. TP-0078 provides the specific operational pattern of the stablecoin-to-CEX hot wallet pipeline, including the 2-hop attribution methodology and Proof-of-Reserves cross-referencing technique."
+  },
+  {
+    "id": "TP-0079",
+    "type": "threat_path",
+    "title": "Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale",
+    "text": "Phishing infrastructure has undergone a structural shift toward cheap new generic top-level domains (gTLDs) and free Platform-as-a-Service (PaaS) subdomains as the dominant delivery mechanism for credential harvesting, brand impersonation, and fraud-enabling infrastructure at global scale. Interisle Consulting Group's Phishing Landscape 2025 report, covering May 2024 through April 2025, documented approximately 2 million phishing attacks worldwide across more than 1.5 million unique domains — with 77% of phishing domains identified as maliciously registered (a 36% year-over-year increase).\n\nThe defining finding is the dramatic asymmetry between new gTLD market share and phishing concentration: new gTLDs hold only 11% of the global domain market but accounted for 51% of all phishing domains during the reporting period. This represents a significant escalation from 21% in 2021, indicating that threat actors have systematically migrated to new gTLDs as their preferred registration namespace. The economic driver is clear: 18 new gTLDs offered registrations under $2, and sub-$2 pricing correlates directly with the highest phishing abuse scores.\n\nSimultaneously, PaaS subdomain abuse has emerged as a parallel infrastructure channel. Cloudflare pages.dev saw a 157% increase in phishing attacks (43,800 attacks), Webflow's webflow.io surged 980% (33,400 attacks), Vercel's vercel.app grew 279% (21,400 attacks), and GitBook's gitbook.io appeared as a new vector with 22,000 attacks. These platforms provide free hosting with legitimate SSL certificates and trusted domain reputations, enabling phishers to bypass email security filters and browser warnings.\n\nA specific campaign — the \"Unpaid Toll Scam\" — illustrates the convergence of these techniques: 37,000 domains were registered via Dominet (HK) registrar across the .XIN and .TOP TLDs, operated by the Chinese PhaaS provider XinXin/LUCID, and hosted on Tencent (AS132203), Alibaba (AS45102), and Cloudflare (AS13335) infrastructure. IDN homograph attacks further compound the threat, with 2,655 domains targeting cryptocurrency brands through internationalized domain name spoofing (e.g., xn--btpay-b4a.com rendering as bitpay.com).\n\nCloudflare AS13335 has been the number one hosting network for phishing attacks for four consecutive years, with 540,000 attacks during the reporting period, largely because its reverse proxy architecture obscures the true hosting location of phishing pages from investigators and automated takedown systems."
+  },
+  {
+    "id": "TP-0080",
+    "type": "threat_path",
+    "title": "Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges",
+    "text": "State-sponsored threat actors and transnational criminal organizations have developed a systematic methodology to evade stablecoin issuer freeze capabilities by converting centrally issued stablecoins (USDT, USDC) into decentralized alternatives (DAI, sDAI, LUSD, RAI) and wrapped token variants that decouple the original issuer's administrative controls. This threat path exploits a fundamental architectural gap: when a centrally issued stablecoin is \"wrapped\" through a bridge protocol or swapped for a decentralized stablecoin, the issuer's freeze function — the primary compliance enforcement mechanism — becomes inoperable against the resulting tokens.\n\nThe FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026) quantifies the scale: stablecoins accounted for 84% of the $154 billion in illicit virtual asset transaction volume observed in 2025 (Chainalysis data). This dominance reflects stablecoins' utility as a stable-value transfer mechanism for illicit actors who cannot tolerate the price volatility of BTC or ETH during multi-stage laundering operations.\n\nTwo confirmed nation-state programs demonstrate this threat path at operational scale. The IRGC shifted procurement financing from USDT to DAI following mid-2025 Tether freeze actions, using decentralized stablecoins to purchase drone components and weapons systems through front companies. Billions in IRGC-associated addresses were identified across 2024-2025. Separately, the DPRK's Lazarus Group laundered proceeds from the $1.46 billion Bybit theft (February 2025) through mixers, cross-chain bridges, and 125,000+ Ethereum wallets before converting to USDT on TRON for OTC cash-out — with the 221 General Bureau using USDT for military equipment procurement including munitions-grade copper.\n\nBeyond state actors, drug trafficking organizations are using USDT on TRON and USDC on Ethereum for synthetic drug precursor procurement and settlement. ISIL and Al-Qaeda affiliates have solicited stablecoin donations via encrypted messaging platforms, employing rotating wallet addresses, micro-splitting, and multi-hop transfers to evade tracing.\n\nThe convergence of P2P transactions via unhosted wallets (no AML/CFT intermediary), cross-chain bridge fragmentation of transaction trails, and decentralized stablecoin adoption creates a compounding evasion capability that existing compliance frameworks — designed around centralized issuer controls — are structurally unable to address.\n\n**Key Distinction from TP-0078**: TP-0078 documents the industrialized laundering-as-a-service pipeline model (Huione Group, CEX hot wallet sweep patterns). TP-0080 documents the upstream evasion technique: how illicit actors defeat the freeze capability that is supposed to prevent stablecoins from being used in the TP-0078 pipeline in the first place. TP-0080 feeds into TP-0078 — once freeze-evasion is achieved, the resulting funds flow through the CEX off-ramp infrastructure documented in TP-0078.\n\n**Key Distinction from TP-0049**: TP-0049 covers cryptocurrency laundering infrastructure broadly. TP-0080 specifically addresses the exploitation of stablecoin architectural design — the gap between centralized issuance with freeze capabilities and decentralized/wrapped circulation without them — as a deliberate sanctions and law enforcement evasion technique."
+  },
+  {
+    "id": "TP-0081",
+    "type": "threat_path",
+    "title": "Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud",
+    "text": "Voice phishing (vishing) has emerged as the dominant initial access vector for identity-based intrusions, with adversaries combining real-time phone-based social engineering with technical exploitation chains to achieve account takeover at unprecedented speed. The CrowdStrike 2026 Global Threat Report documents a convergence of vishing, fake CAPTCHA campaigns, help desk impersonation, and GenAI-enabled persona creation that collectively represent a paradigm shift away from malware-centric attack models. 82% of CrowdStrike-observed detections in 2025 were malware-free, relying instead on valid credentials, native tools, and administrative functions.\n\nCHATTY SPIDER exemplifies the operational tempo: in a documented incident against a law firm, the adversary achieved a 4-minute breakout from initial vishing contact to active data exfiltration. Fake CAPTCHA campaigns surged 563% in 2025, with threat actors (BRASH SPIDER, COOKIE SPIDER) tricking victims into executing clipboard-delivered PowerShell payloads. SCATTERED SPIDER continues to social-engineer help desk personnel into performing password resets on SSO and cloud accounts, exploiting hybrid identity infrastructure (Entra ID, AD FS) for lateral movement. Average eCrime breakout time has collapsed to 29 minutes (down 65% from 48 minutes in 2024; fastest observed: 27 seconds), making real-time detection and response essential.\n\nAI-enabled adversary attacks rose 89%, with GenAI used to create convincing voice personas, synthetic identities for fraudulent employment (FAMOUS CHOLLIMA, +109% in fake personas), and multi-day social engineering campaigns (COZY BEAR leveraging instant messaging, email, video conferencing, and OAuth 2.0 device code phishing). Financial services accounted for 11% of interactive intrusion targets, with technology at 23%.\n\n**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure and session token hijacking via reverse proxy platforms. TP-0081 focuses on the voice-based and hybrid social engineering attack surface — vishing, help desk manipulation, fake CAPTCHA campaigns, and RMM tool abuse — where the human operator, not a phishing kit, is the primary attack instrument. The two threat paths frequently chain: vishing provides initial access that enables AiTM-style session capture downstream."
+  },
+  {
+    "id": "TP-0082",
+    "type": "threat_path",
+    "title": "Gold Courier Scam — Physical Precious Metal Cash-Out",
+    "text": "Gold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to physical gold, which is then collected by couriers dispatched by the criminal network. The FBI IC3 2025 Annual Report documented 725 complaints with $311.8 million in losses, yielding an extraordinary average loss of approximately $430,000 per victim — among the highest of any IC3 crime category. The physical gold acquisition and courier collection circumvents traditional electronic transaction monitoring, making this a detection blind spot for institutions relying solely on digital payment analytics."
+  },
+  {
+    "id": "TP-0083",
+    "type": "threat_path",
+    "title": "Investment Club Scam — Social Media Insider Group Fraud",
+    "text": "Investment club scams exploit social media and messaging platforms to create fraudulent \"insider\" trading groups that lure victims with fabricated trading success, AI-generated celebrity endorsements, and peer pressure dynamics. The FBI IC3 2025 Annual Report documented approximately 1,600 complaints with $160 million in losses, and PSA250703 (July 3, 2025) specifically warned about investment clubs accessed on social media and messaging applications. Unlike traditional pig butchering (TP-0017) which relies on 1:1 grooming, investment club scams leverage group dynamics — social proof from other \"members\" (often shills or bots), fake trading screenshots, and the illusion of an exclusive community — to accelerate victim conversion and increase investment amounts."
+  },
+  {
+    "id": "TP-0084",
+    "type": "threat_path",
+    "title": "Government Impersonation — Authority-Based Authorized Push Payment Fraud",
+    "text": "Government impersonation fraud uses the authority of federal and state agencies — IRS, SSA, DOJ, FBI, DEA, and state attorneys general — as a social engineering weapon to compel victims into making authorized push payments. The FBI IC3 2025 Annual Report documented 32,424 complaints with $797.9 million in losses, representing an 87% increase in complaints and 97% increase in losses from 2024. This is fundamentally distinct from government program fraud (TP-0022) which exploits government systems for unauthorized benefit claims. Here, the government is not the victim — it is the impersonated authority used to intimidate and control the actual victim.\n\nThe payment channel distribution reveals the scheme's adaptability: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier's Check 10%. Victims aged 60+ are disproportionately targeted, accounting for 8,628 complaints and $413.2 million in losses (52% of total losses).\n\nA notable sub-variant involves scammers impersonating the FBI IC3 itself (PSA250418), exploiting victims' awareness of IC3 as a fraud reporting resource to add credibility to recovery or refund schemes."
+  },
+  {
+    "id": "TP-0085",
+    "type": "threat_path",
+    "title": "Crypto ATM/Kiosk Directed Fraud — Physical-to-Digital Monetization Channel",
+    "text": "Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cryptocurrency ATMs/kiosks, converting physical currency to digital assets that are immediately transferred to attacker-controlled wallets. The FBI IC3 2025 Annual Report documented 13,460 complaints with $389 million in losses — a 58% increase from 2024. The elder demographic is disproportionately impacted: victims aged 60+ accounted for 6,188 complaints (46%) and $257 million in losses (66% of total crypto ATM losses).\n\nThis TP is distinct from general cryptocurrency fraud because it focuses specifically on the physical-to-digital conversion point — the crypto ATM itself — as the execution and monetization channel. The crypto ATM serves as the critical chokepoint where detection and intervention are possible before funds become irrecoverable on-chain."
+  },
+  {
+    "id": "TP-0086",
+    "type": "threat_path",
+    "title": "Crisis-Exploitation Fraud Infrastructure",
+    "text": "Crisis-exploitation fraud infrastructure is a systematic pattern where threat actors exploit geopolitical crises, natural disasters, and emergency government program announcements to rapidly deploy phishing, credential harvesting, and investment scam infrastructure. The attack model follows a predictable sequence: crisis event triggers a government program announcement, which generates a wave of fraudulent domain registrations within 48-72 hours, followed by deployment of phishing pages impersonating government relief portals, energy subsidy applications, and commodity investment platforms.\n\nCrimsonVector research into the 2026 Iran War oil shock identified 1,435 crisis-themed domains registered in the weeks following the conflict's escalation and associated government energy subsidy announcements. 846 domains were registered during the peak week alone. Confirmed phishing sites included `gov.dwp-subsidy.shop` impersonating the UK Department for Work and Pensions, and multiple domains targeting EU and US energy assistance programs. The infrastructure leveraged cheap gTLDs (.shop, .top, .xyz, .bond), Cloudflare Pages (pages.dev) for free hosting, and rapid Let's Encrypt certificate issuance to achieve HTTPS credibility within hours of registration.\n\nThis threat path is distinct from general phishing infrastructure (TP-0079) because the attack timing is predictable — anchored to external crisis events and government announcements — and the domain keyword patterns are crisis-specific, creating a detection window during the 48-72 hour infrastructure build-out phase before victim-facing deployment."
   },
   {
     "id": "DL-0001",
@@ -1098,18 +1200,6 @@
     "text": "Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ramping through Chinese OTC brokers (days 20-45). Temporal pattern matching against known laundering cycle timelines.\n"
   },
   {
-    "id": "DL-0115",
-    "type": "detection_rule",
-    "title": "DaaS Platform Transaction Pattern",
-    "text": "Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.\n"
-  },
-  {
-    "id": "DL-0117",
-    "type": "detection_rule",
-    "title": "Multilingual Chatbot Scam Pattern Detection",
-    "text": "Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.\n"
-  },
-  {
     "id": "DL-0118",
     "type": "detection_rule",
     "title": "Automated Mule Account Creation Velocity",
@@ -1138,6 +1228,12 @@
     "type": "detection_rule",
     "title": "Keitaro/Binom TDS Abuse Infrastructure Detection",
     "text": "Detect abuse of legitimate Traffic Distribution Systems Keitaro and Binom for fraud infrastructure: (1) HTTP redirect chains containing Keitaro tracking parameters such as click_id, campaign_id, and characteristic Keitaro URL path structures, (2) domains resolving to IP addresses associated with Keitaro or Binom hosting infrastructure, (3) redirect chain behavior patterns matching cloaking and visitor fingerprinting techniques used to evade security researchers while directing victims to investment scam landing pages.\n"
+  },
+  {
+    "id": "DL-0123",
+    "type": "detection_rule",
+    "title": "TAE Infrastructure Rotation Detection",
+    "text": "Detect Threat Actor Ecosystem (TAE) infrastructure rotation patterns used by bulletproof hosting providers to evade sanctions and takedowns: (1) IP prefix transfers between related Autonomous Systems within short timeframes, (2) RIPE NCC resource reallocation to newly created organizations with minimal operational history, (3) BGP announcement changes matching known TAE rebranding patterns such as Aeza to Hypercore to NetCrafters, (4) threat density score spikes on newly announced prefixes indicating migration of malicious infrastructure to fresh address space.\n"
   },
   {
     "id": "DL-0124",
@@ -1300,6 +1396,432 @@
     "type": "detection_rule",
     "title": "Post-AiTM Inbox Rule Manipulation — New Rules from Risky Sign-In",
     "text": "Detects inbox rule creation or modification in Exchange Online following a sign-in flagged with medium or high risk, or following authentication from a previously unseen IP address. Post-AiTM inbox rule manipulation is a characteristic Phase 3 (Positioning) technique: within minutes of session hijack, attackers create inbox rules to redirect or delete security alerts, payment notifications, and colleague communications. This detection correlates Exchange Online Unified Audit Log operations (New-InboxRule, Set-InboxRule, Set-Mailbox forwarding) with Entra ID risky sign-in events.\n"
+  },
+  {
+    "id": "DL-0151",
+    "type": "detection_rule",
+    "title": "Synthetic Identity Credit Utilization Spike — Low-and-Slow Buildup Followed by Bust-Out",
+    "text": "Detects the characteristic synthetic identity bust-out pattern: prolonged low credit utilization (< 35% for 6+ months) followed by a rapid spike to near-maximum utilization (> 80%) within 30 days. Synthetic identity fraudsters nurture credit profiles over 12-24 months with steady payments and low utilization, then execute a coordinated bust-out where all available credit is maxed simultaneously. The Federal Reserve estimates synthetic identity fraud costs U.S. lenders $6B+ annually. The discontinuous utilization jump from a stable baseline is the hallmark behavioral indicator.\n"
+  },
+  {
+    "id": "DL-0152",
+    "type": "detection_rule",
+    "title": "Thin-File Identity Clustering — Shared Address, Phone, or Device Across New Applicants",
+    "text": "Detects clusters of thin-file credit applicants sharing physical addresses, phone numbers, or device fingerprints — a hallmark indicator of synthetic identity ring activity. Fraud rings fabricate multiple synthetic identities that share infrastructure (mailing addresses, burner phones, devices used for applications). When 3+ new applicants with thin credit files (< 12 months history, < 3 tradelines) share an address, phone, or device within a 180-day window, this indicates coordinated identity fabrication rather than coincidental overlap. The Federal Reserve identifies address and device clustering as primary synthetic identity detection signals.\n"
+  },
+  {
+    "id": "DL-0153",
+    "type": "detection_rule",
+    "title": "Coordinated Bust-Out Timing — Simultaneous Max-Utilization Across Multiple Products",
+    "text": "Detects coordinated bust-out execution where the same identity (or linked identities) max out credit across multiple products within a 72-hour window. Synthetic identity rings time their bust-out to extract maximum value before accounts are frozen: cash advances, balance transfers to controlled accounts, and high-value purchases for resale all occur within a narrow window. When 3+ credit products associated with the same identity show utilization above 90% within 72 hours, and at least one involves a cash advance or balance transfer, this is a high-confidence bust-out indicator.\n"
+  },
+  {
+    "id": "DL-0154",
+    "type": "detection_rule",
+    "title": "SSN Age and Issuance Mismatch — Synthetic Identity Indicator",
+    "text": "Detects credit applications where the SSN characteristics are inconsistent with the applicant's stated identity — a primary indicator of synthetic identity fabrication. Key signals: (1) SSN issued after the applicant's date of birth suggests the SSN belongs to someone else (minors, immigrants, recently deceased), (2) post-2011 randomized SSNs that don't match SSA area number geography, (3) SSN first appearing at credit bureaus within the last 18 months combined with an applicant age > 25 (natural credit profiles start appearing at 18-22). The eCBSV (electronic Consent Based SSN Verification) service can confirm SSN-name-DOB matches, but adoption is inconsistent.\n"
+  },
+  {
+    "id": "DL-0155",
+    "type": "detection_rule",
+    "title": "First-Party Credit Buildup and Sudden Spike",
+    "text": "Detects consumer accounts following a first-party fraud pattern: steady good payments for 6-12 months then sudden utilization spike and missed payments within 60 days. Unlike synthetic identity (TP-0003), the identity is real but the intent is fraudulent. First-party bust-out actors nurture credit profiles with consistent on-time payments and low utilization, then rapidly maximize available credit before abandoning the account. The transition from responsible usage to aggressive drawdown is the key behavioral signal. LexisNexis estimates first-party fraud now represents 36% of all detected fraud events globally.\n"
+  },
+  {
+    "id": "DL-0156",
+    "type": "detection_rule",
+    "title": "Never-Pay Pattern — Immediate Max Utilization with Zero Payments",
+    "text": "Detects new credit accounts with immediate high utilization and zero payment activity after 60 days — classic \"never-pay\" first-party fraud where the consumer opens an account with no intent to pay. Unlike bust-out schemes that involve a credit nurturing phase, never-pay actors maximize utilization immediately after account opening and make no payments whatsoever. This pattern is distinguishable from legitimate new account activity because at least one billing cycle has passed with zero payment response. The never-pay variant accounts for a significant share of first-party fraud losses, particularly in unsecured credit products.\n"
+  },
+  {
+    "id": "DL-0157",
+    "type": "detection_rule",
+    "title": "Rapid Authorized User Addition Across Multiple Accounts",
+    "text": "Detects the same individual being added as an authorized user across 3 or more credit accounts within 30 days. This technique is used in first-party bust-out and synthetic identity schemes to rapidly build credit history or gain access to multiple credit lines for coordinated bust-out. Authorized user tradelines inherit the primary account's payment history, allowing fraudsters to artificially inflate credit scores in weeks rather than months. When combined with subsequent high utilization, this pattern is a strong leading indicator of coordinated bust-out activity. The \"piggybacking\" of authorized user status is a well-documented credit manipulation technique exploited by both first-party fraudsters and synthetic identity rings.\n"
+  },
+  {
+    "id": "DL-0158",
+    "type": "detection_rule",
+    "title": "Document Metadata Anomaly — AI-Generated ID Document Detection",
+    "text": "Detects submitted identity documents with metadata inconsistencies indicating AI generation or manipulation: PDF creation tools (Photoshop, GIMP, AI generators), timestamp manipulation (creation date after modification date), inconsistent DPI, missing EXIF data, font embedding anomalies. 85% of synthetic fraud now involves GenAI document fabrication. Underground services like OnlyFake and ProKYC produce photo-realistic government IDs for as little as $30, complete with simulated holograms and barcode data, but leave detectable metadata and structural artifacts that differ from genuine document scans.\n"
+  },
+  {
+    "id": "DL-0159",
+    "type": "detection_rule",
+    "title": "Facial Liveness Failure Pattern — Iterative Deepfake Tuning",
+    "text": "Detects repeated liveness check failures from the same device followed by eventual success — indicates iterative deepfake tuning where fraudsters adjust their deepfake parameters until they pass liveness detection. Normal users fail once (bad lighting) and succeed quickly; attackers show a pattern of 3+ failures with improving scores. Real-time face-swap applications and pre-recorded deepfake videos are used to defeat challenges requiring head turns, blinking, or phrase repetition. The iterative improvement pattern — each attempt scoring higher than the last — is a strong indicator of adversarial tuning against the liveness detection model.\n"
+  },
+  {
+    "id": "DL-0160",
+    "type": "detection_rule",
+    "title": "Cross-Application Identity Collision — Same Biometric or Device Across Different Identities",
+    "text": "Detects the same biometric template (face embedding), device fingerprint, or behavioral pattern appearing across applications submitted under different identity names. Fraudsters using AI-generated faces may reuse the same base model or device, creating detectable collisions in the biometric or device space. Even when AI-generated facial images appear visually distinct, the underlying face embedding vectors may cluster due to shared generative model artifacts. Similarly, device fingerprints and behavioral biometric profiles persist across sessions even when the presented identity changes, enabling cross-application correlation that reveals synthetic identity networks.\n"
+  },
+  {
+    "id": "DL-0161",
+    "type": "detection_rule",
+    "title": "AI Document Template Cluster — Identical Formatting Patterns Across Applications",
+    "text": "Detects clusters of submitted ID documents sharing identical formatting artifacts, template structures, or AI generation signatures. AI document generators produce documents with consistent pixel-level artifacts, font embedding patterns, and template metadata even when the identity details differ. When 3+ documents from different applicants show template_similarity_score > 0.85, this indicates a common AI generator. Underground forgery services like OnlyFake successors use a limited number of document templates per jurisdiction, creating detectable clustering when multiple synthetic identities are onboarded through the same forgery pipeline. Template similarity analysis across the document corpus reveals these clusters even when individual documents pass automated verification checks.\n"
+  },
+  {
+    "id": "DL-0162",
+    "type": "detection_rule",
+    "title": "Check Washing — Altered Check Mobile Deposit with Duplicate or MICR Inconsistency",
+    "text": "Detects mobile deposits of potentially washed or altered checks by identifying two key indicators: (1) the same check number deposited at multiple financial institutions within a short window, indicating duplicate deposit fraud, and (2) check amounts inconsistent with the MICR (Magnetic Ink Character Recognition) line data, suggesting the payee and amount fields were chemically washed and rewritten while the MICR line was preserved. FinCEN data shows check fraud SARs surged 200%+ from 2021-2023, driven by USPS mail theft and the ease of mobile deposit. Washed checks deposited via mobile apps exploit the lag between deposit and check clearing under Reg CC funds availability requirements. The Recorded Future 2025 report documented a geographic shift in stolen check activity toward the Midwest and suburban/rural USPS routes.\n"
+  },
+  {
+    "id": "DL-0163",
+    "type": "detection_rule",
+    "title": "Disability Insurance Fraud — Fabricated Medical Documentation Provider Anomaly",
+    "text": "Detects patterns indicative of fabricated medical documentation supporting fraudulent disability claims by identifying two key signals: (1) a single medical provider billing across multiple claimants with identical or near-identical diagnosis codes (ICD-10), suggesting template-driven fabricated documentation rather than genuine clinical variation, and (2) claims supported by providers located outside the claimant's geographic area, indicating the claimant traveled specifically to a complicit provider or the documentation was fabricated remotely. DOJ prosecutions reveal organized disability fraud rings where complicit providers generate documentation for dozens of fictitious or exaggerated claims, with cumulative payouts in the millions. The long-tail nature of disability payments means a single fraudulent claim can generate $100,000+ in benefits before detection. Generative AI tools now enable fabrication of convincing medical documentation without provider collusion, representing an emerging escalation vector.\n"
+  },
+  {
+    "id": "DL-0164",
+    "type": "detection_rule",
+    "title": "Insider-Enabled Account Fraud — Employee Access Anomaly with Subsequent Account Changes",
+    "text": "Detects financial institution employees accessing customer accounts outside their normal behavioral pattern, combined with subsequent account modifications — a hallmark of insider- enabled fraud. The rule identifies four converging anomaly signals: (1) account access occurring outside normal business hours for the employee's role, (2) access volume significantly exceeding the employee's baseline, (3) access to accounts not assigned to the employee's portfolio or branch, and (4) account changes (address, beneficiary, contact info, transaction limits) following the anomalous access. The ACFE estimates insider fraud accounts for 5% of organizational revenue globally, with an average detection time of 18 months. Financial institution insiders are particularly dangerous because they understand internal controls and operate below detection thresholds. This rule correlates UEBA access data with account modification logs to surface the positioning phase (CFPF P3) before funds are extracted.\n"
+  },
+  {
+    "id": "DL-0165",
+    "type": "detection_rule",
+    "title": "Business Identity Takeover — Rapid Signer, Address, and Banking Detail Changes on Established Account",
+    "text": "Detects potential business identity takeover by identifying a cluster of critical account changes occurring within a short window on established commercial accounts. The rule flags accounts where authorized signer changes, business address updates, and banking detail modifications (routing/account number, wire instructions, or beneficiary changes) all occur within 14 days — a pattern strongly indicative of corporate hijacking. Threat actors impersonate legitimate businesses by filing fraudulent amendments with the Secretary of State to change registered agents or officers, then use the hijacked identity to modify banking relationships and extract funds. Established accounts (open 12+ months) are specifically targeted because they have built credit history and banking relationships that actors exploit. This pattern was heavily observed during pandemic-era PPP/EIDL fraud and continues to plague commercial lenders. Average commercial loan fraud via business identity theft ranges from $100K to $1M+.\n"
+  },
+  {
+    "id": "DL-0166",
+    "type": "detection_rule",
+    "title": "GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary",
+    "text": "Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $8.65 billion in investment fraud losses in 2025 (up from $6.57B in 2024) — the single largest fraud category. IC3 2025 data shows 72% of investment fraud payments flow through cryptocurrency, 19% via wire transfer/ACH, and 4% peer-to-peer. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.\n"
+  },
+  {
+    "id": "DL-0167",
+    "type": "detection_rule",
+    "title": "Elder Financial Exploitation — New Payee Addition with Escalating Payment Amounts",
+    "text": "Detects a multi-signal elder financial exploitation pattern: account holder aged 65 or older adds a new payee not present in their historical payment network, followed by escalating payment amounts to that payee over a rolling 30-day window. FBI IC3 reported $7.748B in elder fraud losses in 2025 (59% YoY increase from $4.885B in 2024), with 201,266 complaints from victims aged 60+. Crypto ATM/kiosk fraud disproportionately targets this cohort: 6,188 complaints and $257M in losses from 60+ victims alone. The convergence of advanced age, new payee addition, and escalating amounts is a hallmark of romance scams, tech support fraud, government impersonation, and caregiver exploitation — all of which follow a pattern of trust-building followed by increasing financial extraction. This rule targets Phase 4 (Execution) but the escalating pattern often indicates prolonged Phase 2/3 social engineering that has already been underway for weeks or months.\n"
+  },
+  {
+    "id": "DL-0168",
+    "type": "detection_rule",
+    "title": "Web3 Wallet Drainer — Malicious Token Approval to Drainer Contract",
+    "text": "Detects wallet drainer approval phishing by identifying three high-confidence on-chain indicators: (1) token approval (approve() or increaseAllowance()) granting unlimited allowance to a contract address on known drainer threat feeds, (2) unlimited ERC-20 approvals to contracts deployed within the last 48 hours with no verified source code, or (3) rapid multi-token approvals (3+ distinct token contracts) from a single wallet to the same spender address within a 10-minute window — characteristic of automated DaaS kit multi-token harvesting. ScamSniffer reported $494M stolen via wallet drainers in 2024, with Inferno Drainer commanding 40-45% DaaS market share. The Permit/Permit2 gasless signature variant bypasses traditional on-chain approval monitoring; this rule covers the on-chain approve() path and Permit2 batch transfer events. Stolen assets are typically consolidated and bridged cross-chain within hours.\n"
+  },
+  {
+    "id": "DL-0169",
+    "type": "detection_rule",
+    "title": "Ghost Student Financial Aid Fraud — Multi-Signal Botnet Enrollment Detection",
+    "text": "Detects ghost student financial aid fraud by correlating three botnet-driven enrollment indicators: (1) multiple FAFSA applications originating from the same device fingerprint or IP address within an enrollment cycle, (2) shared bank accounts across distinct financial aid applicants (multiple student IDs disbursing to the same routing/account number), or (3) financial aid disbursements from multiple student IDs flowing to the same beneficiary account or being withdrawn at the same ATM cluster. California community colleges flagged 31-34% of applications as potentially fraudulent, and Equifax reported preventing $180M in ghost student fraud in a single year. Ghost student botnets exploit open-enrollment admissions to submit hundreds of synthetic identity applications per cycle, file FAFSA for maximum Pell Grant eligibility ($7,395/year), and extract disbursements before census date attendance verification can trigger aid return requirements.\n"
+  },
+  {
+    "id": "DL-0170",
+    "type": "detection_rule",
+    "title": "Calendar Invite Injection Phishing — Mass External Calendar Event Creation from New Domains",
+    "text": "Detects calendar injection phishing by identifying mass calendar invite creation from external sources targeting internal users, where the event body contains URLs and the organizer domain is recently registered (under 30 days) or on a high-abuse TLD. Attackers send emails containing .ics calendar attachments or Google Calendar invite links that auto-populate on victim calendars, bypassing email gateway filtering that focuses on message body and attachment analysis. An observed March 2026 campaign delivered 6,000+ emails across 10 sender domains (9 RDGA-generated on .cyou/.sbs/.click TLDs) with antivirus renewal and meeting invite lures. Calendar events persist after email deletion and re-surface via reminder notifications, creating a delayed-action social engineering vector. Recently created organizer accounts (under 7 days) sending calendar invites to 5+ internal recipients are additionally flagged as high-confidence indicators.\n"
+  },
+  {
+    "id": "DL-0171",
+    "type": "detection_rule",
+    "title": "QR Code Payment Fraud (Quishing) — Malicious QR Destination to Credential Harvesting Infrastructure",
+    "text": "Detects quishing attacks by identifying emails or messages containing QR code images where the encoded URL resolves to a recently registered domain (under 30 days), a known URL shortener redirecting to a credential harvesting page, or a domain impersonating postal services or banking institutions. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents a European modus operandi where fraudsters send fake QR codes claiming payment is available at a post office, routing victims through a fake postal site to a cloned bank login page. In a documented case, USD 110,000 was stolen through this method. The attack exploits a fundamental QR code UX gap: unlike hyperlinks, QR codes do not display a destination URL before the victim commits to following them. The subsequent 2FA device enrollment step converts credential capture into persistent account takeover, making real-time detection at the email/content analysis layer critical before the victim scans.\n"
+  },
+  {
+    "id": "DL-0172",
+    "type": "detection_rule",
+    "title": "Sextortion-Investment Hybrid Fraud — Small Payment Escalation to Crypto Addresses with Communication Pattern Shift",
+    "text": "Detects the sextortion-investment hybrid fraud pattern where a victim makes initial small payments followed by escalating amounts to cryptocurrency addresses, with the communication pattern showing a transition from social/romantic interaction to financial urgency. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents this as a globally escalating pattern where scam centre operators systematically pivot from romance/investment scripts to sextortion as a scripted operational fallback. The hallmark behavioral signature is a first-ever crypto transaction within 30 days of a new social media contact, followed by rapid escalation in both payment frequency and amount, often accompanied by messaging patterns shifting from casual/romantic to urgent/threatening language. The hybrid structure maximizes total extraction while suppressing victim reporting through shame and blackmail leverage.\n"
+  },
+  {
+    "id": "DL-0173",
+    "type": "detection_rule",
+    "title": "Vehicle Export Financing Fraud — Auto Loan Followed by Rapid Title Transfer or Export with Active Lien",
+    "text": "Detects the vehicle export financing fraud pattern where an auto loan application is approved and the financed vehicle undergoes rapid title transfer or appears in export documentation while the loan remains active and the lien is outstanding. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents this as a growing transnational fraud scheme first detected in North America in early 2024, where criminal networks use identity theft and straw buyers to obtain auto loans for high-value vehicles, then export them overseas before lenders detect fraud. The critical detection window is the period between vehicle delivery and export — often as short as 7-21 days. Key indicators include high-value vehicles (>$30,000) with high LTV ratios, fewer than 3 loan payments made, title transfer events within 60 days of origination, and GPS telematics showing vehicle departure from the borrower's stated area toward port cities or border crossings. The structural delay between loan default and fraud detection is the primary vulnerability exploited by these networks.\n"
+  },
+  {
+    "id": "DL-0174",
+    "type": "detection_rule",
+    "title": "Crypto Fraud-Terrorism/Narco Financing Nexus — Sanctions-Exposed Wallets and Peel Chain Patterns Through Mixing Services",
+    "text": "Detects the crypto-terror/narco financing nexus pattern where transactions flow to wallets with known OFAC/sanctions exposure, or exhibit peel chain patterns through cryptocurrency mixing services followed by consolidation to designated entity-linked addresses. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two confirmed manifestations: (1) a USD 150 million cryptocurrency fraud scheme linked to Tren de Aragua laundering drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula; and (2) Operation Catalyst, which uncovered a USD 562 million crypto Ponzi scheme affecting 100,000+ victims across 17 countries with wallet-level links to terrorism financing in Central Africa. The detection logic targets three signatures: direct transactions to OFAC SDN-listed wallet addresses within 2 hops, peel chain patterns where funds are split into decreasingly small amounts through mixing services before reconsolidation, and co-mingling indicators where platform wallets receive both retail investor deposits and large round-number inflows from high-risk wallet clusters. This rule operates at critical severity given the terrorism and narcotics financing implications and associated OFAC blocking obligations.\n"
+  },
+  {
+    "id": "DL-0175",
+    "type": "detection_rule",
+    "title": "Organized Insurance Claims Fraud — Shared Professional Enablers and Claim Timing Clustering Around Policy Inception",
+    "text": "Detects organized insurance claims fraud patterns where the same claimant or provider appears across multiple claims with shared professional enablers (medical provider, legal representative, repair shop), or where claim timing is clustered around policy inception. INTERPOL's 2026 Global Financial Fraud Threat Assessment identifies insurance fraud — notably car and medical insurance claims — as escalating globally, with Europe most impacted: the UK recorded a 25% spike in motor insurance fraud in early 2025, France detected nearly USD 1 billion in fraud in 2024, and German insurers flagged 10% of claims as suspicious with annual losses exceeding USD 7 billion. The detection logic targets two primary signatures: (1) network analysis identifying claimants, providers, legal representatives, or repair shops appearing across multiple claims — indicating an organized fraud ring with division of labor; and (2) temporal analysis identifying claims filed within 90 days of policy inception with high severity, which indicates opportunistic application fraud followed by immediate fraudulent claim filing. The combination of shared enablers and inception-proximate timing is a strong indicator of organized ring activity.\n"
+  },
+  {
+    "id": "DL-0176",
+    "type": "detection_rule",
+    "title": "Organized Counterfeit Goods and Non-Delivery Fraud Network — High Dispute Merchant Accounts with Drop Location Clustering and Below-Market Pricing",
+    "text": "Detects organized counterfeit goods and non-delivery fraud network activity by identifying merchant accounts exhibiting multiple fraud indicators simultaneously: high chargeback/dispute rates, shipping addresses clustered at known drop locations, product listings priced significantly below market value, and seller account age under 90 days with disproportionately high transaction volume. The UNODC Organized Fraud Issue Paper (2024) documents this as the most prevalent fraud category by volume, with organized criminal groups operating multi-site networks backed by dedicated money laundering infrastructure, recruited money mules, and counterfeit supply chains. Case studies from Romania, Germany, and the US show OCGs adopting formal business structures — suppliers, distribution centers, online retailers — to deceive payment providers and scale operations. The detection logic combines four signals: (1) dispute rate exceeding 2% of transactions indicating non-delivery or counterfeit complaints; (2) shipping address concentration at drop locations or mail receiving services; (3) product pricing 30%+ below market benchmarks; and (4) new seller accounts (<90 days) with anomalously high listing and transaction volume. Any two of these four indicators in combination warrant investigation.\n"
+  },
+  {
+    "id": "DL-0177",
+    "type": "detection_rule",
+    "title": "Magecart WebSocket Card Data Exfiltration — Payment Page to Recently Registered Domain",
+    "text": "Detects Magecart-style card data exfiltration via WebSocket connections from e-commerce checkout or payment pages to recently registered domains (< 90 days) that masquerade as legitimate services (analytics, CDN, jQuery). The ANY.RUN \"Banks Magecart Campaign\" (March 2026) documented a 24+ month campaign across 100+ domains targeting the Redsys payment system (Spain), PayPlug SAS, and generic Visa/Mastercard flows. The attack uses a multi-stage injection model: (1) obfuscated loader injected into site scripts, (2) rotating domains deliver secondary payloads, (3) DOM monitoring conceals legitimate payment buttons and injects fake payment interfaces, (4) WebSocket connections (wss://<c2>/?token=<base64>) exfiltrate full card data (BIN, PAN, expiry, CVV). WebSocket is chosen specifically to reduce visibility in traditional HTTP-based security monitoring. Detection combines three signals: WebSocket connection from a payment/checkout page context, destination domain registered within 90 days, and domain name pattern masquerading as a legitimate service (analytics, CDN, jQuery, caching). The confirmed IOC domain list from the campaign uses registrar NICENIC INTERNATIONAL GROUP, identified by Silent Push as a bulletproof registrar.\n"
+  },
+  {
+    "id": "DL-0178",
+    "type": "detection_rule",
+    "title": "Bulletproof Hosting ASN Connection Correlation — Traffic to Known BPH Networks",
+    "text": "Detects DNS resolution or network connections to IP addresses within known bulletproof hosting (BPH) Autonomous System Number (ASN) ranges, domains registered via the NiceNIC registrar, or domains using Dynamic DNS providers such as afraid.org. Silent Push (2025) documented 200+ BPH providers controlling approximately 1 million IP addresses globally. This rule correlates network traffic against a curated list of BPH ASNs identified through abuse pattern analysis, including providers with high DGA domain density, disposable abuse contact emails, shell company registrations in permissive jurisdictions, and self-declared bulletproof hosting marketing. Additionally, the rule flags domains registered through NiceNIC — a registrar favored by threat actors (including Scattered Spider and The Com) due to its requirement for a Power of Attorney to process takedown requests — and domains leveraging Dynamic DNS services that create BPH-like abuse-resistant infrastructure. Any match warrants investigation for potential fraud-enabling infrastructure, C2 communication, or criminal hosting activity.\n"
+  },
+  {
+    "id": "DL-0179",
+    "type": "detection_rule",
+    "title": "Cloud Phone Behavioral Anomaly — Device-Environment Decorrelation Detection",
+    "text": "Detects cloud phone behavioral anomalies indicative of industrial-scale dropper/mule account creation. Cloud phones — remote-access Android devices running genuine firmware on ARM hardware in data centers — pass hardware attestation and present authentic device signals, making them invisible to traditional emulator detection. This rule uses a composite scoring approach combining device-environment decorrelation signals: perpetual full battery, absence of accelerometer motion during active sessions, presence of VPN/proxy and vendor management apps, unusually high banking app density, and recent device first-seen dates. Group-IB reports cloud phone rental from $0.10/hour with pre-verified dropper accounts selling for $50–200 on darknet markets. UK APP fraud losses reached £485.2M in 2023 with dropper accounts as the top contributing factor.\n"
+  },
+  {
+    "id": "DL-0180",
+    "type": "detection_rule",
+    "title": "Fake OTA Domain Pattern Detection — Domains Mimicking Booking.com/Expedia/Airbnb Registered < 30 Days",
+    "text": "Detects web traffic to recently registered domains (< 30 days old) that mimic major Online Travel Agency brands (Booking.com, Expedia, Airbnb) using typosquatting, homoglyph substitution, or brand-adjacent naming patterns. These fake OTA domains are the primary infrastructure for travel booking fraud credential harvesting operations. NordVPN/Saily identified 4,344 active fake travel domains in 2026. Average domain lifespan is 18 days before takedown, making registration age the highest-signal detection feature. Domains serving payment form pages are critical-severity indicators.\n"
+  },
+  {
+    "id": "DL-0181",
+    "type": "detection_rule",
+    "title": "B4U Booking Velocity Anomaly — Same Payment Method Booking Across Multiple OTAs/Hotels in Rapid Succession",
+    "text": "Detects Buy-for-You (B4U) booking fraud patterns where the same payment method is used to make travel bookings across multiple OTAs, airlines, or hotel chains within a 24-hour period, especially when bookings are made for different travelers. B4U operators use stolen payment credentials to purchase travel at legitimate platforms, then resell bookings at 30-60% of face value. Sumsub estimates B4U services generate $37B in annual travel fraud losses. The velocity of bookings across disparate merchants with mismatched traveler names is the hallmark detection signal.\n"
+  },
+  {
+    "id": "DL-0182",
+    "type": "detection_rule",
+    "title": "IRSF Traffic Spike Detection — Abnormal Call Volume to Premium-Rate International Numbers",
+    "text": "Detects abnormal spikes in outbound call volume to premium-rate international number ranges, the hallmark indicator of International Revenue Share Fraud (IRSF). IRSF is the single largest telecom fraud category at $10.76B in annual losses (CFCA/TNS 2026). Fraudsters generate artificial traffic to premium-rate numbers where they hold revenue- sharing agreements, typically using compromised PBX systems or automated dialers. The detection uses z-score analysis against per-source baseline call volumes to premium-rate destinations, flagging when hourly volume exceeds 3 standard deviations. A compromised PBX can generate $50K-$500K in fraudulent charges within hours, making real-time detection critical.\n"
+  },
+  {
+    "id": "DL-0183",
+    "type": "detection_rule",
+    "title": "Wangiri Callback Velocity — High Volume of Short-Duration Outbound International Calls From Single Source",
+    "text": "Detects Wangiri (\"one-ring\") fraud patterns where a high volume of short-duration (< 5 seconds) outbound international calls originate from a single source, indicating subscriber callbacks to premium-rate numbers. In a Wangiri scheme, fraudsters place brief inbound calls from premium-rate numbers to trigger victim callbacks. The callbacks connect to IVR systems or premium content lines that accumulate per-minute charges. This rule detects the callback side of the attack: clusters of brief outbound international calls from individual subscribers or PBX systems to premium-rate destinations. Average victim loss is $15-$50 per callback; aggregate campaign revenues reach $100K-$1M (Subex/Akamai).\n"
+  },
+  {
+    "id": "DL-0184",
+    "type": "detection_rule",
+    "title": "Telecom Subscription Velocity — Multiple New Service Activations From Same Identity/Device Within 30 Days",
+    "text": "Detects subscription fraud patterns where the same identity or device IMEI is used to activate multiple new telecom service accounts within a 30-day window. Subscription fraud is the top concern for 53% of telecom executives (TransUnion 2025). Fraudsters use synthetic identities (TP-0003) with GenAI-generated KYC documents to open accounts across multiple carriers, acquiring subsidized flagship devices on installment plans with no payment intent. The multi-carrier activation pattern is the strongest detection signal, as legitimate customers rarely activate 3+ accounts across 2+ carriers in a 30-day period. Devices acquired through subscription fraud are resold at 60-80% of retail value on secondary markets.\n"
+  },
+  {
+    "id": "DL-0185",
+    "type": "detection_rule",
+    "title": "Premium SMS Billing Anomaly — Unauthorized Premium SMS Subscriptions Appearing on Accounts",
+    "text": "Detects unauthorized premium SMS subscriptions (cramming) appearing on customer accounts without corresponding opt-in or consent records. Premium SMS cramming generates an estimated $1.5B in unauthorized consumer charges annually (CFCA/TNS 2026). Fraudsters add premium SMS shortcode subscriptions to accounts through compromised billing APIs, social engineering of carrier support staff, or malware-initiated WAP billing triggers. The key detection signal is premium SMS subscription records that lack a corresponding customer opt-in event. Multiple premium subscriptions appearing on the same account within a 30-day window without opt-in are high-confidence cramming indicators.\n"
+  },
+  {
+    "id": "DL-0186",
+    "type": "detection_rule",
+    "title": "Seller Impersonation Pattern — Property Sale Initiated by Non-Resident Owner of Vacant/Unencumbered Property With Recent Contact Info Changes",
+    "text": "Detects the characteristic seller impersonation pattern in real estate title fraud: a property sale or title transfer is initiated on a vacant, unencumbered property where the owner is non-resident (mailing address differs from property address) and the owner's contact information has been recently changed. FBI data shows $16.6B in total real estate fraud losses (2024), with seller impersonation of vacant property owners as the fastest-growing subcategory. Fraudsters target vacant, mortgage-free properties because there is no occupant to notice and no lender monitoring the title. A risk score is computed from multiple indicators: non-resident owner, vacant property, unencumbered, recent contact changes, and below-market listing price.\n"
+  },
+  {
+    "id": "DL-0187",
+    "type": "detection_rule",
+    "title": "Fraudulent Deed Transfer Anomaly — Deed Recording With Document Metadata Anomalies (AI Generation Indicators) on Properties With No Prior Activity",
+    "text": "Detects deed recordings that exhibit document metadata anomalies indicative of AI- generated or forged documents, particularly on properties with no recent prior recording activity. The detection combines document forensic signals (AI tool signatures in PDF metadata, rapid creation timestamps, font inconsistencies) with property-level risk factors (no prior recordings in 5 years, vacant status, unencumbered, non-resident owner). Entrust reports a 40% YoY increase in deepfake-related fraud attempts (2026), with AI-forged deeds, government IDs, and notary stamps as primary vectors in real estate title fraud. Notary commission validation is a critical check -- invalid or expired notary credentials are a high-confidence fraud indicator.\n"
+  },
+  {
+    "id": "DL-0188",
+    "type": "detection_rule",
+    "title": "Ghost Broker Policy Pattern — Multiple Policies with Disposable Contacts and Below-Market Premiums",
+    "text": "Detects ghost broker activity by identifying intermediaries submitting multiple insurance policies using disposable contact details (temporary email addresses, prepaid phone numbers) with premiums significantly below market rates. Ghost broking victims increased 93% in 2025, with organized operators selling fake or fraudulently obtained policies at 30-60% below market rates. The combination of high policy volume, rotating disposable contacts, and below-market pricing is the hallmark pattern of ghost broker operations. City of London Police made arrests in May 2025 and IFED designated February 2026 as a ghost broking intensification month.\n"
+  },
+  {
+    "id": "DL-0189",
+    "type": "detection_rule",
+    "title": "Ghost Portal Infrastructure Detection — Fake Insurance Verification on Recently Registered Domains",
+    "text": "Detects ghost portal infrastructure — fraudulent insurance verification websites deployed on recently registered domains that return valid-looking but unverifiable policy numbers. Ghost portals represent the evolution of ghost broking into a fraud-as-a-service model, where operators build and sell fake insurance verification platforms to other fraudsters. These portals are typically deployed on domains registered within the past 90 days, use insurance-related keywords, and mimic legitimate insurer verification workflows. Detection focuses on DNS queries and web traffic to recently registered domains containing insurance verification terminology.\n"
+  },
+  {
+    "id": "DL-0190",
+    "type": "detection_rule",
+    "title": "Chargeback Velocity Pattern — Serial Dispute Filing Across Merchants with Confirmed Delivery",
+    "text": "Detects friendly fraud chargeback abuse by identifying cardholders with 3 or more chargebacks filed within a 90-day window across different merchants where delivery was confirmed for the original transactions. Friendly fraud represents 36% of all fraud, with 337 million chargebacks projected for 2026 costing USD 15.3 billion in the US. Chargeback abuse surged 233% between Q1 and Q3 2025. The combination of multi-merchant dispute filing with contradicting delivery evidence is a high-confidence indicator of first-party chargeback abuse rather than legitimate disputes. Merchants lose USD 4.61 for every USD 1.00 of friendly fraud.\n"
+  },
+  {
+    "id": "DL-0191",
+    "type": "detection_rule",
+    "title": "First-Party Dispute Anomaly — Chargeback with Delivery Confirmation, Device Match, and No Merchant Contact",
+    "text": "Detects high-confidence friendly fraud by identifying chargebacks where three independent indicators contradict the dispute claim: (1) delivery was confirmed for the original order, (2) the device fingerprint filing the dispute matches the device used for the original purchase, and (3) no merchant contact was attempted before the chargeback was filed. The triple correlation of delivery evidence, device match, and merchant bypass is a strong signal that the cardholder is the original purchaser who received the goods and chose to file a chargeback rather than a legitimate return. 84% of consumers find chargebacks simpler than contacting merchants, creating systemic abuse of the dispute mechanism.\n"
+  },
+  {
+    "id": "DL-0192",
+    "type": "detection_rule",
+    "title": "Cookie Stuffing Detection — Affiliate Cookies Set Without Corresponding Click Events",
+    "text": "Detects cookie stuffing — the most prevalent affiliate fraud technique (approximately 60% of cases) — by identifying affiliates that set tracking cookies in user browsers without corresponding user click events. Cookie stuffing uses hidden iframes, 1x1 pixel images, or JavaScript injection to drop affiliate cookies without the user's knowledge or intent. This steals attribution credit from legitimate affiliates and organic traffic, inflating the fraudulent affiliate's commission payments. Detection relies on the cookie-to-click ratio: legitimate affiliates typically have a ratio near 1:1, while cookie stuffers exhibit ratios of 5:1 or higher, or set cookies with zero associated clicks entirely. Global ad fraud is projected at USD 71 billion in 2025.\n"
+  },
+  {
+    "id": "DL-0193",
+    "type": "detection_rule",
+    "title": "Bot Traffic Behavioral Anomaly — Mechanical Consistency in Affiliate Session Metrics",
+    "text": "Detects bot-generated affiliate traffic by identifying sessions with mechanical behavioral consistency — identical session durations, linear scroll patterns, and zero mouse movement variance — that indicate automated rather than human browsing. Bot networks account for approximately 40% of all click fraud, and AI-powered bots increasingly mimic individual human sessions. However, bot traffic still exhibits statistically detectable patterns at the population level: genuine human traffic has natural variance in behavioral metrics, while bot traffic — even sophisticated AI bots — produces distributions with anomalously low standard deviation. This rule analyzes session-level behavioral distributions per affiliate to detect mechanical consistency at the aggregate level.\n"
+  },
+  {
+    "id": "DL-0194",
+    "type": "detection_rule",
+    "title": "AI-Generated Claims Document Detection — Metadata Anomalies and Generation Tool Signatures",
+    "text": "Detects AI-generated or AI-altered insurance claims documents by analyzing metadata anomalies including GAN artifacts, inconsistent EXIF data, and AI generation tool signatures. An estimated 25-30% of insurance claims now involve some form of GenAI-altered content. This rule targets the document forensics layer: photos submitted without legitimate camera metadata, documents with AI tool signatures in creation metadata, images with frequency domain anomalies characteristic of GAN generation, and GPS coordinates that contradict the claimed loss location. The insurance fraud detection market is growing from USD 7.5B to USD 9.13B reflecting industry investment in these countermeasures. Debener et al. (2023) demonstrate that XGBoost and isolation forests provide complementary detection approaches for anomalous claims.\n"
+  },
+  {
+    "id": "DL-0195",
+    "type": "detection_rule",
+    "title": "Deepfake Vehicle Damage Photo Pattern — Pixel Artifacts, Lighting Inconsistencies, and AI Generation Indicators",
+    "text": "Detects deepfake vehicle damage photos in insurance claims by analyzing pixel-level artifacts, lighting and shadow inconsistencies, and metadata indicating AI image generation tools. AI-generated vehicle damage photos represent an acute threat to auto insurance claims processing, as generative AI can produce realistic collision, hail, and vandalism damage images that bypass visual inspection by claims adjusters. Detection relies on computer vision analysis: GAN-generated images exhibit characteristic pixel artifacts at damage boundaries, physically impossible lighting/shadow combinations, and frequency domain signatures distinct from camera-captured photos. This rule targets vehicle-specific claims (collision, comprehensive, vandalism) and correlates image forensics scores with claim characteristics.\n"
+  },
+  {
+    "id": "DL-0196",
+    "type": "detection_rule",
+    "title": "Stablecoin Flow to CEX via Hot Wallet Sweep Pattern",
+    "text": "Detects the 2-hop hot wallet sweep pattern used in industrialized stablecoin laundering pipelines: illicit or high-risk funds flow from a flagged/suspicious address to a centralized exchange (CEX) deposit address (hop 1), which is then automatically swept into the exchange institutional hot wallet (hop 2). Confirming both hops confirms the exchange relationship and receipt of flagged funds. This pattern was documented by ICIJ in the Huione Group investigation, where at least $408 million flowed to Binance and $226 million to OKX via TRON/USDT through this exact mechanism. The detection leverages publicly available exchange Proof-of-Reserves (PoR) address lists and Arkham Intelligence illicit wallet tags to attribute both source risk and destination exchange. TRON/USDT is the primary monitoring surface given its dominance as the SE Asian fraud compound laundering rail.\n"
+  },
+  {
+    "id": "DL-0197",
+    "type": "detection_rule",
+    "title": "Crypto-to-Cash Desk — Ephemeral Wallet and Unlicensed OTC Indicators",
+    "text": "Detects crypto-to-cash desk operations that convert USDT to physical currency with minimal or no KYC, generating fresh wallet addresses per transaction to defeat blockchain tracing. These unlicensed OTC operations represent the final monetization layer in stablecoin laundering pipelines, bridging the gap between on-chain cryptocurrency and usable physical cash. ICIJ investigators documented such operations in Dubai and Eastern European cities during the Coin Laundry investigation, with one desk processing $2 million in volume over 10 days on the TRON network alone — and critically, that desk did not appear in any major blockchain analytics provider attribution database (Chainalysis, TRM, Elliptic). The detection targets ephemeral wallets (< 7 days old, < 3 prior transactions) receiving USDT from multiple distinct sources on TRON, where the destination wallet is not attributed in any known analytics or exchange Proof-of-Reserves database.\n"
+  },
+  {
+    "id": "DL-0198",
+    "type": "detection_rule",
+    "title": "Shell Company Address Concentration as Fraud Infrastructure Indicator",
+    "text": "Detects abnormal concentration of corporate registrations at a single registered address as an indicator of shell company infrastructure used for fraud, money laundering, or beneficial ownership obfuscation. The ICIJ/OpenCorporates investigation of Wyoming documented that 40% of all Wyoming LLCs are registered to just two buildings in Sheridan, WY, with a 30% spike in LLC registrations in 2023 alone. Wyoming now surpasses Delaware in companies registered per capita. Wyoming LLC services are actively marketed in Cyprus, Singapore, and other offshore jurisdictions as tax avoidance and asset-shielding vehicles. Millions in PPP loan fraud were traced to shell companies registered at a single Wyoming storefront address. The Corporate Transparency Act beneficial ownership registry — catalyzed by the FinCEN Files investigation — was effectively gutted in 2025 when the Trump Administration suspended all enforcement and deleted previously submitted data, removing the primary countermeasure against shell company opacity in the United States. This rule targets the recon phase (P1) where fraud infrastructure is established through mass corporate registration at concentrated addresses.\n"
+  },
+  {
+    "id": "DL-0199",
+    "type": "detection_rule",
+    "title": "ASN Reputation Clustering — High Abuse-Density Autonomous Systems",
+    "text": "Detects network traffic to or from IP addresses within autonomous systems (ASNs) that exhibit high abuse density — defined as a concentration of abuse reports, malware hosting, and fraud-associated domains relative to total IP allocation. BPH operators concentrate on ASNs with high abuse-to-IP ratios due to their resistance to takedown. ASN-level reputation clustering is more resilient to infrastructure rotation than individual IP blocking, as operators rotate IPs within the same ASN. Sourced from Flare Academy BPH Webinar and Recorded Future TAE provider intelligence.\n"
+  },
+  {
+    "id": "DL-0200",
+    "type": "detection_rule",
+    "title": "Infrastructure Rotation Velocity — Rapid DNS IP Changes Within BPH Networks",
+    "text": "Detects domains exhibiting rapid IP address rotation characteristic of bulletproof hosting infrastructure management. BPH operators rotate IP addresses every 24-72 hours to evade blocklists, with emergency rotation following IOC publication. A domain resolving to 4+ unique IPs within 7 days — particularly when those IPs span multiple TAE provider ASNs — is a strong indicator of managed BPH infrastructure rotation. This detection complements static IP blocklists by identifying the rotation behavior itself. Sourced from Flare Academy BPH Webinar and Cybercrime Diaries BPH landscape analysis.\n"
+  },
+  {
+    "id": "DL-0201",
+    "type": "detection_rule",
+    "title": "AiTM Antibot Cloaking Detection — Divergent Content by Client Type",
+    "text": "Detects phishing pages that serve different content to automated scanners versus human visitors — a key evasion technique used by PhaaS platforms including Bluekit, Tycoon 2FA, and NakedPages. Antibot cloaking typically returns benign content (blank pages, Wikipedia redirects, legitimate-looking sites) to known scanner User-Agents, IP ranges associated with security vendors, and headless browsers, while serving the actual phishing page to real victims. Detection compares HTTP responses for the same URL across different client profiles. Sourced from Bluekit PhaaS TI report (CrimsonVector, March 2026).\n"
+  },
+  {
+    "id": "DL-0202",
+    "type": "detection_rule",
+    "title": "Browser Fingerprint Spoofing — User-Agent Inconsistency in Authentication Flow",
+    "text": "Detects authentication sessions where the User-Agent string changes between sequential authentication steps — a strong indicator of AiTM proxy-based session hijacking. Bluekit advertises \"full 2FA support with emulation/spoofing of geolocation and browser information,\" and Sneaky 2FA exhibits an \"impossible device shift\" where Safari/iOS is used for login but Edge/Windows for session resume. When a legitimate user authenticates, the User-Agent remains consistent throughout the flow. AiTM proxies may inject different User-Agents at different stages due to proxy architecture or deliberate fingerprint spoofing. Sourced from Bluekit PhaaS TI report and Sekoia TDR Sneaky 2FA analysis.\n"
+  },
+  {
+    "id": "DL-0203",
+    "type": "detection_rule",
+    "title": "Crypto Laundering Service Fee Pattern — Percentage-Based Deduction on Transfers",
+    "text": "Detects cryptocurrency transfer patterns consistent with laundering service fee structures. Illicit crypto exchange services charge 2.8%-8.5% base fees plus a 4% \"dirty funds\" surcharge, resulting in outbound amounts that are consistently 93-97% of inbound amounts. When a wallet receives cryptocurrency and forwards approximately 93-97% to another address within 24 hours — retaining 3-7% as a service fee — this is a strong indicator of a crypto mixing or cashout service. The retained percentage serves as the service operator's commission. Sourced from Cybercrime Diaries undercover exchange contact research (June 2025).\n"
+  },
+  {
+    "id": "DL-0204",
+    "type": "detection_rule",
+    "title": "Stablecoin-to-Decentralized-Stablecoin Swap Velocity",
+    "text": "Detects when a wallet receives USDT/USDC and swaps to decentralized stablecoins (DAI, sDAI, LUSD, RAI) via a DEX within 24 hours, particularly when the source wallet has elevated risk scores. The IRGC's documented USDT-to-DAI shift after mid-2025 Tether freezes is the direct intelligence basis. Centralized stablecoins can be frozen by issuers; swapping to decentralized alternatives defeats this control.\n"
+  },
+  {
+    "id": "DL-0205",
+    "type": "detection_rule",
+    "title": "Wrapped Stablecoin Bridge Transfer from High-Risk Source",
+    "text": "Detects stablecoin bridge transactions where USDT/USDC is wrapped through bridge protocols to create wrapped representations (wUSDT, wUSDC) on destination chains, and the source address has elevated risk indicators or recent exposure to sanctioned addresses. Bridging defeats the original issuer's freeze capability on the destination chain, making this a key laundering technique for sanctioned actors.\n"
+  },
+  {
+    "id": "DL-0206",
+    "type": "detection_rule",
+    "title": "Rapid Wallet Fan-Out Exceeding 100 Wallets Post-Theft",
+    "text": "Detects when a single wallet or cluster distributes funds across 100+ new wallets within 48 hours following a large-value transfer (>$1M). Directly models the DPRK Bybit laundering pattern where PRESSURE CHOLLIMA distributed stolen funds across 125,000+ Ethereum wallets. Existing DL-0196 and DL-0197 cover CEX off-ramp detection; this rule covers the upstream distancing and layering phase.\n"
+  },
+  {
+    "id": "DL-0207",
+    "type": "detection_rule",
+    "title": "Micro-Splitting Stablecoin Donations to Rotating Wallets",
+    "text": "Detect patterns of small-value stablecoin transfers ($10-$500) sent to wallets that are used only once or twice before rotating to new addresses. Models the ISIL/Al-Qaeda donation solicitation pattern: rotating wallet addresses, micro-splitting, and multi-hop transfers designed to evade transaction monitoring thresholds.\n"
+  },
+  {
+    "id": "DL-0208",
+    "type": "detection_rule",
+    "title": "New gTLD Domain Registration Burst with Phishing Characteristics",
+    "text": "Detect bulk domain registrations (5+ in 24h from same registrant/nameserver) on high-abuse gTLDs (.TOP, .BOND, .XYZ, .SHOP, .XIN, .CFD, .LOL) with brand-keyword presence, domain age < 7 days, and low registration cost. Interisle found 37% of phishing domains were bulk-registered and new gTLDs accounted for 51% of all phishing domains.\n"
+  },
+  {
+    "id": "DL-0209",
+    "type": "detection_rule",
+    "title": "Legitimate PaaS Subdomain Hosting Phishing Content",
+    "text": "Detect URLs hosted on known PaaS free subdomain services (*.pages.dev, *.webflow.io, *.vercel.app, *.github.io, *.gitbook.io, *.workers.dev, *.r2.dev) that contain financial brand keywords or trigger phishing heuristics. These subdomains inherit the PaaS provider's domain reputation, bypassing domain-age and reputation filters commonly used in fraud detection.\n"
+  },
+  {
+    "id": "DL-0210",
+    "type": "detection_rule",
+    "title": "IDN Homograph Domain Targeting Crypto Brands",
+    "text": "Detect DNS queries or URL accesses to internationalized domain names (IDN/punycode with xn-- prefix) that visually resemble crypto brand domains (bitpay, coinbase, metamask, phantom, pancakeswap, uniswap, etc.). Interisle documented 2,655 IDN homograph phishing domains with significant crypto brand targeting.\n"
+  },
+  {
+    "id": "DL-0211",
+    "type": "detection_rule",
+    "title": "Fake CAPTCHA Campaign Redirect Chain Detection",
+    "text": "Detect web access patterns consistent with fake CAPTCHA campaigns: user visits a page with CAPTCHA verification UI, is instructed to copy/execute clipboard content (PowerShell, cmd, mshta), which triggers malware or stealer download. CrowdStrike documented a +563% increase in fake CAPTCHA campaigns in 2025. Used by BRASH SPIDER (Doshell Stealer) and COOKIE SPIDER (SHAMOS).\n"
+  },
+  {
+    "id": "DL-0212",
+    "type": "detection_rule",
+    "title": "Elder Account — Large Cash Withdrawal with Crypto ATM Deposit Indicators",
+    "text": "Detects the elder-targeted crypto ATM fraud pattern where victims aged 60+ make large cash withdrawals with no corresponding deposit or transfer activity within 48 hours — a strong indicator that funds were deposited at a crypto ATM/kiosk under the direction of a scammer. FBI IC3 2025 data shows 6,188 crypto ATM complaints and $257 million in losses from victims aged 60+ (66% of all crypto ATM fraud losses). The 48-hour gap between bank withdrawal and lack of corresponding activity represents the detection window before funds become irrecoverable on-chain. This rule targets the P4 execution phase where bank-side intervention can still prevent loss.\n"
+  },
+  {
+    "id": "DL-0213",
+    "type": "detection_rule",
+    "title": "Unusual Large Cash Withdrawal with Precious Metals Merchant Transaction",
+    "text": "Detects the gold courier scam pattern where victims — predominantly elderly — make large cash withdrawals or wire transfers to precious metals merchants with no prior history of such transactions. FBI IC3 2025 documented 725 gold courier complaints with $311.8 million in losses, yielding an extraordinary average of ~$430,000 per victim. Victims are typically directed by government impersonation callers to purchase physical gold as \"asset protection,\" which is then collected by couriers. The precious metals MCC codes (5094 for precious stones/metals, 5944 for jewelry/watch/clock stores) serve as the primary detection signal when combined with customer age and transaction history anomalies.\n"
+  },
+  {
+    "id": "DL-0214",
+    "type": "detection_rule",
+    "title": "Post-Fraud Victim Payment to Newly Registered Legal or Recovery Entity",
+    "text": "Detects recovery fraud patterns where victims of prior fraud are targeted by fictitious law firms or recovery companies promising to retrieve lost funds. FBI IC3 2025 reported 10,516 recovery scam complaints with $1.4 billion in losses — making recovery fraud one of the largest IC3 loss categories. PSA250813 (August 2025) specifically warned about fictitious law firms targeting cryptocurrency scam victims. This rule identifies the characteristic pattern: a customer with a recent fraud complaint making payments to a newly established entity with legal or recovery terminology in the payee name. The 180-day lookback window accounts for IC3 data showing longer re-targeting timelines than previously estimated.\n"
+  },
+  {
+    "id": "DL-0215",
+    "type": "detection_rule",
+    "title": "Multiple Unrelated Customers Depositing to Same Novel Beneficiary — Investment Club Pattern",
+    "text": "Detects investment club scam patterns where multiple unrelated victims deposit funds to the same fraudulent beneficiary within a short time window. FBI IC3 2025 documented approximately 1,600 investment club complaints with $160 million in losses, and PSA250703 specifically warned about fraudulent investment clubs on social media and messaging apps. The cluster deposit pattern — five or more unique, unrelated customers sending to the same novel beneficiary within 14 days — distinguishes investment club scams from 1:1 pig butchering (TP-0017) where victims typically deposit to unique beneficiary accounts. The group-based nature creates a detectable convergence signal absent from individual targeting schemes.\n"
+  },
+  {
+    "id": "DL-0216",
+    "type": "detection_rule",
+    "title": "Government Impersonation — Multi-Channel Payment Under Duress Indicators",
+    "text": "Detects government impersonation APP fraud by identifying payments with government agency references made via crypto, wire, or prepaid channels to non-historical payees. FBI IC3 2025 reported $797.9 million in losses from 32,424 government impersonation complaints — an 87% increase in complaints and 97% increase in losses from 2024. The payment channel distribution is distinctive: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%. This rule targets payment references containing government agency names or legal terminology from customers with no prior government- related payment history, as legitimate government payments follow established patterns and channels.\n"
+  },
+  {
+    "id": "DL-0217",
+    "type": "detection_rule",
+    "title": "AI-Enhanced BEC — Payment Request Behavioral Divergence from Sender Baseline",
+    "text": "Detects AI-enhanced business email compromise by identifying wire transfer requests where the communication pattern diverges significantly from the sender's established baseline. FBI IC3 2025 reported $30 million in losses from AI-enabled BEC where chat generators created official-sounding emails mimicking company executives and voice cloning was used for wire authorization requests. AI-generated BEC content, while linguistically fluent, often lacks the sender's authentic communication patterns — writing style, formality level, time-of-day preferences, typical request amounts, and approval workflows. This rule targets Phase 3 (Positioning) where the fraudulent request is crafted and delivered, before the wire transfer is executed.\n"
+  },
+  {
+    "id": "DL-0218",
+    "type": "detection_rule",
+    "title": "Crisis-Keyword Domain Registration Surge — Bulk NRD Detection within 72h Window",
+    "text": "Detects bulk registration of crisis-themed domains (5+ in 72h) matching government subsidy, energy relief, and commodity investment keyword patterns on cheap gTLDs. CrimsonVector research identified 846 crisis-themed domains registered in a single peak week during the 2026 Iran War oil shock, with 48-72h lag between government program announcements and domain activation. This rule targets the P1 infrastructure build-out phase where early detection can disrupt campaigns before victim-facing deployment.\n"
+  },
+  {
+    "id": "DL-0219",
+    "type": "detection_rule",
+    "title": "Government Subsidy Impersonation Domain — NRD with Agency Keyword Pattern",
+    "text": "Detects newly registered domains (< 30 days) matching government agency impersonation patterns combined with subsidy/relief keywords. Targets domains like gov*-subsidy*, dwp-*, hmrc-*, irs-*, fema-*, *-relief-payment, and country-agency combinations (uk-energy-*, us-fuel-*). CrimsonVector confirmed gov.dwp-subsidy.shop as a phishing site impersonating the UK Department for Work and Pensions during the 2026 oil shock. The NRD age filter (< 30 days) eliminates legitimate government domains while catching the 48-72h post-announcement registration surge.\n"
+  },
+  {
+    "id": "DL-0220",
+    "type": "detection_rule",
+    "title": "Rapid Certificate Issuance on Crisis-Themed Domain — Sub-48h Registration-to-Cert Velocity",
+    "text": "Detects TLS certificate issuance within 48 hours of domain registration on crisis-themed domains. Legitimate organizations typically register domains days to weeks before certificate provisioning, while crisis-exploitation infrastructure shows a characteristic sub-48h registration-to-cert velocity as threat actors race to deploy HTTPS-credible phishing pages before awareness develops. Certificate transparency logs provide the data source. CrimsonVector documented this rapid-cert pattern across 1,435 crisis-themed domains during the 2026 oil shock, with Let's Encrypt and ZeroSSL as the primary issuers.\n"
+  },
+  {
+    "id": "DL-0221",
+    "type": "detection_rule",
+    "title": "Commodity Investment Scam Domain — Crisis-Themed Trading Platform on Cheap gTLD",
+    "text": "Detects newly registered domains on cheap gTLDs matching commodity investment scam patterns (oil-invest*, crude-trad*, commodity-trad*, petrol-fund*, energy-trad*). These domains typically deploy fake trading platforms soliciting cryptocurrency deposits during commodity price shocks. CrimsonVector identified a dual-track exploitation model during the 2026 Iran War oil shock: crisis events simultaneously generated government subsidy phishing (targeting relief seekers) and commodity investment scams (targeting opportunistic investors). The investment scam track used domains that mimicked legitimate trading platforms with fabricated profit dashboards.\n"
   },
   {
     "id": "BASE-001",
@@ -1510,5 +2032,17 @@
     "type": "baseline",
     "title": "Cybercrime Geographic Origin Risk Norms",
     "text": "This baseline defines geographic cybercrime production risk tiers derived from the World Cybercrime Index (WCI), a peer-reviewed expert survey of 92 cybercrime intelligence/investigation professionals covering 97 countries across 5 cybercrime categories (Bruce et al., PLoS ONE 2024, DOI: 10.1371/journal.pone.0297312). The WCI establishes the first standardized geographic attribution framework for where cybercrime offenders are primarily based — as opposed to where attacks originate or infrastructure is hosted. These baselines support geographic risk scoring in transaction monitoring, infrastructure origin assessment, and cross-border fraud pattern detection across multiple FLAME threat paths.\n\n**Critical caveats:**\n- WCI survey data was collected March–October 2021. The SE Asian scam compound explosion (2022+) post-dates this data — Cambodia, Myanmar, and Laos are absent from WCI rankings despite being major operational bases by 2025–2026. Supplement with current intelligence for SE Asian geographic risk.\n- WCI measures cybercrime **production** (where offenders reside), not infrastructure hosting or attack transit. A country's WCI score does not indicate where attacks are launched from or where malicious infrastructure is hosted.\n- WCI is based on expert perception from 92 professionals, not measured incident rates. Expert pool skewed towards Europe and North America; South America and Africa are under-represented.\n- US (#4) and UK (#8) rankings reflect their roles as major financial centers with significant cash-out/money laundering activity, not as traditional cybercrime production hubs."
+  },
+  {
+    "id": "BL-0037",
+    "type": "baseline",
+    "title": "Crypto ATM Transaction Norms by Age Cohort",
+    "text": ""
+  },
+  {
+    "id": "BL-0038",
+    "type": "baseline",
+    "title": "Precious Metals Purchase Norms by Customer Segment",
+    "text": ""
   }
 ]

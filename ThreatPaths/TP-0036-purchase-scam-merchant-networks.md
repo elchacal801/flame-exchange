@@ -30,7 +30,7 @@ mitre_attack:
   - T1598       # Phishing for Information
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA007", "FTA009", "FTA010", "FT016", "FT017", "FT028", "FT007.009"]
-mitre_f3: []
+mitre_f3: ["F1015", "F1020", "F1024", "F1031", "F1032", "F1040", "F1043", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -62,6 +62,9 @@ regulatory_refs:
   - REG-UK-PSR-APP
   - REG-AU-SPF
   - REG-FCA-APP
+baseline_ids:
+  - BL-0016
+  - BL-0018
 tags:
   - purchase-scam
   - scam-merchant

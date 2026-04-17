@@ -20,6 +20,7 @@ Detection rules mapped to **SIM Swap to Cryptocurrency Exchange ATO**.
 | DL-0047 | SIM Swap Indicator Chain | critical | P3 |
 | DL-0048 | VoIP Number MFA Enrollment | high | P2 |
 | DL-0049 | MFA Method Downgrade | high | P3 |
+| DL-0141 | SIM Swap Network-Level API Detection — Pre-MFA SIM Change Verification | high | P2 |
 
 ## Formats
 

@@ -26,7 +26,7 @@ mitre_attack:
   - T1656      # Impersonation
   - T1657      # Financial Theft
 ft3_tactics: ["FTA001", "FTA003", "FTA004", "FTA006", "FTA009", "FTA010", "FT003", "FT006.001", "FT016", "FT028", "FT031", "FT052.003"]
-mitre_f3: []
+mitre_f3: ["F1015", "F1024", "F1043"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -52,6 +52,8 @@ related_tps:
     relationship: shares-infrastructure
 regulatory_refs:
   - REG-NRF-RFT-V1
+baseline_ids:
+  - BL-0008
 tags:
   - refund-fraud
   - FTID
@@ -378,6 +380,20 @@ index=customer_service sourcetype=refund_claims
 **Loss quantification is challenging**: Because RaaS clients are also legitimate customers making legitimate purchases, isolating fraudulent refunds from legitimate returns requires sophisticated analytics. The $103B annual figure includes both organized RaaS and opportunistic individual abuse, making it difficult to quantify the organized component precisely.
 
 **Cross-retailer intelligence sharing is nascent**: Unlike financial services (where FS-ISAC facilitates information sharing), the retail sector lacks a mature cross-company intelligence sharing mechanism for refund fraud. RaaS operators exploit this by rotating across retailers when one tightens controls.
+
+---
+
+## Distinction from Friendly Fraud & Chargeback Abuse
+
+TP-0031 covers **merchant-level refund exploitation** — fraudsters abuse the merchant's return/refund process (fake tracking IDs, DNA claims, partial returns, refunder-as-a-service). The remediation pathway is between customer and merchant.
+
+**TP-0075 (Friendly Fraud & Chargeback Abuse)** covers **payment-network-level dispute exploitation** — customers file chargebacks directly with their issuing bank after receiving goods/services, bypassing the merchant entirely. The remediation pathway involves the payment network (Visa, Mastercard) arbitration process.
+
+These are distinct threat models:
+- **TP-0031**: Customer → Merchant (refund process) → Value extraction
+- **TP-0075**: Customer → Issuing Bank → Payment Network (chargeback process) → Merchant debited
+
+Both may be used by the same actor but represent different operational pathways with different detection signals and different stakeholder impacts.
 
 ---
 

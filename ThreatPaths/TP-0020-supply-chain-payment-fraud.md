@@ -27,7 +27,7 @@ mitre_attack:
   - T1586     # Compromise Accounts
   - T1562.012 # Impair Defenses: Disable or Modify System Firewall (Inbox Rules)
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT007.009", "FT028", "FT008.002", "FT014", "FT043", "FT003", "FT031", "FT042.001", "FT052.003", "FT011.003"]
-mitre_f3: []
+mitre_f3: ["F1005.006", "F1022", "F1025.002", "F1016", "F1031", "F1032", "F1037", "F1044", "F1046", "F1047"]
 groupib_stages:
   - "Reconnaissance"
   - "Account Access"
@@ -54,6 +54,9 @@ regulatory_refs:
   - REG-FATF-R16
   - REG-FBI-IC3
   - REG-OCC-FRAUD
+baseline_ids:
+  - BL-0002
+  - BL-0012
 tags:
   - supply-chain
   - b2b-payments
@@ -158,6 +161,20 @@ Supply Chain Payment Fraud (a variant of Vendor Impersonation / BEC) involves th
 | P5 | Inbound transaction monitoring flagging large B2B wires into consumer accounts | Detective | Bank AML/Fraud |
 
 ---
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive sponsorship of vendor payment security program; investment in ERP audit integration and out-of-band verification infrastructure for B2B payments |
+| ASSESS | Level 3 (Established) | Risk assessment of vendor payment processes across all business units; evaluation of vendor master data change controls and approval workflows; mapping of high-value supply chain relationships most vulnerable to BEC-style interception |
+| PLAN | Level 3 (Established) | Detection strategy integrating email security (inbox rule monitoring), ERP vendor master change alerts, and outbound payment anomaly detection; defined vendor banking detail change verification procedures |
+| ACT | Level 3 (Established) | Mandatory out-of-band verification for all vendor banking detail changes using historical contact information; automated ERP alerts on vendor master data modifications; outbound wire monitoring comparing beneficiary accounts against historical payee profiles |
+| MONITOR | Level 3 (Established) | Continuous monitoring for first-time beneficiary accounts on high-value B2B wire transfers; M365/Google Workspace inbox rule creation surveillance for invoice-related keywords; vendor payment pattern analysis flagging deviations from historical amounts and frequencies |
+| REPORT | Level 2 (Developing) | Incident reporting workflows for suspected vendor impersonation; coordination with vendor's security team for email compromise investigation; law enforcement notification for fund recovery within critical time windows |
+| IMPROVE | Level 3 (Established) | Post-incident review incorporating vendor communication chain reconstruction; periodic testing of out-of-band verification procedures; updating vendor risk tiers based on email security posture assessments |
 
 ## Detection Approaches
 

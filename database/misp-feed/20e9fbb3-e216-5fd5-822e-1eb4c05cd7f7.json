@@ -1,0 +1,98 @@
+{
+  "Event": {
+    "uuid": "20e9fbb3-e216-5fd5-822e-1eb4c05cd7f7",
+    "info": "FLAME: Crisis-Exploitation Fraud Infrastructure",
+    "date": "2026-04-09",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "33c6cdbd-1113-5da6-9486-5239b910b7b1",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0086"
+      },
+      {
+        "uuid": "789c1c3d-717d-5436-9d96-84e27de13eb5",
+        "type": "text",
+        "category": "Other",
+        "value": "brand-impersonation",
+        "comment": "Fraud type for TP-0086"
+      },
+      {
+        "uuid": "1c5abef9-c3df-544a-b491-96fd41f836ca",
+        "type": "text",
+        "category": "Other",
+        "value": "credential-harvesting",
+        "comment": "Fraud type for TP-0086"
+      },
+      {
+        "uuid": "48b43965-0ac7-5326-b386-ad4f04ca18eb",
+        "type": "text",
+        "category": "Other",
+        "value": "investment-scam",
+        "comment": "Fraud type for TP-0086"
+      },
+      {
+        "uuid": "f4c9279e-d864-5158-b962-4f5c605f669c",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0086"
+      },
+      {
+        "uuid": "5b33baa3-405b-5f21-b4ae-61f3a21dc0f1",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-enabling-infrastructure",
+        "comment": "Fraud type for TP-0086"
+      },
+      {
+        "uuid": "8c7ff795-8757-5d07-8a0f-4636e6b6bc3b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0086"
+      },
+      {
+        "uuid": "9eb4d404-b953-54d5-8639-777c06c8d0b2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0086"
+      },
+      {
+        "uuid": "6b547e11-7b98-5a40-a15e-373e3041a508",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0086"
+      },
+      {
+        "uuid": "0c7c40c6-c3dd-52a4-8c6b-c76b6288f88e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0086"
+      },
+      {
+        "uuid": "98870738-a438-5e6f-99c5-b3e5d7d20fb0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0086"
+      }
+    ]
+  }
+}

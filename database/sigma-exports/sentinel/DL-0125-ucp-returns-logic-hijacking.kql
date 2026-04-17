@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+return_tracking_id startswith "void-" or (return_verify_step_completed =~ false and refund_method =~ "settlement.refund.instant") or ((shipping_scan_validated =~ false and refund_issued =~ true) and (count >= 10 and groupby =~ "merchant_id" and timeframe =~ "1h"))

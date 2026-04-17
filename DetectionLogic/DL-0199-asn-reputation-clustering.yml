@@ -1,0 +1,71 @@
+title: ASN Reputation Clustering — High Abuse-Density Autonomous Systems
+id: b3e7a1c4-9d2f-4e8a-a6c1-7f0e8d3a9b41
+status: experimental
+description: >
+  Detects network traffic to or from IP addresses within autonomous systems (ASNs)
+  that exhibit high abuse density — defined as a concentration of abuse reports,
+  malware hosting, and fraud-associated domains relative to total IP allocation.
+  BPH operators concentrate on ASNs with high abuse-to-IP ratios due to their
+  resistance to takedown. ASN-level reputation clustering is more resilient to
+  infrastructure rotation than individual IP blocking, as operators rotate IPs
+  within the same ASN. Sourced from Flare Academy BPH Webinar and Recorded Future
+  TAE provider intelligence.
+
+date: 2026/03/30
+sigma_compatible: false
+native_query_required: true
+threat_paths:
+  - TP-0061
+cfpf_phase: P2
+fraud_types:
+  - bulletproof-hosting
+  - fraud-enabling-infrastructure
+  - infrastructure-rotation
+logsource:
+  product: telecom
+  category: network_traffic
+  service: firewall
+detection:
+  selection:
+    dst_ip|cidr: "%tae_asn_ip_ranges%"
+  condition: selection
+  note: >
+    Requires maintained lookup table of IP ranges associated with high-abuse ASNs.
+    Populate from Spamhaus ASN-DROP list, AbuseIPDB high-confidence reports,
+    and Recorded Future TAE provider ASN database. Key indicators: disposable/free
+    email in WHOIS abuse records, low IP density (<200 IPs), few peering partners
+    (1-2 ASNs), high DGA domain density, shell company registration in permissive
+    jurisdictions.
+falsepositives:
+  - Legitimate services hosted on shared infrastructure within flagged ASNs
+  - CDN edge nodes co-located with flagged IP ranges
+  - VPN exit nodes within flagged ASN ranges
+level: medium
+references:
+  - Flare Academy BPH Webinar — TAE provider ASN concentration analysis
+  - Recorded Future TAE Provider Intelligence Report
+  - Spamhaus ASN-DROP List (https://www.spamhaus.org/drop/asndrop.json)
+  - AbuseIPDB high-confidence IP abuse reports (abuseipdb.com)
+tags:
+  - cfpf.p2.infrastructure
+  - attack.t1583.003
+  - flame.shared
+  - bulletproof-hosting
+  - asn-reputation
+  - infrastructure-rotation
+  - TP-0061
+queries:
+  splunk: |-
+    index=firewall
+    | lookup tae_asn_ranges dst_ip OUTPUT asn_name abuse_density_score
+    | where isnotnull(asn_name) AND abuse_density_score > 0.7
+    | stats count dc(src_ip) AS internal_hosts values(dst_ip) AS external_ips
+      values(asn_name) AS asn_names by src_ip
+    | sort -count
+  cql: |-
+    #event_simpleName=NetworkConnectIP4
+    | RemoteAddressIP4=*
+    | lookup tae_asn_ranges RemoteAddressIP4 OUTPUT asn_name abuse_density_score
+    | abuse_density_score > 0.7
+    | groupBy([RemoteAddressIP4, asn_name], function=[count(aid), dc(aid)])
+    | sort(_count, order=desc)

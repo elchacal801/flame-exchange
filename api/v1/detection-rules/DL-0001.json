@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.084702+00:00",
+    "generated_at": "2026-04-09T19:40:01.428795+00:00",
     "total": 1
   },
   "data": {
@@ -31,7 +31,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Mule Account Velocity Pattern\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\ntransaction_type=\"ACH_IN\"\n| groupBy(account_id, function=[count(as=event_count), collect(originator_name)])\n| event_count > 3",
+      "cql": "// CrowdStrike CQL for Mule Account Velocity Pattern\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\ntransaction_type=\"ACH_IN\"\n| groupBy(account_id, function=[count(as=event_count), collect(originator_name)])\n| event_count > 3",
       "splunk": "`comment(\"Splunk SPL for Mule Account Velocity Pattern\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_inbound | count(distinct originator_name) by account_id > 3\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring transaction_type=\"ACH_IN\"\n| stats dc(originator_name) as unique_originator_name by account_id\n| where unique_originator_name > 3"
     },
     "references": [

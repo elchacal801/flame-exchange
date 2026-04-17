@@ -1,0 +1,25 @@
+{
+  "tp_id": "TP-0079",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- Detect bulk domain registration sets targeting high-abuse gTLDs\nSELECT\n  registrar_name,\n  registrant_hash,\n  tld,\n  COUNT(DISTINCT domain_name) AS domain_count,\n  MIN(registration_date) AS first_registration,\n  MAX(registration_date) AS last_registration,\n  DATEDIFF(hour, MIN(registration_date), MAX(registration_date)) AS registration_window_hours\nFROM domain_registration_feed\nWHERE tld IN ('.top', '.bond', '.xyz', '.shop', '.xin', '.loan', '.icu', '.buzz')\n  AND registration_date >= CURRENT_TIMESTAMP - INTERVAL '7 days'\nGROUP BY registrar_name, registrant_hash, tld\nHAVING COUNT(DISTINCT domain_name) >= 20\n  AND DATEDIFF(hour, MIN(registration_date), MAX(registration_date)) <= 48\nORDER BY domain_count DESC;",
+      "title": "Bulk gTLD Registration Detection (SQL)"
+    },
+    {
+      "type": "sql",
+      "content": "-- Detect PaaS subdomains containing protected brand keywords\nSELECT\n  subdomain_fqdn,\n  paas_provider,\n  creation_timestamp,\n  ssl_cert_issued_date,\n  content_hash,\n  CASE\n    WHEN subdomain_fqdn LIKE '%pancakeswap%' THEN 'crypto-exchange'\n    WHEN subdomain_fqdn LIKE '%metamask%' THEN 'crypto-wallet'\n    WHEN subdomain_fqdn LIKE '%usps%' OR subdomain_fqdn LIKE '%toll%' THEN 'government-postal'\n    WHEN subdomain_fqdn LIKE '%paypal%' OR subdomain_fqdn LIKE '%chase%' THEN 'financial'\n    ELSE 'other'\n  END AS impersonation_category\nFROM paas_subdomain_monitor\nWHERE paas_provider IN ('pages.dev', 'webflow.io', 'vercel.app', 'gitbook.io', 'github.io')\n  AND creation_timestamp >= CURRENT_TIMESTAMP - INTERVAL '24 hours'\n  AND (\n    subdomain_fqdn REGEXP '(paypal|chase|wells.?fargo|bank.?of.?america|usps|fedex|ups|pancakeswap|uniswap|metamask|coinbase|binance|facebook|instagram|telegram|microsoft|apple)'\n  )\nORDER BY creation_timestamp DESC;",
+      "title": "PaaS Subdomain Brand Impersonation Detection (SQL)"
+    },
+    {
+      "type": "sql",
+      "content": "-- Detect punycode domain registrations targeting monitored brands\nSELECT\n  domain_name,\n  punycode_representation,\n  unicode_rendering,\n  registrar_name,\n  registration_date,\n  nameserver_provider,\n  similarity_score\nFROM idn_registration_monitor\nWHERE punycode_representation LIKE 'xn--%'\n  AND registration_date >= CURRENT_TIMESTAMP - INTERVAL '30 days'\n  AND (\n    unicode_rendering ILIKE '%bitpay%'\n    OR unicode_rendering ILIKE '%coinbase%'\n    OR unicode_rendering ILIKE '%metamask%'\n    OR unicode_rendering ILIKE '%pancakeswap%'\n    OR unicode_rendering ILIKE '%uniswap%'\n    OR similarity_score >= 0.85  -- fuzzy match against protected brand list\n  )\nORDER BY similarity_score DESC, registration_date DESC;",
+      "title": "IDN Homograph Registration Detection (SQL)"
+    },
+    {
+      "type": "sql",
+      "content": "-- CQL: Alert on new certificates for suspicious gTLD domains\nevent_simpleName=CertificateIssuance\n| search tld IN (\"top\", \"bond\", \"xyz\", \"shop\", \"xin\", \"loan\", \"icu\", \"buzz\")\n| where domain_age_hours < 48\n| stats count AS cert_count, values(domain) AS domains, dc(domain) AS unique_domains BY issuer, registrar\n| where unique_domains >= 10\n| sort -unique_domains",
+      "title": "Certificate Transparency Monitoring for New gTLD Phishing (CQL — CrowdStrike NGSIEM)"
+    }
+  ]
+}

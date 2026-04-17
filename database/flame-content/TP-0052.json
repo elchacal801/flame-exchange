@@ -58,7 +58,16 @@
     "FTA003",
     "FT016"
   ],
-  "mitre_f3": [],
+  "mitre_f3": [
+    "F1020.001",
+    "F1018",
+    "F1025",
+    "F1031",
+    "F1032",
+    "F1040",
+    "T1598",
+    "T1660"
+  ],
   "groupib_stages": [
     "Reconnaissance",
     "Social Engineering",
@@ -82,7 +91,13 @@
     "report": "Level 2",
     "improve": "Level 2"
   },
-  "detection_rule_ids": [],
+  "baseline_ids": [
+    "BL-0003",
+    "BL-0004"
+  ],
+  "detection_rule_ids": [
+    "DL-0172"
+  ],
   "related_tps": [
     {
       "id": "TP-0011",

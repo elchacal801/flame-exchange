@@ -41,15 +41,15 @@ data_sources:
   - field: amount_pct_of_rail_limit
     source: Payment rail enrichment (percentage of rail transaction limit)
 queries:
-  logscale: |-
-    // LogScale LQL for Repeated A2A Payments at Maximum Per-Transaction Limit
+  cql: |-
+    // CrowdStrike CQL for Repeated A2A Payments at Maximum Per-Transaction Limit
     // Repository: flame-banking-a2a-processing
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection and filter_at_limit | count() by account_id > 3
     event_type="a2a_payment_initiated"
     (payment_rail="ZELLE" OR payment_rail="FEDNOW" OR payment_rail="RTP" OR payment_rail="ACH_SAMEDAY")
     amount_pct_of_rail_limit>=95
-    | groupBy(account_id, function=count(as=event_count))
+    | groupBy(account_id, function=[count(as=event_count)])
     | event_count > 3
   splunk: |-
     `comment("Splunk SPL for Repeated A2A Payments at Maximum Per-Transaction Limit")`

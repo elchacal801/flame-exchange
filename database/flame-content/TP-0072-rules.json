@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0072",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- SQL for Premium SMS Billing Anomaly Detection — DL-0185\n-- Detects unauthorized premium SMS subscriptions appearing on accounts\nSELECT\n  a.account_id,\n  a.customer_name,\n  a.account_open_date,\n  COUNT(DISTINCT s.shortcode) AS premium_sms_subscriptions,\n  SUM(s.charge_amount) AS total_premium_charges,\n  MIN(s.subscription_start_date) AS first_subscription,\n  MAX(s.subscription_start_date) AS last_subscription,\n  DATEDIFF(DAY, MIN(s.subscription_start_date), MAX(s.subscription_start_date)) AS subscription_window_days,\n  STRING_AGG(s.shortcode, ', ') AS shortcodes\nFROM customer_accounts a\nJOIN premium_sms_subscriptions s ON a.account_id = s.account_id\nLEFT JOIN premium_sms_opt_in o ON a.account_id = o.account_id AND s.shortcode = o.shortcode\nWHERE s.subscription_start_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND o.opt_in_id IS NULL  -- No corresponding opt-in record\nGROUP BY a.account_id, a.customer_name, a.account_open_date\nHAVING COUNT(DISTINCT s.shortcode) >= 2\nORDER BY total_premium_charges DESC",
+      "title": "TP-0072 detection rule (sql)"
+    }
+  ]
+}

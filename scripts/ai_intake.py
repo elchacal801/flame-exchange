@@ -254,7 +254,7 @@ The YAML block inside the code fence must contain these fields:
 - cfpf_phases: list (subset of [P1, P2, P3, P4, P5] — only include phases actually covered by the scheme)
 - mitre_attack: list of MITRE ATT&CK technique IDs (e.g., T1566.001) — only include if genuinely applicable
 - ft3_tactics: [] (empty for now)
-- mitre_f3: [] (empty for now)
+- mitre_f3: list of MITRE F3 technique IDs (F1xxx for F3-native, Txxx for ATT&CK-reused). Use scripts/f3_mapper.py to auto-generate mappings. Key techniques: F1005 (Account Manipulation), F1006 (Account Takeover), F1018 (Convert to Cryptocurrency), F1025 (Electronic Funds Transfer), F1031 (Impersonate Account Holder), F1032 (Impersonate Official), F1040 (Phone Number Spoofing). Reference data in data/f3/F3_Techniques.json.
 - groupib_stages: list of Group-IB Fraud Matrix stage names if applicable (from: Reconnaissance, Resource Development, Trust Abuse, End-user Interaction, Credential Access, Account Access, Defence Evasion, Perform Fraud, Monetization, Laundering)
 - tags: list of descriptive kebab-case tags
 

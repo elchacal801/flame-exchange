@@ -49,17 +49,44 @@ data_sources:
   - hcpcs_code
   - beneficiary_id
   - provider_address_zip
+  derived_fields:
+  - claims_per_day
+  - days_to_first_claim
+  - enrollment_age_days
+  - total_billed_amount
   enrichment_required:
   - field: enrollment_effective_date
     source: CMS PECOS enrollment records
   - field: high_fraud_zip
     source: CMS geographic fraud heat map (moratorium ZIP codes)
 queries:
+  cql: |-
+    // CrowdStrike CQL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly
+    // Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment
+    | match(file="pecos_enrollment.csv", field=provider_npi, include=[enrollment_effective_date, provider_type, provider_zip])
+    | days_to_first_claim := (claim_date - enrollment_effective_date) / 86400000
+    | days_to_first_claim >= 0 AND days_to_first_claim <= 30
+    | groupBy([provider_npi, enrollment_effective_date], function=[
+        count(as=claim_count),
+        sum(billed_amount, as=total_billed),
+        count(field=beneficiary_id, distinct=true, as=unique_beneficiaries),
+        count(field=hcpcs_code, distinct=true, as=unique_codes),
+        min(claim_date, as=first_claim_date),
+        max(claim_date, as=last_claim_date),
+        collect([provider_type, provider_zip])
+      ])
+    | total_billed > 100000
+    | code_diversity_ratio := round(unique_codes / claim_count * 10000) / 10000
+    | avg_per_beneficiary := round(total_billed / unique_beneficiaries * 100) / 100
+    | risk_score := if(total_billed > 1000000 AND code_diversity_ratio < 0.05, "CRITICAL",
+        if(total_billed > 500000, "HIGH",
+        if(total_billed > 100000 AND code_diversity_ratio < 0.1, "HIGH", "MEDIUM")))
+    | sort(total_billed, order=desc)
   splunk: |-
     `comment("Splunk SPL for Rapid Enrollment-to-Billing Healthcare Provider Anomaly")`
     `comment("Flags providers billing >$100K within 30 days of Medicare/Medicaid enrollment")`
     index=medicare_claims sourcetype=cms_claims
-    | join provider_npi [search index=pecos_enrollment
+    | join type=inner max=0 provider_npi [search index=pecos_enrollment
       | fields provider_npi enrollment_effective_date provider_type provider_zip]
     | eval days_to_first_claim=round((strptime(claim_date,"%Y-%m-%d")
       - strptime(enrollment_effective_date,"%Y-%m-%d")) / 86400)
@@ -114,6 +141,8 @@ falsepositives:
 - Large healthcare systems enrolling new provider NPIs for existing operational locations
 level: high
 tags:
+- attack.t1657
+- attack.t1078
 - cfpf.phase4.execution
 - healthcare-fraud
 - rapid-enrollment

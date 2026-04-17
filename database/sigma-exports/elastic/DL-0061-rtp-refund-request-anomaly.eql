@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:instant_payment_completed AND (payment_rail:(*RTP* OR *FEDNOW*))) AND (event_type:(*refund_request* OR *return_request* OR *rrof_submitted*))

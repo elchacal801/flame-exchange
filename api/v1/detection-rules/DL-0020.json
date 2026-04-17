@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.170395+00:00",
+    "generated_at": "2026-04-09T19:40:01.797903+00:00",
     "total": 1
   },
   "data": {
@@ -41,7 +41,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Rapid Contact Information Change\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| groupBy(account_id, function=count(as=event_count))\n| event_count >= 3",
+      "cql": "// CrowdStrike CQL for Rapid Contact Information Change\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count >= 3",
       "splunk": "`comment(\"Splunk SPL for Rapid Contact Information Change\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: (selection_email and selection_phone and selection_address) | count() by account_id >= 3\")`\nindex=flame_banking sourcetype=flame:identity_management\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"email\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"phone\"\nevent_type=\"CONTACT_CHANGE\"\nfield_changed=\"mailing_address\"\n| stats count as event_count by account_id\n| where event_count >= 3"
     },
     "references": [

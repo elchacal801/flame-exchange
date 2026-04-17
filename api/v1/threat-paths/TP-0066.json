@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:14.471114+00:00",
+    "generated_at": "2026-04-09T19:39:56.618709+00:00",
     "total": 1
   },
   "data": {
@@ -55,7 +55,10 @@
       "FTA001",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1027"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -75,6 +78,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0136"
     ],

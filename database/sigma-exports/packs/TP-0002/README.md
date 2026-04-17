@@ -16,6 +16,8 @@ Detection rules mapped to **Business Email Compromise — Vendor Impersonation W
 | DL-0040 | Crypto Off-Ramp After Wire or ACH Receipt | high | P5 |
 | DL-0041 | Peer-to-Peer Transfer Chain (Smurfing Pattern) | medium | P5 |
 | DL-0043 | Rapid Fund Layering Through Shell Accounts | high | P5 |
+| DL-0137 | AiTM Session Token Replay Detection — User-Agent and IP Mismatch Post-MFA | high | P3 |
+| DL-0138 | Post-Compromise Inbox Rule Manipulation — Rule Creation After New-IP Authentication | high | P3 |
 
 ## Formats
 

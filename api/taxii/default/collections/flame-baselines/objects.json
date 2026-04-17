@@ -324,6 +324,296 @@
     },
     {
       "spec_version": "2.1",
+      "description": "This baseline defines normal parameters for domain registration clusters detected in CZDS zone file daily diffs, supporting detection logic for TP-0041 (Registered DGA Domain Clustering). It establishes behavioral norms for bulk registration volumes, nameserver concentration ratios, inter-registration timing distributions, and lexical entropy thresholds that distinguish legitimate bulk registrar activity from algorithmically generated domain campaigns. These baselines are derived from Infoblox 2",
+      "id": "x-flame-baseline--ae9ba6fe-fb92-56e8-8136-898d02be2eb2",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "rdga",
+        "zone-file-analysis",
+        "bulk-registration",
+        "nameserver-clustering",
+        "dns-intelligence"
+      ],
+      "name": "RDGA Cluster Size and Registration Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines normal redirect chain depth for legitimate web traffic versus TDS (Traffic Distribution System) exploitation, supporting detection logic for TP-0042 (TDS Redirect Chain Abuse). It establishes behavioral norms for redirect hop counts, per-hop latency, geographic traversal patterns, cloaking node behavior, and TDS infrastructure scale. These baselines are derived from Infoblox 2025 DNS threat intelligence data on VexTrio and related TDS operations, web traffic analysis of leg",
+      "id": "x-flame-baseline--f53a48e4-f002-5f75-9695-08e3fdb6f9cc",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "tds",
+        "redirect-chain",
+        "cloaking",
+        "web-proxy",
+        "dns-intelligence"
+      ],
+      "name": "TDS Chain Hop Count Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "This baseline defines registration rate and pattern baselines for distinguishing AI-assisted from human-operated domain infrastructure campaigns, supporting detection logic for TP-0043 (AI-Accelerated Domain Infrastructure). It establishes behavioral norms for registration velocity, timing regularity, naming pattern characteristics, certificate provisioning speed, and campaign creation efficiency across human-operated and AI-assisted threat actor workflows. These baselines are derived from Palo ",
+      "id": "x-flame-baseline--cf82ffc4-327e-5b6f-9ac3-338d35f0b0ea",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "ai-generated",
+        "domain-generation",
+        "zone-file-analysis",
+        "content-generation",
+        "dns-intelligence"
+      ],
+      "name": "AI vs Human Domain Registration Rate Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--39bd4b34-696e-58c7-8816-ce38af51b101",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "state-criminal-convergence",
+        "infrastructure-reuse",
+        "nation-state",
+        "baseline"
+      ],
+      "name": "State-Actor Infrastructure Reuse Pattern Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--6b6b852a-68f7-5291-998a-e287afaea4ec",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "geopolitical-timing",
+        "domain-registration",
+        "election-cycle",
+        "sanctions-response",
+        "baseline"
+      ],
+      "name": "Geopolitical Event Domain Registration Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--bbe28a8c-439e-5f76-91e3-d3e97a35860e",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "bph-migration",
+        "sanctions-response",
+        "infrastructure-relocation",
+        "baseline"
+      ],
+      "name": "BPH Migration Timing and Relocation Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--090e7f6d-d08b-5350-9b47-657c885d443f",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "crypto-laundering",
+        "cmln",
+        "dprk-laundering-cycle",
+        "baseline"
+      ],
+      "name": "Cryptocurrency Laundering Cycle Duration Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--85d9fe85-18b6-52a7-a7d0-cf0fc14d9f25",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "deepfake",
+        "daas",
+        "procurement-norms",
+        "telegram-channels",
+        "baseline"
+      ],
+      "name": "Deepfake Service Procurement Activity Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--a044d1fa-ae10-56a6-a214-d50d4db99e55",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "mule-account",
+        "bot-detection",
+        "velocity-norms",
+        "kyc",
+        "account-onboarding",
+        "baseline"
+      ],
+      "name": "Automated Account Opening Velocity Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--ba00e318-c45e-5ed1-899d-76f027c97632",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "tds",
+        "investment-scam",
+        "geo-routing",
+        "rdga",
+        "referral-chain",
+        "baseline"
+      ],
+      "name": "Investment Platform TDS Routing Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--f6fd9328-eda4-5527-bbf9-1e47303231cd",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "recovery-fraud",
+        "victim-contact",
+        "complaint-monitoring",
+        "double-victimization",
+        "baseline"
+      ],
+      "name": "Recovery Fraud Victim Contact Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--ea078c05-0212-51d3-98a8-7d287a012cd2",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "long-firm-fraud",
+        "commercial-credit",
+        "credit-utilization",
+        "bust-out",
+        "trade-finance",
+        "baseline"
+      ],
+      "name": "Commercial Credit Utilization Lifecycle Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--49db6333-08fe-5a36-a76b-f4a39062c8e6",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "ai-generated-content",
+        "stylometric-detection",
+        "nlp",
+        "phishing-detection",
+        "baseline"
+      ],
+      "name": "AI-Generated vs Human-Written Fraud Content Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--e99b39f1-a045-5608-a5d0-100668069eee",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "rug-pull",
+        "crypto",
+        "defi",
+        "liquidity",
+        "token-lifecycle",
+        "baseline"
+      ],
+      "name": "Crypto Token Liquidity Lifecycle Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--cf431013-e2d6-516d-8ba7-ac183129755d",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "gift-card",
+        "retail",
+        "balance-probing",
+        "card-tampering",
+        "nrf-rft",
+        "baseline"
+      ],
+      "name": "Gift Card Transaction Velocity and Pattern Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "",
+      "id": "x-flame-baseline--1315b7b5-fcf6-5d1e-8abc-369ae8bbd19b",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "geographic-risk",
+        "wci-geographic-attribution",
+        "country-risk",
+        "transaction-monitoring",
+        "baseline"
+      ],
+      "name": "Cybercrime Geographic Origin Risk Norms",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
       "description": "This baseline document defines the \"normal\" operating parameters for commercial wire transfers within the SME (Small to Medium Enterprise) banking sector, used to contextualize detection rules for TP-0002 (BEC), TP-0019 (Business Identity Theft), and TP-0020 (Supply Chain Payment Fraud).",
       "id": "x-flame-baseline--bfc0004f-9951-52ad-962a-6d91c1f5e59a",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",

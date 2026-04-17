@@ -33,7 +33,7 @@ mitre_attack:
   - T1656       # Impersonation
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA003", "FTA004"]
-mitre_f3: []
+mitre_f3: ["F1006", "F1027", "F1029", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -59,6 +59,7 @@ related_tps:
 regulatory_refs:
   - REG-FINCEN-AML
   - REG-CFPB-REGE
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

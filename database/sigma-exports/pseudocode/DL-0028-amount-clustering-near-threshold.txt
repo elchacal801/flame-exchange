@@ -40,8 +40,7 @@
 #     transaction_amount|gte: 2800
 #     transaction_amount|lt: 3000
 #   timeframe: 7d
-#   condition: (selection_under_10k | count() by account_id > 2) or (selection_under_3k
-#     | count() by account_id > 2)
+#   condition: (selection_under_10k
 #
 # ----------------------------------------------------------------------
 # Known False Positives

@@ -221,7 +221,7 @@ A sample `x-flame-fraud-scheme` object for TP-0001 (Treasury Management ATO via 
   "external_references": [
     {
       "source_name": "FLAME",
-      "url": "https://elchacal801.github.io/flame-fraud/threat-path/TP-0001",
+      "url": "https://flameintel.org/threat-path/TP-0001",
       "external_id": "TP-0001"
     }
   ]

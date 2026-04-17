@@ -1,55 +1,81 @@
 title: SIM Swap Indicator Chain
 id: 87100baf-ac95-4cb4-bf81-dcfb1ddb9575
 status: experimental
-description: >
-  Detects the full SIM swap attack chain: phone number change followed by password reset followed
-  by high-value account action in rapid sequence. This multi-stage correlation captures the
-  complete attack lifecycle where the attacker first takes over the phone number, then uses it
-  to reset the account password via SMS OTP, and finally executes a high-value transfer or
-  account modification.
+description: 'Detects the full SIM swap attack chain: phone number change followed by password reset followed by high-value
+  account action in rapid sequence. This multi-stage correlation captures the complete attack lifecycle where the attacker
+  first takes over the phone number, then uses it to reset the account password via SMS OTP, and finally executes a high-value
+  transfer or account modification.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://attack.mitre.org/techniques/T1111/
-  - https://attack.mitre.org/techniques/T1098/
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1111/
+- https://attack.mitre.org/techniques/T1098/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0008
+- TP-0008
 cfpf_phase: P3
 fraud_types:
-  - account-takeover
-  - esim-hijacking
+- account-takeover
+- esim-hijacking
 logsource:
   product: banking
   service: identity_management
 detection:
   stage1_sim_change:
     event_type|contains:
-      - 'phone_number_change'
-      - 'sim_swap'
-      - 'mobile_update'
+    - phone_number_change
+    - sim_swap
+    - mobile_update
   stage2_password_reset:
-    event_type: 'password_reset'
-    reset_method: 'sms_otp'
+    event_type: password_reset
+    reset_method: sms_otp
   stage3_high_value_action:
     event_type|contains:
-      - 'wire_transfer'
-      - 'beneficiary_add'
-      - 'address_change'
-      - 'email_change'
+    - wire_transfer
+    - beneficiary_add
+    - address_change
+    - email_change
     transaction_amount|gte: 1000
   timeframe: 24h
-  condition: >
-    stage1_sim_change
-    | followed_by stage2_password_reset
-    | followed_by stage3_high_value_action
-    on user_id
-    within 24h
-
-  # Three-stage correlation: SIM change -> password reset via SMS -> high-value action
+  condition: stage1_sim_change and stage2_password_reset and stage3_high_value_action
+data_sources:
+  native_fields:
+  - event_type
+  - reset_method
+  - transaction_amount
+queries:
+  cql: |-
+    // CrowdStrike CQL for SIM Swap Indicator Chain
+    // Repository: flame-banking-identity-management
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h
+    (event_type="phone_number_change" OR event_type="sim_swap" OR event_type="mobile_update")
+    event_type="password_reset"
+    reset_method="sms_otp"
+    (event_type="wire_transfer" OR event_type="beneficiary_add" OR event_type="address_change" OR event_type="email_change")
+    transaction_amount>=1000
+    // Sequential correlation — use CrowdStrike NGSIEM sequence detection
+    // Correlate stages sequentially on on within 24h
+  splunk: |-
+    `comment("Splunk SPL for SIM Swap Indicator Chain")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h")`
+    index=flame_banking sourcetype=flame:identity_management
+    (event_type="phone_number_change" OR event_type="sim_swap" OR event_type="mobile_update")
+    event_type="password_reset"
+    reset_method="sms_otp"
+    (event_type="wire_transfer" OR event_type="beneficiary_add" OR event_type="address_change" OR event_type="email_change")
+    transaction_amount>=1000
+    | transaction on maxspan=24h
+    | where eventcount >= 2
+    `comment("Sequential correlation across stages")`
 falsepositives:
-  - Legitimate users who change carriers, reset a forgotten password, and then make a large purchase in the same day
+- Legitimate users who change carriers, reset a forgotten password, and then make a large purchase in the same day
 level: critical
 tags:
-  - cfpf.phase3.positioning
-  - attack.t1111
-  - attack.t1098
-  - attack.t1078
+- cfpf.phase3.positioning
+- attack.t1111
+- attack.t1098
+- attack.t1078

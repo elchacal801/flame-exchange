@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "f1500922-65ef-5502-807d-0952bbe9fa76",
+    "info": "FLAME: AI-Generated Insurance Claims Fraud",
+    "date": "2026-03-27",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "099b4a9f-a850-5a80-a783-f4f770e045af",
+        "type": "text",
+        "category": "Other",
+        "value": "ai-generated-claims",
+        "comment": "Fraud type for TP-0077"
+      },
+      {
+        "uuid": "fbb9b2ea-d5df-50b2-9cd3-0e0f30a47d5e",
+        "type": "text",
+        "category": "Other",
+        "value": "deepfake-claims",
+        "comment": "Fraud type for TP-0077"
+      },
+      {
+        "uuid": "06359477-13d1-52c2-a9bc-160a96e286e3",
+        "type": "text",
+        "category": "Other",
+        "value": "document-fraud",
+        "comment": "Fraud type for TP-0077"
+      },
+      {
+        "uuid": "098a4618-1d07-5074-b2af-082a455e6282",
+        "type": "text",
+        "category": "Other",
+        "value": "insurance-fraud",
+        "comment": "Fraud type for TP-0077"
+      },
+      {
+        "uuid": "6ae24176-f173-5cf1-a2ae-8e6b2945e004",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0077"
+      },
+      {
+        "uuid": "41e065aa-a06c-551b-af7e-d81c03611bfd",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0077"
+      },
+      {
+        "uuid": "9936f889-6021-5eda-8eec-10ed47d12121",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0077"
+      }
+    ]
+  }
+}

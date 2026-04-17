@@ -22,7 +22,7 @@ cfpf_phases:
   - P5
 mitre_attack: []
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT023", "FT035", "FT022", "FT036", "FT032", "FT011", "FT016", "FT012", "FT015", "FT017"]
-mitre_f3: []
+mitre_f3: ["F1024", "F1015", "F1043"]
 groupib_stages:
   - "Reconnaissance"
   - "Perform Fraud"
@@ -46,6 +46,8 @@ related_tps:
   - id: TP-0040
     relationship: variant-of
 regulatory_refs: []
+baseline_ids:
+  - BL-0032
 tags:
   - first-party
   - credit-card
@@ -143,6 +145,20 @@ First-party fraud occurs when an individual intentionally misrepresents their id
 | P5 | Block or review high-velocity cash advances | Preventive | Transaction Monitoring |
 
 ---
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive commitment to distinguishing first-party fraud from credit loss; dedicated fraud-loss attribution program separating intentional bust-out from legitimate default |
+| ASSESS | Level 3 (Established) | Risk assessment of credit portfolio for bust-out exposure across product lines; evaluation of credit limit increase policies and over-limit tolerances as fraud vectors; consortium data integration for cross-institutional bust-out pattern identification |
+| PLAN | Level 3 (Established) | Detection strategy combining credit risk and fraud analytics for account lifecycle monitoring; defined criteria for "sleep/wake" behavioral pattern triggers and credit-nurturing indicators |
+| ACT | Level 4 (Advanced) | ML models trained on account lifecycle features (payment velocity, utilization trajectory, cash advance ratios) for bust-out prediction; real-time velocity checks on credit limit increase requests; automated holds on rapid utilization spikes exceeding historical baselines |
+| MONITOR | Level 4 (Advanced) | Continuous monitoring of utilization ratio changes across the credit portfolio; tracking of contact information modifications preceding high-value draws; cross-product correlation for customers simultaneously maxing multiple credit lines |
+| REPORT | Level 2 (Developing) | Fraud-loss reporting that separates confirmed first-party fraud from general charge-offs; internal escalation for coordinated bust-out ring indicators |
+| IMPROVE | Level 3 (Established) | Post-charge-off forensic review process to identify missed bust-out indicators; model retraining incorporating confirmed first-party fraud cases and viral fraud cohort characteristics; consortium intelligence sharing to improve capture rates |
 
 ## Detection Approaches
 

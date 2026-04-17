@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.767765+00:00",
+    "generated_at": "2026-04-09T19:40:03.390649+00:00",
     "total": 1
   },
   "data": {
@@ -31,6 +31,7 @@
     "native_query_required": true,
     "data_sources": {
       "native_fields": [
+        "transaction_type",
         "source_card",
         "destination_card",
         "transfer_amount",
@@ -40,6 +41,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Gift Card Merge and Transfer Anomaly Detection\n// NRF FT1202: Monitor for suspicious multi-card merges\n#repo=\"retail\" #event_type=\"giftcard_transactions\"\ntransaction_type=\"merge\" OR transaction_type=\"transfer\" OR transaction_type=\"consolidate\"\n| groupBy(destination_card, function=[count(as=merge_count), count(field=source_card, distinct=true, as=source_card_count), sum(transfer_amount, as=total_transferred), min(@timestamp, as=first_merge), max(@timestamp, as=last_merge), collect([source_ip])], span=1h)\n| source_card_count >= 3\n| sort(source_card_count, order=desc)",
       "splunk": "`comment(\"Splunk SPL for Gift Card Merge and Transfer Anomaly Detection\")`\n`comment(\"NRF FT1202: Monitor for suspicious multi-card merges\")`\nindex=retail sourcetype=giftcard:transactions\n  transaction_type IN (\"merge\", \"transfer\", \"consolidate\")\n| stats count AS merge_count,\n        dc(source_card) AS source_card_count,\n        sum(transfer_amount) AS total_transferred,\n        min(_time) AS first_merge,\n        max(_time) AS last_merge,\n        values(source_ip) AS source_ips\n  BY destination_card\n| eval window_minutes = round((last_merge - first_merge) / 60, 1)\n| where source_card_count >= 3 AND window_minutes < 60\n| sort - source_card_count",
       "sql": "-- SQL: Gift card merge anomaly detection\nSELECT\n    destination_card,\n    COUNT(DISTINCT source_card) AS source_card_count,\n    SUM(transfer_amount) AS total_transferred,\n    MIN(transfer_timestamp) AS first_merge,\n    MAX(transfer_timestamp) AS last_merge,\n    DATEDIFF(minute, MIN(transfer_timestamp), MAX(transfer_timestamp)) AS window_minutes\nFROM gift_card_transfers\nWHERE transfer_timestamp >= DATEADD(day, -7, GETDATE())\n  AND transaction_type IN ('merge', 'transfer', 'consolidate')\nGROUP BY destination_card\nHAVING COUNT(DISTINCT source_card) >= 3\n   AND DATEDIFF(minute, MIN(transfer_timestamp), MAX(transfer_timestamp)) < 60\nORDER BY source_card_count DESC"
     },
@@ -55,6 +57,7 @@
       "gift-card-tampering"
     ],
     "tags": [
+      "attack.t1657",
       "cfpf.phase3.positioning",
       "flame.gift-card",
       "flame.nrf-rft"

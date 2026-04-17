@@ -1,44 +1,73 @@
 title: Multi-Bank Funnel Pattern
 id: 1090ec4d-01b4-489f-bd55-6170d4413643
 status: experimental
-description: >
-  Detects accounts receiving funds from multiple external financial institutions that
-  are then consolidated and sent outbound to a single destination. This funnel pattern
-  is a hallmark of money mule operations where proceeds from multiple fraud victims
-  are aggregated before being laundered.
+description: 'Detects accounts receiving funds from multiple external financial institutions that are then consolidated and
+  sent outbound to a single destination. This funnel pattern is a hallmark of money mule operations where proceeds from multiple
+  fraud victims are aggregated before being laundered.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.fatf-gafi.org/en/publications/Methodsandtrends/Money-laundering-terrorist-financing-trends.html
 threat_paths:
-  - TP-0011
-  - TP-0002
-  - TP-0022
+- TP-0011
+- TP-0002
+- TP-0022
 cfpf_phase: P5
 fraud_types:
-  - money-mule
-  - wire-fraud
+- money-mule
+- wire-fraud
 logsource:
   product: banking
   service: transaction_monitoring
 detection:
   selection_inbound:
     event_type:
-      - 'WIRE_CREDIT'
-      - 'ACH_CREDIT'
+    - WIRE_CREDIT
+    - ACH_CREDIT
     originating_bank_external: true
   selection_outbound:
     event_type:
-      - 'WIRE_INITIATION'
-      - 'ACH_DEBIT'
+    - WIRE_INITIATION
+    - ACH_DEBIT
   timeframe: 7d
-  condition: >
-    selection_inbound | count(distinct originating_bank_id) by account_id > 3
-    and selection_outbound | count(distinct beneficiary_id) by account_id <= 2
+  condition: selection_inbound
+data_sources:
+  native_fields:
+  - event_type
+  - originating_bank_external
+queries:
+  cql: |-
+    // CrowdStrike CQL for Multi-Bank Funnel Pattern
+    // Repository: flame-banking-transaction-monitoring
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2
+    (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT")
+    originating_bank_external=true
+    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
+    | groupBy(account_id, function=[count(as=event_count), collect(originating_bank_id)])
+    | event_count > 3
+    | groupBy(account_id, function=[count(as=event_count), collect(beneficiary_id)])
+    | event_count <= 2
+  splunk: |-
+    `comment("Splunk SPL for Multi-Bank Funnel Pattern")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2")`
+    index=flame_banking sourcetype=flame:transaction_monitoring
+    (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT")
+    originating_bank_external=true
+    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
+    | stats dc(originating_bank_id) as unique_originating_bank_id by account_id
+    | where unique_originating_bank_id > 3
+    | stats dc(beneficiary_id) as unique_beneficiary_id by account_id
+    | where unique_beneficiary_id <= 2
 falsepositives:
-  - Freelancers or consultants receiving payments from multiple clients via different banks
-  - Small businesses with receivables from diverse customer base
+- Freelancers or consultants receiving payments from multiple clients via different banks
+- Small businesses with receivables from diverse customer base
 level: high
 tags:
-  - cfpf.phase5.monetization
-  - attack.t1583
-  - flame.mule_indicator
+- cfpf.phase5.monetization
+- attack.t1583
+- flame.mule_indicator

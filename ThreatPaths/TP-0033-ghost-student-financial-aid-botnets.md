@@ -29,7 +29,7 @@ mitre_attack:
   - T1657      # Financial Theft
   - T1583.003  # Acquire Infrastructure: Virtual Private Server
 ft3_tactics: ["FTA001", "FTA003", "FTA004", "FTA006", "FTA009", "FTA010", "FT003", "FT006.001", "FT016", "FT028", "FT031", "FT052.003"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -57,6 +57,8 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
+baseline_ids:
+  - BL-0011
 tags:
   - ghost-student
   - financial-aid

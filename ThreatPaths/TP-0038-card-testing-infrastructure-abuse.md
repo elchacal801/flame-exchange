@@ -29,7 +29,7 @@ mitre_attack:
   - T1059       # Command and Scripting Interpreter
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA007", "FTA009", "FTA010", "FT003", "FT007.009", "FT017"]
-mitre_f3: []
+mitre_f3: ["F1038", "F1006", "F1012", "F1029", "F1046", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -57,6 +57,9 @@ related_tps:
 regulatory_refs:
   - REG-FINCEN-CDD
   - REG-OCC-FRAUD
+baseline_ids:
+  - BL-0016
+  - BL-0018
 tags:
   - card-testing
   - BIN-attack

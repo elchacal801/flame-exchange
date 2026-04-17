@@ -1,0 +1,60 @@
+title: Zone File Daily Diff Anomaly Detection
+id: a2c8e4f1-b637-4d95-8e0a-1f5d9c3b7a24
+status: experimental
+description: 'Detects anomalous patterns in daily zone file diffs: unusual volume of new registrations in a single TLD, concentration
+  of registrations at specific registrars, or patterns suggesting algorithmic generation including lexical similarity, sequential
+  naming, and entropy clustering. Zone file diffs provide a ground-truth view of new domain registrations across gTLDs and
+  many ccTLDs. Fraudulent campaigns using RDGA, TDS, or AI-generated domain strategies produce detectable statistical anomalies
+  in daily diff data — particularly registrar concentration spikes, abnormal per-TLD registration volumes, and clusters of
+  domains with similar character distribution or word structure. This rule establishes rolling baselines for registrar-TLD
+  combinations and alerts when daily new registration counts exceed three standard deviations from the 30-day rolling mean,
+  or when entropy analysis reveals clustering indicative of algorithmic or template-based domain generation.
+
+  '
+sigma_compatible: true
+references:
+- https://czds.icann.org/
+- https://www.verisign.com/en_US/channel-resources/domain-registry-products/zone-file/index.xhtml
+- https://www.farsightsecurity.com/solutions/dnsdb/
+threat_paths:
+- TP-0041
+- TP-0042
+- TP-0043
+cfpf_phase: P2
+fraud_types:
+- rdga-infrastructure
+- tds-exploitation
+- ai-accelerated-fraud-infrastructure
+logsource:
+  product: dns_intelligence
+  service: zone_file_diff
+detection:
+  selection:
+    event_type: zone_file_new_entry
+    registration_volume_zscore|gte: 3.0
+  aggregation:
+    count|gte: 50
+    groupby: registrar_id, tld
+    timeframe: 24h
+  condition: selection and aggregation
+data_sources:
+  native_fields:
+  - count
+  - event_type
+  - groupby
+  - timeframe
+  enrichment_required:
+  - field: registration_volume_zscore
+    source: Statistical baseline enrichment (z-score against 30-day rolling mean)
+falsepositives:
+- Promotional pricing events by registrars that cause legitimate registration spikes
+- New TLD launches or sunrise periods with high legitimate registration volume
+- Large enterprise domain portfolio acquisitions through a single registrar
+level: high
+tags:
+- cfpf.phase2.initial_access
+- attack.t1583.001
+- flame.rdga
+- flame.tds
+- flame.ai_generated
+- flame.zone_file_anomaly

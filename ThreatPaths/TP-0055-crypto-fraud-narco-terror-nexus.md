@@ -32,7 +32,7 @@ mitre_attack:
   - T1657       # Financial Theft
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FTA003", "FTA007"]
-mitre_f3: []
+mitre_f3: ["F1020.002", "F1009", "F1018", "F1025", "F1031", "F1032", "F1045", "F1047", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -55,12 +55,18 @@ related_tps:
     relationship: related-to
   - id: TP-0049
     relationship: shares-infrastructure
+  - id: TP-0080
+    relationship: related-to
 regulatory_refs:
   - REG-FINCEN-AML
   - REG-FATF-R16
   - REG-INTERPOL-GFFTA
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+  - REG-FATF-STABLECOIN-2026
+baseline_ids:
+  - BL-0034
+  - BL-0036
 geopolitical_timing: none
 nation_state_nexus: suspected
 tags:
@@ -77,6 +83,9 @@ tags:
   - unodc
   - unodc-organized-fraud-2024
   - wci-geographic-attribution
+  - irgc-stablecoin
+  - isil-stablecoin
+  - fatf-stablecoin-2026
 ---
 ```
 
@@ -343,6 +352,38 @@ ORDER BY t.amount_usd DESC;
 - **Confidence**: High
 - **Summary**: UNODC provides the formal UNTOC Convention definition of organized criminal groups (art. 2(a): structured group of 3+ persons, existing for a period of time, acting in concert for financial benefit) and its application to fraud. Key finding on fraud-terrorism nexus: "In some instances, the profits from fraud can be used by the organized criminal groups to fund other serious criminal activities. There are some examples in which fraud features in the nexus between organized crime and terrorism, whereby fraud provides the means to finance the activities of terrorist organizations." UNODC also documents the serious crime threshold (maximum deprivation of liberty ≥4 years) and its variability across jurisdictions.
 
+### EV-TP0055-2026-003: IRGC Stablecoin Procurement (FATF 2026)
+
+- **Source**: FATF, "Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses" (2026)
+- **Geography**: Iran, global on-chain
+- **CFPF Phase Coverage**: P1, P4, P5
+- **Confidence**: High
+- **Summary**: The Islamic Revolutionary Guard Corps is leveraging stablecoins for proliferation financing at significant scale. Blockchain analytics assess several billion dollars in IRGC-associated addresses on-chain during 2024-2025. Iranian actors use virtual assets to procure drone components and high-tech equipment, with Iran accepting VAs for weapons payments. The IRGC transfers funds via VAs to UN-sanctioned actors, including Houthi groups, for weapons procurement. Following mid-2025 USDT freezes targeting IRGC-linked addresses, sanctioned Iranian entities have shifted to stablecoins without freeze functions (e.g., DAI), demonstrating adaptive sanctions evasion at the protocol level.
+
+### EV-TP0055-2026-004: ISIL/Al-Qaeda Stablecoin Donations (FATF 2026)
+
+- **Source**: FATF, "Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses" (2026)
+- **Geography**: Global (encrypted platforms, social media)
+- **CFPF Phase Coverage**: P1, P2, P4, P5
+- **Confidence**: High
+- **Summary**: ISIL, Da'esh affiliates, and Al-Qaeda are soliciting donations in stablecoins via encrypted platforms and social media. Campaigns provide rotating wallet addresses to receive VAs from worldwide supporters. Operatives use stablecoins to break down larger sums into many small transfers passing through multiple VASPs. Campaigns leverage recycled QR codes, domains, and change addresses, allowing persistence despite enforcement takedowns. Transaction patterns feature dense multi-hop transfers (25+ rapid hops), micro-splitting, and re-aggregation before off-ramping via OTC brokers.
+
+### EV-TP0055-2026-005: Drug Trafficking Stablecoin Use (FATF 2026)
+
+- **Source**: FATF, "Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses" (2026)
+- **Geography**: Global
+- **CFPF Phase Coverage**: P4, P5
+- **Confidence**: High
+- **Summary**: Drug trafficking organizations are increasingly using USDT on TRON and USDC on Ethereum for paying overseas suppliers of synthetic drug precursors, settling drug transactions, and laundering proceeds. Laundering involves money mules, OTC brokers, P2P platforms, and rapid cross-chain transactions. Some DTOs exploit high-volume online gambling platforms and merchant refund loops as additional layering mechanisms.
+
+### EV-TP0055-2026-006: Southeast Asia Scam Compound Stablecoin Remittance (FATF India Case Study)
+
+- **Source**: FATF, "Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses" (2026) — FIU India case study
+- **Geography**: India, Cambodia, Myanmar, Southeast Asia
+- **CFPF Phase Coverage**: P4, P5
+- **Confidence**: High
+- **Summary**: FIU India identified Indians trafficked to scam compounds in Cambodia and Myanmar using a Southeast Asia-based payment service provider for salary remittance in USDT. Workers funded accounts with USDT, immediately liquidated to INR, and withdrew to bank accounts. Analysis traced 241 user locations to known scam compounds. The investigation also identified previously unknown compounds through geolocation analysis of user activity, demonstrating how stablecoin transaction monitoring can serve as a detection mechanism for human trafficking-linked fraud operations.
+
 ---
 
 ## References
@@ -354,6 +395,7 @@ ORDER BY t.amount_usd DESC;
 - FinCEN, *Advisory on Illicit Activity Involving Convertible Virtual Currency*, May 2019 — foundational guidance on crypto AML obligations
 - OFAC, *Sanctions Compliance Guidance for the Virtual Currency Industry*, October 2021 — SDN screening obligations for crypto platforms
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter I, Organized Criminal Groups; Serious Crime
+- FATF, "Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses" (2026) — IRGC stablecoin procurement, ISIL/Al-Qaeda stablecoin donations, DTO stablecoin laundering, FIU India scam compound case study
 
 ---
 
@@ -375,3 +417,4 @@ ORDER BY t.amount_usd DESC;
 |------|--------|--------|
 | 2026-03-17 | FLAME Project | Initial submission |
 | 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 terrorist financing via crypto in Africa and Operation Catalyst details |
+| 2026-04-01 | FLAME Project | Enrichment: FATF 2026 stablecoin intelligence — IRGC proliferation financing, ISIL/Al-Qaeda stablecoin donations, DTO stablecoin laundering, FIU India scam compound case study; added TP-0080 cross-reference |

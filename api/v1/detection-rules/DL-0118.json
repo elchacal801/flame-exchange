@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.616332+00:00",
+    "generated_at": "2026-04-09T19:40:02.994035+00:00",
     "total": 1
   },
   "data": {
@@ -56,7 +56,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Automated Mule Account Creation Velocity\n// Repository: flame-banking-account-onboarding\n// Aggregation that cannot be expressed in Sigma\napplication_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0\n| groupBy([device_fingerprint, ip_address], function=[\n    count(as=app_count),\n    countDistinct(applicant_id, as=unique_applicants),\n    collect(applicant_id),\n    avg(application_duration_seconds, as=avg_duration),\n    min(application_duration_seconds, as=min_duration),\n    sum(mouse_events_count, as=total_mouse_events)\n  ])\n| app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| case {\n    app_count>10 | risk_level:=\"critical\";\n    app_count>5 | risk_level:=\"high\";\n    app_count>3 | risk_level:=\"medium\";\n  }",
+      "cql": "// CrowdStrike CQL for Automated Mule Account Creation Velocity\n// Repository: flame-banking-account-onboarding\n// Aggregation that cannot be expressed in Sigma\napplication_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0\n| groupBy([device_fingerprint, ip_address], function=[\n    count(as=app_count),\n    countDistinct(applicant_id, as=unique_applicants),\n    collect(applicant_id),\n    avg(application_duration_seconds, as=avg_duration),\n    min(application_duration_seconds, as=min_duration),\n    sum(mouse_events_count, as=total_mouse_events)\n  ])\n| app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| case {\n    app_count>10 | risk_level:=\"critical\";\n    app_count>5 | risk_level:=\"high\";\n    app_count>3 | risk_level:=\"medium\";\n  }",
       "splunk": "`comment(\"Splunk SPL for Automated Mule Account Creation Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\nindex=flame_banking sourcetype=flame:account_onboarding\n(application_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0)\n| stats count as app_count dc(applicant_id) as unique_applicants values(applicant_id) as applicants\n  avg(application_duration_seconds) as avg_duration min(application_duration_seconds) as min_duration\n  sum(mouse_events_count) as total_mouse_events by device_fingerprint ip_address\n| where app_count>3 OR (avg_duration<120 AND total_mouse_events=0)\n| eval risk_level=case(app_count>10, \"critical\", app_count>5, \"high\", app_count>3, \"medium\")"
     },
     "threat_path_ids": [
@@ -69,6 +69,7 @@
     ],
     "tags": [
       "TP-0059",
+      "attack.t1589",
       "automation",
       "bot-detection",
       "cfpf.phase2.initial_access",

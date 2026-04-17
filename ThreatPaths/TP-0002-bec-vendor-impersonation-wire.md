@@ -20,7 +20,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1566.001, T1534, T1114.003, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT052.003", "FT026.001", "FT028", "FT031", "FT012", "FT027", "FT039", "FT042.001", "FT043", "FT053.001"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1005.006", "F1025.002", "F1016", "F1027", "F1036", "F1037", "F1044", "F1046", "F1047"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -52,6 +52,8 @@ regulatory_refs:
   - REG-FBI-IC3
   - REG-OCC-FRAUD
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids:
+  - BL-0012
 tags:
   - vendor-impersonation
   - accounts-payable
@@ -64,7 +66,7 @@ tags:
 
 ## Summary
 
-Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.
+Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.
 
 ## Threat Path Hypothesis
 
@@ -139,6 +141,20 @@ Threat actors compromise or spoof vendor email accounts, then impersonate the ve
 | P4 | AP process: flag invoices where beneficiary bank differs from previous payments to same vendor | Detective |
 | P5 | Wire recall procedures within 24-72 hour window | Responsive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive sponsorship for email security and wire transfer verification programs; funded BEC awareness training for AP staff |
+| ASSESS | Level 3 (Established) | Formal risk assessment of vendor payment workflows including email-based invoice processing; identification of high-risk vendor relationships |
+| PLAN | Level 3 (Established) | Documented procedures for out-of-band verification of banking detail changes; incident response playbook for BEC wire fraud with recall timelines |
+| ACT | Level 3 (Established) | DMARC/DKIM/SPF enforcement on all corporate domains; AP process controls requiring dual authorization for beneficiary bank changes; email forwarding rule monitoring in M365/Google Workspace |
+| MONITOR | Level 3 (Established) | Continuous monitoring of invoice payment routing changes; email forwarding rule alerting; lookalike domain monitoring via CT logs and domain intelligence |
+| REPORT | Level 2 (Developing) | SAR filing procedures for BEC incidents; internal escalation from AP to fraud/security team when suspicious invoice changes are detected |
+| IMPROVE | Level 3 (Established) | Post-incident review of BEC attempts including root cause analysis of email compromise vector; regular updates to vendor verification procedures based on emerging evasion techniques |
+
 ## Detection Approaches
 
 **Splunk — Invoice Banking Detail Change Detection**
@@ -153,10 +169,12 @@ index=ap_system action="payment_update"
 **Email — Forwarding Rule Monitoring (M365)**
 
 ```kql
+// Microsoft Sentinel KQL: BEC Forwarding Rule Monitoring (DL-0138)
 OfficeActivity
-| where Operation in ("New-InboxRule", "Set-InboxRule")
-| where Parameters has_any ("ForwardTo", "ForwardAsAttachmentTo", "RedirectTo")
-| project TimeGenerated, UserId, Parameters, ClientIP
+| where Operation in ("New-InboxRule", "Set-InboxRule", "Enable-InboxRule", "Set-Mailbox")
+| where Parameters has_any ("ForwardTo", "ForwardAsAttachmentTo", "RedirectTo",
+                             "DeleteMessage", "MarkAsRead")
+| project TimeGenerated, UserId, Operation, Parameters, ClientIP
 ```
 
 ## Operational Evidence
@@ -179,12 +197,15 @@ OfficeActivity
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $2.8B in BEC losses, making it the second-highest loss category after investment fraud. Total reported internet crime losses reached $16.6B in 2024, up 33% from 2023's $12.5B. BEC remains among the most financially damaging cybercrime categories despite a slight decline from 2023's $2.9B figure, reflecting improved corporate awareness alongside persistent attacker adaptation.
 
+**FBI IC3 2025 Annual Report:** BEC generated $3.046 billion in losses from 24,768 complaints (up from $2.77B/21,442 in 2024). Transaction type breakdown (IC3 2025): Wire Transfer/ACH 86%, Cryptocurrency 7%, Debit/Credit Card 3%, Peer-to-Peer 2%, Other 2%. AI-enabled BEC: $30 million in reported losses where AI was flagged as involved (IC3 2025 AI category). Chat generators used for CEO impersonation emails; voice cloning for wire authorization requests. FFKC expansion: The IC3 Recovery Asset Team's Financial Fraud Kill Chain process saw a rise in ATO and tech support fraud initiations in 2025, expanding beyond its traditional BEC focus. 3,900 total FFKC incidents, $679M frozen, 58% success rate. FFKC Case Study (April 2025): Oregon city government BEC incident, $6M+ loss. RAT matched the fraudulent recipient account to a prior March 2025 FFKC freeze, notified banking partners, and the originating bank issued a successful recall for the full $6M. FFKC Case Study (August 2025): BEC/Real Estate incident, $449K wire to impersonated attorney. RAT initiated FFKC and recipient bank confirmed full amount still in account and on hold.
+
 ## References
 
 - FBI IC3: \"2024 Internet Crime Report\" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - FinCEN Advisory FIN-2019-A005: \"Advisory on Business Email Compromise.\" [Link](https://www.fincen.gov/sites/default/files/advisory/2019-07-16/FinCEN%20BEC%20Advisory%20508%20FINAL.pdf)
 - Abnormal Security: Annual BEC Trends Report. [Link](https://abnormalsecurity.com/resources/state-of-email-security)
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Business Email Compromise Fraud
+- FBI IC3, "2025 Internet Crime Report" — BEC loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 
 ## Case Studies & References
 

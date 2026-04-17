@@ -1,0 +1,25 @@
+{
+    "name": "FLAME - Fraud Intelligence Exchange",
+    "short_name": "FLAME",
+    "description": "Fraud Lifecycle Analysis & Mitigation Exchange — structured fraud detection intelligence across 81 threat paths, 211 detection rules, and 6 frameworks.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a0a1a",
+    "theme_color": "#f97316",
+    "orientation": "any",
+    "categories": ["security", "business", "finance"],
+    "icons": [
+        {
+            "src": "icons/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "icons/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}

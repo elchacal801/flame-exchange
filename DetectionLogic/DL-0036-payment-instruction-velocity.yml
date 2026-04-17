@@ -39,15 +39,15 @@ data_sources:
   - event_type
   - threshold_multiplier
 queries:
-  logscale: |-
-    // LogScale LQL for Payment Instruction Velocity Spike
+  cql: |-
+    // CrowdStrike CQL for Payment Instruction Velocity Spike
     // Repository: flame-banking-transaction-monitoring
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count() by session_id > 5
     (event_type="WIRE_INITIATION" OR event_type="ACH_BATCH_SUBMIT" OR event_type="INTERNAL_TRANSFER" OR event_type="PAYMENT_INSTRUCTION")
     aggregate="sum(transaction_amount) by account_id"
     threshold_multiplier="3.0"
-    | groupBy(session_id, function=count(as=event_count))
+    | groupBy(session_id, function=[count(as=event_count)])
     | event_count > 5
   splunk: |-
     `comment("Splunk SPL for Payment Instruction Velocity Spike")`

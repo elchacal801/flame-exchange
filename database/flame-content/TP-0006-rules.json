@@ -3,7 +3,7 @@
   "rules": [
     {
       "type": "kql",
-      "content": "EmailEvents\n| where Subject has_any (\"wire\", \"closing\", \"escrow\", \"wiring instructions\")\n| extend sender_domain = tostring(split(SenderFromAddress, \"@\")[1])\n| where sender_domain !in (known_title_company_domains)\n| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject",
+      "content": "// Microsoft Sentinel KQL: Real Estate Wire Instruction Anomaly\n// Requires: populate known_title_company_domains with your title/escrow company domains\nlet known_title_company_domains = dynamic([\"example-titleco.com\", \"example-escrow.com\"]);\nEmailEvents\n| where Subject has_any (\"wire\", \"closing\", \"escrow\", \"wiring instructions\")\n| extend sender_domain = tostring(split(SenderFromAddress, \"@\")[1])\n| where sender_domain !in (known_title_company_domains)\n| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject, sender_domain",
       "title": "Email — Wire Instruction Anomaly (M365 / Google Workspace)"
     },
     {

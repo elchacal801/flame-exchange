@@ -33,7 +33,7 @@ mitre_attack:
   - T1071.001
   - T1048
 ft3_tactics: []
-mitre_f3: []
+mitre_f3: ["F1018", "F1025", "F1045", "F1047"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -63,6 +63,7 @@ regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+baseline_ids: []
 tags:
   - human-trafficking
   - scam-compound
@@ -510,6 +511,13 @@ LIMIT 100;
 - **CFPF Phase Coverage**: P2 (chatbot-enabled initial contact), P3 (deepfake-enhanced trust building), P4 (scripted exploitation with sextortion fallback)
 - **Confidence**: High
 
+### EV-TP0047-2026-003: Guardian/OCCRP Prince Group–Timor-Leste Investigation
+
+- **Source**: Guardian/Organised Crime and Corruption Reporting Project (OCCRP), 4-month joint investigation (April 2026)
+- **CFPF Phase Coverage**: P1–P3
+- **Confidence**: High
+- **Summary**: Three OFAC-sanctioned Prince Group associates (Yang Jian, Yang Yanming, Shih Ting-yu) were involved in the proposed AB Digital Technology Resort in Timor-Leste, a "crypto resort" presented as a blockchain and philanthropy development. The investigation documents the complete geographic expansion playbook: legitimate investment vehicle → charitable foundation as reputational cover (AB Foundation, with former Irish taoiseach Bertie Ahern as co-director/chairman) → diplomatic passport for key operator Lin Xiaofan → sanctioned individuals as corporate shareholders → rapid entity restructuring post-sanctions. Prince Group operated across 30+ countries with 100+ business entities. UN had warned of unnamed scam network infiltration of Timor-Leste; senior minister Ágio Pereira described the nation as at risk of becoming "an amusement park for transnational crime syndicates."
+
 ### EV-TP0047-2026-003: UNODC UNTOC Convention Framework for Trafficking-Fraud Nexus
 
 - **Source**: UNODC Organized Fraud Issue Paper (Vienna, 2024)
@@ -558,6 +566,8 @@ OFAC designated Funnull Technology, a content delivery network (CDN) provider th
 
 - **UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024)** — Chapter I, Organized Criminal Groups; UNODC Regional Office for SE Asia, "ASEAN-China regional cooperation roadmap", 2023. [Link](https://www.unodc.org/)
 
+- Guardian/OCCRP, "Private jets, deserted shores and an unbuilt resort: alleged links to sanctioned scam empire revealed in Timor-Leste," April 6, 2026. [Link](https://www.theguardian.com/world/ng-interactive/2026/apr/06/prince-group-timor-leste-links-to-alleged-scam-empire)
+
 ---
 
 ## Analyst Notes
@@ -580,6 +590,8 @@ These developments confirm the global metastasis of the scam centre model beyond
 
 **Geographic expansion is accelerating**: The UNODC September 2025 report documents scam compound operations expanding beyond their SE Asian base into the Middle East, North Africa, and South America. This geographic diversification indicates that the operational model is being replicated rather than merely relocated, with local criminal organizations adopting the compound-based fraud model pioneered in Myanmar, Cambodia, and Laos.
 
+**Guardian/OCCRP joint investigation (April 2026)**: Three OFAC-sanctioned Prince Group associates — Yang Jian, Yang Yanming, and Shih Ting-yu — were involved in a proposed "AB Digital Technology Resort" in Timor-Leste. Yang Jian was the majority shareholder of the resort company, removed from corporate records within days of the October 2025 OFAC sanctions. Prince Group founder Chen Zhi was indicted by the US DOJ for wire fraud conspiracy and money laundering conspiracy; $15 billion in bitcoin was seized and over $450 million in assets were frozen in Hong Kong and Singapore. Chen was extradited to China in January 2026. FBI Director Kash Patel described the Prince Group takedown as "one of the largest financial fraud takedowns in history." The resort/charitable foundation model represents a documented new front for scam compound geographic expansion: legitimate-looking tourism/tech investment, donations to government and civil society ($500K scholarship, laptops for university students), diplomatic passport obtained for a key operator (valid until 2030), and sanctioned individuals embedded in corporate structures — all creating a legitimacy facade while establishing operational infrastructure in a vulnerable developing nation.
+
 ---
 
 ## Revision History
@@ -589,3 +601,4 @@ These developments confirm the global metastasis of the scam centre model beyond
 | 2026-03-05 | 1.0 | FLAME Project | Initial publication based on CrimsonVector Strategic Intelligence Report, FBI IC3, Chainalysis, OFAC, and DOJ Scam Center Strike Force sources |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — global scam centre expansion, Myanmar crackdown, MENA trafficking nexus |
 | 2026-03-20 | FLAME Project | Enriched with UNODC Sept 2025 and INTERPOL GFFTA 2026 intelligence: multilingual chatbot deployment, sextortion scripted fallback, geographic expansion data, 80 nationalities trafficked, $18-37B loss estimates |
+| 2026-04-06 | FLAME Project | Enriched with Guardian/OCCRP Prince Group–Timor-Leste investigation intelligence |

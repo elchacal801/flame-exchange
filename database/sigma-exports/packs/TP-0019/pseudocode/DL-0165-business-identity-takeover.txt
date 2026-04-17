@@ -1,0 +1,74 @@
+# ======================================================================
+# FLAME Detection Rule: Business Identity Takeover — Rapid Signer, Address, and Banking Detail Changes on Established Account
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P3
+# Threat Paths: TP-0019
+#
+# Description:
+#   Detects potential business identity takeover by identifying a cluster
+#   of critical account changes occurring within a short window on
+#   established commercial accounts. The rule flags accounts where
+#   authorized signer changes, business address updates, and banking detail
+#   modifications (routing/account number, wire instructions, or
+#   beneficiary changes) all occur within 14 days — a pattern strongly
+#   indicative of corporate hijacking. Threat actors impersonate legitimate
+#   businesses by filing fraudulent amendments with the Secretary of State
+#   to change registered agents or officers, then use the hijacked identity
+#   to modify banking relationships and extract funds. Established accounts
+#   (open 12+ months) are specifically targeted because they have built
+#   credit history and banking relationships that actors exploit. This
+#   pattern was heavily observed during pandemic-era PPP/EIDL fraud and
+#   continues to plague commercial lenders. Average commercial loan fraud
+#   via business identity theft ranges from $100K to $1M+.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: commercial_account_management
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     account_type:
+#     - commercial
+#     - business_checking
+#     - business_savings
+#     - commercial_line_of_credit
+#   filter_account_age:
+#     account_age_months|gte: 12
+#   filter_signer_change:
+#     authorized_signer_change_within_window: true
+#   filter_address_change:
+#     business_address_change_within_window: true
+#   filter_banking_detail_change:
+#     banking_detail_change_within_window: true
+#   timeframe: 14d
+#   condition: 'selection AND filter_account_age AND filter_signer_change AND filter_address_change
+#     AND filter_banking_detail_change
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate business acquisitions or mergers resulting in rapid ownership and banking changes
+#   - Business relocations with concurrent signer updates due to organizational restructuring
+#   - Seasonal businesses reactivating dormant accounts with updated contact and banking information
+#   - Court-ordered changes following business litigation or estate proceedings
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

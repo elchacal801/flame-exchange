@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.089480+00:00",
+    "generated_at": "2026-04-09T19:40:01.456867+00:00",
     "total": 1
   },
   "data": {
@@ -40,7 +40,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Infostealer Credential Dump Velocity\n// Repository: flame-banking-endpoint-detection\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| groupBy(host_id, function=[count(as=event_count), collect(target_credential)])\n| event_count > 20",
+      "cql": "// CrowdStrike CQL for Infostealer Credential Dump Velocity\n// Repository: flame-banking-endpoint-detection\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| groupBy(host_id, function=[count(as=event_count), collect(target_credential)])\n| event_count > 20",
       "splunk": "`comment(\"Splunk SPL for Infostealer Credential Dump Velocity\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_legitimate | count(distinct target_credential) by host_id > 20\")`\nindex=flame_banking sourcetype=flame:endpoint_detection\nevent_type=\"credential_access\"\naction=\"credential_read\"\n(process_name=\"\\lsass.exe\" OR process_name=\"\\services.exe\")\n| stats dc(target_credential) as unique_target_credential by host_id\n| where unique_target_credential > 20"
     },
     "references": [

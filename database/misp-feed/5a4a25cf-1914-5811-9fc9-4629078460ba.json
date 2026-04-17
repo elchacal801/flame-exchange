@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "5a4a25cf-1914-5811-9fc9-4629078460ba",
+    "info": "FLAME: Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud",
+    "date": "2026-04-01",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "c49a7ebb-7206-5363-931a-820916923f11",
+        "type": "text",
+        "category": "Other",
+        "value": "vishing",
+        "comment": "Fraud type for TP-0081"
+      },
+      {
+        "uuid": "b78d5d45-7634-5f59-8a4f-3b4ec50d7afd",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0081"
+      },
+      {
+        "uuid": "b68e97ff-272c-5aed-bef3-90462252e68c",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0081"
+      },
+      {
+        "uuid": "6cab2a0b-ed6c-5dc5-ad68-983d2c1b81d3",
+        "type": "text",
+        "category": "Other",
+        "value": "BEC",
+        "comment": "Fraud type for TP-0081"
+      },
+      {
+        "uuid": "4e22a936-dc82-5f70-b4ea-06b59bdfb60f",
+        "type": "text",
+        "category": "Other",
+        "value": "fake-captcha-fraud",
+        "comment": "Fraud type for TP-0081"
+      },
+      {
+        "uuid": "7dd0d55f-f658-55bb-a3cc-d2a6c49591f1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0081"
+      },
+      {
+        "uuid": "0948e80f-b7fe-5af0-bebd-4e30554da24a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0081"
+      },
+      {
+        "uuid": "15b3e4f0-eecc-588f-9c63-85a68fd5b834",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0081"
+      },
+      {
+        "uuid": "bed3ed50-9856-5f28-9664-4ab941ec24f1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0081"
+      },
+      {
+        "uuid": "34a2f7b9-950a-5c49-ae6b-89f0df020b1d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0081"
+      }
+    ]
+  }
+}

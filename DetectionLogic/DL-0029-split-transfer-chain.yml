@@ -41,8 +41,8 @@ data_sources:
   - event_type
   - transaction_amount
 queries:
-  logscale: |-
-    // LogScale LQL for Split Transfer Chain Detection
+  cql: |-
+    // CrowdStrike CQL for Split Transfer Chain Detection
     // Repository: flame-banking-wire-system
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection_large_inbound | near selection_multiple_outbound by account_id | count(distinct beneficiary_id) by account_id > 2

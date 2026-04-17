@@ -1,0 +1,67 @@
+# ======================================================================
+# FLAME Detection Rule: Seller Impersonation Pattern — Property Sale Initiated by Non-Resident Owner of Vacant/Unencumbered Property With Recent Contact Info Changes
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P3
+# Threat Paths: TP-0073, TP-0006
+#
+# Description:
+#   Detects the characteristic seller impersonation pattern in real estate
+#   title fraud: a property sale or title transfer is initiated on a
+#   vacant, unencumbered property where the owner is non-resident (mailing
+#   address differs from property address) and the owner's contact
+#   information has been recently changed. FBI data shows $16.6B in total
+#   real estate fraud losses (2024), with seller impersonation of vacant
+#   property owners as the fastest-growing subcategory. Fraudsters target
+#   vacant, mortgage-free properties because there is no occupant to notice
+#   and no lender monitoring the title. A risk score is computed from
+#   multiple indicators: non-resident owner, vacant property, unencumbered,
+#   recent contact changes, and below-market listing price.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: real_estate
+#   service: property_transactions
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     transaction_type:
+#     - sale_listing
+#     - title_transfer
+#     - deed_recording
+#   filter_vacant_or_nonresident:
+#     occupancy_status: vacant
+#   filter_unencumbered:
+#     mortgage_balance|lte: 0
+#   filter_recent_contact_change:
+#     owner_contact_updated_days|lt: 90
+#   condition: 'selection AND (filter_vacant_or_nonresident OR owner_address_mismatch)
+#     AND filter_unencumbered AND filter_recent_contact_change
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate sales of investment properties by non-resident owners
+#   - Estate sales of inherited vacant properties
+#   - Property owners with recently updated contact info due to relocation
+#   - Below-market listings for quick sales (divorce, financial hardship)
+#   - Vacant lot sales by developers or investors
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

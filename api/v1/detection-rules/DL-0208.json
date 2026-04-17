@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.528945+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "12723c28-6172-41ec-a45a-038daa320751",
+    "dl_id": "DL-0208",
+    "title": "New gTLD Domain Registration Burst with Phishing Characteristics",
+    "status": "experimental",
+    "description": "Detect bulk domain registrations (5+ in 24h from same registrant/nameserver) on high-abuse gTLDs (.TOP, .BOND, .XYZ, .SHOP, .XIN, .CFD, .LOL) with brand-keyword presence, domain age < 7 days, and low registration cost. Interisle found 37% of phishing domains were bulk-registered and new gTLDs accounted for 51% of all phishing domains.\n",
+    "cfpf_phase": "P1",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "tld|re": "TOP|BOND|XYZ|SHOP|XIN|CFD|LOL",
+        "domain_age_days|lte": 7,
+        "registration_count_24h|gte": 5,
+        "shared_nameserver": true
+      },
+      "filter": {
+        "brand_keyword_match": true,
+        "random_string_pattern": true
+      },
+      "condition": "selection and (1 of filter)"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "domain_intelligence"
+    },
+    "references": [
+      "https://interisle.net/PhishingLandscape2025.pdf"
+    ],
+    "threat_path_ids": [
+      "TP-0041",
+      "TP-0079"
+    ],
+    "fraud_types": [
+      "brand-impersonation",
+      "fraud-enabling-infrastructure",
+      "phishing"
+    ],
+    "tags": [
+      "cfpf.phase1.recon",
+      "flame.infrastructure",
+      "flame.shared"
+    ],
+    "falsepositives": [
+      "Domain portfolio investors acquiring multiple domains",
+      "Corporate brand protection bulk registrations",
+      "Legitimate product launches registering multiple TLD variants"
+    ]
+  }
+}

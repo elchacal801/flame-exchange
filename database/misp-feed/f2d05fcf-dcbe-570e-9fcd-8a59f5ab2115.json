@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "f2d05fcf-dcbe-570e-9fcd-8a59f5ab2115",
+    "info": "FLAME: Fraud-as-a-Service (FaaS) Platforms",
+    "date": "2026-03-17",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "b550232f-aa94-5aa7-9905-c98084eddf89",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-as-a-service",
+        "comment": "Fraud type for TP-0054"
+      },
+      {
+        "uuid": "31bf9f08-c93f-58c2-bc00-1493ce6ec0af",
+        "type": "text",
+        "category": "Other",
+        "value": "ai-accelerated-fraud-infrastructure",
+        "comment": "Fraud type for TP-0054"
+      },
+      {
+        "uuid": "4ff4df85-c0e9-529e-a0dd-5bde9841aab1",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0054"
+      },
+      {
+        "uuid": "12375d5f-8094-5cf7-9e73-8f30113fefba",
+        "type": "text",
+        "category": "Other",
+        "value": "brand-impersonation",
+        "comment": "Fraud type for TP-0054"
+      },
+      {
+        "uuid": "cf42c75c-5c9b-5c25-8a3d-72d87d23f060",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0054"
+      },
+      {
+        "uuid": "4f6bbf90-ca2e-5abd-a23b-78dbfeb90713",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0054"
+      },
+      {
+        "uuid": "3292e710-de4a-511a-b03a-7bb3064b818b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0054"
+      },
+      {
+        "uuid": "810b7e23-adc9-5b81-8e47-570e9b0af78a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0054"
+      },
+      {
+        "uuid": "7fff0364-09d9-50a8-b897-60a643f1106b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0054"
+      }
+    ]
+  }
+}

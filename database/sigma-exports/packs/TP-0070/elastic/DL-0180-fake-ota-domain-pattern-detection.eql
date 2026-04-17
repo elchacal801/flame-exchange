@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(request_domain:/(?i)(book[1i!l]ng|b00king|booking-?\w+)\.(com|net|org|info|travel|xyz|top)/ OR request_domain:/(?i)(exped[1i!l]a|exp3dia|expedia-?\w+)\.(com|net|org|info|travel|xyz|top)/ OR request_domain:/(?i)(a[1i!l]rbnb|airbnb-?\w+|a1rbnb)\.(com|net|org|info|travel|xyz|top)/ OR request_domain:/(?i)(hotels?-?\w*book|book-?\w*travel|cheap-?\w*flight)\.(com|net|org|info|travel)/) AND (NOT (request_domain:(booking.com OR *.booking.com OR expedia.com OR *.expedia.com OR airbnb.com OR *.airbnb.com OR hotels.com OR *.hotels.com))) AND domain_registration_age_days:<30

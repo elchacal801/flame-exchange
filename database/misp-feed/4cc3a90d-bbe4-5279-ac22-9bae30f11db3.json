@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "4cc3a90d-bbe4-5279-ac22-9bae30f11db3",
+    "info": "FLAME: Government Impersonation \u2014 Authority-Based Authorized Push Payment Fraud",
+    "date": "2026-04-06",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "18378845-201a-536e-a468-2315c1cc2ccc",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0084"
+      },
+      {
+        "uuid": "a1e3969e-1255-5fad-8523-e1b4e53785e8",
+        "type": "text",
+        "category": "Other",
+        "value": "authorized-push-payment",
+        "comment": "Fraud type for TP-0084"
+      },
+      {
+        "uuid": "42b7f100-5daf-5774-b93b-657a4dd5eef7",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0084"
+      },
+      {
+        "uuid": "1ca04101-0289-58ec-9f8e-a9fd150bb00f",
+        "type": "text",
+        "category": "Other",
+        "value": "elder-exploitation",
+        "comment": "Fraud type for TP-0084"
+      },
+      {
+        "uuid": "d9e87beb-1330-5e27-84ba-bff827563fc9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0084"
+      },
+      {
+        "uuid": "0cfa29c2-7fb7-5149-9d7f-e8890abb4b19",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0084"
+      },
+      {
+        "uuid": "b8008f84-dd75-57b6-ac9f-d5ad33a02b99",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0084"
+      },
+      {
+        "uuid": "6d09bebb-eaae-5054-aa02-0ece4489417a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0084"
+      },
+      {
+        "uuid": "d2071dd7-7f13-5a20-bb2a-729e5cc8b254",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0084"
+      }
+    ]
+  }
+}

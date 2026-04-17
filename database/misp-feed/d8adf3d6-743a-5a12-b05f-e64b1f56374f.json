@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "d8adf3d6-743a-5a12-b05f-e64b1f56374f",
+    "info": "FLAME: Vehicle Export Financing Fraud",
+    "date": "2026-03-17",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "591e76b9-5e1a-5411-99a9-29b91d66aee7",
+        "type": "text",
+        "category": "Other",
+        "value": "vehicle-export-fraud",
+        "comment": "Fraud type for TP-0053"
+      },
+      {
+        "uuid": "4d94c8b5-772b-54ac-9936-794f7469384c",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0053"
+      },
+      {
+        "uuid": "1a0c9c73-fa98-5928-aad9-b335ed430905",
+        "type": "text",
+        "category": "Other",
+        "value": "application-fraud",
+        "comment": "Fraud type for TP-0053"
+      },
+      {
+        "uuid": "9d3570bc-7b8a-55a3-9753-c233631d5dce",
+        "type": "text",
+        "category": "Other",
+        "value": "loan-fraud",
+        "comment": "Fraud type for TP-0053"
+      },
+      {
+        "uuid": "1b65201a-f28d-58ce-bed4-0c085674b027",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0053"
+      },
+      {
+        "uuid": "26a4037d-238a-5568-9ff4-3368b0a7a415",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0053"
+      },
+      {
+        "uuid": "ec466567-5f85-585a-b248-795fb5513c33",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0053"
+      },
+      {
+        "uuid": "a822dd2d-7635-571e-ab32-92bdf0e9fe0f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0053"
+      },
+      {
+        "uuid": "43729864-930e-5af1-bb60-a7ba550e0a65",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0053"
+      }
+    ]
+  }
+}

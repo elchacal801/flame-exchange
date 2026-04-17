@@ -1,0 +1,164 @@
+title: Shell Company Address Concentration as Fraud Infrastructure Indicator
+id: c9a5d3e6-4f1b-4caa-d8e3-7b2a0f4c9d5b
+status: experimental
+description: 'Detects abnormal concentration of corporate registrations at a single registered
+  address as an indicator of shell company infrastructure used for fraud, money laundering, or
+  beneficial ownership obfuscation. The ICIJ/OpenCorporates investigation of Wyoming documented
+  that 40% of all Wyoming LLCs are registered to just two buildings in Sheridan, WY, with a 30%
+  spike in LLC registrations in 2023 alone. Wyoming now surpasses Delaware in companies registered
+  per capita. Wyoming LLC services are actively marketed in Cyprus, Singapore, and other offshore
+  jurisdictions as tax avoidance and asset-shielding vehicles. Millions in PPP loan fraud were
+  traced to shell companies registered at a single Wyoming storefront address. The Corporate
+  Transparency Act beneficial ownership registry — catalyzed by the FinCEN Files investigation —
+  was effectively gutted in 2025 when the Trump Administration suspended all enforcement and
+  deleted previously submitted data, removing the primary countermeasure against shell company
+  opacity in the United States. This rule targets the recon phase (P1) where fraud infrastructure
+  is established through mass corporate registration at concentrated addresses.
+
+  '
+date: 2026/03/30
+sigma_compatible: false
+native_query_required: true
+threat_paths:
+- TP-0078
+- TP-0055
+cfpf_phase: P1
+fraud_types:
+- shell-company-fraud
+- money-laundering
+logsource:
+  product: corporate_registry
+  category: entity_monitoring
+  service: registration_monitoring
+detection:
+  selection:
+    entity_type:
+    - LLC
+    - corporation
+    - limited_partnership
+    event_type: registration
+  filter_address_concentration:
+    address_active_entity_count|gte: 50
+  filter_opacity_jurisdiction:
+    registration_jurisdiction:
+    - Wyoming
+    - Nevada
+    - Delaware
+    - South Dakota
+    - New Mexico
+    - BVI
+    - Seychelles
+    - Cayman Islands
+    - Panama
+  filter_agent_velocity:
+    agent_registrations_90d|gte: 10
+  condition: selection AND filter_address_concentration AND (filter_opacity_jurisdiction
+    OR filter_agent_velocity)
+  timeframe: 90d
+data_sources:
+  native_fields:
+  - entity_name
+  - entity_type
+  - registration_date
+  - registered_address
+  - registered_agent
+  - registration_jurisdiction
+  - entity_status
+  enrichment_required:
+  - field: address_active_entity_count
+    source: OpenCorporates bulk data or state registry API — count of active entities
+      currently registered at the same address
+  - field: agent_registrations_90d
+    source: OpenCorporates bulk data or state registry API — count of new registrations
+      by the same registered agent in the preceding 90 days
+  - field: beneficial_owner_filed
+    source: FinCEN BOI registry lookup — whether beneficial ownership information has
+      been filed for this entity (NOTE status as of 2025 — enforcement suspended, data
+      deleted)
+  - field: international_marketing_flag
+    source: OSINT — whether the registered agent or formation service is marketed in
+      offshore jurisdictions (Cyprus, Singapore, UAE)
+queries:
+  cql: |-
+    // CrowdStrike CQL for Shell Company Address Concentration Detection
+    // Detects abnormal registration concentration at single addresses in opacity jurisdictions
+    entity_type IN ["LLC", "corporation", "limited_partnership"]
+    event_type="registration"
+    | groupBy(registered_address, function=[
+        count(as=entity_count),
+        count(distinct=entity_name, as=unique_entities),
+        collect([entity_name, registration_date, registered_agent, registration_jurisdiction])
+      ])
+    | entity_count >= 50
+    | registration_jurisdiction IN ["Wyoming", "Nevada", "Delaware", "South Dakota",
+        "New Mexico", "BVI", "Seychelles", "Cayman Islands", "Panama"]
+      OR agent_registrations_90d >= 10
+    | sort(entity_count, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for Shell Company Address Concentration Detection")`
+    `comment("Detects abnormal corporate registration concentration at single addresses")`
+    index=flame_corporate sourcetype=flame:entity_monitoring
+      (entity_type="LLC" OR entity_type="corporation" OR entity_type="limited_partnership")
+      event_type="registration"
+    | stats count AS entity_count,
+            dc(entity_name) AS unique_entities,
+            values(registration_jurisdiction) AS jurisdictions,
+            values(registered_agent) AS agents,
+            min(registration_date) AS earliest_reg,
+            max(registration_date) AS latest_reg
+      BY registered_address
+    | where entity_count >= 50
+    | eval is_opacity_jurisdiction = if(
+        match(jurisdictions, "Wyoming|Nevada|Delaware|South Dakota|New Mexico|BVI|Seychelles|Cayman|Panama"),
+        1, 0)
+    | where is_opacity_jurisdiction=1
+    | sort - entity_count
+  sql: |-
+    -- SQL for Shell Company Address Concentration Detection
+    -- Detects abnormal registration concentration at single addresses
+    SELECT
+      e.registered_address,
+      COUNT(*) AS entity_count,
+      COUNT(DISTINCT e.entity_name) AS unique_entities,
+      e.registration_jurisdiction,
+      e.registered_agent,
+      MIN(e.registration_date) AS earliest_registration,
+      MAX(e.registration_date) AS latest_registration,
+      COUNT(CASE WHEN e.registration_date >= CURRENT_DATE - INTERVAL '90 days'
+            THEN 1 END) AS registrations_last_90d
+    FROM corporate_entities e
+    WHERE e.entity_type IN ('LLC', 'corporation', 'limited_partnership')
+      AND e.entity_status = 'active'
+    GROUP BY e.registered_address, e.registration_jurisdiction, e.registered_agent
+    HAVING COUNT(*) >= 50
+      AND (e.registration_jurisdiction IN ('Wyoming', 'Nevada', 'Delaware',
+           'South Dakota', 'New Mexico', 'BVI', 'Seychelles', 'Cayman Islands', 'Panama')
+        OR COUNT(CASE WHEN e.registration_date >= CURRENT_DATE - INTERVAL '90 days'
+                 THEN 1 END) >= 10)
+    ORDER BY entity_count DESC
+falsepositives:
+- Legitimate registered agent services (CT Corporation, CSC Global) that maintain
+  large client portfolios at a single address
+- Coworking spaces and business incubators with many tenant companies
+- Law firm registered agent services with high-volume but legitimate client bases
+level: medium
+references:
+- ICIJ/OpenCorporates Wyoming investigation — 40% of Wyoming LLCs at 2 Sheridan buildings
+- ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026)
+- OpenCorporates bulk data analysis methodology (PostgreSQL fuzzy address matching)
+- FinCEN Files investigation (2020) — catalyzed Corporate Transparency Act
+- Corporate Transparency Act — beneficial ownership reporting (enforcement suspended 2025)
+- PPP loan fraud traced to Wyoming shell company storefronts
+tags:
+- cfpf.phase1.recon
+- shell-company
+- beneficial-ownership
+- address-concentration
+- corporate-opacity
+- wyoming-llc
+- registered-agent
+- opencorporates
+- cta-suspended
+- fraud-infrastructure
+- TP-0078
+- TP-0055

@@ -1,54 +1,65 @@
 title: BIN Enumeration Sequential Card Number Attack
 id: 1c6e4b89-d7f3-4a28-bf51-8e3c2a9d5f17
 status: experimental
-description: >
-  Detects sequential or near-sequential card number authorization attempts
-  sharing the same Bank Identification Number (BIN) prefix with incremental
-  variation in the remaining digits. BIN enumeration attacks generate valid
-  card numbers by iterating through possible combinations within a BIN range,
-  validating each against live payment infrastructure through sub-dollar
-  authorization requests. Sequential card numbers from the same BIN prefix
-  have a zero false positive rate for legitimate merchants — this pattern is
-  exclusively associated with fraudulent enumeration. Recorded Future's 2025
-  report documents BIN attacks as a primary method for generating valid card
-  credentials for downstream fraud, with enumerated cards feeding into card
-  testing (TP-0038), digital wallet provisioning (TP-0037), and card-not-present
-  fraud operations. This rule targets Phase 4 of TP-0038.
+description: 'Detects sequential or near-sequential card number authorization attempts sharing the same Bank Identification
+  Number (BIN) prefix with incremental variation in the remaining digits. BIN enumeration attacks generate valid card numbers
+  by iterating through possible combinations within a BIN range, validating each against live payment infrastructure through
+  sub-dollar authorization requests. Sequential card numbers from the same BIN prefix have a zero false positive rate for
+  legitimate merchants — this pattern is exclusively associated with fraudulent enumeration. Recorded Future''s 2025 report
+  documents BIN attacks as a primary method for generating valid card credentials for downstream fraud, with enumerated cards
+  feeding into card testing (TP-0038), digital wallet provisioning (TP-0037), and card-not-present fraud operations. This
+  rule targets Phase 4 of TP-0038.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
+- https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
 threat_paths:
-  - TP-0038
+- TP-0038
 cfpf_phase: P4
 fraud_types:
-  - card-testing
-  - identity-theft
+- card-testing
+- identity-theft
 logsource:
   product: ecommerce
   service: payment_gateway
 detection:
   selection:
-    transaction_amount|lt: 5.00
+    transaction_amount|lt: 5.0
     event_type|contains:
-      - 'authorization'
-      - 'auth_request'
+    - authorization
+    - auth_request
   aggregation_bin:
     count|gte: 10
     groupby:
-      - merchant_id
-      - bin_prefix_8
+    - merchant_id
+    - bin_prefix_8
     timeframe: 30m
   filter_sequential:
     sequential_card_numbers|gte: 5
     card_number_increment_pattern: true
   filter_decline:
-    decline_rate|gte: 0.80
+    decline_rate|gte: 0.8
   condition: selection and aggregation_bin and filter_sequential and filter_decline
+data_sources:
+  native_fields:
+  - card_number_increment_pattern
+  - count
+  - event_type
+  - groupby
+  - sequential_card_numbers
+  - timeframe
+  - transaction_amount
+  enrichment_required:
+  - field: decline_rate
+    source: Payment analytics enrichment (decline rate calculation over window)
 falsepositives:
-  - Corporate card programs where cards are issued with sequential numbers to the same organization (extremely rare in authorization streams)
+- Corporate card programs where cards are issued with sequential numbers to the same organization (extremely rare in authorization
+  streams)
 level: critical
 tags:
-  - cfpf.phase4.execution
-  - attack.t1110.001
-  - flame.ecommerce
-  - flame.bin_attack
-  - flame.card_enumeration
+- cfpf.phase4.execution
+- attack.t1110.001
+- flame.ecommerce
+- flame.bin_attack
+- flame.card_enumeration

@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "19825c03-1ee9-535c-8fac-0d481174d45f",
+    "info": "FLAME: Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines",
+    "date": "2026-03-30",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "94556027-76c5-510a-a69e-9fa70e82030c",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0078"
+      },
+      {
+        "uuid": "bea8b839-2a25-56f8-8ebf-5bb10a194f93",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering-infrastructure",
+        "comment": "Fraud type for TP-0078"
+      },
+      {
+        "uuid": "a5fe30f9-6bc2-5008-9d7b-3e1fccdd2f46",
+        "type": "text",
+        "category": "Other",
+        "value": "money-laundering",
+        "comment": "Fraud type for TP-0078"
+      },
+      {
+        "uuid": "d07b36f1-d827-5f96-9a63-e2db22e8ac21",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0078"
+      },
+      {
+        "uuid": "91e5863e-d541-5441-8414-85b8718b3fd0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0078"
+      },
+      {
+        "uuid": "51a58ed6-806e-5a08-84ce-fc21c184a227",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0078"
+      },
+      {
+        "uuid": "01920317-a452-5637-903f-50dc55078e47",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0078"
+      },
+      {
+        "uuid": "a211aa31-3f9c-5bc6-ab2b-de294eba13c8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0078"
+      }
+    ]
+  }
+}

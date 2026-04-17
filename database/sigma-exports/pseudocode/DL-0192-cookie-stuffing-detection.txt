@@ -1,0 +1,64 @@
+# ======================================================================
+# FLAME Detection Rule: Cookie Stuffing Detection — Affiliate Cookies Set Without Corresponding Click Events
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P3
+# Threat Paths: TP-0076
+#
+# Description:
+#   Detects cookie stuffing — the most prevalent affiliate fraud technique
+#   (approximately 60% of cases) — by identifying affiliates that set
+#   tracking cookies in user browsers without corresponding user click
+#   events. Cookie stuffing uses hidden iframes, 1x1 pixel images, or
+#   JavaScript injection to drop affiliate cookies without the user's
+#   knowledge or intent. This steals attribution credit from legitimate
+#   affiliates and organic traffic, inflating the fraudulent affiliate's
+#   commission payments. Detection relies on the cookie-to-click ratio:
+#   legitimate affiliates typically have a ratio near 1:1, while cookie
+#   stuffers exhibit ratios of 5:1 or higher, or set cookies with zero
+#   associated clicks entirely. Global ad fraud is projected at USD 71
+#   billion in 2025.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: advertising
+#   service: affiliate_tracking
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     event_type:
+#     - cookie_set
+#     - affiliate_attribution
+#   filter_no_click:
+#     associated_click_count: 0
+#     cookie_count|gte: 50
+#   filter_high_ratio:
+#     cookie_to_click_ratio|gte: 5.0
+#   timeframe: 7d
+#   condition: 'selection AND (filter_no_click OR filter_high_ratio)
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Affiliates using legitimate pre-click tracking (e.g., impression-based cookies for attribution modeling)
+#   - Browser extensions that pre-load affiliate cookies with user consent
+#   - Testing and QA activity generating cookies without production click events
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

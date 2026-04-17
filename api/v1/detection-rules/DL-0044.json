@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.283076+00:00",
+    "generated_at": "2026-04-09T19:40:02.151571+00:00",
     "total": 1
   },
   "data": {
@@ -44,7 +44,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Carrier Change Authentication Correlation\n// Repository: flame-telecom-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n// Sequential correlation — use LogScale sequence detection\n// Correlate stages sequentially on phone_number within 120m",
+      "cql": "// CrowdStrike CQL for Carrier Change Authentication Correlation\n// Repository: flame-telecom-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n// Sequential correlation — use CrowdStrike NGSIEM sequence detection\n// Correlate stages sequentially on phone_number within 120m",
       "splunk": "`comment(\"Splunk SPL for Carrier Change Authentication Correlation\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m\")`\nindex=flame_telecom sourcetype=flame:identity_management\n(event_type=\"sim_swap\" OR event_type=\"carrier_change\" OR event_type=\"number_port\")\nstatus=\"completed\"\nevent_type=\"login_attempt\"\nmfa_method=\"sms\"\nmfa_result=\"success\"\n| transaction phone_number maxspan=120m\n| where eventcount >= 2\n`comment(\"Sequential correlation across stages\")`"
     },
     "references": [

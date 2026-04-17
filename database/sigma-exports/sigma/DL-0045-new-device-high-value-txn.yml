@@ -1,39 +1,52 @@
 title: New Device High-Value Transaction
 id: f4bfdc2d-a85c-40b9-a4d8-cc415d3fbae7
 status: experimental
-description: >
-  Detects a high-value financial transaction initiated from a new or previously unknown device
-  shortly after initial authentication. Attackers who have compromised credentials and bypassed
-  MFA via SIM swap typically move quickly to execute high-value transfers from a device with no
-  prior history on the account, exploiting the narrow window before the victim notices.
+description: 'Detects a high-value financial transaction initiated from a new or previously unknown device shortly after initial
+  authentication. Attackers who have compromised credentials and bypassed MFA via SIM swap typically move quickly to execute
+  high-value transfers from a device with no prior history on the account, exploiting the narrow window before the victim
+  notices.
+
+  '
+sigma_compatible: true
 references:
-  - https://attack.mitre.org/techniques/T1078/
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1078/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0008
-  - TP-0001
+- TP-0008
+- TP-0001
 cfpf_phase: P3
 fraud_types:
-  - account-takeover
-  - esim-hijacking
+- account-takeover
+- esim-hijacking
 logsource:
   product: banking
   service: transaction_monitoring
 detection:
   selection_new_device:
-    device_trust_level: 'new'
+    device_trust_level: new
     device_first_seen_days: 0
   selection_high_value:
-    event_type: 'wire_transfer'
+    event_type: wire_transfer
     transaction_amount|gte: 5000
   selection_timing:
     time_since_auth_minutes|lte: 30
   condition: selection_new_device and selection_high_value and selection_timing
+data_sources:
+  native_fields:
+  - event_type
+  - transaction_amount
+  enrichment_required:
+  - field: device_first_seen_days
+    source: Device profiling enrichment (first-seen date from device intelligence)
+  - field: device_trust_level
+    source: Device profiling enrichment (trust score from device intelligence platform)
+  - field: time_since_auth_minutes
+    source: Session analytics enrichment (minutes since last authentication)
 falsepositives:
-  - Customers logging in from a newly purchased device to make a planned large payment
-  - Joint account holders using a device not previously associated with the account
+- Customers logging in from a newly purchased device to make a planned large payment
+- Joint account holders using a device not previously associated with the account
 level: critical
 tags:
-  - cfpf.phase3.positioning
-  - attack.t1078
-  - attack.t1111
+- cfpf.phase3.positioning
+- attack.t1078
+- attack.t1111

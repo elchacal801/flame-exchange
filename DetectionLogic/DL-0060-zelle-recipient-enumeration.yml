@@ -31,14 +31,14 @@ data_sources:
   - event_type
   - lookup_result
 queries:
-  logscale: |-
-    // LogScale LQL for Zelle Recipient Enumeration via Multiple Failed Lookups
+  cql: |-
+    // CrowdStrike CQL for Zelle Recipient Enumeration via Multiple Failed Lookups
     // Repository: flame-banking-a2a-processing
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count() by account_id > 10
     event_type="zelle_recipient_lookup"
     lookup_result="not_found"
-    | groupBy(account_id, function=count(as=event_count))
+    | groupBy(account_id, function=[count(as=event_count)])
     | event_count > 10
   splunk: |-
     `comment("Splunk SPL for Zelle Recipient Enumeration via Multiple Failed Lookups")`

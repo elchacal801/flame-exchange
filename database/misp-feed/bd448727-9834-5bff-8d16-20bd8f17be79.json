@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "bd448727-9834-5bff-8d16-20bd8f17be79",
+    "info": "FLAME: Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale",
+    "date": "2026-04-01",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "8961ee9a-b7ad-50aa-a80b-1c6be9640143",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0079"
+      },
+      {
+        "uuid": "023471b8-0c40-5fbd-a5d0-f46b31ae052d",
+        "type": "text",
+        "category": "Other",
+        "value": "brand-impersonation",
+        "comment": "Fraud type for TP-0079"
+      },
+      {
+        "uuid": "49d5fd62-696e-5715-ab56-f94bf3514fd6",
+        "type": "text",
+        "category": "Other",
+        "value": "credential-harvesting",
+        "comment": "Fraud type for TP-0079"
+      },
+      {
+        "uuid": "6f326586-e980-5f54-bbc7-990db643527f",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-enabling-infrastructure",
+        "comment": "Fraud type for TP-0079"
+      },
+      {
+        "uuid": "713a5365-ccd3-5258-abdf-e0170a1a28ed",
+        "type": "text",
+        "category": "Other",
+        "value": "paas-subdomain-abuse",
+        "comment": "Fraud type for TP-0079"
+      },
+      {
+        "uuid": "a07ab0bb-ce46-5958-9a88-7c9bf39e4da4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0079"
+      },
+      {
+        "uuid": "b9046625-737b-5f35-95d5-d3f68ef4bff9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0079"
+      },
+      {
+        "uuid": "ce256fa2-83f2-5cb5-bfb9-7b069c2ac883",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0079"
+      },
+      {
+        "uuid": "7c936b95-8adb-5aa9-b854-3613f20d9a64",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0079"
+      },
+      {
+        "uuid": "70c471c2-fb96-5548-b16c-2097f1c94288",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0079"
+      }
+    ]
+  }
+}

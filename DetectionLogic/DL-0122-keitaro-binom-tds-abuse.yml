@@ -58,8 +58,8 @@ data_sources:
   - field: final_destination_domain_age_days
     source: WHOIS enrichment (domain registration age for final redirect destination)
 queries:
-  logscale: |-
-    // LogScale LQL for Keitaro/Binom TDS Abuse Infrastructure Detection
+  cql: |-
+    // CrowdStrike CQL for Keitaro/Binom TDS Abuse Infrastructure Detection
     // Repository: flame-proxy-http-log
     // HTTP redirect chain analysis for TDS abuse patterns
     (url_query=/click_id=|campaign_id=|keitaro|binom|cnv_id=/)
@@ -88,6 +88,8 @@ falsepositives:
 - Performance marketing redirect chains for authorized advertising
 level: medium
 tags:
+- attack.t1583.001
+- attack.t1090.003
 - cfpf.phase2.initial_access
 - keitaro
 - binom

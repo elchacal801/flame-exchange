@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.438077+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "548082ea-f953-4ab5-b9ff-0aba4be689b7",
+    "dl_id": "DL-0201",
+    "title": "AiTM Antibot Cloaking Detection — Divergent Content by Client Type",
+    "status": "experimental",
+    "description": "Detects phishing pages that serve different content to automated scanners versus human visitors — a key evasion technique used by PhaaS platforms including Bluekit, Tycoon 2FA, and NakedPages. Antibot cloaking typically returns benign content (blank pages, Wikipedia redirects, legitimate-looking sites) to known scanner User-Agents, IP ranges associated with security vendors, and headless browsers, while serving the actual phishing page to real victims. Detection compares HTTP responses for the same URL across different client profiles. Sourced from Bluekit PhaaS TI report (CrimsonVector, March 2026).\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection_redirect": {
+        "response_code": [
+          301,
+          302,
+          307
+        ],
+        "response_location|contains": [
+          "wikipedia.org",
+          "google.com",
+          "youtube.com",
+          "rickroll"
+        ]
+      },
+      "selection_suspicious_domain": {
+        "request_url|re": ".*login.*|.*verify.*|.*secure.*|.*account.*"
+      },
+      "condition": "selection_redirect and selection_suspicious_domain",
+      "note": "Primary detection vector: URL with login/authentication keywords that redirects to Wikipedia, Google, or YouTube — characteristic of Evilginx rickroll redirect, NakedPages Wikipedia redirect, and Bluekit antibot cloaking. Secondary detection: same URL returning different Content-Length for different User-Agents within the same time window (requires web proxy logs with response size). Bluekit's March 2026 changelog specifically added \"improved security system that will work against safebrowsing red alert\" — targeting Google Safe Browsing detection.\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "proxy_logs"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "queries": {
+      "splunk": "index=proxy\n| where match(url, \"(?i)(login|verify|secure|account|signin|auth)\")\n| where response_code IN (301, 302, 307)\n| where match(response_location, \"(?i)(wikipedia|google\\.com|youtube|rickroll)\")\n| stats count values(response_location) AS redirect_targets\n  values(user_agent) AS user_agents by url, src_ip\n| sort -count",
+      "cql": "#event_simpleName=HttpRequest\n| HttpUrl=/(?i)(login|verify|secure|account|signin|auth)/\n| HttpResponseCode IN [301, 302, 307]\n| HttpResponseLocation=/(?i)(wikipedia|google\\.com|youtube|rickroll)/\n| groupBy([HttpUrl, SourceIP], function=[count(aid), collect([HttpResponseLocation, UserAgent])])"
+    },
+    "references": [
+      "Bluekit PhaaS TI Report — CrimsonVector, March 2026",
+      "Tycoon 2FA PhaaS antibot cloaking analysis",
+      "NakedPages Wikipedia redirect cloaking technique",
+      "Evilginx rickroll redirect detection methodology"
+    ],
+    "threat_path_ids": [
+      "TP-0067",
+      "TP-0069"
+    ],
+    "fraud_types": [
+      "aitm-phishing",
+      "cloaking",
+      "fraud-as-a-service",
+      "phishing"
+    ],
+    "tags": [
+      "TP-0067",
+      "TP-0069",
+      "aitm-phishing",
+      "antibot-cloaking",
+      "attack.t1027",
+      "attack.t1566.002",
+      "bluekit",
+      "cfpf.p2.initial_access",
+      "flame.shared",
+      "phaas"
+    ],
+    "falsepositives": [
+      "Legitimate URL shorteners redirecting to Wikipedia/Google",
+      "A/B testing platforms serving different content to different users",
+      "Geo-restricted content redirecting non-target users"
+    ]
+  }
+}

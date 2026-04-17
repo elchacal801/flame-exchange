@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.777631+00:00",
+    "generated_at": "2026-04-09T19:40:03.411606+00:00",
     "total": 1
   },
   "data": {
@@ -14,13 +14,13 @@
     "level": "critical",
     "detection": {
       "selection": {
-        "AuthenticationStepResultType": 0
+        "ResultType": 0
       },
       "condition": "count(distinct UserAgent) by CorrelationId >= 2 AND timeframe < 10 minutes\n"
     },
     "logsource": {
       "product": "azure",
-      "service": "entra_id_signin"
+      "service": "signinlogs"
     },
     "sigma_compatible": false,
     "native_query_required": true,
@@ -30,12 +30,13 @@
         "UserAgent",
         "UserPrincipalName",
         "IPAddress",
-        "AuthenticationStepResultType",
-        "AuthenticationDetails"
+        "ResultType",
+        "TimeGenerated"
       ]
     },
     "queries": {
-      "kql": "// KQL: Sneaky 2FA Impossible Device Shift Detection\n// Correlates mismatched User-Agents within same authentication flow\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UserAgents = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n// High confidence: Safari/iOS + Edge/Windows combination\n| where UserAgents has \"Safari\" and UserAgents has \"Edge\"\n    or UserAgents has \"iPhone\" and UserAgents has \"Windows\"\n| project UserPrincipalName, CorrelationId, UACount, UserAgents,\n          IPs, MinTime, MaxTime",
+      "cql": "// CrowdStrike CQL for Sneaky 2FA Impossible Device Shift Detection\n// Correlates mismatched User-Agents within same authentication flow\n#repo=\"azure_signinlogs\"\nResultType=\"0\"\n| groupBy([CorrelationId, UserPrincipalName], function=[count(field=UserAgent, distinct=true, as=UACount), collect([UserAgent], as=UserAgents), collect([IPAddress], as=IPs), min(@timestamp, as=MinTime), max(@timestamp, as=MaxTime)], span=10m)\n| UACount >= 2\n// High confidence: Safari/iOS + Edge/Windows combination (Sneaky 2FA signature)\n| UserAgents=/Safari/ AND UserAgents=/Edge/\n    OR UserAgents=/iPhone/ AND UserAgents=/Windows/\n| select([UserPrincipalName, CorrelationId, UACount, UserAgents,\n          IPs, MinTime, MaxTime])\n| sort(UACount, order=desc)",
+      "kql": "// KQL: Sneaky 2FA Impossible Device Shift Detection\n// Correlates mismatched User-Agents within same authentication flow\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UserAgents = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n// Convert dynamic array to string for substring matching\n| extend UA_str = tostring(UserAgents)\n// High confidence: Safari/iOS + Edge/Windows combination (Sneaky 2FA signature)\n| where (UA_str has \"Safari\" and UA_str has \"Edge\")\n    or (UA_str has \"iPhone\" and UA_str has \"Windows\")\n| project UserPrincipalName, CorrelationId, UACount, UserAgents,\n          IPs, MinTime, MaxTime",
       "splunk": "`comment(\"Splunk SPL for Sneaky 2FA Impossible Device Shift\")`\n`comment(\"Detects User-Agent mismatch within same auth correlation ID\")`\nindex=azure sourcetype=azure:aad:signin ResultType=0\n| stats dc(UserAgent) AS ua_count,\n        values(UserAgent) AS user_agents,\n        values(IPAddress) AS ips,\n        min(_time) AS first_event,\n        max(_time) AS last_event\n  BY CorrelationId, UserPrincipalName\n| where ua_count >= 2\n| eval window_minutes = round((last_event - first_event) / 60, 1)\n| where window_minutes <= 10\n| search (user_agents=\"*Safari*\" AND user_agents=\"*Edge*\")\n    OR (user_agents=\"*iPhone*\" AND user_agents=\"*Windows*\")\n| sort - ua_count"
     },
     "references": [
@@ -50,6 +51,8 @@
       "aitm-phishing"
     ],
     "tags": [
+      "attack.t1111",
+      "attack.t1557",
       "cfpf.phase2.initial_access",
       "flame.aitm",
       "flame.sneaky-2fa",

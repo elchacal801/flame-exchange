@@ -17,7 +17,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: []
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT026.002", "FT052.001", "FT024", "FT041", "FT006", "FT010", "FT012", "FT015", "FT018", "FT023"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1009.002", "F1014", "F1019", "F1035"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -42,6 +42,7 @@ related_tps:
     relationship: provides-mules-for
 regulatory_refs:
   - REG-OCC-FRAUD
+baseline_ids: []
 tags:
   - check-washing
   - mail-theft
@@ -122,6 +123,20 @@ Actors steal checks from USPS mailboxes (using stolen arrow keys or by fishing m
 | P4 | Duplicate deposit detection across institutions (consortium-level data sharing) | Detective |
 | P5 | Extended hold on mobile deposits to new accounts above threshold | Preventive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Management acknowledgment of check fraud as a growing loss category; budget for check image analytics and mobile deposit fraud controls |
+| ASSESS | Level 2 (Developing) | Risk assessment of mobile deposit channel including new account deposit thresholds, device fingerprinting gaps, and geographic exposure to USPS mail theft corridors |
+| PLAN | Level 2 (Developing) | Defined hold policies for mobile deposits to new accounts; coordination plan with USPS OIG and law enforcement for mail theft-linked check fraud clusters |
+| ACT | Level 3 (Established) | AI-based check image analytics detecting ink inconsistencies, font anomalies, and washing artifacts; device fingerprinting linking deposits across multiple accounts; Positive Pay enrollment for business customers; extended holds on mobile deposits exceeding thresholds to new accounts |
+| MONITOR | Level 3 (Established) | Real-time monitoring of mobile deposit patterns — high-value deposits to new accounts, same device fingerprint across multiple accounts, duplicate check detection across institutions via consortium data sharing |
+| REPORT | Level 3 (Established) | SAR filing with check fraud indicators including USPS mail theft correlation; participation in industry check fraud data-sharing consortiums; reporting to USPS Inspection Service for mail theft patterns |
+| IMPROVE | Level 2 (Developing) | Post-incident analysis of check washing techniques to update image analytics models; recalibration of geographic risk thresholds based on deurbanization trends and Midwest shift patterns |
+
 ## Detection Approaches
 
 **SQL — Suspicious Mobile Deposit Patterns**
@@ -140,6 +155,8 @@ ORDER BY d.device_fingerprint, d.deposit_date;
 
 ## Analyst Notes
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $282.7 million in credit card/check fraud losses from 18,774 complaints — a 41% increase from $199.9M in 2024. PSA250127 (January 27, 2025) specifically warned that mail theft-related check fraud is on the rise, corroborating the deurbanization trends documented by Recorded Future. The continued year-over-year increases in check fraud losses, despite the overall decline in check usage, confirm that criminal groups are successfully exploiting USPS mail theft at scale.
+
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $483M in credit card and check fraud losses. While IC3 figures likely undercount check fraud (many victims report to their bank rather than IC3), the data confirms check and payment instrument fraud remains a significant loss category. The continued surge in USPS mail theft and check washing activity is corroborated by the 200%+ increase in check fraud SARs reported by FinCEN from 2021-2023.
 
 **Deurbanization & Midwest Shift (2024-2025)**: The Recorded Future Annual Payment Fraud Intelligence Report 2025 documented a significant geographic shift in U.S. check fraud. Total stolen check images on Telegram decreased by 42% (to 1.3M) — primarily due to Telegram's late-2024 policy enforcement against channels violating terms. However, the volume of unique stolen checks increased by 3% to 233,000, indicating that the actual supply of newly stolen checks remains unaffected. Crucially, the geographic origin of stolen checks shifted away from major urban postal corridors toward the U.S. Midwest and suburban/rural USPS routes, suggesting that criminal groups are adjusting mail theft strategies in response to increased urban enforcement. This deurbanization trend may require financial institutions — particularly community banks and credit unions in Midwest markets — to recalibrate their check fraud monitoring thresholds and geographic risk models. The FBI and USPIS released a joint alert regarding mail theft-related check fraud in January 2025, following a similar FinCEN/USPIS alert from February 2023.
@@ -147,6 +164,8 @@ ORDER BY d.device_fingerprint, d.deposit_date;
 ## References
 
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Credit Card/Check Fraud: $282.7M in losses, 18,774 complaints (up from $199.9M in 2024 — 41% increase). [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
+- FBI PSA250127 (January 27, 2025): FBI warns mail theft-related check fraud is on the rise. [Link](https://www.ic3.gov/PSA/2025/PSA250127)
 - FinCEN: Check Fraud SAR Trends (2023-2024). [Link](https://www.fincen.gov/sites/default/files/shared/FTA_Check_Fraud_508_FINAL.pdf)
 - USPS OIG: Mail Theft and Check Fraud Reports. [Link](https://www.uspsoig.gov/)
 - ABA Banking Journal: "The Check Fraud Epidemic". [Link](https://bankingjournal.aba.com/)
@@ -159,3 +178,4 @@ ORDER BY d.device_fingerprint, d.deposit_date;
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
 | 2026-03-04 | FLAME Project | Enhanced with Recorded Future 2025 intelligence — deurbanization trend, Midwest geographic shift |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — check fraud $282.7M losses (41% increase), PSA250127 mail theft warning |

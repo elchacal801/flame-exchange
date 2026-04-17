@@ -56,6 +56,7 @@ falsepositives:
 - Users re-attempting verification from different networks (mobile vs wifi)
 level: high
 tags:
+- attack.t1589
 - cfpf.phase2.initial_access
 - kyc-bypass
 - synthetic-face

@@ -36,14 +36,14 @@ data_sources:
   - event_type
   - return_code
 queries:
-  logscale: |-
-    // LogScale LQL for ACH Return Rate Anomaly
+  cql: |-
+    // CrowdStrike CQL for ACH Return Rate Anomaly
     // Repository: flame-banking-ach-processing
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection_returns | count() by originator_id > 5
     event_type="ACH_RETURN"
     (return_code="R10" OR return_code="R29" OR return_code="R07" OR return_code="R08")
-    | groupBy(originator_id, function=count(as=event_count))
+    | groupBy(originator_id, function=[count(as=event_count)])
     | event_count > 5
   splunk: |-
     `comment("Splunk SPL for ACH Return Rate Anomaly")`

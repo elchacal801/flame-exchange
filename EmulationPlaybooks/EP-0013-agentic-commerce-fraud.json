@@ -1,0 +1,68 @@
+{
+    "id": "EP-0013",
+    "title": "Agentic Commerce Fraud — AI Shopping Agent Exploitation",
+    "description": "Simulates the end-to-end lifecycle of an agentic commerce fraud operation where threat actors exploit AI shopping agents through prompt injection, manipulated merchant pages, and automated purchase abuse. The adversary sets up malicious merchant infrastructure, lures autonomous AI purchasing agents, injects hidden cart mandates, triggers unauthorized purchases, and exploits return policies through agent manipulation. This playbook validates detection coverage across all five CFPF phases for AI agent-mediated commerce fraud patterns.",
+    "author": "FLAME Project",
+    "date": "2026-03-27",
+    "target_threat_paths": ["TP-0039"],
+    "cfpf_phases": ["P1", "P2", "P3", "P4", "P5"],
+    "fraud_types": ["agentic-commerce-fraud", "prompt-injection", "unauthorized-purchase", "return-fraud", "merchant-fraud"],
+    "sectors": ["ecommerce", "retail"],
+    "prerequisites": {
+        "environment": "Fraud detection test environment with AI shopping agent simulator, merchant storefront platform, payment processing test infrastructure, and return/refund management system. Requires prompt injection detection tooling and agent behavioral analytics capabilities.",
+        "tools": ["AI shopping agent simulator (e.g., test-mode Buy for Me agent)", "Merchant storefront platform (test mode)", "Payment gateway sandbox", "Return and refund management system", "Prompt injection detection scanner", "Agent behavioral analytics dashboard"],
+        "access_required": "Test-environment access to AI shopping agent orchestration systems, merchant onboarding portals, payment processing dashboards, and return/refund workflows. Access to prompt injection test harnesses and agent activity logging."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Set Up Malicious Merchant Page with Prompt Injection Payloads",
+            "action": "Register a merchant storefront on a legitimate e-commerce platform or create a standalone merchant website designed to attract AI shopping agents. Embed prompt injection payloads within product descriptions, metadata, and hidden HTML elements. Payloads should include instructions to override agent purchasing constraints, add additional items to cart, redirect payment to attacker-controlled merchant accounts, or ignore price thresholds set by the consumer. Ensure the page appears legitimate to both human reviewers and automated merchant verification systems.",
+            "automation": null,
+            "expected_result": "Merchant verification systems should flag newly registered storefronts with anomalous product descriptions containing injection-pattern text. Content scanning should detect embedded instructions within product metadata that target AI agent parsing. Merchant risk scoring should elevate the risk rating based on storefront age, product catalog inconsistencies, and seller verification gaps.",
+            "detection_rule_ref": "DL-0085"
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Lure AI Shopping Agent to Browse Malicious Merchant",
+            "action": "Manipulate search engine optimization and product listing algorithms to ensure the malicious merchant page ranks highly for product categories commonly targeted by AI shopping agents. Use competitive pricing, fabricated positive reviews, and optimized product titles to increase the likelihood that an AI agent autonomously selects the malicious merchant during a consumer-initiated shopping task. Alternatively, inject the malicious merchant URL into the agent's browsing context through compromised recommendation feeds or MCP server connections.",
+            "automation": null,
+            "expected_result": "Agent navigation monitoring should detect unusual browsing patterns including visits to newly registered merchant domains. Recommendation integrity checks should flag injected merchant URLs that do not match the consumer's established shopping preferences. Domain reputation scoring should identify the malicious merchant as high-risk based on registration recency and lack of transaction history.",
+            "detection_rule_ref": "DL-0086"
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P3",
+            "title": "Inject Hidden Cart Mandate with Unauthorized Line Items",
+            "action": "When the AI shopping agent interacts with the malicious merchant page, the embedded prompt injection payload activates and instructs the agent to add hidden line items to the shopping cart. These items may include high-value digital gift cards, additional physical products for shipment to an attacker-controlled address, or inflated service fees. The injection modifies the agent's cart state without surfacing the additions in the consumer-facing summary, exploiting the opacity of agent-mediated transactions.",
+            "automation": null,
+            "expected_result": "Cart integrity monitoring should detect discrepancies between the consumer's original purchase intent and the agent's final cart contents. Line item anomaly detection should flag additions that were not explicitly requested by the consumer. Price threshold enforcement should trigger alerts when the cart total exceeds the consumer's pre-authorized spending limit.",
+            "detection_rule_ref": "DL-0124"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P4",
+            "title": "Trigger Unauthorized Purchases via Manipulated Agent",
+            "action": "Allow the compromised AI shopping agent to proceed to checkout and execute the transaction using the consumer's stored payment credentials. The injected cart mandate causes the agent to authorize a payment amount that exceeds the consumer's intended purchase, with the excess directed to attacker-controlled merchant accounts. Execute multiple such transactions across different consumer agents within a compressed timeframe to maximize extraction before detection.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should flag purchases where the authorized amount significantly exceeds the consumer's stated intent or historical spending patterns. Velocity detection should identify multiple rapid transactions from the same merchant with different consumer payment sources. Agent authorization verification should detect transactions where the agent's purchase confirmation diverges from the consumer's original delegation parameters.",
+            "detection_rule_ref": "DL-0125"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P5",
+            "title": "Exploit Return Policy via Agent to Extract Refunds",
+            "action": "After the unauthorized purchases are completed, use a separate AI agent instance (or manipulate the original agent) to initiate return requests for the physical goods, claiming item-not-received or item-not-as-described. Exploit automated return processing systems that approve refunds without requiring physical item return verification. Simultaneously retain the delivered goods for resale while collecting the refund, achieving double monetization. Target merchants with lenient return policies and automated refund approval workflows.",
+            "automation": null,
+            "expected_result": "Return fraud detection should flag return requests initiated by AI agents for recently purchased items from high-risk merchants. Refund velocity monitoring should detect multiple return requests across different consumer accounts targeting the same merchant. Item-not-received claim analysis should correlate delivery confirmation data with false non-receipt claims to identify fraudulent return patterns.",
+            "detection_rule_ref": "DL-0126"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0085", "DL-0086", "DL-0124", "DL-0125", "DL-0126"],
+        "alerts_generated": "Merchant verification alerts on newly registered storefronts with embedded prompt injection payloads; agent navigation alerts on visits to high-risk merchant domains; cart integrity alerts on hidden line item additions exceeding consumer intent; transaction monitoring alerts on unauthorized purchase amounts diverging from delegation parameters; return fraud alerts on agent-initiated refund requests correlated with delivery confirmation data; velocity alerts on rapid multi-consumer transactions targeting the same malicious merchant.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for agentic commerce fraud. Validates malicious merchant detection at preparation (P1), agent luring and navigation integrity at initiation (P2), prompt injection and cart manipulation detection during positioning (P3), unauthorized transaction detection during execution (P4), and return fraud and refund abuse detection during monetization (P5)."
+    }
+}

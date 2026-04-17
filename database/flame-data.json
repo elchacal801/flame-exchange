@@ -66,7 +66,18 @@
       "FT017",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1025.002",
+      "F1032",
+      "F1034",
+      "F1040.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1016",
+      "F1031"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -106,7 +117,7 @@
     "author": "FLAME Project",
     "source": "FBI IC3 / FinCEN Advisory FIN-2019-A005 / multiple public reporting",
     "tlp": "WHITE",
-    "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.",
+    "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 per FBI IC3. The scheme exploits trust relationships between businesses and their vendors, often going undetected until the legitimate vendor inquires about unpaid invoices weeks or months later.",
     "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0002-bec-vendor-impersonation-wire.md",
     "confidence_score": 88,
     "source_reliability": "B",
@@ -166,7 +177,17 @@
       "FT043",
       "FT053.001"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1025.002",
+      "F1016",
+      "F1027",
+      "F1036",
+      "F1037",
+      "F1044",
+      "F1046",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -255,7 +276,11 @@
       "FT005",
       "FT012"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1021",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -342,7 +367,18 @@
       "FT006.001",
       "FT008.002"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "T1185",
+      "T1189",
+      "T1451",
+      "T1539",
+      "T1557",
+      "T1598"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -435,7 +471,18 @@
       "FT018",
       "FT038.002"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "T1185",
+      "T1189",
+      "T1451",
+      "T1539",
+      "T1557",
+      "T1598"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -530,7 +577,18 @@
       "FT020",
       "FT021"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1025.002",
+      "F1016",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1037",
+      "F1040",
+      "F1044",
+      "F1046"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -626,7 +684,18 @@
       "FT008.002",
       "FT018"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1025.002",
+      "F1031",
+      "F1032",
+      "F1016",
+      "F1037",
+      "F1040",
+      "F1044",
+      "F1046",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -725,7 +794,18 @@
       "FT013",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047",
+      "T1185",
+      "T1451"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -817,7 +897,12 @@
       "FT018",
       "FT023"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1009.002",
+      "F1014",
+      "F1019",
+      "F1035"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -950,7 +1035,9 @@
       "human-trafficking",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "drops-recruitment",
+      "forum-recruitment"
     ],
     "cfpf_phases": [
       "P1",
@@ -983,7 +1070,17 @@
       "FT016",
       "FT020"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1009",
+      "F1018",
+      "F1020",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1079,7 +1176,18 @@
       "FT003",
       "FT007.009"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1032",
+      "F1031",
+      "F1034",
+      "F1040.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1020",
+      "T1185"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1178,7 +1286,15 @@
       "FT027",
       "FT018"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.004",
+      "T1555",
+      "F1004",
+      "T1185",
+      "T1451",
+      "T1539"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1273,7 +1389,18 @@
       "FT037.002",
       "FT042"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1005",
+      "F1029",
+      "F1033",
+      "T1185",
+      "T1451",
+      "T1539"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Account Access",
@@ -1369,7 +1496,16 @@
       "FT007.009",
       "FT011.002"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1031",
+      "F1032",
+      "F1006",
+      "F1025",
+      "F1029",
+      "F1040",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1451,7 +1587,11 @@
       "FT015",
       "FT017"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1024",
+      "F1015",
+      "F1043"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Perform Fraud",
@@ -1537,7 +1677,17 @@
       "FT011",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1025.003",
+      "F1018",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "End-user Interaction",
@@ -1625,7 +1775,14 @@
       "FT018",
       "FT006"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1006",
+      "F1021",
+      "F1027",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Trust Abuse",
@@ -1708,7 +1865,18 @@
       "FT020",
       "FT028"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1005.006",
+      "F1022",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1027",
+      "F1029",
+      "F1031",
+      "F1032"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Account Access",
@@ -1799,7 +1967,18 @@
       "FT052.003",
       "FT011.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1022",
+      "F1025.002",
+      "F1016",
+      "F1031",
+      "F1032",
+      "F1037",
+      "F1044",
+      "F1046",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Account Access",
@@ -1902,7 +2081,15 @@
       "FT029",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1009",
+      "F1025",
+      "F1027",
+      "F1033",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1982,7 +2169,12 @@
       "FT051.003",
       "FT006"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1006",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Perform Fraud",
@@ -2067,7 +2259,18 @@
       "FT018",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1007.001",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "T1113",
+      "T1185",
+      "T1219",
+      "T1451",
+      "T1539"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
@@ -2163,7 +2366,18 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1025.002",
+      "F1016",
+      "F1031",
+      "F1032",
+      "F1037",
+      "F1040",
+      "F1044",
+      "F1046",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2269,7 +2483,17 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1025.003",
+      "F1018",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2374,7 +2598,16 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1025.003",
+      "F1018",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1045",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2477,7 +2710,18 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1025.003",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1018",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2594,7 +2838,18 @@
       "FT016",
       "FT017"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1009",
+      "F1018",
+      "F1025",
+      "F1027",
+      "F1031",
+      "F1032",
+      "F1033",
+      "F1040",
+      "F1045"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2688,7 +2943,11 @@
       "FT017",
       "FT028"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1021",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2777,7 +3036,18 @@
       "FT017",
       "FT028"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1025.002",
+      "F1006",
+      "F1015",
+      "F1016",
+      "F1024",
+      "F1029",
+      "F1037",
+      "F1043",
+      "F1046"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2863,7 +3133,11 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1015",
+      "F1024",
+      "F1043"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2956,7 +3230,18 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1004",
+      "F1007",
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047",
+      "T1185",
+      "T1189",
+      "T1539",
+      "T1555"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3050,7 +3335,10 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3080,7 +3368,7 @@
     "category": "ThreatPath",
     "date": "2026-03-03",
     "author": "FLAME Project",
-    "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)",
+    "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, CrowdStrike 2026 GTR, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026), FATF 2026 Stablecoin Report",
     "tlp": "WHITE",
     "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use stolen or synthetic American identities to fraudulently obtain remote employment at Western technology companies. The program generates revenue for the North Korean regime in violation of international sanctions, while simultaneously creating insider threat vectors for credential theft, source code exfiltration, and post-termination data extortion. The DOJ has documented 136+ compromised U.S. companies with $2.2M+ in direct salary revenue from a single case, while CrowdStrike has observed 304 incidents. The threat has escalated since mid-2024 from pure salary extraction to active data exfiltration and ransom demands, representing a convergence of state-sponsored espionage, employment fraud, and cyber extortion. The operation relies on organized facilitator networks spanning the U.S. and Ukraine that provide stolen identities, proxy laptop hosting at U.S. addresses, and financial laundering infrastructure.\n\nThe World Cybercrime Index (Bruce et al., PLoS ONE 2024) provides independent academic corroboration: North Korea ranks #7 globally (WCI 10.61/100) with a pronounced attacks/extortion specialization (25.33 — 2.4x its overall score), while scoring minimally on scams (2.17) and cash-out (3.88). This asymmetric profile reflects a state-directed cybercrime apparatus focused on high-impact attacks rather than the broad-spectrum fraud production seen in other top-ranked countries. Note: WCI data was collected in 2021, before the IT worker fraud campaign reached its current documented scale.\n\n---",
     "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0034-dprk-it-worker-fraud.md",
@@ -3126,7 +3414,13 @@
       "beavertail",
       "invisibleferret",
       "purplebravo",
-      "purpledelta"
+      "purpledelta",
+      "pressure-chollima",
+      "famous-chollima",
+      "stardust-chollima",
+      "bybit-theft",
+      "crowdstrike-gtr-2026",
+      "fatf-stablecoin-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -3163,7 +3457,11 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3180,7 +3478,9 @@
       "REG-FBI-IC3",
       "REG-UNODC-EMERGING-THREATS",
       "REG-RF-CTA-2026-0319",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -3260,7 +3560,15 @@
       "FT016",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1007.001",
+      "F1006",
+      "F1011",
+      "F1029",
+      "T1113",
+      "T1219",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3350,7 +3658,17 @@
       "FT028",
       "FT007.009"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1015",
+      "F1020",
+      "F1024",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1043",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3445,7 +3763,18 @@
       "FT031",
       "FT043"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1005",
+      "F1019",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1037"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3533,7 +3862,14 @@
       "FT007.009",
       "FT017"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1038",
+      "F1006",
+      "F1012",
+      "F1029",
+      "F1046",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3639,7 +3975,18 @@
       "FT028",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1017",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1185"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3728,7 +4075,18 @@
       "FT007",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1020.001",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1015",
+      "F1024",
+      "F1029",
+      "F1031",
+      "F1032"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3926,7 +4284,13 @@
       "FT007",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4012,7 +4376,13 @@
       "FT007",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4079,7 +4449,12 @@
       "operation-redcard",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "probiv-lookup-services",
+      "insider-database-access",
+      "pressure-chollima",
+      "bybit-theft",
+      "crowdstrike-gtr-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -4098,7 +4473,15 @@
       "T1071.001"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1007.001",
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047",
+      "T1113",
+      "T1219"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4115,7 +4498,8 @@
       "REG-INTERPOL-SHADOW-STORM",
       "REG-RF-CTA-2026-0319",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -4182,7 +4566,12 @@
       "T1048"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4335,7 +4724,12 @@
       "T1048"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4411,7 +4805,11 @@
       "T1578"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Defence Evasion",
@@ -4471,7 +4869,11 @@
       "unodc",
       "unodc-organized-fraud-2024",
       "ai-evasion",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "fatf-stablecoin-2026",
+      "bybit-laundering",
+      "p2p-laundering",
+      "unhosted-wallet"
     ],
     "cfpf_phases": [
       "P1",
@@ -4496,7 +4898,8 @@
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-EMERGING-THREATS",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 4",
@@ -4563,7 +4966,14 @@
       "FTA010",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4642,7 +5052,18 @@
       "FTA009",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.004",
+      "F1020.002",
+      "T1555",
+      "F1004",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1185",
+      "T1451"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4726,7 +5147,16 @@
       "FTA003",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1018",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Social Engineering",
@@ -4805,7 +5235,12 @@
       "FTA003",
       "FTA004"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006",
+      "F1027",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4904,7 +5339,13 @@
       "FTA010",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
@@ -4971,7 +5412,10 @@
       "operation-catalyst",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "irgc-stablecoin",
+      "isil-stablecoin",
+      "fatf-stablecoin-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -4989,7 +5433,17 @@
       "FTA003",
       "FTA007"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1009",
+      "F1018",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5003,7 +5457,8 @@
       "REG-FATF-R16",
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -5067,7 +5522,13 @@
       "FTA003",
       "FTA004"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1006",
+      "F1027",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5151,7 +5612,12 @@
       "FTA009",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
@@ -5239,7 +5705,16 @@
       "FTA009",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1018",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
@@ -5270,7 +5745,7 @@
     "category": "ThreatPath",
     "date": "2026-03-20",
     "author": "FLAME Project",
-    "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319",
+    "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319, Group-IB Cloud Phones 2026",
     "tlp": "WHITE",
     "summary": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account systems integrated into scam compound laundering operations. Recorded Future identifies automated KYC circumvention toolkits on dark web marketplaces that combine synthetic identity documents, liveness check bypass tools, and device emulators to open accounts across multiple financial institutions simultaneously. INTERPOL reports mule networks comprising thousands of accounts per operation, enabling rapid layering of fraud proceeds across jurisdictions.\n\n**Distinction from TP-0049**: TP-0049 covers the downstream cryptocurrency laundering techniques; TP-0059 covers the upstream automated infrastructure that creates and manages the mule accounts used as the first layer of laundering.\n\nThe geographic distribution of money mule networks aligns with WCI (Bruce et al., PLoS ONE 2024) cash-out/money laundering scores: the US (26.63/100) and UK (21.63) rank as the top Western cash-out jurisdictions, reflecting their role as primary mule account destinations rather than fraud production hubs. Note: WCI data was collected in 2021.",
     "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0059-automated-mule-account-infrastructure.md",
@@ -5304,7 +5779,8 @@
       "unodc-organized-fraud-2024",
       "mule-herding",
       "velocity-anomaly",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "cloud-phone"
     ],
     "cfpf_phases": [
       "P1",
@@ -5438,11 +5914,11 @@
     "category": "ThreatPath",
     "date": "2026-03-20",
     "author": "FLAME Project",
-    "source": "Recorded Future CTA-2026-0319, INTERPOL GFFTA 2026",
+    "source": "Recorded Future CTA-2026-0319, INTERPOL GFFTA 2026; Flare Academy BPH Webinar (Oleg O, 2026); Cybercrime Diaries — BPH Landscape and Black Basta Chat Leak posts (2024-2025)",
     "tlp": "WHITE",
     "summary": "Bulletproof hosting (BPH) providers and abuse-resistant infrastructure services that enable fraud operations by providing hosting that resists takedown requests, law enforcement cooperation, and abuse complaints. Recorded Future identifies specific providers — Virtualine, Stark Industries, AEZA, Aurologic — as Threat Actor Enabling (TAE) entities operating from jurisdictions with weak enforcement. INTERPOL Operation Shadow Storm targeted fraud-enabling infrastructure providers. These TAE entities provide the foundational hosting layer for TDS infrastructure, fake investment platforms, DaaS platforms, mule account management systems, and FaaS marketplaces — making them a critical enabling dependency across multiple fraud threat paths.\n\n**Distinction from TP-0044**: TP-0044 covers the broader state-criminal infrastructure convergence pattern; TP-0061 focuses specifically on the commercial bulletproof hosting providers that sell abuse-resistant infrastructure to fraud operators as a business model.",
     "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0061-tae-bulletproof-hosting-infrastructure.md",
-    "confidence_score": 68,
+    "confidence_score": 72,
     "source_reliability": "B",
     "info_credibility": 2,
     "infrastructure_generation_method": "manual",
@@ -5471,7 +5947,16 @@
       "fraud-infrastructure",
       "hosting-complicity",
       "recorded-future",
-      "interpol-shadow-storm"
+      "interpol-shadow-storm",
+      "lots-living-off-trusted-services",
+      "bearhost",
+      "chang-way",
+      "monolithic-vs-non-monolithic",
+      "tae-ecosystem",
+      "vpskov",
+      "black-basta-infrastructure",
+      "cybercrime-diaries",
+      "forum-intelligence"
     ],
     "cfpf_phases": [
       "P1",
@@ -5562,7 +6047,15 @@
       "FT007.009",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1031",
+      "F1032",
+      "F1025",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Trust Abuse",
@@ -5641,7 +6134,15 @@
       "FT006.001",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006",
+      "F1009",
+      "F1025",
+      "F1029",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5720,7 +6221,18 @@
       "FT008.002",
       "FT028"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1015",
+      "F1016",
+      "F1024",
+      "F1027",
+      "F1036",
+      "F1037",
+      "F1043",
+      "F1046",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5807,7 +6319,17 @@
       "FT016",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1032",
+      "F1020.002",
+      "F1031",
+      "F1034",
+      "F1040.002",
+      "F1018",
+      "F1025",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5883,7 +6405,10 @@
       "FTA001",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1027"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5910,7 +6435,7 @@
     "category": "ThreatPath",
     "date": "2026-03-22",
     "author": "FLAME Project",
-    "source": "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)",
+    "source": "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026); Bluekit PhaaS Threat Intelligence Report (CrimsonVector, March 2026)",
     "tlp": "WHITE",
     "summary": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim sessions through attacker-controlled infrastructure in real time. The attacker captures both credentials and session tokens/cookies as the victim authenticates with the legitimate service. Sekoia.io identified 11 major AiTM phishing kits active in early 2025, with Tycoon 2FA as the most prevalent (1,200+ domains, targeting 500K+ organizations monthly). Credential phishing attacks surged 703% in H2 2024. These kits operate as Phishing-as-a-Service (PhaaS) marketplaces, lowering the barrier to sophisticated MFA-bypass attacks. FIDO2/phishing-resistant MFA blocks 93.9% of AiTM campaigns, making it the primary defensive recommendation.\n\n**Distinction from TP-0054**: TP-0054 (FaaS Ecosystem) covers the broader fraud-as-a-service model. TP-0067 focuses specifically on the AiTM phishing kit infrastructure — the reverse proxy technology, session token capture mechanics, and PhaaS distribution model that enables downstream BEC, account takeover, and wire fraud.",
     "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0067-aitm-phishing-kit-infrastructure.md",
@@ -5955,7 +6480,15 @@
       "sessionshark",
       "darcula",
       "smishing-triad",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "bluekit",
+      "phaas-market-fragmentation",
+      "vacuum-effect",
+      "antibot-cloaking",
+      "imperial-kitten",
+      "shinyhunters",
+      "cozy-bear",
+      "crowdstrike-gtr-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -5983,7 +6516,18 @@
       "FT007.009",
       "FT011.001"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.004",
+      "T1539",
+      "T1555",
+      "F1004",
+      "F1007",
+      "T1185",
+      "T1189",
+      "T1451",
+      "T1557"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5996,7 +6540,8 @@
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
       "REG-STIX-FCI",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6060,7 +6605,15 @@
       "FTA001",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1017",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -6126,7 +6679,16 @@
       "phaas",
       "toll-scam",
       "card-not-present",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "phaas-market-fragmentation",
+      "vacuum-effect",
+      "bluekit",
+      "kratos",
+      "evilTokens",
+      "interisle-2025",
+      "xinxin-lucid",
+      "dominet-hk",
+      "xin-tld"
     ],
     "cfpf_phases": [
       "P1",
@@ -6150,7 +6712,18 @@
       "FT011.001",
       "FT016.001"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1038",
+      "F1001",
+      "F1012",
+      "F1019",
+      "F1029",
+      "F1040",
+      "F1048",
+      "T1189",
+      "T1555"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -6171,6 +6744,1347 @@
       "act": "Level 3",
       "monitor": "Level 3",
       "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0070",
+    "title": "Travel Booking Fraud & Fake OTA Networks",
+    "category": "ThreatPath",
+    "date": "2026-03-29",
+    "author": "FLAME Project",
+    "source": "Sumsub Travel Fraud Report (2026); NordVPN/Saily Travel Scam Intelligence (2026); Riskified OTA Fraud Analysis; Trustwave Threat Briefing; HackerNews (Nov 2025)",
+    "tlp": "WHITE",
+    "summary": "Travel booking fraud and fake Online Travel Agency (OTA) networks represent a rapidly growing fraud category, with estimated global losses reaching $37 billion through Buy-for-You (B4U) services alone. Fraudsters operate fake travel agency websites mimicking legitimate OTAs (Booking.com, Expedia, Airbnb), with 4,344 fake travel domains identified in active campaigns. Telegram-based B4U agencies offer deeply discounted travel bookings purchased with stolen payment credentials, creating a laundering layer between cardholders and travel providers. The ecosystem encompasses fake OTA domains, vacation rental hijacking, loyalty point laundering (TP-0013), and AI-enhanced scam operations that generate convincing travel listings and customer service interactions. Seasonal peaks align with holiday booking periods, amplifying losses during Q4 and summer travel seasons.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0070-travel-booking-fraud-fake-ota.md",
+    "confidence_score": 78,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "seasonal-political",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "travel",
+      "payments",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "travel-booking-fraud",
+      "buy-for-you-fraud",
+      "fake-ota",
+      "loyalty-point-laundering"
+    ],
+    "tags": [
+      "travel-booking-fraud",
+      "fake-ota",
+      "buy-for-you",
+      "b4u-services",
+      "loyalty-point-laundering",
+      "vacation-rental-hijack",
+      "ai-travel-scam",
+      "telegram-b4u",
+      "wci-geographic-attribution"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1566.002",
+      "T1078",
+      "T1656",
+      "T1598",
+      "T1059"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.009",
+      "FT011.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0071",
+    "title": "IRSF & Telecom Revenue Share Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-29",
+    "author": "FLAME Project",
+    "source": "Subex Telecom Fraud Intelligence (2025, 2026); TNS/CFCA Global Fraud Loss Survey (2026); Akamai Telecom Threat Report; NDSS Symposium",
+    "tlp": "WHITE",
+    "summary": "International Revenue Share Fraud (IRSF) is the single largest category of telecommunications fraud, generating $10.76 billion in annual losses according to the CFCA/TNS Global Fraud Loss Survey (2026). IRSF exploits the inter-carrier settlement system where originating carriers pay terminating carriers per-minute rates for international calls. Fraudsters establish revenue-sharing agreements with premium-rate number providers in high-rate destinations, then generate artificial call traffic to those numbers using compromised PBX systems, SIM boxes, or automated dialers. Wangiri (\"one-ring\") fraud, a variant where victims are tricked into calling back premium-rate numbers, adds a social engineering dimension. The convergence of SIM box fraud (TP-0008), compromised enterprise PBX systems, and sophisticated traffic routing creates a multi-layered ecosystem that is difficult to detect in real time. Machine learning-based detection has achieved 98% accuracy in identifying IRSF traffic patterns.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0071-irsf-telecom-revenue-share-fraud.md",
+    "confidence_score": 80,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "telecommunications"
+    ],
+    "fraud_types": [
+      "irsf",
+      "premium-rate-fraud",
+      "telecom-revenue-fraud",
+      "wangiri"
+    ],
+    "tags": [
+      "irsf",
+      "premium-rate-fraud",
+      "wangiri",
+      "sim-box-fraud",
+      "telecom-revenue-share",
+      "international-revenue-share",
+      "pbx-hacking",
+      "one-ring-callback",
+      "traffic-pumping",
+      "wci-geographic-attribution"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1496",
+      "T1078",
+      "T1059",
+      "T1583.001",
+      "T1571",
+      "T1205"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT011.002"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    }
+  },
+  {
+    "id": "TP-0072",
+    "title": "Telecom Subscription & Billing Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-29",
+    "author": "FLAME Project",
+    "source": "Subex Telecom Fraud Intelligence (2025, 2026); TransUnion Consumer Pulse (2025); SEON Telecom Fraud Guide; Vonage Communications Fraud Report",
+    "tlp": "WHITE",
+    "summary": "Telecom subscription and billing fraud encompasses the use of stolen, synthetic, or manipulated identities to fraudulently obtain telecom services, devices, and credit -- combined with unauthorized billing manipulation that charges victims for premium services they never requested. TransUnion reports that 53% of telecom executives identify subscription fraud as their top concern, driven by the increasing sophistication of synthetic identity creation (TP-0003) and GenAI-powered KYC bypass techniques. The total telecom fraud ecosystem reaches $41.82B annually (CFCA/TNS 2026), with subscription fraud as a primary entry point that enables downstream fraud including device resale, SIM swap attacks (TP-0008), and premium SMS billing schemes (cramming). GenAI tools now generate convincing synthetic identity documents that pass automated KYC checks, enabling fraudsters to open multiple telecom accounts for device acquisition at industrial scale.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0072-telecom-subscription-billing-fraud.md",
+    "confidence_score": 75,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "telecommunications"
+    ],
+    "fraud_types": [
+      "subscription-fraud",
+      "telecom-billing-fraud",
+      "premium-sms-fraud"
+    ],
+    "tags": [
+      "subscription-fraud",
+      "telecom-billing-fraud",
+      "premium-sms-fraud",
+      "synthetic-identity-telecom",
+      "device-fraud",
+      "genai-kyc-bypass",
+      "cramming",
+      "wci-geographic-attribution"
+    ],
+    "cfpf_phases": [
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1078",
+      "T1656",
+      "T1136",
+      "T1098",
+      "T1565"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.003",
+      "FT011.001"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0073",
+    "title": "Real Estate Title Fraud & Deed Theft",
+    "category": "ThreatPath",
+    "date": "2026-03-29",
+    "author": "FLAME Project",
+    "source": "First American Title Fraud Report; HousingWire (2025); ALTA Best Practices; Virginia Deed Fraud Study (2025); NAR Fraud Advisory; CertifID Wire Fraud Report; Entrust Identity Fraud Report (2026)",
+    "tlp": "WHITE",
+    "summary": "Real estate title fraud and deed theft represent a growing category of property-related fraud, with FBI data reporting $16.6 billion in total real estate fraud losses in 2024. The core scheme involves impersonating property owners -- primarily targeting vacant lots, unencumbered properties, and absentee-owner homes -- to fraudulently transfer titles or initiate sales, diverting proceeds to attacker-controlled accounts. The emergence of AI-forged documents (deeds, government IDs, notary stamps) and deepfake video notarization has dramatically lowered the barrier to executing these schemes, with Entrust reporting a 40% year-over-year increase in deepfake-related fraud attempts. Seller impersonation of vacant property owners is the most common vector, as these properties lack occupants who would notice unauthorized activity. Virginia's 2025 deed fraud legislation represents the first major legislative response, mandating enhanced identity verification for property transfers. This threat path intersects with wire fraud (TP-0006) at the monetization phase, where sale proceeds are redirected via business email compromise or fraudulent wire instructions.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0073-real-estate-title-fraud-deed-theft.md",
+    "confidence_score": 80,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "real-estate"
+    ],
+    "fraud_types": [
+      "title-fraud",
+      "deed-theft",
+      "seller-impersonation",
+      "appraisal-fraud"
+    ],
+    "tags": [
+      "title-fraud",
+      "deed-theft",
+      "seller-impersonation",
+      "appraisal-fraud",
+      "deepfake-notary",
+      "ai-forged-documents",
+      "vacant-property-fraud",
+      "wire-fraud-real-estate",
+      "remote-notarization-fraud",
+      "wci-geographic-attribution"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1566.002",
+      "T1078",
+      "T1565",
+      "T1136",
+      "T1583.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.009",
+      "FT011.001"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    }
+  },
+  {
+    "id": "TP-0074",
+    "title": "Ghost Broking & Unauthorized Insurance Portals",
+    "category": "ThreatPath",
+    "date": "2026-03-27",
+    "author": "FLAME Project",
+    "source": "Aviva ghost broking intelligence (Nov 2025); City of London Police (2025); Insurance Times (2025); ABI (2025); FraudOps (2026); NICB",
+    "tlp": "WHITE",
+    "summary": "Ghost broking is a rapidly growing insurance fraud typology where unlicensed individuals or organized crime groups sell fraudulent, forged, or illegitimately obtained motor insurance policies to unsuspecting consumers. Victims increased 93% in 2025, driven by cost-of-living pressures that make below-market premiums attractive. An emerging evolution is the \"ghost portal\" — fraudsters now build and sell entire fake insurance verification platforms to other criminals, creating a fraud-as-a-service layer within the insurance ecosystem. City of London Police made significant arrests in May 2025, and the Insurance Fraud Enforcement Department (IFED) designated February 2026 as a ghost broking intensification month. UK fraud losses topped GBP 1 billion in 2024, with ghost broking contributing a material share of motor insurance fraud.\n\n**Distinction from TP-0056**: TP-0056 covers claims fraud (filing false or inflated claims against legitimate policies). TP-0074 covers the upstream fraud of selling fake or unauthorized policies themselves, where the victim believes they have legitimate coverage but does not.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0074-ghost-broking-unauthorized-insurance-portals.md",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "insurance"
+    ],
+    "fraud_types": [
+      "ghost-broking",
+      "ghost-portal",
+      "insurance-policy-fraud",
+      "unlicensed-insurance"
+    ],
+    "tags": [
+      "ghost-broking",
+      "ghost-portal",
+      "fake-insurance",
+      "unlicensed-intermediary",
+      "insurance-fraud",
+      "organized-crime",
+      "uk-insurance",
+      "ifed"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1566.002",
+      "T1078",
+      "T1589",
+      "T1656"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    }
+  },
+  {
+    "id": "TP-0075",
+    "title": "Friendly Fraud & Chargeback Abuse",
+    "category": "ThreatPath",
+    "date": "2026-03-27",
+    "author": "FLAME Project",
+    "source": "Chargebacks911 (2026); Chargeflow (2025); Payscout (2025); Chargeback.io (2026); Alloy; Offenso Academy (2026)",
+    "tlp": "WHITE",
+    "summary": "Friendly fraud — where legitimate cardholders dispute genuine transactions to obtain refunds while retaining goods or services — has become the single largest fraud category in payment networks, representing 36% of all fraud and projected to reach 337 million chargebacks costing USD 15.3 billion in the US by 2026. Unlike third-party fraud, the identity is real and the transaction is legitimate, making detection fundamentally different. Chargeback abuse surged 233% between Q1 and Q3 2025, with 84% of consumers finding chargebacks simpler than contacting the merchant. The economic multiplier is severe: merchants lose USD 4.61 for every USD 1.00 of friendly fraud. Visa's VAMP (Visa Acquirer Monitoring Program) launched April 2025 to impose stricter thresholds on merchants and acquirers. Underground \"refund hack\" tutorials proliferate on forums and social platforms, teaching consumers systematic chargeback abuse techniques.\n\n**Distinction from TP-0031**: TP-0031 covers Refund-as-a-Service (RaaS) — organized refund fraud where third-party services file refunds on behalf of consumers against merchants. TP-0075 covers first-party chargeback abuse where the cardholder directly files disputes through the payment network, bypassing the merchant entirely.\n\n**Distinction from TP-0016**: TP-0016 covers first-party bust-out fraud (synthetic or real identity credit abuse). TP-0075 covers dispute-level abuse of the chargeback mechanism against individual transactions, not credit line bust-outs.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0075-friendly-fraud-chargeback-abuse.md",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "payments",
+      "ecommerce",
+      "retail"
+    ],
+    "fraud_types": [
+      "friendly-fraud",
+      "chargeback-abuse",
+      "first-party-misuse",
+      "dispute-fraud"
+    ],
+    "tags": [
+      "friendly-fraud",
+      "chargeback-abuse",
+      "first-party-fraud",
+      "dispute-fraud",
+      "visa-vamp",
+      "refund-hack",
+      "chargeback-velocity",
+      "delivery-confirmation",
+      "merchant-fraud"
+    ],
+    "cfpf_phases": [
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1657"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1015",
+      "F1024",
+      "F1043"
+    ],
+    "groupib_stages": [
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    }
+  },
+  {
+    "id": "TP-0076",
+    "title": "Affiliate Network Fraud & Invalid Traffic",
+    "category": "ThreatPath",
+    "date": "2026-03-27",
+    "author": "FLAME Project",
+    "source": "TrafficGuard (2025); Tapper (2025, 2026); BluePear (2025); Anura (2025); SearchEngineLand (2026)",
+    "tlp": "WHITE",
+    "summary": "Affiliate network fraud encompasses a range of techniques where fraudulent affiliates generate fake clicks, impressions, leads, or conversions to earn illegitimate commissions from advertiser programs. Global ad fraud is projected to reach USD 71 billion in 2025 (Juniper Research). Cookie stuffing accounts for approximately 60% of affiliate fraud cases, while bot networks generate 40% of all click fraud. AI-powered bots are increasingly mimicking genuine user behavior — generating realistic mouse movements, scroll patterns, and session durations — making detection significantly harder. Approximately 25% of leads generated through affiliate programs are fake, wasting advertiser spend and corrupting marketing analytics. Click injection and postback manipulation represent emerging techniques that exploit mobile attribution windows and server-side tracking vulnerabilities respectively.\n\n**Relationship to TP-0042 (TDS)**: Traffic Distribution Systems documented in TP-0042 provide infrastructure that affiliate fraudsters exploit for traffic manipulation and redirection. TP-0076 covers the affiliate fraud techniques themselves rather than the TDS infrastructure.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0076-affiliate-network-fraud-invalid-traffic.md",
+    "confidence_score": 75,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "ecommerce",
+      "technology"
+    ],
+    "fraud_types": [
+      "affiliate-fraud",
+      "click-fraud",
+      "ad-fraud",
+      "cookie-stuffing",
+      "invalid-traffic"
+    ],
+    "tags": [
+      "affiliate-fraud",
+      "click-fraud",
+      "ad-fraud",
+      "cookie-stuffing",
+      "invalid-traffic",
+      "bot-traffic",
+      "click-injection",
+      "postback-manipulation",
+      "fake-leads",
+      "ivt"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1584.005",
+      "T1059",
+      "T1571",
+      "T1036"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    }
+  },
+  {
+    "id": "TP-0077",
+    "title": "AI-Generated Insurance Claims Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-27",
+    "author": "FLAME Project",
+    "source": "Shift Technology (2025); USI (2025); Utah Insurance Dept; Insurance Journal (2026); Debener et al. (2023, J. Risk & Insurance, doi:10.1111/jori.12427)",
+    "tlp": "WHITE",
+    "summary": "Generative AI is transforming insurance claims fraud by enabling fraudsters to create highly convincing fabricated or altered evidence — including deepfake vehicle damage photos, forged medical records, synthetic invoices, and AI-generated supporting documentation. An estimated 25-30% of insurance claims now involve some form of GenAI-altered content, ranging from minor photo manipulation to entirely fabricated damage scenarios. Deepfake vehicle damage photos represent a particularly acute threat, with AI-generated images of vehicle damage that can bypass visual inspection by claims adjusters. The 2025 US Healthcare Fraud Takedown (324 defendants, USD 14.6 billion in alleged fraud) demonstrated the scale of organized claims fraud that AI tools can amplify. The insurance fraud detection market is growing from USD 7.5 billion to USD 9.13 billion, reflecting industry investment in countermeasures. Academic research (Debener et al., 2023) demonstrates that XGBoost and isolation forest algorithms are complementary approaches for detecting anomalous claims patterns.\n\n**Distinction from TP-0056**: TP-0056 covers traditional claims fraud (exaggerated, staged, or fabricated claims using conventional methods). TP-0077 specifically covers the use of generative AI tools to create or alter claims evidence, which requires different detection techniques focused on digital forensics and AI artifact analysis rather than claims pattern analytics alone.\n\n**Distinction from TP-0029/TP-0018**: TP-0029 covers AI-generated synthetic identities and TP-0018 covers deepfake document fraud broadly. TP-0077 focuses on the specific application of these techniques within the insurance claims process, where the claims workflow creates unique detection opportunities.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0077-ai-generated-insurance-claims-fraud.md",
+    "confidence_score": 78,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "insurance"
+    ],
+    "fraud_types": [
+      "ai-generated-claims",
+      "deepfake-claims",
+      "document-fraud",
+      "insurance-fraud"
+    ],
+    "tags": [
+      "ai-generated-claims",
+      "deepfake-claims",
+      "document-fraud",
+      "insurance-fraud",
+      "genai-fraud",
+      "vehicle-damage-deepfake",
+      "claims-fraud",
+      "gan-artifacts",
+      "exif-anomaly",
+      "xgboost",
+      "isolation-forest"
+    ],
+    "cfpf_phases": [
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566",
+      "T1036",
+      "T1027",
+      "T1589"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1027"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    }
+  },
+  {
+    "id": "TP-0078",
+    "title": "Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines",
+    "category": "ThreatPath",
+    "date": "2026-03-30",
+    "author": "FLAME Project",
+    "source": "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026); Cybercrime Diaries — 'From Dirty Crypto to Clean Money' (Oleg, June 2025)",
+    "tlp": "WHITE",
+    "summary": "Criminal conglomerates are operating industrialized cryptocurrency laundering services that process hundreds of millions of dollars through centralized exchange (CEX) hot wallet pipelines. Unlike the narco-terror Ponzi convergence model documented in TP-0055, this threat path describes a distinct operational model: a criminal organization that builds and operates a full-service laundering infrastructure — issuing its own stablecoin, running its own exchange, and routing proceeds through major centralized exchanges via traceable deposit-to-hot-wallet sweep patterns.\n\nThe Huione Group, a Cambodian financial conglomerate designated by FinCEN as a primary money laundering concern in May 2025, is the paradigm case. ICIJ's year-long \"Coin Laundry\" investigation documented at least $408 million flowing from Huione-controlled TRON addresses to Binance and at least $226 million to OKX over approximately one year (July 2024 to July 2025). The group operated Huione Pay (a cryptocurrency exchange) and issued its own stablecoin (USDH) deployed across four major blockchains: Ethereum, TRON, Binance Smart Chain, and Solana. TRON/USDT was identified as the dominant rail for Southeast Asian fraud compound money laundering due to speed and low transaction fees.\n\nCritically, neither Binance nor OKX demonstrably curtailed their transaction volume with Huione following their own DOJ plea agreements (Binance: November 2023; OKX: February 2025), indicating that plea-deal compliance commitments did not immediately translate into effective flow interdiction.\n\nThe convergence of this laundering infrastructure with offshore shell company opacity (see DL-0198) and unlicensed crypto-to-cash desk operations (see DL-0197) creates a complete end-to-end pipeline from illicit proceeds to usable physical currency.\n\n**Key Distinction from TP-0055**: TP-0055 covers narco-terror organizations using crypto Ponzi schemes to launder drug/extortion proceeds — the criminal actors *using* crypto as a laundering tool. TP-0078 covers the *industrialized laundering service provider* model — a criminal conglomerate offering laundering-as-a-service at scale via its own stablecoin and exchange infrastructure, serving multiple criminal actor types including SE Asian scam compounds.\n\n**Key Distinction from TP-0049**: TP-0049 covers cryptocurrency laundering infrastructure broadly. TP-0078 provides the specific operational pattern of the stablecoin-to-CEX hot wallet pipeline, including the 2-hop attribution methodology and Proof-of-Reserves cross-referencing technique.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0078-stablecoin-laundering-cex-hot-wallet-pipelines.md",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "crypto",
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "crypto-laundering-infrastructure",
+      "money-laundering"
+    ],
+    "tags": [
+      "stablecoin-laundering",
+      "tron-usdt",
+      "hot-wallet-sweep",
+      "cex-pipeline",
+      "huione-group",
+      "proof-of-reserves",
+      "crypto-to-cash",
+      "exchange-attribution",
+      "laundering-as-a-service",
+      "icij-coin-laundry",
+      "fincen-311",
+      "shell-company-convergence",
+      "beneficial-ownership-gap",
+      "russophone-laundering-tradecraft",
+      "coinjoin",
+      "chain-hopping",
+      "temporal-dilution",
+      "liquidity-buffering",
+      "income-legalization",
+      "lockbitsupp-laundering",
+      "black-basta-laundering",
+      "infostealer-intelligence",
+      "cybercrime-diaries"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1657",
+      "T1583.001",
+      "T1036"
+    ],
+    "ft3_tactics": [
+      "FTA007",
+      "FTA003"
+    ],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-AML",
+      "REG-FATF-R16",
+      "REG-OFAC-SDN"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    }
+  },
+  {
+    "id": "TP-0079",
+    "title": "Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "Interisle Consulting Group — Phishing Landscape 2025 (September 2025)",
+    "tlp": "WHITE",
+    "summary": "Phishing infrastructure has undergone a structural shift toward cheap new generic top-level domains (gTLDs) and free Platform-as-a-Service (PaaS) subdomains as the dominant delivery mechanism for credential harvesting, brand impersonation, and fraud-enabling infrastructure at global scale. Interisle Consulting Group's Phishing Landscape 2025 report, covering May 2024 through April 2025, documented approximately 2 million phishing attacks worldwide across more than 1.5 million unique domains — with 77% of phishing domains identified as maliciously registered (a 36% year-over-year increase).\n\nThe defining finding is the dramatic asymmetry between new gTLD market share and phishing concentration: new gTLDs hold only 11% of the global domain market but accounted for 51% of all phishing domains during the reporting period. This represents a significant escalation from 21% in 2021, indicating that threat actors have systematically migrated to new gTLDs as their preferred registration namespace. The economic driver is clear: 18 new gTLDs offered registrations under $2, and sub-$2 pricing correlates directly with the highest phishing abuse scores.\n\nSimultaneously, PaaS subdomain abuse has emerged as a parallel infrastructure channel. Cloudflare pages.dev saw a 157% increase in phishing attacks (43,800 attacks), Webflow's webflow.io surged 980% (33,400 attacks), Vercel's vercel.app grew 279% (21,400 attacks), and GitBook's gitbook.io appeared as a new vector with 22,000 attacks. These platforms provide free hosting with legitimate SSL certificates and trusted domain reputations, enabling phishers to bypass email security filters and browser warnings.\n\nA specific campaign — the \"Unpaid Toll Scam\" — illustrates the convergence of these techniques: 37,000 domains were registered via Dominet (HK) registrar across the .XIN and .TOP TLDs, operated by the Chinese PhaaS provider XinXin/LUCID, and hosted on Tencent (AS132203), Alibaba (AS45102), and Cloudflare (AS13335) infrastructure. IDN homograph attacks further compound the threat, with 2,655 domains targeting cryptocurrency brands through internationalized domain name spoofing (e.g., xn--btpay-b4a.com rendering as bitpay.com).\n\nCloudflare AS13335 has been the number one hosting network for phishing attacks for four consecutive years, with 540,000 attacks during the reporting period, largely because its reverse proxy architecture obscures the true hosting location of phishing pages from investigators and automated takedown systems.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0079-gtld-subdomain-fraud-infrastructure.md",
+    "confidence_score": 90,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "crypto",
+      "payments",
+      "government"
+    ],
+    "fraud_types": [
+      "phishing",
+      "brand-impersonation",
+      "credential-harvesting",
+      "fraud-enabling-infrastructure",
+      "paas-subdomain-abuse"
+    ],
+    "tags": [
+      "gtld-abuse",
+      "bulk-registration",
+      "paas-subdomain",
+      "cloudflare-proxy",
+      "phishing-infrastructure",
+      "interisle-2025",
+      "idn-homograph",
+      "unpaid-toll-scam",
+      "xinxin-lucid",
+      "dominet-hk",
+      "webflow-abuse",
+      "vercel-abuse",
+      "domain-pricing"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1583.003",
+      "T1566.002",
+      "T1608.005"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1598",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0080",
+    "title": "Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026); CrowdStrike 2026 Global Threat Report; Chainalysis 2026 Crypto Crime Report",
+    "tlp": "WHITE",
+    "summary": "State-sponsored threat actors and transnational criminal organizations have developed a systematic methodology to evade stablecoin issuer freeze capabilities by converting centrally issued stablecoins (USDT, USDC) into decentralized alternatives (DAI, sDAI, LUSD, RAI) and wrapped token variants that decouple the original issuer's administrative controls. This threat path exploits a fundamental architectural gap: when a centrally issued stablecoin is \"wrapped\" through a bridge protocol or swapped for a decentralized stablecoin, the issuer's freeze function — the primary compliance enforcement mechanism — becomes inoperable against the resulting tokens.\n\nThe FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026) quantifies the scale: stablecoins accounted for 84% of the $154 billion in illicit virtual asset transaction volume observed in 2025 (Chainalysis data). This dominance reflects stablecoins' utility as a stable-value transfer mechanism for illicit actors who cannot tolerate the price volatility of BTC or ETH during multi-stage laundering operations.\n\nTwo confirmed nation-state programs demonstrate this threat path at operational scale. The IRGC shifted procurement financing from USDT to DAI following mid-2025 Tether freeze actions, using decentralized stablecoins to purchase drone components and weapons systems through front companies. Billions in IRGC-associated addresses were identified across 2024-2025. Separately, the DPRK's Lazarus Group laundered proceeds from the $1.46 billion Bybit theft (February 2025) through mixers, cross-chain bridges, and 125,000+ Ethereum wallets before converting to USDT on TRON for OTC cash-out — with the 221 General Bureau using USDT for military equipment procurement including munitions-grade copper.\n\nBeyond state actors, drug trafficking organizations are using USDT on TRON and USDC on Ethereum for synthetic drug precursor procurement and settlement. ISIL and Al-Qaeda affiliates have solicited stablecoin donations via encrypted messaging platforms, employing rotating wallet addresses, micro-splitting, and multi-hop transfers to evade tracing.\n\nThe convergence of P2P transactions via unhosted wallets (no AML/CFT intermediary), cross-chain bridge fragmentation of transaction trails, and decentralized stablecoin adoption creates a compounding evasion capability that existing compliance frameworks — designed around centralized issuer controls — are structurally unable to address.\n\n**Key Distinction from TP-0078**: TP-0078 documents the industrialized laundering-as-a-service pipeline model (Huione Group, CEX hot wallet sweep patterns). TP-0080 documents the upstream evasion technique: how illicit actors defeat the freeze capability that is supposed to prevent stablecoins from being used in the TP-0078 pipeline in the first place. TP-0080 feeds into TP-0078 — once freeze-evasion is achieved, the resulting funds flow through the CEX off-ramp infrastructure documented in TP-0078.\n\n**Key Distinction from TP-0049**: TP-0049 covers cryptocurrency laundering infrastructure broadly. TP-0080 specifically addresses the exploitation of stablecoin architectural design — the gap between centralized issuance with freeze capabilities and decentralized/wrapped circulation without them — as a deliberate sanctions and law enforcement evasion technique.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0080-stablecoin-freeze-evasion-cross-chain.md",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "sanctions-response",
+    "nation_state_nexus": "confirmed",
+    "sectors": [
+      "crypto",
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "stablecoin-freeze-evasion",
+      "sanctions-evasion-infrastructure",
+      "money-laundering"
+    ],
+    "tags": [
+      "stablecoin-freeze-evasion",
+      "wrapped-stablecoin",
+      "cross-chain-bridge",
+      "dai-evasion",
+      "unhosted-wallet",
+      "p2p-laundering",
+      "irgc-procurement",
+      "dprk-bybit",
+      "fatf-stablecoin-2026",
+      "otc-broker",
+      "tron-usdt",
+      "chain-hopping"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1657",
+      "T1036"
+    ],
+    "ft3_tactics": [
+      "FTA007"
+    ],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-FATF-STABLECOIN-2026",
+      "REG-FATF-R16",
+      "REG-FINCEN-AML",
+      "REG-OFAC-SDN"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    }
+  },
+  {
+    "id": "TP-0081",
+    "title": "Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "CrowdStrike 2026 Global Threat Report",
+    "tlp": "WHITE",
+    "summary": "Voice phishing (vishing) has emerged as the dominant initial access vector for identity-based intrusions, with adversaries combining real-time phone-based social engineering with technical exploitation chains to achieve account takeover at unprecedented speed. The CrowdStrike 2026 Global Threat Report documents a convergence of vishing, fake CAPTCHA campaigns, help desk impersonation, and GenAI-enabled persona creation that collectively represent a paradigm shift away from malware-centric attack models. 82% of CrowdStrike-observed detections in 2025 were malware-free, relying instead on valid credentials, native tools, and administrative functions.\n\nCHATTY SPIDER exemplifies the operational tempo: in a documented incident against a law firm, the adversary achieved a 4-minute breakout from initial vishing contact to active data exfiltration. Fake CAPTCHA campaigns surged 563% in 2025, with threat actors (BRASH SPIDER, COOKIE SPIDER) tricking victims into executing clipboard-delivered PowerShell payloads. SCATTERED SPIDER continues to social-engineer help desk personnel into performing password resets on SSO and cloud accounts, exploiting hybrid identity infrastructure (Entra ID, AD FS) for lateral movement. Average eCrime breakout time has collapsed to 29 minutes (down 65% from 48 minutes in 2024; fastest observed: 27 seconds), making real-time detection and response essential.\n\nAI-enabled adversary attacks rose 89%, with GenAI used to create convincing voice personas, synthetic identities for fraudulent employment (FAMOUS CHOLLIMA, +109% in fake personas), and multi-day social engineering campaigns (COZY BEAR leveraging instant messaging, email, video conferencing, and OAuth 2.0 device code phishing). Financial services accounted for 11% of interactive intrusion targets, with technology at 23%.\n\n**Distinction from TP-0067**: TP-0067 covers AiTM phishing kit infrastructure and session token hijacking via reverse proxy platforms. TP-0081 focuses on the voice-based and hybrid social engineering attack surface — vishing, help desk manipulation, fake CAPTCHA campaigns, and RMM tool abuse — where the human operator, not a phishing kit, is the primary attack instrument. The two threat paths frequently chain: vishing provides initial access that enables AiTM-style session capture downstream.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0081-vishing-hybrid-social-engineering.md",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector",
+      "technology",
+      "insurance"
+    ],
+    "fraud_types": [
+      "vishing",
+      "account-takeover",
+      "social-engineering",
+      "BEC",
+      "fake-captcha-fraud"
+    ],
+    "tags": [
+      "vishing",
+      "chatty-spider",
+      "scattered-spider",
+      "fake-captcha",
+      "helpdesk-impersonation",
+      "rmm-tooling",
+      "social-engineering",
+      "crowdstrike-gtr-2026",
+      "genai-personas",
+      "hybrid-identity",
+      "breakout-time"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.004",
+      "T1078",
+      "T1219",
+      "T1567"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1032",
+      "F1034",
+      "F1040.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1020",
+      "F1031",
+      "T1185"
+    ],
+    "groupib_stages": [
+      "Social Engineering",
+      "Initial Access",
+      "Lateral Movement",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-CROWDSTRIKE-GTR-2026"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0082",
+    "title": "Gold Courier Scam — Physical Precious Metal Cash-Out",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Gold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to physical gold, which is then collected by couriers dispatched by the criminal network. The FBI IC3 2025 Annual Report documented 725 complaints with $311.8 million in losses, yielding an extraordinary average loss of approximately $430,000 per victim — among the highest of any IC3 crime category. The physical gold acquisition and courier collection circumvents traditional electronic transaction monitoring, making this a detection blind spot for institutions relying solely on digital payment analytics.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0082-gold-courier-scam.md",
+    "confidence_score": 78,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "social-engineering",
+      "impersonation",
+      "authorized-push-payment",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "gold-courier",
+      "physical-cashout",
+      "elder-fraud",
+      "government-impersonation",
+      "precious-metals"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1025.003",
+      "F1031",
+      "F1032",
+      "F1017",
+      "F1018",
+      "F1020",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-FINCEN-AML"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0083",
+    "title": "Investment Club Scam — Social Media Insider Group Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Investment club scams exploit social media and messaging platforms to create fraudulent \"insider\" trading groups that lure victims with fabricated trading success, AI-generated celebrity endorsements, and peer pressure dynamics. The FBI IC3 2025 Annual Report documented approximately 1,600 complaints with $160 million in losses, and PSA250703 (July 3, 2025) specifically warned about investment clubs accessed on social media and messaging applications. Unlike traditional pig butchering (TP-0017) which relies on 1:1 grooming, investment club scams leverage group dynamics — social proof from other \"members\" (often shills or bots), fake trading screenshots, and the illusion of an exclusive community — to accelerate victim conversion and increase investment amounts.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0083-investment-club-scam.md",
+    "confidence_score": 72,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "ai-assisted",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "investment",
+      "banking",
+      "crypto"
+    ],
+    "fraud_types": [
+      "investment-scam",
+      "social-engineering",
+      "authorized-push-payment",
+      "crypto-laundering"
+    ],
+    "tags": [
+      "ic3-2025",
+      "investment-club",
+      "social-media",
+      "group-fraud",
+      "social-proof",
+      "telegram",
+      "whatsapp",
+      "discord"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.003",
+      "T1656"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1025.003",
+      "F1018",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1045",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-SEC-SAR"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 2",
+      "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0084",
+    "title": "Government Impersonation — Authority-Based Authorized Push Payment Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Government impersonation fraud uses the authority of federal and state agencies — IRS, SSA, DOJ, FBI, DEA, and state attorneys general — as a social engineering weapon to compel victims into making authorized push payments. The FBI IC3 2025 Annual Report documented 32,424 complaints with $797.9 million in losses, representing an 87% increase in complaints and 97% increase in losses from 2024. This is fundamentally distinct from government program fraud (TP-0022) which exploits government systems for unauthorized benefit claims. Here, the government is not the victim — it is the impersonated authority used to intimidate and control the actual victim.\n\nThe payment channel distribution reveals the scheme's adaptability: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier's Check 10%. Victims aged 60+ are disproportionately targeted, accounting for 8,628 complaints and $413.2 million in losses (52% of total losses).\n\nA notable sub-variant involves scammers impersonating the FBI IC3 itself (PSA250418), exploiting victims' awareness of IC3 as a fraud reporting resource to add credibility to recovery or refund schemes.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0084-government-impersonation-app-fraud.md",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector",
+      "government"
+    ],
+    "fraud_types": [
+      "impersonation",
+      "authorized-push-payment",
+      "social-engineering",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "government-impersonation",
+      "authority-abuse",
+      "caller-id-spoofing",
+      "irs-impersonation",
+      "ssa-impersonation",
+      "elder-fraud",
+      "app-fraud"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1025.003",
+      "F1031",
+      "F1032",
+      "F1017",
+      "F1018",
+      "F1020",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-CFPB-REGE",
+      "REG-OCC-FRAUD"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0085",
+    "title": "Crypto ATM/Kiosk Directed Fraud — Physical-to-Digital Monetization Channel",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cryptocurrency ATMs/kiosks, converting physical currency to digital assets that are immediately transferred to attacker-controlled wallets. The FBI IC3 2025 Annual Report documented 13,460 complaints with $389 million in losses — a 58% increase from 2024. The elder demographic is disproportionately impacted: victims aged 60+ accounted for 6,188 complaints (46%) and $257 million in losses (66% of total crypto ATM losses).\n\nThis TP is distinct from general cryptocurrency fraud because it focuses specifically on the physical-to-digital conversion point — the crypto ATM itself — as the execution and monetization channel. The crypto ATM serves as the critical chokepoint where detection and intervention are possible before funds become irrecoverable on-chain.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0085-crypto-atm-kiosk-directed-fraud.md",
+    "confidence_score": 80,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "crypto",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "authorized-push-payment",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "crypto-atm",
+      "kiosk-fraud",
+      "elder-fraud",
+      "physical-to-digital",
+      "monetization-channel"
+    ],
+    "cfpf_phases": [
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1025.003",
+      "F1032",
+      "F1017",
+      "F1018",
+      "F1031",
+      "F1040",
+      "F1045",
+      "F1047"
+    ],
+    "groupib_stages": [
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-FINCEN-AML"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    }
+  },
+  {
+    "id": "TP-0086",
+    "title": "Crisis-Exploitation Fraud Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-04-09",
+    "author": "FLAME Project",
+    "source": "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report",
+    "tlp": "WHITE",
+    "summary": "Crisis-exploitation fraud infrastructure is a systematic pattern where threat actors exploit geopolitical crises, natural disasters, and emergency government program announcements to rapidly deploy phishing, credential harvesting, and investment scam infrastructure. The attack model follows a predictable sequence: crisis event triggers a government program announcement, which generates a wave of fraudulent domain registrations within 48-72 hours, followed by deployment of phishing pages impersonating government relief portals, energy subsidy applications, and commodity investment platforms.\n\nCrimsonVector research into the 2026 Iran War oil shock identified 1,435 crisis-themed domains registered in the weeks following the conflict's escalation and associated government energy subsidy announcements. 846 domains were registered during the peak week alone. Confirmed phishing sites included `gov.dwp-subsidy.shop` impersonating the UK Department for Work and Pensions, and multiple domains targeting EU and US energy assistance programs. The infrastructure leveraged cheap gTLDs (.shop, .top, .xyz, .bond), Cloudflare Pages (pages.dev) for free hosting, and rapid Let's Encrypt certificate issuance to achieve HTTPS credibility within hours of registration.\n\nThis threat path is distinct from general phishing infrastructure (TP-0079) because the attack timing is predictable — anchored to external crisis events and government announcements — and the domain keyword patterns are crisis-specific, creating a detection window during the 48-72 hour infrastructure build-out phase before victim-facing deployment.",
+    "file_path": "/home/runner/work/flame-fraud/flame-fraud/ThreatPaths/TP-0086-crisis-exploitation-fraud-infrastructure.md",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "rdga-registered",
+    "geopolitical_timing": "conflict-triggered",
+    "nation_state_nexus": "suspected",
+    "sectors": [
+      "government",
+      "banking",
+      "insurance",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "phishing",
+      "brand-impersonation",
+      "credential-harvesting",
+      "investment-scam",
+      "impersonation",
+      "fraud-enabling-infrastructure"
+    ],
+    "tags": [
+      "crisis-exploitation",
+      "domain-infrastructure",
+      "government-impersonation",
+      "subsidy-fraud",
+      "energy-scam",
+      "commodity-investment-fraud",
+      "oil-shock",
+      "rdga",
+      "nrd-abuse",
+      "cheap-gtld",
+      "pages-dev-abuse",
+      "conflict-triggered",
+      "crimsonvector"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1584.001",
+      "T1566.002",
+      "T1608.005",
+      "T1608.006",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1032",
+      "F1031",
+      "F1029",
+      "T1583.001",
+      "T1598",
+      "T1608.006",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Social Engineering",
+      "Credential Access",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-CFPB-REGE",
+      "REG-OCC-FRAUD",
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
       "improve": "Level 2"
     }
   }

@@ -36,7 +36,7 @@ mitre_attack:
   - T1656       # Impersonation
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "F1018", "F1025", "F1031", "F1032", "F1040", "T1598", "T1660"]
 groupib_stages:
   - "Reconnaissance"
   - "Social Engineering"
@@ -66,6 +66,9 @@ regulatory_refs:
   - REG-CFPB-REGE
   - REG-FINCEN-AML
   - REG-INTERPOL-GFFTA
+baseline_ids:
+  - BL-0003
+  - BL-0004
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

@@ -1,69 +1,74 @@
 title: Unauthorized Checkout Page DOM Modification
 id: e2d19a5c-4f87-4b3e-9c61-7a0e8d3f25b9
 status: experimental
-description: >
-  Detects modifications to checkout page DOM elements — including payment form
-  fields, submit buttons, and iframe injections — that occur outside authorized
-  deployment windows or without corresponding change management records.
-  E-skimmer operators manipulate checkout page DOM to inject fake payment form
-  overlays, intercept form submission events, or create invisible iframes that
-  mirror payment forms to capture card data. Legitimate checkout page
-  modifications should only occur during scheduled deployment windows and
-  should be tracked in version control and change management systems. Any DOM
-  mutation on payment form elements that does not correlate with an authorized
-  release is a high-confidence indicator of e-skimmer injection. This rule
-  supports PCI DSS 4.0 Requirement 6.4.3 for script and content integrity
-  monitoring on payment pages.
+description: 'Detects modifications to checkout page DOM elements — including payment form fields, submit buttons, and iframe
+  injections — that occur outside authorized deployment windows or without corresponding change management records. E-skimmer
+  operators manipulate checkout page DOM to inject fake payment form overlays, intercept form submission events, or create
+  invisible iframes that mirror payment forms to capture card data. Legitimate checkout page modifications should only occur
+  during scheduled deployment windows and should be tracked in version control and change management systems. Any DOM mutation
+  on payment form elements that does not correlate with an authorized release is a high-confidence indicator of e-skimmer
+  injection. This rule supports PCI DSS 4.0 Requirement 6.4.3 for script and content integrity monitoring on payment pages.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
+- https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
 threat_paths:
-  - TP-0035
+- TP-0035
 cfpf_phase: P3
 fraud_types:
-  - e-skimmer
-  - malware
+- e-skimmer
+- malware
 logsource:
   product: ecommerce
   service: client_side_monitoring
 detection:
   selection:
     event_type|contains:
-      - 'dom_mutation'
-      - 'element_injected'
-      - 'form_modified'
-      - 'iframe_created'
+    - dom_mutation
+    - element_injected
+    - form_modified
+    - iframe_created
     page_uri|contains:
-      - '/checkout'
-      - '/payment'
-      - '/billing'
+    - /checkout
+    - /payment
+    - /billing
     target_element|contains:
-      - 'payment-form'
-      - 'card-number'
-      - 'cc-number'
-      - 'card-expiry'
-      - 'card-cvc'
-      - 'billing-address'
-      - 'submit-payment'
+    - payment-form
+    - card-number
+    - cc-number
+    - card-expiry
+    - card-cvc
+    - billing-address
+    - submit-payment
   filter_authorized_deployment:
     deployment_id|exists: true
     deployment_window: true
   filter_framework_mutations:
     mutation_source|contains:
-      - 'react'
-      - 'angular'
-      - 'vue'
-      - 'next'
-      - 'nuxt'
+    - react
+    - angular
+    - vue
+    - next
+    - nuxt
   condition: selection and not filter_authorized_deployment and not filter_framework_mutations
+data_sources:
+  native_fields:
+  - deployment_id
+  - deployment_window
+  - event_type
+  - mutation_source
+  - page_uri
+  - target_element
 falsepositives:
-  - Legitimate hotfix deployments that bypass standard change management windows
-  - Browser extensions that modify page DOM for accessibility purposes
-  - Payment processor SDK updates that modify form elements dynamically
+- Legitimate hotfix deployments that bypass standard change management windows
+- Browser extensions that modify page DOM for accessibility purposes
+- Payment processor SDK updates that modify form elements dynamically
 level: high
 tags:
-  - cfpf.phase3.positioning
-  - attack.t1059.007
-  - attack.t1189
-  - flame.ecommerce
-  - flame.eskimmer
-  - flame.dom_integrity
+- cfpf.phase3.positioning
+- attack.t1059.007
+- attack.t1189
+- flame.ecommerce
+- flame.eskimmer
+- flame.dom_integrity

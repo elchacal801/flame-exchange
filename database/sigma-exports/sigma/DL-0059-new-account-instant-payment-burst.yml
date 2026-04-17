@@ -1,40 +1,70 @@
 title: New Account Sending Multiple Instant Payments
 id: 0027c204-9449-4a75-8329-d18eddc7388b
 status: experimental
-description: >
-  Detects accounts less than 30 days old that initiate multiple instant payments
-  within a short time window. Newly opened accounts used for rapid instant-payment
-  disbursement are a strong indicator of synthetic identity fraud or mule accounts
+description: 'Detects accounts less than 30 days old that initiate multiple instant payments within a short time window. Newly
+  opened accounts used for rapid instant-payment disbursement are a strong indicator of synthetic identity fraud or mule accounts
   created specifically for the monetization phase of a fraud scheme.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.occ.treas.gov/topics/supervision-and-examination/bank-operations/financial-crime/suspicious-activity-reports/index-suspicious-activity-reports.html
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.occ.treas.gov/topics/supervision-and-examination/bank-operations/financial-crime/suspicious-activity-reports/index-suspicious-activity-reports.html
 threat_paths:
-  - TP-0024
+- TP-0024
 cfpf_phase: P5
 fraud_types:
-  - authorized-push-payment
-  - wire-fraud
+- authorized-push-payment
+- wire-fraud
 logsource:
   product: banking
   service: instant_payments
 detection:
   selection:
-    event_type: 'instant_payment_initiated'
+    event_type: instant_payment_initiated
     payment_rail|contains:
-      - 'ZELLE'
-      - 'FEDNOW'
-      - 'RTP'
-      - 'ACH_SAMEDAY'
+    - ZELLE
+    - FEDNOW
+    - RTP
+    - ACH_SAMEDAY
   filter_new_account:
     account_age_days|lt: 30
-  condition: selection and filter_new_account | count() by account_id > 5
+  condition: selection and filter_new_account
   timeframe: 48h
+data_sources:
+  native_fields:
+  - event_type
+  - payment_rail
+  enrichment_required:
+  - field: account_age_days
+    source: Account analytics enrichment (account opening date lookup)
+queries:
+  cql: |-
+    // CrowdStrike CQL for New Account Sending Multiple Instant Payments
+    // Repository: flame-banking-instant-payments
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection and filter_new_account | count() by account_id > 5
+    event_type="instant_payment_initiated"
+    (payment_rail="ZELLE" OR payment_rail="FEDNOW" OR payment_rail="RTP" OR payment_rail="ACH_SAMEDAY")
+    account_age_days<30
+    | groupBy(account_id, function=[count(as=event_count)])
+    | event_count > 5
+  splunk: |-
+    `comment("Splunk SPL for New Account Sending Multiple Instant Payments")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection and filter_new_account | count() by account_id > 5")`
+    index=flame_banking sourcetype=flame:instant_payments
+    event_type="instant_payment_initiated"
+    (payment_rail="ZELLE" OR payment_rail="FEDNOW" OR payment_rail="RTP" OR payment_rail="ACH_SAMEDAY")
+    account_age_days<30
+    | stats count as event_count by account_id
+    | where event_count > 5
 falsepositives:
-  - Newly opened business account setting up recurring vendor payments
-  - College student opening account and paying multiple roommates for shared expenses
+- Newly opened business account setting up recurring vendor payments
+- College student opening account and paying multiple roommates for shared expenses
 level: high
 tags:
-  - cfpf.phase5.monetization
-  - attack.t1136
-  - flame.a2a
+- cfpf.phase5.monetization
+- attack.t1136
+- flame.a2a

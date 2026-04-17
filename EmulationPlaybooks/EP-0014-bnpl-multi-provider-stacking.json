@@ -1,0 +1,68 @@
+{
+    "id": "EP-0014",
+    "title": "BNPL Fraud — Multi-Provider Synthetic Stacking",
+    "description": "Simulates the end-to-end lifecycle of a Buy Now, Pay Later multi-provider synthetic stacking fraud operation targeting e-commerce and fintech sectors. The adversary creates or acquires a synthetic identity with a thin credit file, simultaneously opens BNPL accounts across multiple providers that lack cross-bureau loan reporting, executes high-resale-value purchases, defaults on all installment obligations, and resells the acquired goods. This playbook validates detection coverage across CFPF phases P2 through P5 for BNPL-specific fraud patterns.",
+    "author": "FLAME Project",
+    "date": "2026-03-27",
+    "target_threat_paths": ["TP-0040"],
+    "cfpf_phases": ["P2", "P3", "P4", "P5"],
+    "fraud_types": ["bnpl-fraud", "synthetic-identity", "multi-provider-stacking", "bust-out", "resale-fraud"],
+    "sectors": ["ecommerce", "fintech"],
+    "prerequisites": {
+        "environment": "Fraud detection test environment with BNPL provider application portals (Affirm, Klarna, Afterpay simulators), identity verification systems, credit bureau interfaces, merchant transaction processing, and collections monitoring. Requires multi-provider account visibility and cross-bureau loan reporting simulation capabilities.",
+        "tools": ["BNPL provider application portals (test mode — Affirm, Klarna, Afterpay)", "Identity verification platform (test mode)", "Credit bureau inquiry simulator", "Merchant e-commerce platform (test mode)", "Collections and default monitoring system", "Cross-provider account linkage analytics"],
+        "access_required": "Test-environment access to BNPL provider onboarding workflows, credit bureau inquiry systems, merchant transaction dashboards, and collections monitoring platforms. Access to cross-provider account linkage tools and resale marketplace monitoring."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P2",
+            "title": "Create or Acquire Identity with Thin Credit File",
+            "action": "Obtain a synthetic identity with a thin credit file by either fabricating identity components (combining a CPN or stolen SSN with fictitious personal details) or purchasing a pre-warmed synthetic identity from a Fraud-as-a-Service marketplace such as STYX. The identity should have minimal credit history — sufficient to pass basic BNPL soft-pull verification but lacking the depth that would indicate an established credit user. Establish a dedicated email address, phone number, and shipping address associated with the synthetic identity.",
+            "automation": null,
+            "expected_result": "Identity verification systems should flag the thin credit file with limited bureau history. Synthetic identity detection models should identify inconsistencies between the identity's claimed age and credit file depth. Email and phone verification should detect recently created communication channels associated with the application.",
+            "detection_rule_ref": "DL-0087"
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P3",
+            "title": "Apply for BNPL at Multiple Providers Simultaneously",
+            "action": "Within a compressed timeframe of 1-4 hours, submit BNPL account applications at Affirm, Klarna, and Afterpay using the same synthetic identity. Exploit the structural gap in cross-provider loan reporting — because most BNPL providers do not report to traditional credit bureaus, each provider evaluates the application independently without visibility into obligations at competing providers. Use device fingerprint rotation and VPN infrastructure to avoid cross-application velocity detection based on device or IP linkage.",
+            "automation": null,
+            "expected_result": "Cross-provider velocity detection should flag simultaneous BNPL applications from the same identity across multiple providers. Device fingerprint analysis should detect rotation patterns indicative of automated application submission. Credit inquiry monitoring should identify multiple soft pulls within a short timeframe for an identity with no prior BNPL history.",
+            "detection_rule_ref": "DL-0088"
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P4",
+            "title": "Execute High-Resale-Value Purchases Across Providers",
+            "action": "Once approved at multiple BNPL providers, immediately make purchases of high-resale-value goods including consumer electronics (phones, laptops, gaming consoles), designer apparel, and gift cards. Distribute purchases across providers to maximize total credit exposure — target the maximum approved amount at each provider. Focus on merchants known for easy checkout with BNPL options and items with strong secondary market demand. Ship all items to a single address or a network of reshipping addresses controlled by the fraud operation.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should flag first-purchase velocity with immediate maximum-amount utilization across multiple BNPL providers. Merchant-side fraud detection should identify high-value orders from new BNPL accounts with no purchase history. Shipping address analytics should detect multiple high-value orders from different BNPL providers converging on the same delivery address or known reshipping locations.",
+            "detection_rule_ref": "DL-0089"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P4",
+            "title": "Default on All Installment Payments",
+            "action": "Make no installment payments on any of the BNPL obligations across all providers. Allow all accounts to enter delinquency and progress through collection stages. The synthetic identity has no legitimate financial footprint to protect, so there is no deterrent against default. The simultaneous default across multiple providers creates a loss pattern that mirrors traditional bust-out schemes but exploits the BNPL-specific gap in cross-provider visibility.",
+            "automation": null,
+            "expected_result": "Collections monitoring should detect the simultaneous first-payment default across all BNPL providers linked to the same identity. Cross-provider correlation should identify the coordinated default pattern. Loss attribution analysis should flag the identity as a synthetic bust-out based on the zero-payment history combined with maximum utilization.",
+            "detection_rule_ref": "DL-0090"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P5",
+            "title": "Resell Acquired Goods for Cash Extraction",
+            "action": "Liquidate the purchased goods through secondary marketplaces (eBay, StockX, Facebook Marketplace, Telegram resale channels) or through organized reshipping and fencing networks. Convert proceeds to cash or cryptocurrency to complete the monetization cycle. Target 60-80% recovery of retail value on high-demand electronics and 40-60% on designer goods. Use multiple seller accounts and shipping origins to avoid marketplace-level velocity detection on the resale side.",
+            "automation": null,
+            "expected_result": "Resale marketplace monitoring should detect high-volume listings of new-in-box merchandise from recently created seller accounts. Transaction tracing should correlate the resold items with BNPL-purchased goods based on serial numbers, product descriptions, or shipping origin patterns. Cryptocurrency transaction monitoring should flag conversion patterns consistent with fraud proceeds laundering.",
+            "detection_rule_ref": "DL-0091"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0087", "DL-0088", "DL-0089", "DL-0090", "DL-0091"],
+        "alerts_generated": "Identity verification alerts on thin-file synthetic identity with recently created communication channels; cross-provider velocity alerts on simultaneous BNPL applications across Affirm, Klarna, and Afterpay; transaction monitoring alerts on first-purchase maximum utilization of BNPL credit lines; shipping convergence alerts on multiple high-value orders from different providers to the same address; collections alerts on coordinated first-payment default across all providers; resale marketplace alerts on high-volume new-in-box listings from recently created seller accounts.",
+        "coverage_validated": "CFPF lifecycle coverage (P2 through P5) for BNPL multi-provider synthetic stacking fraud. Validates synthetic identity detection at application (P2), cross-provider stacking detection during positioning (P3), high-value purchase and default detection during execution (P4), and resale monetization detection during cash-out (P5)."
+    }
+}

@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="http_redirect_chain" redirect_type IN ("*301*", "*302*", "*javascript_redirect*") redirect_hop_count>=4 intermediate_domain_max_age_days<=30 intermediate_domain_min_reputation<=20

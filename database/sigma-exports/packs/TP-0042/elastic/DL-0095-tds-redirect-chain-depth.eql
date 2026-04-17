@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:http_redirect_chain AND (redirect_type:(*301* OR *302* OR *javascript_redirect*))) AND redirect_hop_count:>=4 AND (intermediate_domain_max_age_days:<=30 AND intermediate_domain_min_reputation:<=20)

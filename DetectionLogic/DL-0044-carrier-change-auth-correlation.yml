@@ -42,8 +42,8 @@ data_sources:
   - mfa_result
   - status
 queries:
-  logscale: |-
-    // LogScale LQL for Carrier Change Authentication Correlation
+  cql: |-
+    // CrowdStrike CQL for Carrier Change Authentication Correlation
     // Repository: flame-telecom-identity-management
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection_carrier_change | followed_by selection_auth on phone_number within 120m
@@ -52,7 +52,7 @@ queries:
     event_type="login_attempt"
     mfa_method="sms"
     mfa_result="success"
-    // Sequential correlation — use LogScale sequence detection
+    // Sequential correlation — use CrowdStrike NGSIEM sequence detection
     // Correlate stages sequentially on phone_number within 120m
   splunk: |-
     `comment("Splunk SPL for Carrier Change Authentication Correlation")`

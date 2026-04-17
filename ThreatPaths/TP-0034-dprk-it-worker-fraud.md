@@ -7,7 +7,7 @@ title: "DPRK State-Sponsored IT Worker Fraud & Data Extortion"
 category: ThreatPath
 date: 2026-03-03
 author: "FLAME Project"
-source: "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)"
+source: "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, CrowdStrike 2026 GTR, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026), FATF 2026 Stablecoin Report"
 tlp: WHITE
 sector:
   - technology
@@ -37,7 +37,7 @@ mitre_attack:
   - T1587.001  # Develop Capabilities: Malware
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT005.001", "FT007.009", "FT018", "FT020", "FT021", "FT031", "FT052.003"]
-mitre_f3: []
+mitre_f3: ["F1006", "F1029", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -71,6 +71,8 @@ related_tps:
     relationship: feeds-into
   - id: TP-0057
     relationship: related-to
+  - id: TP-0080
+    relationship: feeds-into
 regulatory_refs:
   - REG-OFAC-SDN
   - REG-FINCEN-CDD
@@ -78,6 +80,11 @@ regulatory_refs:
   - REG-UNODC-EMERGING-THREATS
   - REG-RF-CTA-2026-0319
   - REG-WCI-2024
+  - REG-CROWDSTRIKE-GTR-2026
+  - REG-FATF-STABLECOIN-2026
+baseline_ids:
+  - BL-0013
+  - BL-0028
 tags:
   - dprk
   - north-korea
@@ -101,6 +108,12 @@ tags:
   - invisibleferret
   - purplebravo
   - purpledelta
+  - pressure-chollima
+  - famous-chollima
+  - stardust-chollima
+  - bybit-theft
+  - crowdstrike-gtr-2026
+  - fatf-stablecoin-2026
 ---
 ```
 
@@ -496,6 +509,25 @@ tags:
 - **CFPF Phase Coverage**: P1 (infrastructure provisioning), P2 (malware delivery via developer lures), P3-P4 (credential access, data exfiltration via InvisibleFerret)
 - **Confidence**: Very High
 
+### EV-TP0034-2026-005: CrowdStrike 2026 Global Threat Report — DPRK Adversary Group Operations
+
+- **Source**: CrowdStrike 2026 Global Threat Report (GTR-2026)
+- **FAMOUS CHOLLIMA (CrowdStrike naming)**: Activity doubled in 2025 versus 2024. Uses GenAI (ChatGPT, Gemini, GitHub Copilot, VSCodium) for fake persona creation (+109% increase), AI image manipulation for identity fabrication, messaging services with AI for managing multiple fake accounts, and AI coding assistants to perform legitimate job functions while embedded.
+- **STARDUST CHOLLIMA**: Significantly increased operational tempo in 2025.
+- **PRESSURE CHOLLIMA — $1.46B Bybit Theft (February 2025)**: Executed the largest single cryptocurrency theft in history. Compromised Safe{Wallet} developer via trojanized Python project, exfiltrated credentials, pivoted to cloud infrastructure, injected malicious JavaScript into Bybit transaction flow, redirected $1.46B to adversary wallet, and immediately restored code to evade detection. This demonstrates escalation from IT worker access to exchange-level theft via supply chain compromise.
+- **npm supply chain vector**: FAMOUS CHOLLIMA deployed 30+ malicious npm packages (January–May 2025) as part of BeaverTail malware campaigns, masquerading as job recruiters asking developers to review projects. Packages downloaded 8,000+ times.
+- **CrowdStrike assessment**: DPRK-nexus adversaries will pose an acute threat to fintech, technology, and Western defense entities in 2026.
+- **CFPF Phase Coverage**: P1 (GenAI persona fabrication, npm supply chain), P2 (AI-assisted embedding), P3-P4 (credential theft, supply chain compromise), P5 (cryptocurrency theft)
+- **Confidence**: Very High
+
+### EV-TP0034-2026-006: FATF 2026 Stablecoin Report — DPRK 221 General Bureau Procurement
+
+- **Source**: FATF 2026 Stablecoin Report (FATF-STABLECOIN-2026)
+- **DPRK 221 General Bureau**: Now using USDT stablecoins for military equipment and raw materials procurement (copper for munitions). The 221 General Bureau (formerly Korea Mining Development Trading Corporation / KOMID, UN-designated) has expanded stablecoin use beyond cyber theft to direct procurement of prohibited goods under UNSCRs.
+- **Significance**: Represents an evolution of DPRK financial flows from salary extraction and cryptocurrency theft (documented in prior evidence items) to stablecoin-mediated procurement of sanctioned goods, creating a direct nexus between IT worker revenue generation and weapons program supply chains.
+- **CFPF Phase Coverage**: P5 (monetization — stablecoin conversion for procurement)
+- **Confidence**: Very High
+
 ---
 
 ## Analyst Notes
@@ -514,7 +546,11 @@ tags:
 
 **PurpleBravo/PurpleDelta infrastructure convergence creates compound risk**: Recorded Future's confirmation that DPRK developer-lure campaigns (PurpleBravo/Contagious Interview) share infrastructure with IT worker operations (PurpleDelta) means that a DPRK IT worker placement may simultaneously serve as an entry point for malware deployment targeting the employer's development environment. The BeaverTail infostealer and InvisibleFerret RAT are not just credential theft tools — they represent active, persistent backdoors that can survive the IT worker's termination.
 
+**IC3 2025 Data — Formal IC3 Tracking:** The FBI IC3 2025 Internet Crime Report formally tracks the DPRK IT worker scam. Dozens of victim companies have been identified through IC3.gov complaints. Critically, IC3 confirms that DPRK IT workers are now leveraging unlawful company network access to exfiltrate proprietary data and facilitate cyber-criminal activities — validating the escalation from salary extraction to active insider threat documented in this threat path. PSA250123 (January 23, 2025) covered data extortion, and PSA250723 (July 23, 2025) addressed broader threats to U.S. businesses.
+
 **Cross-border investigation complexity**: DPRK IT worker operations span multiple jurisdictions (DPRK, China, Russia, Ukraine, U.S., EU). Law enforcement coordination requires FBI, CISA, international partners, and private sector threat intelligence sharing. Organizations should establish pre-incident relationships with FBI field offices and CISA regional coordinators to enable rapid response when DPRK IT workers are identified.
+
+**CrowdStrike now tracks 3+ distinct DPRK adversary groups with differentiated operational patterns**: FAMOUS CHOLLIMA (IT worker fraud and GenAI-driven persona fabrication), STARDUST CHOLLIMA (increased operational tempo in 2025), and PRESSURE CHOLLIMA (high-value cryptocurrency exchange theft, including the $1.46B Bybit heist). The differentiation of these groups under separate tracking names suggests organizational separation within DPRK cyber operations — distinct units with distinct missions, TTPs, and targeting — rather than a monolithic program. This has implications for detection: indicators and behavioral patterns effective against FAMOUS CHOLLIMA IT worker placements may not detect PRESSURE CHOLLIMA supply chain compromises, and vice versa. Defenders must maintain detection coverage across all three operational profiles.
 
 ---
 
@@ -523,6 +559,10 @@ tags:
 - **FBI IC3 — North Korean IT Worker Threats to U.S. Businesses** (July 2025): Public Service Announcement detailing DPRK IT worker TTPs, indicators, and recommended mitigations. [Link](https://www.ic3.gov/PSA/2025/PSA250701)
 
 - **FBI IC3 — North Korean IT Workers Conducting Data Extortion** (January 2025): PSA documenting the escalation from salary extraction to post-termination data extortion. [Link](https://www.ic3.gov/PSA/2025/PSA250123)
+
+- **FBI IC3 — North Korean IT Worker Threats to U.S. Businesses** (July 23, 2025): PSA250723. [Link](https://www.ic3.gov/PSA/2025/PSA250723)
+
+- **FBI IC3 2025 Internet Crime Report**: DPRK IT worker scam formally tracked by IC3. Dozens of victim companies identified through IC3.gov complaints. DPRK IT workers now leveraging unlawful company network access to exfiltrate proprietary data and facilitate cyber-criminal activities. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 
 - **DOJ — Nationwide Actions to Combat Illicit North Korean Government Revenue Generation** (November 2025): Press release detailing enforcement actions against DPRK IT worker facilitator networks, including $15M+ in civil forfeitures. [Link](https://www.justice.gov/opa/pr/)
 
@@ -542,6 +582,10 @@ tags:
 
 - **Recorded Future CTA-2026-0319 — 2025 Year in Review: Malicious Infrastructure** (March 2026): Documents PurpleBravo/PurpleDelta infrastructure overlap, DPRK malware families (BeaverTail, InvisibleFerret, GolangGhost, PylangGhost, HexEval), 759 credential harvesting domains, hosting on Evoxt/Kaopu Cloud/Veesp. [Link](https://www.recordedfuture.com/)
 
+- **CrowdStrike 2026 Global Threat Report** (2026): Documents FAMOUS CHOLLIMA activity doubling in 2025, GenAI-driven persona fabrication (+109% increase), STARDUST CHOLLIMA operational tempo increase, PRESSURE CHOLLIMA $1.46B Bybit theft via Safe{Wallet} supply chain compromise, and 30+ malicious npm packages in BeaverTail campaigns. [Link](https://www.crowdstrike.com/global-threat-report/)
+
+- **FATF — Stablecoins: Financial Integrity Risks and AML/CFT Considerations** (2026): Documents DPRK 221 General Bureau (formerly KOMID) use of USDT stablecoins for military equipment and raw materials procurement in violation of UNSCRs. [Link](https://www.fatf-gafi.org/)
+
 - **Related FLAME Threat Paths**: [TP-0015: Employment Fraud via Brand Impersonation](TP-0015-employment-fraud-brand-impersonation.md) (civilian employment fraud); [TP-0029: AI Synthetic Identity & Document Forgery](TP-0029-ai-synthetic-identity-document-forgery.md) (AI-enhanced identity fabrication); [TP-0019: Business Identity Theft](TP-0019-business-identity-theft.md) (organizational identity compromise); [TP-0045: Sanctions Evasion via Fraud Infrastructure](TP-0045-sanctions-evasion-via-fraud-infrastructure.md) (feeds-into); [TP-0057: Deepfake-as-a-Service Marketplace](TP-0057-deepfake-as-a-service-marketplace.md) (AI face/voice changer supply chain).
 
 ---
@@ -551,4 +595,5 @@ tags:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-03 | FLAME Project | Initial submission |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — DPRK IT worker formally tracked by IC3, data extortion escalation confirmed, PSA250123/PSA250723 |
 | 2026-03-20 | FLAME Project | Major enrichment: Added Flare/IBM X-Force intelligence (RB Site, NetkeyRegister internal platforms; Western collaborator recruitment; AI face/voice changers; 100K+ operatives, $500M/year scale); Added Recorded Future CTA-2026-0319 intelligence (PurpleBravo/PurpleDelta infrastructure overlap; BeaverTail, InvisibleFerret, GolangGhost malware families; 759 credential harvesting domains; hosting infrastructure patterns). New techniques CFPF-P1-005, CFPF-P1-006 added. New evidence blocks EV-TP0034-2026-003, EV-TP0034-2026-004. |

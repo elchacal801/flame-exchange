@@ -35,8 +35,8 @@ data_sources:
   - event_type
   - transaction_amount
 queries:
-  logscale: |-
-    // LogScale LQL for Mule Recruitment Test Deposit Pattern
+  cql: |-
+    // CrowdStrike CQL for Mule Recruitment Test Deposit Pattern
     // Repository: flame-banking-ach-processing
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection_small_deposits | count(distinct originator_id) by account_id > 8

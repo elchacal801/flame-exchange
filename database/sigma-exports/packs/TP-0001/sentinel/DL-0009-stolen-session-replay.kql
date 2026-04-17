@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(event_type =~ "session_activity" and isnotempty(session_token)) and (not((geo_country =~ "%original_session_country%" and device_fingerprint =~ "%original_device_fingerprint%")))

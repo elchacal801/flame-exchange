@@ -1,34 +1,59 @@
 title: Multiple Account Access from Single Source
 id: 3356cb1e-e2f7-4831-a23d-af57358f0495
 status: experimental
-description: >
-  Detects multiple distinct banking accounts being accessed from a single device or IP address
-  within a short timeframe. This pattern is consistent with an attacker using stolen credentials
-  from an infostealer dump to sequentially access compromised accounts for reconnaissance
-  or initial positioning before fraudulent transactions.
+description: 'Detects multiple distinct banking accounts being accessed from a single device or IP address within a short
+  timeframe. This pattern is consistent with an attacker using stolen credentials from an infostealer dump to sequentially
+  access compromised accounts for reconnaissance or initial positioning before fraudulent transactions.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://attack.mitre.org/techniques/T1078/
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1078/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0001
-  - TP-0008
+- TP-0001
+- TP-0008
 cfpf_phase: P2
 fraud_types:
-  - account-takeover
-  - credential-stuffing
+- account-takeover
+- credential-stuffing
 logsource:
   product: banking
   service: auth_logs
 detection:
   selection:
-    event_type: 'login_success'
+    event_type: login_success
   timeframe: 1h
-  condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3
+  condition: selection
+data_sources:
+  native_fields:
+  - event_type
+queries:
+  cql: |-
+    // CrowdStrike CQL for Multiple Account Access from Single Source
+    // Repository: flame-banking-auth-logs
+    // Aggregation that cannot be expressed in Sigma:
+    // Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3
+    event_type="login_success"
+    | groupBy(source_ip, function=[count(as=event_count), collect(account_id)])
+    | event_count > 5
+    | groupBy(device_fingerprint, function=[count(as=event_count), collect(account_id)])
+    | event_count > 3
+  splunk: |-
+    `comment("Splunk SPL for Multiple Account Access from Single Source")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3")`
+    index=flame_banking sourcetype=flame:auth_logs event_type="login_success"
+    | stats dc(account_id) as unique_account_id by source_ip
+    | where unique_account_id > 5
+    | stats dc(account_id) as unique_account_id by device_fingerprint
+    | where unique_account_id > 3
 falsepositives:
-  - Shared corporate NAT gateways where multiple employees access accounts from same public IP
-  - Household devices shared among family members with separate accounts
+- Shared corporate NAT gateways where multiple employees access accounts from same public IP
+- Household devices shared among family members with separate accounts
 level: high
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1078
-  - attack.t1078.004
+- cfpf.phase2.initial_access
+- attack.t1078
+- attack.t1078.004

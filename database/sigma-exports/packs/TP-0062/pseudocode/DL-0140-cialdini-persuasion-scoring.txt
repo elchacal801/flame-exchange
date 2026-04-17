@@ -1,0 +1,56 @@
+# ======================================================================
+# FLAME Detection Rule: Cialdini Persuasion Principle Scoring in Fraud Communications
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: medium
+# CFPF Phase: P2
+# Threat Paths: TP-0011, TP-0025, TP-0065, TP-0062
+#
+# Description:
+#   Scores inbound communications (email, SMS, chat) for Cialdini's six
+#   principles of persuasion: Reciprocity, Consistency, Social Proof,
+#   Authority, Liking, and Scarcity. Research shows combining these
+#   features with BERT/SBERT embeddings improves phishing detection F1 by
+#   2.62%. Communications exhibiting 3+ principles above threshold are
+#   flagged as high-probability social engineering. Directly applicable to
+#   romance fraud, investment scam, impersonation, and recovery fraud
+#   detection where psychological manipulation is the primary attack
+#   vector.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: communication_analysis
+#   service: nlp_scoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     content_type:
+#     - email
+#     - sms
+#     - chat
+#   condition: 'cialdini_principles_detected >= 3 AND max_principle_score > 0.7
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate marketing using persuasion techniques
+#   - Fundraising and charity communications
+#   - Sales communications with urgency and social proof
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

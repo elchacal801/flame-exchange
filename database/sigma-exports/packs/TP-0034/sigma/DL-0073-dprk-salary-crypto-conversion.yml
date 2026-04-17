@@ -1,46 +1,80 @@
 title: Salary Direct Deposit Rapid Cryptocurrency Conversion
 id: 785dad0d-0f29-536e-b7d2-816b8db1844f
 status: experimental
-description: >
-  Detects patterns where salary direct deposit payments are rapidly converted to
-  cryptocurrency (USDT, USDC, BTC) within 48 hours of deposit, particularly when
-  the receiving account was recently opened or when multiple employee accounts
-  show the same conversion pattern through the same exchange or payment
-  processor. DPRK IT workers convert salary to cryptocurrency for transfer to
-  regime-controlled wallets, often using daily conversion limits to avoid AML
-  alerts.
+description: 'Detects patterns where salary direct deposit payments are rapidly converted to cryptocurrency (USDT, USDC, BTC)
+  within 48 hours of deposit, particularly when the receiving account was recently opened or when multiple employee accounts
+  show the same conversion pattern through the same exchange or payment processor. DPRK IT workers convert salary to cryptocurrency
+  for transfer to regime-controlled wallets, often using daily conversion limits to avoid AML alerts.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.justice.gov/opa/pr/justice-department-announces-nationwide-actions-combat-illicit-north-korean-government
-  - https://www.ic3.gov/PSA/2025/PSA250723-4
+- https://www.justice.gov/opa/pr/justice-department-announces-nationwide-actions-combat-illicit-north-korean-government
+- https://www.ic3.gov/PSA/2025/PSA250723-4
 threat_paths:
-  - TP-0034
+- TP-0034
 cfpf_phase: P5
 fraud_types:
-  - dprk-it-worker-fraud
-  - crypto-laundering
+- dprk-it-worker-fraud
+- crypto-laundering
 logsource:
   product: banking
   service: transaction_monitoring
 detection:
   selection_deposit:
-    transaction_type: 'ACH_IN'
-    transaction_category: 'payroll'
+    transaction_type: ACH_IN
+    transaction_category: payroll
   selection_conversion:
     outbound_type|contains:
-      - 'crypto_exchange'
-      - 'p2p_crypto'
-      - 'wire_to_exchange'
+    - crypto_exchange
+    - p2p_crypto
+    - wire_to_exchange
     time_since_deposit_hours|lte: 48
-  condition: selection_deposit | near selection_conversion
-
-  # Correlation: flag when the same crypto exchange or wallet address receives
-  # converted salary from multiple employee accounts at the same employer.
+  condition: selection_deposit and selection_conversion
+data_sources:
+  native_fields:
+  - outbound_type
+  - transaction_category
+  - transaction_type
+  enrichment_required:
+  - field: time_since_deposit_hours
+    source: Transaction correlation enrichment (hours since last inbound deposit)
+queries:
+  cql: |-
+    // CrowdStrike CQL for Salary Direct Deposit Rapid Cryptocurrency Conversion
+    // Repository: flame-banking-transaction-monitoring
+    // Correlates payroll deposit with crypto exchange transfer within 48h
+    (transaction_type="ACH_IN" AND transaction_category="payroll")
+    OR (outbound_type="crypto_exchange" OR outbound_type="p2p_crypto"
+        OR outbound_type="wire_to_exchange")
+    | selfJoinFilter(account_id, where=[
+        {transaction_type="ACH_IN" AND transaction_category="payroll"}
+        {outbound_type="crypto_exchange" OR outbound_type="p2p_crypto"
+          OR outbound_type="wire_to_exchange"}
+      ])
+    | groupBy(account_id, function=[
+        count(as=event_count),
+        collect([transaction_type, outbound_type, transaction_amount, @timestamp])
+      ], span=48h)
+    | event_count >= 2
+  splunk: |-
+    `comment("Splunk SPL for Salary Direct Deposit Rapid Cryptocurrency Conversion")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection_deposit | near selection_conversion")`
+    index=flame_banking sourcetype=flame:transaction_monitoring
+    transaction_type="ACH_IN"
+    transaction_category="payroll"
+    (outbound_type="crypto_exchange" OR outbound_type="p2p_crypto" OR outbound_type="wire_to_exchange")
+    time_since_deposit_hours<=48
+    | transaction account_id maxspan=1h
+    | where eventcount >= 2
 falsepositives:
-  - Employees who routinely invest a portion of salary in cryptocurrency through automated transfers
-  - Cryptocurrency industry employees whose compensation is partially crypto-denominated
+- Employees who routinely invest a portion of salary in cryptocurrency through automated transfers
+- Cryptocurrency industry employees whose compensation is partially crypto-denominated
 level: medium
 tags:
-  - cfpf.phase5.monetization
-  - attack.t1657
-  - flame.dprk
-  - flame.crypto
+- cfpf.phase5.monetization
+- attack.t1657
+- flame.dprk
+- flame.crypto

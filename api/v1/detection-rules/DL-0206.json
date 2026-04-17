@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.504222+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "3842538a-7ffb-4c3e-a690-e2de5d80c507",
+    "dl_id": "DL-0206",
+    "title": "Rapid Wallet Fan-Out Exceeding 100 Wallets Post-Theft",
+    "status": "experimental",
+    "description": "Detects when a single wallet or cluster distributes funds across 100+ new wallets within 48 hours following a large-value transfer (>$1M). Directly models the DPRK Bybit laundering pattern where PRESSURE CHOLLIMA distributed stolen funds across 125,000+ Ethereum wallets. Existing DL-0196 and DL-0197 cover CEX off-ramp detection; this rule covers the upstream distancing and layering phase.\n",
+    "cfpf_phase": "P4",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "source_wallet": "*",
+        "unique_destination_count|gte": 100,
+        "timeframe_hours|lte": 48,
+        "total_amount_usd|gte": 1000000
+      },
+      "aggregation": {
+        "operation": "count(distinct destination_wallet) by source_wallet_cluster",
+        "timeframe": "48h"
+      },
+      "condition": "selection"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "blockchain_analytics"
+    },
+    "references": [
+      "CrowdStrike 2026 Global Threat Report (PRESSURE CHOLLIMA Bybit case)",
+      "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
+    ],
+    "threat_path_ids": [
+      "TP-0044",
+      "TP-0049",
+      "TP-0080"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.critical",
+      "flame.crypto"
+    ],
+    "falsepositives": [
+      "Exchange hot wallet distributions to customer withdrawal addresses",
+      "Airdrop campaigns distributing tokens to large recipient lists",
+      "Payroll distributions from corporate treasury wallets"
+    ]
+  }
+}

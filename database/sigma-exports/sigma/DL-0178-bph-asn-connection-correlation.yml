@@ -1,0 +1,136 @@
+title: Bulletproof Hosting ASN Connection Correlation — Traffic to Known BPH Networks
+id: 73d4e9e5-5fd8-4c20-9710-2f75189023ac
+status: experimental
+description: >
+  Detects DNS resolution or network connections to IP addresses within known bulletproof hosting
+  (BPH) Autonomous System Number (ASN) ranges, domains registered via the NiceNIC registrar,
+  or domains using Dynamic DNS providers such as afraid.org. Silent Push (2025) documented 200+
+  BPH providers controlling approximately 1 million IP addresses globally. This rule correlates
+  network traffic against a curated list of BPH ASNs identified through abuse pattern analysis,
+  including providers with high DGA domain density, disposable abuse contact emails, shell company
+  registrations in permissive jurisdictions, and self-declared bulletproof hosting marketing.
+  Additionally, the rule flags domains registered through NiceNIC — a registrar favored by threat
+  actors (including Scattered Spider and The Com) due to its requirement for a Power of Attorney
+  to process takedown requests — and domains leveraging Dynamic DNS services that create BPH-like
+  abuse-resistant infrastructure. Any match warrants investigation for potential fraud-enabling
+  infrastructure, C2 communication, or criminal hosting activity.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "Silent Push, Shining a Light on the Global Bulletproof Hosting Ecosystem (2025) — 200+ BPH providers, infrastructure laundering, sanctions timeline"
+  - "CISA Advisory — Increased Use of Bulletproof Hosting Against Critical Infrastructure (2025)"
+  - "Recorded Future, CTA-2026-0319: Criminal Exploitation of Fraud-Enabling Infrastructure, March 2026"
+threat_paths:
+  - TP-0048
+  - TP-0061
+cfpf_phase: P1
+fraud_types:
+  - bph-migration
+  - bulletproof-hosting
+  - fraud-enabling-infrastructure
+logsource:
+  product: network
+  service: dns_monitoring
+detection:
+  selection_bph_asn:
+    destination_asn:
+      - AS152194   # CTGSERVERLIMITED-AS-AP — Heavy DGA, Spamhaus blocklist
+      - AS214351   # FEMOIT GB — UK shell company, Ukrainian operator
+      - AS213194   # NECHAEVDS-AS RU — Russia, 100% DGA domains
+      - AS214943   # RAILNET — Investment scams
+      - AS34985    # NETINNOVATIONLLC-AS-AP — DGA usage
+      - AS48589    # SOW-A-AS (Tiger Net) — Ukraine, DGA
+      - AS49217    # HOSTYPE US — Wyoming shell company, DGA
+      - AS214940   # KPROHOST LLC — 100% malicious content
+      - AS140224   # STARCLOUD GLOBAL SG — Triad Nexus infrastructure
+      - AS200019   # AlexHost — Moldova, self-declared DMCA ignored
+      - AS49042    # Phanes Networks — Netherlands, self-declared bulletproof
+      - AS45839    # Shinjiru — Malaysia, ignores DMCA
+  selection_nicenic_registrar:
+    domain_registrar|contains: "nicenic"
+  selection_dynamic_dns:
+    query|endswith:
+      - ".afraid.org"
+      - ".mooo.com"
+      - ".hopto.org"
+      - ".zapto.org"
+      - ".sytes.net"
+  condition: selection_bph_asn OR selection_nicenic_registrar OR selection_dynamic_dns
+  timeframe: 24h
+data_sources:
+  native_fields:
+    - src_ip
+    - dst_ip
+    - destination_asn
+    - query
+    - answer
+    - domain_registrar
+    - dns_record_type
+  enrichment_required:
+    - field: destination_asn
+      source: MaxMind GeoIP or IP-to-ASN mapping database for resolved IP addresses
+    - field: domain_registrar
+      source: WHOIS/RDAP lookup for queried domains
+    - field: bph_asn_list
+      source: Curated BPH ASN watchlist maintained from Silent Push, Spamhaus, and threat intelligence feeds
+  derived_fields:
+    - bph_match_type
+    - risk_category
+queries:
+  cql: |-
+    // CrowdStrike CQL for BPH ASN Connection Correlation
+    // Detects traffic to known BPH ASNs, NiceNIC-registered domains, or Dynamic DNS abuse
+    #event_simpleName=DnsRequest OR #event_simpleName=NetworkConnectIP4
+    | bph_asn_match := destination_asn IN [
+        "AS152194", "AS214351", "AS213194", "AS214943", "AS34985",
+        "AS48589", "AS49217", "AS214940", "AS140224",
+        "AS200019", "AS49042", "AS45839"
+      ]
+    | nicenic_match := domain_registrar = /nicenic/i
+    | dyndns_match := DomainName = /\.(afraid\.org|mooo\.com|hopto\.org|zapto\.org|sytes\.net)$/i
+    | where bph_asn_match OR nicenic_match OR dyndns_match
+    | match_type := case {
+        bph_asn_match | "bph_asn";
+        nicenic_match | "nicenic_registrar";
+        dyndns_match  | "dynamic_dns";
+      }
+    | groupBy([ComputerName, DomainName, destination_asn, match_type], function=[
+        count(aid, as=connection_count),
+        collect([src_ip, dst_ip, answer])
+      ])
+    | sort(connection_count, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for BPH ASN Connection Correlation")`
+    `comment("Detects traffic to known BPH ASNs, NiceNIC domains, or Dynamic DNS abuse")`
+    index=flame_network sourcetype=flame:dns_monitoring
+    | lookup bph_asn_watchlist destination_asn OUTPUT bph_provider_name, bph_risk_level
+    | eval bph_asn_match = if(isnotnull(bph_provider_name), 1, 0)
+    | eval nicenic_match = if(like(domain_registrar, "%nicenic%"), 1, 0)
+    | eval dyndns_match = if(
+        match(query, "\.(afraid\.org|mooo\.com|hopto\.org|zapto\.org|sytes\.net)$"), 1, 0)
+    | where bph_asn_match=1 OR nicenic_match=1 OR dyndns_match=1
+    | eval match_type = case(
+        bph_asn_match=1, "bph_asn",
+        nicenic_match=1, "nicenic_registrar",
+        dyndns_match=1, "dynamic_dns")
+    | eval risk_category = case(
+        bph_asn_match=1 AND nicenic_match=1, "high",
+        bph_asn_match=1, "medium",
+        nicenic_match=1, "medium",
+        dyndns_match=1, "low")
+    | stats count AS connection_count dc(src_ip) AS unique_sources
+            values(query) AS domains values(destination_asn) AS asns
+            values(bph_provider_name) AS bph_providers
+            values(match_type) AS match_types
+      by src_ip
+    | sort - connection_count
+falsepositives:
+  - Legitimate websites incidentally hosted on BPH ASNs
+  - Security researchers investigating BPH infrastructure
+level: medium
+tags:
+  - attack.t1583.003
+  - attack.t1583.001
+  - cfpf.phase1.recon
+  - flame.bph
+  - flame.infrastructure

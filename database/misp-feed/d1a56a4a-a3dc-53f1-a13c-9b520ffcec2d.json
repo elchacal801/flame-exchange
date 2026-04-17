@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "d1a56a4a-a3dc-53f1-a13c-9b520ffcec2d",
+    "info": "FLAME: Automated Mule Account Infrastructure",
+    "date": "2026-03-20",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "ed317b6f-4204-525a-8a8b-0873352a22d3",
+        "type": "text",
+        "category": "Other",
+        "value": "automated-mule-accounts",
+        "comment": "Fraud type for TP-0059"
+      },
+      {
+        "uuid": "7382cfa2-bb4a-5c35-b29b-cf14382d04c1",
+        "type": "text",
+        "category": "Other",
+        "value": "money-laundering",
+        "comment": "Fraud type for TP-0059"
+      },
+      {
+        "uuid": "86dab667-d59a-5506-bc5d-4ccb881fb8bb",
+        "type": "text",
+        "category": "Other",
+        "value": "bot-driven-account-opening",
+        "comment": "Fraud type for TP-0059"
+      },
+      {
+        "uuid": "800c4504-d1ba-5cb2-afa8-1def7b1a695b",
+        "type": "text",
+        "category": "Other",
+        "value": "kyc-circumvention",
+        "comment": "Fraud type for TP-0059"
+      },
+      {
+        "uuid": "0f38bee2-d0a2-5e56-87c2-6f7eaba7960b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0059"
+      },
+      {
+        "uuid": "1dc58dc8-0858-5dfc-a364-f61b1fff9f42",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0059"
+      },
+      {
+        "uuid": "a9e160a9-b7e7-566b-ac5f-4d6930c13e3f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0059"
+      },
+      {
+        "uuid": "5ddb7b02-4068-5b7f-8a99-c538cdaf26c8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0059"
+      },
+      {
+        "uuid": "e1ca8a53-6030-587d-b33b-6daba56bdf94",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0059"
+      }
+    ]
+  }
+}

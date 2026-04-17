@@ -1,0 +1,155 @@
+title: Crypto-to-Cash Desk — Ephemeral Wallet and Unlicensed OTC Indicators
+id: b8f4c2d5-3e0a-4b9f-c7d2-6a1f9e3b8c4a
+status: experimental
+description: 'Detects crypto-to-cash desk operations that convert USDT to physical currency with
+  minimal or no KYC, generating fresh wallet addresses per transaction to defeat blockchain tracing.
+  These unlicensed OTC operations represent the final monetization layer in stablecoin laundering
+  pipelines, bridging the gap between on-chain cryptocurrency and usable physical cash. ICIJ
+  investigators documented such operations in Dubai and Eastern European cities during the Coin
+  Laundry investigation, with one desk processing $2 million in volume over 10 days on the TRON
+  network alone — and critically, that desk did not appear in any major blockchain analytics
+  provider attribution database (Chainalysis, TRM, Elliptic). The detection targets ephemeral
+  wallets (< 7 days old, < 3 prior transactions) receiving USDT from multiple distinct sources
+  on TRON, where the destination wallet is not attributed in any known analytics or exchange
+  Proof-of-Reserves database.
+
+  '
+date: 2026/03/30
+sigma_compatible: false
+native_query_required: true
+threat_paths:
+- TP-0078
+cfpf_phase: P5
+fraud_types:
+- crypto-laundering
+- money-laundering
+logsource:
+  product: crypto
+  category: blockchain_analytics
+  service: chain_monitoring
+detection:
+  selection:
+    token_symbol: USDT
+    chain: TRON
+    amount_usd|gte: 500
+  filter_ephemeral_wallet:
+    destination_wallet_age_days|lte: 7
+    destination_wallet_tx_count|lt: 3
+  filter_desk_aggregation:
+    destination_unique_senders_72h|gte: 5
+  filter_unattributed:
+    destination_in_por_dataset: false
+    destination_in_analytics_db: false
+  condition: selection AND filter_ephemeral_wallet AND (filter_desk_aggregation OR
+    filter_unattributed)
+  timeframe: 7d
+data_sources:
+  native_fields:
+  - transaction_hash
+  - from_address
+  - to_address
+  - amount_usd
+  - amount_crypto
+  - token_symbol
+  - chain
+  - block_number
+  - block_timestamp
+  enrichment_required:
+  - field: destination_wallet_age_days
+    source: Blockchain analytics — days since first transaction involving the destination
+      wallet address
+  - field: destination_wallet_tx_count
+    source: Blockchain analytics — total transaction count for the destination wallet
+      address at time of current transaction
+  - field: destination_unique_senders_72h
+    source: Blockchain analytics — count of distinct source wallet addresses that have
+      sent to the destination wallet in the preceding 72 hours
+  - field: destination_in_por_dataset
+    source: Cross-reference destination address against collected exchange Proof-of-Reserves
+      CSV datasets. False if address does not appear in any PoR dataset.
+  - field: destination_in_analytics_db
+    source: Cross-reference destination address against Chainalysis, TRM, Elliptic,
+      or Arkham Intelligence attribution databases. False if address is unattributed
+      in all checked databases.
+queries:
+  cql: |-
+    // CrowdStrike CQL for Crypto-to-Cash Desk Ephemeral Wallet Detection
+    // Detects unlicensed OTC desk patterns on TRON: ephemeral wallets receiving from multiple sources
+    token_symbol="USDT" chain="TRON" amount_usd>=500
+    destination_wallet_age_days<=7
+    destination_wallet_tx_count<3
+    | groupBy(to_address, function=[
+        count(distinct=from_address, as=unique_senders),
+        sum(amount_usd, as=total_volume),
+        collect([transaction_hash, from_address, amount_usd, @timestamp])
+      ], span=72h)
+    | unique_senders >= 5
+    | match(to_address, file="exchange_por_addresses.csv", field="address", strict=false, include=false)
+    | match(to_address, file="arkham_attributed.csv", field="address", strict=false, include=false)
+    | sort(total_volume, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for Crypto-to-Cash Desk Ephemeral Wallet Detection")`
+    `comment("Detects unlicensed OTC desk patterns on TRON")`
+    index=flame_blockchain sourcetype=flame:chain_monitoring
+      token_symbol="USDT" chain="TRON" amount_usd>=500
+      destination_wallet_age_days<=7
+      destination_wallet_tx_count<3
+    | lookup exchange_por_addresses to_address AS to_address OUTPUT exchange_name AS por_match
+    | lookup arkham_attributions to_address AS to_address OUTPUT entity_name AS arkham_match
+    | where isnull(por_match) AND isnull(arkham_match)
+    | bin _time span=72h
+    | stats dc(from_address) AS unique_senders,
+            sum(amount_usd) AS total_volume,
+            count AS tx_count,
+            values(from_address) AS source_wallets
+      BY to_address, _time
+    | where unique_senders >= 5
+    | sort - total_volume
+  sql: |-
+    -- SQL for Crypto-to-Cash Desk Ephemeral Wallet Detection
+    -- Detects unlicensed OTC desk patterns: ephemeral wallets receiving from multiple sources
+    SELECT
+      t.to_address AS desk_wallet,
+      COUNT(DISTINCT t.from_address) AS unique_senders,
+      SUM(t.amount_usd) AS total_volume_usd,
+      MIN(t.block_timestamp) AS first_tx,
+      MAX(t.block_timestamp) AS last_tx,
+      w.first_seen_date,
+      w.total_transaction_count
+    FROM transactions t
+    JOIN wallet_metadata w ON t.to_address = w.wallet_address
+    LEFT JOIN proof_of_reserves por ON t.to_address = por.wallet_address
+    LEFT JOIN arkham_attributions ark ON t.to_address = ark.wallet_address
+    WHERE t.token_symbol = 'USDT'
+      AND t.chain = 'TRON'
+      AND t.amount_usd >= 500
+      AND t.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '7 days'
+      AND w.total_transaction_count < 3
+      AND w.first_seen_date > CURRENT_DATE - 7
+      AND por.wallet_address IS NULL
+      AND ark.wallet_address IS NULL
+    GROUP BY t.to_address, w.first_seen_date, w.total_transaction_count
+    HAVING COUNT(DISTINCT t.from_address) >= 5
+    ORDER BY total_volume_usd DESC
+falsepositives:
+- Newly created wallets for legitimate P2P trading on LocalBitcoins or Paxful
+- Payment processor wallets during initial operational period
+- DeFi protocol wallets receiving from multiple depositors shortly after deployment
+level: high
+references:
+- ICIJ Coin Laundry Investigation (2024-2025) — field visits to crypto-to-cash desks
+  in Dubai and Eastern Europe
+- ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026) — $2M
+  volume from single unattributed TRON desk in 10 days
+- FinCEN Advisory on Illicit Activity Involving Convertible Virtual Currency (May 2019)
+tags:
+- cfpf.phase5.monetization
+- attack.t1657
+- crypto-to-cash
+- ephemeral-wallet
+- otc-desk
+- unlicensed-exchange
+- tron-usdt
+- attribution-gap
+- physical-layer
+- TP-0078

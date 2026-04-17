@@ -33,8 +33,8 @@ data_sources:
   - auth_result
   - event_type
 queries:
-  logscale: |-
-    // LogScale LQL for Combo List Iteration Pattern
+  cql: |-
+    // CrowdStrike CQL for Combo List Iteration Pattern
     // Repository: flame-banking-auth-logs
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count(distinct username) by source_ip > 15 and stddev(inter_event_time) by source_ip < 500ms

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.134382+00:00",
+    "generated_at": "2026-04-09T19:40:01.653333+00:00",
     "total": 1
   },
   "data": {
@@ -39,7 +39,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Login Velocity Anomaly\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_internal | count() by source_ip > 50\nevent_type=\"login_attempt\"\n(source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| groupBy(source_ip, function=count(as=event_count))\n| event_count > 50",
+      "cql": "// CrowdStrike CQL for Login Velocity Anomaly\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_internal | count() by source_ip > 50\nevent_type=\"login_attempt\"\n(source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| groupBy(source_ip, function=[count(as=event_count)])\n| event_count > 50",
       "splunk": "`comment(\"Splunk SPL for Login Velocity Anomaly\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_internal | count() by source_ip > 50\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" (source_ip=\"10.0.0.0/8\" OR source_ip=\"172.16.0.0/12\" OR source_ip=\"192.168.0.0/16\")\n| stats count as event_count by source_ip\n| where event_count > 50"
     },
     "references": [

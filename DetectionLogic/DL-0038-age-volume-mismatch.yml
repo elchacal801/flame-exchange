@@ -44,15 +44,15 @@ data_sources:
   - field: account_age_days
     source: Account analytics enrichment (account opening date lookup)
 queries:
-  logscale: |-
-    // LogScale LQL for Account Age vs Transaction Volume Mismatch
+  cql: |-
+    // CrowdStrike CQL for Account Age vs Transaction Volume Mismatch
     // Repository: flame-banking-transaction-monitoring
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection and selection_high_volume | count() by account_id > 20
     account_age_days<90
     (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT" OR event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT" OR event_type="INTERNAL_TRANSFER")
     peer_comparison="{'metric': 'transaction_count', 'threshold': 'percentile_95'}"
-    | groupBy(account_id, function=count(as=event_count))
+    | groupBy(account_id, function=[count(as=event_count)])
     | event_count > 20
   splunk: |-
     `comment("Splunk SPL for Account Age vs Transaction Volume Mismatch")`

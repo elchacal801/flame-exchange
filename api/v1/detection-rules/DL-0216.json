@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.682066+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "b6d2e75a-1c8f-4a3e-f5b7-3d0c2e6a9b18",
+    "dl_id": "DL-0216",
+    "title": "Government Impersonation — Multi-Channel Payment Under Duress Indicators",
+    "status": "experimental",
+    "description": "Detects government impersonation APP fraud by identifying payments with government agency references made via crypto, wire, or prepaid channels to non-historical payees. FBI IC3 2025 reported $797.9 million in losses from 32,424 government impersonation complaints — an 87% increase in complaints and 97% increase in losses from 2024. The payment channel distribution is distinctive: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%. This rule targets payment references containing government agency names or legal terminology from customers with no prior government- related payment history, as legitimate government payments follow established patterns and channels.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_payment": {
+        "transaction_type": [
+          "wire_transfer",
+          "ach_credit",
+          "crypto_purchase",
+          "prepaid_card_purchase",
+          "gift_card_purchase"
+        ]
+      },
+      "selection_gov_reference": {
+        "payment_reference|contains": [
+          "IRS",
+          "SSA",
+          "Social Security",
+          "DOJ",
+          "FBI",
+          "DEA",
+          "warrant",
+          "penalty",
+          "tax lien",
+          "federal",
+          "treasury",
+          "immigration",
+          "customs",
+          "marshal"
+        ]
+      },
+      "filter_non_historical": {
+        "payee_in_historical_pattern": false
+      },
+      "condition": "selection_payment AND selection_gov_reference AND filter_non_historical"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "account_holder_age",
+        "transaction_type",
+        "transaction_amount",
+        "transaction_date",
+        "payment_reference",
+        "payee_id",
+        "payee_name"
+      ],
+      "enrichment_required": [
+        {
+          "field": "payee_in_historical_pattern",
+          "source": "Boolean — whether payee exists in 12-month historical payment network"
+        }
+      ],
+      "derived_fields": [
+        "payment_channel_diversity_72h",
+        "total_gov_reference_payments_7d"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Government Impersonation Payment Detection\n// Detects payments with government references to non-historical payees\n(transaction_type=\"wire_transfer\" OR transaction_type=\"ach_credit\" OR transaction_type=\"crypto_purchase\" OR transaction_type=\"prepaid_card_purchase\" OR transaction_type=\"gift_card_purchase\")\npayment_reference=/IRS|SSA|Social.Security|DOJ|FBI|DEA|warrant|penalty|tax.lien|federal|treasury|immigration|customs|marshal/i\npayee_in_historical_pattern=\"false\"\n| groupBy(account_id, function=[\n    collect([account_holder_age, transaction_type, transaction_amount,\n             transaction_date, payment_reference, payee_name]),\n    count(transaction_id, as=payment_count),\n    sum(transaction_amount, as=total_amount)\n  ])\n| sort(total_amount, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Government Impersonation Payment Detection\")`\n`comment(\"Detects payments with government references to non-historical payees\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (transaction_type=\"wire_transfer\" OR transaction_type=\"ach_credit\"\n   OR transaction_type=\"crypto_purchase\" OR transaction_type=\"prepaid_card_purchase\"\n   OR transaction_type=\"gift_card_purchase\")\n  payee_in_historical_pattern=\"false\"\n| regex payment_reference=\"(?i)(IRS|SSA|Social.Security|DOJ|FBI|DEA|warrant|penalty|tax.lien|federal|treasury|immigration|customs|marshal)\"\n| stats count AS payment_count, sum(transaction_amount) AS total_amount,\n    dc(transaction_type) AS channel_diversity,\n    values(transaction_type) AS channels,\n    values(payment_reference) AS references,\n    values(payee_name) AS payees\n    by account_id, account_holder_age\n| eval risk_score = case(\n    channel_diversity >= 2 AND total_amount > 10000, \"critical\",\n    account_holder_age >= 60 AND total_amount > 5000, \"critical\",\n    total_amount > 10000, \"high\",\n    1=1, \"medium\")\n| sort - total_amount"
+    },
+    "references": [
+      "FBI IC3, 2025 Internet Crime Report — Government impersonation: 32,424 complaints, $797.9M losses (87% increase)",
+      "FBI IC3 PSA250418, April 18, 2025 — FBI Warns of Scammers Impersonating the IC3",
+      "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+      "https://www.ic3.gov/PSA/2025/PSA250418"
+    ],
+    "threat_path_ids": [
+      "TP-0027",
+      "TP-0084"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "impersonation",
+      "social-engineering"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.authorized-push-payment",
+      "flame.government-impersonation",
+      "flame.social-engineering"
+    ],
+    "falsepositives": [
+      "Legitimate tax payments to IRS via authorized payment processors",
+      "Attorney or legal service payments referencing government cases",
+      "Immigration service fees paid through authorized channels",
+      "Court-ordered payments referencing federal agencies"
+    ]
+  }
+}

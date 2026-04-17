@@ -1,0 +1,68 @@
+{
+    "id": "EP-0008",
+    "title": "Treasury Management ATO via Malvertising and Vishing",
+    "description": "Simulates a multi-phase account takeover targeting commercial banking treasury management platforms. The adversary deploys search engine malvertising to harvest credentials, conducts vishing calls to treasury staff to obtain MFA tokens and authorization, modifies beneficiary information, initiates unauthorized wire transfers, and extracts funds through mule accounts. This playbook validates detection coverage across all five CFPF phases for the TP-0001 threat path.",
+    "author": "FLAME Project",
+    "date": "2026-03-27",
+    "target_threat_paths": ["TP-0001"],
+    "cfpf_phases": ["P1", "P2", "P3", "P4", "P5"],
+    "fraud_types": ["account-takeover", "vishing", "wire-fraud", "malvertising"],
+    "sectors": ["banking"],
+    "prerequisites": {
+        "environment": "Fraud detection test environment with treasury management platform, wire transfer processing, call center telephony systems, and domain monitoring capabilities. Requires simulated search engine advertising infrastructure and spoofed domain hosting.",
+        "tools": ["Search engine ad platform (test mode)", "Domain registration and hosting for spoofed pages", "VoIP telephony with caller ID spoofing", "Treasury management platform (test environment)", "Wire transfer monitoring system", "Transaction monitoring platform"],
+        "access_required": "Test-environment access to treasury management platform, wire transfer processing systems, call center interaction logs, domain monitoring tools, and transaction monitoring dashboards."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Deploy Malvertising Infrastructure",
+            "action": "Register a lookalike domain mimicking the target bank's treasury management login page (typosquat or homoglyph). Purchase search engine ads targeting keywords such as 'bank name treasury login' and 'bank name wire transfer portal'. Configure the spoofed page to harvest credentials and relay MFA tokens in real time. Establish callback phone infrastructure with caller ID spoofing to display the bank's legitimate phone number.",
+            "automation": null,
+            "expected_result": "Domain monitoring systems should flag the newly registered lookalike domain via certificate transparency logs and WHOIS anomaly detection. Brand protection services should alert on search ads impersonating the bank.",
+            "detection_rule_ref": "DL-0042"
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Conduct Vishing Call to Treasury Staff",
+            "action": "After a simulated customer clicks the malvertising ad and enters credentials on the spoofed page, initiate a vishing call to the customer impersonating bank staff. Use the pretext of a detected suspicious activity alert requiring identity verification. During the call, collect MFA tokens, security question answers, and obtain verbal authorization for account modifications. Alternatively, call the bank's call center impersonating the customer using harvested information to pass authentication.",
+            "automation": null,
+            "expected_result": "Call center interaction logs should capture the suspicious call pattern. Authentication systems should flag the credential usage from an anomalous IP/device associated with the spoofed domain. MFA provider logs should show token usage from an unexpected source.",
+            "detection_rule_ref": "DL-0005"
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P3",
+            "title": "Modify Beneficiary and Account Settings",
+            "action": "Using the compromised credentials and socially-engineered access, log into the treasury management platform. Add a new beneficiary account (the mule account) to the wire transfer recipient list. Modify notification preferences to suppress transaction alerts to the legitimate account holder. Change contact information to hinder callback verification. Optionally add a new authorized user or register a new MFA device for persistence.",
+            "automation": null,
+            "expected_result": "Account administration audit logs should flag the beneficiary change from an unusual IP or device. Beneficiary change velocity alerting should trigger. Alert preference modifications before high-value transactions should generate a detection event. New MFA device registration from an unrecognized device should be flagged.",
+            "detection_rule_ref": "DL-0003"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P4",
+            "title": "Initiate Unauthorized Wire Transfer",
+            "action": "Using the modified authorized access on the treasury management platform, initiate one or more wire transfers to the newly added mule account beneficiary. Structure the transfers to either stay just below institutional review thresholds or time them for end-of-day processing when manual review capacity is reduced. Ensure transfers target the new beneficiary added in the previous step, with no corresponding email trail or dual-authorization log entry.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should flag wire transfers to a new beneficiary that was added within the preceding 24 hours. Amount clustering near threshold limits should trigger alerts. The combination of recent account modifications plus high-value wire should generate a high-severity composite alert.",
+            "detection_rule_ref": "DL-0009"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P5",
+            "title": "Extract Funds via Mule Account Layering",
+            "action": "Once funds arrive at the domestic mule account, rapidly move them through additional layers: transfer to secondary mule accounts, convert to cryptocurrency via exchanges, or initiate international wire transfers to jurisdictions with limited recovery options. Execute withdrawals and transfers within 24-48 hours to minimize the recovery window. Simulate the multi-hop wire pattern that characterizes organized mule network operations.",
+            "automation": null,
+            "expected_result": "Mule account velocity detection should flag the rapid subsequent withdrawals and transfers from the receiving account. Multi-hop wire patterns should trigger AML alerts. Crypto on-ramp activity at receiving accounts should be flagged. SAR cross-referencing should identify destination accounts with recent opening dates and no legitimate transaction history.",
+            "detection_rule_ref": "DL-0001"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0001", "DL-0003", "DL-0005", "DL-0009", "DL-0042"],
+        "alerts_generated": "Domain monitoring alerts on lookalike domain registration and malvertising; authentication anomaly alerts on credential usage from spoofed infrastructure; call center interaction alerts correlated with account modifications; beneficiary change velocity alerts on new payee addition followed by wire transfer within short time window; transaction monitoring alerts on wire transfers to new beneficiaries with recent account changes; mule account velocity alerts on rapid fund movement at destination accounts; AML alerts on multi-hop wire patterns and crypto conversion.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for treasury management ATO via malvertising and vishing. Validates domain monitoring and brand protection at recon (P1), credential harvesting and vishing detection at initial access (P2), beneficiary change correlation and alert suppression monitoring at positioning (P3), new-beneficiary wire transfer anomaly detection at execution (P4), and mule account velocity and fund layering detection at monetization (P5)."
+    }
+}

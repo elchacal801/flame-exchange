@@ -28,7 +28,7 @@ mitre_attack:
   - T1656      # Impersonation
   - T1657      # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT011.001", "FT016", "FT028", "FT003", "FT007.009", "FT008.002", "FT052.003", "FT006.001", "FT017", "FT031"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1006.002", "F1025.002", "F1032", "F1034", "F1040.002", "T1110.001", "T1555", "F1004", "F1016", "F1031"]
 groupib_stages:               # Group-IB Fraud Matrix (reference)
   - "Reconnaissance"
   - "Resource Development"
@@ -68,6 +68,8 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids:
+  - BL-0012
 tags:
   - treasury-management
   - commercial-banking
@@ -297,6 +299,8 @@ tags:
 
 - **FBI IC3 2024 Internet Crime Report**: Business Email Compromise and account takeover remain top financial loss categories, with BEC alone accounting for $2.9B+ in reported losses. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 
+- **FBI IC3 2025 Internet Crime Report**: Account Takeover (ATO) generated approximately 4,700 complaints and $359.7 million in losses. The Financial Fraud Kill Chain (FFKC) was expanded in 2025 to cover ATO (previously BEC-focused). ATO-related FFKC incidents can contain upwards of 50+ transactions to different recipient accounts at multiple banks happening simultaneously via ACH. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
+
 - **BankInfoSecurity — "New Framework Targets Rising Financial Crime Threats" (2025)**: Coverage of the CFPF launch, noting that cyber and fraud teams "traditionally get involved at different points in the attack lifecycle." [Link](https://www.bankinfosecurity.com/new-framework-targets-rising-financial-crime-threats-a-28112)
 
 ---
@@ -311,6 +315,8 @@ This threat path represents a "textbook" CFPF case — it's the framework's flag
 
 **Emerging variants**: Recent reporting suggests threat actors are beginning to use AI-generated voice deepfakes in the vishing phase (P2), making caller impersonation more convincing. This raises the effectiveness of the social engineering component and reduces the skill barrier for new entrants.
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported approximately 4,700 ATO complaints and $359.7 million in losses. Significantly, the Financial Fraud Kill Chain (FFKC) was expanded in 2025 to cover ATO (previously BEC-focused). ATO-related FFKC incidents can contain upwards of 50+ transactions to different recipient accounts at multiple banks happening simultaneously via ACH — underscoring the speed and scale at which compromised treasury management accounts can be drained.
+
 **Connection to mule networks**: The monetization phase (P5) connects this threat path to broader organized crime infrastructure. Mule recruitment campaigns (romance scams, fake job postings) represent a separate but interconnected threat path that feeds into this one. See also: [TP-XXXX: Money Mule Recruitment Networks — when created].
 
 ---
@@ -321,3 +327,4 @@ This threat path represents a "textbook" CFPF case — it's the framework's flag
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission, adapted from FS-ISAC CFPF case study |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — ATO $359.7M losses, FFKC expansion to cover ATO |

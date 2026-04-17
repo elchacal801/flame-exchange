@@ -7,7 +7,7 @@ Processes all DL-XXXX rules and applies:
 2. native_query_required flag (where applicable)
 3. Condition syntax fixes (extract aggregation to queries block)
 4. data_sources block (native_fields + enrichment_required)
-5. queries block (LogScale LQL + Splunk SPL) for non-compatible rules
+5. queries block (CrowdStrike CQL + Splunk SPL) for non-compatible rules
 6. Improved falsepositives
 7. Framework tagging validation
 """
@@ -353,8 +353,8 @@ def get_splunk_index(logsource):
     return idx, st
 
 
-def get_logscale_repo(logsource):
-    """Get LogScale repo for a logsource."""
+def get_cql_repo(logsource):
+    """Get CrowdStrike NGSIEM repo for a logsource."""
     product = logsource.get('product', '')
     service = logsource.get('service', '')
 
@@ -362,10 +362,10 @@ def get_logscale_repo(logsource):
     return f'flame-{product.replace("_", "-")}-{service.replace("_", "-")}'
 
 
-def generate_logscale_query(data, original_condition, detection):
-    """Generate a LogScale LQL query for non-compatible rules."""
+def generate_cql_query(data, original_condition, detection):
+    """Generate a CrowdStrike CQL query for non-Sigma-compatible rules."""
     logsource = data.get('logsource', {})
-    repo = get_logscale_repo(logsource)
+    repo = get_cql_repo(logsource)
 
     # Build the base filter from selections
     filters = []
@@ -431,26 +431,26 @@ def generate_logscale_query(data, original_condition, detection):
             agg_lines.append(f'| groupBy({group}, function=count(as=event_count))')
             agg_lines.append(f'| event_count {op} {threshold}')
     elif 'near' in cond.lower():
-        agg_lines.append(f'// Temporal correlation — use join() or selfJoinFilter() in LogScale')
+        agg_lines.append(f'// Temporal correlation — use join() or selfJoinFilter() in CrowdStrike NGSIEM')
         agg_lines.append(f'// to correlate the selection events within the timeframe')
         # Extract the by-field
         by_match = re.search(r'by\s+(\w+)', cond)
         by_field = by_match.group(1) if by_match else 'account_id'
         agg_lines.append(f'| selfJoinFilter({by_field}, where=[...])')
     elif 'followed_by' in cond.lower():
-        agg_lines.append(f'// Sequential correlation — use LogScale sequence detection')
+        agg_lines.append(f'// Sequential correlation — use CrowdStrike NGSIEM sequence detection')
         by_match = re.search(r'on\s+(\w+)', cond)
         by_field = by_match.group(1) if by_match else 'user_id'
         within_match = re.search(r'within\s+(\w+)', cond)
         window = within_match.group(1) if within_match else timeframe
         agg_lines.append(f'// Correlate stages sequentially on {by_field} within {window}')
     elif 'temporal(' in cond.lower():
-        agg_lines.append(f'// Temporal ordered correlation — use join() in LogScale')
+        agg_lines.append(f'// Temporal ordered correlation — use join() in CrowdStrike NGSIEM')
         by_match = re.search(r'by=(\w+)', cond)
         by_field = by_match.group(1) if by_match else 'account_id'
         agg_lines.append(f'| join({{...}}, field={by_field}, mode=inner)')
     elif 'compare(' in cond.lower():
-        agg_lines.append(f'// Statistical comparison against baseline — use bucket() + stats in LogScale')
+        agg_lines.append(f'// Statistical comparison against baseline — use bucket() + stats in CrowdStrike NGSIEM')
         agg_lines.append(f'| bucket(span=1d, field=@timestamp, function=count(as=daily_count))')
         agg_lines.append(f'// Compare daily_count against 30d rolling mean + 3 stddev')
     elif 'stddev(' in cond.lower():
@@ -463,7 +463,7 @@ def generate_logscale_query(data, original_condition, detection):
 
     agg_section = '\n'.join(agg_lines)
 
-    query = f"""// LogScale LQL for {data.get('title', 'Unknown')}
+    query = f"""// CrowdStrike CQL for {data.get('title', 'Unknown')}
 // Repository: {repo}
 // Aggregation that cannot be expressed in Sigma:
 // Original condition: {cond.strip()[:200]}
@@ -666,13 +666,13 @@ def remediate_rule(filepath):
     # 5. Add queries block for non-compatible rules
     if not sigma_ok:
         changes['queries_added'] = True
-        changes['queries_platforms'] = ['logscale', 'splunk']
+        changes['queries_platforms'] = ['cql', 'splunk']
 
-        lql = generate_logscale_query(data, original_condition, detection)
+        lql = generate_cql_query(data, original_condition, detection)
         spl = generate_splunk_query(data, original_condition, detection)
 
         data['queries'] = {
-            'logscale': LiteralStr(lql),
+            'cql': LiteralStr(lql),
             'splunk': LiteralStr(spl),
         }
 

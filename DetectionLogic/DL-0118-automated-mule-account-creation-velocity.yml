@@ -47,8 +47,8 @@ data_sources:
   - field: kyc_document_metadata_anomaly
     source: Document analysis enrichment (metadata consistency and template detection)
 queries:
-  logscale: |-
-    // LogScale LQL for Automated Mule Account Creation Velocity
+  cql: |-
+    // CrowdStrike CQL for Automated Mule Account Creation Velocity
     // Repository: flame-banking-account-onboarding
     // Aggregation that cannot be expressed in Sigma
     application_duration_seconds<120 OR mouse_events_count=0 OR scroll_events_count=0
@@ -82,6 +82,7 @@ falsepositives:
 - Corporate onboarding processes using automated form-filling
 level: high
 tags:
+- attack.t1589
 - cfpf.phase2.initial_access
 - mule-account
 - bot-detection

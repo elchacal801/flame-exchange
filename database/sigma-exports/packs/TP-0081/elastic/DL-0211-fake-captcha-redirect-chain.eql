@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(process_parent:/chrome.exe|firefox.exe|msedge.exe|brave.exe|opera.exe/ AND process_child:/powershell.exe|cmd.exe|mshta.exe/ AND (referrer_page:(*captcha* OR *verify* OR *check* OR *human*))) AND (max_seconds:60 AND (sequence:(browser_visit_suspicious_page OR clipboard_execution)))

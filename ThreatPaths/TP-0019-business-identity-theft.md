@@ -27,7 +27,7 @@ mitre_attack:
   - T1566  # Phishing
   - T1589  # Gather Victim Identity Information
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT052", "FT011.002", "FT008.002", "FT003", "FT007.009", "FT026.001", "FT005.001", "FT016", "FT020", "FT028"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "F1005.006", "F1022", "T1110.001", "T1555", "F1004", "F1027", "F1029", "F1031", "F1032"]
 groupib_stages:
   - "Reconnaissance"
   - "Account Access"
@@ -58,6 +58,7 @@ regulatory_refs:
   - REG-FINCEN-CDD
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids: []
 tags:
   - corporate-hijacking
   - commercial-banking
@@ -162,6 +163,20 @@ Business Identity Theft (or Corporate Hijacking) involves threat actors imperson
 | P4 | Out-of-band verification (using historical phone numbers from credit bureaus, not application data) prior to funding | Preventive | Commercial Ops |
 
 ---
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Organizational commitment to enhanced due diligence for commercial account opening; investment in Secretary of State data integration and beneficial ownership verification capabilities |
+| ASSESS | Level 3 (Established) | Risk assessment of commercial lending and account opening processes for corporate hijacking exposure; evaluation of reliance on public filing data without historical verification; gap analysis of EIN and state filing validation procedures |
+| PLAN | Level 3 (Established) | Detection strategy incorporating Secretary of State amendment monitoring, domain age verification, and cross-referencing of beneficial ownership against FinCEN BOI database; defined escalation protocols for applications with recent state filing changes |
+| ACT | Level 3 (Established) | Automated domain age checks on commercial application email addresses; Secretary of State API integration flagging recent officer/agent changes within 60 days of application; out-of-band verification using historical phone numbers from credit bureaus rather than application-provided contacts |
+| MONITOR | Level 3 (Established) | Ongoing monitoring of existing commercial customers for state filing amendments indicating potential hijacking; alerts on corporate customer name matches against newly registered lookalike domains; post-funding surveillance of draw-down velocity on new commercial accounts |
+| REPORT | Level 3 (Established) | SAR filing workflows for suspected corporate hijacking; notification procedures for legitimate business owners whose identities may have been compromised; coordination with SBA OIG and FinCEN for business identity theft reporting |
+| IMPROVE | Level 2 (Developing) | Post-incident review of corporate hijacking cases to identify gaps in underwriting verification; periodic reassessment of domain age and filing recency thresholds based on evolving threat patterns |
 
 ## Detection Approaches
 

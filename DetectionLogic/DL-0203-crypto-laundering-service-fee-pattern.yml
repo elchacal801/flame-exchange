@@ -1,0 +1,101 @@
+title: Crypto Laundering Service Fee Pattern — Percentage-Based Deduction on Transfers
+id: 70c9cb43-a468-41b9-9040-d91d8ec70394
+status: experimental
+description: >
+  Detects cryptocurrency transfer patterns consistent with laundering service
+  fee structures. Illicit crypto exchange services charge 2.8%-8.5% base fees
+  plus a 4% "dirty funds" surcharge, resulting in outbound amounts that are
+  consistently 93-97% of inbound amounts. When a wallet receives cryptocurrency
+  and forwards approximately 93-97% to another address within 24 hours — retaining
+  3-7% as a service fee — this is a strong indicator of a crypto mixing or cashout
+  service. The retained percentage serves as the service operator's commission.
+  Sourced from Cybercrime Diaries undercover exchange contact research (June 2025).
+
+date: 2026/03/30
+sigma_compatible: false
+native_query_required: true
+threat_paths:
+  - TP-0078
+  - TP-0049
+cfpf_phase: P4
+fraud_types:
+  - crypto-laundering
+  - crypto-laundering-infrastructure
+  - money-laundering
+logsource:
+  product: crypto
+  category: blockchain_analytics
+  service: transaction_monitoring
+detection:
+  selection:
+    token_symbol:
+      - USDT
+      - USDC
+      - BTC
+    amount_usd|gte: 5000
+  timeframe: 24h
+  condition: >
+    selection | group by to_address |
+    where outbound_amount / inbound_amount between 0.93 and 0.97
+    and outbound_count >= 1
+    and inbound_count >= 1
+  note: >
+    The 93-97% forwarding ratio reflects documented fee structures:
+    ~3.5% base + 4% dirty surcharge = 7.5% (93% forwarded) on the high end;
+    ~2.8% base + 0% surcharge = 2.8% (97% forwarded) on the low end for
+    "clean" funds. The pattern is strongest when: (a) inbound and outbound occur
+    within 24h, (b) the receiving wallet has < 30 days of history, (c) the wallet
+    performs this pattern across multiple distinct source wallets, and (d) the
+    retained percentage is consistent across transactions (service fee, not random).
+    Cross-reference with DL-0197 ephemeral wallet detection.
+falsepositives:
+  - Payment processors forwarding funds minus legitimate transaction fees
+  - DEX aggregators routing trades with slippage/fees
+  - Legitimate escrow services releasing funds minus commission
+level: medium
+references:
+  - Cybercrime Diaries undercover exchange contact research (June 2025)
+  - FATF Guidance on Virtual Assets and Virtual Asset Service Providers
+  - Chainalysis Crypto Crime Report 2025 — mixer/tumbler fee structures
+tags:
+  - cfpf.p4.execution
+  - attack.t1657
+  - flame.shared
+  - crypto-laundering
+  - money-laundering
+  - fee-pattern
+  - illicit-exchange
+  - TP-0078
+  - TP-0049
+queries:
+  sql: |-
+    WITH wallet_flows AS (
+      SELECT
+        wallet_address,
+        SUM(CASE WHEN direction = 'inbound' THEN amount_usd ELSE 0 END) AS total_inbound,
+        SUM(CASE WHEN direction = 'outbound' THEN amount_usd ELSE 0 END) AS total_outbound,
+        COUNT(CASE WHEN direction = 'inbound' THEN 1 END) AS inbound_count,
+        COUNT(CASE WHEN direction = 'outbound' THEN 1 END) AS outbound_count,
+        MIN(first_seen) AS wallet_age_start
+      FROM blockchain_transactions
+      WHERE token_symbol IN ('USDT', 'USDC', 'BTC')
+        AND amount_usd >= 5000
+        AND block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '7 days'
+      GROUP BY wallet_address
+    )
+    SELECT
+      wallet_address,
+      total_inbound,
+      total_outbound,
+      ROUND(total_outbound / NULLIF(total_inbound, 0), 4) AS forwarding_ratio,
+      ROUND((1 - total_outbound / NULLIF(total_inbound, 0)) * 100, 2) AS retained_pct,
+      inbound_count,
+      outbound_count,
+      wallet_age_start
+    FROM wallet_flows
+    WHERE total_inbound > 0
+      AND total_outbound > 0
+      AND (total_outbound / total_inbound) BETWEEN 0.93 AND 0.97
+      AND inbound_count >= 1
+      AND outbound_count >= 1
+    ORDER BY total_inbound DESC

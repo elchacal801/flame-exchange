@@ -8,6 +8,9 @@ Detection rules mapped to **Agentic Commerce Fraud**.
 |---------|-------|-------|-------|
 | DL-0085 | Agent Intent Manipulation — Purchase Divergence from User Intent | high | P3 |
 | DL-0086 | Agent Transaction Velocity Anomaly | medium | P4 |
+| DL-0124 | UCP Cart Mandate Gift Card Injection via Indirect Prompt Injection | critical | P3 |
+| DL-0125 | UCP Returns Logic Hijacking — Void Return and Verify Step Bypass | critical | P4 |
+| DL-0126 | Indirect Prompt Injection in UCP Agent Browsing Content | critical | P2 |
 
 ## Formats
 

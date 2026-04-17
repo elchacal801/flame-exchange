@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:03.518153+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "b66aa9c6-3803-4edb-8c8b-3c139fa2ff0a",
+    "dl_id": "DL-0156",
+    "title": "Never-Pay Pattern — Immediate Max Utilization with Zero Payments",
+    "status": "experimental",
+    "description": "Detects new credit accounts with immediate high utilization and zero payment activity after 60 days — classic \"never-pay\" first-party fraud where the consumer opens an account with no intent to pay. Unlike bust-out schemes that involve a credit nurturing phase, never-pay actors maximize utilization immediately after account opening and make no payments whatsoever. This pattern is distinguishable from legitimate new account activity because at least one billing cycle has passed with zero payment response. The never-pay variant accounts for a significant share of first-party fraud losses, particularly in unsecured credit products.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "account_type": [
+          "consumer_credit",
+          "credit_card"
+        ]
+      },
+      "filter_new_account": {
+        "account_age_days|lte": 90
+      },
+      "filter_high_utilization": {
+        "current_utilization_pct|gte": 75
+      },
+      "filter_zero_payments": {
+        "total_payments_made": 0
+      },
+      "filter_billing_cycle": {
+        "billing_cycles_elapsed|gte": 1
+      },
+      "condition": "selection AND filter_new_account AND filter_high_utilization AND filter_zero_payments AND filter_billing_cycle\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "credit_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "account_type",
+        "credit_limit",
+        "current_balance",
+        "current_utilization_pct",
+        "account_open_date",
+        "account_age_days",
+        "total_payments_made"
+      ],
+      "enrichment_required": [
+        {
+          "field": "account_age_days",
+          "source": "Days since account opening (derived from account_open_date)"
+        },
+        {
+          "field": "billing_cycles_elapsed",
+          "source": "Count of completed billing cycles since account opening"
+        },
+        {
+          "field": "total_payments_made",
+          "source": "Sum of all payment transactions on the account"
+        }
+      ],
+      "derived_fields": [
+        "days_to_max_utilization",
+        "spend_velocity_per_day"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Never-Pay Pattern\n// Detects new accounts with immediate high utilization and zero payments\n(account_type=\"consumer_credit\" OR account_type=\"credit_card\")\naccount_age_days<=90\ncurrent_utilization_pct>=75\ntotal_payments_made=0\nbilling_cycles_elapsed>=1\n| days_to_max_utilization := account_age_days\n| spend_velocity_per_day := current_balance / account_age_days\n| groupBy(account_id, function=[\n    collect([credit_limit, current_balance, current_utilization_pct,\n             account_age_days, billing_cycles_elapsed,\n             spend_velocity_per_day, account_open_date])\n  ])\n| sort(current_utilization_pct, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Never-Pay Pattern\")`\n`comment(\"Detects new accounts with immediate high utilization and zero payments\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  (account_type=\"consumer_credit\" OR account_type=\"credit_card\")\n  account_age_days<=90\n  current_utilization_pct>=75\n  total_payments_made=0\n  billing_cycles_elapsed>=1\n| eval spend_velocity = round(current_balance / account_age_days, 2)\n| eval risk_score = case(\n    current_utilization_pct >= 95 AND billing_cycles_elapsed >= 2, \"critical\",\n    current_utilization_pct >= 85, \"high\",\n    1=1, \"medium\")\n| table account_id, account_type, credit_limit, current_balance,\n        current_utilization_pct, account_age_days, billing_cycles_elapsed,\n        spend_velocity, account_open_date, risk_score\n| sort - current_utilization_pct",
+      "sql": "-- SQL for Never-Pay Pattern\n-- Detects new accounts with immediate high utilization and zero payments\nSELECT\n  a.account_id,\n  a.account_type,\n  a.credit_limit,\n  a.current_balance,\n  a.current_utilization_pct,\n  DATEDIFF(DAY, a.account_open_date, CURRENT_DATE) AS account_age_days,\n  b.billing_cycles_elapsed,\n  ROUND(a.current_balance / NULLIF(DATEDIFF(DAY, a.account_open_date, CURRENT_DATE), 0), 2) AS spend_velocity_per_day,\n  a.account_open_date\nFROM credit_accounts a\nJOIN billing_cycle_summary b ON a.account_id = b.account_id\nLEFT JOIN payments p ON a.account_id = p.account_id\nWHERE a.account_type IN ('consumer_credit', 'credit_card')\n  AND DATEDIFF(DAY, a.account_open_date, CURRENT_DATE) <= 90\n  AND a.current_utilization_pct >= 75\n  AND p.account_id IS NULL\n  AND b.billing_cycles_elapsed >= 1\nORDER BY a.current_utilization_pct DESC"
+    },
+    "references": [
+      "LexisNexis Risk Solutions, Global State of Fraud and Identity Report (2026)",
+      "Aite-Novarica Group, First-Party Fraud: The Growing Challenge (2023)",
+      "OCC, Comptroller's Handbook: Credit Card Lending — Early-Stage Delinquency Indicators"
+    ],
+    "threat_path_ids": [
+      "TP-0016"
+    ],
+    "fraud_types": [
+      "bust-out",
+      "credit-card-fraud",
+      "first-party-fraud"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.first-party-fraud",
+      "flame.never-pay"
+    ],
+    "falsepositives": [
+      "Newly opened accounts used for a single large planned purchase with payment pending",
+      "Accounts opened near billing cycle boundary where payment is not yet due",
+      "Corporate cards issued to employees with centralized payment processing"
+    ]
+  }
+}

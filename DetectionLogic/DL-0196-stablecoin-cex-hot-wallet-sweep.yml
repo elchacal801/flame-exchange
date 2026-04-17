@@ -1,0 +1,192 @@
+title: Stablecoin Flow to CEX via Hot Wallet Sweep Pattern
+id: a7e3b1c4-2d9f-4a8e-b6c1-5f0e8d2a7b39
+status: experimental
+description: 'Detects the 2-hop hot wallet sweep pattern used in industrialized stablecoin laundering
+  pipelines: illicit or high-risk funds flow from a flagged/suspicious address to a centralized exchange
+  (CEX) deposit address (hop 1), which is then automatically swept into the exchange institutional hot
+  wallet (hop 2). Confirming both hops confirms the exchange relationship and receipt of flagged funds.
+  This pattern was documented by ICIJ in the Huione Group investigation, where at least $408 million
+  flowed to Binance and $226 million to OKX via TRON/USDT through this exact mechanism. The detection
+  leverages publicly available exchange Proof-of-Reserves (PoR) address lists and Arkham Intelligence
+  illicit wallet tags to attribute both source risk and destination exchange. TRON/USDT is the primary
+  monitoring surface given its dominance as the SE Asian fraud compound laundering rail.
+
+  '
+date: 2026/03/30
+sigma_compatible: false
+native_query_required: true
+threat_paths:
+- TP-0078
+- TP-0055
+cfpf_phase: P5
+fraud_types:
+- crypto-laundering
+- crypto-laundering-infrastructure
+logsource:
+  product: crypto
+  category: blockchain_analytics
+  service: chain_monitoring
+detection:
+  selection:
+    token_symbol:
+    - USDT
+    - USDC
+    chain:
+    - TRON
+    - ETH
+    - BSC
+    amount_usd|gte: 10000
+  filter_por_match:
+    destination_in_por_dataset: true
+  filter_hot_wallet_sweep:
+    sweep_to_hot_wallet: true
+    hours_to_sweep|lte: 24
+  filter_source_risk:
+    source_risk_score|gte: 70
+  filter_source_tagged:
+    source_illicit_tag: true
+  condition: selection AND (filter_por_match OR filter_hot_wallet_sweep) AND (filter_source_risk
+    OR filter_source_tagged)
+  timeframe: 30d
+data_sources:
+  native_fields:
+  - transaction_hash
+  - from_address
+  - to_address
+  - amount_usd
+  - amount_crypto
+  - token_symbol
+  - chain
+  - block_number
+  - block_timestamp
+  enrichment_required:
+  - field: destination_in_por_dataset
+    source: Cross-reference destination address against collected exchange Proof-of-Reserves
+      CSV datasets (Binance, OKX, Bybit, Kraken). Updated quarterly.
+  - field: sweep_to_hot_wallet
+    source: Blockchain analytics — true if destination address subsequently transfers
+      full balance to a known exchange hot wallet within 24 hours
+  - field: hours_to_sweep
+    source: Time in hours between initial deposit transaction and the sweep transaction
+      to the exchange hot wallet
+  - field: source_risk_score
+    source: Composite risk score (0-100) from blockchain analytics platform (Arkham
+      Intelligence, Chainalysis, or equivalent) for the source wallet address
+  - field: source_illicit_tag
+    source: Arkham Intelligence illicit/suspicious tag database — true if source wallet
+      is tagged as illicit, suspicious, OFAC-sanctioned, or involved in known criminal
+      activity
+  - field: exchange_name
+    source: Exchange name derived from PoR dataset match or hot wallet attribution
+queries:
+  cql: |-
+    // CrowdStrike CQL for Stablecoin Flow to CEX via Hot Wallet Sweep
+    // Detects 2-hop pattern: flagged source -> deposit address -> hot wallet
+    (token_symbol="USDT" OR token_symbol="USDC")
+    (chain="TRON" OR chain="ETH" OR chain="BSC")
+    amount_usd>=10000
+    (source_risk_score>=70 OR source_illicit_tag="true")
+    | match(to_address, file="exchange_por_addresses.csv", field="address", strict=false)
+      OR sweep_to_hot_wallet="true"
+    | groupBy(from_address, function=[
+        collect([transaction_hash, to_address, amount_usd, token_symbol, chain,
+                 source_risk_score, source_illicit_tag, exchange_name,
+                 sweep_to_hot_wallet, hours_to_sweep, @timestamp]),
+        sum(amount_usd, as=total_volume)
+      ])
+    | sort(total_volume, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for Stablecoin Flow to CEX via Hot Wallet Sweep")`
+    `comment("Detects 2-hop pattern: flagged source -> deposit address -> hot wallet")`
+    index=flame_blockchain sourcetype=flame:chain_monitoring
+      (token_symbol="USDT" OR token_symbol="USDC")
+      (chain="TRON" OR chain="ETH" OR chain="BSC")
+      amount_usd>=10000
+      (source_risk_score>=70 OR source_illicit_tag="true")
+    | lookup exchange_por_addresses to_address AS to_address OUTPUT exchange_name AS por_exchange
+    | where isnotnull(por_exchange) OR sweep_to_hot_wallet="true"
+    | eval detection_method = case(
+        isnotnull(por_exchange), "por_match",
+        sweep_to_hot_wallet="true", "hot_wallet_sweep",
+        1=1, "unknown")
+    | stats sum(amount_usd) AS total_volume,
+            count AS transaction_count,
+            dc(to_address) AS unique_deposit_addresses,
+            values(exchange_name) AS exchanges,
+            values(detection_method) AS methods
+      BY from_address
+    | sort - total_volume
+  sql: |-
+    -- SQL for Stablecoin Flow to CEX via Hot Wallet Sweep
+    -- Detects 2-hop pattern: flagged source -> deposit address -> hot wallet
+    WITH flagged_deposits AS (
+      SELECT
+        t.transaction_hash AS deposit_tx,
+        t.from_address AS source_wallet,
+        t.to_address AS deposit_address,
+        t.amount_usd,
+        t.token_symbol,
+        t.chain,
+        t.block_timestamp AS deposit_time,
+        w.risk_score AS source_risk_score,
+        w.illicit_tag AS source_illicit_tag
+      FROM transactions t
+      JOIN wallet_risk w ON t.from_address = w.wallet_address
+      WHERE t.token_symbol IN ('USDT', 'USDC')
+        AND t.chain IN ('TRON', 'ETH', 'BSC')
+        AND t.amount_usd >= 10000
+        AND (w.risk_score >= 70 OR w.illicit_tag = TRUE)
+        AND t.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    ),
+    sweep_events AS (
+      SELECT
+        t2.from_address AS deposit_address,
+        t2.to_address AS hot_wallet,
+        t2.block_timestamp AS sweep_time,
+        hw.exchange_name
+      FROM transactions t2
+      JOIN exchange_hot_wallets hw ON t2.to_address = hw.wallet_address
+      WHERE t2.block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '30 days'
+    )
+    SELECT
+      fd.source_wallet,
+      fd.deposit_address,
+      se.hot_wallet,
+      se.exchange_name,
+      fd.amount_usd,
+      fd.token_symbol,
+      fd.chain,
+      fd.source_risk_score,
+      fd.source_illicit_tag,
+      fd.deposit_time,
+      se.sweep_time,
+      EXTRACT(EPOCH FROM (se.sweep_time - fd.deposit_time))/3600 AS hours_to_sweep
+    FROM flagged_deposits fd
+    JOIN sweep_events se ON fd.deposit_address = se.deposit_address
+    WHERE se.sweep_time > fd.deposit_time
+      AND se.sweep_time < fd.deposit_time + INTERVAL '24 hours'
+    ORDER BY fd.amount_usd DESC
+falsepositives:
+- Legitimate high-value crypto transfers from institutional investors to exchanges
+- OTC trading desks with high volume that happen to receive from wallets with elevated
+  risk scores due to indirect associations
+- Market makers rebalancing positions across exchanges
+level: critical
+references:
+- ICIJ Coin Laundry Investigation (2024-2025) — Huione Group tracing methodology
+- ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026)
+- FinCEN Section 311 Designation of Huione Group (May 2025)
+- Exchange Proof-of-Reserves publications (Binance, OKX, Bybit)
+- Arkham Intelligence illicit wallet tag database (intel.arkm.com/tags/suspicious)
+tags:
+- cfpf.phase5.monetization
+- attack.t1657
+- stablecoin-laundering
+- hot-wallet-sweep
+- proof-of-reserves
+- tron-usdt
+- cex-pipeline
+- exchange-attribution
+- huione-group
+- TP-0078
+- TP-0055

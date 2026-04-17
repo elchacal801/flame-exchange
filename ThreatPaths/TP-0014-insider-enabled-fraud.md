@@ -21,7 +21,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1078, T1530, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA008", "FTA009", "FTA010", "FT011.002", "FT038", "FT003", "FT006", "FT007.005", "FT039.001", "FT016", "FT028", "FT037.002", "FT042"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1006.002", "T1110.001", "T1555", "F1004", "F1005", "F1029", "F1033", "T1185", "T1451", "T1539"]
 groupib_stages:               # Group-IB Fraud Matrix (reference)
   - "Reconnaissance"
   - "Account Access"
@@ -56,6 +56,7 @@ regulatory_refs:
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
   - REG-SEC-SAR
+baseline_ids: []
 tags:
   - insider
   - employee-fraud
@@ -141,6 +142,20 @@ Employees of financial institutions abuse their legitimate system access to comm
 | P4 | Mandatory vacation policies: require employees to take consecutive days off (allows anomaly detection when cover handles accounts) | Detective |
 | P4 | Transaction peer review: second-party approval for transactions on accounts employee has modified | Preventive |
 | P5 | Post-employment monitoring: watch for account activity connected to recently separated employees | Detective |
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive-sponsored insider threat program with dedicated budget; board-level reporting on employee fraud risk appetite and tolerance thresholds |
+| ASSESS | Level 3 (Established) | Insider threat risk assessment covering all employee roles with system access; periodic evaluation of segregation-of-duties gaps across core banking, account management, and claims systems |
+| PLAN | Level 3 (Established) | Insider threat detection strategy integrating HR behavioral indicators, IT access monitoring, and fraud transaction analytics; defined escalation protocols for cross-functional insider investigations |
+| ACT | Level 4 (Advanced) | UEBA deployment for employee access monitoring with behavioral baselining; segregation of duties enforcement across account opening, modification, and transaction initiation; DLP controls for customer data exfiltration detection |
+| MONITOR | Level 4 (Advanced) | Continuous monitoring of employee-to-account access patterns with graph analytics linking employees to beneficiaries; real-time correlation of HR red flags with access anomalies; mandatory vacation policy compliance tracking |
+| REPORT | Level 3 (Established) | SAR filing workflows for insider-related suspicious activity; internal reporting channels for whistleblower and peer-reported concerns; audit trail documentation for all employee account access |
+| IMPROVE | Level 3 (Established) | Post-incident review process for insider fraud cases incorporating lessons into access controls and monitoring rules; periodic recalibration of UEBA baselines and detection thresholds based on closed investigations |
 
 ## Detection Approaches
 

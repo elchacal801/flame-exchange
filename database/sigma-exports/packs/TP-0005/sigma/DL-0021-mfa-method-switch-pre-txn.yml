@@ -1,44 +1,82 @@
 title: MFA Method Switch Before High-Value Transaction
 id: 5fa193cc-8e4e-4a02-a05c-da7004124f42
 status: experimental
-description: >
-  Detects when an account's multi-factor authentication method is changed (e.g., from
-  hardware token to SMS or email OTP) shortly before a high-value wire or ACH transaction
-  is initiated. Attackers downgrade MFA to a method they control prior to executing fraud.
+description: 'Detects when an account''s multi-factor authentication method is changed (e.g., from hardware token to SMS or
+  email OTP) shortly before a high-value wire or ACH transaction is initiated. Attackers downgrade MFA to a method they control
+  prior to executing fraud.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://attack.mitre.org/techniques/T1556/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1556/
 threat_paths:
-  - TP-0001
-  - TP-0005
-  - TP-0006
+- TP-0001
+- TP-0005
+- TP-0006
 cfpf_phase: P3
 fraud_types:
-  - account-takeover
-  - wire-fraud
+- account-takeover
+- wire-fraud
 logsource:
   product: banking
   service: identity_management
 detection:
   selection_mfa_change:
-    event_type: 'MFA_METHOD_CHANGE'
+    event_type: MFA_METHOD_CHANGE
     new_mfa_method:
-      - 'sms_otp'
-      - 'email_otp'
-      - 'voice_call'
+    - sms_otp
+    - email_otp
+    - voice_call
   selection_high_value_txn:
     event_type:
-      - 'WIRE_INITIATION'
-      - 'ACH_DEBIT'
+    - WIRE_INITIATION
+    - ACH_DEBIT
     transaction_amount|gte: 5000
   timeframe: 4h
-  condition: selection_mfa_change | near selection_high_value_txn by account_id
+  condition: selection_mfa_change and selection_high_value_txn
+data_sources:
+  native_fields:
+  - event_type
+  - new_mfa_method
+  - transaction_amount
+queries:
+  cql: |-
+    // CrowdStrike CQL for MFA Method Switch Before High-Value Transaction
+    // Repository: flame-banking-identity-management
+    // Correlates MFA downgrade with subsequent high-value transaction
+    // within 4h for the same account
+    (event_type="MFA_METHOD_CHANGE" AND
+      (new_mfa_method="sms_otp" OR new_mfa_method="email_otp" OR new_mfa_method="voice_call"))
+    OR ((event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT") AND
+      transaction_amount>=5000)
+    | selfJoinFilter(account_id, where=[
+        {event_type="MFA_METHOD_CHANGE"}
+        {event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT"}
+      ])
+    | groupBy(account_id, function=[
+        count(as=event_count),
+        collect([event_type, new_mfa_method, transaction_amount, @timestamp])
+      ], span=4h)
+    | event_count >= 2
+  splunk: |-
+    `comment("Splunk SPL for MFA Method Switch Before High-Value Transaction")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection_mfa_change | near selection_high_value_txn by account_id")`
+    index=flame_banking sourcetype=flame:identity_management
+    event_type="MFA_METHOD_CHANGE"
+    (new_mfa_method="sms_otp" OR new_mfa_method="email_otp" OR new_mfa_method="voice_call")
+    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
+    transaction_amount>=5000
+    | transaction account_id maxspan=4h
+    | where eventcount >= 2
 falsepositives:
-  - Customer who lost their hardware token and is making a legitimate scheduled payment
-  - Planned MFA migration events by IT or security teams
+- Customer who lost their hardware token and is making a legitimate scheduled payment
+- Planned MFA migration events by IT or security teams
 level: high
 tags:
-  - cfpf.phase3.positioning
-  - attack.t1098
-  - attack.t1556
-  - flame.account_modification
+- cfpf.phase3.positioning
+- attack.t1098
+- attack.t1556
+- flame.account_modification

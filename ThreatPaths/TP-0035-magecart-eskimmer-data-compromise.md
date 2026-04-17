@@ -32,7 +32,7 @@ mitre_attack:
   - T1041       # Exfiltration Over C2 Channel
   - T1657       # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA007", "FTA009", "FTA010", "FT003", "FT007.009", "FT008.002", "FT016", "FT031"]
-mitre_f3: []
+mitre_f3: ["F1007.001", "F1006", "F1011", "F1029", "T1113", "T1219", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -64,6 +64,8 @@ regulatory_refs:
   - REG-FINCEN-CDD
   - REG-PSD3-SCA
   - REG-DORA
+baseline_ids:
+  - BL-0015
 tags:
   - magecart
   - e-skimmer
@@ -305,6 +307,42 @@ The continued abuse of Google Tag Manager containers as a delivery mechanism for
 
 ---
 
+## Banks Magecart Campaign — Multi-Stage WebSocket Exfiltration (2024–2026)
+
+ANY.RUN (March 2026) documented a structured, infrastructure-driven Magecart campaign active 24+ months across 100+ domains, primarily targeting the Redsys payment system (Spain) with secondary impact on PayPlug SAS and generic Visa/Mastercard flows.
+
+### Attack Architecture
+
+**Multi-stage injection model:**
+1. **Loader**: Small obfuscated JavaScript injected into existing site scripts with fallback infrastructure lists
+2. **Stage 1 (Payload delivery)**: Rotating domains deliver secondary payloads via `https://<c2>/<base64>.js?_=<digits>`
+3. **Stage 2 (Checkout hijacking)**: Monitors DOM for checkout elements, conceals legitimate payment buttons via `display: none`, injects custom iframes and fake payment interfaces. State machine: `init` → `return` → `confirm` → `alert` → `getData`
+4. **Stage 3 (Exfiltration)**: WebSocket connections (`wss://<c2>/?token=<base64_data>`) transmit full card data (BIN, PAN, expiry, CVV). WebSocket chosen to reduce visibility in traditional security monitoring
+
+### Confirmed IOC Domains
+
+`bundle-feedback[.]com`, `doubleclickcache[.]com`, `analyticsgctm[.]com`, `hotjarcdn[.]com`, `firefoxcaptcha[.]com`, `solutionjquery[.]com`, `jquerybootstrap[.]com`, `assetsbundle[.]com`, `bundle-referrer[.]com`, `categorywishlist[.]com`, `cachesecure[.]com`, `securedata-ns[.]com`, `analysiscache[.]com`, `newassetspro[.]com`, `explorerpros[.]com`, `redsysgate[.]com`
+
+**Registrar**: NICENIC INTERNATIONAL GROUP (identified by Silent Push as a "bulletproof registrar" — see TP-0061)
+
+### Anti-Analysis Techniques
+
+- Custom JavaScript VM with opcodes, symbolic execution, and `eval`-based string execution
+- Function serialization-based anti-tampering with bitwise/arithmetical integrity verification
+- Base64-encoded HTML containing secondary payloads
+- State persistence in `localStorage`
+- Masquerading as legitimate external dependencies (analytics, CDN, jQuery)
+
+### Scale
+
+- **Duration**: 24+ months active
+- **Infrastructure**: 100+ domains
+- **Confirmed victims**: 17 WooCommerce sites (Feb 2024–Apr 2025)
+- **Geographic scope**: 12+ countries (concentration in Spain, France, USA, UK, Denmark)
+- **Mobile variant**: Android APK with localization in English, Spanish, Arabic, French
+
+---
+
 ## Detection Approaches
 
 ### Queries / Rules
@@ -420,6 +458,8 @@ tags:
 
 - **Related FLAME Threat Paths**: [TP-0013: Card-Not-Present Fraud](TP-0013-card-not-present-fraud.md) (downstream fraud using skimmed data); [TP-0030: Triangulation Fraud](TP-0030-triangulation-fraud.md) (stolen cards used to fulfill scam merchant orders); [TP-0038: Card Testing Operations](TP-0038-card-testing-operations.md) (stolen card validation before monetization).
 
+- ANY.RUN, "Banks Magecart Campaign: Multi-Stage Injection and WebSocket Exfiltration" (March 2026)
+
 ---
 
 ## Revision History
@@ -427,3 +467,4 @@ tags:
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-04 | FLAME Project | Initial submission — sourced from Recorded Future Annual Payment Fraud Report 2025 |
+| 2026-03-27 | FLAME Project | ANY.RUN enrichment — Banks Magecart campaign with multi-stage WebSocket exfiltration, 100+ IOC domains, Redsys targeting |

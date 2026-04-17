@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "46108087-ff79-5b39-8b77-e5beacd20c8d",
+    "info": "FLAME: Insurance Claims Fraud (Motor/Medical)",
+    "date": "2026-03-17",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "480a88ae-485d-528d-bf6f-666a8b3c14e0",
+        "type": "text",
+        "category": "Other",
+        "value": "insurance-fraud",
+        "comment": "Fraud type for TP-0056"
+      },
+      {
+        "uuid": "2f3d85d7-995d-50a0-be4d-da1a04d7a2bf",
+        "type": "text",
+        "category": "Other",
+        "value": "fraudulent-claim",
+        "comment": "Fraud type for TP-0056"
+      },
+      {
+        "uuid": "84e64274-2f8b-56ec-b558-5f6df12876f0",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0056"
+      },
+      {
+        "uuid": "3fb02679-8bc2-5b5a-8324-ec78d4ffe61b",
+        "type": "text",
+        "category": "Other",
+        "value": "documentary-fraud",
+        "comment": "Fraud type for TP-0056"
+      },
+      {
+        "uuid": "a48f2b8e-29fc-5238-a6dd-c076306f1eb7",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0056"
+      },
+      {
+        "uuid": "fdf12ba5-64aa-50b2-b866-26e1065b6764",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0056"
+      },
+      {
+        "uuid": "ada53d67-d4b0-5421-a1a2-d649dedc10f1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0056"
+      },
+      {
+        "uuid": "051ec18d-ed5a-520c-bf0d-caf4b7b9c1fe",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0056"
+      },
+      {
+        "uuid": "eb951ca9-6f0a-5358-a7d9-da9cc027e7cc",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0056"
+      }
+    ]
+  }
+}

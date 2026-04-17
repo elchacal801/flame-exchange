@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.773027+00:00",
+    "generated_at": "2026-04-09T19:40:03.402240+00:00",
     "total": 1
   },
   "data": {
@@ -20,7 +20,7 @@
     },
     "logsource": {
       "product": "azure",
-      "service": "entra_id_signin"
+      "service": "signinlogs"
     },
     "sigma_compatible": false,
     "native_query_required": true,
@@ -37,6 +37,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for AiTM Session Token Replay Detection\n// Detects same SessionId used from multiple IPs (proxy + attacker)\n#repo=\"azure_signinlogs\"\nResultType=\"0\"\n| groupBy([SessionId, UserPrincipalName], function=[count(field=IPAddress, distinct=true, as=IPCount), collect([IPAddress], as=IPs), collect([UserAgent], as=UserAgents), collect([AppId], as=AppIds), min(@timestamp, as=MinTime), max(@timestamp, as=MaxTime), collect([RiskLevelDuringSignIn], as=RiskLevels)], span=4h)\n| IPCount >= 2\n| select([UserPrincipalName, SessionId, IPCount, IPs, UserAgents,\n          AppIds, MinTime, MaxTime, RiskLevels])\n| sort(IPCount, order=desc)",
       "kql": "// KQL: AiTM Session Token Replay Detection\n// Detects same SessionId used from multiple IPs (proxy + attacker)\nlet timeWindow = 4h;\nSigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    IPCount = dcount(IPAddress),\n    IPs = make_set(IPAddress),\n    UserAgents = make_set(UserAgent),\n    AppIds = make_set(AppId),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated),\n    RiskLevels = make_set(RiskLevelDuringSignIn)\n  by SessionId, UserPrincipalName\n| where IPCount >= 2\n| where datetime_diff('hour', MaxTime, MinTime) <= 4\n| project UserPrincipalName, SessionId, IPCount, IPs, UserAgents,\n          AppIds, MinTime, MaxTime, RiskLevels",
       "splunk": "`comment(\"Splunk SPL for AiTM Session Token Replay Detection\")`\n`comment(\"Same SessionId from multiple IPs indicates token replay\")`\nindex=azure sourcetype=azure:aad:signin ResultType=0\n| stats dc(IPAddress) AS ip_count,\n        values(IPAddress) AS ips,\n        values(UserAgent) AS user_agents,\n        values(AppId) AS app_ids,\n        min(_time) AS first_seen,\n        max(_time) AS last_seen,\n        values(RiskLevelDuringSignIn) AS risk_levels\n  BY SessionId, UserPrincipalName\n| where ip_count >= 2\n| eval window_hours = round((last_seen - first_seen) / 3600, 2)\n| where window_hours <= 4\n| sort - ip_count"
     },
@@ -53,6 +54,9 @@
       "aitm-phishing"
     ],
     "tags": [
+      "attack.t1539",
+      "attack.t1550.004",
+      "attack.t1557",
       "cfpf.phase3.positioning",
       "flame.aitm",
       "flame.mfa-bypass",

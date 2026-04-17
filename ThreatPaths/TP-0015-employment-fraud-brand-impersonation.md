@@ -20,7 +20,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1566.001, T1583.001]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT052.003", "FT026.001", "FT018", "FT020", "FT021", "FT016", "FT055", "FT005.001", "FT007.009", "FT011.002"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "F1031", "F1032", "F1006", "F1025", "F1029", "F1040", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -48,6 +48,7 @@ regulatory_refs:
   - REG-FINCEN-CDD
   - REG-UK-PSR-APP
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids: []
 tags:
   - employment-fraud
   - brand-impersonation
@@ -133,6 +134,20 @@ Actors impersonate legitimate employers — particularly in healthcare staffing,
 | P4 | Payment processor flags for "equipment fee" patterns from employment contexts | Detective |
 | P5 | Identity monitoring for applicants who submitted PII to unverified employers | Responsive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Organizational acknowledgment of brand impersonation risk to job seekers; allocation of resources for domain monitoring and takedown coordination |
+| ASSESS | Level 2 (Developing) | Assessment of brand exposure on job boards and staffing platforms; identification of high-risk brand assets (company names, career page URLs, HR email domains) vulnerable to impersonation |
+| PLAN | Level 2 (Developing) | Brand protection plan covering lookalike domain detection, job board monitoring, and coordinated takedown procedures with registrars and hosting providers |
+| ACT | Level 3 (Established) | Automated lookalike domain monitoring for employer brand variations; job board scanning for unauthorized postings using company branding; applicant-facing warnings on official careers pages about known scam patterns |
+| MONITOR | Level 2 (Developing) | Ongoing surveillance of newly registered domains matching employer name patterns; periodic review of job board postings for fraudulent listings; monitoring of disposable email infrastructure used in HR impersonation |
+| REPORT | Level 2 (Developing) | Reporting workflows for victim complaints and brand abuse incidents; coordination with FBI IC3 and FTC for employment fraud reporting; notification procedures for affected job applicants |
+| IMPROVE | Level 2 (Developing) | Feedback loop from takedown actions and victim reports to refine domain monitoring keywords and job board scanning rules; periodic update of applicant education materials based on emerging scam variants |
+
 ## Detection Approaches
 
 ### Domain-Based Detection
@@ -189,12 +204,16 @@ Flag job postings where:
 
 ## Analyst Notes
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $362.9 million in employment fraud losses from 24,688 complaints — up from $264.2M/20,044 in 2024, representing a 37% loss increase. AI-enabled employment fraud accounted for $12.6M in losses from 691 complaints, with deepfake video used in online interviews where lip movement and auditory actions were not aligned with visual presentation. PSA250424 (April 24, 2025) warned of cyber criminals impersonating employee self-service websites to steal victim information and funds, representing a variant where the fraud targets existing employees rather than job seekers.
+
 Employment fraud has surged alongside the normalization of remote work, as job seekers are increasingly accustomed to fully digital hiring processes — making it easier for threat actors to impersonate legitimate employers without in-person interaction. The FTC reported that job scam losses exceeded $500M in 2023, with the median individual loss around $2,000 from advance-fee payments for fake equipment, training, or background checks. A notable variant involves "task scams" where victims are recruited for fake online work (product reviews, data entry) and asked to deposit their own funds as "working capital." Brand impersonation is particularly effective against large employers with distributed hiring — the victim assumes a local recruiter is legitimate because the parent brand is well-known. Companies should proactively monitor for fraudulent job postings using their brand and maintain a prominent careers-page warning about known scam patterns.
 
 ## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Employment Fraud
 - FBI IC3: Internet Crime Report 2023 — Employment/Business Fraud. [Link](https://www.ic3.gov/AnnualReport/Reports/2023_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Employment fraud: $362.9M in losses, 24,688 complaints (up from $264.2M/20,044 in 2024 — 37% loss increase). AI-enabled employment fraud: $12.6M in losses, 691 complaints. Deepfake video used in online interviews — lip movement and auditory actions not aligned with visual. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
+- FBI PSA250424 (April 24, 2025): Cyber criminals impersonating employee self-service websites to steal victim information and funds. [Link](https://www.ic3.gov/PSA/2025/PSA250424)
 - FTC: Job Scams Report (2024). [Link](https://www.ftc.gov/news-events/data-visualizations/data-spotlight/2024/08/job-scams)
 - Better Business Bureau: Employment Scam Tracker
 - Right at Home: Official careers page (for brand impersonation comparison)
@@ -209,3 +228,4 @@ Employment fraud has surged alongside the normalization of remote work, as job s
 |------|--------|--------|
 | 2026-02-19 | FLAME Project | Initial submission with DEA investigation evidence |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — employment fraud $362.9M losses (37% increase), AI-enabled $12.6M, PSA250424 self-service website impersonation |

@@ -1,44 +1,52 @@
 title: BNPL Account Opening Risk Signal Cluster
 id: 7c3e9a12-d4f8-4b61-ae52-1f6d83b7c904
 status: experimental
-description: >
-  Detects BNPL account applications exhibiting multiple risk signals indicative
-  of synthetic identity fraud. Specifically targets accounts opened with email
-  domains less than 30 days old, minimal digital footprint (score below 0.2),
-  and patterns consistent with emulator-based mass account creation. BNPL
-  providers using soft-check-only approval processes are particularly vulnerable
-  to synthetic identities that pass initial verification but exhibit these
-  digital footprint anomalies. This rule supports detection at Phase 2 of
-  TP-0040 by identifying high-risk onboarding patterns before the synthetic
-  identity progresses to credit grooming and multi-provider stacking.
+description: 'Detects BNPL account applications exhibiting multiple risk signals indicative of synthetic identity fraud. Specifically
+  targets accounts opened with email domains less than 30 days old, minimal digital footprint (score below 0.2), and patterns
+  consistent with emulator-based mass account creation. BNPL providers using soft-check-only approval processes are particularly
+  vulnerable to synthetic identities that pass initial verification but exhibit these digital footprint anomalies. This rule
+  supports detection at Phase 2 of TP-0040 by identifying high-risk onboarding patterns before the synthetic identity progresses
+  to credit grooming and multi-provider stacking.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.lexisnexis.com/risk/global-fraud-identity-report
+- https://www.lexisnexis.com/risk/global-fraud-identity-report
 threat_paths:
-  - TP-0040
+- TP-0040
 cfpf_phase: P2
 fraud_types:
-  - bnpl-fraud
-  - identity-theft
+- bnpl-fraud
+- identity-theft
 logsource:
   product: ecommerce
   service: bnpl_onboarding
 detection:
   selection:
-    account_type: 'bnpl'
-    application_status: 'approved'
+    account_type: bnpl
+    application_status: approved
   filter_email_age:
     email_domain_age_days|lte: 30
   filter_digital_footprint:
     digital_footprint_score|lte: 0.2
   condition: selection and filter_email_age and filter_digital_footprint
+data_sources:
+  native_fields:
+  - account_type
+  - application_status
+  enrichment_required:
+  - field: digital_footprint_score
+    source: Identity verification enrichment (digital footprint scoring service)
+  - field: email_domain_age_days
+    source: WHOIS enrichment (email domain registration date lookup)
 falsepositives:
-  - Young consumers opening their first financial accounts with limited digital history
-  - New email service adopters who recently migrated to a new email provider
-  - Immigrants or expats establishing new digital identities in a new country
+- Young consumers opening their first financial accounts with limited digital history
+- New email service adopters who recently migrated to a new email provider
+- Immigrants or expats establishing new digital identities in a new country
 level: high
 tags:
-  - cfpf.phase2.initial_access
-  - attack.t1586
-  - flame.ecommerce
-  - flame.bnpl_fraud
-  - flame.synthetic_identity
+- cfpf.phase2.initial_access
+- attack.t1586
+- flame.ecommerce
+- flame.bnpl_fraud
+- flame.synthetic_identity

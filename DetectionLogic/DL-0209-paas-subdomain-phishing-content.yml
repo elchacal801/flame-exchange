@@ -1,0 +1,55 @@
+title: "Legitimate PaaS Subdomain Hosting Phishing Content"
+id: "d4ed8c8c-500a-4030-ac6b-225104c0ebb6"
+status: experimental
+description: >
+  Detect URLs hosted on known PaaS free subdomain services (*.pages.dev,
+  *.webflow.io, *.vercel.app, *.github.io, *.gitbook.io, *.workers.dev,
+  *.r2.dev) that contain financial brand keywords or trigger phishing
+  heuristics. These subdomains inherit the PaaS provider's domain reputation,
+  bypassing domain-age and reputation filters commonly used in fraud detection.
+references:
+  - "https://interisle.net/PhishingLandscape2025.pdf"
+threat_paths:
+  - TP-0079
+  - TP-0067
+cfpf_phase: P2
+fraud_types:
+  - phishing
+  - credential-harvesting
+  - paas-subdomain-abuse
+logsource:
+  product: banking
+  service: web_proxy
+detection:
+  selection:
+    url_domain|endswith:
+      - ".pages.dev"
+      - ".webflow.io"
+      - ".vercel.app"
+      - ".github.io"
+      - ".gitbook.io"
+      - ".workers.dev"
+      - ".r2.dev"
+    url_contains_brand_keyword: true
+  brand_keywords:
+    - login
+    - verify
+    - secure
+    - account
+    - update
+    - confirm
+    - bank
+    - paypal
+    - coinbase
+    - metamask
+    - pancakeswap
+  condition: selection
+falsepositives:
+  - "Legitimate developer projects hosted on PaaS platforms"
+  - "Documentation sites using brand names in context"
+  - "Testing and staging environments on free-tier subdomains"
+level: medium
+tags:
+  - cfpf.phase2.initial_access
+  - flame.infrastructure
+  - flame.shared

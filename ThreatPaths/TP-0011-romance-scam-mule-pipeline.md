@@ -17,7 +17,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1656]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT021", "FT043", "FT007.009", "FT008.003", "FT010.003", "FT052.001", "FT018", "FT051.004", "FT016", "FT020"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1009", "F1018", "F1020", "F1025", "F1031", "F1032", "F1045", "F1047", "T1585"]
 groupib_stages:               # Group-IB Fraud Matrix (reference)
   - "Reconnaissance"
   - "Resource Development"
@@ -55,6 +55,9 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-WCI-2024
+baseline_ids:
+  - BL-0003
+  - BL-0031
 tags:
   - pig-butchering
   - social-engineering
@@ -65,6 +68,8 @@ tags:
   - unodc
   - unodc-organized-fraud-2024
   - wci-geographic-attribution
+  - drops-recruitment
+  - forum-recruitment
 ---
 ```
 
@@ -204,6 +209,20 @@ Romance scam operations are heavily discussed in West African cybercrime communi
 | P4 | Gift card purchase velocity monitoring at retail POS | Detective |
 | P5 | FinCEN SAR filing with romance scam/mule indicators for cross-referencing | Responsive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive sponsorship for mule detection programs spanning transaction monitoring, customer education, and law enforcement coordination; dedicated resources for elder fraud prevention |
+| ASSESS | Level 3 (Established) | Risk assessment of customer base for mule recruitment vulnerability including demographic profiling, account behavior baselines, and exposure to romance scam vectors; assessment of mule typologies (complicit, recruited, exploited) |
+| PLAN | Level 3 (Established) | Mule detection strategy incorporating behavioral analytics, device telemetry, and cross-institution data sharing; customer intervention protocols for suspected mule accounts balancing fraud prevention with victim sensitivity |
+| ACT | Level 3 (Established) | Transaction monitoring rules detecting receive-and-forward patterns to unrelated parties; behavioral biometric analysis for credential handoff detection; device telemetry fusion (IP geolocation, SIM country, GPS, behavioral shifts) for layered mule operations |
+| MONITOR | Level 3 (Established) | Continuous monitoring for mule account indicators — multiple unrelated inbound sources followed by rapid outbound transfers to international wires, crypto, or P2P; gift card purchase velocity monitoring; tracking of account age vs. transaction risk escalation patterns |
+| REPORT | Level 3 (Established) | SAR filing with romance scam and mule recruitment indicators for FinCEN cross-referencing; coordination with law enforcement on scam compound investigations; referrals to INTERPOL for cross-border mule networks |
+| IMPROVE | Level 3 (Established) | Post-case review of mule detection gaps incorporating Group-IB mule evolution intelligence; updating detection rules for emerging mule techniques (physical device muling, victim-to-victim handoff); Gen Z recruitment trend monitoring to adjust customer education |
+
 ## Detection Approaches
 
 **Mule Account Behavioral Pattern**
@@ -255,9 +274,13 @@ This threat path is the connective tissue of fraud. Mule networks recruited thro
 
 **Mule operation industrialization**: The Group-IB Evolving Mule Tactics report demonstrates that mule operations have moved far beyond simple "receive and forward" schemes. Modern mule networks are supply-chain operations with: dedicated recruitment teams, SIM/eSIM procurement logistics, GPS spoofing toolkits, physical device shipping infrastructure, and "commercial camouflage" backstories mimicking legitimate business partnerships. This represents a fundamentally different scale of operation than the individual mule recruitment that FLAME's original threat path assumed.
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $929.3 million in confidence/romance fraud losses from 23,159 complaints — a significant increase from $672M/17,910 in 2024. Transaction type breakdown: Cryptocurrency 31%, Wire Transfer/ACH 25%, Peer-to-Peer 21%, Debit/Credit Card 15%, Prepaid card/Gift card 8%. Elder romance fraud (60+ victims) accounted for 10,188 complaints and $584M in losses, confirming that elderly victims bear the majority of romance fraud losses. The reversal of the apparent 2024 decline suggests that the 2024 drop was indeed a reclassification artifact, not a true decline in romance scam activity.
+
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $672M in confidence/romance fraud losses, a notable decline from 2023's $1.1B+. However, this likely reflects reclassification of romance-initiated investment scams to the investment fraud category ($6.5B) rather than a true decline in romance scam activity. Elderly victims (60+) accounted for $4.9B in total IC3-reported losses in 2024, with romance scams remaining a primary vector for elder financial exploitation.
 
 **Cross-FLAME connections**: TP-0001 (treasury ATO) → funds wire to mule from this pipeline. TP-0002 (BEC) → mule account receives diverted invoice payment. TP-0006 (real estate wire) → mule account receives closing funds. TP-0009 (check fraud) → mule account opened by recruited mule.
+
+**"Drops" Recruitment Ecosystem**: Cybercrime Diaries' analysis of 94 active Russian-language cybercriminal forums (January 2024) found that "drops" — individuals who lend or sell their identities (bank accounts, IDs, addresses) for financial operations — are heavily recruited across virtually all forums. Drops serve as the physical human layer connecting digital fraud to real-world financial extraction: they receive stolen funds, forward packages, open accounts, and provide identity documents. For romance scam mule pipelines, drops recruited on forums like DarkMoney and LolzTeam represent a professionalized alternative to the unwitting victims traditionally recruited through romance manipulation — these are knowing participants operating as commoditized infrastructure. Detection should distinguish between unwitting mules (romance scam victims who believe they are helping a romantic partner) and professional drops (forum-recruited participants who understand the criminal nature of their role), as behavioral patterns and intervention strategies differ fundamentally.
 
 ### Mule Network Operational Scale — LNRS 2026
 
@@ -282,12 +305,14 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Relationship and Trust Fraud
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Confidence/Romance fraud: $929.3M in losses, 23,159 complaints (up from $672M/17,910 in 2024). Transaction type breakdown: Cryptocurrency 31%, Wire Transfer/ACH 25%, Peer-to-Peer 21%, Debit/Credit Card 15%, Prepaid card/Gift card 8%. Elder romance fraud: 10,188 complaints, $584M in losses from 60+ victims. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 - FinCEN Advisory FIN-2020-A008: "Advisory on Imposter Scams and Money Mule Schemes". [Link](https://www.fincen.gov/sites/default/files/advisory/2020-07-30/Advisory-Imposter-Scams-508.pdf)
 - INTERPOL: Operation First Light (scam compound raids). [Link](https://www.interpol.int/en/News-and-Events/News/2024/INTERPOL-led-operation-targets-online-scam-networks)
 - UNODC: "Online Scam Operations in Southeast Asia". [Link](https://www.unodc.org/roseap/en/2024/08/online-fraud-southeast-asia-2024/story.html)
 - Group-IB Fraud Intelligence: "Evolving Mule Tactics" report (6-stage mule evolution analysis, META region Q4 2023 – Q1 2025, detection methodology)
 - **LexisNexis Risk Solutions — Global State of Fraud and Identity Report 2026**: Mule network operational scale data, Gen Z recruitment statistics, enforcement action summaries.
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents MENA region victims coerced into money mule roles via investment fraud schemes; European re-victimization patterns where fraud victims are recruited as mules through "recovery" scams
+- Cybercrime Diaries (cybercrimediaries.com), "Russian Language Cybercriminal Forums — Steep Investments And Hefty Profits" (January 2024) — drops recruitment across 94 forums
 
 ## Revision History
 
@@ -296,3 +321,5 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Underground Ecosystem Context, IC3 2024 loss figures |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — MENA and European mule recruitment patterns |
+| 2026-03-30 | FLAME Project | Enrichment: drops recruitment ecosystem context — sourced from Cybercrime Diaries forum analysis |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — romance fraud $929.3M losses, elder fraud $584M, transaction type breakdown |

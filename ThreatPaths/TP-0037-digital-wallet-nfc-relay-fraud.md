@@ -31,7 +31,7 @@ mitre_attack:
   - T1078      # Valid Accounts
   - T1657      # Financial Theft
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT011.002", "FT013", "FT016", "FT031", "FT043"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "T1110.001", "T1555", "F1004", "F1005", "F1019", "F1020", "F1031", "F1032", "F1037"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -65,6 +65,8 @@ regulatory_refs:
   - REG-DORA
   - REG-FFIEC-AUTH
   - REG-OCC-FRAUD
+baseline_ids:
+  - BL-0017
 tags:
   - digital-wallet
   - nfc-relay

@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "b1f72d96-2410-5fc2-ba15-31b24bfdc640",
+    "info": "FLAME: Smishing PhaaS Ecosystem \u2014 Darcula, Smishing Triad, and Mass-Messaging Credential Harvest",
+    "date": "2026-03-23",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "9c293061-a912-516c-b517-cee703a1c850",
+        "type": "text",
+        "category": "Other",
+        "value": "smishing",
+        "comment": "Fraud type for TP-0069"
+      },
+      {
+        "uuid": "be147c87-f117-5ee1-a1d7-e109238777f4",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0069"
+      },
+      {
+        "uuid": "c4ef4674-abd4-5c1a-b505-0d3357087c3d",
+        "type": "text",
+        "category": "Other",
+        "value": "card-not-present-fraud",
+        "comment": "Fraud type for TP-0069"
+      },
+      {
+        "uuid": "abe3a2b0-8a2a-5bd2-ac8e-4997756a7851",
+        "type": "text",
+        "category": "Other",
+        "value": "identity-theft",
+        "comment": "Fraud type for TP-0069"
+      },
+      {
+        "uuid": "ac10ce9e-a121-5730-9fad-7024c75f2cd0",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-as-a-service",
+        "comment": "Fraud type for TP-0069"
+      },
+      {
+        "uuid": "7441abce-2112-5042-a31f-7ded0aa93bb0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0069"
+      },
+      {
+        "uuid": "065eaf94-16d7-5b08-bc29-0a79c208f1a6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0069"
+      },
+      {
+        "uuid": "52e5d652-c47f-5a51-a943-345a324a0ba8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0069"
+      },
+      {
+        "uuid": "660c92f1-52da-5cf8-99c5-3efe81a9edf8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0069"
+      },
+      {
+        "uuid": "714cda7b-48a6-535a-af31-4c1bea8a2b0e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0069"
+      }
+    ]
+  }
+}

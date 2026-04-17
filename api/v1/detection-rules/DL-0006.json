@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.107637+00:00",
+    "generated_at": "2026-04-09T19:40:01.547194+00:00",
     "total": 1
   },
   "data": {
@@ -36,7 +36,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Credential Testing After Dump\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct user_id) by source_ip > 10\nevent_type=\"login_attempt\"\n(auth_result=\"failure\" OR auth_result=\"success\")\n| groupBy(source_ip, function=[count(as=event_count), collect(user_id)])\n| event_count > 10",
+      "cql": "// CrowdStrike CQL for Credential Testing After Dump\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection | count(distinct user_id) by source_ip > 10\nevent_type=\"login_attempt\"\n(auth_result=\"failure\" OR auth_result=\"success\")\n| groupBy(source_ip, function=[count(as=event_count), collect(user_id)])\n| event_count > 10",
       "splunk": "`comment(\"Splunk SPL for Credential Testing After Dump\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection | count(distinct user_id) by source_ip > 10\")`\nindex=flame_banking sourcetype=flame:auth_logs event_type=\"login_attempt\" (auth_result=\"failure\" OR auth_result=\"success\")\n| stats dc(user_id) as unique_user_id by source_ip\n| where unique_user_id > 10"
     },
     "references": [

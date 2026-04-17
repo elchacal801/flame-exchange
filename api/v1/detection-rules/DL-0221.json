@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.762578+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f80",
+    "dl_id": "DL-0221",
+    "title": "Commodity Investment Scam Domain — Crisis-Themed Trading Platform on Cheap gTLD",
+    "status": "experimental",
+    "description": "Detects newly registered domains on cheap gTLDs matching commodity investment scam patterns (oil-invest*, crude-trad*, commodity-trad*, petrol-fund*, energy-trad*). These domains typically deploy fake trading platforms soliciting cryptocurrency deposits during commodity price shocks. CrimsonVector identified a dual-track exploitation model during the 2026 Iran War oil shock: crisis events simultaneously generated government subsidy phishing (targeting relief seekers) and commodity investment scams (targeting opportunistic investors). The investment scam track used domains that mimicked legitimate trading platforms with fabricated profit dashboards.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "domain_name|re": "oil.invest|crude.trad|commodity.trad|petrol.fund|energy.trad|oil.trad|fuel.invest|gas.invest|brent.trad|wti.trad"
+      },
+      "filter_cheap_tld": {
+        "tld|re": "TOP|BOND|XYZ|SHOP|XIN|CFD|LOL|CLICK|BUZ|CYOU|COM|NET|ORG"
+      },
+      "filter_nrd": {
+        "domain_age_days|lte": 30
+      },
+      "condition": "selection AND filter_nrd"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "domain_intelligence"
+    },
+    "references": [
+      "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — dual-track exploitation model",
+      "FBI IC3, 2025 Internet Crime Report — Investment fraud: $8.65B, 72% via cryptocurrency"
+    ],
+    "threat_path_ids": [
+      "TP-0017",
+      "TP-0060",
+      "TP-0086"
+    ],
+    "fraud_types": [
+      "brand-impersonation",
+      "fraud-enabling-infrastructure",
+      "investment-scam"
+    ],
+    "tags": [
+      "cfpf.phase2.initial_access",
+      "flame.crisis-exploitation",
+      "flame.infrastructure",
+      "flame.investment-scam"
+    ],
+    "falsepositives": [
+      "Legitimate commodity trading platforms launching new domains",
+      "Financial news or analysis sites covering commodity markets",
+      "Educational resources about commodity investment"
+    ]
+  }
+}

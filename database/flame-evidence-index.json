@@ -350,6 +350,26 @@
     "cfpf_phase_coverage": "P1 (infrastructure provisioning), P2 (malware delivery via developer lures), P3-P4 (credential access, data exfiltration via InvisibleFerret)"
   },
   {
+    "evidence_id": "EV-TP0034-2026-005",
+    "tp_id": "TP-0034",
+    "title": "CrowdStrike 2026 Global Threat Report — DPRK Adversary Group Operations",
+    "source": "CrowdStrike 2026 Global Threat Report (GTR-2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Very High",
+    "cfpf_phase_coverage": "P1 (GenAI persona fabrication, npm supply chain), P2 (AI-assisted embedding), P3-P4 (credential theft, supply chain compromise), P5 (cryptocurrency theft)"
+  },
+  {
+    "evidence_id": "EV-TP0034-2026-006",
+    "tp_id": "TP-0034",
+    "title": "FATF 2026 Stablecoin Report — DPRK 221 General Bureau Procurement",
+    "source": "FATF 2026 Stablecoin Report (FATF-STABLECOIN-2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Very High",
+    "cfpf_phase_coverage": "P5 (monetization — stablecoin conversion for procurement)"
+  },
+  {
     "evidence_id": "EV-TP0039-2026-002",
     "tp_id": "TP-0039",
     "title": "INTERPOL Confirmation of Agentic AI Fraud",
@@ -440,6 +460,36 @@
     "cfpf_phase_coverage": "P1–P5"
   },
   {
+    "evidence_id": "EV-TP0044-2026-003",
+    "tp_id": "TP-0044",
+    "title": "PRESSURE CHOLLIMA Bybit Theft — Largest Single State-Criminal Convergence Incident (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0044-2026-004",
+    "tp_id": "TP-0044",
+    "title": "Operational Tempo Acceleration (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3, P4"
+  },
+  {
+    "evidence_id": "EV-TP0044-2026-005",
+    "tp_id": "TP-0044",
+    "title": "DPRK Operational Diversification (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
     "evidence_id": "EV-TP0047-2026-003",
     "tp_id": "TP-0047",
     "title": "UNODC/INTERPOL Compound Operations Intelligence",
@@ -448,6 +498,16 @@
     "domain_count": "",
     "confidence": "High",
     "cfpf_phase_coverage": "P2 (chatbot-enabled initial contact), P3 (deepfake-enhanced trust building), P4 (scripted exploitation with sextortion fallback)"
+  },
+  {
+    "evidence_id": "EV-TP0047-2026-003",
+    "tp_id": "TP-0047",
+    "title": "Guardian/OCCRP Prince Group–Timor-Leste Investigation",
+    "source": "Guardian/Organised Crime and Corruption Reporting Project (OCCRP), 4-month joint investigation (April 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P3"
   },
   {
     "evidence_id": "EV-TP0047-2026-003",
@@ -488,6 +548,46 @@
     "domain_count": "",
     "confidence": "High",
     "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-004",
+    "tp_id": "TP-0049",
+    "title": "Stablecoin Dominance in Illicit VA Volume (2025)",
+    "source": "FATF Stablecoin Report 2026 (citing Chainalysis data); CrowdStrike 2026 Global Threat Report",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-005",
+    "tp_id": "TP-0049",
+    "title": "DPRK Bybit Laundering Pattern (Feb 2025)",
+    "source": "FATF Stablecoin Report 2026; CrowdStrike 2026 Global Threat Report",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P4"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-006",
+    "tp_id": "TP-0049",
+    "title": "P2P Unhosted Wallet Vulnerability",
+    "source": "FATF Stablecoin Report 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3, P5"
+  },
+  {
+    "evidence_id": "EV-TP0049-2026-007",
+    "tp_id": "TP-0049",
+    "title": "Professional Money Laundering Techniques via Stablecoins",
+    "source": "FATF Stablecoin Report 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3"
   },
   {
     "evidence_id": "EV-TP0050-2026-001",
@@ -670,6 +770,46 @@
     "cfpf_phase_coverage": "P1–P5"
   },
   {
+    "evidence_id": "EV-TP0055-2026-003",
+    "tp_id": "TP-0055",
+    "title": "IRGC Stablecoin Procurement (FATF 2026)",
+    "source": "FATF, \"Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses\" (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0055-2026-004",
+    "tp_id": "TP-0055",
+    "title": "ISIL/Al-Qaeda Stablecoin Donations (FATF 2026)",
+    "source": "FATF, \"Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses\" (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P2, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0055-2026-005",
+    "tp_id": "TP-0055",
+    "title": "Drug Trafficking Stablecoin Use (FATF 2026)",
+    "source": "FATF, \"Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses\" (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0055-2026-006",
+    "tp_id": "TP-0055",
+    "title": "Southeast Asia Scam Compound Stablecoin Remittance (FATF India Case Study)",
+    "source": "FATF, \"Virtual Assets and Stablecoins: Risks, Trends and Regulatory Responses\" (2026) — FIU India case study",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4, P5"
+  },
+  {
     "evidence_id": "EV-TP0056-2026-001",
     "tp_id": "TP-0056",
     "title": "European Motor Insurance Fraud Surge — INTERPOL GFFTA 2026",
@@ -790,6 +930,16 @@
     "cfpf_phase_coverage": "P1–P5"
   },
   {
+    "evidence_id": "EV-TP0059-2026-002",
+    "tp_id": "TP-0059",
+    "title": "Cloud Phones as Industrial-Scale Dropper Account Infrastructure",
+    "source": "Group-IB, \"Cloud Phones: The Invisible Threat\" (March 25, 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P3"
+  },
+  {
     "evidence_id": "EV-TP0060-2026-001",
     "tp_id": "TP-0060",
     "title": "Recorded Future TDS-as-Fraud-Infrastructure Analysis",
@@ -838,6 +988,36 @@
     "domain_count": "",
     "confidence": "High",
     "cfpf_phase_coverage": "P1, P3"
+  },
+  {
+    "evidence_id": "EV-TP0061-2026-003",
+    "tp_id": "TP-0061",
+    "title": "BearHost / Chang Way Technologies OSINT Investigation",
+    "source": "Flare Academy BPH Webinar (Oleg O, Flare.io/cybercrimediaries.com), 2026",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High — OSINT-derived from public records, forum data, and passive DNS; corporate attribution confirmed via Russian company registry",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0061-2026-004",
+    "tp_id": "TP-0061",
+    "title": "BPH Market Landscape — 40 Active Providers (2024)",
+    "source": "Cybercrime Diaries, \"50 Shades of Bulletproof Hosting\" (Oleg, July 2024)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium — practitioner analysis from direct forum research",
+    "cfpf_phase_coverage": "P1, P2"
+  },
+  {
+    "evidence_id": "EV-TP0061-2026-005",
+    "tp_id": "TP-0061",
+    "title": "Black Basta Infrastructure Procurement Model",
+    "source": "Cybercrime Diaries, \"Black Basta Chat Leak\" (Oleg, March 2025); ExploitWhispers leak (196,045 internal messages)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High — derived from authenticated internal chat leak (196,045 messages); infrastructure details cross-referenced with public hosting data",
+    "cfpf_phase_coverage": "P1, P2, P3"
   },
   {
     "evidence_id": "EV-TP0062-2026-001",
@@ -940,6 +1120,56 @@
     "cfpf_phase_coverage": "P2"
   },
   {
+    "evidence_id": "EV-TP0067-2026-005",
+    "tp_id": "TP-0067",
+    "title": "Bluekit PhaaS Platform Emergence",
+    "source": "OSINT analysis — Reza Abasi (LinkedIn), Cracked/OGUsers/Patched forum posts, Telegram channel monitoring, bluekit[.]cc analysis",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium — OSINT-derived from forum posts and public Telegram; platform is newly launched with limited operational history",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-006",
+    "tp_id": "TP-0067",
+    "title": "IMPERIAL KITTEN EvilGinx2 Campaign (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-007",
+    "tp_id": "TP-0067",
+    "title": "ShinyHunters CRM SaaS Targeting (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2, P3, P4"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-008",
+    "tp_id": "TP-0067",
+    "title": "COZY BEAR OAuth 2.0 Device Code Phishing (CrowdStrike 2026)",
+    "source": "CrowdStrike, \"Global Threat Report 2026\"",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1, P2, P3"
+  },
+  {
+    "evidence_id": "EV-TP0067-2026-009",
+    "tp_id": "TP-0067",
+    "title": "PaaS Subdomain Hosting for AiTM Pages (Interisle 2025)",
+    "source": "Interisle Consulting Group, \"Phishing Landscape 2025\" (September 2025); cross-reference TP-0079",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1"
+  },
+  {
     "evidence_id": "EV-TP0068-2026-001",
     "tp_id": "TP-0068",
     "title": "NRF Retail Fraud Taxonomy v1.0 Gift Card Fraud Scheme",
@@ -968,5 +1198,345 @@
     "domain_count": "",
     "confidence": "High",
     "cfpf_phase_coverage": "P1–P3"
+  },
+  {
+    "evidence_id": "EV-TP0069-2026-003",
+    "tp_id": "TP-0069",
+    "title": "PhaaS Ecosystem Growth and Market Fragmentation",
+    "source": "Barracuda Networks PhaaS threat review (January 2026); KnowBe4 \"The Rise of Kratos\" (February 2026); CrowdStrike Tycoon2FA post-takedown analysis (March 2026); Bluekit PhaaS TI report (CrimsonVector, March 2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — multi-source vendor telemetry (CrowdStrike, Barracuda, KnowBe4, Sekoia)",
+    "cfpf_phase_coverage": "P1 (market landscape)"
+  },
+  {
+    "evidence_id": "EV-TP0069-2026-004",
+    "tp_id": "TP-0069",
+    "title": "Unpaid Toll Scam at Global Scale (Interisle 2025)",
+    "source": "Interisle Consulting Group, \"Phishing Landscape 2025\" (September 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — independent quantitative domain analysis",
+    "cfpf_phase_coverage": "P1, P2"
+  },
+  {
+    "evidence_id": "EV-TP0070-2026-001",
+    "tp_id": "TP-0070",
+    "title": "B4U Service Ecosystem Scale",
+    "source": "Sumsub Travel Fraud Report (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P1-P5"
+  },
+  {
+    "evidence_id": "EV-TP0070-2026-002",
+    "tp_id": "TP-0070",
+    "title": "Fake Travel Domain Infrastructure",
+    "source": "NordVPN/Saily Travel Scam Intelligence (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1-P2"
+  },
+  {
+    "evidence_id": "EV-TP0070-2026-003",
+    "tp_id": "TP-0070",
+    "title": "AI-Enhanced Travel Scam Operations",
+    "source": "HackerNews (November 2025); Trustwave Threat Briefing",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium",
+    "cfpf_phase_coverage": "P2-P4"
+  },
+  {
+    "evidence_id": "EV-TP0071-2026-001",
+    "tp_id": "TP-0071",
+    "title": "IRSF Global Loss Quantification",
+    "source": "TNS/CFCA Global Fraud Loss Survey (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1-P5"
+  },
+  {
+    "evidence_id": "EV-TP0071-2026-002",
+    "tp_id": "TP-0071",
+    "title": "ML-Based IRSF Detection",
+    "source": "Subex Telecom Fraud Intelligence (2025, 2026); NDSS Symposium",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4"
+  },
+  {
+    "evidence_id": "EV-TP0071-2026-003",
+    "tp_id": "TP-0071",
+    "title": "Wangiri Campaign Analysis",
+    "source": "Subex (2025); Akamai Telecom Threat Report",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2-P5"
+  },
+  {
+    "evidence_id": "EV-TP0072-2026-001",
+    "tp_id": "TP-0072",
+    "title": "Executive Concern and Synthetic Identity Scale",
+    "source": "TransUnion Consumer Pulse Report (2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2-P5"
+  },
+  {
+    "evidence_id": "EV-TP0072-2026-002",
+    "tp_id": "TP-0072",
+    "title": "GenAI KYC Bypass Capabilities",
+    "source": "Subex (2026); SEON Telecom Fraud Guide",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P2"
+  },
+  {
+    "evidence_id": "EV-TP0072-2026-003",
+    "tp_id": "TP-0072",
+    "title": "Total Telecom Fraud Scale",
+    "source": "Subex (2025, 2026); TNS/CFCA (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2-P5"
+  },
+  {
+    "evidence_id": "EV-TP0073-2026-001",
+    "tp_id": "TP-0073",
+    "title": "FBI Real Estate Fraud Scale",
+    "source": "FBI Internet Crime Complaint Center (IC3); First American Title Fraud Report",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1-P5"
+  },
+  {
+    "evidence_id": "EV-TP0073-2026-002",
+    "tp_id": "TP-0073",
+    "title": "AI-Forged Documents and Deepfake Notarization",
+    "source": "Entrust Identity Fraud Report (2026); CertifID Wire Fraud Report; HousingWire (2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2-P4"
+  },
+  {
+    "evidence_id": "EV-TP0073-2026-003",
+    "tp_id": "TP-0073",
+    "title": "Virginia Legislative Response",
+    "source": "Virginia Deed Fraud Study (2025); ALTA Best Practices",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P2-P4"
+  },
+  {
+    "evidence_id": "EV-TP0074-2026-001",
+    "tp_id": "TP-0074",
+    "title": "Ghost Broking Victim Surge 2025",
+    "source": "Aviva (November 2025); ABI (2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0074-2026-002",
+    "tp_id": "TP-0074",
+    "title": "City of London Police Ghost Broking Arrests",
+    "source": "City of London Police / IFED (May 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4–P5"
+  },
+  {
+    "evidence_id": "EV-TP0074-2026-003",
+    "tp_id": "TP-0074",
+    "title": "Ghost Portal Evolution",
+    "source": "Insurance Times (2025); FraudOps (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P3–P5"
+  },
+  {
+    "evidence_id": "EV-TP0075-2026-001",
+    "tp_id": "TP-0075",
+    "title": "Chargeback Volume and Cost Projections",
+    "source": "Chargebacks911 (2026); Chargeback.io (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4–P5"
+  },
+  {
+    "evidence_id": "EV-TP0075-2026-002",
+    "tp_id": "TP-0075",
+    "title": "Chargeback Abuse Surge 2025",
+    "source": "Chargeflow (2025); Payscout (2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4"
+  },
+  {
+    "evidence_id": "EV-TP0075-2026-003",
+    "tp_id": "TP-0075",
+    "title": "Visa VAMP Program Launch",
+    "source": "Visa (April 2025); Alloy",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P5"
+  },
+  {
+    "evidence_id": "EV-TP0075-2026-004",
+    "tp_id": "TP-0075",
+    "title": "Refund Hack Tutorial Ecosystem",
+    "source": "Offenso Academy (2026); underground forum analysis",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P4"
+  },
+  {
+    "evidence_id": "EV-TP0076-2026-001",
+    "tp_id": "TP-0076",
+    "title": "Global Ad Fraud Scale",
+    "source": "Juniper Research (2025); SearchEngineLand (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P1–P5"
+  },
+  {
+    "evidence_id": "EV-TP0076-2026-002",
+    "tp_id": "TP-0076",
+    "title": "Cookie Stuffing Prevalence",
+    "source": "BluePear (2025); Tapper (2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P3–P5"
+  },
+  {
+    "evidence_id": "EV-TP0076-2026-003",
+    "tp_id": "TP-0076",
+    "title": "AI Bot Evolution",
+    "source": "Anura (2025); TrafficGuard (2025); Tapper (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium",
+    "cfpf_phase_coverage": "P4"
+  },
+  {
+    "evidence_id": "EV-TP0077-2026-001",
+    "tp_id": "TP-0077",
+    "title": "GenAI Content in Insurance Claims",
+    "source": "Shift Technology (2025); USI (2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High",
+    "cfpf_phase_coverage": "P3–P5"
+  },
+  {
+    "evidence_id": "EV-TP0077-2026-002",
+    "tp_id": "TP-0077",
+    "title": "2025 Healthcare Fraud Takedown",
+    "source": "DOJ (2025); Insurance Journal (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High",
+    "cfpf_phase_coverage": "P4–P5"
+  },
+  {
+    "evidence_id": "EV-TP0077-2026-003",
+    "tp_id": "TP-0077",
+    "title": "Detection Market Growth and Academic Research",
+    "source": "Insurance Journal (2026); Debener et al. (2023)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High (peer-reviewed)",
+    "cfpf_phase_coverage": "P4"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-001",
+    "tp_id": "TP-0078",
+    "title": "Huione Group — ICIJ Coin Laundry Investigation",
+    "source": "ICIJ \"Coin Laundry\" investigation series (published November 2024 onwards); ICIJ/OpenCorporates \"The Modern Money Trail\" webinar (2026)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High (ICIJ methodology: Tronscan/Arkham API tracing, Proof-of-Reserves cross-referencing, hot wallet sweep confirmation, independent expert reproduction prior to publication)",
+    "cfpf_phase_coverage": "P1, P2, P3, P4, P5"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-002",
+    "tp_id": "TP-0078",
+    "title": "FinCEN Huione Group 311 Designation",
+    "source": "FinCEN, Designation of Huione Group as Primary Money Laundering Concern under Section 311 of the USA PATRIOT Act (May 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High (formal government designation)",
+    "cfpf_phase_coverage": "P5 (regulatory response)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-003",
+    "tp_id": "TP-0078",
+    "title": "Post-Plea Compliance Gap",
+    "source": "ICIJ analysis of transaction volumes pre- and post-DOJ plea agreements",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High (volume analysis based on blockchain data; compliance implementation timelines may involve lag)",
+    "cfpf_phase_coverage": "P4 (compliance failure enabling continued pipeline operation)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-004",
+    "tp_id": "TP-0078",
+    "title": "Crypto-to-Cash Physical Layer",
+    "source": "ICIJ field visits to crypto-to-cash exchange desks in Dubai and Eastern European cities",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High (direct ICIJ observation; single operation documented)",
+    "cfpf_phase_coverage": "P5 (monetization via physical cash conversion)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-005",
+    "tp_id": "TP-0078",
+    "title": "LockBitSupp (Khoroshev) — Laundering via Legitimate Business",
+    "source": "Cybercrime Diaries, \"From Dirty Crypto to Clean Money\" (Oleg, June 2025); Russian business registry analysis post-May 2024 law enforcement identification",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "High — based on public Russian business registry records post-identification",
+    "cfpf_phase_coverage": "P5 (monetization/legalization)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-006",
+    "tp_id": "TP-0078",
+    "title": "Black Basta (Nefedov/Tramp) — Restaurant Business Laundering",
+    "source": "Cybercrime Diaries, \"From Dirty Crypto to Clean Money\" (Oleg, June 2025); Black Basta chat leak (February 2025)",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium-High — derived from authenticated internal chat leak and public business registry data",
+    "cfpf_phase_coverage": "P5 (monetization/legalization)"
+  },
+  {
+    "evidence_id": "EV-TP0078-2026-007",
+    "tp_id": "TP-0078",
+    "title": "Infostealer Logs as Crypto Exchange Intelligence",
+    "source": "Cybercrime Diaries, \"From Dirty Crypto to Clean Money\" (Oleg, June 2025); Flare.io infostealer log analysis",
+    "cluster": "",
+    "domain_count": "",
+    "confidence": "Medium — methodology described by Flare CTI analyst; specific case data not publicly disclosed",
+    "cfpf_phase_coverage": "P3, P4, P5"
   }
 ]

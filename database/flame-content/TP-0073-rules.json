@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0073",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- SQL for Seller Impersonation Pattern Detection — DL-0186\n-- Property sale initiated by non-resident owner of vacant/unencumbered property\n-- with recent contact info changes\nSELECT\n  p.property_id,\n  p.property_address,\n  p.property_type,\n  p.assessed_value,\n  p.mortgage_balance,\n  o.owner_name,\n  o.owner_mailing_address,\n  o.contact_last_updated,\n  t.transaction_type,\n  t.listing_price,\n  t.listing_date,\n  t.seller_contact_email,\n  t.seller_contact_phone,\n  CASE WHEN p.property_address != o.owner_mailing_address THEN 1 ELSE 0 END AS non_resident_owner,\n  CASE WHEN p.mortgage_balance = 0 OR p.mortgage_balance IS NULL THEN 1 ELSE 0 END AS unencumbered,\n  CASE WHEN p.occupancy_status = 'vacant' THEN 1 ELSE 0 END AS vacant_property,\n  CASE WHEN o.contact_last_updated >= DATEADD(DAY, -90, CURRENT_DATE) THEN 1 ELSE 0 END AS recent_contact_change,\n  (CASE WHEN p.property_address != o.owner_mailing_address THEN 1 ELSE 0 END\n   + CASE WHEN p.mortgage_balance = 0 OR p.mortgage_balance IS NULL THEN 1 ELSE 0 END\n   + CASE WHEN p.occupancy_status = 'vacant' THEN 1 ELSE 0 END\n   + CASE WHEN o.contact_last_updated >= DATEADD(DAY, -90, CURRENT_DATE) THEN 1 ELSE 0 END\n   + CASE WHEN t.listing_price < p.assessed_value * 0.85 THEN 1 ELSE 0 END) AS risk_score\nFROM properties p\nJOIN property_owners o ON p.property_id = o.property_id\nJOIN property_transactions t ON p.property_id = t.property_id\nWHERE t.transaction_type IN ('sale_listing', 'title_transfer')\n  AND t.listing_date >= DATEADD(DAY, -30, CURRENT_DATE)\n  AND (p.occupancy_status = 'vacant' OR p.property_address != o.owner_mailing_address)\n  AND (p.mortgage_balance = 0 OR p.mortgage_balance IS NULL)\nHAVING risk_score >= 3\nORDER BY risk_score DESC, t.listing_date DESC",
+      "title": "Queries / Rules"
+    }
+  ]
+}

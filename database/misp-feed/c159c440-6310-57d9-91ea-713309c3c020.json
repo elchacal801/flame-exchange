@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "c159c440-6310-57d9-91ea-713309c3c020",
+    "info": "FLAME: Sextortion-Investment Hybrid Fraud",
+    "date": "2026-03-17",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "9adda473-c97f-500b-b8db-a3110d0a289d",
+        "type": "text",
+        "category": "Other",
+        "value": "sextortion",
+        "comment": "Fraud type for TP-0052"
+      },
+      {
+        "uuid": "02afd4e2-dbe8-5e97-b732-dd8c5d53c4a8",
+        "type": "text",
+        "category": "Other",
+        "value": "investment-scam",
+        "comment": "Fraud type for TP-0052"
+      },
+      {
+        "uuid": "9932a7bd-3365-5a7a-ae15-1da94b29d7a5",
+        "type": "text",
+        "category": "Other",
+        "value": "deepfake",
+        "comment": "Fraud type for TP-0052"
+      },
+      {
+        "uuid": "e3126fac-4c16-5fb9-84b9-7ea8224e0e98",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0052"
+      },
+      {
+        "uuid": "bea738b6-4a99-541e-8f57-e7585d05da24",
+        "type": "text",
+        "category": "Other",
+        "value": "romance-scam",
+        "comment": "Fraud type for TP-0052"
+      },
+      {
+        "uuid": "120d26a9-584e-5417-a8d6-10d2ec0790c4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0052"
+      },
+      {
+        "uuid": "3a60bffa-8ad3-5f1e-9fa6-aba3e98a7f92",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0052"
+      },
+      {
+        "uuid": "ba95bbbd-e3f7-509d-a425-6e7505f67878",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0052"
+      },
+      {
+        "uuid": "9c161c9f-f14c-5f43-92c7-d3de9dfd284b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0052"
+      },
+      {
+        "uuid": "0e5e9229-2230-566c-92f9-cb9357aa8192",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0052"
+      }
+    ]
+  }
+}

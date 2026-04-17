@@ -1,0 +1,149 @@
+title: Wangiri Callback Velocity — High Volume of Short-Duration Outbound International Calls From Single Source
+id: c68daae0-88fc-44d9-b84d-e27ef3e25361
+status: experimental
+description: >
+  Detects Wangiri ("one-ring") fraud patterns where a high volume of short-duration
+  (< 5 seconds) outbound international calls originate from a single source, indicating
+  subscriber callbacks to premium-rate numbers. In a Wangiri scheme, fraudsters place
+  brief inbound calls from premium-rate numbers to trigger victim callbacks. The callbacks
+  connect to IVR systems or premium content lines that accumulate per-minute charges.
+  This rule detects the callback side of the attack: clusters of brief outbound
+  international calls from individual subscribers or PBX systems to premium-rate
+  destinations. Average victim loss is $15-$50 per callback; aggregate campaign revenues
+  reach $100K-$1M (Subex/Akamai).
+sigma_compatible: false
+native_query_required: true
+references:
+  - "Subex, Global Telecom Fraud Intelligence Report (2025)"
+  - "Akamai, Telecom Threat Landscape Report"
+  - "TNS/CFCA, Global Fraud Loss Survey (2026)"
+threat_paths:
+  - TP-0071
+cfpf_phase: P4
+fraud_types:
+  - wangiri
+  - premium-rate-fraud
+  - telecom-revenue-fraud
+logsource:
+  product: telecom
+  service: call_detail_records
+detection:
+  selection:
+    call_direction: outbound
+    call_type: international
+  filter_short_duration:
+    call_duration_seconds|lt: 5
+  filter_volume:
+    short_call_count_24h|gte: 10
+  filter_destination_diversity:
+    unique_premium_destinations_24h|gte: 3
+  timeframe: 24h
+  condition: >
+    selection AND filter_short_duration AND filter_volume
+    AND filter_destination_diversity
+data_sources:
+  native_fields:
+    - call_id
+    - calling_number
+    - called_number
+    - call_direction
+    - call_type
+    - call_start_time
+    - call_duration_seconds
+    - source_system
+    - destination_country
+  enrichment_required:
+    - field: is_premium_rate
+      source: Premium-rate number range lookup table (CFCA/i3 Forum intelligence)
+    - field: inbound_missed_call_correlation
+      source: CDR correlation identifying prior inbound one-ring calls from the same international prefix
+    - field: risk_country
+      source: Country risk classification for Wangiri-target destinations
+  derived_fields:
+    - short_call_count_24h
+    - unique_premium_destinations_24h
+    - time_since_inbound_ring
+queries:
+  splunk: |-
+    `comment("Splunk SPL for Wangiri Callback Velocity — DL-0183")`
+    `comment("Detects high volume of short-duration outbound international calls")`
+    index=flame_telecom sourcetype=flame:cdr
+      call_direction="outbound"
+      call_type="international"
+      call_duration_seconds < 5
+    | lookup premium_rate_ranges number_prefix OUTPUTNEW is_premium_rate, risk_country
+    | where is_premium_rate="true"
+    | bin _time span=24h
+    | stats count as short_call_count,
+            dc(called_number) as unique_destinations,
+            dc(destination_country) as unique_countries,
+            values(called_number) as called_numbers,
+            values(destination_country) as countries,
+            avg(call_duration_seconds) as avg_duration,
+            earliest(_time) as first_call,
+            latest(_time) as last_call
+      by calling_number, source_system, _time
+    | where short_call_count >= 10 AND unique_destinations >= 3
+    | eval risk_score = case(
+        short_call_count >= 50 AND unique_destinations >= 10, "critical",
+        short_call_count >= 25 AND unique_destinations >= 5, "high",
+        1=1, "medium")
+    | table calling_number, source_system, short_call_count, unique_destinations,
+            unique_countries, called_numbers, countries, avg_duration,
+            first_call, last_call, risk_score
+    | sort - short_call_count
+  sql: |-
+    -- SQL for Wangiri Callback Velocity Detection
+    -- Detects high volume of short-duration outbound international calls from single source
+    SELECT
+      c.calling_number,
+      c.source_system,
+      COUNT(*) AS short_call_count,
+      COUNT(DISTINCT c.called_number) AS unique_destinations,
+      COUNT(DISTINCT c.destination_country) AS unique_countries,
+      AVG(c.call_duration_seconds) AS avg_duration_seconds,
+      MIN(c.call_start_time) AS first_call,
+      MAX(c.call_start_time) AS last_call,
+      DATEDIFF(MINUTE, MIN(c.call_start_time), MAX(c.call_start_time)) AS window_minutes,
+      CASE
+        WHEN COUNT(*) >= 50 AND COUNT(DISTINCT c.called_number) >= 10 THEN 'critical'
+        WHEN COUNT(*) >= 25 AND COUNT(DISTINCT c.called_number) >= 5 THEN 'high'
+        ELSE 'medium'
+      END AS risk_score
+    FROM call_detail_records c
+    JOIN premium_rate_numbers p ON c.called_number LIKE p.number_prefix || '%'
+    WHERE c.call_direction = 'outbound'
+      AND c.call_type = 'international'
+      AND c.call_duration_seconds < 5
+      AND c.call_start_time >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)
+    GROUP BY c.calling_number, c.source_system
+    HAVING COUNT(*) >= 10
+       AND COUNT(DISTINCT c.called_number) >= 3
+    ORDER BY short_call_count DESC
+  cql: |-
+    // CrowdStrike CQL for Wangiri Callback Velocity
+    call_direction="outbound" call_type="international" call_duration_seconds < 5
+    | join premium_rate_numbers on called_number
+    | groupBy(calling_number, source_system, function=[
+        count(as=short_call_count),
+        countDistinct(called_number, as=unique_destinations),
+        countDistinct(destination_country, as=unique_countries),
+        avg(call_duration_seconds, as=avg_duration),
+        min(call_start_time, as=first_call),
+        max(call_start_time, as=last_call),
+        collect([called_number, destination_country])
+      ], span=24h)
+    | short_call_count >= 10
+    | unique_destinations >= 3
+    | sort(short_call_count, order=desc)
+falsepositives:
+  - International business call attempts with connection failures (busy/no answer)
+  - Automated system health checks or monitoring calls to international endpoints
+  - Call center operations with short-duration international callback attempts
+  - Network testing or carrier quality assurance calls
+level: high
+tags:
+  - cfpf.phase4.execution
+  - flame.wangiri
+  - flame.premium-rate-fraud
+  - flame.telecom-revenue-fraud

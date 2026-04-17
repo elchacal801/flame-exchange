@@ -42,18 +42,24 @@ data_sources:
   - new_mfa_method
   - transaction_amount
 queries:
-  logscale: |-
-    // LogScale LQL for MFA Method Switch Before High-Value Transaction
+  cql: |-
+    // CrowdStrike CQL for MFA Method Switch Before High-Value Transaction
     // Repository: flame-banking-identity-management
-    // Aggregation that cannot be expressed in Sigma:
-    // Original condition: selection_mfa_change | near selection_high_value_txn by account_id
-    event_type="MFA_METHOD_CHANGE"
-    (new_mfa_method="sms_otp" OR new_mfa_method="email_otp" OR new_mfa_method="voice_call")
-    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
-    transaction_amount>=5000
-    // Temporal correlation — use join() or selfJoinFilter() in LogScale
-    // to correlate the selection events within the timeframe
-    | selfJoinFilter(account_id, where=[...])
+    // Correlates MFA downgrade with subsequent high-value transaction
+    // within 4h for the same account
+    (event_type="MFA_METHOD_CHANGE" AND
+      (new_mfa_method="sms_otp" OR new_mfa_method="email_otp" OR new_mfa_method="voice_call"))
+    OR ((event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT") AND
+      transaction_amount>=5000)
+    | selfJoinFilter(account_id, where=[
+        {event_type="MFA_METHOD_CHANGE"}
+        {event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT"}
+      ])
+    | groupBy(account_id, function=[
+        count(as=event_count),
+        collect([event_type, new_mfa_method, transaction_amount, @timestamp])
+      ], span=4h)
+    | event_count >= 2
   splunk: |-
     `comment("Splunk SPL for MFA Method Switch Before High-Value Transaction")`
     `comment("Aggregation that cannot be expressed in Sigma")`

@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "0d372364-b933-5d4b-af19-bd1a7d558a4a",
+    "info": "FLAME: IRSF & Telecom Revenue Share Fraud",
+    "date": "2026-03-29",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "834f0f99-f8df-5678-8247-417769111355",
+        "type": "text",
+        "category": "Other",
+        "value": "irsf",
+        "comment": "Fraud type for TP-0071"
+      },
+      {
+        "uuid": "b2365c9c-23b1-50a4-aaa1-c88d6f14ed61",
+        "type": "text",
+        "category": "Other",
+        "value": "premium-rate-fraud",
+        "comment": "Fraud type for TP-0071"
+      },
+      {
+        "uuid": "2859c460-b652-5106-87a9-9b6a0f7dd50f",
+        "type": "text",
+        "category": "Other",
+        "value": "telecom-revenue-fraud",
+        "comment": "Fraud type for TP-0071"
+      },
+      {
+        "uuid": "c7981e18-c64d-5c3b-8b36-f0fcf7be9c21",
+        "type": "text",
+        "category": "Other",
+        "value": "wangiri",
+        "comment": "Fraud type for TP-0071"
+      },
+      {
+        "uuid": "28f9d40e-08e4-545c-ab26-04bf8bc707b3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0071"
+      },
+      {
+        "uuid": "5b4e161e-d73a-5444-bc26-bd697b1ff670",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0071"
+      },
+      {
+        "uuid": "f5dfa741-f837-5d8a-8d26-58f1f7e5473e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0071"
+      },
+      {
+        "uuid": "26008375-121a-5c87-9b65-5f9ea42fff89",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0071"
+      },
+      {
+        "uuid": "38d776f3-eacd-5bb7-a394-089188ce6ac0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0071"
+      }
+    ]
+  }
+}

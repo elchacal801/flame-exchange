@@ -18,6 +18,7 @@ Detection rules mapped to **Real Estate Wire Fraud — Closing Scam**.
 | DL-0033 | Round-Dollar Wire Amount Pattern | medium | P4 |
 | DL-0035 | Wire to FATF High-Risk Jurisdiction | high | P4 |
 | DL-0036 | Payment Instruction Velocity Spike | high | P4 |
+| DL-0186 | Seller Impersonation Pattern — Property Sale Initiated by Non-Resident Owner of Vacant/Unencumbered Property With Recent Contact Info Changes | high | P3 |
 
 ## Formats
 

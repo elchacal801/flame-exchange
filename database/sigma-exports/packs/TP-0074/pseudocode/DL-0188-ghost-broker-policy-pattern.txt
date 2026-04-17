@@ -1,0 +1,63 @@
+# ======================================================================
+# FLAME Detection Rule: Ghost Broker Policy Pattern — Multiple Policies with Disposable Contacts and Below-Market Premiums
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0074
+#
+# Description:
+#   Detects ghost broker activity by identifying intermediaries submitting
+#   multiple insurance policies using disposable contact details (temporary
+#   email addresses, prepaid phone numbers) with premiums significantly
+#   below market rates. Ghost broking victims increased 93% in 2025, with
+#   organized operators selling fake or fraudulently obtained policies at
+#   30-60% below market rates. The combination of high policy volume,
+#   rotating disposable contacts, and below-market pricing is the hallmark
+#   pattern of ghost broker operations. City of London Police made arrests
+#   in May 2025 and IFED designated February 2026 as a ghost broking
+#   intensification month.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: insurance
+#   service: policy_management
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     policy_type:
+#     - motor
+#     - vehicle
+#   filter_intermediary_volume:
+#     intermediary_policy_count_90d|gte: 5
+#   filter_premium:
+#     premium_pct_of_market|lt: 70
+#   filter_disposable_contacts:
+#     disposable_contact_indicator|gte: 3
+#   timeframe: 90d
+#   condition: 'selection AND filter_intermediary_volume AND filter_premium AND filter_disposable_contacts
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate high-volume intermediaries with diverse client bases
+#   - Intermediaries serving privacy-conscious customers who use privacy email services
+#   - Seasonal fluctuations in premium pricing (promotional periods)
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

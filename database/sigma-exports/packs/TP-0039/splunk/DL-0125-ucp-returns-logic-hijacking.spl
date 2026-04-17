@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+return_tracking_id="void-*" OR (return_verify_step_completed=false refund_method="settlement.refund.instant") OR (shipping_scan_validated=false refund_issued=true count>=10 groupby="merchant_id" timeframe="1h")

@@ -35,7 +35,7 @@ mitre_attack:
   - T1657      # Financial Theft
   - T1588.002  # Obtain Capabilities: Tool
 ft3_tactics: ["FTA001", "FTA002", "FTA005", "FTA006", "FTA007", "FTA009", "FT005.001", "FT006.001", "FT016", "FT017"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "F1009", "F1018", "F1025", "F1027", "F1031", "F1032", "F1033", "F1040", "F1045"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -66,6 +66,8 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-AML
+baseline_ids:
+  - BL-0006
 geopolitical_timing: none
 nation_state_nexus: suspected
 tags:

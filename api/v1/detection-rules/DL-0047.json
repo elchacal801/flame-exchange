@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.297048+00:00",
+    "generated_at": "2026-04-09T19:40:02.185602+00:00",
     "total": 1
   },
   "data": {
@@ -50,7 +50,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for SIM Swap Indicator Chain\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n// Sequential correlation — use LogScale sequence detection\n// Correlate stages sequentially on on within 24h",
+      "cql": "// CrowdStrike CQL for SIM Swap Indicator Chain\n// Repository: flame-banking-identity-management\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n// Sequential correlation — use CrowdStrike NGSIEM sequence detection\n// Correlate stages sequentially on on within 24h",
       "splunk": "`comment(\"Splunk SPL for SIM Swap Indicator Chain\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: stage1_sim_change | followed_by stage2_password_reset | followed_by stage3_high_value_action on user_id within 24h\")`\nindex=flame_banking sourcetype=flame:identity_management\n(event_type=\"phone_number_change\" OR event_type=\"sim_swap\" OR event_type=\"mobile_update\")\nevent_type=\"password_reset\"\nreset_method=\"sms_otp\"\n(event_type=\"wire_transfer\" OR event_type=\"beneficiary_add\" OR event_type=\"address_change\" OR event_type=\"email_change\")\ntransaction_amount>=1000\n| transaction on maxspan=24h\n| where eventcount >= 2\n`comment(\"Sequential correlation across stages\")`"
     },
     "references": [

@@ -7,7 +7,7 @@ title: "AiTM Phishing Kit Infrastructure and Session Token Hijacking"
 category: ThreatPath
 date: 2026-03-22
 author: "FLAME Project"
-source: "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
+source: "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026); Bluekit PhaaS Threat Intelligence Report (CrimsonVector, March 2026)"
 tlp: WHITE
 infrastructure_generation_method: manual
 fraud_types:
@@ -44,7 +44,7 @@ mitre_attack:
   - T1078.004  # Valid Accounts: Cloud Accounts
   - T1027      # Obfuscated Files or Information
 ft3_tactics: ["FTA001", "FT007.009", "FT011.001"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "T1110.004", "T1539", "T1555", "F1004", "F1007", "T1185", "T1189", "T1451", "T1557"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -70,10 +70,14 @@ related_tps:
     relationship: related-to
   - id: TP-0069
     relationship: related-to
+  - id: TP-0079
+    relationship: related-to
 regulatory_refs:
   - REG-INTERPOL-GFFTA
   - REG-STIX-FCI
   - REG-WCI-2024
+  - REG-CROWDSTRIKE-GTR-2026
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -99,6 +103,14 @@ tags:
   - darcula
   - smishing-triad
   - wci-geographic-attribution
+  - bluekit
+  - phaas-market-fragmentation
+  - vacuum-effect
+  - antibot-cloaking
+  - imperial-kitten
+  - shinyhunters
+  - cozy-bear
+  - crowdstrike-gtr-2026
 ---
 ```
 
@@ -228,7 +240,7 @@ Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evol
 ### Service Supply Chain
 | Role | Service Type | Underground Availability | Typical Cost Range |
 |------|-------------|--------------------------|-------------------|
-| AiTM kit developer | Tycoon 2FA, Evilginx, W3LL Panel, Caffeine, NakedPages, Greatness | High | $200–$1,500/month subscription |
+| AiTM kit developer | Tycoon 2FA, Evilginx, W3LL Panel, Caffeine, NakedPages, Greatness, Bluekit | High | $90–$350/month subscription ($90/7 days, $170/14 days, $350/month for Bluekit; $200–$1,500/month for established kits) |
 | Domain registrar | Bulk domain registration for phishing pages | High | $10–$50/domain |
 | Hosting provider | Bulletproof hosting for reverse proxy infrastructure | High | $50–$200/month |
 | Template designer | Login page templates mimicking specific identity providers | Medium | $50–$500 per template |
@@ -249,6 +261,7 @@ Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evol
 | Greatness | M365-exclusive with Autograb | `/admin/js/mj.php` URI; `httpd.grt` config; blurred Excel + spinner lure; auto-steals victim logo/background | $120/month | Active — deploys on compromised WordPress |
 | Caffeine | Open-registration PhaaS (no vetting) | Self-service web portal; Chinese/Russian templates; WordPress deployment via license tokens | $250–$850/month | Active |
 | SessionShark | "Educational" proxy-based AiTM | Telegram bot exfiltration; custom HTTP headers to bypass threat intel feeds; dynamic content alteration for scanners | Unknown | Active (primarily advertised) |
+| Bluekit | Fully managed AiTM dashboard; bulletproof/decentralized infrastructure; automated domain purchase | Antibot cloaking; safebrowsing bypass; CIS geo-blocking default; 40+ "1:1 copy" templates; Doraemon branding in forum posts | $90/7 days, $170/14 days, $350/month | Active — emerged 25 March 2026, post-Tycoon2FA takedown |
 | Modlishka | Go single-domain transparent proxy | `/SayHello2Modlishka` panel; "id" tracking cookie; "ident" URL parameter | Open-source | Active — pen-test/red-team primary use |
 | Muraena + NecroBrowser | Go proxy + Node.js/Puppeteer post-exploitation | TOML config; `/instrument` API endpoint; automated SSH key injection, inbox rule manipulation across headless Chromium instances | Open-source | Active — pioneered automated session exploitation |
 
@@ -312,8 +325,8 @@ Despite these victories, impact is consistently temporary — displaced customer
 ### Queries / Rules
 
 ```kql
--- Microsoft Sentinel KQL: Detect AiTM session token replay
--- User-Agent or IP mismatch between MFA completion and subsequent access
+// Microsoft Sentinel KQL: Detect AiTM session token replay (DL-0137)
+// User-Agent or IP mismatch between MFA completion and subsequent access
 let mfa_events = SigninLogs
 | where TimeGenerated > ago(24h)
 | where AuthenticationRequirement == "multiFactorAuthentication"
@@ -323,41 +336,72 @@ let mfa_events = SigninLogs
 let access_events = SigninLogs
 | where TimeGenerated > ago(24h)
 | where ResultType == 0
+// Exclude MFA events to prevent self-join noise
+| where AuthenticationRequirement != "multiFactorAuthentication"
 | project AccessTime=TimeGenerated, UserPrincipalName, Access_IP=IPAddress,
           Access_UserAgent=UserAgent, Access_AppId=AppId;
 mfa_events
 | join kind=inner access_events on UserPrincipalName
-| where AccessTime > MFATime and AccessTime < MFATime + 4h
+// Access must occur 5min–4h after MFA (skip trivially close auth flow events)
+| where AccessTime > MFATime + 5m and AccessTime < MFATime + 4h
 | where MFA_IP != Access_IP or MFA_UserAgent != Access_UserAgent
 | project UserPrincipalName, MFATime, AccessTime,
           MFA_IP, Access_IP, MFA_UserAgent, Access_UserAgent
 ```
 
+```kql
+// Microsoft Sentinel KQL: Same SessionId from Multiple IPs (DL-0146)
+// Strongest AiTM detection signal — phishing proxy IP and attacker replay IP on same session
+let timeWindow = 4h;
+SigninLogs
+| where TimeGenerated > ago(24h)
+| where ResultType == 0
+| summarize
+    IPCount = dcount(IPAddress),
+    IPs = make_set(IPAddress),
+    UserAgents = make_set(UserAgent),
+    AppIds = make_set(AppId),
+    MinTime = min(TimeGenerated),
+    MaxTime = max(TimeGenerated),
+    RiskLevels = make_set(RiskLevelDuringSignIn)
+  by SessionId, UserPrincipalName
+| where IPCount >= 2
+| where datetime_diff('hour', MaxTime, MinTime) <= 4
+| project UserPrincipalName, SessionId, IPCount, IPs, UserAgents,
+          AppIds, MinTime, MaxTime, RiskLevels
+```
+
 ```sigma
-title: Post-Authentication Inbox Rule Creation from New IP
+title: Post-Compromise Inbox Rule Manipulation (DL-0138 — Standalone)
 status: experimental
-description: Detects inbox rule creation within 24h of sign-in from previously unseen IP
+description: >
+  Basic detection: inbox rule creation from non-RFC1918 IP.
+  For the full correlated detection (new-IP sign-in + inbox rule), use the
+  KQL queries in DL-0138 which perform cross-log temporal correlation.
 logsource:
     product: m365
     service: exchange
 detection:
-    selection_rule:
+    selection:
         Operation:
             - New-InboxRule
             - Set-InboxRule
             - Enable-InboxRule
-    filter_known:
+    filter_internal:
         ClientIP|cidr:
             - 10.0.0.0/8
             - 172.16.0.0/12
             - 192.168.0.0/16
-    timeframe: 24h
-    condition: selection_rule and not filter_known
+    condition: selection and not filter_internal
 fields:
     - UserId
     - ClientIP
     - Parameters
 level: high
+falsepositives:
+    - Users creating inbox rules from external networks (home, mobile)
+    - Cloud-hosted email management tools with non-RFC1918 IPs
+    - Corporate networks using public IP NAT for Exchange clients
 ```
 
 ### Behavioral Analytics
@@ -441,6 +485,45 @@ The strongest AiTM detection signals in Entra ID:
 - **CFPF Phase Coverage**: P2
 - **Confidence**: High
 
+### EV-TP0067-2026-005: Bluekit PhaaS Platform Emergence
+
+- **Source**: OSINT analysis — Reza Abasi (LinkedIn), Cracked/OGUsers/Patched forum posts, Telegram channel monitoring, bluekit[.]cc analysis
+- **Key Findings**: Bluekit is a fully managed PhaaS platform that emerged 21 days after the Europol-led Tycoon2FA takedown (4 March 2026). Advertised on Cracked forum on 25 March 2026 by a newly created "Premium Member" account, then cross-posted to OGUsers and Patched by throwaway accounts. Platform offers 40+ ready-to-use templates targeting Microsoft, Outlook, Okta, Citrix, Bank of America, Wells Fargo, PayPal, and 9+ cryptocurrency exchanges (Binance, Coinbase, Bybit, OKX, Kucoin, Gate, Upbit, MEXC, crypto.com). Key capabilities include full 2FA bypass with geolocation/browser emulation, session cookie/local storage/keyboard capture, automated domain purchase, antibot cloaking, safebrowsing bypass, and AI assistant. March 27 changelog (2 days post-launch) added CIS geo-blocking policy, Outlook full-access session hijacking via OTP capture, French banking templates (Credit Agricole, La Banque Postale, Robinhood), and IP/country whitelist. Attribution indicators point to Eastern European (likely Russian-speaking) operator: CIS exclusion policy, Jabber on exploit[.]im, "petrushka" handle pattern, rapid dev velocity suggesting pre-existing team.
+- **CFPF Phase Coverage**: P1–P5
+- **Confidence**: Medium — OSINT-derived from forum posts and public Telegram; platform is newly launched with limited operational history
+
+### EV-TP0067-2026-006: IMPERIAL KITTEN EvilGinx2 Campaign (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: Israel
+- **CFPF Phase Coverage**: P1, P2, P3
+- **Confidence**: High
+- **Summary**: Iran-nexus adversary IMPERIAL KITTEN conducted credential phishing against Israeli Microsoft 365 users in November 2025 using the AiTM toolkit EvilGinx2 with Israel-themed infrastructure and English/Hebrew-language lures. This represents significant evidence of state-nexus adoption of commercial AiTM tooling — a nation-state intelligence operation leveraging the same PhaaS-grade AiTM infrastructure documented across the criminal ecosystem in this threat path.
+
+### EV-TP0067-2026-007: ShinyHunters CRM SaaS Targeting (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: Global
+- **CFPF Phase Coverage**: P2, P3, P4
+- **Confidence**: High
+- **Summary**: Between January and August 2025, ShinyHunters conducted social engineering campaigns targeting CRM instances via AiTM phishing pages. CRM emerged as a key exfiltration target in 2025, extending the AiTM threat beyond traditional email/identity provider compromise to SaaS applications containing customer data, sales pipelines, and financial records.
+
+### EV-TP0067-2026-008: COZY BEAR OAuth 2.0 Device Code Phishing (CrowdStrike 2026)
+
+- **Source**: CrowdStrike, "Global Threat Report 2026"
+- **Geography**: United States
+- **CFPF Phase Coverage**: P1, P2, P3
+- **Confidence**: High
+- **Summary**: Russia-nexus adversary COZY BEAR systematically exploited interpersonal trust to compromise US-based targets through a multi-layered trust exploitation campaign. The attack chain involved: (1) compromising or impersonating individuals from international NGOs, (2) delivering Entra ID OAuth 2.0 authorization code and device code phishing links that redirected to authentic Microsoft login pages, and (3) sustaining multi-day conversations across IM, email, and video conferencing to build rapport before delivering phishing payloads. Timeline example: Day 1 initial contact, Day 5 email access from a legitimate compromised account, Day 31 pivot to a new target. This demonstrates how state actors augment AiTM tooling with sustained social engineering to defeat user vigilance.
+
+### EV-TP0067-2026-009: PaaS Subdomain Hosting for AiTM Pages (Interisle 2025)
+
+- **Source**: Interisle Consulting Group, "Phishing Landscape 2025" (September 2025); cross-reference TP-0079
+- **Geography**: Global
+- **CFPF Phase Coverage**: P1
+- **Confidence**: High
+- **Summary**: Interisle's 2025 analysis documents explosive growth in abuse of PaaS subdomain hosting for phishing pages, including AiTM landing pages. Cloudflare pages.dev saw a +157% increase in phishing abuse, Webflow +980%, and Vercel +279%. These platforms provide attacker-controlled subdomains under high-reputation parent domains, effectively bypassing domain reputation filters and browser safelist protections. AiTM kit operators increasingly deploy reverse proxy infrastructure on these PaaS platforms rather than registering dedicated phishing domains — reducing infrastructure cost and improving evasion. See TP-0079 for the dedicated gTLD/subdomain abuse threat path.
+
 ---
 
 ## References
@@ -459,6 +542,12 @@ The strongest AiTM detection signals in Entra ID:
 - Group-IB, "W3LL DONE" (September 2023) — W3LL Store and Panel OV6 analysis
 - Sekoia TDR, "Sneaky 2FA" (December 2024) — impossible device shift detection
 - Sekoia TDR, "Mamba 2FA" (May 2024) — Socket.IO relay analysis
+- CrimsonVector (Diego Parra), "Bluekit PhaaS Threat Intelligence Report" (30 March 2026) — platform emergence, template analysis, evasion capabilities, attribution indicators
+- CrowdStrike, "Tycoon2FA Phishing-as-a-Service Platform Persists After Takedown" (March 2026) — post-takedown resilience analysis
+- Barracuda Networks, PhaaS threat review (January 2026) — PhaaS kit doubling statistic
+- KnowBe4, "The Rise of Kratos" (February 2026) — 90% credential compromise prediction
+- CrowdStrike, "Global Threat Report 2026" — IMPERIAL KITTEN EvilGinx2 campaign, ShinyHunters CRM targeting, COZY BEAR OAuth 2.0 device code phishing
+- Interisle Consulting Group, "Phishing Landscape 2025" (September 2025) — PaaS subdomain hosting abuse for phishing/AiTM pages (Cloudflare pages.dev, Webflow, Vercel)
 
 ---
 
@@ -478,6 +567,10 @@ Post-authentication token protection is emerging as the critical second layer. F
 
 Detection engineering should leverage kit-specific fingerprints: the impossible device shift (Sneaky 2FA), hardcoded application IDs (Rockstar 2FA/FlowerStorm), Socket.IO WebSocket events (Mamba 2FA), and URI patterns (Greatness) provide high-fidelity, low-false-positive detection signals that complement behavioral analytics.
 
+**Bluekit Evasion Capabilities (March 2026)**: The newly emerged Bluekit PhaaS platform introduces several evasion features that directly challenge existing detection layers: (1) configurable antibot cloaking designed to evade automated security scanners, (2) safebrowsing bypass specifically targeting Google Safe Browsing red alerts, (3) geolocation and browser fingerprint emulation to defeat location-based anomaly detection, and (4) CAPTCHA disable option for iframe integration. The March 27 changelog's improvement to Outlook session hijacking — capturing full access via one-time codes rather than just passwords — indicates the platform is specifically optimizing for enterprise email account takeover. Organizations relying on OTP-based MFA for Outlook/Exchange are directly exposed.
+
+**Post-Tycoon2FA Market Fragmentation (March 2026)**: The PhaaS ecosystem is experiencing explosive growth despite headline takedown successes. Active PhaaS kits doubled during 2025 (Barracuda). By end of 2026, an estimated 90% of credential compromise attacks will be enabled by modular PhaaS kits (KnowBe4). The Tycoon2FA takedown created a reputational and trust vacuum — even though Tycoon2FA resumed operations within days (CrowdStrike observed activity returning to pre-disruption levels by March 6), the brand damage among criminal customers who value operational stability created a market opening. Bluekit's emergence 21 days post-takedown is a textbook example of this "vacuum effect." Additional new entrants include Kratos, Whisper 2FA, GhostFrame, EvilTokens (device code phishing), Sneaky 2FA, and CoGUI — indicating the market is fragmenting and specializing rather than consolidating.
+
 ---
 
 ## Revision History
@@ -486,3 +579,5 @@ Detection engineering should leverage kit-specific fingerprints: the impossible 
 |------|--------|--------|
 | 2026-03-22 | FLAME Project | Initial submission — sourced from technical landscape report (2026) |
 | 2026-03-23 | FLAME Project | Major enrichment: added 13 kit profiles, Tycoon 2FA takedown, kit-specific detection fingerprints, Entra ID log detection, expanded MITRE ATT&CK (12 techniques), law enforcement timeline, 3 new operational evidence entries, CAE/Token Protection controls — sourced from phishing kit intelligence reference |
+| 2026-03-30 | FLAME Project | Enrichment: Bluekit PhaaS platform (EV-TP0067-2026-005), PhaaS market fragmentation analysis, evasion capabilities, post-Tycoon2FA vacuum effect — sourced from Bluekit PhaaS TI report (CrimsonVector) and CrowdStrike post-takedown analysis |
+| 2026-04-01 | FLAME Project | Enrichment: CrowdStrike GTR 2026 — IMPERIAL KITTEN EvilGinx2, ShinyHunters CRM targeting, COZY BEAR OAuth device code phishing; Interisle 2025 PaaS subdomain hosting abuse; added TP-0079 cross-reference |
