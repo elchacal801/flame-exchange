@@ -1,11 +1,11 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-09T19:40:04.717412+00:00",
+    "generated_at": "2026-04-17T14:49:41.572988+00:00",
     "total": 1
   },
   "data": {
-    "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "id": "cceb819b-6b4f-4cef-9a22-51a23b4c176b",
     "dl_id": "DL-0218",
     "title": "Crisis-Keyword Domain Registration Surge — Bulk NRD Detection within 72h Window",
     "status": "experimental",
@@ -48,29 +48,19 @@
       "Interisle Consulting Group, Phishing Landscape 2025 — Bulk registration patterns on cheap gTLDs"
     ],
     "threat_path_ids": [
-      "TP-0057",
       "TP-0079",
       "TP-0086"
     ],
     "fraud_types": [
       "brand-impersonation",
-      "deepfake-as-a-service",
-      "fraud-as-a-service",
       "fraud-enabling-infrastructure",
       "phishing"
     ],
     "tags": [
-      "TP-0057",
-      "attack.t1589",
       "cfpf.phase1.recon",
-      "cfpf.phase1.recon",
-      "daas",
-      "deepfake",
       "flame.crisis-exploitation",
       "flame.infrastructure",
-      "flame.shared",
-      "fraud-as-a-service",
-      "subscription-pattern"
+      "flame.shared"
     ],
     "falsepositives": [
       "Legitimate government agencies registering official program domains",
