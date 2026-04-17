@@ -1,18 +1,21 @@
 {
   "summary": {
-    "rules_audited": 150,
-    "rules_with_issues": 25,
-    "total_issues": 72,
+    "rules_audited": 221,
+    "rules_with_issues": 166,
+    "total_issues": 352,
     "fail_count": 0,
-    "warn_count": 64,
-    "info_count": 8,
+    "warn_count": 342,
+    "info_count": 10,
     "by_check": {
-      "field_consistency": 57,
-      "spl_quality": 8,
+      "field_consistency": 207,
+      "spl_quality": 12,
       "stub_detection": 1,
       "threshold_consistency": 4,
-      "spl_syntax": 1,
-      "kql_syntax": 1
+      "spl_syntax": 14,
+      "kql_syntax": 1,
+      "attack_tags": 33,
+      "cql_syntax": 4,
+      "inline_drift": 76
     }
   },
   "issues": [
@@ -506,6 +509,1833 @@
       "lang": "kql",
       "message": "Unknown OfficeActivity/SigninLogs fields in KQL: ['Parameters;']",
       "rule": "DL-0150"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'account_open_date', 'credit_limit', 'current_balance', 'payment_history_months']",
+      "rule": "DL-0151"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['account_open_date', 'credit_limit', 'current_balance', 'payment_history_months']",
+      "rule": "DL-0151"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['address', 'applicant_id', 'application_date', 'device_fingerprint', 'email', 'phone', 'ssn_hash']",
+      "rule": "DL-0152"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['applicant_id', 'application_date', 'device_fingerprint', 'email', 'phone', 'ssn_hash']",
+      "rule": "DL-0152"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['address', 'applicant_id', 'application_date', 'device_fingerprint', 'email', 'phone', 'ssn_hash']",
+      "rule": "DL-0152"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'credit_limit', 'identity_id', 'merchant_category', 'transaction_amount', 'transaction_type']",
+      "rule": "DL-0153"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['account_id', 'credit_limit', 'merchant_category', 'transaction_amount', 'transaction_type']",
+      "rule": "DL-0153"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL 'search' command after transforming command \u2014 may not work as expected",
+      "rule": "DL-0153"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['address', 'applicant_id', 'applicant_stated_dob', 'application_date', 'device_fingerprint', 'phone', 'ssn_hash']",
+      "rule": "DL-0154"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['address', 'applicant_stated_dob', 'device_fingerprint', 'phone', 'ssn_hash']",
+      "rule": "DL-0154"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['address', 'applicant_stated_dob', 'application_date', 'device_fingerprint', 'event_type', 'phone', 'ssn_hash']",
+      "rule": "DL-0154"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'account_open_date', 'credit_limit', 'current_balance', 'last_payment_date', 'payment_history_months']",
+      "rule": "DL-0155"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['account_open_date', 'credit_limit', 'current_balance', 'last_payment_date', 'payment_history_months']",
+      "rule": "DL-0155"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0156"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'authorized_user_id', 'authorized_user_name', 'authorized_user_ssn', 'event_date', 'primary_account_holder_id']",
+      "rule": "DL-0157"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['account_id', 'authorized_user_ssn', 'event_date', 'primary_account_holder_id']",
+      "rule": "DL-0157"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['account_id', 'authorized_user_id', 'authorized_user_name', 'authorized_user_ssn', 'event_date', 'event_type', 'primary_account_holder_id']",
+      "rule": "DL-0157"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['count_distinct', 'group_by']",
+      "rule": "DL-0157"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0157"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['applicant_id', 'device_fingerprint', 'document_file_hash', 'document_type', 'ip_address', 'submission_timestamp']",
+      "rule": "DL-0158"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['applicant_id', 'device_fingerprint', 'document_type', 'event_type', 'ip_address', 'submission_timestamp']",
+      "rule": "DL-0158"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['applicant_id', 'device_fingerprint', 'ip_address', 'liveness_score', 'liveness_timestamp', 'session_id']",
+      "rule": "DL-0159"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['applicant_id', 'ip_address', 'liveness_score', 'liveness_timestamp', 'session_id']",
+      "rule": "DL-0159"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['applicant_id', 'device_fingerprint', 'event_type', 'ip_address', 'liveness_result', 'liveness_score', 'liveness_timestamp', 'session_id']",
+      "rule": "DL-0159"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['applicant_id', 'applicant_name', 'application_date', 'device_fingerprint', 'ip_address', 'session_id', 'ssn_hash']",
+      "rule": "DL-0160"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['applicant_id', 'applicant_name', 'application_date', 'ip_address', 'session_id', 'ssn_hash']",
+      "rule": "DL-0160"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['applicant_id', 'applicant_name', 'application_date', 'device_fingerprint', 'event_type', 'ip_address', 'session_id', 'ssn_hash']",
+      "rule": "DL-0160"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['applicant_id', 'applicant_name', 'device_fingerprint', 'document_file_hash', 'document_type', 'ssn_hash', 'submission_timestamp']",
+      "rule": "DL-0161"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['applicant_id', 'applicant_name', 'device_fingerprint', 'document_file_hash', 'document_type', 'ssn_hash', 'submission_timestamp']",
+      "rule": "DL-0161"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['applicant_id', 'applicant_name', 'device_fingerprint', 'document_file_hash', 'document_type', 'event_type', 'ssn_hash', 'submission_timestamp']",
+      "rule": "DL-0161"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'account_open_date', 'check_amount', 'check_number', 'deposit_date', 'depositing_institution_id', 'device_fingerprint', 'micr_encoded_amount', 'micr_line_data']",
+      "rule": "DL-0162"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['account_id', 'account_open_date', 'check_amount', 'deposit_date', 'depositing_institution_id', 'device_fingerprint', 'micr_encoded_amount', 'micr_line_data']",
+      "rule": "DL-0162"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['account_open_date', 'check_amount', 'check_number', 'deposit_date', 'depositing_institution_id', 'device_fingerprint', 'micr_encoded_amount', 'micr_line_data']",
+      "rule": "DL-0162"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['claim_amount', 'claim_filing_date', 'claim_id', 'claimant_address_zip', 'claimant_id', 'icd10_primary_diagnosis', 'policy_effective_date', 'provider_address_zip', 'provider_id', 'provider_npi']",
+      "rule": "DL-0163"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['claim_amount', 'claim_filing_date', 'claim_id', 'claimant_address_zip', 'claimant_id', 'policy_effective_date', 'provider_address_zip', 'provider_npi']",
+      "rule": "DL-0163"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['claim_amount', 'claim_filing_date', 'claim_id', 'claimant_address_zip', 'icd10_primary_diagnosis', 'policy_effective_date', 'provider_address_zip', 'provider_npi']",
+      "rule": "DL-0163"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['claim_type']",
+      "rule": "DL-0163"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['access_timestamp', 'account_id', 'employee_branch', 'employee_id', 'employee_role', 'modification_timestamp', 'modification_type', 'source_ip', 'workstation_id']",
+      "rule": "DL-0164"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['access_timestamp', 'account_id', 'modification_timestamp', 'modification_type', 'source_ip', 'workstation_id']",
+      "rule": "DL-0164"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['access_timestamp', 'event_type', 'modification_timestamp', 'modification_type', 'source_ip', 'workstation_id']",
+      "rule": "DL-0164"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['access_time_local']",
+      "rule": "DL-0164"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'account_open_date', 'authorized_signer_names', 'business_address', 'business_name', 'modification_channel', 'modification_date', 'modification_type', 'modified_by_user', 'routing_number', 'tax_id', 'wire_instructions']",
+      "rule": "DL-0165"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['account_open_date', 'authorized_signer_names', 'business_address', 'modification_channel', 'modification_date', 'modified_by_user', 'routing_number', 'wire_instructions']",
+      "rule": "DL-0165"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['account_open_date', 'authorized_signer_names', 'business_address', 'modification_channel', 'modification_date', 'modified_by_user', 'routing_number', 'wire_instructions']",
+      "rule": "DL-0165"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['account_age_months']",
+      "rule": "DL-0165"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'beneficiary_account', 'beneficiary_added_date', 'beneficiary_id', 'beneficiary_name', 'customer_id', 'payment_channel', 'payment_reference', 'transaction_amount', 'transaction_date', 'transaction_id']",
+      "rule": "DL-0166"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['account_id', 'beneficiary_account', 'beneficiary_added_date', 'payment_channel', 'transaction_amount', 'transaction_date', 'transaction_id']",
+      "rule": "DL-0166"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['account_id', 'beneficiary_account', 'beneficiary_added_date', 'payment_channel', 'payment_reference', 'transaction_amount', 'transaction_date', 'transaction_id']",
+      "rule": "DL-0166"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'payee_id', 'payee_name', 'payment_amount', 'payment_date', 'payment_method']",
+      "rule": "DL-0167"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['payee_name', 'payment_amount', 'payment_date', 'payment_method']",
+      "rule": "DL-0167"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['block_number', 'block_timestamp', 'chain_id', 'from_address', 'spender_address', 'to_address', 'token_contract_address', 'tx_hash']",
+      "rule": "DL-0168"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['block_number', 'block_timestamp', 'chain_id', 'to_address', 'token_contract_address', 'tx_hash']",
+      "rule": "DL-0168"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['approval_amount', 'block_number', 'block_timestamp', 'chain_id', 'from_address', 'to_address', 'token_contract_address', 'tx_hash']",
+      "rule": "DL-0168"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['approval_type', 'same_spender']",
+      "rule": "DL-0168"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0168"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0168"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0168"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['application_id', 'bank_account_number', 'bank_routing_number', 'device_fingerprint', 'disbursement_amount', 'disbursement_date', 'fafsa_submission_date', 'institution_id', 'source_ip', 'student_id']",
+      "rule": "DL-0169"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['application_id', 'disbursement_amount', 'disbursement_date', 'fafsa_submission_date', 'institution_id', 'source_ip', 'student_id']",
+      "rule": "DL-0169"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['application_id', 'device_fingerprint', 'disbursement_amount', 'disbursement_date', 'fafsa_submission_date', 'institution_id', 'source_ip']",
+      "rule": "DL-0169"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['application_source', 'disbursement_type']",
+      "rule": "DL-0169"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['attachment_type', 'auto_accepted', 'event_body', 'event_created_timestamp', 'event_id', 'event_title', 'organizer_domain', 'organizer_email', 'recipient_email']",
+      "rule": "DL-0170"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['attachment_type', 'auto_accepted', 'event_body', 'event_created_timestamp', 'event_id', 'event_title', 'organizer_email', 'recipient_email']",
+      "rule": "DL-0170"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['attachment_type', 'auto_accepted', 'event_body', 'event_created_timestamp', 'event_id', 'event_title', 'organizer_email', 'recipient_email']",
+      "rule": "DL-0170"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['event_type', 'organizer_is_external']",
+      "rule": "DL-0170"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['attachment_hash', 'attachment_type', 'message_id', 'message_timestamp', 'recipient_email', 'sender_domain', 'sender_email', 'subject']",
+      "rule": "DL-0171"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['attachment_hash', 'attachment_type', 'message_id', 'message_timestamp', 'recipient_email', 'sender_domain', 'sender_email', 'subject']",
+      "rule": "DL-0171"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['attachment_hash', 'attachment_type', 'message_timestamp', 'recipient_email', 'sender_domain', 'sender_email', 'subject']",
+      "rule": "DL-0171"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['qr_destination_domain_is_legitimate']",
+      "rule": "DL-0171"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0171"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'amount', 'beneficiary_name', 'crypto_address', 'currency', 'transaction_date', 'transaction_id']",
+      "rule": "DL-0172"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['amount', 'beneficiary_name', 'crypto_address', 'currency', 'transaction_date', 'transaction_id']",
+      "rule": "DL-0172"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['amount', 'beneficiary_name', 'crypto_address', 'currency', 'transaction_date', 'transaction_id']",
+      "rule": "DL-0172"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['application_id', 'borrower_id', 'borrower_zip', 'dealership_id', 'dealership_name', 'loan_amount', 'loan_id', 'loan_status', 'ltv_ratio', 'origination_date', 'vehicle_vin']",
+      "rule": "DL-0173"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['application_id', 'borrower_id', 'borrower_zip', 'dealership_id', 'dealership_name', 'loan_amount', 'loan_type', 'ltv_ratio', 'origination_date']",
+      "rule": "DL-0173"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['amount_crypto', 'block_number', 'block_timestamp', 'counterparty_wallet', 'crypto_currency', 'transaction_date', 'transaction_hash', 'transaction_id', 'wallet_address']",
+      "rule": "DL-0174"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['amount_crypto', 'block_number', 'block_timestamp', 'counterparty_wallet', 'crypto_currency', 'transaction_date', 'transaction_hash', 'transaction_id']",
+      "rule": "DL-0174"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['amount_crypto', 'block_number', 'block_timestamp', 'crypto_currency', 'transaction_date', 'transaction_id', 'wallet_address']",
+      "rule": "DL-0174"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['transaction_type']",
+      "rule": "DL-0174"
+    },
+    {
+      "check": "cql_syntax",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "CQL uses '=' not '==' for equality: sdn_hop_distance==2 -> \"indirect_sdn_exposure\";",
+      "rule": "DL-0174"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['claim_amount', 'claim_date', 'claim_id', 'claim_severity', 'claimant_id', 'claimant_name', 'incident_date', 'legal_representative_id', 'legal_representative_name', 'policy_id', 'policy_inception_date', 'provider_id', 'provider_name', 'repair_shop_id', 'repair_shop_name']",
+      "rule": "DL-0175"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['claim_amount', 'claim_date', 'claim_id', 'claimant_id', 'claimant_name', 'incident_date', 'legal_representative_name', 'policy_id', 'policy_inception_date', 'repair_shop_id', 'repair_shop_name']",
+      "rule": "DL-0175"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['claim_amount', 'claim_date', 'claim_id', 'claimant_name', 'incident_date', 'legal_representative_name', 'policy_inception_date', 'provider_name', 'repair_shop_id', 'repair_shop_name']",
+      "rule": "DL-0175"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0175"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['avg_product_price', 'dispute_rate_pct', 'merchant_id', 'merchant_name', 'product_category', 'seller_account_creation_date', 'seller_id', 'total_sales_30d']",
+      "rule": "DL-0176"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['avg_product_price', 'merchant_name', 'product_category', 'seller_account_creation_date', 'seller_id', 'total_sales_30d']",
+      "rule": "DL-0176"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0176"
+    },
+    {
+      "check": "cql_syntax",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "CQL uses '=' not '==' for equality: | drop_location := shipping_address_drop_flag == \"true\" AND shipping_address_clu",
+      "rule": "DL-0176"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['destination_ip', 'referer_url', 'session_id', 'timestamp', 'user_agent']",
+      "rule": "DL-0177"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['destination_ip', 'referer_url', 'session_id', 'timestamp', 'user_agent']",
+      "rule": "DL-0177"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0177"
+    },
+    {
+      "check": "cql_syntax",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "CQL uses '=' not '==' for equality: | where referer_page_type == \"payment_page\"",
+      "rule": "DL-0177"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['answer', 'destination_asn', 'dns_record_type', 'domain_registrar', 'dst_ip', 'query', 'src_ip']",
+      "rule": "DL-0178"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['answer', 'destination_asn', 'dns_record_type', 'domain_registrar', 'dst_ip', 'query']",
+      "rule": "DL-0178"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['device_first_seen_date', 'device_id', 'device_timezone', 'installed_apps_list', 'ip_address', 'ip_geolocation', 'session_end_time', 'session_start_time', 'vendor_management_app_present']",
+      "rule": "DL-0179"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['device_first_seen_date', 'device_id', 'device_platform', 'device_timezone', 'installed_apps_list', 'ip_address', 'ip_geolocation', 'session_end_time', 'session_start_time']",
+      "rule": "DL-0179"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0179"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0179"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0179"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['http_method', 'request_url', 'response_code', 'source_ip', 'user_agent']",
+      "rule": "DL-0180"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['http_method', 'request_url', 'response_code', 'source_ip', 'user_agent']",
+      "rule": "DL-0180"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['booking_date', 'destination_city', 'device_fingerprint', 'merchant_category', 'merchant_name', 'transaction_amount', 'transaction_id', 'travel_date', 'traveler_name']",
+      "rule": "DL-0181"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['booking_date', 'destination_city', 'device_fingerprint', 'merchant_category', 'merchant_name', 'payment_method_hash', 'transaction_amount', 'transaction_id', 'travel_date', 'traveler_name']",
+      "rule": "DL-0181"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['booking_date', 'destination_city', 'device_fingerprint', 'merchant_category', 'merchant_name', 'payment_method_hash', 'transaction_amount', 'transaction_id', 'travel_date', 'traveler_name']",
+      "rule": "DL-0181"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['transaction_type']",
+      "rule": "DL-0181"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0181"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['call_duration_seconds', 'call_id', 'call_start_time', 'called_number', 'calling_number', 'destination_country', 'source_system', 'trunk_group']",
+      "rule": "DL-0182"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['call_duration_seconds', 'call_id', 'call_start_time', 'called_number', 'calling_number', 'destination_country']",
+      "rule": "DL-0182"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "kql",
+      "message": "data_sources fields not found in kql query: ['call_direction', 'call_duration_seconds', 'call_id', 'call_start_time', 'called_number', 'calling_number', 'destination_country', 'destination_type', 'source_system', 'trunk_group']",
+      "rule": "DL-0182"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['call_direction', 'call_duration_seconds', 'call_id', 'call_start_time', 'called_number', 'calling_number', 'destination_country', 'destination_type']",
+      "rule": "DL-0182"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['destination_prefix']",
+      "rule": "DL-0182"
+    },
+    {
+      "check": "cql_syntax",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "selfJoinFilter where= has 0 conditions (need >= 2 for correlation)",
+      "rule": "DL-0182"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['call_direction', 'call_id', 'call_start_time', 'call_type', 'called_number', 'calling_number', 'destination_country', 'source_system']",
+      "rule": "DL-0183"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['call_id', 'call_start_time', 'called_number', 'calling_number', 'destination_country', 'source_system']",
+      "rule": "DL-0183"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0183"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['account_id', 'activation_channel', 'activation_date', 'carrier_id', 'customer_name', 'device_imei', 'device_model', 'device_value', 'plan_type']",
+      "rule": "DL-0184"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['account_id', 'activation_channel', 'activation_date', 'carrier_id', 'customer_name', 'device_imei', 'device_model', 'device_value', 'identity_hash', 'plan_type']",
+      "rule": "DL-0184"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'activation_channel', 'activation_date', 'carrier_id', 'customer_name', 'device_imei', 'device_model', 'device_value', 'identity_hash', 'plan_type']",
+      "rule": "DL-0184"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['activation_type']",
+      "rule": "DL-0184"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0184"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['billing_source', 'charge_amount', 'charge_frequency', 'content_provider', 'shortcode', 'subscription_start_date']",
+      "rule": "DL-0185"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['billing_source', 'charge_amount', 'charge_frequency', 'content_provider', 'customer_name', 'subscription_start_date']",
+      "rule": "DL-0185"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'billing_source', 'charge_amount', 'charge_frequency', 'content_provider', 'customer_name', 'shortcode', 'subscription_start_date']",
+      "rule": "DL-0185"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['charge_type']",
+      "rule": "DL-0185"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['assessed_value', 'listing_date', 'listing_price', 'owner_mailing_address', 'owner_name', 'property_address', 'property_id', 'property_type', 'seller_contact_email', 'seller_contact_phone']",
+      "rule": "DL-0186"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['assessed_value', 'listing_date', 'listing_price', 'occupancy_status', 'owner_mailing_address', 'owner_name', 'property_address', 'property_type', 'seller_contact_email', 'seller_contact_phone']",
+      "rule": "DL-0186"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0186"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0186"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['document_page_count', 'grantee_name', 'grantor_name', 'notary_commission_number', 'notary_name', 'notary_state', 'property_address', 'property_id', 'recording_date', 'recording_id']",
+      "rule": "DL-0187"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['document_page_count', 'grantee_name', 'grantor_name', 'notary_commission_number', 'notary_name', 'notary_state', 'recording_date']",
+      "rule": "DL-0187"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['document_page_count', 'grantee_name', 'grantor_name', 'notary_name', 'property_address', 'recording_date', 'recording_id']",
+      "rule": "DL-0187"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0187"
+    },
+    {
+      "check": "spl_syntax",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "SPL eval may use '=' (assignment) instead of '==' (comparison) in if()",
+      "rule": "DL-0187"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['contact_email', 'contact_phone', 'intermediary_id', 'intermediary_name', 'issue_date', 'policy_id', 'premium_amount']",
+      "rule": "DL-0188"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['contact_email', 'contact_phone', 'intermediary_id', 'intermediary_name', 'issue_date', 'policy_id', 'premium_amount']",
+      "rule": "DL-0188"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['contact_email', 'contact_phone', 'issue_date', 'policy_id', 'premium_amount']",
+      "rule": "DL-0188"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0188"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['query_domain', 'query_timestamp', 'response_code', 'src_ip']",
+      "rule": "DL-0189"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['query_domain', 'query_timestamp', 'response_code', 'src_ip']",
+      "rule": "DL-0189"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['query_timestamp', 'response_code', 'src_ip']",
+      "rule": "DL-0189"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['query', 'query_count']",
+      "rule": "DL-0189"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0189"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['dispute_amount', 'dispute_date', 'dispute_id', 'dispute_reason_code', 'merchant_id']",
+      "rule": "DL-0190"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['dispute_amount', 'dispute_date', 'dispute_id', 'dispute_reason_code', 'merchant_id', 'original_transaction_id']",
+      "rule": "DL-0190"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['cardholder_id', 'dispute_amount', 'dispute_date', 'dispute_id', 'dispute_reason_code', 'merchant_id', 'original_transaction_id']",
+      "rule": "DL-0190"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['dispute_type']",
+      "rule": "DL-0190"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0190"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['cardholder_id', 'dispute_amount', 'dispute_date', 'dispute_id', 'dispute_reason_code', 'merchant_id', 'original_transaction_id']",
+      "rule": "DL-0191"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['dispute_amount', 'dispute_date', 'dispute_id', 'dispute_reason_code']",
+      "rule": "DL-0191"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['dispute_type']",
+      "rule": "DL-0191"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0191"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['affiliate_id', 'cookie_id', 'cookie_set_timestamp', 'session_id']",
+      "rule": "DL-0192"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['cookie_id', 'cookie_set_timestamp', 'session_id']",
+      "rule": "DL-0192"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['cookie_count', 'event_type']",
+      "rule": "DL-0192"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0192"
+    },
+    {
+      "check": "spl_quality",
+      "severity": "warn",
+      "message": "SPL join without 'max=' (defaults to max=1, likely loses results)",
+      "rule": "DL-0192"
+    },
+    {
+      "check": "spl_quality",
+      "severity": "info",
+      "message": "SPL uses join command \u2014 consider stats-based approach for better performance",
+      "rule": "DL-0192"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['page_views', 'scroll_depth_pct', 'session_duration_sec', 'session_id', 'src_ip']",
+      "rule": "DL-0193"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['page_views', 'scroll_depth_pct', 'session_duration_sec', 'session_id', 'src_ip']",
+      "rule": "DL-0193"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['affiliate_id', 'mouse_movement_pixels', 'page_views', 'scroll_depth_pct', 'session_duration_sec', 'session_id', 'src_ip']",
+      "rule": "DL-0193"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['session_count', 'traffic_source']",
+      "rule": "DL-0193"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0193"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['claim_amount', 'claim_id', 'claimant_id', 'document_id', 'file_name', 'submission_date']",
+      "rule": "DL-0194"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['claim_amount', 'claimant_id', 'document_id', 'document_type', 'file_name', 'submission_date']",
+      "rule": "DL-0194"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['claim_amount', 'document_id', 'file_name', 'submission_date']",
+      "rule": "DL-0194"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0194"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['claim_amount', 'claim_id', 'claimant_id', 'file_name', 'photo_id', 'submission_date', 'vehicle_vin']",
+      "rule": "DL-0195"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['claim_amount', 'claimant_id', 'file_name', 'photo_id', 'submission_date', 'vehicle_vin']",
+      "rule": "DL-0195"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['document_type']",
+      "rule": "DL-0195"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0195"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['amount_crypto', 'block_number', 'block_timestamp', 'from_address', 'to_address', 'transaction_hash']",
+      "rule": "DL-0196"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['amount_crypto', 'block_number', 'block_timestamp', 'from_address', 'to_address', 'transaction_hash']",
+      "rule": "DL-0197"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['amount_crypto', 'block_number', 'block_timestamp', 'from_address', 'transaction_hash']",
+      "rule": "DL-0197"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['amount_crypto', 'block_number', 'block_timestamp', 'chain', 'from_address', 'token_symbol', 'transaction_hash']",
+      "rule": "DL-0197"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['entity_name', 'entity_status', 'entity_type', 'registered_address', 'registered_agent', 'registration_date', 'registration_jurisdiction']",
+      "rule": "DL-0198"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['entity_name', 'entity_status', 'registered_agent', 'registration_date', 'registration_jurisdiction']",
+      "rule": "DL-0198"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "sql",
+      "message": "data_sources fields not found in sql query: ['entity_name', 'entity_status', 'registered_address', 'registered_agent', 'registration_date']",
+      "rule": "DL-0198"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "message": "Detection block fields not in data_sources: ['event_type']",
+      "rule": "DL-0198"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0198"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0204"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0205"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0206"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0207"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0208"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0209"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0210"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0212"
+    },
+    {
+      "check": "spl_quality",
+      "severity": "warn",
+      "message": "SPL join without 'max=' (defaults to max=1, likely loses results)",
+      "rule": "DL-0212"
+    },
+    {
+      "check": "spl_quality",
+      "severity": "info",
+      "message": "SPL uses join command \u2014 consider stats-based approach for better performance",
+      "rule": "DL-0212"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0213"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'customer_id', 'payee_id', 'payee_name', 'payment_amount', 'payment_date', 'payment_method']",
+      "rule": "DL-0214"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0214"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_id', 'beneficiary_id', 'beneficiary_name', 'customer_id', 'payment_reference', 'transaction_amount', 'transaction_date']",
+      "rule": "DL-0215"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['account_id', 'customer_id', 'payment_reference', 'transaction_amount', 'transaction_date']",
+      "rule": "DL-0215"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0215"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['account_holder_age', 'account_id', 'payee_id', 'payee_name', 'payment_reference', 'transaction_amount', 'transaction_date']",
+      "rule": "DL-0216"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0216"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "cql",
+      "message": "data_sources fields not found in cql query: ['beneficiary_account', 'beneficiary_name', 'request_amount', 'request_date', 'request_id', 'request_time', 'sender_email', 'sender_name']",
+      "rule": "DL-0217"
+    },
+    {
+      "check": "field_consistency",
+      "severity": "warn",
+      "lang": "splunk",
+      "message": "data_sources fields not found in splunk query: ['beneficiary_account', 'beneficiary_name', 'request_amount', 'request_date', 'request_id', 'request_time']",
+      "rule": "DL-0217"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0217"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0218"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0219"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0220"
+    },
+    {
+      "check": "attack_tags",
+      "severity": "warn",
+      "message": "No ATT&CK technique tags",
+      "rule": "DL-0221"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0001",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0001', 'DL-0002', 'DL-0003', 'DL-0004', 'DL-0005', 'DL-0006', 'DL-0007', 'DL-0008', 'DL-0009', 'DL-0010', 'DL-0012', 'DL-0014', 'DL-0015', 'DL-0016', 'DL-0018', 'DL-0019', 'DL-0020', 'DL-0021', 'DL-0022', 'DL-0023', 'DL-0026', 'DL-0027', 'DL-0030', 'DL-0031', 'DL-0034', 'DL-0036', 'DL-0037', 'DL-0042', 'DL-0044', 'DL-0045', 'DL-0046', 'DL-0048', 'DL-0049']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0002",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0001', 'DL-0028', 'DL-0029', 'DL-0031', 'DL-0033', 'DL-0034', 'DL-0039', 'DL-0040', 'DL-0041', 'DL-0043', 'DL-0137', 'DL-0138', 'DL-0217']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0003",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0151', 'DL-0152', 'DL-0153', 'DL-0154', 'DL-0157', 'DL-0158', 'DL-0160', 'DL-0184']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0004",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0019', 'DL-0022', 'DL-0024', 'DL-0025']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0005",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0020', 'DL-0021', 'DL-0023', 'DL-0025', 'DL-0026']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0006",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0019', 'DL-0021', 'DL-0024', 'DL-0025', 'DL-0027', 'DL-0029', 'DL-0030', 'DL-0031', 'DL-0032', 'DL-0033', 'DL-0035', 'DL-0036', 'DL-0186']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0007",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0050', 'DL-0051', 'DL-0052', 'DL-0217']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0008",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0003', 'DL-0006', 'DL-0008', 'DL-0009', 'DL-0011', 'DL-0013', 'DL-0014', 'DL-0017', 'DL-0044', 'DL-0045', 'DL-0046', 'DL-0047', 'DL-0048', 'DL-0049', 'DL-0141']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0009",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0162']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0010",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0163']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0011",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0001', 'DL-0037', 'DL-0038', 'DL-0039', 'DL-0041', 'DL-0042', 'DL-0043', 'DL-0140']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0012",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0055', 'DL-0056', 'DL-0057', 'DL-0058', 'DL-0060']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0013",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0012', 'DL-0013', 'DL-0015', 'DL-0016', 'DL-0017', 'DL-0018', 'DL-0062', 'DL-0063', 'DL-0064', 'DL-0066', 'DL-0067']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0014",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0164']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0015",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0143']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0016",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0151', 'DL-0155', 'DL-0156', 'DL-0157']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0017",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0117', 'DL-0142', 'DL-0215', 'DL-0221']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0018",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0050', 'DL-0052', 'DL-0053', 'DL-0054', 'DL-0159']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0019",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0165']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0020",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0028', 'DL-0029', 'DL-0032', 'DL-0035']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0021",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0130', 'DL-0131', 'DL-0132']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0022",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0001', 'DL-0037', 'DL-0038', 'DL-0039', 'DL-0040', 'DL-0041', 'DL-0043', 'DL-0179']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0023",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0002', 'DL-0004', 'DL-0005', 'DL-0007', 'DL-0010', 'DL-0011']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0024",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0055', 'DL-0056', 'DL-0057', 'DL-0058', 'DL-0059', 'DL-0060', 'DL-0061']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0025",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0139', 'DL-0140']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0026",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0166']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0027",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0167', 'DL-0212', 'DL-0213', 'DL-0216']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0028",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0130', 'DL-0131', 'DL-0132']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0029",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0152', 'DL-0154', 'DL-0158', 'DL-0159', 'DL-0160', 'DL-0161']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0030",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0064', 'DL-0067']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0031",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0062', 'DL-0063', 'DL-0065', 'DL-0066', 'DL-0125']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0032",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0168']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0033",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0169']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0034",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0068', 'DL-0069', 'DL-0070', 'DL-0071', 'DL-0072', 'DL-0073', 'DL-0074', 'DL-0116', 'DL-0119', 'DL-0121']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0035",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0075', 'DL-0076', 'DL-0077', 'DL-0177']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0036",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0078', 'DL-0079']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0037",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0080', 'DL-0081', 'DL-0082']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0038",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0083', 'DL-0084']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0039",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0085', 'DL-0086', 'DL-0124', 'DL-0125', 'DL-0126']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0040",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0087', 'DL-0088', 'DL-0089', 'DL-0090', 'DL-0091']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0041",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0092', 'DL-0093', 'DL-0094', 'DL-0099', 'DL-0100', 'DL-0208']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0042",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0095', 'DL-0096', 'DL-0097', 'DL-0099', 'DL-0100', 'DL-0120', 'DL-0122', 'DL-0127', 'DL-0128', 'DL-0129']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0043",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0098', 'DL-0099', 'DL-0100', 'DL-0139']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0044",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0101', 'DL-0123', 'DL-0206']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0045",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0102', 'DL-0103', 'DL-0104', 'DL-0106']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0047",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0108', 'DL-0109']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0050",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0170']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0051",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0171']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0052",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0172']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0053",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0173']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0054",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0128', 'DL-0129']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0055",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0174', 'DL-0196', 'DL-0198', 'DL-0207']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0056",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0175']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0057",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0115', 'DL-0116']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0058",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0117']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0059",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0118', 'DL-0119', 'DL-0179']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0060",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0120', 'DL-0122', 'DL-0127', 'DL-0221']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0061",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0123', 'DL-0178', 'DL-0199', 'DL-0200']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0062",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0133', 'DL-0140', 'DL-0214']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0064",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0135']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0065",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0134', 'DL-0140']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0066",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0136']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0067",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0137', 'DL-0138', 'DL-0146', 'DL-0147', 'DL-0148', 'DL-0150', 'DL-0200', 'DL-0201', 'DL-0202', 'DL-0209']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0068",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0144', 'DL-0145']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0069",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0149', 'DL-0201']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0070",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0180', 'DL-0181']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0071",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0182', 'DL-0183']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0072",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0184', 'DL-0185']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0073",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0186', 'DL-0187']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0074",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0188', 'DL-0189']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0075",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0190', 'DL-0191']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0076",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0192', 'DL-0193']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0077",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0194', 'DL-0195']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0078",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0040', 'DL-0174', 'DL-0196', 'DL-0197', 'DL-0198', 'DL-0203']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0079",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0208', 'DL-0209', 'DL-0210', 'DL-0218', 'DL-0220']"
+    },
+    {
+      "check": "inline_drift",
+      "severity": "warn",
+      "tp": "TP-0080",
+      "message": "Inline rules lack source_rule traceability. Expected DL rules: ['DL-0204', 'DL-0205', 'DL-0206', 'DL-0207']"
     }
   ]
 }
