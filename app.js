@@ -774,6 +774,7 @@
         const fraudTypes = item.fraud_types || [];
         const tags = item.tags || [];
         const ft3 = item.ft3_tactics || [];
+        const f3 = item.mitre_f3 || [];
         const ucff = item.ucff_domains || {};
 
         let html = '';
@@ -821,6 +822,7 @@
         html += '<div class="taxonomy-toggle" id="taxonomy-toggle">';
         html += '<button class="tax-btn' + (activeTaxonomy === 'cfpf' ? ' active' : '') + '" data-taxonomy="cfpf">CFPF Phases</button>';
         html += '<button class="tax-btn' + (activeTaxonomy === 'mitre' ? ' active' : '') + '" data-taxonomy="mitre">MITRE ATT&CK</button>';
+        html += '<button class="tax-btn' + (activeTaxonomy === 'f3' ? ' active' : '') + '" data-taxonomy="f3">MITRE F3</button>';
         html += '<button class="tax-btn' + (activeTaxonomy === 'groupib' ? ' active' : '') + '" data-taxonomy="groupib">Group-IB</button>';
         html += '</div>';
 
@@ -829,6 +831,8 @@
             html += renderCfpfTimeline(phases);
         } else if (activeTaxonomy === 'mitre') {
             html += renderMitreView(mitre);
+        } else if (activeTaxonomy === 'f3') {
+            html += renderMitreF3View(f3);
         } else if (activeTaxonomy === 'groupib') {
             html += renderGroupibView(groupib);
         }
@@ -859,6 +863,11 @@
         if (ft3.length > 0) {
             html += '<div class="tag-group"><h4>Stripe FT3</h4><div class="tag-list">';
             ft3.forEach(function (t) { html += '<span class="detail-tag ft3-tag">' + escapeHtml(t) + '</span>'; });
+            html += '</div></div>';
+        }
+        if (f3.length > 0 && activeTaxonomy !== 'f3') {
+            html += '<div class="tag-group"><h4>MITRE F3</h4><div class="tag-list">';
+            f3.forEach(function (t) { html += '<span class="detail-tag f3-tag">' + escapeHtml(t) + '</span>'; });
             html += '</div></div>';
         }
         // UCFF domains — render only domains with non-empty values, in lifecycle order
@@ -1099,6 +1108,27 @@
             html += '<span class="mitre-id">' + escapeHtml(t) + '</span>';
             html += '<span class="mitre-link-icon">↗</span>';
             html += '</a>';
+        });
+        html += '</div>';
+        return html;
+    }
+
+    function renderMitreF3View(techniques) {
+        if (techniques.length === 0) {
+            return '<div class="taxonomy-empty">No MITRE F3 mappings for this threat path.</div>';
+        }
+        let html = '<div class="mitre-grid">';
+        techniques.forEach(function (t) {
+            if (/^T\d/.test(t)) {
+                html += '<a class="mitre-card f3-card" href="https://attack.mitre.org/techniques/' + encodeURIComponent(t.replace('.', '/')) + '/" target="_blank" rel="noopener">';
+                html += '<span class="mitre-id">' + escapeHtml(t) + '</span>';
+                html += '<span class="mitre-link-icon">↗</span>';
+                html += '</a>';
+            } else {
+                html += '<span class="mitre-card f3-card f3-card-native">';
+                html += '<span class="mitre-id">' + escapeHtml(t) + '</span>';
+                html += '</span>';
+            }
         });
         html += '</div>';
         return html;
