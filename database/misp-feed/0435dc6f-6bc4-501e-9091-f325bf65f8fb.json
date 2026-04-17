@@ -1,0 +1,63 @@
+{
+  "Event": {
+    "uuid": "0435dc6f-6bc4-501e-9091-f325bf65f8fb",
+    "info": "FLAME: Friendly Fraud & Chargeback Abuse",
+    "date": "2026-03-27",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "3edc6270-a120-5a60-844f-420bfc63ec8f",
+        "type": "text",
+        "category": "Other",
+        "value": "friendly-fraud",
+        "comment": "Fraud type for TP-0075"
+      },
+      {
+        "uuid": "9d847f1a-70bc-5f55-a1b2-c354275cc4b0",
+        "type": "text",
+        "category": "Other",
+        "value": "chargeback-abuse",
+        "comment": "Fraud type for TP-0075"
+      },
+      {
+        "uuid": "915f75be-d447-5221-9493-a0552fd36911",
+        "type": "text",
+        "category": "Other",
+        "value": "first-party-misuse",
+        "comment": "Fraud type for TP-0075"
+      },
+      {
+        "uuid": "8a463a12-4f61-5d5f-a011-a35690c0dcf1",
+        "type": "text",
+        "category": "Other",
+        "value": "dispute-fraud",
+        "comment": "Fraud type for TP-0075"
+      },
+      {
+        "uuid": "a0511b87-6165-57ad-8239-b801c2d17fb8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0075"
+      },
+      {
+        "uuid": "1bd897ed-493d-5fc0-a475-e874a88f8c1e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0075"
+      }
+    ]
+  }
+}

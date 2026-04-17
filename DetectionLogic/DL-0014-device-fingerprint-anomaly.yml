@@ -31,8 +31,8 @@ data_sources:
   - device_fingerprint
   - event_type
 queries:
-  logscale: |
-    // LogScale LQL for Device Fingerprint Anomaly
+  cql: |
+    // CrowdStrike CQL for Device Fingerprint Anomaly
     // Repository: flame-banking-web-gateway
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | where device_fingerprint in known_device_fingerprints and (

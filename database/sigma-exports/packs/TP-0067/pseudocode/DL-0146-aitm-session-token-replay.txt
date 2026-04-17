@@ -1,0 +1,52 @@
+# ======================================================================
+# FLAME Detection Rule: AiTM Session Token Replay — Same SessionId from Multiple IPs
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P3
+# Threat Paths: TP-0067
+#
+# Description:
+#   Detects potential AiTM session token replay by identifying the same
+#   Entra ID SessionId appearing from multiple IP addresses within a short
+#   time window. In an AiTM attack, the phishing proxy IP and the
+#   attacker's actual replay IP both appear on the same session. This is
+#   the single strongest AiTM detection signal in Microsoft Entra ID
+#   sign-in logs. Additional confidence comes from the error code sequence
+#   50074 (MFA required) → 50140 (Keep Me Signed In) → 0 (success) in rapid
+#   succession with medium or high risk level.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: azure
+#   service: signinlogs
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     ResultType: 0
+#   condition: 'count(distinct IPAddress) by SessionId >= 2 AND timeframe < 4 hours
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Users connecting through VPN that changes IP mid-session
+#   - Load-balanced corporate proxies presenting different egress IPs
+#   - Mobile users transitioning between WiFi and cellular networks
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

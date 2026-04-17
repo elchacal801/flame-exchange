@@ -10,6 +10,7 @@ Detection rules mapped to **Refund-as-a-Service (FTID / RaaS)**.
 | DL-0063 | Abnormally High Refund Rate Per Customer Account | medium | P5 |
 | DL-0065 | Return Without Receipt Clustering by Customer or Region | medium | P5 |
 | DL-0066 | High-Value Item Not Received Claims Exceeding Threshold | high | P4 |
+| DL-0125 | UCP Returns Logic Hijacking — Void Return and Verify Step Bypass | critical | P4 |
 
 ## Formats
 

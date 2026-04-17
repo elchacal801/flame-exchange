@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:03.613658+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "0e18b1c0-c9eb-413f-be41-d7a262dfa9b9",
+    "dl_id": "DL-0163",
+    "title": "Disability Insurance Fraud — Fabricated Medical Documentation Provider Anomaly",
+    "status": "experimental",
+    "description": "Detects patterns indicative of fabricated medical documentation supporting fraudulent disability claims by identifying two key signals: (1) a single medical provider billing across multiple claimants with identical or near-identical diagnosis codes (ICD-10), suggesting template-driven fabricated documentation rather than genuine clinical variation, and (2) claims supported by providers located outside the claimant's geographic area, indicating the claimant traveled specifically to a complicit provider or the documentation was fabricated remotely. DOJ prosecutions reveal organized disability fraud rings where complicit providers generate documentation for dozens of fictitious or exaggerated claims, with cumulative payouts in the millions. The long-tail nature of disability payments means a single fraudulent claim can generate $100,000+ in benefits before detection. Generative AI tools now enable fabrication of convincing medical documentation without provider collusion, representing an emerging escalation vector.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "claim_type": [
+          "short_term_disability",
+          "long_term_disability"
+        ],
+        "claim_status": [
+          "open",
+          "approved",
+          "in_payment"
+        ]
+      },
+      "filter_provider_diagnosis_concentration": {
+        "provider_identical_diagnosis_claimant_count|gte": 3
+      },
+      "filter_provider_geographic_mismatch": {
+        "provider_claimant_distance_miles|gte": 150
+      },
+      "timeframe": "365d",
+      "condition": "selection AND (filter_provider_diagnosis_concentration OR filter_provider_geographic_mismatch)\n"
+    },
+    "logsource": {
+      "product": "insurance",
+      "service": "claims_management"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "claim_id",
+        "claimant_id",
+        "provider_id",
+        "provider_npi",
+        "provider_address_zip",
+        "claimant_address_zip",
+        "icd10_primary_diagnosis",
+        "claim_filing_date",
+        "claim_amount",
+        "claim_status",
+        "policy_effective_date"
+      ],
+      "enrichment_required": [
+        {
+          "field": "provider_identical_diagnosis_claimant_count",
+          "source": "Count of distinct claimants per provider with identical primary ICD-10 code within rolling 12 months"
+        },
+        {
+          "field": "provider_claimant_distance_miles",
+          "source": "Geographic distance between provider address and claimant residence (ZIP centroid calculation)"
+        },
+        {
+          "field": "provider_claim_rate_percentile",
+          "source": "Provider disability claim support rate relative to specialty peer group"
+        }
+      ],
+      "derived_fields": [
+        "policy_to_claim_days",
+        "provider_claimant_ratio",
+        "diagnosis_concentration_score"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Disability Insurance Fraud — Fabricated Medical Documentation\n// Detects provider diagnosis concentration or geographic mismatch patterns\n(claim_type=\"short_term_disability\" OR claim_type=\"long_term_disability\")\n(claim_status=\"open\" OR claim_status=\"approved\" OR claim_status=\"in_payment\")\n(provider_identical_diagnosis_claimant_count>=3 OR provider_claimant_distance_miles>=150)\n| policy_to_claim_days := dateDiff(claim_filing_date, policy_effective_date)\n| groupBy(provider_id, function=[\n    collect([claim_id, claimant_id, icd10_primary_diagnosis, claim_amount,\n             provider_claimant_distance_miles, provider_identical_diagnosis_claimant_count,\n             policy_to_claim_days, claim_filing_date]),\n    count(claimant_id, distinct=true, as=unique_claimants)\n  ])\n| sort(unique_claimants, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Disability Insurance Fraud — Fabricated Medical Documentation\")`\n`comment(\"Detects providers with identical diagnoses across multiple claimants or geographic anomalies\")`\nindex=flame_insurance sourcetype=flame:claims_management\n  (claim_type=\"short_term_disability\" OR claim_type=\"long_term_disability\")\n  (claim_status=\"open\" OR claim_status=\"approved\" OR claim_status=\"in_payment\")\n| eval policy_to_claim_days = round((strptime(claim_filing_date, \"%Y-%m-%d\") - strptime(policy_effective_date, \"%Y-%m-%d\")) / 86400)\n| stats dc(claimant_id) AS unique_claimants\n    values(claimant_id) AS claimants\n    values(claim_amount) AS claim_amounts\n    avg(provider_claimant_distance_miles) AS avg_distance\n    BY provider_id, icd10_primary_diagnosis\n| where unique_claimants >= 3 OR avg_distance >= 150\n| eval risk_score = case(\n    unique_claimants >= 5 AND avg_distance >= 150, \"critical\",\n    unique_claimants >= 5, \"high\",\n    avg_distance >= 300, \"high\",\n    1=1, \"medium\")\n| table provider_id, icd10_primary_diagnosis, unique_claimants,\n        claimants, claim_amounts, avg_distance, risk_score\n| sort - unique_claimants",
+      "sql": "-- SQL for Disability Insurance Fraud — Fabricated Medical Documentation\n-- Detects provider diagnosis concentration or geographic mismatch patterns\nWITH provider_analysis AS (\n  SELECT\n    c.provider_id,\n    c.icd10_primary_diagnosis,\n    COUNT(DISTINCT c.claimant_id) AS unique_claimants,\n    COUNT(c.claim_id) AS total_claims,\n    SUM(c.claim_amount) AS total_claim_amount,\n    AVG(g.provider_claimant_distance_miles) AS avg_distance_miles,\n    AVG(DATEDIFF(DAY, p.effective_date, c.claim_filing_date)) AS avg_policy_to_claim_days\n  FROM disability_claims c\n  JOIN policies p ON c.policy_id = p.policy_id\n  JOIN provider_claimant_geography g ON c.provider_id = g.provider_id\n    AND c.claimant_id = g.claimant_id\n  WHERE c.claim_type IN ('short_term_disability', 'long_term_disability')\n    AND c.claim_status IN ('open', 'approved', 'in_payment')\n    AND c.claim_filing_date >= DATEADD(YEAR, -1, CURRENT_DATE)\n  GROUP BY c.provider_id, c.icd10_primary_diagnosis\n)\nSELECT *\nFROM provider_analysis\nWHERE unique_claimants >= 3\n   OR avg_distance_miles >= 150\nORDER BY unique_claimants DESC, avg_distance_miles DESC"
+    },
+    "references": [
+      "DOJ, Disability Fraud Prosecution Records — organized ring case studies",
+      "Coalition Against Insurance Fraud, Annual Reports",
+      "NICB, Insurance Fraud Reporting",
+      "ACFE, Report to the Nations — occupational fraud statistics"
+    ],
+    "threat_path_ids": [
+      "TP-0010"
+    ],
+    "fraud_types": [
+      "disability-fraud",
+      "fraudulent-claim",
+      "provider-fraud"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.disability-fraud",
+      "flame.fabricated-documentation",
+      "flame.provider-fraud"
+    ],
+    "falsepositives": [
+      "Specialist providers legitimately treating patients with the same condition (e.g., orthopedic surgeons with high back injury volume)",
+      "Rural claimants who must travel long distances to see specialists not available locally",
+      "Telehealth providers with geographically dispersed patient bases",
+      "Occupational health providers serving a single large employer with common workplace injuries"
+    ]
+  }
+}

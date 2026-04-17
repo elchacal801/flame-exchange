@@ -55,6 +55,9 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-WCI-2024
+baseline_ids:
+  - BL-0025
+  - BL-0036
 tags:
   - geopolitical-timing
   - election-cycle

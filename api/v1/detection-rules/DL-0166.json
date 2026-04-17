@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:03.662679+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "c5d5c46a-0d68-4cf9-8a06-91a9a6a9f293",
+    "dl_id": "DL-0166",
+    "title": "GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary",
+    "status": "experimental",
+    "description": "Detects the characteristic authorized push payment (APP) pattern associated with GenAI- enhanced investment fraud (pig butchering). The rule identifies customers making increasing payments to a newly added beneficiary with investment-related payment references, where payment velocity accelerates over a multi-week period. This pattern reflects the classic fattening-then-slaughter cycle: victims are groomed through AI-powered financial advisor personas and deepfake celebrity endorsements, make a small initial investment, see fabricated returns on fraudulent trading dashboards, and are progressively encouraged to invest larger amounts. The FBI IC3 reported $8.65 billion in investment fraud losses in 2025 (up from $6.57B in 2024) — the single largest fraud category. IC3 2025 data shows 72% of investment fraud payments flow through cryptocurrency, 19% via wire transfer/ACH, and 4% peer-to-peer. Chainalysis research shows AI-enabled investment scams extract 4.5x more revenue per operation ($3.2M average) compared to non-AI variants ($719K average). The rule targets the execution phase (P4) where escalating authorized payments represent the point of maximum financial exposure before funds are laundered through cryptocurrency mixing, DeFi protocols, or mule networks.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "transaction_type": [
+          "wire_transfer",
+          "faster_payment",
+          "ach_credit",
+          "sepa_credit",
+          "crypto_purchase"
+        ]
+      },
+      "filter_new_beneficiary": {
+        "beneficiary_relationship_days|lt": 60
+      },
+      "filter_investment_reference": {
+        "payment_reference|contains": [
+          "invest",
+          "trading",
+          "platform",
+          "portfolio",
+          "return",
+          "crypto",
+          "bitcoin",
+          "forex",
+          "yield",
+          "fund",
+          "capital",
+          "broker"
+        ]
+      },
+      "filter_escalating_amount": {
+        "payment_amount_increase_pct_vs_first|gte": 200
+      },
+      "filter_velocity_acceleration": {
+        "inter_payment_interval_decreasing": true
+      },
+      "timeframe": "60d",
+      "condition": "selection AND filter_new_beneficiary AND filter_investment_reference AND filter_escalating_amount AND filter_velocity_acceleration\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "customer_id",
+        "account_id",
+        "transaction_id",
+        "transaction_type",
+        "transaction_amount",
+        "transaction_date",
+        "beneficiary_id",
+        "beneficiary_name",
+        "beneficiary_account",
+        "beneficiary_added_date",
+        "payment_reference",
+        "payment_channel"
+      ],
+      "enrichment_required": [
+        {
+          "field": "beneficiary_relationship_days",
+          "source": "Derived from beneficiary_added_date vs transaction_date"
+        },
+        {
+          "field": "payment_amount_increase_pct_vs_first",
+          "source": "Current payment amount as percentage increase over first payment to same beneficiary"
+        },
+        {
+          "field": "inter_payment_interval_decreasing",
+          "source": "Boolean — whether the gap between consecutive payments to the beneficiary is shrinking"
+        },
+        {
+          "field": "beneficiary_fraud_intelligence_flag",
+          "source": "Consortium fraud intelligence or regulatory warning list match on beneficiary account"
+        }
+      ],
+      "derived_fields": [
+        "total_payments_to_beneficiary",
+        "cumulative_amount_to_beneficiary",
+        "average_payment_amount",
+        "days_since_first_payment",
+        "payment_velocity_trend"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for GenAI-Enhanced APP Fraud — Investment Variant\n// Detects escalating payments to new beneficiary with investment references\n(transaction_type=\"wire_transfer\" OR transaction_type=\"faster_payment\" OR transaction_type=\"ach_credit\" OR transaction_type=\"sepa_credit\" OR transaction_type=\"crypto_purchase\")\nbeneficiary_relationship_days<60\npayment_reference=/invest|trading|platform|portfolio|return|crypto|bitcoin|forex|yield|fund|capital|broker/i\npayment_amount_increase_pct_vs_first>=200\ninter_payment_interval_decreasing=\"true\"\n| cumulative_amount := sum(transaction_amount)\n| payment_count := count(transaction_id)\n| groupBy([customer_id, beneficiary_id], function=[\n    collect([transaction_id, transaction_amount, transaction_date,\n             beneficiary_name, payment_reference, payment_channel,\n             beneficiary_relationship_days]),\n    sum(transaction_amount, as=cumulative_amount),\n    count(transaction_id, as=total_payments)\n  ])\n| sort(cumulative_amount, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for GenAI-Enhanced APP Fraud — Investment Variant\")`\n`comment(\"Detects escalating authorized push payments to new beneficiaries with investment references\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (transaction_type=\"wire_transfer\" OR transaction_type=\"faster_payment\"\n   OR transaction_type=\"ach_credit\" OR transaction_type=\"sepa_credit\"\n   OR transaction_type=\"crypto_purchase\")\n| eval beneficiary_age_days = round((now() - strptime(beneficiary_added_date, \"%Y-%m-%d\")) / 86400)\n| where beneficiary_age_days < 60\n| regex payment_reference=\"(?i)(invest|trading|platform|portfolio|return|crypto|bitcoin|forex|yield|fund|capital|broker)\"\n| sort customer_id beneficiary_id _time\n| streamstats count AS payment_seq first(transaction_amount) AS first_amount\n    sum(transaction_amount) AS cumulative_amount\n    range(_time) AS time_span\n    BY customer_id, beneficiary_id\n| eval amount_increase_pct = round(((transaction_amount - first_amount) / first_amount) * 100, 1)\n| stats count AS total_payments sum(transaction_amount) AS total_amount\n    first(transaction_amount) AS first_payment last(transaction_amount) AS latest_payment\n    min(_time) AS first_date max(_time) AS last_date\n    values(payment_reference) AS references\n    BY customer_id, beneficiary_id, beneficiary_name\n| eval escalation_ratio = round(latest_payment / first_payment, 1)\n| eval days_span = round((last_date - first_date) / 86400)\n| where total_payments >= 3 AND escalation_ratio >= 3\n| eval risk_score = case(\n    total_amount > 50000 AND escalation_ratio >= 5, \"critical\",\n    total_amount > 20000 AND escalation_ratio >= 3, \"high\",\n    escalation_ratio >= 3, \"high\",\n    1=1, \"medium\")\n| table customer_id, beneficiary_id, beneficiary_name, total_payments,\n        first_payment, latest_payment, escalation_ratio, total_amount,\n        days_span, references, risk_score\n| sort - total_amount",
+      "sql": "-- SQL for GenAI-Enhanced APP Fraud — Investment Variant\n-- Detects escalating authorized push payments to new beneficiaries with investment references\nWITH payment_sequence AS (\n  SELECT\n    t.customer_id,\n    t.account_id,\n    t.beneficiary_id,\n    t.beneficiary_name,\n    t.transaction_amount,\n    t.transaction_date,\n    t.payment_reference,\n    t.payment_channel,\n    DATEDIFF(DAY, b.beneficiary_added_date, t.transaction_date) AS beneficiary_age_days,\n    ROW_NUMBER() OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS payment_seq,\n    FIRST_VALUE(t.transaction_amount) OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS first_payment_amount,\n    LAG(t.transaction_date) OVER (PARTITION BY t.customer_id, t.beneficiary_id ORDER BY t.transaction_date) AS prev_payment_date\n  FROM transactions t\n  JOIN beneficiaries b ON t.beneficiary_id = b.beneficiary_id AND t.customer_id = b.customer_id\n  WHERE t.transaction_type IN ('wire_transfer', 'faster_payment', 'ach_credit', 'sepa_credit', 'crypto_purchase')\n    AND t.transaction_date >= DATEADD(DAY, -60, CURRENT_DATE)\n    AND DATEDIFF(DAY, b.beneficiary_added_date, t.transaction_date) < 60\n    AND t.payment_reference LIKE '%invest%'\n     OR t.payment_reference LIKE '%trading%'\n     OR t.payment_reference LIKE '%platform%'\n     OR t.payment_reference LIKE '%crypto%'\n     OR t.payment_reference LIKE '%bitcoin%'\n     OR t.payment_reference LIKE '%forex%'\n     OR t.payment_reference LIKE '%yield%'\n     OR t.payment_reference LIKE '%fund%'\n     OR t.payment_reference LIKE '%capital%'\n     OR t.payment_reference LIKE '%broker%'\n),\nbeneficiary_summary AS (\n  SELECT\n    customer_id,\n    beneficiary_id,\n    beneficiary_name,\n    COUNT(*) AS total_payments,\n    SUM(transaction_amount) AS total_amount,\n    MIN(transaction_amount) AS min_payment,\n    MAX(transaction_amount) AS max_payment,\n    MIN(transaction_date) AS first_payment_date,\n    MAX(transaction_date) AS last_payment_date,\n    DATEDIFF(DAY, MIN(transaction_date), MAX(transaction_date)) AS payment_span_days,\n    MAX(transaction_amount) / NULLIF(MIN(transaction_amount), 0) AS escalation_ratio\n  FROM payment_sequence\n  GROUP BY customer_id, beneficiary_id, beneficiary_name\n)\nSELECT *\nFROM beneficiary_summary\nWHERE total_payments >= 3\n  AND escalation_ratio >= 3\nORDER BY total_amount DESC"
+    },
+    "references": [
+      "FBI IC3, 2025 Internet Crime Report — $8.65B investment fraud (72% crypto), 72,984 complaints",
+      "FBI IC3, 2024 Internet Crime Report — $6.57B investment fraud, $5.8B crypto investment fraud",
+      "Chainalysis, AI-Enabled Investment Scam Revenue Analysis — 4.5x revenue multiplier for AI-enhanced operations",
+      "UK Payment Systems Regulator (PSR), APP Fraud Mandatory Reimbursement (2024)",
+      "FCA, Consumer Warning — Deepfake Celebrity Investment Scams",
+      "FinCEN, AML Advisory on Investment Scam Typologies"
+    ],
+    "threat_path_ids": [
+      "TP-0026"
+    ],
+    "fraud_types": [
+      "authorized-push-payment",
+      "crypto-laundering",
+      "investment-scam"
+    ],
+    "tags": [
+      "attack.t1656",
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.authorized-push-payment",
+      "flame.genai-fraud",
+      "flame.investment-scam",
+      "flame.pig-butchering"
+    ],
+    "falsepositives": [
+      "Legitimate staged investments in registered platforms (brokerage accounts, mutual funds) with increasing contributions",
+      "Business customers making scheduled investment-related payments to regulated financial institutions",
+      "Property investment installment payments with escalating milestone amounts",
+      "Cryptocurrency dollar-cost-averaging strategies with increasing position sizes"
+    ]
+  }
+}

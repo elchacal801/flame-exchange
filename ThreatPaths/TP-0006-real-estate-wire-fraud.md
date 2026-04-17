@@ -20,7 +20,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1566.001, T1114.003, T1534, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT052.003", "FT055", "FT012", "FT026.001", "FT031", "FT008.002", "FT016", "FT018", "FT020", "FT021"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1005.006", "F1025.002", "F1016", "F1020", "F1031", "F1032", "F1037", "F1040", "F1044", "F1046"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -52,6 +52,8 @@ regulatory_refs:
   - REG-FBI-IC3
   - REG-OCC-FRAUD
   - REG-UK-PSR-APP
+baseline_ids:
+  - BL-0012
 tags:
   - real-estate
   - title-company
@@ -155,11 +157,14 @@ Actors compromise email accounts of real estate agents, title companies, attorne
 **Email — Wire Instruction Anomaly (M365 / Google Workspace)**
 
 ```kql
+// Microsoft Sentinel KQL: Real Estate Wire Instruction Anomaly
+// Requires: populate known_title_company_domains with your title/escrow company domains
+let known_title_company_domains = dynamic(["example-titleco.com", "example-escrow.com"]);
 EmailEvents
 | where Subject has_any ("wire", "closing", "escrow", "wiring instructions")
 | extend sender_domain = tostring(split(SenderFromAddress, "@")[1])
 | where sender_domain !in (known_title_company_domains)
-| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject
+| project Timestamp, SenderFromAddress, RecipientEmailAddress, Subject, sender_domain
 ```
 
 **Email — Suspicious Inbox Rule Creation (M365)**
@@ -185,12 +190,15 @@ detection:
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $2.8B in total BEC losses, of which real estate wire fraud is a significant subcategory. Real estate closings remain a high-value BEC target due to the time-sensitive nature and large dollar amounts involved. Elderly victims (60+) accounted for $4.9B in total IC3-reported losses across all categories in 2024, and are disproportionately targeted in real estate wire schemes.
 
+**FBI IC3 2025 Annual Report:** Real estate fraud generated $275.1 million in losses from 12,368 complaints (up from $173.6M/9,359 in 2024 — 58% increase in losses). FFKC Case Study (March 2025): Missouri senior citizen closing on property received compromised email with wire instructions for $1.3M+. RAT initiated FFKC and confirmed funds frozen. Investigation revealed recipient account owner was a victim of an overpayment scam instructed to forward $1M to Hong Kong — RAT initiated International FFKC. FFKC Case Study (August 2025): BEC/Real Estate incident, $449K wire to impersonated attorney. RAT initiated FFKC and recipient bank confirmed full amount on hold. Real estate fraud elder impact: 2,473 complaints and $123.7M in losses from 60+ victims.
+
 ## References
 
 - FBI IC3 PSA: "Real Estate Wire Fraud". [Link](https://www.ic3.gov/PSA/2024/PSA240411)
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
 - American Land Title Association (ALTA): Wire Fraud Prevention Best Practices
 - CertifID: Real Estate Wire Fraud Report (annual)
+- FBI IC3, "2025 Internet Crime Report" — real estate fraud statistics and FFKC case studies. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 
 ## Revision History
 

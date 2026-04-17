@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type IN ("*phone_number_change*", "*sim_swap*", "*mobile_update*") event_type="password_reset" reset_method="sms_otp" event_type IN ("*wire_transfer*", "*beneficiary_add*", "*address_change*", "*email_change*") transaction_amount>=1000

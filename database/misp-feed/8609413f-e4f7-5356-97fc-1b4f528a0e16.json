@@ -1,0 +1,63 @@
+{
+  "Event": {
+    "uuid": "8609413f-e4f7-5356-97fc-1b4f528a0e16",
+    "info": "FLAME: Crypto ATM/Kiosk Directed Fraud \u2014 Physical-to-Digital Monetization Channel",
+    "date": "2026-04-06",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "820f75f7-5a26-561f-b388-67d87fe9624a",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0085"
+      },
+      {
+        "uuid": "f9bd0197-f003-5694-bbc5-d0a3ef05fca5",
+        "type": "text",
+        "category": "Other",
+        "value": "authorized-push-payment",
+        "comment": "Fraud type for TP-0085"
+      },
+      {
+        "uuid": "213cfecb-ae81-5b24-be2a-5816ff3a9781",
+        "type": "text",
+        "category": "Other",
+        "value": "elder-exploitation",
+        "comment": "Fraud type for TP-0085"
+      },
+      {
+        "uuid": "b85d5e2a-416f-5b33-a076-30c641d58258",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0085"
+      },
+      {
+        "uuid": "d8097dc2-969d-5e6a-968b-56a502043b88",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0085"
+      },
+      {
+        "uuid": "ecc1e1a4-0141-5af2-b7ae-781cbfc6e156",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0085"
+      }
+    ]
+  }
+}

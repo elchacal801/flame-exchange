@@ -1,0 +1,68 @@
+{
+    "id": "EP-0009",
+    "title": "Deepfake Voice Authorization Fraud",
+    "description": "Simulates an AI-enabled voice deepfake attack targeting phone-based wire transfer authorization controls in commercial banking. The adversary harvests executive voice samples from public sources, trains a real-time voice cloning model, impersonates the executive via phone to authorize a high-value wire transfer, and extracts funds through international mule accounts. This playbook validates detection coverage across all five CFPF phases for the TP-0007 threat path and tests the institution's resilience against deepfake-enhanced social engineering.",
+    "author": "FLAME Project",
+    "date": "2026-03-27",
+    "target_threat_paths": ["TP-0007"],
+    "cfpf_phases": ["P1", "P2", "P3", "P4", "P5"],
+    "fraud_types": ["wire-fraud", "impersonation", "BEC", "deepfake"],
+    "sectors": ["banking"],
+    "prerequisites": {
+        "environment": "Fraud detection test environment with wire transfer processing, phone-based authorization workflows, call center telephony systems with recording capabilities, and voice biometric analysis tools. Requires access to AI voice cloning tools and VoIP infrastructure with caller ID spoofing.",
+        "tools": ["AI voice cloning platform (e.g., commercial real-time voice synthesis API)", "VoIP telephony with caller ID spoofing", "Wire transfer processing system (test environment)", "Voice biometric analysis system (if deployed)", "Call center telephony and CRM platform", "Transaction monitoring system"],
+        "access_required": "Test-environment access to wire transfer authorization workflows, call center telephony infrastructure, voice biometric systems, and transaction monitoring dashboards. Access to publicly available audio samples of the target executive (earnings calls, conference recordings)."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Harvest Executive Voice Samples",
+            "action": "Collect audio samples of the target executive (CEO, CFO, or authorized wire signer) from publicly available sources: earnings calls, conference presentations, media interviews, YouTube videos, and podcast appearances. Aim to collect at least 20-30 seconds of clean audio for voice cloning (current technology requires as little as 10 seconds). Simultaneously perform organizational reconnaissance using LinkedIn, SEC filings, and corporate websites to identify who in treasury/finance processes wire authorization requests and map the authorization chain.",
+            "automation": null,
+            "expected_result": "This phase is largely invisible to the target institution. Monitoring for unusual access patterns to corporate media pages or investor relations content may provide early indicators. OSINT monitoring tools should flag reconnaissance activity against executive profiles.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P1",
+            "title": "Train Deepfake Voice Model and Prepare Infrastructure",
+            "action": "Using the harvested audio samples, train a real-time voice cloning model capable of generating convincing speech in the executive's voice. Test the model for naturalness, emotional range, and ability to handle interactive conversation. Set up callback phone infrastructure with caller ID spoofing configured to display the executive's direct line or corporate main number. Prepare a social engineering script referencing real business context (recent deals, known counterparties, upcoming deadlines) to increase credibility.",
+            "automation": null,
+            "expected_result": "No direct detection opportunity at this stage. The institution should have baseline voice biometric profiles for authorized signers that can later be compared against the deepfake audio during the authorization call.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P2",
+            "title": "Execute Deepfake Voice Call to Bank",
+            "action": "Call the treasury operations or wire processing team using the AI-generated voice of the CEO/CFO/authorized signer. Establish urgency with a pretext such as: 'I need an emergency wire processed before market close for a confidential acquisition.' Reference real business context gathered during reconnaissance to increase credibility. If challenged, invoke executive authority: 'I am authorizing this personally.' Frame the request as confidential to prevent the target from verifying with others: 'Do not discuss this with anyone else — this is sensitive M&A activity.'",
+            "automation": null,
+            "expected_result": "Call center logs should capture the interaction. Voice biometric analysis (if deployed) should detect deviation from the known voiceprint of the impersonated executive. Red flags: executive calling during unusual hours, unusual urgency, requests to bypass standard verification procedures, and invocation of secrecy.",
+            "detection_rule_ref": "DL-0050"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P4",
+            "title": "Wire Transfer Authorization via Deepfake Voice",
+            "action": "Through the deepfake voice call, provide wire transfer instructions including the beneficiary account details (mule account), amount, and routing information. Authorize the wire verbally without providing corresponding email or secure portal confirmation. The wire amount should be significant (six to seven figures) but framed as consistent with the purported business purpose. If the operations staff requests a callback for verification, attempt to direct them to the spoofed callback number.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should flag the wire transfer as voice-only authorized with no corresponding email trail or secure portal approval. The combination of a new beneficiary, voice-only authorization, and high-value amount should trigger a high-severity alert. Dual-authorization logs should show a gap (only voice authorization, no second-channel confirmation).",
+            "detection_rule_ref": "DL-0051"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P5",
+            "title": "Fund Extraction via International Wire Layering",
+            "action": "Once the wire transfer is processed, funds arrive at the mule account (frequently at an intermediary bank in Hong Kong, Singapore, or the UK). Rapidly move funds through additional layers: domestic business accounts, international wire transfers to jurisdictions with limited recovery, or conversion to cryptocurrency. Execute the layering within 24-48 hours before the fraud is discovered and wire recall procedures are initiated.",
+            "automation": null,
+            "expected_result": "International wire monitoring should flag the transfer to a new counterparty with no contract on file. Multi-hop wire patterns within 24-48 hours should trigger AML alerts. The receiving account should be flagged if it has a recent opening date or is associated with known mule network indicators. Wire recall procedures should be tested for response time effectiveness.",
+            "detection_rule_ref": "DL-0052"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0050", "DL-0051", "DL-0052"],
+        "alerts_generated": "Voice biometric anomaly alerts on deviation from known executive voiceprint; call center red-flag alerts on urgency indicators, secrecy framing, and requests to bypass verification procedures; transaction monitoring alerts on voice-only wire authorization with no email trail; new beneficiary alerts on wire to previously unknown counterparty; dual-authorization gap alerts on missing second-channel confirmation; AML alerts on international wire to mule account with rapid subsequent fund movement.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for deepfake voice authorization fraud. Validates executive voice sample exposure awareness at recon (P1), voice biometric analysis and social engineering red-flag detection at initial access (P2), authority assertion and secrecy framing detection at positioning (P3), voice-only authorization gap detection and new-beneficiary wire monitoring at execution (P4), and international mule layering and wire recall effectiveness at monetization (P5)."
+    }
+}

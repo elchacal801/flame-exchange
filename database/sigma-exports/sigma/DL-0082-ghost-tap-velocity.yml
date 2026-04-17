@@ -1,37 +1,35 @@
 title: Ghost-Tap Multi-Terminal Contactless Velocity Anomaly
 id: e9c47f13-82a6-4d5e-b394-7f2a8e15d6b9
 status: experimental
-description: >
-  Detects multiple contactless transactions from the same wallet token or card
-  credential across multiple distinct POS terminals within a short timeframe.
-  Normal cardholder behavior produces a maximum of 2-3 contactless transactions
-  per hour across different terminals during shopping activity. NFC relay
-  (ghost-tapping) operations using tools such as SuperCardX, NFCGate, Hyper
-  NFC, or Valkirie NFC enable simultaneous contactless transactions at multiple
-  POS terminals by relaying stolen card data to multiple money mule devices.
-  This rule detects the Phase 4 execution pattern of TP-0037 where the same
-  wallet token appears at 3 or more distinct POS terminals within 30 minutes,
-  a pattern that is physically impossible for a single cardholder and
-  pathognomonic for NFC relay fraud.
+description: 'Detects multiple contactless transactions from the same wallet token or card credential across multiple distinct
+  POS terminals within a short timeframe. Normal cardholder behavior produces a maximum of 2-3 contactless transactions per
+  hour across different terminals during shopping activity. NFC relay (ghost-tapping) operations using tools such as SuperCardX,
+  NFCGate, Hyper NFC, or Valkirie NFC enable simultaneous contactless transactions at multiple POS terminals by relaying stolen
+  card data to multiple money mule devices. This rule detects the Phase 4 execution pattern of TP-0037 where the same wallet
+  token appears at 3 or more distinct POS terminals within 30 minutes, a pattern that is physically impossible for a single
+  cardholder and pathognomonic for NFC relay fraud.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
+- https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
 threat_paths:
-  - TP-0037
+- TP-0037
 cfpf_phase: P4
 fraud_types:
-  - nfc-relay
-  - digital-wallet-fraud
-  - unauthorized-transaction
+- nfc-relay
+- digital-wallet-fraud
+- unauthorized-transaction
 logsource:
   product: banking
   service: transaction_monitoring
 detection:
   selection:
-    transaction_type: 'contactless'
+    transaction_type: contactless
     entry_mode|contains:
-      - 'wallet_nfc'
-      - 'contactless_emv'
-      - 'tap_to_pay'
+    - wallet_nfc
+    - contactless_emv
+    - tap_to_pay
   aggregation:
     count|gte: 3
     groupby: wallet_token_id
@@ -41,14 +39,24 @@ detection:
   filter_multi_location:
     dc_terminal_city|gte: 2
   condition: selection and aggregation and (filter_multi_terminal or filter_multi_location)
+data_sources:
+  native_fields:
+  - count
+  - dc_terminal_city
+  - dc_terminal_id
+  - entry_mode
+  - groupby
+  - timeframe
+  - transaction_type
 falsepositives:
-  - Family members sharing a card account who shop at different stores simultaneously (rare with tokenized wallets as each device has a unique token)
-  - POS terminal ID reassignment or misconfiguration causing apparent multi-terminal usage
+- Family members sharing a card account who shop at different stores simultaneously (rare with tokenized wallets as each device
+  has a unique token)
+- POS terminal ID reassignment or misconfiguration causing apparent multi-terminal usage
 level: critical
 tags:
-  - cfpf.phase4.execution
-  - attack.t1657
-  - flame.banking
-  - flame.nfc_relay
-  - flame.ghost_tapping
-  - flame.supercardx
+- cfpf.phase4.execution
+- attack.t1657
+- flame.banking
+- flame.nfc_relay
+- flame.ghost_tapping
+- flame.supercardx

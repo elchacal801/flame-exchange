@@ -66,6 +66,7 @@ falsepositives:
 - Legitimate geo-restricted financial services with regional redirects
 level: medium
 tags:
+- attack.t1583.001
 - cfpf.phase3.positioning
 - tds
 - geo-routing

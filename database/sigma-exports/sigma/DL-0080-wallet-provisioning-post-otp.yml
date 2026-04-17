@@ -1,53 +1,61 @@
 title: Wallet Provisioning Following OTP Interception Indicator
 id: 7a3e91d2-4f8c-4b17-a6e5-2d9f83c7b104
 status: experimental
-description: >
-  Detects digital wallet provisioning events where the OTP or verification code
-  was delivered within minutes of a social engineering indicator, such as an
-  inbound call from a suspicious source, a phishing link click, or a smishing
-  response. Legitimate wallet provisioning is typically self-initiated, with
-  OTP-to-provisioning intervals of 30-120 seconds. When provisioning occurs
-  within 15 seconds of OTP delivery, or when OTP delivery is preceded by a
-  phishing or social engineering indicator within a 30-minute window, this
-  strongly suggests automated interception-to-provision attack chains associated
-  with digital wallet fraud (TP-0037). The card provisioning attempt is the
-  critical disruption point where refined controls can prevent downstream
-  contactless fraud.
+description: 'Detects digital wallet provisioning events where the OTP or verification code was delivered within minutes of
+  a social engineering indicator, such as an inbound call from a suspicious source, a phishing link click, or a smishing response.
+  Legitimate wallet provisioning is typically self-initiated, with OTP-to-provisioning intervals of 30-120 seconds. When provisioning
+  occurs within 15 seconds of OTP delivery, or when OTP delivery is preceded by a phishing or social engineering indicator
+  within a 30-minute window, this strongly suggests automated interception-to-provision attack chains associated with digital
+  wallet fraud (TP-0037). The card provisioning attempt is the critical disruption point where refined controls can prevent
+  downstream contactless fraud.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
+- https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
 threat_paths:
-  - TP-0037
+- TP-0037
 cfpf_phase: P3
 fraud_types:
-  - digital-wallet-fraud
-  - social-engineering
-  - account-takeover
+- digital-wallet-fraud
+- social-engineering
+- account-takeover
 logsource:
   product: banking
   service: wallet_provisioning
 detection:
   selection_provisioning:
-    event_type: 'wallet_card_provisioned'
+    event_type: wallet_card_provisioned
     device_first_seen: true
   correlation_otp:
     otp_delivery_elapsed_seconds|lte: 600
     otp_to_provisioning_seconds|lte: 15
   correlation_phishing:
     preceding_event_type|contains:
-      - 'phishing_click'
-      - 'smishing_response'
-      - 'suspicious_inbound_call'
-      - 'social_engineering_indicator'
+    - phishing_click
+    - smishing_response
+    - suspicious_inbound_call
+    - social_engineering_indicator
     preceding_event_window: 1800
   condition: selection_provisioning and (correlation_otp or correlation_phishing)
+data_sources:
+  native_fields:
+  - event_type
+  - otp_delivery_elapsed_seconds
+  - otp_to_provisioning_seconds
+  - preceding_event_type
+  - preceding_event_window
+  enrichment_required:
+  - field: device_first_seen
+    source: Device profiling enrichment (first-seen timestamp from device intelligence)
 falsepositives:
-  - Legitimate cardholders who provision wallets very quickly after receiving OTP
-  - Tech-savvy users with automated provisioning workflows on trusted devices
-  - Corporate card administrators provisioning multiple devices in rapid succession
+- Legitimate cardholders who provision wallets very quickly after receiving OTP
+- Tech-savvy users with automated provisioning workflows on trusted devices
+- Corporate card administrators provisioning multiple devices in rapid succession
 level: critical
 tags:
-  - cfpf.phase3.positioning
-  - attack.t1111
-  - flame.banking
-  - flame.digital_wallet
-  - flame.otp_interception
+- cfpf.phase3.positioning
+- attack.t1111
+- flame.banking
+- flame.digital_wallet
+- flame.otp_interception

@@ -192,9 +192,30 @@ MIT-licensed fraud taxonomy. Mapped to all 23 TPs via `ft3_mapper.py`. Tactic an
 
 Seven-domain defense governance model. Mapped to 7 of 23 priority TPs as `ucff_domains` in frontmatter. Each mapped TP includes per-domain maturity levels and key deliverables required for effective detection. Domains: Commit, Assess, Prevent, Detect, Respond, Investigate, Manage.
 
-### MITRE F3
+### MITRE F3 (Fight Fraud Framework)
 
-Placeholder — will map when MITRE ships the F3 extension. Field included in frontmatter schema for forward compatibility.
+MITRE F3 was released April 9, 2026, as a behavior-based model of fraud actor tactics and techniques. Developed collaboratively by MITRE CTID with FS-ISAC, CrowdStrike, Citigroup, JPMorganChase, Standard Chartered, Lloyds Banking Group, and others.
+
+**Structure**: 7 tactics, 74 top-level techniques (48 F3-native + 26 ATT&CK-reused), 49 sub-techniques.
+
+**Tactics** (kill chain order):
+- `TA0043` Reconnaissance (ATT&CK-derived)
+- `TA0042` Resource Development (ATT&CK-derived)
+- `TA0001` Initial Access (ATT&CK-derived)
+- `FA0001` **Positioning** (F3-native) — fraud actor's actions to collect/manipulate data or prepare for execution after initial access
+- `TA0002` Execution (ATT&CK-derived)
+- `TA0005` Defense Evasion (ATT&CK-derived)
+- `FA0002` **Monetization** (F3-native) — fraud actor's actions to convert assets into usable funds or value
+
+**ID format**: F3-native techniques use `F1xxx` (e.g., `F1005` Account Manipulation). Sub-techniques use `F1xxx.yyy` (e.g., `F1005.003` Add Beneficiary). ATT&CK-reused techniques retain their `Txxx` IDs.
+
+**CFPF alignment**: FA0001 (Positioning) maps to CFPF P3; FA0002 (Monetization) maps to CFPF P5.
+
+**Vendored data**: `data/f3/F3_Tactics.json`, `data/f3/F3_Techniques.json`
+
+**Auto-mapper**: `scripts/f3_mapper.py` uses 3-signal mapping (CFPF phase alignment, Group-IB stage matching, fraud type keyword matching) to generate and apply F3 technique suggestions.
+
+**Source**: https://ctid.mitre.org/fraud
 
 ## Frontmatter Schema
 

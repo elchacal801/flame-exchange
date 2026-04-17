@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "5d605af7-2791-5f2a-b52a-dfea8250aa11",
+    "info": "FLAME: Ghost Broking & Unauthorized Insurance Portals",
+    "date": "2026-03-27",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "99cb09d2-f57b-5f5b-9218-2a6353cc512d",
+        "type": "text",
+        "category": "Other",
+        "value": "ghost-broking",
+        "comment": "Fraud type for TP-0074"
+      },
+      {
+        "uuid": "26c1c1a8-b39d-5079-8907-fa1b137646b4",
+        "type": "text",
+        "category": "Other",
+        "value": "ghost-portal",
+        "comment": "Fraud type for TP-0074"
+      },
+      {
+        "uuid": "41cd3a68-4887-5b24-8cac-944dffc231f9",
+        "type": "text",
+        "category": "Other",
+        "value": "insurance-policy-fraud",
+        "comment": "Fraud type for TP-0074"
+      },
+      {
+        "uuid": "582d0d7f-8035-50c0-b77d-670553944f3c",
+        "type": "text",
+        "category": "Other",
+        "value": "unlicensed-insurance",
+        "comment": "Fraud type for TP-0074"
+      },
+      {
+        "uuid": "1b27b72b-7493-5382-8070-73d7caa738f7",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0074"
+      },
+      {
+        "uuid": "4aa7ce3d-b23a-54cf-955c-60a4fe9bbee6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0074"
+      },
+      {
+        "uuid": "62cb8755-c2db-5fc4-b60f-c09a323c6606",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0074"
+      },
+      {
+        "uuid": "b30f88ef-a291-59a3-80c6-28663323f343",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0074"
+      },
+      {
+        "uuid": "5decb89b-6c49-5b26-912f-ce56ef2d0a93",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0074"
+      }
+    ]
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.070154+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "abb558a9-94f0-4b94-8945-053d12e379ed",
+    "dl_id": "DL-0187",
+    "title": "Fraudulent Deed Transfer Anomaly — Deed Recording With Document Metadata Anomalies (AI Generation Indicators) on Properties With No Prior Activity",
+    "status": "experimental",
+    "description": "Detects deed recordings that exhibit document metadata anomalies indicative of AI- generated or forged documents, particularly on properties with no recent prior recording activity. The detection combines document forensic signals (AI tool signatures in PDF metadata, rapid creation timestamps, font inconsistencies) with property-level risk factors (no prior recordings in 5 years, vacant status, unencumbered, non-resident owner). Entrust reports a 40% YoY increase in deepfake-related fraud attempts (2026), with AI-forged deeds, government IDs, and notary stamps as primary vectors in real estate title fraud. Notary commission validation is a critical check -- invalid or expired notary credentials are a high-confidence fraud indicator.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "recording_type": [
+          "deed_transfer",
+          "quitclaim_deed",
+          "warranty_deed",
+          "grant_deed"
+        ]
+      },
+      "filter_document_anomaly": {
+        "document_metadata_risk_score|gte": 40
+      },
+      "filter_no_prior_activity": {
+        "prior_recordings_5yr|lte": 0
+      },
+      "condition": "selection AND (filter_document_anomaly OR filter_no_prior_activity)\n"
+    },
+    "logsource": {
+      "product": "real_estate",
+      "service": "deed_recordings"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "recording_id",
+        "property_id",
+        "property_address",
+        "recording_type",
+        "recording_date",
+        "grantor_name",
+        "grantee_name",
+        "notary_name",
+        "notary_commission_number",
+        "notary_state",
+        "document_page_count"
+      ],
+      "enrichment_required": [
+        {
+          "field": "document_metadata_risk_score",
+          "source": "AI document forensics analysis of PDF metadata, font consistency, image artifacts, and creation timestamps"
+        },
+        {
+          "field": "prior_recordings_5yr",
+          "source": "Count of recordings against the property in the prior 5 years from county recorder database"
+        },
+        {
+          "field": "notary_commission_valid",
+          "source": "State notary commission database validation"
+        },
+        {
+          "field": "property_occupancy_status",
+          "source": "Property data enrichment (county assessor, USPS vacancy data)"
+        }
+      ],
+      "derived_fields": [
+        "composite_risk_score",
+        "ai_generation_indicators",
+        "notary_validation_result"
+      ]
+    },
+    "queries": {
+      "cql": "// CQL for Fraudulent Deed Transfer Anomaly — DL-0187\n// Detects deed recording with AI generation indicators on inactive properties\nDeedRecordings\n| recording_type = \"deed_transfer\" OR recording_type = \"quitclaim_deed\" OR recording_type = \"warranty_deed\" OR recording_type = \"grant_deed\"\n| notary_invalid := if(commission_status != \"active\" OR commission_expiry < now(), 1, 0)\n| no_prior_activity := if(prior_recordings_5yr <= 0, 1, 0)\n| vacant := if(property_occupancy_status = \"vacant\", 1, 0)\n| unencumbered := if(property_mortgage_balance <= 0 OR property_mortgage_balance = null, 1, 0)\n| ai_metadata_flag := if(document_metadata_risk_score >= 40, 1, 0)\n| rapid_creation := if(document_creation_to_modification_sec < 60, 1, 0)\n| composite_risk_score := (notary_invalid * 40) + (ai_metadata_flag * 30) + (no_prior_activity * 20) + (vacant * 15) + (unencumbered * 10) + (rapid_creation * 15)\n| composite_risk_score >= 40\n| risk_level := if(composite_risk_score >= 80, \"critical\", if(composite_risk_score >= 60, \"high\", \"medium\"))\n| recommendation := if(composite_risk_score >= 60, \"HOLD_RECORDING\", \"MANUAL_REVIEW\")\n| sort(composite_risk_score, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Fraudulent Deed Transfer Anomaly — DL-0187\")`\n`comment(\"Detects deed recording with AI generation indicators on inactive properties\")`\nindex=flame_realestate sourcetype=flame:deed_recordings\n  (recording_type=\"deed_transfer\" OR recording_type=\"quitclaim_deed\"\n   OR recording_type=\"warranty_deed\" OR recording_type=\"grant_deed\")\n| lookup notary_commission_db notary_commission_number, notary_state\n    OUTPUT commission_status, commission_expiry\n| eval notary_invalid = if(commission_status != \"active\"\n    OR commission_expiry < now(), 1, 0)\n| eval no_prior_activity = if(prior_recordings_5yr <= 0, 1, 0)\n| eval vacant = if(property_occupancy_status=\"vacant\", 1, 0)\n| eval unencumbered = if(property_mortgage_balance <= 0\n    OR isnull(property_mortgage_balance), 1, 0)\n| eval ai_metadata_flag = if(document_metadata_risk_score >= 40, 1, 0)\n| eval rapid_creation = if(document_creation_to_modification_sec < 60, 1, 0)\n| eval composite_risk_score = (notary_invalid * 40)\n    + (ai_metadata_flag * 30)\n    + (no_prior_activity * 20)\n    + (vacant * 15)\n    + (unencumbered * 10)\n    + (rapid_creation * 15)\n| where composite_risk_score >= 40\n| eval risk_level = case(\n    composite_risk_score >= 80, \"critical\",\n    composite_risk_score >= 60, \"high\",\n    composite_risk_score >= 40, \"medium\")\n| eval recommendation = if(composite_risk_score >= 60, \"HOLD_RECORDING\", \"MANUAL_REVIEW\")\n| table recording_id, property_id, property_address, recording_type,\n        recording_date, grantor_name, grantee_name, notary_name,\n        notary_commission_number, commission_status, notary_invalid,\n        document_metadata_risk_score, ai_metadata_flag, rapid_creation,\n        prior_recordings_5yr, property_occupancy_status,\n        composite_risk_score, risk_level, recommendation\n| sort - composite_risk_score",
+      "sql": "-- SQL for Fraudulent Deed Transfer Anomaly Detection\n-- Detects deed recording with AI generation indicators on properties with no prior activity\nSELECT\n  r.recording_id,\n  r.property_id,\n  r.property_address,\n  r.recording_type,\n  r.recording_date,\n  r.grantor_name,\n  r.grantee_name,\n  r.notary_name,\n  r.notary_commission_number,\n  n.commission_status,\n  n.commission_expiry,\n  r.document_metadata_risk_score,\n  COALESCE(h.prior_recording_count, 0) AS prior_recordings_5yr,\n  p.occupancy_status,\n  p.mortgage_balance,\n  (CASE WHEN n.commission_status != 'active' OR n.commission_expiry < CURRENT_DATE THEN 40 ELSE 0 END\n   + CASE WHEN r.document_metadata_risk_score >= 40 THEN 30 ELSE 0 END\n   + CASE WHEN COALESCE(h.prior_recording_count, 0) = 0 THEN 20 ELSE 0 END\n   + CASE WHEN p.occupancy_status = 'vacant' THEN 15 ELSE 0 END\n   + CASE WHEN p.mortgage_balance <= 0 OR p.mortgage_balance IS NULL THEN 10 ELSE 0 END\n   + CASE WHEN r.document_creation_to_modification_sec < 60 THEN 15 ELSE 0 END\n  ) AS composite_risk_score\nFROM deed_recordings r\nLEFT JOIN notary_commission_db n ON r.notary_commission_number = n.commission_number\n                                 AND r.notary_state = n.state\nLEFT JOIN (\n  SELECT property_id, COUNT(*) AS prior_recording_count\n  FROM deed_recordings\n  WHERE recording_date >= DATEADD(YEAR, -5, CURRENT_DATE)\n  GROUP BY property_id\n) h ON r.property_id = h.property_id\nLEFT JOIN properties p ON r.property_id = p.property_id\nWHERE r.recording_type IN ('deed_transfer', 'quitclaim_deed',\n                            'warranty_deed', 'grant_deed')\n  AND r.recording_date >= DATEADD(DAY, -7, CURRENT_DATE)\nHAVING composite_risk_score >= 40\nORDER BY composite_risk_score DESC"
+    },
+    "references": [
+      "Entrust, Identity Fraud Report (2026)",
+      "HousingWire, Deed Fraud on the Rise: AI-Powered Property Theft (2025)",
+      "First American, Title Fraud: Emerging Threats and Prevention Strategies",
+      "Virginia Deed Fraud Study (2025)"
+    ],
+    "threat_path_ids": [
+      "TP-0073"
+    ],
+    "fraud_types": [
+      "appraisal-fraud",
+      "deed-theft",
+      "title-fraud"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.ai-forged-documents",
+      "flame.deed-theft",
+      "flame.title-fraud"
+    ],
+    "falsepositives": [
+      "Legitimate property transfers on long-held family properties with no recent activity",
+      "Estate transfers after death of long-term owner",
+      "Quitclaim deeds between family members for estate planning",
+      "Properties in rural areas with infrequent recording activity",
+      "Documents scanned or digitized from paper originals (may trigger metadata anomalies)"
+    ]
+  }
+}

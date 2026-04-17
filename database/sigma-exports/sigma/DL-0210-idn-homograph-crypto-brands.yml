@@ -1,0 +1,44 @@
+title: "IDN Homograph Domain Targeting Crypto Brands"
+id: "6b55f1b4-557c-40b2-949b-a910f9af13ca"
+status: experimental
+description: >
+  Detect DNS queries or URL accesses to internationalized domain names
+  (IDN/punycode with xn-- prefix) that visually resemble crypto brand domains
+  (bitpay, coinbase, metamask, phantom, pancakeswap, uniswap, etc.). Interisle
+  documented 2,655 IDN homograph phishing domains with significant crypto brand
+  targeting.
+references:
+  - "https://interisle.net/PhishingLandscape2025.pdf"
+threat_paths:
+  - TP-0079
+cfpf_phase: P2
+fraud_types:
+  - phishing
+  - brand-impersonation
+  - wallet-drainer
+logsource:
+  product: banking
+  service: dns_monitoring
+detection:
+  selection:
+    domain|startswith: "xn--"
+    resolved_visual_domain|contains:
+      - bitpay
+      - coinbase
+      - metamask
+      - phantom
+      - pancakeswap
+      - uniswap
+      - opensea
+      - kraken
+      - binance
+      - ledger
+  condition: selection
+falsepositives:
+  - "Legitimate internationalized domain names in non-Latin scripts"
+  - "Localized crypto service providers using native-language domains"
+level: high
+tags:
+  - cfpf.phase2.initial_access
+  - flame.crypto
+  - flame.infrastructure

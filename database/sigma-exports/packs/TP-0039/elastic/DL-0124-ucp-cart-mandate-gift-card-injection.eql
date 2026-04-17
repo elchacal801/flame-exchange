@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(event_type:cart_mandate_submission AND initiated_by:ai_agent) AND (((line_item_type:(*gift_card* OR *e_gift_card* OR *digital_gift_card*)) AND display_status:hidden) OR ((line_item_type:(*gift_card* OR *e_gift_card* OR *digital_gift_card*)) AND recipient_email_matches_user:false) OR ((line_item_type:(*gift_card* OR *e_gift_card* OR *digital_gift_card*)) AND line_item_added_by:agent_auto AND user_intent_contains_gift_card:false))

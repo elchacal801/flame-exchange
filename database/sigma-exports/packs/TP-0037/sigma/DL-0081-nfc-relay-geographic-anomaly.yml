@@ -1,35 +1,34 @@
 title: NFC Relay Geographic Impossibility on Contactless Transaction
 id: b5d28e47-6a1f-4c93-8b72-9e4a1d6f3c58
 status: experimental
-description: >
-  Detects contactless (tap-to-pay) transactions where the POS terminal location
-  is geographically impossible given the cardholder's last known location. When
-  a contactless transaction occurs at a POS terminal more than 100 kilometers
-  from the cardholder's most recent authenticated activity (mobile banking
-  login, ATM withdrawal, or prior in-person transaction) within a timeframe
-  that makes physical travel impossible, it indicates NFC relay (ghost-tapping)
-  or unauthorized wallet token use. This rule specifically targets the Phase 4
-  execution stage of digital wallet fraud and NFC relay attacks (TP-0037),
-  where money mules conduct contactless purchases using relayed card data at
-  POS terminals geographically distant from the legitimate cardholder.
+description: 'Detects contactless (tap-to-pay) transactions where the POS terminal location is geographically impossible given
+  the cardholder''s last known location. When a contactless transaction occurs at a POS terminal more than 100 kilometers
+  from the cardholder''s most recent authenticated activity (mobile banking login, ATM withdrawal, or prior in-person transaction)
+  within a timeframe that makes physical travel impossible, it indicates NFC relay (ghost-tapping) or unauthorized wallet
+  token use. This rule specifically targets the Phase 4 execution stage of digital wallet fraud and NFC relay attacks (TP-0037),
+  where money mules conduct contactless purchases using relayed card data at POS terminals geographically distant from the
+  legitimate cardholder.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
+- https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
 threat_paths:
-  - TP-0037
+- TP-0037
 cfpf_phase: P4
 fraud_types:
-  - nfc-relay
-  - digital-wallet-fraud
+- nfc-relay
+- digital-wallet-fraud
 logsource:
   product: banking
   service: transaction_monitoring
 detection:
   selection:
-    transaction_type: 'contactless'
+    transaction_type: contactless
     entry_mode|contains:
-      - 'wallet_nfc'
-      - 'contactless_emv'
-      - 'tap_to_pay'
+    - wallet_nfc
+    - contactless_emv
+    - tap_to_pay
   correlation_geographic:
     cardholder_last_known_lat|exists: true
     cardholder_last_known_lon|exists: true
@@ -39,14 +38,26 @@ detection:
   filter_travel_impossible:
     required_speed_kmh|gte: 500
   condition: selection and correlation_geographic and filter_distance and filter_travel_impossible
+data_sources:
+  native_fields:
+  - cardholder_last_activity_minutes
+  - cardholder_last_known_lat
+  - cardholder_last_known_lon
+  - entry_mode
+  - transaction_type
+  enrichment_required:
+  - field: geo_distance_km
+    source: Geolocation enrichment (geodesic distance calculation between IP geolocations)
+  - field: required_speed_kmh
+    source: Geolocation enrichment (travel speed calculation between login locations)
 falsepositives:
-  - Cardholders who travel by air and conduct transactions shortly after landing
-  - Corporate cards used by multiple authorized individuals in different locations
-  - Mobile banking geolocation errors due to VPN or proxy usage
+- Cardholders who travel by air and conduct transactions shortly after landing
+- Corporate cards used by multiple authorized individuals in different locations
+- Mobile banking geolocation errors due to VPN or proxy usage
 level: high
 tags:
-  - cfpf.phase4.execution
-  - attack.t1657
-  - flame.banking
-  - flame.nfc_relay
-  - flame.ghost_tapping
+- cfpf.phase4.execution
+- attack.t1657
+- flame.banking
+- flame.nfc_relay
+- flame.ghost_tapping

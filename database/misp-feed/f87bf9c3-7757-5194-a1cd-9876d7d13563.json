@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "f87bf9c3-7757-5194-a1cd-9876d7d13563",
+    "info": "FLAME: Cryptocurrency Laundering Infrastructure",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "5160166a-6cd1-5de7-8226-4deebd6c767e",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering-infrastructure",
+        "comment": "Fraud type for TP-0049"
+      },
+      {
+        "uuid": "9863e868-4f69-57c4-9443-78bbcf98e880",
+        "type": "text",
+        "category": "Other",
+        "value": "cmln-operations",
+        "comment": "Fraud type for TP-0049"
+      },
+      {
+        "uuid": "9f5c14e1-b772-5e1e-a1b3-f6694e9f9e3c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0049"
+      },
+      {
+        "uuid": "bccaf03d-9829-53e1-8a3c-805a7d7909a1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0049"
+      },
+      {
+        "uuid": "4c5be8c9-d0de-5bf4-a8c5-f928f9c6df82",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0049"
+      },
+      {
+        "uuid": "5259cd8e-8edd-5aa9-b4b8-e4d28ba81ee6",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0049"
+      },
+      {
+        "uuid": "25fae97d-81af-5d1f-8006-9a612651fccd",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0049"
+      }
+    ]
+  }
+}

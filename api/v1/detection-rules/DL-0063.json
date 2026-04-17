@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.372680+00:00",
+    "generated_at": "2026-04-09T19:40:02.386211+00:00",
     "total": 1
   },
   "data": {
@@ -23,7 +23,7 @@
         "condition": "selection\n| groupby(customer_account_id)\n| where count(event_type='refund_issued') / count(event_type='order_completed') > 0.4\n| where count(event_type='order_completed') >= 10\n"
       },
       "timeframe": "90d",
-      "condition": "aggregation"
+      "condition": "selection | aggregation"
     },
     "logsource": {
       "product": "ecommerce",

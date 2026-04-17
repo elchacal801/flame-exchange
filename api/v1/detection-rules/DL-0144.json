@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.763174+00:00",
+    "generated_at": "2026-04-09T19:40:03.377470+00:00",
     "total": 1
   },
   "data": {
@@ -27,6 +27,7 @@
     "native_query_required": true,
     "data_sources": {
       "native_fields": [
+        "endpoint_type",
         "card_number",
         "source_ip",
         "user_agent",
@@ -37,6 +38,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Gift Card Balance Probing Velocity Detection\n// NRF FT1103: Monitor balance check endpoints for automated probing\n#repo=\"retail\" #event_type=\"giftcard_balance_check\"\n| groupBy(source_ip, function=[count(as=check_count), count(field=card_number, distinct=true, as=unique_cards), count(field=user_agent, distinct=true, as=unique_agents), collect([device_fingerprint])], span=1h)\n| check_count > 50 OR unique_cards > 20\n| case {\n    check_count > 200 AND unique_cards > 100 | risk := \"CRITICAL\";\n    check_count > 100 OR unique_cards > 50 | risk := \"HIGH\";\n    check_count > 50 OR unique_cards > 20 | risk := \"MEDIUM\";\n  }\n| sort(check_count, order=desc)",
       "splunk": "`comment(\"Splunk SPL for Gift Card Balance Probing Velocity Detection\")`\n`comment(\"NRF FT1103: Monitor balance check endpoints for automated probing\")`\nindex=retail sourcetype=giftcard:balance_check\n| bin _time span=1h\n| stats count AS check_count,\n        dc(card_number) AS unique_cards,\n        dc(user_agent) AS unique_agents,\n        values(device_fingerprint) AS devices\n  BY source_ip, _time\n| where check_count > 50 OR unique_cards > 20\n| eval risk = case(\n    check_count > 200 AND unique_cards > 100, \"CRITICAL\",\n    check_count > 100 OR unique_cards > 50, \"HIGH\",\n    check_count > 50 OR unique_cards > 20, \"MEDIUM\"\n  )\n| sort - check_count",
       "sql": "-- SQL: Gift card balance probing velocity detection\nSELECT\n    source_ip,\n    COUNT(*) AS check_count,\n    COUNT(DISTINCT card_number) AS unique_cards,\n    COUNT(DISTINCT user_agent) AS unique_agents,\n    MIN(request_timestamp) AS first_check,\n    MAX(request_timestamp) AS last_check\nFROM gift_card_balance_checks\nWHERE request_timestamp >= DATEADD(hour, -1, GETDATE())\nGROUP BY source_ip\nHAVING COUNT(*) > 50 OR COUNT(DISTINCT card_number) > 20\nORDER BY check_count DESC"
     },
@@ -51,6 +53,7 @@
       "gift-card-fraud"
     ],
     "tags": [
+      "attack.t1657",
       "cfpf.phase2.initial_access",
       "flame.gift-card",
       "flame.nrf-rft"

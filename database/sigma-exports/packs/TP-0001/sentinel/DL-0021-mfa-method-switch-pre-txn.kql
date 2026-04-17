@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(event_type =~ "MFA_METHOD_CHANGE" and (new_mfa_method in~ ("sms_otp", "email_otp", "voice_call"))) and ((event_type in~ ("WIRE_INITIATION", "ACH_DEBIT")) and transaction_amount >= 5000)

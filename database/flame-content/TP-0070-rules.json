@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0070",
+  "rules": [
+    {
+      "type": "sigma",
+      "content": "title: Fake OTA Domain Pattern Detection (DL-0180)\nstatus: experimental\ndescription: >\n  Detects access to recently registered domains mimicking major OTA brands\n  (booking.com, expedia.com, airbnb.com) using typosquatting, homoglyph,\n  or brand-adjacent naming patterns. Domains registered within the last\n  30 days accessing payment submission endpoints are high-confidence\n  indicators of fake OTA credential harvesting operations.\nlogsource:\n    product: proxy\n    service: web_traffic\ndetection:\n    selection_domain_patterns:\n        request_domain|re:\n            - '(?i)(book[1i!]ng|b00king|booking-?\\w+)\\.(com|net|org|info|travel)'\n            - '(?i)(exped[1i!]a|exp3dia|expedia-?\\w+)\\.(com|net|org|info|travel)'\n            - '(?i)(a[1i!]rbnb|airbnb-?\\w+|a1rbnb)\\.(com|net|org|info|travel)'\n    filter_legitimate:\n        request_domain:\n            - 'booking.com'\n            - 'expedia.com'\n            - 'airbnb.com'\n            - '*.booking.com'\n            - '*.expedia.com'\n            - '*.airbnb.com'\n    filter_domain_age:\n        domain_registration_age_days|lt: 30\n    condition: selection_domain_patterns and not filter_legitimate and filter_domain_age\nfields:\n    - request_domain\n    - domain_registration_date\n    - source_ip\n    - user_agent\n    - request_url\nlevel: high\nfalsepositives:\n    - Legitimate new travel startups with similar naming\n    - Regional OTA affiliates with brand-adjacent domains",
+      "title": "Queries / Rules"
+    }
+  ]
+}

@@ -103,21 +103,21 @@ class TestCFPBSource:
         assert a0.alert_id == "cfpb-12345"
         assert a0.title == "Incorrect information on your report"
         assert a0.date == "2026-02-01"
-        assert a0.category == "Credit reporting"
+        assert a0.category == "credit-reporting"
         assert a0.severity == "medium"
         assert a0.summary == "My credit report shows an account that is not mine."
 
         a1 = alerts[1]
         assert a1.alert_id == "cfpb-67890"
-        assert a1.category == "Mortgage"
+        assert a1.category == "mortgage-fraud"
 
     def test_parse_maps_tp_ids(self):
         """parse() should map product to TP IDs via category_mapping."""
         config = _make_config({
             "base_url": "https://api.example.com",
             "category_mapping": {
-                "Credit reporting": ["TP-0051"],
-                "Mortgage": ["TP-0002"],
+                "credit-reporting": ["TP-0051"],
+                "mortgage-fraud": ["TP-0002"],
             },
         })
         src = CFPBSource(config)

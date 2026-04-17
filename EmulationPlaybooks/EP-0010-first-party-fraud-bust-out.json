@@ -1,0 +1,68 @@
+{
+    "id": "EP-0010",
+    "title": "First-Party Fraud / Consumer Bust-Out",
+    "description": "Simulates the full lifecycle of a first-party fraud bust-out scheme where a legitimate customer intentionally builds a positive credit history over months before simultaneously maxing out all credit lines and defaulting. Unlike synthetic identity schemes, the actor uses their real identity, making detection significantly more challenging. This playbook validates detection coverage across CFPF phases P2-P5 for the TP-0016 threat path, focusing on behavioral analytics and the distinctive 'sleep/wake' pattern that characterizes bust-out fraud.",
+    "author": "FLAME Project",
+    "date": "2026-03-27",
+    "target_threat_paths": ["TP-0016"],
+    "cfpf_phases": ["P2", "P3", "P4", "P5"],
+    "fraud_types": ["first-party-fraud", "bust-out"],
+    "sectors": ["banking", "credit-union"],
+    "prerequisites": {
+        "environment": "Fraud detection test environment with credit application intake, account lifecycle management, transaction monitoring, credit limit management, and collections systems. Requires the ability to simulate account activity over an extended period (6-12 months of compressed time) and multi-product credit portfolios.",
+        "tools": ["Credit application portal (test environment)", "Account lifecycle simulator (compressed time capability)", "Transaction monitoring system", "Credit limit management system", "Collections and charge-off tracking system", "Credit bureau reporting simulator"],
+        "access_required": "Test-environment access to credit application systems, account management portals, transaction monitoring dashboards, credit limit adjustment workflows, and collections systems across at least two simulated credit products."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P2",
+            "title": "Open Legitimate Account with Real Identity",
+            "action": "Submit a credit card application at the target financial institution using a real identity with legitimate personal information, verifiable employment, and a genuine SSN. Provide accurate contact information and a stable address. The application should pass all identity verification checks because the identity is real. Accept modest initial credit limits appropriate for the stated income and credit history.",
+            "automation": null,
+            "expected_result": "The application should pass standard identity verification and fraud screening since the identity is legitimate. No identity-related fraud alerts should fire. Baseline risk scoring should assign a standard risk level. This step validates that first-party fraud bypasses identity verification controls — the gap that makes this fraud type uniquely difficult to detect.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P3",
+            "title": "Build Credit History Over 6-12 Months",
+            "action": "Over a simulated period of 6-12 months, conduct a pattern of regular small purchases followed by consistent on-time payments. Maintain low utilization ratios (under 30%). Periodically make overpayments to demonstrate 'responsible' credit behavior. After 3-4 months of history, request credit limit increases citing income growth or good payment history. Accept each increase and continue the pattern of low utilization and on-time payments. The goal is to establish a behavioral baseline that appears entirely legitimate.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should establish a baseline of low-risk, consistent activity. Credit limit increase velocity tracking should monitor the frequency and pattern of increase requests. Overpayment pattern detection should flag accounts making payments significantly above minimum due, particularly if funded by external sources. The 'credit nurturing' behavioral signature should begin to emerge in ML models trained on bust-out features.",
+            "detection_rule_ref": "DL-0155"
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P3",
+            "title": "Open Additional Credit Products and Request Final Limit Increases",
+            "action": "Using the established positive credit history, apply for additional credit products at the same institution and at one or more other financial institutions: a second credit card, a personal line of credit, and/or a retail credit account. Shortly before the planned bust-out, request final credit limit increases across all accounts. Modify contact information on the accounts — change the phone number to a VoIP line and the mailing address to a mail drop — to hinder future collections efforts.",
+            "automation": null,
+            "expected_result": "Multi-product application velocity should trigger cross-product correlation alerts. Contact information changes (phone to VoIP, address to known mail drop) preceding high-value activity should generate detective alerts. The combination of recent limit increases plus contact information changes is a strong pre-bust-out indicator. Cross-institutional data sharing (consortium intelligence) should flag the multi-institution pattern.",
+            "detection_rule_ref": "DL-0156"
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P4",
+            "title": "Max All Credit Lines Simultaneously",
+            "action": "Within a compressed timeframe of 24-72 hours, execute high-value transactions across all open credit accounts to reach or exceed credit limits. Use a combination of: cash advances at ATMs, balance transfers to external accounts, purchases of high-value resalable goods (electronics, jewelry, luxury items), and purchases of cash equivalents (gift cards, prepaid cards, money orders). The spending pattern should deviate dramatically from the established 6-12 month baseline of small, regular transactions and low utilization.",
+            "automation": null,
+            "expected_result": "Sleep/wake pattern detection should fire on the dramatic utilization spike from the established low-utilization baseline. Rapid utilization spike alerts should trigger when utilization jumps from under 30% to over 85% within 72 hours. Cash advance velocity monitoring should flag high-frequency ATM withdrawals. MCC analysis should detect concentration in high-value resalable goods and cash equivalents. Cross-product correlation should identify simultaneous max-out across multiple credit lines.",
+            "detection_rule_ref": "DL-0151"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P5",
+            "title": "Default and Abandon Accounts",
+            "action": "Cease all payment activity on every account and allow all credit lines to enter default status. Abandon the contact information (VoIP line and mail drop) set up in the positioning phase. Convert the extracted value: sell resalable goods, liquidate gift cards and prepaid cards, and transfer cash advance proceeds to untraceable accounts. Do not respond to collections attempts. Allow accounts to progress through delinquency stages to charge-off.",
+            "automation": null,
+            "expected_result": "Collections systems should correlate the simultaneous default across multiple products. Post-default forensic analysis should identify the bust-out signature: extended low-activity period followed by rapid max-out and abandonment. The contact information changes preceding the bust-out should be identified as leading indicators during retrospective analysis. Fraud-loss attribution should classify the charge-off as confirmed first-party fraud rather than standard credit loss.",
+            "detection_rule_ref": "DL-0157"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0151", "DL-0155", "DL-0156", "DL-0157"],
+        "alerts_generated": "Credit nurturing pattern alerts on consistent overpayment behavior and systematic limit increase requests; contact information change alerts on phone/address modifications preceding high-value activity; sleep/wake pattern alerts on dramatic utilization spike from established low-utilization baseline; rapid utilization spike alerts when utilization exceeds 85% within 72 hours; cash advance velocity alerts on high-frequency ATM withdrawals; MCC concentration alerts on resalable goods and cash equivalents; cross-product correlation alerts on simultaneous max-out across multiple credit lines; collections correlation alerts on synchronized default across products.",
+        "coverage_validated": "CFPF phases P2 through P5 coverage for first-party fraud bust-out schemes. No P1 (recon) phase because the actor uses their real identity. Validates that identity verification passes at onboarding (P2 — demonstrating the detection gap), behavioral baselining and credit nurturing detection during positioning (P3), sleep/wake pattern and rapid utilization spike detection during execution (P4), and fraud-loss attribution and bust-out signature identification during monetization/default (P5)."
+    }
+}

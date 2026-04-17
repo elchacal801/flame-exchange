@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "86009265-e14a-5892-9f8e-2c8d9f3e1c55",
+    "info": "FLAME: Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges",
+    "date": "2026-04-01",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "beb3ff3b-b2df-55b4-a5df-48df5e8afc83",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0080"
+      },
+      {
+        "uuid": "e522bf47-9848-5caa-9d15-caf20ee677e0",
+        "type": "text",
+        "category": "Other",
+        "value": "stablecoin-freeze-evasion",
+        "comment": "Fraud type for TP-0080"
+      },
+      {
+        "uuid": "1832fa4d-500c-5ea0-869f-a411ad518b21",
+        "type": "text",
+        "category": "Other",
+        "value": "sanctions-evasion-infrastructure",
+        "comment": "Fraud type for TP-0080"
+      },
+      {
+        "uuid": "cee9d597-ff64-5ca1-8700-639d8e72de76",
+        "type": "text",
+        "category": "Other",
+        "value": "money-laundering",
+        "comment": "Fraud type for TP-0080"
+      },
+      {
+        "uuid": "4e6db8f5-59f7-5210-8ca7-463f2631e28e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0080"
+      },
+      {
+        "uuid": "a5b0c1b9-f808-5d91-86ec-644ceb468700",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0080"
+      },
+      {
+        "uuid": "211948f9-af2a-57ce-bc5d-9b501346f6a5",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0080"
+      },
+      {
+        "uuid": "36ae94e8-b978-5dc9-aef2-d559d052eadb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0080"
+      },
+      {
+        "uuid": "3387bca4-ffb0-517f-bb4d-1785dc207d7b",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0080"
+      }
+    ]
+  }
+}

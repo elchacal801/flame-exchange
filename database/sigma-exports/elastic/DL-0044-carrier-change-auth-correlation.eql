@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+((event_type:(*sim_swap* OR *carrier_change* OR *number_port*)) AND status:completed) AND (event_type:login_attempt AND mfa_method:sms AND mfa_result:success)

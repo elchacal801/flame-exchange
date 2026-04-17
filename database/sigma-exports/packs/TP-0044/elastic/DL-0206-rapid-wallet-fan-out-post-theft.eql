@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+source_wallet:* AND unique_destination_count:>=100 AND timeframe_hours:<=48 AND total_amount_usd:>=1000000

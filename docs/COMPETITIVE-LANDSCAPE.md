@@ -226,11 +226,51 @@ UCFF is Group-IB's defense-side complement to their attack-side Fraud Matrix. Wh
 
 ---
 
+## Cross-Sector Information Sharing Landscape (ACAMS, 2026)
+
+The ACAMS International Anti-Fraud and Technology Task Force published "Cross-Sector Fraud Information Sharing — Pathways to Action" (March 2026), confirming that private-sector fraud intelligence sharing is the foundational priority for coordinated fraud prevention — and that it remains systemically broken.
+
+### The Problem ACAMS Identifies
+
+The paper documents a consistent pattern across US, European, and APAC stakeholder engagements: **fraud schemes operate across telecommunications, technology platforms, social media, banking, and cryptocurrency exchanges, yet intelligence remains siloed within individual sectors.** No single entity sees the complete picture. The barriers are legal uncertainty, technical incompatibility, competitive concerns, and misaligned incentives.
+
+### What ACAMS Calls For — and What FLAME Already Provides
+
+| ACAMS Identified Need | FLAME's Solution |
+|---|---|
+| "A common fraud typology taxonomy that translates across sectors" | 160 fraud types mapped across 6 frameworks (CFPF, ATT&CK, Group-IB, FT3, UCFF, Regulatory) |
+| "Confidence and quality indicators for shared intelligence" | Admiralty Code confidence scoring (0-100) + source reliability ratings (A-F) on every threat path |
+| "Fraud typology alerts" as #1 priority low-friction sharing type | 81 structured threat paths with CFPF lifecycle mapping, detection approaches, and operational evidence |
+| "API specifications for bilateral sharing" | OpenAPI 3.0 spec, STIX 2.1 export, MISP feed, TAXII 2.1 endpoints, MCP server |
+| "Descriptions of current fraud schemes, tactics, and targeting patterns" | Entire FLAME knowledge base — structured for consumption, not locked in PDFs |
+| "Infrastructure indicators for blocking and takedown" | 211 detection rules with CQL/SPL/KQL/Sigma query implementations |
+
+### Operational Models FLAME Complements
+
+FLAME provides the **structured content layer** that sharing platforms distribute:
+
+| Model | Jurisdiction | Function | How FLAME Complements |
+|---|---|---|---|
+| **FINEST** | Hong Kong | Many-to-many mule account sharing via HKMA | FLAME's mule-related TPs (TP-0022, TP-0059) provide typology context for shared indicators |
+| **CIFAS** | UK | Cross-sector fraud risk data sharing (banking, insurance, telecom, retail) | FLAME's 21-sector coverage provides structured typologies matching CIFAS categories |
+| **Anti-Scam Centre (ASC)** | Singapore | Public-private intelligence fusion with immediate action authority | FLAME's STIX/TAXII exports feed into fusion center intelligence platforms |
+| **NASC** | Australia | Government-led cross-sector intelligence coordination | FLAME's detection rules are deployable outputs for coordinated detection campaigns |
+| **NCFTA** | US | Industry-law enforcement-academic partnership | FLAME's open-source model enables academic and law enforcement participation without commercial barriers |
+| **JMLIT** | UK | Public-private AML/fraud intelligence fusion | FLAME's cross-framework mapping (especially UCFF) aligns with JMLIT's maturity assessment approach |
+
+### Key Insight
+
+The ACAMS paper identifies that the #1 barrier to scaling fraud information sharing is not technology — it's **lack of structured, standardized content with operational context**. Organizations share raw indicators (IP addresses, account numbers) but lack the typological framework to explain *why* an indicator matters and *what action to take*. FLAME directly addresses this gap: every threat path includes detection approaches, controls, CFPF phase mapping, and cross-framework context that transforms raw data into actionable intelligence.
+
+**Reference:** ACAMS, "Cross-Sector Fraud Information Sharing — Pathways to Action," AFC Briefing, March 2026. Presented to the ACAMS International Anti-Fraud and Technology Task Force, February 2026.
+
+---
+
 ## Key Takeaway
 
 The fraud taxonomy problem is being solved by well-resourced organizations. The community knowledge exchange problem — where practitioners share structured operational intelligence across organizational and framework boundaries — remains entirely unserved in open source.
 
-FLAME fills that gap. As more taxonomies emerge, FLAME becomes more valuable, not less — each new framework is another mapping layer the platform supports.
+FLAME fills that gap. As more taxonomies emerge, FLAME becomes more valuable, not less — each new framework is another mapping layer the platform supports. The ACAMS Task Force's 2026 findings confirm that structured fraud typology sharing is the foundational priority for the industry — and FLAME is the only open-source platform delivering it.
 
 ---
 

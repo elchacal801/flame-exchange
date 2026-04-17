@@ -39,8 +39,8 @@ data_sources:
   - event_type
   - originating_bank_external
 queries:
-  logscale: |-
-    // LogScale LQL for Multi-Bank Funnel Pattern
+  cql: |-
+    // CrowdStrike CQL for Multi-Bank Funnel Pattern
     // Repository: flame-banking-transaction-monitoring
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection_inbound | count(distinct originating_bank_id) by account_id > 3 and selection_outbound | count(distinct beneficiary_id) by account_id <= 2

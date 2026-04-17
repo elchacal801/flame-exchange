@@ -27,8 +27,8 @@ data_sources:
   native_fields:
   - transaction_type
 queries:
-  logscale: |-
-    // LogScale LQL for Mule Account Velocity Pattern
+  cql: |-
+    // CrowdStrike CQL for Mule Account Velocity Pattern
     // Repository: flame-banking-transaction-monitoring
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection_inbound | count(distinct originator_name) by account_id > 3

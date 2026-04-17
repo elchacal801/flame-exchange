@@ -1,0 +1,63 @@
+# ======================================================================
+# FLAME Detection Rule: Chargeback Velocity Pattern — Serial Dispute Filing Across Merchants with Confirmed Delivery
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P5
+# Threat Paths: TP-0075
+#
+# Description:
+#   Detects friendly fraud chargeback abuse by identifying cardholders with
+#   3 or more chargebacks filed within a 90-day window across different
+#   merchants where delivery was confirmed for the original transactions.
+#   Friendly fraud represents 36% of all fraud, with 337 million
+#   chargebacks projected for 2026 costing USD 15.3 billion in the US.
+#   Chargeback abuse surged 233% between Q1 and Q3 2025. The combination of
+#   multi-merchant dispute filing with contradicting delivery evidence is a
+#   high-confidence indicator of first-party chargeback abuse rather than
+#   legitimate disputes. Merchants lose USD 4.61 for every USD 1.00 of
+#   friendly fraud.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: payments
+#   service: dispute_management
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     dispute_type:
+#     - chargeback
+#     - pre-arbitration
+#   filter_velocity:
+#     cardholder_dispute_count_90d|gte: 3
+#   filter_cross_merchant:
+#     distinct_merchant_count_90d|gte: 2
+#   filter_delivery:
+#     delivery_confirmed: true
+#   timeframe: 90d
+#   condition: 'selection AND filter_velocity AND filter_cross_merchant AND filter_delivery
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Cardholders who are genuine victims of multiple merchant fraud incidents
+#   - Cardholders disputing recurring subscription charges from multiple services
+#   - Shared household cards where multiple family members file independent disputes
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

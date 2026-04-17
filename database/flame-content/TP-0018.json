@@ -57,7 +57,14 @@
     "FT018",
     "FT006"
   ],
-  "mitre_f3": [],
+  "mitre_f3": [
+    "F1020.001",
+    "F1006",
+    "F1021",
+    "F1027",
+    "F1029",
+    "T1585"
+  ],
   "groupib_stages": [
     "Resource Development",
     "Trust Abuse",
@@ -75,11 +82,15 @@
     "report": "Level 2",
     "improve": "Level 3"
   },
+  "baseline_ids": [
+    "BL-0007"
+  ],
   "detection_rule_ids": [
     "DL-0050",
     "DL-0052",
     "DL-0053",
-    "DL-0054"
+    "DL-0054",
+    "DL-0159"
   ],
   "related_tps": [
     {

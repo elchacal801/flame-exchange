@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(url_domain endswith ".pages.dev" or url_domain endswith ".webflow.io" or url_domain endswith ".vercel.app" or url_domain endswith ".github.io" or url_domain endswith ".gitbook.io" or url_domain endswith ".workers.dev" or url_domain endswith ".r2.dev") and url_contains_brand_keyword =~ true

@@ -1,0 +1,58 @@
+[
+    {
+        "ID": "FA0001",
+        "name": "Positioning",
+        "description": "The fraud actor's actions in a selected environment, after initial access, to collect or manipulate data or otherwise prepare for execution. Positioning consists of techniques that involve fraud actors gathering sensitive information, altering account configurations, manipulating transaction parameters, or establishing conditions necessary for successful fraud operations. These preparatory activities enable fraud actors to maximize the value extracted during fraud execution or establish persistent access for future operations.",
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "FA0002",
+        "name": "Monetization",
+        "description": "The fraud actor's actions to convert assets, often stolen, into usable funds or value in their possession. Fraud actors may convert fraudulently obtained funds or assets into a form they can utilize or transfer to their possession. Monetization consists of techniques that involve fraud actors liquidating stolen digital assets, transferring funds from compromised accounts, converting fraud proceeds into difficult-to-trace monetary instruments, or manipulating markets.",
+        "origin": "f3-native",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "TA0001",
+        "name": "Initial Access",
+        "description": "The fraud actor's actions to gain a foothold in a selected environment. Initial Access consists of techniques that use various entry vectors to gain their initial foothold within a selected environment. Techniques used to gain a foothold include targeted spearphishing and exploiting weaknesses in browsers.",
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "TA0002",
+        "name": "Execution",
+        "description": "The fraud actor's actions to run malicious code or initiate fraudulent transactions that will convert stolen data to money. Execution consists of techniques that result in fraud actor\u2011controlled code or actions running on a local, remote, or transaction\u2011processing system. Techniques that run malicious code or automate actions are often paired with other tactics to achieve broader goals, such as exploring a network, manipulating applications, initiating unauthorized payments, or altering transaction data to support fraud.",
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "TA0005",
+        "name": "Defense Evasion",
+        "description": "The fraud actor's actions to avoid being detected. Defense Evasion consists of techniques that fraud actors use to avoid detection throughout their compromise. Techniques used for defense evasion include phone number spoofing or social engineering.",
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "TA0042",
+        "name": "Resource Development",
+        "description": "The fraud actor's actions to establish resources they can use to support both cyber and fraud activities. Resource Development consists of techniques that involve fraud actors creating, purchasing, or compromising/stealing resources that can be used to support targeting. Such resources include infrastructure, accounts, or capabilities.",
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    },
+    {
+        "ID": "TA0043",
+        "name": "Reconnaissance",
+        "description": "The fraud actor's actions to gather information they can use to plan future operations, including both cyber intrusions and attempted fraud. Reconnaissance consists of techniques that involve fraud actors actively or passively gathering information that can be used to support targeting. Such information may include details of the victim organization, infrastructure, or staff/personnel.",
+        "origin": "attack-derived",
+        "version": "1.0",
+        "last_modified": "2026-04-08"
+    }
+]

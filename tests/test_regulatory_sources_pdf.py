@@ -27,17 +27,21 @@ def _make_config(extra=None):
 
 FINCEN_HTML = """
 <table>
+  <tr><th>Title</th><th>Date</th><th>Description</th></tr>
   <tr>
-    <td><time>2026-02-15</time></td>
     <td><a href="/advisory/fake.pdf">FinCEN Advisory on Money Laundering</a></td>
+    <td><time>2026-02-15</time></td>
+    <td>Advisory on the Use of Money Laundering Networks</td>
   </tr>
   <tr>
-    <td>2026-02-10</td>
     <td><a href="/advisory/fake2.pdf">FinCEN Advisory on Ransomware</a></td>
+    <td>2026-02-10</td>
+    <td>Advisory on Ransomware and the Financial System</td>
   </tr>
   <tr>
-    <td><time>Invalid Date</time></td>
     <td>No Link Here</td>
+    <td><time>Invalid Date</time></td>
+    <td>Should be skipped</td>
   </tr>
 </table>
 """
@@ -55,15 +59,16 @@ class TestFinCENSource:
         assert alerts[0].title == "FinCEN Advisory on Money Laundering"
         assert alerts[0].date == "2026-02-15"
         assert alerts[0].url == "https://www.fincen.gov/advisory/fake.pdf"
-        assert alerts[0].category == "Advisory"
+        assert alerts[0].category == "money-laundering"
         assert alerts[0].severity == "medium"
 
         assert alerts[1].title == "FinCEN Advisory on Ransomware"
         assert alerts[1].date == "2026-02-10"
         assert alerts[1].url == "https://www.fincen.gov/advisory/fake2.pdf"
+        assert alerts[1].category == "ransomware"
 
     def test_parse_severity_high_when_tp_mapped(self):
-        config = _make_config({"category_mapping": {"Advisory": ["TP-0001"]}})
+        config = _make_config({"category_mapping": {"money-laundering": ["TP-0001"]}})
         src = FinCENSource(config)
         alerts = src.parse(FINCEN_HTML)
         assert alerts[0].severity == "high"

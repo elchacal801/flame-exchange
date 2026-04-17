@@ -1,0 +1,77 @@
+{
+  "Event": {
+    "uuid": "345691e7-40a7-5be7-987c-53b5723acbb0",
+    "info": "FLAME: Traffic Distribution System (TDS) Chain Exploitation",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "6147ca24-8e91-56ff-9303-687fd5e89cf6",
+        "type": "text",
+        "category": "Other",
+        "value": "tds-exploitation",
+        "comment": "Fraud type for TP-0042"
+      },
+      {
+        "uuid": "6020ceb1-96a4-5118-a0b9-e3900ff8b939",
+        "type": "text",
+        "category": "Other",
+        "value": "malvertising",
+        "comment": "Fraud type for TP-0042"
+      },
+      {
+        "uuid": "f9f4ed58-746b-5068-8474-ed98566b2678",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0042"
+      },
+      {
+        "uuid": "b8d45988-d809-57c9-bf88-3da8b2b17f95",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0042"
+      },
+      {
+        "uuid": "45a96509-2df0-595a-adf5-e6dce14dd384",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0042"
+      },
+      {
+        "uuid": "ebb7fdae-6a4d-5452-b7d4-126c556d9d61",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0042"
+      },
+      {
+        "uuid": "1802ada6-6dbe-5d41-b392-081518171c61",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0042"
+      },
+      {
+        "uuid": "dc65f457-9c4c-5ab9-b807-c76de3608c6d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0042"
+      }
+    ]
+  }
+}

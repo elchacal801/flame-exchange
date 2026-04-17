@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type="http_response_divergence" target_domain_age_days<=90 visitor_profile="scanner" response_category IN ("*200_benign*", "*200_empty*", "*403_blocked*") visitor_profile="residential" response_category IN ("*302_redirect*", "*301_redirect*", "*javascript_redirect*", "*malicious_content*") response_similarity_score<=0.2

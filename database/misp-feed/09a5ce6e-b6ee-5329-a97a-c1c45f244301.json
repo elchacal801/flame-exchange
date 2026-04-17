@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "09a5ce6e-b6ee-5329-a97a-c1c45f244301",
+    "info": "FLAME: Crash-for-Cash and Organized Insurance Fraud Rings",
+    "date": "2026-03-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "18714f39-708d-5605-b837-7a1ec2d6150e",
+        "type": "text",
+        "category": "Other",
+        "value": "crash-for-cash",
+        "comment": "Fraud type for TP-0066"
+      },
+      {
+        "uuid": "788cda25-5498-5c20-87c5-d3034ae568fa",
+        "type": "text",
+        "category": "Other",
+        "value": "insurance-fraud",
+        "comment": "Fraud type for TP-0066"
+      },
+      {
+        "uuid": "8dde6a0a-9ed9-537e-83f3-3a76ae4a2001",
+        "type": "text",
+        "category": "Other",
+        "value": "fraudulent-claim",
+        "comment": "Fraud type for TP-0066"
+      },
+      {
+        "uuid": "07f585b6-b8f3-5200-872c-49b26c47b97f",
+        "type": "text",
+        "category": "Other",
+        "value": "collusion",
+        "comment": "Fraud type for TP-0066"
+      },
+      {
+        "uuid": "83cf5a05-d868-5de9-b0ab-34e5092dcfa1",
+        "type": "text",
+        "category": "Other",
+        "value": "documentary-fraud",
+        "comment": "Fraud type for TP-0066"
+      },
+      {
+        "uuid": "9281f209-0a67-5386-999f-dec38689d462",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0066"
+      },
+      {
+        "uuid": "868d3ad3-513b-5415-ac0a-4f8f101fb3d3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0066"
+      },
+      {
+        "uuid": "b58cfa8f-c27a-5ad2-aebb-791f52870c13",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0066"
+      },
+      {
+        "uuid": "0911080e-d117-5272-a19d-293bb5f18b16",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0066"
+      },
+      {
+        "uuid": "c477e535-2e46-570f-a06f-b248149dfcce",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0066"
+      }
+    ]
+  }
+}

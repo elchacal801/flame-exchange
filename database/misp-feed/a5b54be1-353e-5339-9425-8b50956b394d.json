@@ -1,0 +1,63 @@
+{
+  "Event": {
+    "uuid": "a5b54be1-353e-5339-9425-8b50956b394d",
+    "info": "FLAME: RDGA-Based Infrastructure Campaigns",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "98949921-2534-5f0b-a22a-5148a6be1a0b",
+        "type": "text",
+        "category": "Other",
+        "value": "rdga-infrastructure",
+        "comment": "Fraud type for TP-0041"
+      },
+      {
+        "uuid": "0a8fc391-9bbf-508f-b038-6ac781298b71",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0041"
+      },
+      {
+        "uuid": "9566f147-fa8d-574b-9af0-39396c1c7430",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0041"
+      },
+      {
+        "uuid": "89444ee1-ad89-5149-b2da-969268f84bf8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0041"
+      },
+      {
+        "uuid": "e6c4aaeb-703a-585a-9ebd-cf05b21c4c2a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0041"
+      },
+      {
+        "uuid": "b2e90229-57d2-500c-959e-c5c0ce5239b4",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0041"
+      }
+    ]
+  }
+}

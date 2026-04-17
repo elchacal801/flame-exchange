@@ -1,0 +1,127 @@
+title: Ghost Portal Infrastructure Detection — Fake Insurance Verification on Recently Registered Domains
+id: 6f42a153-689b-4197-84cd-51f0d6a2a61b
+status: experimental
+description: >
+  Detects ghost portal infrastructure — fraudulent insurance verification websites deployed
+  on recently registered domains that return valid-looking but unverifiable policy numbers.
+  Ghost portals represent the evolution of ghost broking into a fraud-as-a-service model,
+  where operators build and sell fake insurance verification platforms to other fraudsters.
+  These portals are typically deployed on domains registered within the past 90 days, use
+  insurance-related keywords, and mimic legitimate insurer verification workflows. Detection
+  focuses on DNS queries and web traffic to recently registered domains containing insurance
+  verification terminology.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "Insurance Times, Ghost portals: the next evolution in insurance fraud (2025)"
+  - "FraudOps, Insurance fraud threat landscape (2026)"
+  - "Aviva, Ghost broking intelligence (November 2025)"
+  - "City of London Police / IFED (2025)"
+threat_paths:
+  - TP-0074
+cfpf_phase: P3
+fraud_types:
+  - ghost-portal
+  - ghost-broking
+  - insurance-policy-fraud
+logsource:
+  product: network
+  service: dns_proxy
+detection:
+  selection:
+    query|contains:
+      - "insurance-verify"
+      - "policy-check"
+      - "insurance-confirm"
+      - "motor-verify"
+      - "cover-check"
+      - "insure-validate"
+  filter_domain_age:
+    domain_age_days|lt: 90
+  filter_volume:
+    query_count|gte: 10
+  timeframe: 7d
+  condition: >
+    selection AND filter_domain_age AND filter_volume
+data_sources:
+  native_fields:
+    - query_domain
+    - src_ip
+    - query_timestamp
+    - response_code
+  enrichment_required:
+    - field: domain_age_days
+      source: Domain WHOIS registration date lookup
+    - field: domain_registrar
+      source: WHOIS registrar information
+    - field: ssl_issuer
+      source: SSL certificate transparency log
+  derived_fields:
+    - unique_requestor_count
+    - query_frequency
+queries:
+  cql: |-
+    // CQL for Ghost Portal Infrastructure Detection — DL-0189
+    // Insurance verification portals on recently registered domains
+    DnsQueries
+    | query_domain = /insurance.*verify|policy.*check|insurance.*confirm|motor.*verify|cover.*check|insure.*valid/
+    | query_timestamp >= now() - 7d
+    | domain_age_days < 90
+    | groupBy([domain_name, registered_date, registrar, ssl_issuer],
+        function=[count() as query_count,
+                  countDistinct(source_ip) as unique_requestors,
+                  min(query_timestamp) as first_seen,
+                  max(query_timestamp) as last_seen])
+    | query_count >= 10
+    | sort(query_count, order=desc)
+  splunk: |-
+    `comment("Splunk SPL: Ghost Portal Infrastructure Detection")`
+    `comment("Insurance verification portals on recently registered domains")`
+    index=flame_web sourcetype=flame:dns_proxy
+      (query="*insurance*verify*" OR query="*policy*check*" OR query="*insurance*confirm*"
+       OR query="*motor*verify*" OR query="*cover*check*" OR query="*insure*valid*")
+    | lookup domain_age_lookup domain AS query OUTPUT domain_registered_date
+    | eval domain_age_days = round((now() - strptime(domain_registered_date, "%Y-%m-%d")) / 86400)
+    | where domain_age_days < 90
+    | stats count AS query_count, dc(src_ip) AS unique_requestors,
+            values(query) AS domains, min(_time) AS first_seen, max(_time) AS last_seen
+      BY domain_registered_date
+    | where query_count >= 10
+    | eval days_active = round((last_seen - first_seen) / 86400, 1)
+    | sort - query_count
+  sql: |-
+    -- SQL: Ghost Portal Infrastructure Detection
+    -- Recently registered domains mimicking insurance verification portals
+    SELECT
+      d.domain_name,
+      d.registered_date,
+      DATEDIFF(DAY, d.registered_date, CURRENT_DATE) AS domain_age_days,
+      d.registrar,
+      COUNT(*) AS query_count,
+      COUNT(DISTINCT q.source_ip) AS unique_requestors,
+      MIN(q.query_timestamp) AS first_seen,
+      MAX(q.query_timestamp) AS last_seen,
+      d.ssl_issuer
+    FROM dns_queries q
+    JOIN domain_registry d ON q.query_domain = d.domain_name
+    WHERE (q.query_domain LIKE '%insurance%verify%'
+      OR q.query_domain LIKE '%policy%check%'
+      OR q.query_domain LIKE '%insurance%confirm%'
+      OR q.query_domain LIKE '%motor%verify%'
+      OR q.query_domain LIKE '%cover%check%'
+      OR q.query_domain LIKE '%insure%valid%')
+      AND DATEDIFF(DAY, d.registered_date, CURRENT_DATE) < 90
+      AND q.query_timestamp >= DATEADD(DAY, -7, CURRENT_DATE)
+    GROUP BY d.domain_name, d.registered_date, d.registrar, d.ssl_issuer
+    HAVING COUNT(*) >= 10
+    ORDER BY query_count DESC
+falsepositives:
+  - Newly launched legitimate insurance comparison or verification services
+  - Insurance technology startups with recently registered domains
+  - Internal testing of insurance verification APIs on new domains
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - flame.ghost-portal
+  - flame.ghost-broking
+  - flame.insurance-fraud

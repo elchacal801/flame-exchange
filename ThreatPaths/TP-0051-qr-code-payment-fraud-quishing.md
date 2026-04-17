@@ -35,7 +35,7 @@ mitre_attack:
   - T1056.003  # Input Capture: Web Portal Capture
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FTA009", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "T1110.004", "F1020.002", "T1555", "F1004", "F1031", "F1032", "F1040", "T1185", "T1451"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -62,6 +62,7 @@ regulatory_refs:
   - REG-CFPB-REGE
   - REG-UK-PSR-APP
   - REG-PSD3-SCA
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:
@@ -309,6 +310,8 @@ ORDER BY t.amount DESC;
 - FLAME TP-0037: Digital Wallet / NFC Payment Fraud — mobile payment vector overlap
 - FLAME TP-0050: Calendar/Invite Injection Phishing — comparable off-platform lure delivery mechanic
 - FLAME TP-0012: Tech Support Scam / ATO Chain — downstream account takeover pattern
+- FBI PSA250731 (July 31, 2025): FBI warns of unsolicited packages containing QR codes used to initiate fraud schemes. [Link](https://www.ic3.gov/PSA/2025/PSA250731)
+- FBI IC3: "2025 Internet Crime Report." [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 
 ---
 
@@ -322,6 +325,8 @@ ORDER BY t.amount DESC;
 
 **TP-0037 Cross-Reference**: TP-0037 (Digital Wallet / NFC Payment Fraud) covers the mobile payment rails abused in the monetization phase. The mobile money drain technique in this TP is consistent with TP-0037's monetization phase analysis and should be reviewed in conjunction.
 
+**IC3 2025 Data — Physical QR Code Vector:** PSA250731 (July 31, 2025) warns of unsolicited packages containing QR codes used to initiate fraud schemes. This represents a physical-world expansion of the quishing vector beyond the digital marketplace context documented in EV-TP0051-2026-001 — attackers are now mailing QR codes directly to potential victims, removing the need for marketplace-based social engineering to deliver the malicious code. The physical delivery vector may be harder to attribute and track than marketplace-based delivery.
+
 **BSA/SAR Considerations**: Quishing-related losses should be reported under BSA categories Identity theft (Z) and Wire fraud (Q). Recommended SAR keywords: "QR code fraud," "quishing," "fake post office," "fake bank login," "2FA device hijacking," "mobile money drain," "marketplace seller fraud."
 
 ---
@@ -331,3 +336,4 @@ ORDER BY t.amount DESC;
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-17 | FLAME Project | Initial submission |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — PSA250731 unsolicited package QR code fraud warning |

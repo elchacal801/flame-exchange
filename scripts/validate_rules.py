@@ -4,7 +4,7 @@ FLAME Detection Logic — CI Validation Script
 
 Validates all DL-XXXX rules against the FLAME detection logic specification:
 1. sigma_compatible flag is present and accurate
-2. Rules marked sigma_compatible: false have queries block (logscale + splunk)
+2. Rules marked sigma_compatible: false have queries block (cql + splunk)
 3. All logsource definitions have pipeline mappings
 4. All enrichment-required fields are documented in data_sources
 5. Framework tags (CFPF + ATT&CK) are present
@@ -156,17 +156,17 @@ def main():
     result = ValidationResult()
 
     # Load pipeline logsources
-    logscale_sources = set()
+    cql_sources = set()
     splunk_sources = set()
 
-    logscale_path = os.path.join(PIPELINE_DIR, "logscale.yml")
+    cql_path = os.path.join(PIPELINE_DIR, "cql.yml")
     splunk_path = os.path.join(PIPELINE_DIR, "splunk.yml")
 
-    if os.path.exists(logscale_path):
-        logscale_sources = load_pipeline_logsources(logscale_path)
-        print(f"[INFO] LogScale pipeline: {len(logscale_sources)} logsource mappings")
+    if os.path.exists(cql_path):
+        cql_sources = load_pipeline_logsources(cql_path)
+        print(f"[INFO] CrowdStrike NGSIEM pipeline: {len(cql_sources)} logsource mappings")
     else:
-        result.fail("PIPELINE", "logscale.yml not found")
+        result.fail("PIPELINE", "cql.yml not found")
 
     if os.path.exists(splunk_path):
         splunk_sources = load_pipeline_logsources(splunk_path)
@@ -210,8 +210,8 @@ def main():
             if not queries:
                 result.fail(rule_id, "sigma_compatible: false but no queries block")
             else:
-                if 'logscale' not in queries:
-                    result.fail(rule_id, "queries block missing LogScale LQL")
+                if 'cql' not in queries:
+                    result.fail(rule_id, "queries block missing CrowdStrike CQL")
                 else:
                     result.ok()
 
@@ -238,8 +238,8 @@ def main():
         ls_key = (logsource.get('product', ''), logsource.get('service', ''))
 
         if ls_key[0] and ls_key[1]:
-            if logscale_sources and ls_key not in logscale_sources:
-                result.warn(rule_id, f"Logsource ({ls_key[0]}, {ls_key[1]}) not in logscale.yml pipeline")
+            if cql_sources and ls_key not in cql_sources:
+                result.warn(rule_id, f"Logsource ({ls_key[0]}, {ls_key[1]}) not in cql.yml pipeline")
             else:
                 result.ok()
 

@@ -134,13 +134,19 @@ regulations:
       - mule-recruitment
 
   - id: REG-FBI-IC3
-    name: "FBI IC3 Recovery Asset Team"
+    name: "FBI IC3 Recovery Asset Team / Financial Fraud Kill Chain"
     jurisdiction: US
     category: recovery
-    description: "Financial Fraud Kill Chain for wire transfer recovery"
+    description: "FBI IC3 Financial Fraud Kill Chain (FFKC) for fraudulent transaction recovery. 2025 IC3 Annual Report: 1,008,597 complaints, $20.877B losses. FFKC expanded beyond BEC to cover ATO and tech support fraud; 3,900 incidents, $679M frozen, 58% success rate."
     relevant_fraud_types:
       - wire-fraud
       - BEC
+      - account-takeover
+      - tech-support-fraud
+      - investment-scam
+      - recovery-fraud
+      - government-impersonation
+      - crypto-laundering
 
   - id: REG-OFAC-SDN
     name: "OFAC Specially Designated Nationals List"
@@ -318,3 +324,29 @@ regulations:
       - scam-compound-operations
       - sanctions-evasion-infrastructure
       - bph-migration
+
+  - id: REG-FATF-STABLECOIN-2026
+    name: "FATF Targeted Report on Stablecoins and Unhosted Wallets"
+    jurisdiction: International
+    category: virtual-assets
+    description: "March 2026 FATF report documenting stablecoins as 84% of $154B illicit VA transaction volume (Chainalysis 2025). Identifies vulnerabilities in unhosted wallets, cross-chain bridges, and wrapped stablecoins defeating freeze capabilities. Contains 39 risk indicators in Annex A covering transaction patterns, anonymity indicators, and TF/PF red flags. Documents DPRK Lazarus Group ($1.46B Bybit theft laundering), IRGC stablecoin procurement for drone/weapons components, ISIL/Al-Qaeda stablecoin donation solicitation, and drug trafficking organization use of USDT/TRON for precursor procurement."
+    relevant_fraud_types:
+      - crypto-laundering
+      - sanctions-evasion-infrastructure
+      - money-laundering
+      - state-criminal-convergence
+      - stablecoin-freeze-evasion
+
+  - id: REG-CROWDSTRIKE-GTR-2026
+    name: "CrowdStrike 2026 Global Threat Report"
+    jurisdiction: International
+    category: threat-assessment
+    description: "Annual threat report documenting 89% increase in AI-enabled adversary attacks, 29-minute average eCrime breakout time (down from 98 min in 2021), 82% malware-free detections. Covers DPRK PRESSURE CHOLLIMA $1.46B Bybit theft via Safe{Wallet} supply chain, FAMOUS CHOLLIMA GenAI fake persona operations (+109%), fake CAPTCHA campaigns (+563%), CHATTY SPIDER 4-minute vishing breakout targeting law firms, AiTM SaaS targeting by ShinyHunters and IMPERIAL KITTEN, and cloud-conscious intrusions (+37%)."
+    relevant_fraud_types:
+      - dprk-it-worker-fraud
+      - account-takeover
+      - vishing
+      - social-engineering
+      - state-criminal-convergence
+      - crypto-laundering
+      - fake-captcha-fraud

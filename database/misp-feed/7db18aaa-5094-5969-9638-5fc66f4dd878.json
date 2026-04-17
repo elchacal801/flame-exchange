@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "7db18aaa-5094-5969-9638-5fc66f4dd878",
+    "info": "FLAME: AiTM Phishing Kit Infrastructure and Session Token Hijacking",
+    "date": "2026-03-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "60caa1dc-6882-5fcd-ab81-34085ce8eafe",
+        "type": "text",
+        "category": "Other",
+        "value": "aitm-phishing",
+        "comment": "Fraud type for TP-0067"
+      },
+      {
+        "uuid": "c5c72307-422f-5cbb-9766-4b28461dfa82",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0067"
+      },
+      {
+        "uuid": "babd9ab0-51a9-5bd1-ad13-084e82e47f34",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0067"
+      },
+      {
+        "uuid": "bda3c423-35d2-55e7-a32a-3f1eddf41cd0",
+        "type": "text",
+        "category": "Other",
+        "value": "credential-stuffing",
+        "comment": "Fraud type for TP-0067"
+      },
+      {
+        "uuid": "0b405b95-3a84-5f4b-8c1e-eae2bbcc1e44",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-as-a-service",
+        "comment": "Fraud type for TP-0067"
+      },
+      {
+        "uuid": "9a197309-f127-548d-919b-5c0b0cb96a46",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0067"
+      },
+      {
+        "uuid": "2f7e792c-f9f7-58b4-a53b-f5fa62a6d4b1",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0067"
+      },
+      {
+        "uuid": "869bf47a-3b7a-5a58-8278-ce7db2037dfe",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0067"
+      },
+      {
+        "uuid": "3328f94d-3aa4-5262-8066-eb7cf8bec727",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0067"
+      },
+      {
+        "uuid": "43154865-1026-51ea-999d-9146c335964c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0067"
+      }
+    ]
+  }
+}

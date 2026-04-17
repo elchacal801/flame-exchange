@@ -485,6 +485,15 @@ def validate_file(filepath: Path) -> ValidationResult:
         if val is not None and not isinstance(val, list):
             result.error(f"Field '{field}' must be a list")
 
+    # Validate MITRE F3 IDs against known patterns
+    f3_ids = meta.get("mitre_f3", [])
+    if isinstance(f3_ids, list):
+        for fid in f3_ids:
+            if not isinstance(fid, str):
+                result.warn(f"mitre_f3 entry must be a string, got {type(fid).__name__}")
+            elif not (fid.startswith("F1") or fid.startswith("T1") or fid.startswith("FA") or fid.startswith("TA")):
+                result.warn(f"mitre_f3 entry '{fid}' does not match expected F3 ID pattern (F1xxx, T1xxx, FAxxx, TAxxx)")
+
     # UCFF domains (optional, must be a mapping if present)
     ucff = meta.get("ucff_domains")
     if ucff is not None:
@@ -581,6 +590,21 @@ def validate_file(filepath: Path) -> ValidationResult:
             for ref in regulatory_refs:
                 if ref not in VALID_REGULATORY_IDS:
                     result.error(f"Unrecognized regulatory_refs entry '{ref}' (not in config/regulatory_requirements.yaml)")
+
+    # --- Baseline references (optional, ThreatPath only) ---
+    baseline_ids = meta.get("baseline_ids")
+    if baseline_ids is not None:
+        if not isinstance(baseline_ids, list):
+            result.error("baseline_ids must be a list")
+        else:
+            repo_root = filepath.resolve().parent.parent
+            for bl_id in baseline_ids:
+                if not re.match(r"^BL-\d{4}$", str(bl_id)):
+                    result.error(f"baseline_ids entry must match BL-XXXX format, got '{bl_id}'")
+                else:
+                    bl_matches = list((repo_root / "Baselines").glob(f"{bl_id}-*.md"))
+                    if not bl_matches:
+                        result.warn(f"baseline_ids reference '{bl_id}' does not match any file in Baselines/")
 
     # --- Body section validation (only for ThreatPath) ---
     if category != "Baseline":

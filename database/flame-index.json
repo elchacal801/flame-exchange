@@ -65,7 +65,18 @@
       "FT017",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1025.002",
+      "F1032",
+      "F1034",
+      "F1040.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1016",
+      "F1031"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -96,6 +107,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0001",
       "DL-0002",
@@ -159,7 +173,7 @@
     "author": "FLAME Project",
     "source": "FBI IC3 / FinCEN Advisory FIN-2019-A005 / multiple public reporting",
     "tlp": "WHITE",
-    "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $2.9B+ in reported losses in 2023 ...",
+    "summary": "Threat actors compromise or spoof vendor email accounts, then impersonate the vendor to redirect legitimate invoice payments to actor-controlled accounts. BEC caused $3.05B in reported losses in 2025 ...",
     "confidence_score": 88,
     "source_reliability": "B",
     "info_credibility": 1,
@@ -218,7 +232,17 @@
       "FT043",
       "FT053.001"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1025.002",
+      "F1016",
+      "F1027",
+      "F1036",
+      "F1037",
+      "F1044",
+      "F1046",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -243,6 +267,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0001",
       "DL-0028",
@@ -255,7 +282,8 @@
       "DL-0041",
       "DL-0043",
       "DL-0137",
-      "DL-0138"
+      "DL-0138",
+      "DL-0217"
     ],
     "related_tps": [
       {
@@ -335,7 +363,11 @@
       "FT005",
       "FT012"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1021",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -356,7 +388,20 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0007",
+      "BL-0032"
+    ],
+    "detection_rule_ids": [
+      "DL-0151",
+      "DL-0152",
+      "DL-0153",
+      "DL-0154",
+      "DL-0157",
+      "DL-0158",
+      "DL-0160",
+      "DL-0184"
+    ],
     "related_tps": [
       {
         "id": "TP-0009",
@@ -441,7 +486,18 @@
       "FT006.001",
       "FT008.002"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "T1185",
+      "T1189",
+      "T1451",
+      "T1539",
+      "T1557",
+      "T1598"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -469,6 +525,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0019",
       "DL-0022",
@@ -550,7 +607,18 @@
       "FT018",
       "FT038.002"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "T1185",
+      "T1189",
+      "T1451",
+      "T1539",
+      "T1557",
+      "T1598"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -576,6 +644,7 @@
       "report": "Level 3",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0020",
       "DL-0021",
@@ -662,7 +731,18 @@
       "FT020",
       "FT021"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1025.002",
+      "F1016",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1037",
+      "F1040",
+      "F1044",
+      "F1046"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -687,6 +767,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0019",
       "DL-0021",
@@ -699,7 +782,8 @@
       "DL-0032",
       "DL-0033",
       "DL-0035",
-      "DL-0036"
+      "DL-0036",
+      "DL-0186"
     ],
     "related_tps": [
       {
@@ -786,7 +870,18 @@
       "FT008.002",
       "FT018"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1025.002",
+      "F1031",
+      "F1032",
+      "F1016",
+      "F1037",
+      "F1040",
+      "F1044",
+      "F1046",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -816,10 +911,14 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0050",
       "DL-0051",
-      "DL-0052"
+      "DL-0052",
+      "DL-0217"
     ],
     "related_tps": [
       {
@@ -916,7 +1015,18 @@
       "FT013",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047",
+      "T1185",
+      "T1451"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -946,6 +1056,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0003",
       "DL-0006",
@@ -1043,7 +1154,12 @@
       "FT018",
       "FT023"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1009.002",
+      "F1014",
+      "F1019",
+      "F1035"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1063,7 +1179,10 @@
       "report": "Level 3",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0162"
+    ],
     "related_tps": [
       {
         "id": "TP-0003",
@@ -1154,7 +1273,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0163"
+    ],
     "related_tps": [
       {
         "id": "TP-0021",
@@ -1194,7 +1316,9 @@
       "human-trafficking",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "drops-recruitment",
+      "forum-recruitment"
     ],
     "cfpf_phases": [
       "P1",
@@ -1227,7 +1351,17 @@
       "FT016",
       "FT020"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1009",
+      "F1018",
+      "F1020",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1254,6 +1388,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0003",
+      "BL-0031"
+    ],
     "detection_rule_ids": [
       "DL-0001",
       "DL-0037",
@@ -1355,7 +1493,18 @@
       "FT003",
       "FT007.009"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1032",
+      "F1031",
+      "F1034",
+      "F1040.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1020",
+      "T1185"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1384,6 +1533,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0055",
       "DL-0056",
@@ -1475,7 +1625,15 @@
       "FT027",
       "FT018"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.004",
+      "T1555",
+      "F1004",
+      "T1185",
+      "T1451",
+      "T1539"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1500,6 +1658,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0009",
+      "BL-0035"
+    ],
     "detection_rule_ids": [
       "DL-0012",
       "DL-0013",
@@ -1593,7 +1755,18 @@
       "FT037.002",
       "FT042"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1005",
+      "F1029",
+      "F1033",
+      "T1185",
+      "T1451",
+      "T1539"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Account Access",
@@ -1619,7 +1792,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0164"
+    ],
     "related_tps": [
       {
         "id": "TP-0001",
@@ -1708,7 +1884,16 @@
       "FT007.009",
       "FT011.002"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1031",
+      "F1032",
+      "F1006",
+      "F1025",
+      "F1029",
+      "F1040",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -1731,6 +1916,7 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0143"
     ],
@@ -1803,7 +1989,11 @@
       "FT015",
       "FT017"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1024",
+      "F1015",
+      "F1043"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Perform Fraud",
@@ -1819,7 +2009,15 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0032"
+    ],
+    "detection_rule_ids": [
+      "DL-0151",
+      "DL-0155",
+      "DL-0156",
+      "DL-0157"
+    ],
     "related_tps": [
       {
         "id": "TP-0003",
@@ -1904,7 +2102,17 @@
       "FT011",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1025.003",
+      "F1018",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "End-user Interaction",
@@ -1932,9 +2140,16 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0004",
+      "BL-0031",
+      "BL-0034"
+    ],
     "detection_rule_ids": [
-      "DL-0117",
-      "DL-0142"
+      "DL-0142",
+      "DL-0215",
+      "DL-0220",
+      "DL-0221"
     ],
     "related_tps": [
       {
@@ -2006,7 +2221,14 @@
       "FT018",
       "FT006"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1006",
+      "F1021",
+      "F1027",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Trust Abuse",
@@ -2024,11 +2246,15 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0007"
+    ],
     "detection_rule_ids": [
       "DL-0050",
       "DL-0052",
       "DL-0053",
-      "DL-0054"
+      "DL-0054",
+      "DL-0159"
     ],
     "related_tps": [
       {
@@ -2105,7 +2331,18 @@
       "FT020",
       "FT028"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1005.006",
+      "F1022",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1027",
+      "F1029",
+      "F1031",
+      "F1032"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Account Access",
@@ -2131,7 +2368,10 @@
       "report": "Level 3",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0165"
+    ],
     "related_tps": [
       {
         "id": "TP-0003",
@@ -2207,7 +2447,18 @@
       "FT052.003",
       "FT011.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1022",
+      "F1025.002",
+      "F1016",
+      "F1031",
+      "F1032",
+      "F1037",
+      "F1044",
+      "F1046",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Account Access",
@@ -2229,6 +2480,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0002",
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0028",
       "DL-0029",
@@ -2326,7 +2581,15 @@
       "FT029",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1009",
+      "F1025",
+      "F1027",
+      "F1033",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2347,6 +2610,9 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0006"
+    ],
     "detection_rule_ids": [
       "DL-0130",
       "DL-0131",
@@ -2425,7 +2691,12 @@
       "FT051.003",
       "FT006"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1006",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Perform Fraud",
@@ -2443,6 +2714,7 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0001",
       "DL-0037",
@@ -2450,7 +2722,8 @@
       "DL-0039",
       "DL-0040",
       "DL-0041",
-      "DL-0043"
+      "DL-0043",
+      "DL-0179"
     ],
     "related_tps": [
       {
@@ -2533,7 +2806,18 @@
       "FT018",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1007.001",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "T1113",
+      "T1185",
+      "T1219",
+      "T1451",
+      "T1539"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
@@ -2557,6 +2841,7 @@
       "report": "Level 2",
       "improve": "Level 4"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0002",
       "DL-0004",
@@ -2651,7 +2936,18 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1025.002",
+      "F1016",
+      "F1031",
+      "F1032",
+      "F1037",
+      "F1040",
+      "F1044",
+      "F1046",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2682,6 +2978,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0002",
+      "BL-0012"
+    ],
     "detection_rule_ids": [
       "DL-0055",
       "DL-0056",
@@ -2780,7 +3080,17 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1025.003",
+      "F1018",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2809,6 +3119,10 @@
       "report": "Level 3",
       "improve": "Level 4"
     },
+    "baseline_ids": [
+      "BL-0003",
+      "BL-0033"
+    ],
     "detection_rule_ids": [
       "DL-0139",
       "DL-0140"
@@ -2903,7 +3217,16 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1025.003",
+      "F1018",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1045",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -2934,7 +3257,12 @@
       "report": "Level 3",
       "improve": "Level 4"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0004"
+    ],
+    "detection_rule_ids": [
+      "DL-0166"
+    ],
     "related_tps": [
       {
         "id": "TP-0017",
@@ -3021,7 +3349,18 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1025.003",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1018",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3054,7 +3393,15 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0005"
+    ],
+    "detection_rule_ids": [
+      "DL-0167",
+      "DL-0212",
+      "DL-0213",
+      "DL-0216"
+    ],
     "related_tps": [
       {
         "id": "TP-0011",
@@ -3153,7 +3500,18 @@
       "FT016",
       "FT017"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1009",
+      "F1018",
+      "F1025",
+      "F1027",
+      "F1031",
+      "F1032",
+      "F1033",
+      "F1040",
+      "F1045"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3175,6 +3533,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0006"
+    ],
     "detection_rule_ids": [
       "DL-0130",
       "DL-0131",
@@ -3270,7 +3631,11 @@
       "FT017",
       "FT028"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1021",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3294,7 +3659,17 @@
       "report": "Level 3",
       "improve": "Level 4"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0007"
+    ],
+    "detection_rule_ids": [
+      "DL-0152",
+      "DL-0154",
+      "DL-0158",
+      "DL-0159",
+      "DL-0160",
+      "DL-0161"
+    ],
     "related_tps": [
       {
         "id": "TP-0003",
@@ -3370,7 +3745,18 @@
       "FT017",
       "FT028"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1005.006",
+      "F1025.002",
+      "F1006",
+      "F1015",
+      "F1016",
+      "F1024",
+      "F1029",
+      "F1037",
+      "F1043",
+      "F1046"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3393,6 +3779,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0008"
+    ],
     "detection_rule_ids": [
       "DL-0064",
       "DL-0067"
@@ -3482,7 +3871,11 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1015",
+      "F1024",
+      "F1043"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3503,6 +3896,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0008"
+    ],
     "detection_rule_ids": [
       "DL-0062",
       "DL-0063",
@@ -3592,7 +3988,18 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1004",
+      "F1007",
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047",
+      "T1185",
+      "T1189",
+      "T1539",
+      "T1555"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3619,7 +4026,12 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0010"
+    ],
+    "detection_rule_ids": [
+      "DL-0168"
+    ],
     "related_tps": [
       {
         "id": "TP-0017",
@@ -3697,7 +4109,10 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3720,7 +4135,12 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0011"
+    ],
+    "detection_rule_ids": [
+      "DL-0169"
+    ],
     "related_tps": [
       {
         "id": "TP-0003",
@@ -3739,7 +4159,7 @@
     "category": "ThreatPath",
     "date": "2026-03-03",
     "author": "FLAME Project",
-    "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026)",
+    "source": "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, CrowdStrike 2026 GTR, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026), FATF 2026 Stablecoin Report",
     "tlp": "WHITE",
     "summary": "The Democratic People's Republic of Korea (DPRK) operates a state-sponsored employment fraud program in which North Korean IT workers — often operating from China, Russia, and Southeast Asia — use sto...",
     "confidence_score": 85,
@@ -3784,7 +4204,13 @@
       "beavertail",
       "invisibleferret",
       "purplebravo",
-      "purpledelta"
+      "purpledelta",
+      "pressure-chollima",
+      "famous-chollima",
+      "stardust-chollima",
+      "bybit-theft",
+      "crowdstrike-gtr-2026",
+      "fatf-stablecoin-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -3821,7 +4247,11 @@
       "FT031",
       "FT052.003"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3838,7 +4268,9 @@
       "REG-FBI-IC3",
       "REG-UNODC-EMERGING-THREATS",
       "REG-RF-CTA-2026-0319",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -3849,6 +4281,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0013",
+      "BL-0028"
+    ],
     "detection_rule_ids": [
       "DL-0068",
       "DL-0069",
@@ -3859,7 +4295,7 @@
       "DL-0074",
       "DL-0119",
       "DL-0121",
-      "DL-0126"
+      "DL-0219"
     ],
     "related_tps": [
       {
@@ -3885,9 +4321,13 @@
       {
         "id": "TP-0057",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0080",
+        "relationship": "feeds-into"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 6
   },
   {
     "id": "TP-0035",
@@ -3956,7 +4396,15 @@
       "FT016",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1007.001",
+      "F1006",
+      "F1011",
+      "F1029",
+      "T1113",
+      "T1219",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -3981,10 +4429,14 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0015"
+    ],
     "detection_rule_ids": [
       "DL-0075",
       "DL-0076",
-      "DL-0077"
+      "DL-0077",
+      "DL-0177"
     ],
     "related_tps": [
       {
@@ -4065,7 +4517,17 @@
       "FT028",
       "FT007.009"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1015",
+      "F1020",
+      "F1024",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1043",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4090,6 +4552,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0016",
+      "BL-0018"
+    ],
     "detection_rule_ids": [
       "DL-0078",
       "DL-0079"
@@ -4178,7 +4644,18 @@
       "FT031",
       "FT043"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1005",
+      "F1019",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1037"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4205,6 +4682,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0017"
+    ],
     "detection_rule_ids": [
       "DL-0080",
       "DL-0081",
@@ -4285,7 +4765,14 @@
       "FT007.009",
       "FT017"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1038",
+      "F1006",
+      "F1012",
+      "F1029",
+      "F1046",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4306,6 +4793,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0016",
+      "BL-0018"
+    ],
     "detection_rule_ids": [
       "DL-0083",
       "DL-0084"
@@ -4409,7 +4900,18 @@
       "FT028",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1017",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1185"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4434,6 +4936,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0019"
+    ],
     "detection_rule_ids": [
       "DL-0085",
       "DL-0086",
@@ -4527,7 +5032,18 @@
       "FT007",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1020.001",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1015",
+      "F1024",
+      "F1029",
+      "F1031",
+      "F1032"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4552,6 +5068,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0020"
+    ],
     "detection_rule_ids": [
       "DL-0087",
       "DL-0088",
@@ -4668,12 +5187,16 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0021"
+    ],
     "detection_rule_ids": [
       "DL-0092",
       "DL-0093",
       "DL-0094",
       "DL-0099",
-      "DL-0100"
+      "DL-0100",
+      "DL-0208"
     ],
     "related_tps": [
       {
@@ -4779,7 +5302,13 @@
       "FT007",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4802,6 +5331,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0022",
+      "BL-0030"
+    ],
     "detection_rule_ids": [
       "DL-0095",
       "DL-0096",
@@ -4899,7 +5432,13 @@
       "FT007",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -4919,6 +5458,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0023",
+      "BL-0033"
+    ],
     "detection_rule_ids": [
       "DL-0098",
       "DL-0099",
@@ -4986,7 +5529,12 @@
       "operation-redcard",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "probiv-lookup-services",
+      "insider-database-access",
+      "pressure-chollima",
+      "bybit-theft",
+      "crowdstrike-gtr-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -5005,7 +5553,15 @@
       "T1071.001"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1007.001",
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047",
+      "T1113",
+      "T1219"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5022,7 +5578,8 @@
       "REG-INTERPOL-SHADOW-STORM",
       "REG-RF-CTA-2026-0319",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -5033,9 +5590,14 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0024",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0101",
-      "DL-0127"
+      "DL-0123",
+      "DL-0206"
     ],
     "related_tps": [
       {
@@ -5051,7 +5613,7 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 5
   },
   {
     "id": "TP-0045",
@@ -5107,7 +5669,12 @@
       "T1048"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5128,6 +5695,10 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0025",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0102",
       "DL-0103",
@@ -5222,6 +5793,10 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0025",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0105",
       "DL-0106",
@@ -5295,7 +5870,12 @@
       "T1048"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5319,6 +5899,7 @@
       "report": "Level 4",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0108",
       "DL-0109"
@@ -5341,7 +5922,7 @@
         "relationship": "shares-infrastructure"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 3
   },
   {
     "id": "TP-0048",
@@ -5393,7 +5974,11 @@
       "T1578"
     ],
     "ft3_tactics": [],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Defence Evasion",
@@ -5412,10 +5997,15 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0026",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0110",
       "DL-0111",
-      "DL-0112"
+      "DL-0112",
+      "DL-0178"
     ],
     "related_tps": [
       {
@@ -5472,7 +6062,11 @@
       "unodc",
       "unodc-organized-fraud-2024",
       "ai-evasion",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "fatf-stablecoin-2026",
+      "bybit-laundering",
+      "p2p-laundering",
+      "unhosted-wallet"
     ],
     "cfpf_phases": [
       "P1",
@@ -5497,7 +6091,8 @@
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-EMERGING-THREATS",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 4",
@@ -5508,10 +6103,19 @@
       "report": "Level 4",
       "improve": "Level 4"
     },
+    "baseline_ids": [
+      "BL-0027",
+      "BL-0034",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0113",
       "DL-0114",
-      "DL-0142"
+      "DL-0142",
+      "DL-0203",
+      "DL-0204",
+      "DL-0205",
+      "DL-0206"
     ],
     "related_tps": [
       {
@@ -5525,9 +6129,13 @@
       {
         "id": "TP-0047",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0080",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 3
+    "evidence_count": 7
   },
   {
     "id": "TP-0050",
@@ -5583,7 +6191,14 @@
       "FTA010",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5605,7 +6220,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0170"
+    ],
     "related_tps": [
       {
         "id": "TP-0012",
@@ -5673,7 +6291,18 @@
       "FTA009",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.004",
+      "F1020.002",
+      "T1555",
+      "F1004",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1185",
+      "T1451"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5696,7 +6325,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0171"
+    ],
     "related_tps": [
       {
         "id": "TP-0012",
@@ -5772,7 +6404,16 @@
       "FTA003",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1018",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Social Engineering",
@@ -5796,7 +6437,13 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0003",
+      "BL-0004"
+    ],
+    "detection_rule_ids": [
+      "DL-0172"
+    ],
     "related_tps": [
       {
         "id": "TP-0011",
@@ -5870,7 +6517,12 @@
       "FTA003",
       "FTA004"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006",
+      "F1027",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -5892,7 +6544,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0173"
+    ],
     "related_tps": [
       {
         "id": "TP-0018",
@@ -5984,7 +6639,13 @@
       "FTA010",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
@@ -6010,6 +6671,10 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0033",
+      "BL-0036"
+    ],
     "detection_rule_ids": [
       "DL-0128",
       "DL-0129"
@@ -6077,7 +6742,10 @@
       "operation-catalyst",
       "unodc",
       "unodc-organized-fraud-2024",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "irgc-stablecoin",
+      "isil-stablecoin",
+      "fatf-stablecoin-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -6095,7 +6763,17 @@
       "FTA003",
       "FTA007"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1009",
+      "F1018",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -6109,7 +6787,8 @@
       "REG-FATF-R16",
       "REG-INTERPOL-GFFTA",
       "REG-UNODC-ORGANIZED-FRAUD-2024",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-FATF-STABLECOIN-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -6120,7 +6799,16 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [
+      "BL-0034",
+      "BL-0036"
+    ],
+    "detection_rule_ids": [
+      "DL-0174",
+      "DL-0196",
+      "DL-0198",
+      "DL-0207"
+    ],
     "related_tps": [
       {
         "id": "TP-0044",
@@ -6133,9 +6821,13 @@
       {
         "id": "TP-0049",
         "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0080",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 8
   },
   {
     "id": "TP-0056",
@@ -6188,7 +6880,13 @@
       "FTA003",
       "FTA004"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1006",
+      "F1027",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -6209,7 +6907,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0175"
+    ],
     "related_tps": [
       {
         "id": "TP-0005",
@@ -6291,7 +6992,12 @@
       "FTA009",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
@@ -6314,9 +7020,13 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0028",
+      "BL-0033"
+    ],
     "detection_rule_ids": [
-      "DL-0115",
-      "DL-0126"
+      "DL-0218",
+      "DL-0219"
     ],
     "related_tps": [
       {
@@ -6405,7 +7115,16 @@
       "FTA009",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1018",
+      "F1025",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
@@ -6429,8 +7148,9 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
-      "DL-0117"
+      "DL-0220"
     ],
     "related_tps": [
       {
@@ -6458,7 +7178,7 @@
     "category": "ThreatPath",
     "date": "2026-03-20",
     "author": "FLAME Project",
-    "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319",
+    "source": "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319, Group-IB Cloud Phones 2026",
     "tlp": "WHITE",
     "summary": "Bot-driven mule account creation and management infrastructure that automates the opening, maintenance, and coordination of money mule accounts at scale. UNODC documents bot-driven mule account system...",
     "confidence_score": 75,
@@ -6491,7 +7211,8 @@
       "unodc-organized-fraud-2024",
       "mule-herding",
       "velocity-anomaly",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "cloud-phone"
     ],
     "cfpf_phases": [
       "P1",
@@ -6534,9 +7255,13 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0029"
+    ],
     "detection_rule_ids": [
       "DL-0118",
-      "DL-0119"
+      "DL-0119",
+      "DL-0179"
     ],
     "related_tps": [
       {
@@ -6556,7 +7281,7 @@
         "relationship": "enables"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 5
   },
   {
     "id": "TP-0060",
@@ -6640,10 +7365,14 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0030"
+    ],
     "detection_rule_ids": [
       "DL-0120",
       "DL-0122",
-      "DL-0127"
+      "DL-0127",
+      "DL-0221"
     ],
     "related_tps": [
       {
@@ -6671,10 +7400,10 @@
     "category": "ThreatPath",
     "date": "2026-03-20",
     "author": "FLAME Project",
-    "source": "Recorded Future CTA-2026-0319, INTERPOL GFFTA 2026",
+    "source": "Recorded Future CTA-2026-0319, INTERPOL GFFTA 2026; Flare Academy BPH Webinar (Oleg O, 2026); Cybercrime Diaries — BPH Landscape and Black Basta Chat Leak posts (2024-2025)",
     "tlp": "WHITE",
     "summary": "Bulletproof hosting (BPH) providers and abuse-resistant infrastructure services that enable fraud operations by providing hosting that resists takedown requests, law enforcement cooperation, and abuse...",
-    "confidence_score": 68,
+    "confidence_score": 72,
     "source_reliability": "B",
     "info_credibility": 2,
     "infrastructure_generation_method": "manual",
@@ -6703,7 +7432,16 @@
       "fraud-infrastructure",
       "hosting-complicity",
       "recorded-future",
-      "interpol-shadow-storm"
+      "interpol-shadow-storm",
+      "lots-living-off-trusted-services",
+      "bearhost",
+      "chang-way",
+      "monolithic-vs-non-monolithic",
+      "tae-ecosystem",
+      "vpskov",
+      "black-basta-infrastructure",
+      "cybercrime-diaries",
+      "forum-intelligence"
     ],
     "cfpf_phases": [
       "P1",
@@ -6739,8 +7477,14 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0036"
+    ],
     "detection_rule_ids": [
-      "DL-0127"
+      "DL-0123",
+      "DL-0178",
+      "DL-0199",
+      "DL-0200"
     ],
     "related_tps": [
       {
@@ -6764,7 +7508,7 @@
         "relationship": "enables"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 5
   },
   {
     "id": "TP-0062",
@@ -6819,7 +7563,15 @@
       "FT007.009",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1031",
+      "F1032",
+      "F1025",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Trust Abuse",
@@ -6841,9 +7593,13 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0031"
+    ],
     "detection_rule_ids": [
       "DL-0133",
-      "DL-0140"
+      "DL-0140",
+      "DL-0214"
     ],
     "related_tps": [
       {
@@ -6920,7 +7676,15 @@
       "FT006.001",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006",
+      "F1009",
+      "F1025",
+      "F1029",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -6942,7 +7706,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
-    "detection_rule_ids": [],
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0176"
+    ],
     "related_tps": [
       {
         "id": "TP-0030",
@@ -7018,7 +7785,18 @@
       "FT008.002",
       "FT028"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1015",
+      "F1016",
+      "F1024",
+      "F1027",
+      "F1036",
+      "F1037",
+      "F1043",
+      "F1046",
+      "T1585"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -7041,6 +7819,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0032"
+    ],
     "detection_rule_ids": [
       "DL-0135"
     ],
@@ -7122,7 +7903,17 @@
       "FT016",
       "FT031"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1032",
+      "F1020.002",
+      "F1031",
+      "F1034",
+      "F1040.002",
+      "F1018",
+      "F1025",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -7146,6 +7937,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0134",
       "DL-0140"
@@ -7220,7 +8012,10 @@
       "FTA001",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1027"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -7240,6 +8035,7 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0136"
     ],
@@ -7261,7 +8057,7 @@
     "category": "ThreatPath",
     "date": "2026-03-22",
     "author": "FLAME Project",
-    "source": "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)",
+    "source": "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026); Bluekit PhaaS Threat Intelligence Report (CrimsonVector, March 2026)",
     "tlp": "WHITE",
     "summary": "Adversary-in-the-Middle (AiTM) phishing kits represent the most significant evolution in credential theft infrastructure, enabling attackers to bypass multi-factor authentication by proxying victim se...",
     "confidence_score": 82,
@@ -7305,7 +8101,15 @@
       "sessionshark",
       "darcula",
       "smishing-triad",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "bluekit",
+      "phaas-market-fragmentation",
+      "vacuum-effect",
+      "antibot-cloaking",
+      "imperial-kitten",
+      "shinyhunters",
+      "cozy-bear",
+      "crowdstrike-gtr-2026"
     ],
     "cfpf_phases": [
       "P1",
@@ -7333,7 +8137,18 @@
       "FT007.009",
       "FT011.001"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "T1110.004",
+      "T1539",
+      "T1555",
+      "F1004",
+      "F1007",
+      "T1185",
+      "T1189",
+      "T1451",
+      "T1557"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -7346,7 +8161,8 @@
     "regulatory_refs": [
       "REG-INTERPOL-GFFTA",
       "REG-STIX-FCI",
-      "REG-WCI-2024"
+      "REG-WCI-2024",
+      "REG-CROWDSTRIKE-GTR-2026"
     ],
     "ucff_domains": {
       "commit": "Level 3",
@@ -7357,13 +8173,18 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
       "DL-0137",
       "DL-0138",
       "DL-0146",
       "DL-0147",
       "DL-0148",
-      "DL-0150"
+      "DL-0150",
+      "DL-0200",
+      "DL-0201",
+      "DL-0202",
+      "DL-0209"
     ],
     "related_tps": [
       {
@@ -7381,9 +8202,13 @@
       {
         "id": "TP-0069",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0079",
+        "relationship": "related-to"
       }
     ],
-    "evidence_count": 4
+    "evidence_count": 9
   },
   {
     "id": "TP-0068",
@@ -7436,7 +8261,15 @@
       "FTA001",
       "FT016"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1017",
+      "F1020",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1598",
+      "T1660"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -7456,6 +8289,9 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [
+      "BL-0035"
+    ],
     "detection_rule_ids": [
       "DL-0144",
       "DL-0145"
@@ -7520,7 +8356,16 @@
       "phaas",
       "toll-scam",
       "card-not-present",
-      "wci-geographic-attribution"
+      "wci-geographic-attribution",
+      "phaas-market-fragmentation",
+      "vacuum-effect",
+      "bluekit",
+      "kratos",
+      "evilTokens",
+      "interisle-2025",
+      "xinxin-lucid",
+      "dominet-hk",
+      "xin-tld"
     ],
     "cfpf_phases": [
       "P1",
@@ -7544,7 +8389,18 @@
       "FT011.001",
       "FT016.001"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1038",
+      "F1001",
+      "F1012",
+      "F1019",
+      "F1029",
+      "F1040",
+      "F1048",
+      "T1189",
+      "T1555"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -7567,8 +8423,10 @@
       "report": "Level 2",
       "improve": "Level 2"
     },
+    "baseline_ids": [],
     "detection_rule_ids": [
-      "DL-0149"
+      "DL-0149",
+      "DL-0201"
     ],
     "related_tps": [
       {
@@ -7584,6 +8442,1693 @@
         "relationship": "related-to"
       }
     ],
-    "evidence_count": 2
+    "evidence_count": 4
+  },
+  {
+    "id": "TP-0070",
+    "title": "Travel Booking Fraud & Fake OTA Networks",
+    "category": "ThreatPath",
+    "date": "2026-03-29",
+    "author": "FLAME Project",
+    "source": "Sumsub Travel Fraud Report (2026); NordVPN/Saily Travel Scam Intelligence (2026); Riskified OTA Fraud Analysis; Trustwave Threat Briefing; HackerNews (Nov 2025)",
+    "tlp": "WHITE",
+    "summary": "Travel booking fraud and fake Online Travel Agency (OTA) networks represent a rapidly growing fraud category, with estimated global losses reaching $37 billion through Buy-for-You (B4U) services alone...",
+    "confidence_score": 78,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "seasonal-political",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "travel",
+      "payments",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "travel-booking-fraud",
+      "buy-for-you-fraud",
+      "fake-ota",
+      "loyalty-point-laundering"
+    ],
+    "tags": [
+      "travel-booking-fraud",
+      "fake-ota",
+      "buy-for-you",
+      "b4u-services",
+      "loyalty-point-laundering",
+      "vacation-rental-hijack",
+      "ai-travel-scam",
+      "telegram-b4u",
+      "wci-geographic-attribution"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1566.002",
+      "T1078",
+      "T1656",
+      "T1598",
+      "T1059"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.009",
+      "FT011.003"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0180",
+      "DL-0181"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0013",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0036",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0071",
+    "title": "IRSF & Telecom Revenue Share Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-29",
+    "author": "FLAME Project",
+    "source": "Subex Telecom Fraud Intelligence (2025, 2026); TNS/CFCA Global Fraud Loss Survey (2026); Akamai Telecom Threat Report; NDSS Symposium",
+    "tlp": "WHITE",
+    "summary": "International Revenue Share Fraud (IRSF) is the single largest category of telecommunications fraud, generating $10.76 billion in annual losses according to the CFCA/TNS Global Fraud Loss Survey (2026...",
+    "confidence_score": 80,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "telecommunications"
+    ],
+    "fraud_types": [
+      "irsf",
+      "premium-rate-fraud",
+      "telecom-revenue-fraud",
+      "wangiri"
+    ],
+    "tags": [
+      "irsf",
+      "premium-rate-fraud",
+      "wangiri",
+      "sim-box-fraud",
+      "telecom-revenue-share",
+      "international-revenue-share",
+      "pbx-hacking",
+      "one-ring-callback",
+      "traffic-pumping",
+      "wci-geographic-attribution"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1496",
+      "T1078",
+      "T1059",
+      "T1583.001",
+      "T1571",
+      "T1205"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT011.002"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0182",
+      "DL-0183"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0008",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0065",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0072",
+    "title": "Telecom Subscription & Billing Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-29",
+    "author": "FLAME Project",
+    "source": "Subex Telecom Fraud Intelligence (2025, 2026); TransUnion Consumer Pulse (2025); SEON Telecom Fraud Guide; Vonage Communications Fraud Report",
+    "tlp": "WHITE",
+    "summary": "Telecom subscription and billing fraud encompasses the use of stolen, synthetic, or manipulated identities to fraudulently obtain telecom services, devices, and credit -- combined with unauthorized bi...",
+    "confidence_score": 75,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "telecommunications"
+    ],
+    "fraud_types": [
+      "subscription-fraud",
+      "telecom-billing-fraud",
+      "premium-sms-fraud"
+    ],
+    "tags": [
+      "subscription-fraud",
+      "telecom-billing-fraud",
+      "premium-sms-fraud",
+      "synthetic-identity-telecom",
+      "device-fraud",
+      "genai-kyc-bypass",
+      "cramming",
+      "wci-geographic-attribution"
+    ],
+    "cfpf_phases": [
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1078",
+      "T1656",
+      "T1136",
+      "T1098",
+      "T1565"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.003",
+      "FT011.001"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0184",
+      "DL-0185"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0003",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0008",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0073",
+    "title": "Real Estate Title Fraud & Deed Theft",
+    "category": "ThreatPath",
+    "date": "2026-03-29",
+    "author": "FLAME Project",
+    "source": "First American Title Fraud Report; HousingWire (2025); ALTA Best Practices; Virginia Deed Fraud Study (2025); NAR Fraud Advisory; CertifID Wire Fraud Report; Entrust Identity Fraud Report (2026)",
+    "tlp": "WHITE",
+    "summary": "Real estate title fraud and deed theft represent a growing category of property-related fraud, with FBI data reporting $16.6 billion in total real estate fraud losses in 2024. The core scheme involves...",
+    "confidence_score": 80,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "real-estate"
+    ],
+    "fraud_types": [
+      "title-fraud",
+      "deed-theft",
+      "seller-impersonation",
+      "appraisal-fraud"
+    ],
+    "tags": [
+      "title-fraud",
+      "deed-theft",
+      "seller-impersonation",
+      "appraisal-fraud",
+      "deepfake-notary",
+      "ai-forged-documents",
+      "vacant-property-fraud",
+      "wire-fraud-real-estate",
+      "remote-notarization-fraud",
+      "wci-geographic-attribution"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1566.002",
+      "T1078",
+      "T1565",
+      "T1136",
+      "T1583.001"
+    ],
+    "ft3_tactics": [
+      "FTA001",
+      "FT007.009",
+      "FT011.001"
+    ],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA",
+      "REG-WCI-2024"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0186",
+      "DL-0187"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0006",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0029",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0074",
+    "title": "Ghost Broking & Unauthorized Insurance Portals",
+    "category": "ThreatPath",
+    "date": "2026-03-27",
+    "author": "FLAME Project",
+    "source": "Aviva ghost broking intelligence (Nov 2025); City of London Police (2025); Insurance Times (2025); ABI (2025); FraudOps (2026); NICB",
+    "tlp": "WHITE",
+    "summary": "Ghost broking is a rapidly growing insurance fraud typology where unlicensed individuals or organized crime groups sell fraudulent, forged, or illegitimately obtained motor insurance policies to unsus...",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "insurance"
+    ],
+    "fraud_types": [
+      "ghost-broking",
+      "ghost-portal",
+      "insurance-policy-fraud",
+      "unlicensed-insurance"
+    ],
+    "tags": [
+      "ghost-broking",
+      "ghost-portal",
+      "fake-insurance",
+      "unlicensed-intermediary",
+      "insurance-fraud",
+      "organized-crime",
+      "uk-insurance",
+      "ifed"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1566.002",
+      "T1078",
+      "T1589",
+      "T1656"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0188",
+      "DL-0189"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0056",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0066",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0075",
+    "title": "Friendly Fraud & Chargeback Abuse",
+    "category": "ThreatPath",
+    "date": "2026-03-27",
+    "author": "FLAME Project",
+    "source": "Chargebacks911 (2026); Chargeflow (2025); Payscout (2025); Chargeback.io (2026); Alloy; Offenso Academy (2026)",
+    "tlp": "WHITE",
+    "summary": "Friendly fraud — where legitimate cardholders dispute genuine transactions to obtain refunds while retaining goods or services — has become the single largest fraud category in payment networks, repre...",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "payments",
+      "ecommerce",
+      "retail"
+    ],
+    "fraud_types": [
+      "friendly-fraud",
+      "chargeback-abuse",
+      "first-party-misuse",
+      "dispute-fraud"
+    ],
+    "tags": [
+      "friendly-fraud",
+      "chargeback-abuse",
+      "first-party-fraud",
+      "dispute-fraud",
+      "visa-vamp",
+      "refund-hack",
+      "chargeback-velocity",
+      "delivery-confirmation",
+      "merchant-fraud"
+    ],
+    "cfpf_phases": [
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1657"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1015",
+      "F1024",
+      "F1043"
+    ],
+    "groupib_stages": [
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0190",
+      "DL-0191"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0016",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0031",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 4
+  },
+  {
+    "id": "TP-0076",
+    "title": "Affiliate Network Fraud & Invalid Traffic",
+    "category": "ThreatPath",
+    "date": "2026-03-27",
+    "author": "FLAME Project",
+    "source": "TrafficGuard (2025); Tapper (2025, 2026); BluePear (2025); Anura (2025); SearchEngineLand (2026)",
+    "tlp": "WHITE",
+    "summary": "Affiliate network fraud encompasses a range of techniques where fraudulent affiliates generate fake clicks, impressions, leads, or conversions to earn illegitimate commissions from advertiser programs...",
+    "confidence_score": 75,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "ecommerce",
+      "technology"
+    ],
+    "fraud_types": [
+      "affiliate-fraud",
+      "click-fraud",
+      "ad-fraud",
+      "cookie-stuffing",
+      "invalid-traffic"
+    ],
+    "tags": [
+      "affiliate-fraud",
+      "click-fraud",
+      "ad-fraud",
+      "cookie-stuffing",
+      "invalid-traffic",
+      "bot-traffic",
+      "click-injection",
+      "postback-manipulation",
+      "fake-leads",
+      "ivt"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1584.005",
+      "T1059",
+      "T1571",
+      "T1036"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0192",
+      "DL-0193"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0042",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0043",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0077",
+    "title": "AI-Generated Insurance Claims Fraud",
+    "category": "ThreatPath",
+    "date": "2026-03-27",
+    "author": "FLAME Project",
+    "source": "Shift Technology (2025); USI (2025); Utah Insurance Dept; Insurance Journal (2026); Debener et al. (2023, J. Risk & Insurance, doi:10.1111/jori.12427)",
+    "tlp": "WHITE",
+    "summary": "Generative AI is transforming insurance claims fraud by enabling fraudsters to create highly convincing fabricated or altered evidence — including deepfake vehicle damage photos, forged medical record...",
+    "confidence_score": 78,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "insurance"
+    ],
+    "fraud_types": [
+      "ai-generated-claims",
+      "deepfake-claims",
+      "document-fraud",
+      "insurance-fraud"
+    ],
+    "tags": [
+      "ai-generated-claims",
+      "deepfake-claims",
+      "document-fraud",
+      "insurance-fraud",
+      "genai-fraud",
+      "vehicle-damage-deepfake",
+      "claims-fraud",
+      "gan-artifacts",
+      "exif-anomaly",
+      "xgboost",
+      "isolation-forest"
+    ],
+    "cfpf_phases": [
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566",
+      "T1036",
+      "T1027",
+      "T1589"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1027"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0194",
+      "DL-0195"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0018",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0029",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0056",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 3
+  },
+  {
+    "id": "TP-0078",
+    "title": "Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines",
+    "category": "ThreatPath",
+    "date": "2026-03-30",
+    "author": "FLAME Project",
+    "source": "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026); Cybercrime Diaries — 'From Dirty Crypto to Clean Money' (Oleg, June 2025)",
+    "tlp": "WHITE",
+    "summary": "Criminal conglomerates are operating industrialized cryptocurrency laundering services that process hundreds of millions of dollars through centralized exchange (CEX) hot wallet pipelines. Unlike the ...",
+    "confidence_score": 82,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "crypto",
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "crypto-laundering-infrastructure",
+      "money-laundering"
+    ],
+    "tags": [
+      "stablecoin-laundering",
+      "tron-usdt",
+      "hot-wallet-sweep",
+      "cex-pipeline",
+      "huione-group",
+      "proof-of-reserves",
+      "crypto-to-cash",
+      "exchange-attribution",
+      "laundering-as-a-service",
+      "icij-coin-laundry",
+      "fincen-311",
+      "shell-company-convergence",
+      "beneficial-ownership-gap",
+      "russophone-laundering-tradecraft",
+      "coinjoin",
+      "chain-hopping",
+      "temporal-dilution",
+      "liquidity-buffering",
+      "income-legalization",
+      "lockbitsupp-laundering",
+      "black-basta-laundering",
+      "infostealer-intelligence",
+      "cybercrime-diaries"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1657",
+      "T1583.001",
+      "T1036"
+    ],
+    "ft3_tactics": [
+      "FTA007",
+      "FTA003"
+    ],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-FINCEN-AML",
+      "REG-FATF-R16",
+      "REG-OFAC-SDN"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0040",
+      "DL-0174",
+      "DL-0196",
+      "DL-0197",
+      "DL-0198",
+      "DL-0203"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0045",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0055",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0058",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 7
+  },
+  {
+    "id": "TP-0079",
+    "title": "Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "Interisle Consulting Group — Phishing Landscape 2025 (September 2025)",
+    "tlp": "WHITE",
+    "summary": "Phishing infrastructure has undergone a structural shift toward cheap new generic top-level domains (gTLDs) and free Platform-as-a-Service (PaaS) subdomains as the dominant delivery mechanism for cred...",
+    "confidence_score": 90,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "cross-sector",
+      "banking",
+      "crypto",
+      "payments",
+      "government"
+    ],
+    "fraud_types": [
+      "phishing",
+      "brand-impersonation",
+      "credential-harvesting",
+      "fraud-enabling-infrastructure",
+      "paas-subdomain-abuse"
+    ],
+    "tags": [
+      "gtld-abuse",
+      "bulk-registration",
+      "paas-subdomain",
+      "cloudflare-proxy",
+      "phishing-infrastructure",
+      "interisle-2025",
+      "idn-homograph",
+      "unpaid-toll-scam",
+      "xinxin-lucid",
+      "dominet-hk",
+      "webflow-abuse",
+      "vercel-abuse",
+      "domain-pricing"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1583.003",
+      "T1566.002",
+      "T1608.005"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1598",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Initial Access",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0208",
+      "DL-0209",
+      "DL-0210",
+      "DL-0218",
+      "DL-0220"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0041",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0048",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0067",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0069",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0080",
+    "title": "Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026); CrowdStrike 2026 Global Threat Report; Chainalysis 2026 Crypto Crime Report",
+    "tlp": "WHITE",
+    "summary": "State-sponsored threat actors and transnational criminal organizations have developed a systematic methodology to evade stablecoin issuer freeze capabilities by converting centrally issued stablecoins...",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "sanctions-response",
+    "nation_state_nexus": "confirmed",
+    "sectors": [
+      "crypto",
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "stablecoin-freeze-evasion",
+      "sanctions-evasion-infrastructure",
+      "money-laundering"
+    ],
+    "tags": [
+      "stablecoin-freeze-evasion",
+      "wrapped-stablecoin",
+      "cross-chain-bridge",
+      "dai-evasion",
+      "unhosted-wallet",
+      "p2p-laundering",
+      "irgc-procurement",
+      "dprk-bybit",
+      "fatf-stablecoin-2026",
+      "otc-broker",
+      "tron-usdt",
+      "chain-hopping"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1657",
+      "T1036"
+    ],
+    "ft3_tactics": [
+      "FTA007"
+    ],
+    "mitre_f3": [
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [
+      "REG-FATF-STABLECOIN-2026",
+      "REG-FATF-R16",
+      "REG-FINCEN-AML",
+      "REG-OFAC-SDN"
+    ],
+    "ucff_domains": {
+      "commit": "Level 3",
+      "assess": "Level 4",
+      "plan": "Level 3",
+      "act": "Level 4",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 3"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0204",
+      "DL-0205",
+      "DL-0206",
+      "DL-0207"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0045",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0055",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0078",
+        "relationship": "feeds-into"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0081",
+    "title": "Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-01",
+    "author": "FLAME Project",
+    "source": "CrowdStrike 2026 Global Threat Report",
+    "tlp": "WHITE",
+    "summary": "Voice phishing (vishing) has emerged as the dominant initial access vector for identity-based intrusions, with adversaries combining real-time phone-based social engineering with technical exploitatio...",
+    "confidence_score": 82,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector",
+      "technology",
+      "insurance"
+    ],
+    "fraud_types": [
+      "vishing",
+      "account-takeover",
+      "social-engineering",
+      "BEC",
+      "fake-captcha-fraud"
+    ],
+    "tags": [
+      "vishing",
+      "chatty-spider",
+      "scattered-spider",
+      "fake-captcha",
+      "helpdesk-impersonation",
+      "rmm-tooling",
+      "social-engineering",
+      "crowdstrike-gtr-2026",
+      "genai-personas",
+      "hybrid-identity",
+      "breakout-time"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.004",
+      "T1078",
+      "T1219",
+      "T1567"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1006.002",
+      "F1032",
+      "F1034",
+      "F1040.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1020",
+      "F1031",
+      "T1185"
+    ],
+    "groupib_stages": [
+      "Social Engineering",
+      "Initial Access",
+      "Lateral Movement",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-CROWDSTRIKE-GTR-2026"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0211"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0002",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0067",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0082",
+    "title": "Gold Courier Scam — Physical Precious Metal Cash-Out",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Gold courier scams represent a novel physical monetization technique where victims — predominantly elderly — are deceived through government impersonation phone calls into converting bank deposits to ...",
+    "confidence_score": 78,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "social-engineering",
+      "impersonation",
+      "authorized-push-payment",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "gold-courier",
+      "physical-cashout",
+      "elder-fraud",
+      "government-impersonation",
+      "precious-metals"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1025.003",
+      "F1031",
+      "F1032",
+      "F1017",
+      "F1018",
+      "F1020",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-FINCEN-AML"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0213"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0027",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0084",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0085",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0083",
+    "title": "Investment Club Scam — Social Media Insider Group Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Investment club scams exploit social media and messaging platforms to create fraudulent \"insider\" trading groups that lure victims with fabricated trading success, AI-generated celebrity endorsements,...",
+    "confidence_score": 72,
+    "source_reliability": "A",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "ai-assisted",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "investment",
+      "banking",
+      "crypto"
+    ],
+    "fraud_types": [
+      "investment-scam",
+      "social-engineering",
+      "authorized-push-payment",
+      "crypto-laundering"
+    ],
+    "tags": [
+      "ic3-2025",
+      "investment-club",
+      "social-media",
+      "group-fraud",
+      "social-proof",
+      "telegram",
+      "whatsapp",
+      "discord"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1566.003",
+      "T1656"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1025.003",
+      "F1018",
+      "F1031",
+      "F1032",
+      "F1040",
+      "F1045",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-SEC-SAR"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 2",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0215"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0017",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0026",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0060",
+        "relationship": "feeds-into"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0084",
+    "title": "Government Impersonation — Authority-Based Authorized Push Payment Fraud",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Government impersonation fraud uses the authority of federal and state agencies — IRS, SSA, DOJ, FBI, DEA, and state attorneys general — as a social engineering weapon to compel victims into making au...",
+    "confidence_score": 85,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "cross-sector",
+      "government"
+    ],
+    "fraud_types": [
+      "impersonation",
+      "authorized-push-payment",
+      "social-engineering",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "government-impersonation",
+      "authority-abuse",
+      "caller-id-spoofing",
+      "irs-impersonation",
+      "ssa-impersonation",
+      "elder-fraud",
+      "app-fraud"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1025.003",
+      "F1031",
+      "F1032",
+      "F1017",
+      "F1018",
+      "F1020",
+      "F1040",
+      "F1047",
+      "T1598",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Social Engineering",
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-CFPB-REGE",
+      "REG-OCC-FRAUD"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0216",
+      "DL-0219"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0027",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0062",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0081",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0082",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0085",
+        "relationship": "enables"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0085",
+    "title": "Crypto ATM/Kiosk Directed Fraud — Physical-to-Digital Monetization Channel",
+    "category": "ThreatPath",
+    "date": "2026-04-06",
+    "author": "FLAME Project",
+    "source": "FBI IC3, 2025 Internet Crime Report",
+    "tlp": "WHITE",
+    "summary": "Crypto ATM/kiosk fraud is a cross-cutting monetization channel where victims of upstream fraud schemes (tech support, government impersonation, romance, investment) are directed to deposit cash at cry...",
+    "confidence_score": 80,
+    "source_reliability": "A",
+    "info_credibility": 1,
+    "infrastructure_generation_method": "manual",
+    "geopolitical_timing": "none",
+    "nation_state_nexus": "none",
+    "sectors": [
+      "banking",
+      "crypto",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "authorized-push-payment",
+      "elder-exploitation"
+    ],
+    "tags": [
+      "ic3-2025",
+      "crypto-atm",
+      "kiosk-fraud",
+      "elder-fraud",
+      "physical-to-digital",
+      "monetization-channel"
+    ],
+    "cfpf_phases": [
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1656"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1025.003",
+      "F1032",
+      "F1017",
+      "F1018",
+      "F1031",
+      "F1040",
+      "F1045",
+      "F1047"
+    ],
+    "groupib_stages": [
+      "Perform Fraud",
+      "Cash Out"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-FINCEN-AML"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 3",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0212"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0012",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0027",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0049",
+        "relationship": "enables"
+      },
+      {
+        "id": "TP-0084",
+        "relationship": "feeds-into"
+      }
+    ],
+    "evidence_count": 0
+  },
+  {
+    "id": "TP-0086",
+    "title": "Crisis-Exploitation Fraud Infrastructure",
+    "category": "ThreatPath",
+    "date": "2026-04-09",
+    "author": "FLAME Project",
+    "source": "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report",
+    "tlp": "WHITE",
+    "summary": "Crisis-exploitation fraud infrastructure is a systematic pattern where threat actors exploit geopolitical crises, natural disasters, and emergency government program announcements to rapidly deploy ph...",
+    "confidence_score": 80,
+    "source_reliability": "B",
+    "info_credibility": 2,
+    "infrastructure_generation_method": "rdga-registered",
+    "geopolitical_timing": "conflict-triggered",
+    "nation_state_nexus": "suspected",
+    "sectors": [
+      "government",
+      "banking",
+      "insurance",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "phishing",
+      "brand-impersonation",
+      "credential-harvesting",
+      "investment-scam",
+      "impersonation",
+      "fraud-enabling-infrastructure"
+    ],
+    "tags": [
+      "crisis-exploitation",
+      "domain-infrastructure",
+      "government-impersonation",
+      "subsidy-fraud",
+      "energy-scam",
+      "commodity-investment-fraud",
+      "oil-shock",
+      "rdga",
+      "nrd-abuse",
+      "cheap-gtld",
+      "pages-dev-abuse",
+      "conflict-triggered",
+      "crimsonvector"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1584.001",
+      "T1566.002",
+      "T1608.005",
+      "T1608.006",
+      "T1598"
+    ],
+    "ft3_tactics": [],
+    "mitre_f3": [
+      "F1020.002",
+      "F1032",
+      "F1031",
+      "F1029",
+      "T1583.001",
+      "T1598",
+      "T1608.006",
+      "T1660"
+    ],
+    "groupib_stages": [
+      "Reconnaissance",
+      "Resource Development",
+      "Initial Access",
+      "Social Engineering",
+      "Credential Access",
+      "Perform Fraud"
+    ],
+    "regulatory_refs": [
+      "REG-FBI-IC3",
+      "REG-CFPB-REGE",
+      "REG-OCC-FRAUD",
+      "REG-INTERPOL-GFFTA"
+    ],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 3",
+      "plan": "Level 3",
+      "act": "Level 3",
+      "monitor": "Level 4",
+      "report": "Level 3",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "detection_rule_ids": [
+      "DL-0218",
+      "DL-0219",
+      "DL-0220",
+      "DL-0221"
+    ],
+    "related_tps": [
+      {
+        "id": "TP-0041",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0043",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0046",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0060",
+        "relationship": "feeds-into"
+      },
+      {
+        "id": "TP-0067",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0079",
+        "relationship": "shares-infrastructure"
+      },
+      {
+        "id": "TP-0084",
+        "relationship": "related-to"
+      }
+    ],
+    "evidence_count": 0
   }
 ]

@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:03.529422+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "a2848517-37c9-429f-aed8-adfc79bac581",
+    "dl_id": "DL-0157",
+    "title": "Rapid Authorized User Addition Across Multiple Accounts",
+    "status": "experimental",
+    "description": "Detects the same individual being added as an authorized user across 3 or more credit accounts within 30 days. This technique is used in first-party bust-out and synthetic identity schemes to rapidly build credit history or gain access to multiple credit lines for coordinated bust-out. Authorized user tradelines inherit the primary account's payment history, allowing fraudsters to artificially inflate credit scores in weeks rather than months. When combined with subsequent high utilization, this pattern is a strong leading indicator of coordinated bust-out activity. The \"piggybacking\" of authorized user status is a well-documented credit manipulation technique exploited by both first-party fraudsters and synthetic identity rings.\n",
+    "cfpf_phase": "P3",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "event_type": "authorized_user_added"
+      },
+      "aggregation": {
+        "group_by": "authorized_user_id",
+        "count_distinct": "account_id",
+        "count_distinct|gte": 3
+      },
+      "timeframe": "30d",
+      "condition": "selection AND aggregation\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "credit_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "primary_account_holder_id",
+        "authorized_user_id",
+        "authorized_user_ssn",
+        "authorized_user_name",
+        "event_type",
+        "event_date"
+      ],
+      "enrichment_required": [
+        {
+          "field": "authorized_user_credit_score",
+          "source": "Credit bureau score for the authorized user at time of addition"
+        },
+        {
+          "field": "primary_holder_relationship",
+          "source": "Declared relationship between primary holder and authorized user"
+        }
+      ],
+      "derived_fields": [
+        "distinct_account_count",
+        "addition_velocity_days",
+        "total_credit_exposure"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Rapid Authorized User Addition\n// Detects same individual added as authorized user on 3+ accounts in 30 days\nevent_type=\"authorized_user_added\"\n| groupBy(authorized_user_id, function=[\n    count(account_id, distinct=true, as=distinct_account_count),\n    collect([authorized_user_name, account_id, primary_account_holder_id, event_date])\n  ])\n| distinct_account_count >= 3\n| addition_velocity_days := duration(min(event_date), max(event_date))\n| sort(distinct_account_count, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Rapid Authorized User Addition\")`\n`comment(\"Detects same individual added as authorized user on 3+ accounts in 30 days\")`\nindex=flame_banking sourcetype=flame:credit_monitoring\n  event_type=\"authorized_user_added\"\n  earliest=-30d@d latest=now\n| stats dc(account_id) as distinct_account_count,\n        values(account_id) as accounts,\n        values(primary_account_holder_id) as primary_holders,\n        min(event_date) as first_addition,\n        max(event_date) as last_addition\n  by authorized_user_id, authorized_user_name\n| where distinct_account_count >= 3\n| eval addition_span_days = round((strptime(last_addition, \"%Y-%m-%d\") - strptime(first_addition, \"%Y-%m-%d\")) / 86400, 0)\n| eval risk_score = case(\n    distinct_account_count >= 5, \"critical\",\n    distinct_account_count >= 4, \"high\",\n    1=1, \"medium\")\n| table authorized_user_id, authorized_user_name, distinct_account_count,\n        accounts, primary_holders, first_addition, last_addition,\n        addition_span_days, risk_score\n| sort - distinct_account_count",
+      "sql": "-- SQL for Rapid Authorized User Addition\n-- Detects same individual added as authorized user on 3+ accounts in 30 days\nSELECT\n  au.authorized_user_id,\n  au.authorized_user_name,\n  COUNT(DISTINCT au.account_id) AS distinct_account_count,\n  STRING_AGG(DISTINCT au.account_id, ', ') AS accounts,\n  STRING_AGG(DISTINCT au.primary_account_holder_id, ', ') AS primary_holders,\n  MIN(au.event_date) AS first_addition,\n  MAX(au.event_date) AS last_addition,\n  DATEDIFF(DAY, MIN(au.event_date), MAX(au.event_date)) AS addition_span_days\nFROM authorized_user_events au\nWHERE au.event_type = 'authorized_user_added'\n  AND au.event_date >= DATEADD(DAY, -30, CURRENT_DATE)\nGROUP BY au.authorized_user_id, au.authorized_user_name\nHAVING COUNT(DISTINCT au.account_id) >= 3\nORDER BY distinct_account_count DESC"
+    },
+    "references": [
+      "LexisNexis Risk Solutions, Global State of Fraud and Identity Report (2026)",
+      "Federal Reserve, Synthetic Identity Fraud in the U.S. Payment System (2024)",
+      "CFPB, Authorized User Tradeline Abuse Advisory (2024)"
+    ],
+    "threat_path_ids": [
+      "TP-0003",
+      "TP-0016"
+    ],
+    "fraud_types": [
+      "bust-out",
+      "credit-piggybacking",
+      "first-party-fraud",
+      "synthetic-identity"
+    ],
+    "tags": [
+      "cfpf.phase3.positioning",
+      "flame.bust-out",
+      "flame.credit-piggybacking",
+      "flame.first-party-fraud",
+      "flame.synthetic-identity"
+    ],
+    "falsepositives": [
+      "Legitimate family financial management (parent adding child to multiple accounts)",
+      "Business owners adding trusted employees across corporate credit accounts",
+      "Credit repair services using authorized user tradeline strategies (legal but monitored)"
+    ]
+  }
+}

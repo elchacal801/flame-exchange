@@ -1,0 +1,70 @@
+{
+  "Event": {
+    "uuid": "2b1dfd6a-599a-5520-a57e-bf7241a0e631",
+    "info": "FLAME: Bulletproof Hosting Migration Patterns",
+    "date": "2026-03-05",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "b1ff54fc-3f59-519b-830b-37987dc3de93",
+        "type": "text",
+        "category": "Other",
+        "value": "bph-migration",
+        "comment": "Fraud type for TP-0048"
+      },
+      {
+        "uuid": "5bb58ae3-cf6a-5901-acf1-ace5e7b90cd5",
+        "type": "text",
+        "category": "Other",
+        "value": "sanctions-evasion-infrastructure",
+        "comment": "Fraud type for TP-0048"
+      },
+      {
+        "uuid": "b1a84099-9caa-5f57-b1d1-6d36149760c2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0048"
+      },
+      {
+        "uuid": "82f2670c-98bf-5356-91aa-a394310d04c0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0048"
+      },
+      {
+        "uuid": "d84e1475-c886-56fa-a747-1c8acb95b487",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0048"
+      },
+      {
+        "uuid": "1396b69c-452a-5e29-b3c2-025a9e914d37",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0048"
+      },
+      {
+        "uuid": "7977b532-61bc-5318-98af-acf259d6bff3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0048"
+      }
+    ]
+  }
+}

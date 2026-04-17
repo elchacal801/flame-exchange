@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:14.356510+00:00",
+    "generated_at": "2026-04-09T19:39:56.227187+00:00",
     "total": 1
   },
   "data": {
@@ -63,7 +63,14 @@
       "FT018",
       "FT006"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1006",
+      "F1021",
+      "F1027",
+      "F1029",
+      "T1585"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Trust Abuse",
@@ -81,11 +88,15 @@
       "report": "Level 2",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0007"
+    ],
     "detection_rule_ids": [
       "DL-0050",
       "DL-0052",
       "DL-0053",
-      "DL-0054"
+      "DL-0054",
+      "DL-0159"
     ],
     "related_tps": [
       {

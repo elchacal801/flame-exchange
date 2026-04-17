@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0074",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- SQL: Ghost Broker Policy Pattern Detection (DL-0188)\n-- Multiple policies with same intermediary using disposable contact details and below-market premiums\nSELECT\n  p.intermediary_id,\n  p.intermediary_name,\n  COUNT(DISTINCT p.policy_id) AS policy_count,\n  COUNT(DISTINCT p.contact_email) AS distinct_emails,\n  COUNT(DISTINCT p.contact_phone) AS distinct_phones,\n  AVG(p.premium_amount) AS avg_premium,\n  m.market_avg_premium,\n  (AVG(p.premium_amount) / m.market_avg_premium * 100) AS premium_pct_of_market,\n  COUNT(DISTINCT CASE WHEN p.contact_email LIKE '%@protonmail%'\n    OR p.contact_email LIKE '%@guerrillamail%'\n    OR p.contact_email LIKE '%@tempmail%' THEN p.policy_id END) AS disposable_email_policies\nFROM insurance_policies p\nJOIN market_premium_benchmarks m ON p.risk_category = m.risk_category\nWHERE p.issue_date >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND p.premium_amount < (m.market_avg_premium * 0.70)\nGROUP BY p.intermediary_id, p.intermediary_name, m.market_avg_premium\nHAVING COUNT(DISTINCT p.policy_id) >= 5\n  AND (COUNT(DISTINCT p.contact_email) > COUNT(DISTINCT p.policy_id) * 0.8\n       OR disposable_email_policies >= 3)\nORDER BY policy_count DESC",
+      "title": "Queries / Rules"
+    }
+  ]
+}

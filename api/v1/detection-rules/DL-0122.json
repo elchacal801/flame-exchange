@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.638602+00:00",
+    "generated_at": "2026-04-09T19:40:03.049972+00:00",
     "total": 1
   },
   "data": {
@@ -69,7 +69,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Keitaro/Binom TDS Abuse Infrastructure Detection\n// Repository: flame-proxy-http-log\n// HTTP redirect chain analysis for TDS abuse patterns\n(url_query=/click_id=|campaign_id=|keitaro|binom|cnv_id=/)\nOR (url_path=/\\/tracker\\/|\\/click\\/|\\/go\\/|\\/click\\.php/)\n| selfJoinFilter(session_id, where=[{url_query=/keitaro/ OR url_path=/\\/tracker\\//} {url_query=/binom/ OR url_path=/\\/click\\.php/}])\n| groupBy([session_id, src_ip], function=[\n    count(as=redirect_count),\n    collect([url, final_destination])\n  ])\n| redirect_count>=3",
+      "cql": "// CrowdStrike CQL for Keitaro/Binom TDS Abuse Infrastructure Detection\n// Repository: flame-proxy-http-log\n// HTTP redirect chain analysis for TDS abuse patterns\n(url_query=/click_id=|campaign_id=|keitaro|binom|cnv_id=/)\nOR (url_path=/\\/tracker\\/|\\/click\\/|\\/go\\/|\\/click\\.php/)\n| selfJoinFilter(session_id, where=[{url_query=/keitaro/ OR url_path=/\\/tracker\\//} {url_query=/binom/ OR url_path=/\\/click\\.php/}])\n| groupBy([session_id, src_ip], function=[\n    count(as=redirect_count),\n    collect([url, final_destination])\n  ])\n| redirect_count>=3",
       "splunk": "`comment(\"Splunk SPL for Keitaro/Binom TDS Abuse Infrastructure Detection\")`\n`comment(\"HTTP redirect chain analysis for TDS abuse patterns\")`\nindex=flame_proxy sourcetype=flame:http_log\n(url_query=\"*click_id=*\" OR url_query=\"*campaign_id=*\" OR url_query=\"*keitaro*\" OR url_query=\"*binom*\" OR url_query=\"*cnv_id=*\")\nOR (url_path=\"*/tracker/*\" OR url_path=\"*/click/*\" OR url_path=\"*/go/*\" OR url_path=\"*/click.php*\")\n| transaction session_id maxspan=30s\n| where eventcount>=3\n| eval redirect_chain=mvjoin(url, \" -> \")\n| eval has_keitaro=if(like(url_query, \"%keitaro%\") OR like(url_path, \"%/tracker/%\"), 1, 0)\n| eval has_binom=if(like(url_query, \"%binom%\") OR like(url_path, \"%/click.php%\"), 1, 0)\n| where has_keitaro=1 OR has_binom=1\n| stats count values(redirect_chain) as chains values(final_destination) as destinations by src_ip session_id"
     },
     "threat_path_ids": [
@@ -83,6 +83,8 @@
     "tags": [
       "TP-0042",
       "TP-0060",
+      "attack.t1090.003",
+      "attack.t1583.001",
       "binom",
       "cfpf.phase2.initial_access",
       "cloaking",

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.278660+00:00",
+    "generated_at": "2026-04-09T19:40:02.136035+00:00",
     "total": 1
   },
   "data": {
@@ -53,7 +53,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Rapid Fund Layering Through Shell Accounts\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| groupBy(account_id, function=count(as=event_count))\n| event_count > 3",
+      "cql": "// CrowdStrike CQL for Rapid Fund Layering Through Shell Accounts\n// Repository: flame-banking-transaction-monitoring\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| groupBy(account_id, function=[count(as=event_count)])\n| event_count > 3",
       "splunk": "`comment(\"Splunk SPL for Rapid Fund Layering Through Shell Accounts\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection_pass_through | near selection_rapid_egress by account_id and selection_low_retention | count() by account_id > 3 within 30d\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n(event_type=\"WIRE_CREDIT\" OR event_type=\"ACH_CREDIT\" OR event_type=\"INTERNAL_TRANSFER_IN\")\ntransaction_amount>=5000\n(event_type=\"WIRE_INITIATION\" OR event_type=\"ACH_DEBIT\" OR event_type=\"INTERNAL_TRANSFER_OUT\")\npost_transaction_balance<=500\n| stats count as event_count by account_id\n| where event_count > 3"
     },
     "references": [

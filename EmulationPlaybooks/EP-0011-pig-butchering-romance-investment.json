@@ -1,0 +1,68 @@
+{
+    "id": "EP-0011",
+    "title": "Pig Butchering / Romance-Investment Hybrid",
+    "description": "Simulates the full lifecycle of a pig butchering (Sha Zhu Pan) romance-investment hybrid scam. The adversary creates a fake dating profile, cultivates a romantic relationship over weeks, gradually introduces the victim to a fraudulent cryptocurrency investment platform, engineers escalating deposits through fabricated returns, and ultimately blocks withdrawals to steal the victim's funds. This playbook validates detection coverage across all five CFPF phases for the TP-0017 threat path, focusing on authorized push payment (APP) fraud indicators visible to the victim's financial institution.",
+    "author": "FLAME Project",
+    "date": "2026-03-27",
+    "target_threat_paths": ["TP-0017"],
+    "cfpf_phases": ["P1", "P2", "P3", "P4", "P5"],
+    "fraud_types": ["investment-scam", "social-engineering", "authorized-push-payment"],
+    "sectors": ["banking", "cross-sector"],
+    "prerequisites": {
+        "environment": "Fraud detection test environment with retail banking wire transfer and ACH processing, transaction monitoring with behavioral analytics, cryptocurrency exchange on-ramp monitoring, and customer complaint/reporting systems. Requires the ability to simulate customer account activity over an extended period (weeks to months) and interaction with cryptocurrency exchange platforms.",
+        "tools": ["Retail banking platform (test environment)", "Wire transfer and ACH monitoring system", "Transaction monitoring system with behavioral analytics", "Fraudulent investment platform simulator (fake trading dashboard)", "Cryptocurrency exchange integration (test mode)", "Customer complaint and SAR filing system", "Blockchain analytics platform (Chainalysis, TRM, or equivalent)"],
+        "access_required": "Test-environment access to retail banking transaction processing, wire and ACH monitoring, behavioral analytics dashboards, cryptocurrency address screening tools, and blockchain analytics platforms."
+    },
+    "steps": [
+        {
+            "step_number": 1,
+            "cfpf_phase": "P1",
+            "title": "Create Fake Dating Profile and Identify Targets",
+            "action": "Create a convincing fake profile on a dating app or social media platform using stolen or AI-generated photos. Alternatively, simulate the 'wrong number' text message approach: send a misdirected text to the target and use the ensuing conversation to build rapport. Source target phone numbers or profiles from data brokers, breaches, or social media scraping. Focus on demographics with higher vulnerability: isolated individuals, recently divorced or widowed, retirees with savings. Transition the conversation from the dating app to an encrypted messaging platform (WhatsApp, Telegram) to avoid platform-level fraud detection.",
+            "automation": null,
+            "expected_result": "This phase is largely invisible to the victim's financial institution. Telecommunications-level SMS spam filtering may catch 'wrong number' lure messages. No bank-level detection is expected at this stage, which highlights the visibility gap financial institutions face with pig butchering schemes.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 2,
+            "cfpf_phase": "P2",
+            "title": "Establish Romantic Relationship Over Weeks",
+            "action": "Over a simulated period of 2-4 weeks, build trust and emotional connection with the target through daily messaging and occasional voice/video calls. Share fabricated personal details, lifestyle photos, and career information (often portraying a successful investor or business professional). Do not mention money or investments during this phase — focus entirely on relationship building. This extended 'fattening' phase is what distinguishes pig butchering from other scams and makes it particularly effective.",
+            "automation": null,
+            "expected_result": "No detection opportunity for the financial institution during this phase. The social engineering occurs entirely out-of-band via messaging apps. This step validates that traditional fraud controls have zero visibility into the grooming phase, reinforcing the need for customer education as the primary P2 control.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 3,
+            "cfpf_phase": "P3",
+            "title": "Introduce Fraudulent Investment Platform",
+            "action": "After establishing trust, casually mention successful cryptocurrency investments and share screenshots of fabricated portfolio returns. Gradually introduce the victim to a fraudulent trading platform — a sophisticated clone of a real exchange with a professional interface showing real-time price feeds and a functional (but fake) trading dashboard. Guide the victim to create an account on the platform, link their bank account, and make a small initial deposit ($500-$2,000). Show immediate fabricated returns on this initial investment to build confidence.",
+            "automation": null,
+            "expected_result": "Bank connection logs (Plaid/Yodlee) may capture the victim linking their account to an unknown platform. The initial small wire or ACH transfer to a cryptocurrency exchange may not trigger amount-based alerts but should establish a baseline for the customer's new crypto activity. Domain monitoring may flag the fraudulent platform if it uses a lookalike domain of a known exchange.",
+            "detection_rule_ref": null
+        },
+        {
+            "step_number": 4,
+            "cfpf_phase": "P4",
+            "title": "Escalating Deposits to Fraudulent Platform",
+            "action": "Emboldened by fabricated returns, the victim increases their investment. Simulate an escalating pattern of deposits over 2-4 weeks: $5,000, then $15,000, then $50,000, then $100,000+. The victim transfers funds from their bank account to a legitimate cryptocurrency exchange (Coinbase, Kraken, etc.), converts to crypto, and sends it to the fraudulent platform's wallet address. In later stages, the victim may liquidate savings accounts, retirement funds, or take out personal loans and HELOCs to fund additional deposits. Each deposit shows immediate fabricated returns on the fake dashboard, reinforcing the victim's belief.",
+            "automation": null,
+            "expected_result": "Transaction monitoring should flag the escalating wire/ACH pattern to cryptocurrency exchanges, particularly for a customer with no prior crypto history. Behavioral anomaly detection should alert on a dramatic departure from the customer's established transaction baseline. Loan-to-wire velocity monitoring should flag rapid sequence of loan origination followed by immediate wire-out. For elderly customers, elder financial exploitation indicators should trigger enhanced review. Crypto address screening should flag destination wallet addresses associated with known scam infrastructure.",
+            "detection_rule_ref": "DL-0117"
+        },
+        {
+            "step_number": 5,
+            "cfpf_phase": "P5",
+            "title": "Withdrawal Blocked and Funds Stolen",
+            "action": "When the victim attempts to withdraw their 'profits' from the fraudulent platform, the platform demands additional payments framed as 'tax obligations,' 'withdrawal fees,' or 'compliance deposits' — further extracting funds from the victim. Eventually, the platform becomes unresponsive, the fake romantic partner ceases communication, and the victim realizes they have been defrauded. Simulate the blockchain fund flow: victim deposits flow immediately from the fraudulent platform's wallet to nested exchanges, mixing services, or cross-chain bridges for laundering. The fraudulent platform domain may show a 'coming soon' or 'for sale' page to evade post-incident investigation.",
+            "automation": null,
+            "expected_result": "Blockchain analytics should trace the victim's deposits flowing through layering transactions to nested exchanges or mixers. The victim's complaint and SAR filing should trigger retrospective analysis linking the escalating deposit pattern to the pig butchering typology. Domain investigation should identify the fraudulent platform's evasion techniques (geo-targeted content, parked page camouflage). Cross-referencing the destination wallet addresses against known scam wallets in blockchain analytics platforms should confirm the scheme.",
+            "detection_rule_ref": "DL-0142"
+        }
+    ],
+    "expected_outcomes": {
+        "detections_triggered": ["DL-0117", "DL-0142"],
+        "alerts_generated": "Behavioral anomaly alerts on first-time cryptocurrency transfers from a customer with no prior crypto history; escalating wire/ACH velocity alerts on increasing transfer amounts to crypto exchanges over a compressed timeframe; loan-to-wire velocity alerts on rapid loan origination followed by immediate transfer out; elder financial exploitation alerts for vulnerable demographic customers making large crypto transfers; crypto address screening alerts on destination wallets linked to known scam infrastructure; blockchain analytics alerts on fund flows through mixing services and nested exchanges; customer complaint correlation alerts linking reported scam to detected transaction anomalies.",
+        "coverage_validated": "Full CFPF lifecycle coverage (P1 through P5) for pig butchering romance-investment hybrid schemes. Validates the financial institution visibility gap at recon and grooming phases (P1-P2 — no bank-level detection possible, reinforcing customer education as primary control), fraudulent platform introduction detection at positioning (P3), escalating deposit and behavioral anomaly detection at execution (P4), and blockchain fund tracing and SAR correlation at monetization (P5)."
+    }
+}

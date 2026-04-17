@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f97316">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="FLAME">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     <title>FLAME — Fraud Lifecycle Analysis & Mitigation Exchange</title>
     <meta name="description"
         content="FLAME is an open-source, community-driven platform for structured fraud detection intelligence. Browse threat paths mapped across CFPF, MITRE ATT&CK, Group-IB Fraud Matrix, and more.">
@@ -25,10 +31,12 @@
     <header class="site-header" id="site-header">
         <div class="header-inner">
             <div class="header-brand">
-                <h1 class="logo">
-                    <span class="logo-icon">🔥</span>
-                    <span class="logo-text">FLAME</span>
-                </h1>
+                <a href="#browse" class="logo-link" title="Home">
+                    <h1 class="logo">
+                        <span class="logo-icon">🔥</span>
+                        <span class="logo-text">FLAME</span>
+                    </h1>
+                </a>
                 <p class="tagline">Fraud Lifecycle Analysis &amp; Mitigation Exchange</p>
             </div>
             <div class="header-stats" id="header-stats">
@@ -111,6 +119,22 @@
     </header>
 
     <!-- ================================================================ -->
+    <!-- Navigation Tabs                                                  -->
+    <!-- ================================================================ -->
+    <nav class="main-nav" id="main-nav">
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+        <a href="#browse" class="nav-tab active" data-view="browse">Threat Paths</a>
+        <a href="#rules" class="nav-tab" data-view="rules">Detection Rules</a>
+        <a href="#baselines" class="nav-tab" data-view="baselines">Baselines</a>
+    </nav>
+
+    <!-- ================================================================ -->
     <!-- Main Layout                                                      -->
     <!-- ================================================================ -->
     <main class="app-layout" id="app-layout">
@@ -118,6 +142,14 @@
         <!-- Filter Sidebar -->
         <aside class="filter-panel" id="filter-panel">
             <div class="filter-panel-inner">
+                <!-- Sidebar Collapse Button -->
+                <button class="sidebar-collapse-btn" id="sidebar-collapse-btn" title="Collapse sidebar">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="11 17 6 12 11 7"></polyline>
+                        <polyline points="18 17 13 12 18 7"></polyline>
+                    </svg>
+                </button>
+
                 <!-- Search -->
                 <div class="search-box">
                     <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -141,19 +173,45 @@
                     <div class="filter-chips" id="filter-cfpf-phases"></div>
                 </div>
 
+                <!-- Detection Rule Severity -->
+                <div class="filter-group">
+                    <h3 class="filter-group-title">Detection Rule Severity</h3>
+                    <div class="filter-chips" id="filter-severity">
+                        <button class="chip" data-severity="critical">Critical</button>
+                        <button class="chip" data-severity="high">High</button>
+                        <button class="chip" data-severity="medium">Medium</button>
+                        <button class="chip" data-severity="low">Low</button>
+                        <button class="chip" data-severity="informational">Info</button>
+                    </div>
+                </div>
+
                 <!-- Sectors -->
                 <div class="filter-group">
-                    <h3 class="filter-group-title">Sectors</h3>
-                    <div class="filter-chips" id="filter-sectors"></div>
+                    <h3 class="filter-group-title filter-group-collapsible" id="sectors-toggle">Sectors <span class="collapse-arrow">&#9662;</span></h3>
+                    <div class="filter-chips-scroll" id="filter-sectors-wrapper">
+                        <input type="text" class="filter-search-within" id="filter-sectors-search" placeholder="Filter sectors..." autocomplete="off">
+                        <div class="filter-chips" id="filter-sectors"></div>
+                    </div>
                 </div>
 
                 <!-- Fraud Types -->
                 <div class="filter-group">
-                    <h3 class="filter-group-title">Fraud Types</h3>
-                    <div class="filter-chips" id="filter-fraud-types"></div>
+                    <h3 class="filter-group-title filter-group-collapsible" id="fraud-types-toggle">Fraud Types <span class="collapse-arrow">&#9662;</span></h3>
+                    <div class="filter-chips-scroll" id="filter-fraud-types-wrapper">
+                        <input type="text" class="filter-search-within" id="filter-fraud-types-search" placeholder="Filter fraud types..." autocomplete="off">
+                        <div class="filter-chips" id="filter-fraud-types"></div>
+                    </div>
                 </div>
             </div>
         </aside>
+
+        <!-- Sidebar Expand Button (visible when collapsed) -->
+        <button class="sidebar-expand-btn" id="sidebar-expand-btn" title="Show filters" style="display:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="13 17 18 12 13 7"></polyline>
+                <polyline points="6 17 11 12 6 7"></polyline>
+            </svg>
+        </button>
 
         <!-- Mobile Filter Toggle -->
         <button class="filter-toggle" id="filter-toggle" aria-label="Toggle filters">
@@ -184,6 +242,47 @@
                 <div class="detail-content" id="detail-content">
                     <!-- Populated by JS -->
                 </div>
+            </div>
+
+            <!-- Rules View -->
+            <div class="rules-view" id="rules-view" style="display:none;">
+                <div class="rules-header">
+                    <h2>Detection Rules</h2>
+                    <div class="rules-search">
+                        <input type="text" id="rules-search-input" placeholder="Search rules...">
+                    </div>
+                    <div class="rules-filters" id="rules-filters">
+                        <select id="rules-filter-level">
+                            <option value="">All Levels</option>
+                            <option value="critical">Critical</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                            <option value="informational">Informational</option>
+                        </select>
+                        <select id="rules-filter-phase">
+                            <option value="">All Phases</option>
+                            <option value="P1">P1 - Recon</option>
+                            <option value="P2">P2 - Initial Access</option>
+                            <option value="P3">P3 - Positioning</option>
+                            <option value="P4">P4 - Execution</option>
+                            <option value="P5">P5 - Monetization</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="rules-results" id="rules-results">Loading detection rules...</div>
+                <div class="rules-grid" id="rules-grid"></div>
+            </div>
+
+            <!-- Baselines View -->
+            <div class="baselines-view" id="baselines-view" style="display:none;">
+                <div class="baselines-header">
+                    <h2>Baselines</h2>
+                    <div class="baselines-search">
+                        <input type="text" id="baselines-search-input" placeholder="Search baselines...">
+                    </div>
+                </div>
+                <div class="baselines-grid" id="baselines-grid"></div>
             </div>
 
         </div>

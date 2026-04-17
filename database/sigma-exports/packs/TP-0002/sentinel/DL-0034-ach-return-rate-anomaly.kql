@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+event_type =~ "ACH_RETURN" and (return_code in~ ("R10", "R29", "R07", "R08"))

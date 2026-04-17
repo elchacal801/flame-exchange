@@ -1,0 +1,3 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+event_type IN ("WIRE_CREDIT", "ACH_CREDIT") transaction_amount>=25000 event_type IN ("WIRE_INITIATION", "ACH_DEBIT", "INTERNAL_TRANSFER") transaction_amount<10000

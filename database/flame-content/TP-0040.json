@@ -61,7 +61,18 @@
     "FT007",
     "FT016"
   ],
-  "mitre_f3": [],
+  "mitre_f3": [
+    "F1006.002",
+    "F1020.001",
+    "T1110.001",
+    "T1555",
+    "F1004",
+    "F1015",
+    "F1024",
+    "F1029",
+    "F1031",
+    "F1032"
+  ],
   "groupib_stages": [
     "Reconnaissance",
     "Resource Development",
@@ -86,6 +97,9 @@
     "report": "Level 2",
     "improve": "Level 3"
   },
+  "baseline_ids": [
+    "BL-0020"
+  ],
   "detection_rule_ids": [
     "DL-0087",
     "DL-0088",

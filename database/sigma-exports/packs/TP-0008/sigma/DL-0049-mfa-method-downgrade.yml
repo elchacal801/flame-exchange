@@ -1,48 +1,54 @@
 title: MFA Method Downgrade
 id: 77608ced-3ecb-4275-920c-b29214e86231
 status: experimental
-description: >
-  Detects when an account's MFA method is changed from a strong phishing-resistant factor
-  (FIDO2/WebAuthn, hardware token, authenticator app) to a weaker method (SMS OTP, voice call).
-  Attackers who compromise account credentials may downgrade the MFA method to one they can
-  intercept via SIM swap or SS7 exploitation, enabling persistent account takeover.
+description: 'Detects when an account''s MFA method is changed from a strong phishing-resistant factor (FIDO2/WebAuthn, hardware
+  token, authenticator app) to a weaker method (SMS OTP, voice call). Attackers who compromise account credentials may downgrade
+  the MFA method to one they can intercept via SIM swap or SS7 exploitation, enabling persistent account takeover.
+
+  '
+sigma_compatible: true
 references:
-  - https://attack.mitre.org/techniques/T1556/006/
-  - https://attack.mitre.org/techniques/T1098/005/
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://attack.mitre.org/techniques/T1556/006/
+- https://attack.mitre.org/techniques/T1098/005/
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
 threat_paths:
-  - TP-0008
-  - TP-0001
+- TP-0008
+- TP-0001
 cfpf_phase: P3
 fraud_types:
-  - account-takeover
+- account-takeover
 logsource:
   product: banking
   service: identity_management
 detection:
   selection:
     event_type|contains:
-      - 'mfa_method_change'
-      - 'mfa_update'
-      - 'authenticator_change'
+    - mfa_method_change
+    - mfa_update
+    - authenticator_change
   selection_downgrade:
     previous_mfa_method|contains:
-      - 'fido2'
-      - 'webauthn'
-      - 'hardware_token'
-      - 'authenticator_app'
-      - 'totp'
+    - fido2
+    - webauthn
+    - hardware_token
+    - authenticator_app
+    - totp
     new_mfa_method|contains:
-      - 'sms'
-      - 'voice'
-      - 'email'
+    - sms
+    - voice
+    - email
   condition: selection and selection_downgrade
+data_sources:
+  native_fields:
+  - event_type
+  - new_mfa_method
+  - previous_mfa_method
 falsepositives:
-  - Users who lose their hardware security key or authenticator app and fall back to SMS temporarily
-  - Account recovery workflows that require temporary MFA method changes
+- Users who lose their hardware security key or authenticator app and fall back to SMS temporarily
+- Account recovery workflows that require temporary MFA method changes
 level: high
 tags:
-  - cfpf.phase3.positioning
-  - attack.t1556.006
-  - attack.t1098.005
-  - attack.t1111
+- cfpf.phase3.positioning
+- attack.t1556.006
+- attack.t1098.005
+- attack.t1111

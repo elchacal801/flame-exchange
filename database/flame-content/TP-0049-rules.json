@@ -1,0 +1,23 @@
+{
+  "tp_id": "TP-0049",
+  "rules": [
+    {
+      "type": "sigma",
+      "content": "title: CMLN Wallet Cluster Velocity\nstatus: experimental\ndescription: Detect cryptocurrency wallet clusters exhibiting CMLN operational characteristics: high transaction velocity (average processing time under 2 minutes), incoming transfers from multiple unrelated sourc\nlogsource:\n    product: crypto\n    category: blockchain_analytics\n    service: chain_monitoring\ndetection:\n    selection:\n        wallet_cluster: true\n        avg_processing_time|lt: 120\n        inbound_source_count|gt: 10\n        outbound_to_exchange_ratio|gt: 0.7\n    condition: selection\nlevel: high",
+      "title": "DL-0113: CMLN Wallet Cluster Velocity (Sigma)",
+      "source_rule": "DL-0113"
+    },
+    {
+      "type": "sigma",
+      "content": "title: No-KYC Exchange Off-Ramp Pattern\nstatus: experimental\ndescription: Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ram\nlogsource:\n    product: crypto\n    category: blockchain_analytics\n    service: chain_monitoring\ndetection:\n    selection:\n        defi_hop_count|gte: 3\n        defi_hop_timeframe|lte: \"5d\"\n        no_kyc_exchange_deposit_timeframe|lte: \"14d\"\n        otc_broker_withdrawal_timeframe|lte: \"45d\"\n    condition: selection and temporal_sequence\nlevel: high",
+      "title": "DL-0114: No-KYC Exchange Off-Ramp Pattern (Sigma)",
+      "source_rule": "DL-0114"
+    },
+    {
+      "type": "spl",
+      "content": "`comment(\"Splunk SPL for Crypto Rug Pull On-Chain Indicators\")`\nindex=blockchain sourcetype=defi:events\n| eval risk_score = case(\n    liquidity_removal_pct > 80, 10,\n    top5_holder_pct > 0.60, 7,\n    has_hidden_mint = \"true\", 8,\n    has_hidden_pause = \"true\", 6,\n    liquidity_unlocked = \"true\", 5,\n    1=1, 0\n  )\n| where risk_score >= 7\n| table _time, token_address, token_name, risk_score,\n        liquidity_removal_pct, top5_holder_pct,\n        has_hidden_mint, has_hidden_pause, liquidity_unlocked",
+      "title": "DL-0142: Crypto Token Rug Pull Early Warning — On-Chain and OSINT Indicators (SPLUNK)",
+      "source_rule": "DL-0142"
+    }
+  ]
+}

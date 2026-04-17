@@ -33,7 +33,7 @@ mitre_attack:
   - T1589.001  # Gather Victim Identity: Credentials
   - T1656       # Impersonation
 ft3_tactics: ["FTA003", "FTA004"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "F1006", "F1027", "F1029", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -60,6 +60,7 @@ related_tps:
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-FINCEN-AML
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

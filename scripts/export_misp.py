@@ -48,7 +48,7 @@ def build_cluster_entry(tp: dict) -> dict:
         "sectors": tp.get("sector", []),
         "cfpf_phases": tp.get("cfpf_phases", []),
         "confidence_score": tp.get("confidence_score", 0),
-        "refs": [f"https://elchacal801.github.io/flame-fraud/?tp={tp_id}"],
+        "refs": [f"https://flameintel.org/?tp={tp_id}"],
     }
 
     # Build MITRE ATT&CK relations

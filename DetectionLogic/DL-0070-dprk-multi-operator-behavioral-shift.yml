@@ -30,8 +30,8 @@ data_sources:
   native_fields:
   - event_type
 queries:
-  logscale: |-
-    // LogScale LQL for Multi-Operator Behavioral Shift — Timezone and Communication Anomaly
+  cql: |-
+    // CrowdStrike CQL for Multi-Operator Behavioral Shift — Timezone and Communication Anomaly
     // Repository: flame-identity-platform-authentication
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count(distinct src_timezone) by user_id > 2

@@ -66,4 +66,4 @@ class TestRSSFeed:
         tree = ET.parse(feed_path)
         first_item = tree.find(".//channel/item")
         link = first_item.find("link").text
-        assert "elchacal801.github.io/flame-fraud" in link
+        assert "flameintel.org" in link

@@ -72,12 +72,43 @@ data_sources:
   - push_notification_rate
   - in_app_purchase_amount
   - in_app_purchase_frequency
+  - app_permission
+  - push_notification_permission_change
+  derived_fields:
+  - browser_push_notification_rate_per_day
+  - data_exfil_pattern
+  - inbound_proxy_connections
+  - outbound_connections_to_unknown_ips
+  - time_from_install_to_purchase_hours
   enrichment_required:
   - field: network_traffic_pattern
     source: Network traffic analysis (proxy behavior detection via traffic flow analysis)
   - field: notification_source_domain_age_days
     source: WHOIS enrichment for push notification source domains
 queries:
+  cql: |-
+    // CrowdStrike CQL for Fake Mobile App Residential Proxy and Subscription Scam Detection
+    // Detection 1: Fake VPN acting as residential proxy
+    app_category="VPN" OR app_category="cleaner" OR app_category="optimizer" OR app_category="spam-blocker"
+    | groupBy([device_id, app_id], function=[
+        count(field=dest_ip, distinct=true, as=unique_dest_ips),
+        sum(bytes_out, as=total_bytes_out),
+        sum(bytes_in, as=total_bytes_in),
+        count(field=src_port, distinct=true, as=unique_src_ports),
+        collect([app_name])
+      ])
+    | proxy_ratio := round(total_bytes_in / total_bytes_out * 100) / 100
+    | unique_dest_ips > 50 AND proxy_ratio > 2
+    | risk := "residential_proxy_behavior"
+    // Detection 2: Push notification abuse to subscription scam cycle
+    // Run separately and union results:
+    // push_notification_count_24h >= 50
+    // | selfJoinFilter(device_id, where=[
+    //     {push_notification_count_24h >= 50},
+    //     {app_category="spam-blocker" OR app_category="notification-protector" OR app_category="cleaner"},
+    //     {in_app_purchase_amount >= 6.99 AND in_app_purchase_type="subscription"}
+    //   ])
+    // | risk := "notification_to_subscription_scam_cycle"
   splunk: |-
     `comment("Splunk SPL for Fake Mobile App Residential Proxy and Subscription Scam Detection")`
     `comment("Detects VexTrio-pattern fake apps: residential proxy abuse and notification-to-subscription scam cycle")`
@@ -133,6 +164,8 @@ falsepositives:
 - Legitimate notification management apps from established publishers
 level: high
 tags:
+- attack.t1090
+- attack.t1657
 - cfpf.phase4.execution
 - fake-mobile-app
 - residential-proxy

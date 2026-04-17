@@ -29,7 +29,7 @@ mitre_attack:
   - T1657      # Financial Theft
   - T1036      # Masquerading
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA009", "FTA010", "FT003", "FT006.001", "FT007.009", "FT008.002", "FT016", "FT017", "FT028", "FT031", "FT052.003"]
-mitre_f3: []
+mitre_f3: ["F1004", "F1007", "F1018", "F1025", "F1045", "F1047", "T1185", "T1189", "T1539", "T1555"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -61,6 +61,8 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-MAS-SRF
   - REG-PSD3-SCA
+baseline_ids:
+  - BL-0010
 tags:
   - wallet-drainer
   - approval-phishing

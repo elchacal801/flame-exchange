@@ -1,43 +1,78 @@
 title: Rapid Outbound Wire After Large Inbound
 id: fac3da03-fbae-4854-b7e2-ebab675e4c06
 status: experimental
-description: >
-  Detects a large outbound wire or ACH transfer initiated within hours of receiving
-  a large inbound deposit. This pass-through pattern is characteristic of compromised
-  accounts being used as intermediary conduits in fraud or money laundering schemes.
+description: 'Detects a large outbound wire or ACH transfer initiated within hours of receiving a large inbound deposit. This
+  pass-through pattern is characteristic of compromised accounts being used as intermediary conduits in fraud or money laundering
+  schemes.
+
+  '
+sigma_compatible: false
+native_query_required: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://www.fincen.gov/sites/default/files/shared/FIN-2016-A003.pdf
 threat_paths:
-  - TP-0001
-  - TP-0002
-  - TP-0006
+- TP-0001
+- TP-0002
+- TP-0006
 cfpf_phase: P4
 fraud_types:
-  - wire-fraud
-  - money-mule
-  - payment-diversion
+- wire-fraud
+- money-mule
+- payment-diversion
 logsource:
   product: banking
   service: transaction_monitoring
 detection:
   selection_inbound:
     event_type:
-      - 'WIRE_CREDIT'
-      - 'ACH_CREDIT'
+    - WIRE_CREDIT
+    - ACH_CREDIT
     transaction_amount|gte: 10000
   selection_outbound:
     event_type:
-      - 'WIRE_INITIATION'
-      - 'ACH_DEBIT'
+    - WIRE_INITIATION
+    - ACH_DEBIT
     transaction_amount|gte: 8000
   timeframe: 6h
-  condition: selection_inbound | near selection_outbound by account_id
+  condition: selection_inbound and selection_outbound
+data_sources:
+  native_fields:
+  - event_type
+  - transaction_amount
+queries:
+  cql: |-
+    // CrowdStrike CQL for Rapid Outbound Wire After Large Inbound
+    // Repository: flame-banking-transaction-monitoring
+    // Correlates large inbound credit with rapid outbound transfer
+    // within 6h for the same account (pass-through pattern)
+    ((event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT") AND transaction_amount>=10000)
+    OR ((event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT") AND transaction_amount>=8000)
+    | selfJoinFilter(account_id, where=[
+        {event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT"}
+        {event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT"}
+      ])
+    | groupBy(account_id, function=[
+        count(as=event_count),
+        collect([event_type, transaction_amount, beneficiary_name, @timestamp])
+      ], span=6h)
+    | event_count >= 2
+  splunk: |-
+    `comment("Splunk SPL for Rapid Outbound Wire After Large Inbound")`
+    `comment("Aggregation that cannot be expressed in Sigma")`
+    `comment("Original condition: selection_inbound | near selection_outbound by account_id")`
+    index=flame_banking sourcetype=flame:transaction_monitoring
+    (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT")
+    transaction_amount>=10000
+    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
+    transaction_amount>=8000
+    | transaction account_id maxspan=6h
+    | where eventcount >= 2
 falsepositives:
-  - Real estate escrow closings with same-day receipt and disbursement
-  - Business accounts receiving client payments and immediately paying suppliers
+- Real estate escrow closings with same-day receipt and disbursement
+- Business accounts receiving client payments and immediately paying suppliers
 level: high
 tags:
-  - cfpf.phase4.execution
-  - attack.t1657
-  - flame.wire_ach
+- cfpf.phase4.execution
+- attack.t1657
+- flame.wire_ach

@@ -1,0 +1,108 @@
+# ======================================================================
+# FLAME Detection Rule: Magecart WebSocket Card Data Exfiltration — Payment Page to Recently Registered Domain
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: critical
+# CFPF Phase: P4
+# Threat Paths: TP-0035
+#
+# Description:
+#   Detects Magecart-style card data exfiltration via WebSocket connections
+#   from e-commerce checkout or payment pages to recently registered
+#   domains (< 90 days) that masquerade as legitimate services (analytics,
+#   CDN, jQuery). The ANY.RUN "Banks Magecart Campaign" (March 2026)
+#   documented a 24+ month campaign across 100+ domains targeting the
+#   Redsys payment system (Spain), PayPlug SAS, and generic Visa/Mastercard
+#   flows. The attack uses a multi-stage injection model: (1) obfuscated
+#   loader injected into site scripts, (2) rotating domains deliver
+#   secondary payloads, (3) DOM monitoring conceals legitimate payment
+#   buttons and injects fake payment interfaces, (4) WebSocket connections
+#   (wss://<c2>/?token=<base64>) exfiltrate full card data (BIN, PAN,
+#   expiry, CVV). WebSocket is chosen specifically to reduce visibility in
+#   traditional HTTP-based security monitoring. Detection combines three
+#   signals: WebSocket connection from a payment/checkout page context,
+#   destination domain registered within 90 days, and domain name pattern
+#   masquerading as a legitimate service (analytics, CDN, jQuery, caching).
+#   The confirmed IOC domain list from the campaign uses registrar NICENIC
+#   INTERNATIONAL GROUP, identified by Silent Push as a bulletproof
+#   registrar.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: ecommerce
+#   service: web_security
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_websocket:
+#     connection_type: websocket
+#     request_url|startswith: wss://
+#     referer_url|contains:
+#     - checkout
+#     - payment
+#     - billing
+#     - cart/complete
+#     - redsys
+#     - payplug
+#   filter_domain_age:
+#     destination_domain_age_days|lte: 90
+#   filter_masquerade_pattern:
+#     destination_domain|contains:
+#     - analytics
+#     - cache
+#     - cdn
+#     - jquery
+#     - bootstrap
+#     - bundle
+#     - assets
+#     - hotjar
+#     - doubleclick
+#     - captcha
+#     - secure
+#     - referrer
+#     - wishlist
+#     - feedback
+#     - explorer
+#     - redsys
+#   filter_base64_token:
+#     request_url|contains: token=
+#   filter_legitimate:
+#     destination_domain|contains:
+#     - stripe.com
+#     - paypal.com
+#     - braintreegateway.com
+#     - adyen.com
+#     - authorize.net
+#     - redsys.es
+#     - payplug.com
+#     - google-analytics.com
+#     - hotjar.com
+#     - jquery.com
+#     - bootstrapcdn.com
+#   timeframe: 1h
+#   condition: 'selection_websocket AND filter_domain_age AND (filter_masquerade_pattern
+#     OR filter_base64_token) AND NOT filter_legitimate
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate third-party payment or analytics services using WebSocket connections from checkout pages that happen to have recently registered domains
+#   - Development or staging environments using test domains with WebSocket connections for payment flow testing
+#   - Newly deployed legitimate payment integration partners with recently registered service domains
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

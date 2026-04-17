@@ -1,0 +1,54 @@
+# ======================================================================
+# FLAME Detection Rule: Gift Card Balance Probing Velocity Detection
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P2
+# Threat Paths: TP-0068
+#
+# Description:
+#   Detects automated gift card balance probing by monitoring balance check
+#   endpoints for high-velocity requests. NRF RFT FT1103 documents that
+#   fraudsters abuse legitimate balance check functions (web app, phone
+#   IVR) to identify funded cards from brute-forced or purchased card
+#   number lists. Detection signals include request velocity per IP/device,
+#   VoIP source numbers, off-hours timing, and device fingerprint
+#   anomalies. Gift card balance probing is a precursor to gift card
+#   redemption fraud, card merging, and resale monetization.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: retail
+#   service: gift_card_api
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     endpoint_type: balance_check
+#   timeframe: 1h
+#   condition: 'count(distinct card_number) by source_ip > 20 OR count(requests) by source_ip
+#     > 50
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate customer service tools checking multiple cards
+#   - Corporate gift card management platforms
+#   - Batch balance verification during audit periods
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

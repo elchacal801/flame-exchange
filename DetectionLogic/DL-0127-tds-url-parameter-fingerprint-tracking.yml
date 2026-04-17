@@ -1,5 +1,5 @@
 title: TDS URL Parameter Fingerprint Tracking Across Rotating Domains
-id: c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f
+id: a430a7cf-65c1-488b-9547-76c2388c8845
 status: experimental
 description: 'Detects consistent URL query parameter patterns (TDS software behavioral
   signatures) appearing across multiple rotating domains, indicating a single TDS
@@ -77,8 +77,8 @@ queries:
         by param_fingerprint
     | where unique_domains >= 3
     | sort -unique_domains
-  logscale: |-
-    // LogScale LQL for TDS URL Parameter Fingerprint Tracking
+  cql: |-
+    // CrowdStrike CQL for TDS URL Parameter Fingerprint Tracking
     // Repository: flame-proxy-http-log
     http_status=/30[127]/
     | url_query=/\?(u=[^&]*&o=|aff_id=[^&]*&click_id=|subid=[^&]*&source=[^&]*&clickid=|pid=[^&]*&offer_id=)/
@@ -95,6 +95,7 @@ falsepositives:
 - Advertising analytics platforms with standardized URL parameter schemas
 level: medium
 tags:
+- attack.t1583.001
 - cfpf.phase3.positioning
 - tds
 - url-parameter-fingerprint

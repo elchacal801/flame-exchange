@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "d780b8b2-ded9-5702-91e2-0c0a9f3970c0",
+    "info": "FLAME: Recovery Fraud \u2014 Double-Dip Re-victimization",
+    "date": "2026-03-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "ccb27a54-54ed-5b48-ae78-48af0107528e",
+        "type": "text",
+        "category": "Other",
+        "value": "recovery-fraud",
+        "comment": "Fraud type for TP-0062"
+      },
+      {
+        "uuid": "ff4e1556-4abb-5369-92f0-26bbca96736b",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0062"
+      },
+      {
+        "uuid": "24f04b78-d833-5369-b85d-561fbec1e98f",
+        "type": "text",
+        "category": "Other",
+        "value": "advance-fee-fraud",
+        "comment": "Fraud type for TP-0062"
+      },
+      {
+        "uuid": "6669558d-8f27-5ed0-8ba1-758dc51c7311",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0062"
+      },
+      {
+        "uuid": "2cabdde2-3129-5d7c-9528-5ec98cbd18f5",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0062"
+      },
+      {
+        "uuid": "e94595d5-81e9-5253-a30a-c724d887e1e8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0062"
+      },
+      {
+        "uuid": "35059dea-57f3-5fdc-80c3-dff1ea9119cb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0062"
+      },
+      {
+        "uuid": "3c466c85-54ab-5ba7-8874-ab63b073d1e3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0062"
+      },
+      {
+        "uuid": "bf5d6c0a-965a-5cf9-929d-0d6892af9b1c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0062"
+      }
+    ]
+  }
+}

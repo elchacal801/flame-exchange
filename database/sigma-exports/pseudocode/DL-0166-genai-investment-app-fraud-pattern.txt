@@ -1,0 +1,89 @@
+# ======================================================================
+# FLAME Detection Rule: GenAI-Enhanced APP Fraud — Escalating Investment Payments to New Beneficiary
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0026
+#
+# Description:
+#   Detects the characteristic authorized push payment (APP) pattern
+#   associated with GenAI- enhanced investment fraud (pig butchering). The
+#   rule identifies customers making increasing payments to a newly added
+#   beneficiary with investment-related payment references, where payment
+#   velocity accelerates over a multi-week period. This pattern reflects
+#   the classic fattening-then-slaughter cycle: victims are groomed through
+#   AI-powered financial advisor personas and deepfake celebrity
+#   endorsements, make a small initial investment, see fabricated returns
+#   on fraudulent trading dashboards, and are progressively encouraged to
+#   invest larger amounts. The FBI IC3 reported $6.57 billion in investment
+#   fraud losses in 2024 — the single largest fraud category. Chainalysis
+#   research shows AI-enabled investment scams extract 4.5x more revenue
+#   per operation ($3.2M average) compared to non-AI variants ($719K
+#   average). The rule targets the execution phase (P4) where escalating
+#   authorized payments represent the point of maximum financial exposure
+#   before funds are laundered through cryptocurrency mixing, DeFi
+#   protocols, or mule networks.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     transaction_type:
+#     - wire_transfer
+#     - faster_payment
+#     - ach_credit
+#     - sepa_credit
+#     - crypto_purchase
+#   filter_new_beneficiary:
+#     beneficiary_relationship_days|lt: 60
+#   filter_investment_reference:
+#     payment_reference|contains:
+#     - invest
+#     - trading
+#     - platform
+#     - portfolio
+#     - return
+#     - crypto
+#     - bitcoin
+#     - forex
+#     - yield
+#     - fund
+#     - capital
+#     - broker
+#   filter_escalating_amount:
+#     payment_amount_increase_pct_vs_first|gte: 200
+#   filter_velocity_acceleration:
+#     inter_payment_interval_decreasing: true
+#   timeframe: 60d
+#   condition: 'selection AND filter_new_beneficiary AND filter_investment_reference AND
+#     filter_escalating_amount AND filter_velocity_acceleration
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate staged investments in registered platforms (brokerage accounts, mutual funds) with increasing contributions
+#   - Business customers making scheduled investment-related payments to regulated financial institutions
+#   - Property investment installment payments with escalating milestone amounts
+#   - Cryptocurrency dollar-cost-averaging strategies with increasing position sizes
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

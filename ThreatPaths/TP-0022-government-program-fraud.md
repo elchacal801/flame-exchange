@@ -24,7 +24,7 @@ cfpf_phases:
   - P5
 mitre_attack: []
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT052.004", "FT026.004", "FT016.001", "FT020", "FT005.001", "FT011.002", "FT018", "FT025", "FT051.003", "FT006"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "F1006", "F1029", "T1585"]
 groupib_stages:
   - "Resource Development"
   - "Perform Fraud"
@@ -49,6 +49,7 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
+baseline_ids: []
 tags:
   - benefits-scam
   - irs-fraud
@@ -142,6 +143,20 @@ Government Program Fraud involves threat actors leveraging stolen Personally Ide
 
 ---
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Organizational commitment to detecting government benefit fraud at the financial institution level; investment in ACH monitoring capabilities and cross-agency information sharing |
+| ASSESS | Level 3 (Established) | Risk assessment of deposit account portfolio for government benefit fraud exposure; evaluation of onboarding controls for accounts likely to serve as drop accounts (fintech, prepaid, neo-bank); analysis of inbound ACH patterns for government-originated deposits |
+| PLAN | Level 3 (Established) | Detection strategy combining ACH name-mismatch analysis, government deposit velocity monitoring, and rapid withdrawal pattern detection; coordination plan with state workforce agencies and IRS for fraud intelligence sharing |
+| ACT | Level 3 (Established) | Automated ACH receiver name vs. KYC account holder fuzzy matching for government-originated deposits; velocity rules flagging multiple distinct government benefit deposits to a single consumer account; device fingerprinting and IP clustering analysis at account opening to detect botnet-driven drop account creation |
+| MONITOR | Level 3 (Established) | Continuous monitoring for government ACH deposits followed by immediate ATM cash-outs, wire transfers, or crypto purchases; tracking of account opening velocity from shared IP ranges or device clusters; seasonal anomaly detection for unemployment claims outside normal filing patterns |
+| REPORT | Level 4 (Advanced) | SAR filing for suspected government benefit fraud with enriched typology codes; real-time reporting to state agencies when drop accounts are identified; coordination with Secret Service and FBI for large-scale botnet-driven benefit fraud networks |
+| IMPROVE | Level 3 (Established) | Post-investigation review incorporating state agency feedback on confirmed fraud cases; recalibration of name-mismatch thresholds and deposit velocity triggers; integration of new PII breach data into proactive drop account identification models |
+
 ## Detection Approaches
 
 ### Queries / Rules
@@ -172,6 +187,8 @@ HAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits
 
 ## Analyst Notes
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $797.9 million in government impersonation fraud losses from 32,424 complaints — an 87% increase in complaints and 97% increase in losses from 2024. Transaction type breakdown: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier's Check 10%. Elder victims (60+) accounted for 8,628 complaints and $413.2M in losses. Note: Government impersonation APP fraud (using government authority to socially engineer payments) is distinct from the government program exploitation covered by this TP. See TP-0084 for the impersonation-based attack path.
+
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $405M in government impersonation losses. This figure captures cases where actors impersonate government agencies to extract payments from victims, which overlaps with this threat path's use of stolen identities to file fraudulent government benefit claims. IC3 also recorded over 108,000 identity theft complaints in 2024, representing the PII theft pipeline that fuels bulk fraudulent benefit filings.
 
 ---
@@ -179,6 +196,7 @@ HAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits
 ## References
 
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Government impersonation fraud: $797.9M in losses, 32,424 complaints (87% increase in complaints, 97% increase in losses from 2024). Transaction type breakdown: Cryptocurrency 40%, Wire Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%, Check/Cashier's Check 10%. Elder targeting: 8,628 complaints, $413.2M in losses from 60+ victims. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 - FLAME Project Internal Knowledge Base.
 - U.S. Secret Service Advisories on Pandemic Fraud Networks.
 
@@ -190,3 +208,4 @@ HAVING COUNT(*) > 2 -- More than 2 distinct benefit deposits
 |------|--------|--------|
 | 2026-02-20 | FLAME Project | Initial creation |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — government impersonation $797.9M losses (97% increase), elder targeting $413.2M, TP-0084 cross-reference |

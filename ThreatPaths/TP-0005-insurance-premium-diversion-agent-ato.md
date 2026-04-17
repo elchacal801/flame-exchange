@@ -18,7 +18,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1566.001, T1078, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA008", "FTA009", "FTA010", "FT011.002", "FT028", "FT016", "FT037.002", "FT042.001", "FT001", "FT003", "FT008.003", "FT018", "FT038.002"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1006.002", "T1110.001", "T1555", "F1004", "T1185", "T1189", "T1451", "T1539", "T1557", "T1598"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -49,6 +49,7 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids: []
 tags:
   - insurance-agent
   - agent-portal
@@ -125,6 +126,20 @@ Actors compromise insurance agent portals to modify policy payment routing, dive
 | P3 | Anomaly detection on agent session patterns (device, IP, time-of-day, action velocity) | Detective |
 | P4 | Automated premium reconciliation: flag policies where expected premiums don't match received | Detective |
 | P4 | Policyholder confirmation for any servicing changes initiated through agent portal | Preventive |
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Management recognition of agent portal compromise as a premium diversion risk; investment in agent-facing authentication controls |
+| ASSESS | Level 3 (Established) | Comprehensive risk assessment of agent distribution channel including portal access patterns, trust account controls, and independent agent device hygiene; stealer log monitoring for agent credentials |
+| PLAN | Level 2 (Developing) | Defined procedures for out-of-band verification of payment routing changes on agent accounts; incident response plan addressing policyholder coverage gap notifications |
+| ACT | Level 3 (Established) | MFA enforcement on all agent portal access; anomaly detection on agent session patterns (device, IP, time-of-day, action velocity); automated premium reconciliation flagging expected vs. received discrepancies |
+| MONITOR | Level 3 (Established) | Continuous monitoring of agent payment routing changes from unusual sessions; alerting on bulk policy servicing modifications; credential monitoring for agent email domains in stealer log feeds |
+| REPORT | Level 3 (Established) | SIU escalation procedures for premium discrepancies; regulatory reporting to state insurance commissioners for confirmed diversion; policyholder notification processes for coverage gaps |
+| IMPROVE | Level 2 (Developing) | Post-incident analysis of agent portal compromise vectors; periodic review of agent onboarding security requirements and portal access controls |
 
 ## Detection Approaches
 

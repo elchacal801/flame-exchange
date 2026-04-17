@@ -1,0 +1,105 @@
+{
+  "Event": {
+    "uuid": "5b1174ec-b0fc-5e1d-af20-53fba7429aa8",
+    "info": "FLAME: Organized Mass-Marketing Fraud Infrastructure (Boiler Rooms & Lead Lists)",
+    "date": "2026-03-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "d76de530-630e-5532-a5d1-59b408acfd51",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0065"
+      },
+      {
+        "uuid": "688f1e3f-a1f5-5c60-9973-3ff794d0396b",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0065"
+      },
+      {
+        "uuid": "1a534eeb-530f-5bb4-8e0f-8c7ee9a8f6a1",
+        "type": "text",
+        "category": "Other",
+        "value": "vishing",
+        "comment": "Fraud type for TP-0065"
+      },
+      {
+        "uuid": "e65509d8-caee-5901-bb00-1175031ed8ae",
+        "type": "text",
+        "category": "Other",
+        "value": "robodialling-fraud",
+        "comment": "Fraud type for TP-0065"
+      },
+      {
+        "uuid": "82383472-c9c8-5c2e-ac2a-3b3a7695a153",
+        "type": "text",
+        "category": "Other",
+        "value": "advance-fee-fraud",
+        "comment": "Fraud type for TP-0065"
+      },
+      {
+        "uuid": "271967c8-9454-5397-a543-7ee82827e003",
+        "type": "text",
+        "category": "Other",
+        "value": "investment-scam",
+        "comment": "Fraud type for TP-0065"
+      },
+      {
+        "uuid": "8d8e0dc9-c79c-5431-aaee-189d7daae5d3",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-as-a-service",
+        "comment": "Fraud type for TP-0065"
+      },
+      {
+        "uuid": "71dd89e4-b528-5a01-aaf1-204edff131ea",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0065"
+      },
+      {
+        "uuid": "1d4196cc-f6e4-529c-8477-59745f567f9f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0065"
+      },
+      {
+        "uuid": "1dfff2b3-75f5-5a94-a10f-079b6b5a9fcb",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0065"
+      },
+      {
+        "uuid": "205b5e26-a32e-5e2b-8c03-d36bebe7ed25",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0065"
+      },
+      {
+        "uuid": "582858d7-a24c-5937-a650-cae565cb3958",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0065"
+      }
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:03.806274+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "8f79d1fe-39f6-423c-9007-52643a2f28ca",
+    "dl_id": "DL-0174",
+    "title": "Crypto Fraud-Terrorism/Narco Financing Nexus — Sanctions-Exposed Wallets and Peel Chain Patterns Through Mixing Services",
+    "status": "experimental",
+    "description": "Detects the crypto-terror/narco financing nexus pattern where transactions flow to wallets with known OFAC/sanctions exposure, or exhibit peel chain patterns through cryptocurrency mixing services followed by consolidation to designated entity-linked addresses. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents two confirmed manifestations: (1) a USD 150 million cryptocurrency fraud scheme linked to Tren de Aragua laundering drug trafficking and extortion proceeds across Chile, Colombia, Venezuela, and the Iberian Peninsula; and (2) Operation Catalyst, which uncovered a USD 562 million crypto Ponzi scheme affecting 100,000+ victims across 17 countries with wallet-level links to terrorism financing in Central Africa. The detection logic targets three signatures: direct transactions to OFAC SDN-listed wallet addresses within 2 hops, peel chain patterns where funds are split into decreasingly small amounts through mixing services before reconsolidation, and co-mingling indicators where platform wallets receive both retail investor deposits and large round-number inflows from high-risk wallet clusters. This rule operates at critical severity given the terrorism and narcotics financing implications and associated OFAC blocking obligations.\n",
+    "cfpf_phase": "P5",
+    "level": "critical",
+    "detection": {
+      "selection": {
+        "transaction_type": [
+          "crypto_transfer",
+          "crypto_deposit",
+          "crypto_withdrawal"
+        ],
+        "amount_usd|gte": 1000
+      },
+      "filter_sanctions_proximity": {
+        "sdn_hop_distance|lte": 2
+      },
+      "filter_mixing_service": {
+        "mixing_service_interaction": true,
+        "hours_to_mix|lte": 24
+      },
+      "filter_peel_chain": {
+        "peel_chain_detected": true,
+        "consolidation_wallet_risk_score|gte": 80
+      },
+      "timeframe": "90d",
+      "condition": "selection AND (filter_sanctions_proximity OR (filter_mixing_service AND filter_peel_chain))\n"
+    },
+    "logsource": {
+      "product": "crypto",
+      "service": "chain_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "transaction_id",
+        "transaction_hash",
+        "wallet_address",
+        "counterparty_wallet",
+        "amount_usd",
+        "amount_crypto",
+        "crypto_currency",
+        "transaction_date",
+        "block_number",
+        "block_timestamp"
+      ],
+      "enrichment_required": [
+        {
+          "field": "sdn_hop_distance",
+          "source": "OFAC SDN wallet cluster database — minimum hop count from counterparty wallet to nearest SDN-listed address"
+        },
+        {
+          "field": "sdn_entity_name",
+          "source": "OFAC SDN entity name associated with nearest SDN-listed wallet"
+        },
+        {
+          "field": "mixing_service_interaction",
+          "source": "Blockchain analytics — true if transaction chain passes through known mixing/tumbling service within specified timeframe"
+        },
+        {
+          "field": "hours_to_mix",
+          "source": "Hours between initial transaction and first mixing service interaction in the chain"
+        },
+        {
+          "field": "peel_chain_detected",
+          "source": "Blockchain analytics — true if transaction exhibits peel chain splitting pattern (decreasing amounts to sequential wallets)"
+        },
+        {
+          "field": "consolidation_wallet_risk_score",
+          "source": "Risk score (0-100) of the wallet where peel chain funds reconsolidate, based on known entity associations"
+        },
+        {
+          "field": "wallet_cluster_risk_category",
+          "source": "Blockchain analytics wallet clustering — categorization of counterparty wallet cluster (sanctions, terror-financing, narco, high-risk-exchange, unknown)"
+        }
+      ],
+      "derived_fields": [
+        "chain_hop_count",
+        "total_volume_to_sdn_cluster",
+        "mixing_service_name",
+        "peel_chain_depth"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Crypto-Terror/Narco Nexus Detection\n// Detects sanctions-exposed wallet transactions and peel chain patterns through mixers\n(transaction_type=\"crypto_transfer\" OR transaction_type=\"crypto_deposit\" OR transaction_type=\"crypto_withdrawal\")\namount_usd>=1000\n(sdn_hop_distance<=2 OR (mixing_service_interaction=\"true\" AND peel_chain_detected=\"true\"))\n| chain_classification := case {\n    sdn_hop_distance<=1 -> \"direct_sdn_exposure\";\n    sdn_hop_distance==2 -> \"indirect_sdn_exposure\";\n    mixing_service_interaction==\"true\" AND peel_chain_detected==\"true\" -> \"peel_chain_mixing\";\n    * -> \"unknown\";\n  }\n| groupBy(wallet_address, function=[\n    collect([counterparty_wallet, amount_usd, crypto_currency, transaction_date,\n             sdn_hop_distance, sdn_entity_name, mixing_service_interaction,\n             peel_chain_detected, consolidation_wallet_risk_score,\n             chain_classification]),\n    sum(amount_usd, as=total_volume)\n  ])\n| sort(total_volume, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Crypto-Terror/Narco Nexus Detection\")`\n`comment(\"Detects transactions to OFAC-exposed wallets and peel chain patterns through mixers\")`\nindex=flame_blockchain sourcetype=flame:chain_monitoring\n  (transaction_type=\"crypto_transfer\" OR transaction_type=\"crypto_deposit\" OR transaction_type=\"crypto_withdrawal\")\n  amount_usd>=1000\n  (sdn_hop_distance<=2 OR (mixing_service_interaction=\"true\" AND peel_chain_detected=\"true\"))\n| eval chain_classification = case(\n    sdn_hop_distance<=1, \"direct_sdn_exposure\",\n    sdn_hop_distance==2, \"indirect_sdn_exposure\",\n    mixing_service_interaction==\"true\" AND peel_chain_detected==\"true\", \"peel_chain_mixing\",\n    1=1, \"unknown\")\n| eval severity = case(\n    sdn_hop_distance<=1 AND amount_usd >= 50000, \"critical\",\n    sdn_hop_distance<=1, \"critical\",\n    sdn_hop_distance==2 AND amount_usd >= 100000, \"critical\",\n    peel_chain_detected==\"true\" AND consolidation_wallet_risk_score >= 90, \"critical\",\n    1=1, \"high\")\n| stats sum(amount_usd) AS total_volume,\n        count AS transaction_count,\n        dc(counterparty_wallet) AS unique_counterparties,\n        values(chain_classification) AS classifications,\n        values(sdn_entity_name) AS sdn_entities,\n        max(severity) AS max_severity\n  BY wallet_address\n| table wallet_address, total_volume, transaction_count, unique_counterparties,\n        classifications, sdn_entities, max_severity\n| sort - total_volume",
+      "sql": "-- SQL for Crypto-Terror/Narco Nexus Detection\n-- Detects sanctions-exposed wallet transactions and peel chain laundering patterns\nSELECT\n  t.transaction_id,\n  t.transaction_hash,\n  t.wallet_address,\n  t.counterparty_wallet,\n  t.amount_usd,\n  t.crypto_currency,\n  t.transaction_date,\n  s.sdn_entity_name,\n  s.sdn_hop_distance,\n  s.wallet_cluster_risk_category,\n  m.mixing_service_name,\n  m.hours_to_mix,\n  p.peel_chain_depth,\n  p.consolidation_wallet,\n  p.consolidation_wallet_risk_score,\n  CASE\n    WHEN s.sdn_hop_distance <= 1 THEN 'direct_sdn_exposure'\n    WHEN s.sdn_hop_distance = 2 THEN 'indirect_sdn_exposure'\n    WHEN m.mixing_service_interaction = TRUE AND p.peel_chain_detected = TRUE THEN 'peel_chain_mixing'\n    ELSE 'unknown'\n  END AS chain_classification\nFROM crypto_transactions t\nLEFT JOIN sdn_wallet_proximity s\n  ON t.counterparty_wallet = s.wallet_address\nLEFT JOIN mixing_service_interactions m\n  ON t.transaction_hash = m.source_transaction_hash\nLEFT JOIN peel_chain_analysis p\n  ON t.transaction_hash = p.origin_transaction_hash\nWHERE t.amount_usd >= 1000\n  AND t.transaction_date > CURRENT_DATE - INTERVAL '90 days'\n  AND (\n    s.sdn_hop_distance <= 2\n    OR (m.mixing_service_interaction = TRUE\n        AND m.hours_to_mix <= 24\n        AND p.peel_chain_detected = TRUE\n        AND p.consolidation_wallet_risk_score >= 80)\n  )\nORDER BY t.amount_usd DESC"
+    },
+    "references": [
+      "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+      "INTERPOL, International fugitive hunt leads to 85 arrests, 29 December 2025",
+      "INTERPOL, 83 arrests in landmark African operation against terrorism financing, 22 October 2025",
+      "OFAC, Sanctions Compliance Guidance for the Virtual Currency Industry, October 2021",
+      "FinCEN, Advisory on Illicit Activity Involving Convertible Virtual Currency, May 2019",
+      "FATF Recommendation 16 — Wire Transfer Rule",
+      "UNODC, Organized Fraud Issue Paper (Vienna, 2024)",
+      "Arkham Intelligence illicit wallet tag database (intel.arkm.com/tags/suspicious) — open-source wallet attribution starting point for sanctions-exposed and illicit wallet identification",
+      "Florida FOIA records — unredacted cryptocurrency wallet addresses in police reports and AG consumer complaints provide victim-linked address ground truth",
+      "Exchange Proof-of-Reserves CSVs (Binance, OKX, Bybit) — publicly available exchange address attribution resource for confirming exchange relationships",
+      "ICIJ/OpenCorporates, The Modern Money Trail Crypto & Cash webinar (2026) — OSINT methodology for wallet attribution without proprietary analytics access"
+    ],
+    "threat_path_ids": [
+      "TP-0055",
+      "TP-0078"
+    ],
+    "fraud_types": [
+      "crypto-laundering",
+      "investment-scam",
+      "state-criminal-convergence"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase5.monetization",
+      "flame.crypto-laundering",
+      "flame.narco-financing",
+      "flame.peel-chain",
+      "flame.sanctions-exposure",
+      "flame.terrorism-financing"
+    ],
+    "falsepositives": [
+      "Legitimate crypto transactions to wallets that share cluster membership with SDN-listed addresses due to prior commingling on large exchanges",
+      "Privacy-conscious users routing transactions through mixing services for personal privacy without illicit intent",
+      "False positive wallet clustering where blockchain analytics incorrectly associates unrelated wallets"
+    ]
+  }
+}

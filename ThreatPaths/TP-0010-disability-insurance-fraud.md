@@ -18,7 +18,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: []
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT026.001", "FT052", "FT051.002", "FT053.001", "FT006", "FT010", "FT016", "FT024", "FT025", "FT028"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: []
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -40,6 +40,7 @@ related_tps:
   - id: TP-0021
     relationship: related-to
 regulatory_refs: []
+baseline_ids: []
 tags:
   - disability
   - group-benefits
@@ -119,6 +120,20 @@ Actors file fraudulent long-term or short-term disability claims using fabricate
 | P4 | Independent Medical Examinations on high-risk claims | Detective |
 | P4 | Activity checks and surveillance on outlier claims | Detective |
 | P4 | Cross-carrier data sharing (index bureau checks for concurrent claims) | Detective |
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive sponsorship for SIU resources dedicated to disability claims fraud; investment in predictive analytics and provider profiling capabilities |
+| ASSESS | Level 3 (Established) | Risk assessment of disability claim portfolio by diagnosis category, provider concentration, and policy tenure; identification of subjective-condition claims with highest fraud exposure |
+| PLAN | Level 3 (Established) | Defined criteria for triggering IME referrals, surveillance, and social media investigation on high-risk claims; SIU investigation playbook for provider collusion rings |
+| ACT | Level 3 (Established) | Predictive claim risk scoring incorporating diagnosis type, documentation patterns, provider history, and employment tenure; provider profiling identifying disproportionate claim volume; cross-carrier index bureau checks for concurrent disability claims |
+| MONITOR | Level 4 (Advanced) | Ongoing monitoring of active disability claims through social media surveillance, activity checks, and provider-claimant graph analytics; AI-generated document detection for fabricated medical documentation; automated flagging of claims where provider peer-comparison metrics exceed thresholds |
+| REPORT | Level 3 (Established) | SIU case referral to state insurance fraud bureaus and DOJ for organized rings; cross-carrier data sharing for benefit stacking detection; internal reporting linking claims, SIU, and underwriting findings |
+| IMPROVE | Level 3 (Established) | Post-investigation review of missed fraud indicators to refine predictive models; tracking of emerging GenAI-driven documentation fabrication techniques; periodic recalibration of provider risk tiers |
 
 ## Detection Approaches
 

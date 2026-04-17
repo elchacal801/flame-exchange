@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.706226+00:00",
+    "generated_at": "2026-04-09T19:40:03.236452+00:00",
     "total": 1
   },
   "data": {
@@ -44,8 +44,8 @@
       ]
     },
     "queries": {
-      "splunk": "`comment(\"Splunk SPL for Recovery Fraud Contact Pattern\")`\n`comment(\"Cross-references fraud complaints with subsequent outbound payments to new recipients\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n  amount > 500\n| join customer_id [\n  search index=flame_fraud sourcetype=flame:complaints\n  | where complaint_date >= relative_time(now(), \"-90d\")\n  | fields customer_id, complaint_date, original_loss_amount, fraud_type\n]\n| search NOT [\n  search index=flame_banking sourcetype=flame:transaction_monitoring\n    transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n    transaction_date < complaint_date\n  | dedup recipient_account, customer_id\n  | fields recipient_account, customer_id\n]\n| stats count AS payment_count, sum(amount) AS total_amount,\n        values(recipient_account) AS recipients\n  BY customer_id, fraud_type, original_loss_amount\n| where payment_count >= 1",
-      "logscale": "// LogScale LQL for Recovery Fraud Contact Pattern\n// Cross-references fraud complaints with subsequent outbound payments\ntransaction_type IN [\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\"]\n| amount > 500\n| match(file=\"flame_fraud_complaints_90d.csv\", field=customer_id, include=[complaint_date, original_loss_amount, fraud_type])\n| groupBy(customer_id, function=[count(as=payment_count), sum(amount, as=total_amount), collect(recipient_account)])\n| payment_count >= 1",
+      "splunk": "`comment(\"Splunk SPL for Recovery Fraud Contact Pattern\")`\n`comment(\"Cross-references fraud complaints with subsequent outbound payments to new recipients\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n  amount > 500\n| join type=inner max=0 customer_id [\n  search index=flame_fraud sourcetype=flame:complaints\n  | where complaint_date >= relative_time(now(), \"-90d\")\n  | fields customer_id, complaint_date, original_loss_amount, fraud_type\n]\n| search NOT [\n  search index=flame_banking sourcetype=flame:transaction_monitoring\n    transaction_type IN (\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\")\n    transaction_date < complaint_date\n  | dedup recipient_account, customer_id\n  | fields recipient_account, customer_id\n]\n| stats count AS payment_count, sum(amount) AS total_amount,\n        values(recipient_account) AS recipients\n  BY customer_id, fraud_type, original_loss_amount\n| where payment_count >= 1",
+      "cql": "// CrowdStrike CQL for Recovery Fraud Contact Pattern\n// Cross-references fraud complaints with subsequent outbound payments\ntransaction_type IN [\"WIRE_OUT\", \"ACH_OUT\", \"CRYPTO_TRANSFER\"]\n| amount > 500\n| match(file=\"flame_fraud_complaints_90d.csv\", field=customer_id, include=[complaint_date, original_loss_amount, fraud_type])\n| groupBy(customer_id, function=[count(as=payment_count), sum(amount, as=total_amount), collect(recipient_account)])\n| payment_count >= 1",
       "sql": "-- SQL for Recovery Fraud Contact Pattern\nSELECT\n    t.customer_id,\n    t.transaction_date,\n    t.amount,\n    t.recipient_account,\n    c.complaint_date,\n    c.original_loss_amount,\n    c.fraud_type AS original_fraud_type\nFROM transactions t\nJOIN fraud_complaints c ON t.customer_id = c.customer_id\nWHERE c.complaint_date >= DATEADD(day, -90, t.transaction_date)\n  AND t.recipient_account NOT IN (\n    SELECT DISTINCT recipient_account\n    FROM transactions\n    WHERE customer_id = t.customer_id\n      AND transaction_date < c.complaint_date\n  )\n  AND t.amount > 500\nORDER BY t.transaction_date DESC"
     },
     "references": [
@@ -61,6 +61,8 @@
       "recovery-fraud"
     ],
     "tags": [
+      "attack.t1656",
+      "attack.t1657",
       "cfpf.phase4.execution",
       "flame.recovery-fraud",
       "flame.unodc"

@@ -1,0 +1,4 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+bridge_protocol="*" source_chain="*" destination_chain="*" source_risk_score>=70 amount_usd>=10000
+| regex wrapped_token="wUSDT|wUSDC"

@@ -30,8 +30,8 @@ data_sources:
   native_fields:
   - event_type
 queries:
-  logscale: |-
-    // LogScale LQL for Multiple Account Access from Single Source
+  cql: |-
+    // CrowdStrike CQL for Multiple Account Access from Single Source
     // Repository: flame-banking-auth-logs
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count(distinct account_id) by source_ip > 5 or selection | count(distinct account_id) by device_fingerprint > 3

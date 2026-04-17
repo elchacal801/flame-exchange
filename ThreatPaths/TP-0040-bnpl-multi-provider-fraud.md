@@ -32,7 +32,7 @@ mitre_attack:
   - T1657       # Financial Theft
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FTA002", "FTA007", "FTA009", "FT003", "FT007", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1006.002", "F1020.001", "T1110.001", "T1555", "F1004", "F1015", "F1024", "F1029", "F1031", "F1032"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -70,6 +70,8 @@ regulatory_refs:
   - REG-CFPB-REGE
   - REG-FCA-APP
   - REG-AU-SPF
+baseline_ids:
+  - BL-0020
 tags:
   - bnpl
   - klarna-method

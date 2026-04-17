@@ -1,0 +1,166 @@
+title: Cross-Application Identity Collision — Same Biometric or Device Across Different Identities
+id: a6c8ec34-f2ac-43c2-b3f6-ff08aae94a25
+status: experimental
+description: >
+  Detects the same biometric template (face embedding), device fingerprint, or behavioral
+  pattern appearing across applications submitted under different identity names.
+  Fraudsters using AI-generated faces may reuse the same base model or device, creating
+  detectable collisions in the biometric or device space. Even when AI-generated facial
+  images appear visually distinct, the underlying face embedding vectors may cluster
+  due to shared generative model artifacts. Similarly, device fingerprints and behavioral
+  biometric profiles persist across sessions even when the presented identity changes,
+  enabling cross-application correlation that reveals synthetic identity networks.
+sigma_compatible: false
+native_query_required: true
+references:
+  - "Federal Reserve Board, Synthetic Identity Fraud in the U.S. Payment System (2024)"
+  - "Entrust 2025 Identity Fraud Report — cross-platform identity correlation"
+  - "LexisNexis Risk Solutions, Global State of Fraud and Identity Report 2026"
+threat_paths:
+  - TP-0029
+  - TP-0003
+cfpf_phase: P2
+fraud_types:
+  - synthetic-identity
+  - document-fraud
+  - ai-accelerated-fraud-infrastructure
+logsource:
+  product: banking
+  service: document_verification
+detection:
+  selection_application:
+    event_type: CREDIT_APPLICATION
+  filter_biometric_collision:
+    face_embedding_hash|count_distinct(applicant_name)|gt: 1
+  filter_device_collision:
+    device_fingerprint|count_distinct(ssn_hash)|gt: 1
+  condition: >
+    selection_application AND
+    (same face_embedding_hash across 2+ different applicant_name/ssn_hash combinations
+    within 90 days)
+    OR (same device_fingerprint across 2+ different applicant_name/ssn_hash combinations
+    within 90 days)
+data_sources:
+  native_fields:
+    - applicant_id
+    - event_type
+    - application_date
+    - applicant_name
+    - ssn_hash
+    - device_fingerprint
+    - ip_address
+    - session_id
+  enrichment_required:
+    - field: face_embedding_hash
+      source: Biometric verification — locality-sensitive hash of facial embedding vector
+    - field: face_embedding_similarity
+      source: Biometric verification — cosine similarity between face embeddings across applications
+    - field: behavioral_profile_hash
+      source: Behavioral biometrics — hash of behavioral pattern (typing, mouse movement, scroll)
+  derived_fields:
+    - identity_collision_type
+    - collision_count
+    - distinct_identities_per_signal
+queries:
+  cql: |-
+    // CrowdStrike CQL for Cross-Application Identity Collision Detection
+    // Detects same biometric or device across different identity applications
+    event_type="CREDIT_APPLICATION"
+    | application_date > now() - 90d
+    | groupBy(face_embedding_hash, function=[
+        count(distinct=true, field=applicant_name, as=distinct_names),
+        count(distinct=true, field=ssn_hash, as=distinct_ssns),
+        collect([applicant_id, applicant_name, ssn_hash, application_date,
+                 device_fingerprint], limit=50) as application_details
+      ])
+    | distinct_names >= 2 OR distinct_ssns >= 2
+    | identity_collision_type := "biometric_collision"
+    | select([face_embedding_hash, distinct_names, distinct_ssns,
+              identity_collision_type, application_details])
+    | sort(distinct_names, order=desc)
+  splunk: |-
+    `comment("Splunk SPL for Cross-Application Identity Collision Detection")`
+    `comment("Detects same biometric or device across different identity applications")`
+    index=flame_banking sourcetype=flame:document_verification
+      event_type="CREDIT_APPLICATION"
+      earliest=-90d@d
+    | stats
+        dc(applicant_name) as distinct_names,
+        dc(ssn_hash) as distinct_ssns,
+        values(applicant_id) as applicant_ids,
+        values(applicant_name) as names,
+        values(ssn_hash) as ssn_hashes,
+        values(application_date) as application_dates
+        by face_embedding_hash
+    | where distinct_names >= 2 OR distinct_ssns >= 2
+    | eval identity_collision_type = "biometric_collision"
+    | append [
+        search index=flame_banking sourcetype=flame:document_verification
+          event_type="CREDIT_APPLICATION"
+          earliest=-90d@d
+        | stats
+            dc(applicant_name) as distinct_names,
+            dc(ssn_hash) as distinct_ssns,
+            values(applicant_id) as applicant_ids,
+            values(applicant_name) as names,
+            values(ssn_hash) as ssn_hashes,
+            values(application_date) as application_dates
+            by device_fingerprint
+        | where distinct_names >= 2 OR distinct_ssns >= 2
+        | eval identity_collision_type = "device_collision"
+      ]
+    | sort - distinct_names
+  sql: |-
+    -- SQL for Cross-Application Identity Collision Detection
+    -- Detects same biometric or device across different identity applications
+    -- Part 1: Biometric collisions (same face_embedding_hash, different identities)
+    SELECT
+      'biometric_collision' AS identity_collision_type,
+      a.face_embedding_hash AS collision_key,
+      COUNT(DISTINCT a.applicant_name) AS distinct_names,
+      COUNT(DISTINCT a.ssn_hash) AS distinct_ssns,
+      STRING_AGG(DISTINCT a.applicant_name, ', ') AS names,
+      STRING_AGG(DISTINCT a.applicant_id, ', ') AS applicant_ids,
+      MIN(a.application_date) AS earliest_application,
+      MAX(a.application_date) AS latest_application
+    FROM credit_applications a
+    WHERE a.event_type = 'CREDIT_APPLICATION'
+      AND a.application_date >= DATEADD(DAY, -90, CURRENT_DATE)
+      AND a.face_embedding_hash IS NOT NULL
+    GROUP BY a.face_embedding_hash
+    HAVING COUNT(DISTINCT a.applicant_name) >= 2
+       OR COUNT(DISTINCT a.ssn_hash) >= 2
+
+    UNION ALL
+
+    -- Part 2: Device collisions (same device_fingerprint, different identities)
+    SELECT
+      'device_collision' AS identity_collision_type,
+      a.device_fingerprint AS collision_key,
+      COUNT(DISTINCT a.applicant_name) AS distinct_names,
+      COUNT(DISTINCT a.ssn_hash) AS distinct_ssns,
+      STRING_AGG(DISTINCT a.applicant_name, ', ') AS names,
+      STRING_AGG(DISTINCT a.applicant_id, ', ') AS applicant_ids,
+      MIN(a.application_date) AS earliest_application,
+      MAX(a.application_date) AS latest_application
+    FROM credit_applications a
+    WHERE a.event_type = 'CREDIT_APPLICATION'
+      AND a.application_date >= DATEADD(DAY, -90, CURRENT_DATE)
+      AND a.device_fingerprint IS NOT NULL
+    GROUP BY a.device_fingerprint
+    HAVING COUNT(DISTINCT a.applicant_name) >= 2
+       OR COUNT(DISTINCT a.ssn_hash) >= 2
+
+    ORDER BY distinct_names DESC
+falsepositives:
+  - Household members applying from the same shared device (device collision only)
+  - Identical twins or family members with similar facial features (biometric collision)
+  - Corporate devices used by loan officers submitting multiple client applications
+level: critical
+tags:
+  - attack.t1656
+  - attack.t1585.001
+  - cfpf.phase2.initial_access
+  - flame.synthetic-identity
+  - flame.biometric-collision
+  - flame.cross-application-correlation

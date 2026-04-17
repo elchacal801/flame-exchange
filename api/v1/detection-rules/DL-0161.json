@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:03.585603+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "48c67c22-55fb-47fc-bb4d-99d4891ef92e",
+    "dl_id": "DL-0161",
+    "title": "AI Document Template Cluster — Identical Formatting Patterns Across Applications",
+    "status": "experimental",
+    "description": "Detects clusters of submitted ID documents sharing identical formatting artifacts, template structures, or AI generation signatures. AI document generators produce documents with consistent pixel-level artifacts, font embedding patterns, and template metadata even when the identity details differ. When 3+ documents from different applicants show template_similarity_score > 0.85, this indicates a common AI generator. Underground forgery services like OnlyFake successors use a limited number of document templates per jurisdiction, creating detectable clustering when multiple synthetic identities are onboarded through the same forgery pipeline. Template similarity analysis across the document corpus reveals these clusters even when individual documents pass automated verification checks.\n",
+    "cfpf_phase": "P2",
+    "level": "high",
+    "detection": {
+      "selection_document_submission": {
+        "event_type": "DOCUMENT_SUBMISSION"
+      },
+      "filter_template_cluster": {
+        "template_similarity_score|gt": 0.85
+      },
+      "condition": "selection_document_submission AND template_similarity_score > 0.85 across 3+ documents from different applicant_name/ssn_hash combinations within 90 days\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "document_verification"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "applicant_id",
+        "event_type",
+        "submission_timestamp",
+        "document_type",
+        "document_file_hash",
+        "applicant_name",
+        "ssn_hash",
+        "device_fingerprint"
+      ],
+      "enrichment_required": [
+        {
+          "field": "template_similarity_score",
+          "source": "Document analysis — pairwise similarity score (0-1) comparing document template structure"
+        },
+        {
+          "field": "template_cluster_id",
+          "source": "Document clustering model — cluster assignment based on template structural features"
+        },
+        {
+          "field": "pixel_artifact_hash",
+          "source": "Image analysis — perceptual hash of pixel-level artifacts in document background"
+        },
+        {
+          "field": "font_profile_hash",
+          "source": "Font analysis — hash of font embedding characteristics across document text regions"
+        },
+        {
+          "field": "template_source_match",
+          "source": "Threat intel — match against known forgery service template database"
+        }
+      ],
+      "derived_fields": [
+        "cluster_size",
+        "distinct_identities_in_cluster",
+        "cluster_time_span_days"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for AI Document Template Cluster Detection\n// Detects clusters of documents sharing AI generation template signatures\nevent_type=\"DOCUMENT_SUBMISSION\"\n| submission_timestamp > now() - 90d\n| groupBy(template_cluster_id, function=[\n    count(as=cluster_size),\n    count(distinct=true, field=applicant_name, as=distinct_applicants),\n    count(distinct=true, field=ssn_hash, as=distinct_ssns),\n    avg(template_similarity_score, as=avg_similarity),\n    collect([applicant_id, applicant_name, submission_timestamp,\n             document_type, device_fingerprint], limit=50) as cluster_members,\n    min(submission_timestamp) as cluster_start,\n    max(submission_timestamp) as cluster_end\n  ])\n| cluster_size >= 3 AND distinct_applicants >= 3 AND avg_similarity > 0.85\n| select([template_cluster_id, cluster_size, distinct_applicants,\n          distinct_ssns, avg_similarity, cluster_start, cluster_end,\n          cluster_members])\n| sort(cluster_size, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for AI Document Template Cluster Detection\")`\n`comment(\"Detects clusters of documents sharing AI generation template signatures\")`\nindex=flame_banking sourcetype=flame:document_verification\n  event_type=\"DOCUMENT_SUBMISSION\"\n  earliest=-90d@d\n| stats\n    count as cluster_size,\n    dc(applicant_name) as distinct_applicants,\n    dc(ssn_hash) as distinct_ssns,\n    avg(template_similarity_score) as avg_similarity,\n    values(applicant_id) as applicant_ids,\n    values(applicant_name) as names,\n    values(document_type) as document_types,\n    min(submission_timestamp) as cluster_start,\n    max(submission_timestamp) as cluster_end\n    by template_cluster_id\n| where cluster_size >= 3 AND distinct_applicants >= 3 AND avg_similarity > 0.85\n| eval cluster_time_span_days = round((cluster_end - cluster_start) / 86400, 1)\n| table template_cluster_id, cluster_size, distinct_applicants,\n        distinct_ssns, avg_similarity, cluster_start, cluster_end,\n        cluster_time_span_days, applicant_ids, names, document_types\n| sort - cluster_size",
+      "sql": "-- SQL for AI Document Template Cluster Detection\n-- Detects clusters of documents sharing AI generation template signatures\nSELECT\n  d.template_cluster_id,\n  COUNT(*) AS cluster_size,\n  COUNT(DISTINCT d.applicant_name) AS distinct_applicants,\n  COUNT(DISTINCT d.ssn_hash) AS distinct_ssns,\n  AVG(d.template_similarity_score) AS avg_similarity,\n  MIN(d.submission_timestamp) AS cluster_start,\n  MAX(d.submission_timestamp) AS cluster_end,\n  DATEDIFF(DAY, MIN(d.submission_timestamp), MAX(d.submission_timestamp)) AS cluster_time_span_days,\n  STRING_AGG(DISTINCT d.applicant_name, ', ') AS names,\n  STRING_AGG(DISTINCT d.applicant_id, ', ') AS applicant_ids\nFROM document_submissions d\nWHERE d.event_type = 'DOCUMENT_SUBMISSION'\n  AND d.submission_timestamp >= DATEADD(DAY, -90, CURRENT_DATE)\n  AND d.template_cluster_id IS NOT NULL\nGROUP BY d.template_cluster_id\nHAVING COUNT(*) >= 3\n  AND COUNT(DISTINCT d.applicant_name) >= 3\n  AND AVG(d.template_similarity_score) > 0.85\nORDER BY COUNT(*) DESC"
+    },
+    "references": [
+      "Entrust 2025 Identity Fraud Report — document template clustering analysis",
+      "Trend Micro, Underground KYC Bypass Market Research — forgery service template reuse",
+      "LexisNexis Risk Solutions, Global State of Fraud and Identity Report 2026"
+    ],
+    "threat_path_ids": [
+      "TP-0029"
+    ],
+    "fraud_types": [
+      "ai-accelerated-fraud-infrastructure",
+      "document-fraud",
+      "synthetic-identity"
+    ],
+    "tags": [
+      "attack.t1588.005",
+      "attack.t1656",
+      "cfpf.phase2.initial_access",
+      "flame.ai-document-fraud",
+      "flame.forgery-service-detection",
+      "flame.template-clustering"
+    ],
+    "falsepositives": [
+      "Legitimate documents from the same jurisdiction and issuance period sharing standard government templates",
+      "Documents scanned by the same institutional scanner producing consistent compression artifacts",
+      "Batch submissions from legitimate corporate onboarding processes"
+    ]
+  }
+}

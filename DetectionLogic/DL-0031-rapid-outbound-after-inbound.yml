@@ -41,18 +41,22 @@ data_sources:
   - event_type
   - transaction_amount
 queries:
-  logscale: |-
-    // LogScale LQL for Rapid Outbound Wire After Large Inbound
+  cql: |-
+    // CrowdStrike CQL for Rapid Outbound Wire After Large Inbound
     // Repository: flame-banking-transaction-monitoring
-    // Aggregation that cannot be expressed in Sigma:
-    // Original condition: selection_inbound | near selection_outbound by account_id
-    (event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT")
-    transaction_amount>=10000
-    (event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT")
-    transaction_amount>=8000
-    // Temporal correlation — use join() or selfJoinFilter() in LogScale
-    // to correlate the selection events within the timeframe
-    | selfJoinFilter(account_id, where=[...])
+    // Correlates large inbound credit with rapid outbound transfer
+    // within 6h for the same account (pass-through pattern)
+    ((event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT") AND transaction_amount>=10000)
+    OR ((event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT") AND transaction_amount>=8000)
+    | selfJoinFilter(account_id, where=[
+        {event_type="WIRE_CREDIT" OR event_type="ACH_CREDIT"}
+        {event_type="WIRE_INITIATION" OR event_type="ACH_DEBIT"}
+      ])
+    | groupBy(account_id, function=[
+        count(as=event_count),
+        collect([event_type, transaction_amount, beneficiary_name, @timestamp])
+      ], span=6h)
+    | event_count >= 2
   splunk: |-
     `comment("Splunk SPL for Rapid Outbound Wire After Large Inbound")`
     `comment("Aggregation that cannot be expressed in Sigma")`

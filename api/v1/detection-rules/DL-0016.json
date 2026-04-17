@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.154047+00:00",
+    "generated_at": "2026-04-09T19:40:01.726878+00:00",
     "total": 1
   },
   "data": {
@@ -37,7 +37,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Distributed Credential Stuffing\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=/^Mozilla/5\\.0.*$/\n| groupBy(user_agent, function=[count(as=event_count), collect(source_ip)])\n| event_count > 20\n| groupBy(user_agent, function=[count(as=event_count), collect(username)])\n| event_count > 50",
+      "cql": "// CrowdStrike CQL for Distributed Credential Stuffing\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count() by source_ip) < 5\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=/^Mozilla/5\\.0.*$/\n| groupBy(user_agent, function=[count(as=event_count), collect(source_ip)])\n| event_count > 20\n| groupBy(user_agent, function=[count(as=event_count), collect(username)])\n| event_count > 50",
       "splunk": "`comment(\"Splunk SPL for Distributed Credential Stuffing\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and selection_characteristics | count(distinct source_ip) by user_agent > 20 and count(distinct username) by user_agent > 50 and max(count()\")`\nindex=flame_banking sourcetype=flame:auth_logs\nevent_type=\"login_attempt\"\nauth_result=\"failure\"\nuser_agent=\"^Mozilla/5\\.0.*$\"\n| stats dc(source_ip) as unique_source_ip by user_agent\n| where unique_source_ip > 20\n| stats dc(username) as unique_username by user_agent\n| where unique_username > 50"
     },
     "references": [

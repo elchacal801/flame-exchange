@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.721843+00:00",
+    "generated_at": "2026-04-09T19:40:03.279804+00:00",
     "total": 1
   },
   "data": {
@@ -27,6 +27,7 @@
     "native_query_required": true,
     "data_sources": {
       "native_fields": [
+        "claim_type",
         "claim_id",
         "accident_id",
         "claim_date",
@@ -39,6 +40,7 @@
       ]
     },
     "queries": {
+      "cql": "// CrowdStrike CQL for Staged Accident Claim Correlation\n// Identifies claims sharing professional enablers across unrelated accidents\nclaim_type=\"vehicle_accident\"\n| claim_date > now() - 365d\n// Medical provider clustering\n| groupBy(medical_provider, function=[\n    count(field=accident_id, distinct=true, as=accident_count),\n    count(field=claim_id, distinct=true, as=claim_count),\n    collect([accident_id]),\n    sum(claim_amount, as=total_claimed)\n  ])\n| accident_count >= 3\n| provider_type := \"medical\"\n| sort(accident_count, order=desc)\n// Note: run parallel queries replacing medical_provider with\n// legal_representative (provider_type=\"legal\") and\n// repair_shop (provider_type=\"repair\") then union results",
       "splunk": "`comment(\"Splunk SPL for Staged Accident Claim Correlation\")`\n`comment(\"Identifies claims sharing professional enablers across unrelated accidents\")`\nindex=flame_insurance sourcetype=flame:claims claim_type=\"vehicle_accident\"\n| eval claim_date_epoch=strptime(claim_date, \"%Y-%m-%d\")\n| where claim_date_epoch > relative_time(now(), \"-365d\")\n| stats dc(accident_id) AS accident_count,\n        dc(claim_id) AS claim_count,\n        values(accident_id) AS accidents,\n        sum(claim_amount) AS total_claimed\n  BY medical_provider\n| where accident_count >= 3\n| rename medical_provider AS shared_provider\n| eval provider_type=\"medical\"\n| append [\n  search index=flame_insurance sourcetype=flame:claims claim_type=\"vehicle_accident\"\n  | where strptime(claim_date, \"%Y-%m-%d\") > relative_time(now(), \"-365d\")\n  | stats dc(accident_id) AS accident_count,\n          dc(claim_id) AS claim_count,\n          values(accident_id) AS accidents,\n          sum(claim_amount) AS total_claimed\n    BY legal_representative\n  | where accident_count >= 3\n  | rename legal_representative AS shared_provider\n  | eval provider_type=\"legal\"\n]\n| append [\n  search index=flame_insurance sourcetype=flame:claims claim_type=\"vehicle_accident\"\n  | where strptime(claim_date, \"%Y-%m-%d\") > relative_time(now(), \"-365d\")\n  | stats dc(accident_id) AS accident_count,\n          dc(claim_id) AS claim_count,\n          values(accident_id) AS accidents,\n          sum(claim_amount) AS total_claimed\n    BY repair_shop\n  | where accident_count >= 3\n  | rename repair_shop AS shared_provider\n  | eval provider_type=\"repair\"\n]\n| sort - accident_count",
       "sql": "-- SQL for Staged Accident Claim Correlation\n-- Identifies shared professional enablers across unrelated accidents\nSELECT\n    'medical' AS provider_type,\n    a.medical_provider AS shared_provider,\n    COUNT(DISTINCT a.accident_id) AS accident_count,\n    COUNT(DISTINCT a.claim_id) AS claim_count,\n    SUM(a.claim_amount) AS total_claimed\nFROM insurance_claims a\nWHERE a.claim_type = 'vehicle_accident'\n  AND a.claim_date >= DATEADD(year, -1, GETDATE())\n  AND a.medical_provider IS NOT NULL\nGROUP BY a.medical_provider\nHAVING COUNT(DISTINCT a.accident_id) >= 3\n\nUNION ALL\n\nSELECT\n    'legal' AS provider_type,\n    a.legal_representative AS shared_provider,\n    COUNT(DISTINCT a.accident_id) AS accident_count,\n    COUNT(DISTINCT a.claim_id) AS claim_count,\n    SUM(a.claim_amount) AS total_claimed\nFROM insurance_claims a\nWHERE a.claim_type = 'vehicle_accident'\n  AND a.claim_date >= DATEADD(year, -1, GETDATE())\n  AND a.legal_representative IS NOT NULL\nGROUP BY a.legal_representative\nHAVING COUNT(DISTINCT a.accident_id) >= 3\n\nUNION ALL\n\nSELECT\n    'repair' AS provider_type,\n    a.repair_shop AS shared_provider,\n    COUNT(DISTINCT a.accident_id) AS accident_count,\n    COUNT(DISTINCT a.claim_id) AS claim_count,\n    SUM(a.claim_amount) AS total_claimed\nFROM insurance_claims a\nWHERE a.claim_type = 'vehicle_accident'\n  AND a.claim_date >= DATEADD(year, -1, GETDATE())\n  AND a.repair_shop IS NOT NULL\nGROUP BY a.repair_shop\nHAVING COUNT(DISTINCT a.accident_id) >= 3\n\nORDER BY accident_count DESC"
     },
@@ -56,6 +58,7 @@
       "insurance-fraud"
     ],
     "tags": [
+      "attack.t1657",
       "cfpf.phase4.execution",
       "flame.crash-for-cash",
       "flame.insurance-ring",

@@ -19,7 +19,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1111, T1078, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT011.002", "FT043", "FT003", "FT006.002", "FT038.002", "FT044", "FT005.001", "FT008.001", "FT013", "FT016"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1006.002", "T1110.001", "T1555", "F1004", "F1018", "F1025", "F1045", "F1047", "T1185", "T1451"]
 groupib_stages:               # Group-IB Fraud Matrix (reference)
   - "Reconnaissance"
   - "Resource Development"
@@ -58,6 +58,7 @@ regulatory_refs:
   - REG-FINCEN-AML
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids: []
 tags:
   - SIM-swap
   - cryptocurrency
@@ -157,6 +158,20 @@ SIM swap services are actively advertised on Telegram channels, dark web forums,
 | P4 | Exchange: withdrawal address whitelisting with time-lock on additions | Preventive |
 | P5 | Blockchain analytics: flag transactions to known mixer/tumbler addresses | Detective |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 3 (Established) | Executive mandate to eliminate SMS-based MFA for high-value accounts; investment in hardware security key programs and carrier-level SIM swap detection APIs |
+| ASSESS | Level 3 (Established) | Risk assessment of authentication methods across all customer-facing platforms; identification of high-value account holders relying on SMS MFA; evaluation of carrier API integration for SIM swap detection |
+| PLAN | Level 3 (Established) | Incident response playbook for SIM swap-initiated ATO including carrier coordination and blockchain tracing; withdrawal hold policies for accounts showing SIM change indicators |
+| ACT | Level 4 (Advanced) | Real-time SIM swap detection via carrier network APIs (SIM Swap Check, Number Verification); mandatory withdrawal holds when account recovery contacts change within 24-48 hours of new device login; withdrawal address whitelisting with time-locked additions; blockchain analytics integration for mixer/tumbler detection |
+| MONITOR | Level 3 (Established) | Correlation of SIM change events with subsequent MFA authentication attempts and withdrawal requests; monitoring for new device logins followed by contact info changes and maximum withdrawal activity |
+| REPORT | Level 3 (Established) | SAR filing with SIM swap and crypto laundering indicators; coordination with carrier fraud teams and law enforcement for active SIM swap investigations; blockchain intelligence sharing with exchanges |
+| IMPROVE | Level 3 (Established) | Post-incident review incorporating carrier-side SIM change data; tracking of emerging OTP interception techniques (OTP bots, AiTM kits, eSIM hijacking) to update authentication controls |
+
 ## Detection Approaches
 
 **Exchange-Side — SIM Swap Indicator Correlation**
@@ -206,6 +221,8 @@ Flag SIM changes where:
 
 **OTP Interception Beyond SIM Swap (2024-2025)**: The Recorded Future Annual Payment Fraud Intelligence Report 2025 documented the cementing of OTP interception as a popular technique for circumventing authentication, extending well beyond SIM swap. TransUnion's 2025 report identified OTPs as the most common form of secondary authentication globally, making OTP interception a high-value capability for threat actors. Key OTP interception techniques that have matured alongside SIM swap include: (1) **OTP bot services** — automated call-back bots on Telegram that call victims and socially engineer them into entering their OTP, which is then relayed to the attacker in real time; (2) **Phishing kits with real-time OTP relay** — frameworks such as EvilginX (which saw a sharp increase in dark web references throughout 2024) that intercept OTPs during phishing sessions by proxying the victim's session to the legitimate service; (3) **Mobile malware with OTP interception** — Android RATs such as "xl-hook Android Banking Bot RAT" (offered by "churk" on XSS Forum, April 2025) and MaaS platforms like "PhantomOS" (offered by "Zero Compile" on XSS Forum, May 2025) that intercept OTPs via Android accessibility services or notification listeners; (4) **SS7/Diameter protocol exploitation** — interception of SMS-based OTPs via telecom signaling vulnerabilities, increasingly offered as-a-service on dark web forums. These techniques are particularly critical as enablers for digital wallet fraud (TP-0037), where intercepted OTPs are used to provision stolen cards into Apple Pay, Google Pay, or Samsung Pay for downstream contactless fraud.
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported SIM swap losses declining to $17.4 million from 971 complaints (down from $26M/982 in 2024). The decline in losses may indicate improved carrier controls following FCC rule adoption, but SIM swap remains a high-impact technique for targeted attacks on high-value crypto accounts. The per-incident average remains significantly higher than most fraud categories, reflecting the targeted nature of attacks against crypto holders.
+
 SIM swap attacks represent a critical intersection of telecommunications and financial fraud. The FCC adopted new rules in November 2023 requiring carriers to implement more robust customer authentication before processing SIM changes and port-out requests, but enforcement and adoption remain uneven. The threat has evolved beyond targeting individual consumers — organized groups now conduct bulk SIM swaps against high-value targets including cryptocurrency holders, corporate executives, and influencers. Court filings from DOJ prosecutions (e.g., the 2024 "Scattered Spider" cases) reveal that SIM swap capability is routinely sold as a service on Telegram for $300-$1,000 per swap, with carrier insiders sometimes complicit. The shift toward eSIM technology introduces new attack vectors (eSIM profile hijacking via compromised carrier accounts) while partially mitigating traditional physical SIM swap methods. Financial institutions should treat any account activity following a recent SIM change event — detectable via carrier APIs or SS7 monitoring services — as elevated risk requiring step-up authentication beyond SMS OTP.
 
 ## References
@@ -213,6 +230,7 @@ SIM swap attacks represent a critical intersection of telecommunications and fin
 - FBI IC3 PSA: "SIM Swapping". [Link](https://www.ic3.gov/PSA/2022/PSA220208)
 - DOJ: "Eight Individuals Charged in SIM Swap Conspiracy" (various indictments)
 - Chainalysis: Crypto Crime Report (annual). [Link](https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/)
+- FBI IC3: "2025 Internet Crime Report" — SIM swap: $17.4M in losses from 971 complaints (down from $26M/982 in 2024). [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 - T-Mobile, AT&T carrier SIM swap prevention documentation
 
 - "Organized fraud detection in 2026: a technical landscape report" — Specific fraud category detection: Synthetic identity fraud (SIM swap subsection)
@@ -224,3 +242,4 @@ SIM swap attacks represent a critical intersection of telecommunications and fin
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Underground Ecosystem Context |
 | 2026-03-04 | FLAME Project | Enhanced with Recorded Future 2025 intelligence — OTP interception techniques, TP-0037 cross-reference |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — SIM swap losses declined to $17.4M (from $26M), possible carrier control improvement |

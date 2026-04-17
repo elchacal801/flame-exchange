@@ -1,0 +1,84 @@
+{
+  "Event": {
+    "uuid": "fc3cb5c4-cb84-5833-b6d7-5e53c908333c",
+    "info": "FLAME: QR Code Payment Fraud / Quishing",
+    "date": "2026-03-17",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "c12ee74e-2e8b-5071-a76a-87b496511874",
+        "type": "text",
+        "category": "Other",
+        "value": "quishing",
+        "comment": "Fraud type for TP-0051"
+      },
+      {
+        "uuid": "4882ebe7-ec24-5998-8e9d-3f13c51939ac",
+        "type": "text",
+        "category": "Other",
+        "value": "credential-stuffing",
+        "comment": "Fraud type for TP-0051"
+      },
+      {
+        "uuid": "043a26a3-4465-5a53-bc9c-6c159460145b",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0051"
+      },
+      {
+        "uuid": "2d1ec941-0b33-5e2f-b108-6c299160c06b",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0051"
+      },
+      {
+        "uuid": "93bed92e-7079-5f72-b5f9-07f950d736ce",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0051"
+      },
+      {
+        "uuid": "6558472c-fa3d-5f7f-bf6d-2cba4b5268ce",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0051"
+      },
+      {
+        "uuid": "94926920-a9d4-515b-86b1-25fec6a88308",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0051"
+      },
+      {
+        "uuid": "d8160959-5ce6-5a13-99f4-602964ed94c0",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0051"
+      },
+      {
+        "uuid": "25f20c40-8a46-5c9b-9ae1-f6a35a320e30",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0051"
+      }
+    ]
+  }
+}

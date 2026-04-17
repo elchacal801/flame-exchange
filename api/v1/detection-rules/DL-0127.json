@@ -1,11 +1,11 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.662658+00:00",
+    "generated_at": "2026-04-09T19:40:03.138131+00:00",
     "total": 1
   },
   "data": {
-    "id": "c9d0e1f2-a3b4-4c5d-6e7f-8a9b0c1d2e3f",
+    "id": "a430a7cf-65c1-488b-9547-76c2388c8845",
     "dl_id": "DL-0127",
     "title": "TDS URL Parameter Fingerprint Tracking Across Rotating Domains",
     "status": "experimental",
@@ -57,7 +57,7 @@
     },
     "queries": {
       "splunk": "`comment(\"Splunk SPL for TDS URL Parameter Fingerprint Tracking\")`\n`comment(\"Identifies consistent TDS parameter patterns across rotating domains\")`\nindex=flame_proxy sourcetype=flame:http_log http_status IN (301, 302, 307)\n(url_query=\"*?u=*&o=*\" OR url_query=\"*aff_id=*&click_id=*\" OR url_query=\"*subid=*&source=*&clickid=*\" OR url_query=\"*pid=*&offer_id=*\")\n| rex field=url_query \"(?<param_pattern>[a-z_]+=)[^&]*(&[a-z_]+=)[^&]*\"\n| eval param_fingerprint=param_pattern\n| lookup domain_age_feed dest_domain OUTPUT domain_age_days\n| where domain_age_days < 90 OR isnull(domain_age_days)\n| stats dc(dest_domain) AS unique_domains\n        values(dest_domain) AS domains\n        dc(src_ip) AS unique_visitors\n        count AS total_hits\n        earliest(_time) AS first_seen\n        latest(_time) AS last_seen\n    by param_fingerprint\n| where unique_domains >= 3\n| sort -unique_domains",
-      "logscale": "// LogScale LQL for TDS URL Parameter Fingerprint Tracking\n// Repository: flame-proxy-http-log\nhttp_status=/30[127]/\n| url_query=/\\?(u=[^&]*&o=|aff_id=[^&]*&click_id=|subid=[^&]*&source=[^&]*&clickid=|pid=[^&]*&offer_id=)/\n| regex(\"(?<param_fingerprint>[a-z_]+=)[^&]*(&[a-z_]+=)\", field=url_query)\n| groupBy([param_fingerprint], function=[\n    count(as=total_hits),\n    collectDistinct(dest_domain, as=unique_domains),\n    collectDistinct(src_ip, as=unique_visitors)\n  ])\n| length(unique_domains) >= 3"
+      "cql": "// CrowdStrike CQL for TDS URL Parameter Fingerprint Tracking\n// Repository: flame-proxy-http-log\nhttp_status=/30[127]/\n| url_query=/\\?(u=[^&]*&o=|aff_id=[^&]*&click_id=|subid=[^&]*&source=[^&]*&clickid=|pid=[^&]*&offer_id=)/\n| regex(\"(?<param_fingerprint>[a-z_]+=)[^&]*(&[a-z_]+=)\", field=url_query)\n| groupBy([param_fingerprint], function=[\n    count(as=total_hits),\n    collectDistinct(dest_domain, as=unique_domains),\n    collectDistinct(src_ip, as=unique_visitors)\n  ])\n| length(unique_domains) >= 3"
     },
     "references": [
       "https://blackhat.com/us-25/briefings/schedule/#no-hoodies-here-organized-crime-in-adtech-46001",
@@ -65,35 +65,21 @@
     ],
     "threat_path_ids": [
       "TP-0042",
-      "TP-0044",
-      "TP-0060",
-      "TP-0061"
+      "TP-0060"
     ],
     "fraud_types": [
       "affiliate-fraud",
-      "bph-migration",
       "malvertising",
-      "sanctions-evasion-infrastructure",
-      "state-criminal-convergence",
       "tds-exploitation"
     ],
     "tags": [
       "TP-0042",
-      "TP-0044",
       "TP-0060",
-      "TP-0061",
-      "aeza",
       "affiliate-tracking",
+      "attack.t1583.001",
       "behavioral-fingerprint",
-      "bgp",
-      "bulletproof-hosting",
-      "cfpf.phase1.recon",
       "cfpf.phase3.positioning",
       "domain-rotation",
-      "ip-rotation",
-      "ripe-abuse",
-      "sanctions-evasion",
-      "tae",
       "tds",
       "url-parameter-fingerprint",
       "vextrio"

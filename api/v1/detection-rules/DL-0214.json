@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:04.639114+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "f4b0c53e-9a6d-4e1c-d3f5-1b8a0c4e7f96",
+    "dl_id": "DL-0214",
+    "title": "Post-Fraud Victim Payment to Newly Registered Legal or Recovery Entity",
+    "status": "experimental",
+    "description": "Detects recovery fraud patterns where victims of prior fraud are targeted by fictitious law firms or recovery companies promising to retrieve lost funds. FBI IC3 2025 reported 10,516 recovery scam complaints with $1.4 billion in losses — making recovery fraud one of the largest IC3 loss categories. PSA250813 (August 2025) specifically warned about fictitious law firms targeting cryptocurrency scam victims. This rule identifies the characteristic pattern: a customer with a recent fraud complaint making payments to a newly established entity with legal or recovery terminology in the payee name. The 180-day lookback window accounts for IC3 data showing longer re-targeting timelines than previously estimated.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection_prior_victim": {
+        "customer_fraud_complaint_180d": true
+      },
+      "selection_legal_payee": {
+        "payee_name|contains": [
+          "law",
+          "legal",
+          "attorney",
+          "recovery",
+          "asset recovery",
+          "fund recovery",
+          "claims",
+          "restitution",
+          "litigation"
+        ]
+      },
+      "filter_new_entity": {
+        "payee_account_age_days|lte": 90
+      },
+      "condition": "selection_prior_victim AND selection_legal_payee AND filter_new_entity"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "customer_id",
+        "payee_id",
+        "payee_name",
+        "payment_amount",
+        "payment_date",
+        "payment_method"
+      ],
+      "enrichment_required": [
+        {
+          "field": "customer_fraud_complaint_180d",
+          "source": "Boolean — whether customer has filed a fraud complaint or been flagged as a fraud victim in the trailing 180 days"
+        },
+        {
+          "field": "payee_account_age_days",
+          "source": "Days since the payee account was opened at the receiving institution"
+        }
+      ],
+      "derived_fields": [
+        "total_payments_to_payee",
+        "prior_fraud_type",
+        "prior_fraud_amount"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Recovery Fraud — Fictitious Law Firm Payment\n// Detects prior fraud victims paying newly established legal/recovery entities\ncustomer_fraud_complaint_180d=\"true\"\npayee_name=/law|legal|attorney|recovery|asset.recovery|fund.recovery|claims|restitution|litigation/i\npayee_account_age_days<=90\n| groupBy(account_id, payee_id, function=[\n    collect([payee_name, payment_amount, payment_date, payment_method]),\n    count(payment_id, as=payment_count),\n    sum(payment_amount, as=total_paid)\n  ])\n| sort(total_paid, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Recovery Fraud — Fictitious Law Firm Payment\")`\n`comment(\"Detects prior fraud victims paying newly established legal/recovery entities\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  customer_fraud_complaint_180d=\"true\"\n| regex payee_name=\"(?i)(law|legal|attorney|recovery|asset.recovery|fund.recovery|claims|restitution|litigation)\"\n| where payee_account_age_days <= 90\n| stats count AS payment_count, sum(payment_amount) AS total_paid,\n    values(payee_name) AS payee_names, values(payment_method) AS methods,\n    min(_time) AS first_payment, max(_time) AS last_payment\n    by account_id, customer_id, payee_id\n| eval risk_score = case(\n    total_paid > 10000, \"critical\",\n    total_paid > 5000, \"high\",\n    1=1, \"medium\")\n| sort - total_paid"
+    },
+    "references": [
+      "FBI IC3, 2025 Internet Crime Report — Recovery scams: 10,516 complaints, $1.4B losses",
+      "FBI IC3 PSA250813, August 13, 2025 — Fictitious Law Firms Targeting Cryptocurrency Scam Victims",
+      "FBI IC3 PSA250418, April 18, 2025 — FBI Warns of Scammers Impersonating the IC3",
+      "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+      "https://www.ic3.gov/PSA/2025/PSA250813",
+      "https://www.ic3.gov/PSA/2025/PSA250418"
+    ],
+    "threat_path_ids": [
+      "TP-0062"
+    ],
+    "fraud_types": [
+      "advance-fee-fraud",
+      "impersonation",
+      "recovery-fraud"
+    ],
+    "tags": [
+      "cfpf.phase4.execution",
+      "flame.advance-fee-fraud",
+      "flame.impersonation",
+      "flame.recovery-fraud"
+    ],
+    "falsepositives": [
+      "Legitimate legal representation retained after a fraud incident",
+      "Insurance claim payments following documented fraud losses",
+      "Court-ordered restitution payments through established legal entities",
+      "Payments to established, long-standing law firms for legitimate services"
+    ]
+  }
+}

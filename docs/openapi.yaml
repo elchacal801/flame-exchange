@@ -1,0 +1,909 @@
+openapi: 3.0.3
+info:
+  title: FLAME API
+  version: 1.0.0
+  description: |
+    Static JSON API for the FLAME (Financial Fraud Library for Attack Mapping
+    and Enrichment) project. All endpoints serve pre-generated JSON files from
+    a static hosting origin. The API follows a consistent `{meta, data}` envelope
+    for FLAME-native endpoints and standard TAXII 2.1 structures for threat
+    intelligence sharing endpoints.
+
+    **Base URL**: `https://flameintel.org`
+
+    **Authentication**: None required. All data is TLP:WHITE and publicly accessible.
+
+    **Rate Limiting**: Standard CDN rate limits apply (GitHub Pages / Cloudflare).
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: FLAME Project
+    url: https://github.com/elchacal801/flame-fraud
+
+servers:
+  - url: https://flameintel.org
+    description: Production (static site)
+
+tags:
+  - name: Threat Paths
+    description: Fraud threat path hypotheses mapped to CFPF phases
+  - name: Detection Rules
+    description: Detection logic rules (Sigma-compatible and native queries)
+  - name: Baselines
+    description: Fraud baseline measurements for benchmarking
+  - name: Reference Data
+    description: Statistics, taxonomy, and coverage matrix
+  - name: TAXII
+    description: TAXII 2.1 compatible discovery and collection endpoints
+
+paths:
+  /api/v1/threat-paths.json:
+    get:
+      operationId: listThreatPaths
+      tags: [Threat Paths]
+      summary: List all threat paths (summaries)
+      description: |
+        Returns all FLAME threat paths without the full markdown `body` field.
+        Use the individual threat path endpoint for full content.
+      responses:
+        "200":
+          description: Envelope containing an array of threat path summaries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ThreatPathSummary"
+              example:
+                meta:
+                  version: "1.0"
+                  generated_at: "2026-03-28T23:08:38.350700+00:00"
+                  total: 69
+                data:
+                  - id: TP-0001
+                    title: "Treasury Management ATO via Malvertising and Vishing"
+                    category: ThreatPath
+                    date: "2026-02-12"
+                    confidence_score: 82
+                    sectors: ["banking"]
+                    fraud_types: ["account-takeover", "vishing", "wire-fraud", "malvertising"]
+                    cfpf_phases: ["P1", "P2", "P3", "P4", "P5"]
+
+  /api/v1/threat-paths/{tp_id}.json:
+    get:
+      operationId: getThreatPath
+      tags: [Threat Paths]
+      summary: Get a single threat path with full body
+      description: |
+        Returns the complete threat path including the full markdown `body`
+        containing CFPF phase mapping, detection approaches, controls, and
+        analyst notes.
+      parameters:
+        - name: tp_id
+          in: path
+          required: true
+          description: "Threat path identifier (e.g., TP-0001)"
+          schema:
+            type: string
+            pattern: "^TP-\\d{4}$"
+            example: TP-0001
+      responses:
+        "200":
+          description: Envelope containing the full threat path object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    $ref: "#/components/schemas/ThreatPathFull"
+        "404":
+          description: Threat path not found (static file does not exist)
+
+  /api/v1/detection-rules.json:
+    get:
+      operationId: listDetectionRules
+      tags: [Detection Rules]
+      summary: List all detection rules
+      description: Returns all FLAME detection logic rules with query content.
+      responses:
+        "200":
+          description: Envelope containing an array of detection rules
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/DetectionRule"
+              example:
+                meta:
+                  version: "1.0"
+                  generated_at: "2026-03-28T23:08:39.348392+00:00"
+                  total: 176
+                data:
+                  - id: "5a4b11f2-7b0b-4de0-8fb3-a8c3d7031911"
+                    dl_id: DL-0001
+                    title: "Mule Account Velocity Pattern"
+                    status: experimental
+                    cfpf_phase: P5
+                    level: high
+
+  /api/v1/detection-rules/{dl_id}.json:
+    get:
+      operationId: getDetectionRule
+      tags: [Detection Rules]
+      summary: Get a single detection rule
+      parameters:
+        - name: dl_id
+          in: path
+          required: true
+          description: "Detection logic identifier (e.g., DL-0001)"
+          schema:
+            type: string
+            pattern: "^DL-\\d{4}$"
+            example: DL-0001
+      responses:
+        "200":
+          description: Envelope containing the full detection rule
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    $ref: "#/components/schemas/DetectionRule"
+        "404":
+          description: Detection rule not found
+
+  /api/v1/baselines.json:
+    get:
+      operationId: listBaselines
+      tags: [Baselines]
+      summary: List all fraud baselines
+      description: |
+        Returns all FLAME baseline measurements used for fraud detection
+        benchmarking and threshold calibration.
+      responses:
+        "200":
+          description: Envelope containing an array of baselines
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Baseline"
+              example:
+                meta:
+                  version: "1.0"
+                  generated_at: "2026-03-28T23:08:40.366896+00:00"
+                  total: 35
+                data:
+                  - id: BASE-001
+                    title: "Commercial Wire Velocity Baseline"
+                    category: Baseline
+                    date: "2026-02-20"
+                    tlp: WHITE
+
+  /api/v1/stats.json:
+    get:
+      operationId: getStats
+      tags: [Reference Data]
+      summary: Get project statistics
+      description: |
+        Returns aggregate statistics including total threat paths, fraud type
+        counts, sector coverage, CFPF phase coverage, top tags, and the
+        coverage matrix.
+      responses:
+        "200":
+          description: Envelope containing project statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    $ref: "#/components/schemas/Stats"
+              example:
+                meta:
+                  version: "1.0"
+                  generated_at: "2026-03-28T23:08:40.371143+00:00"
+                  total: 1
+                data:
+                  total: 69
+                  fraudTypes: 105
+                  sectors: 19
+                  phaseCoverage:
+                    P1: 69
+                    P2: 67
+                    P3: 69
+                    P4: 67
+                    P5: 67
+
+  /api/v1/taxonomy.json:
+    get:
+      operationId: getTaxonomy
+      tags: [Reference Data]
+      summary: Get controlled vocabulary taxonomy
+      description: |
+        Returns all controlled vocabulary enumerations used across FLAME
+        data objects, including sectors, fraud types, geopolitical timing,
+        nation-state nexus levels, and infrastructure generation methods.
+      responses:
+        "200":
+          description: Envelope containing taxonomy enumerations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    $ref: "#/components/schemas/Taxonomy"
+
+  /api/v1/coverage-matrix.json:
+    get:
+      operationId: getCoverageMatrix
+      tags: [Reference Data]
+      summary: Get fraud type coverage matrix
+      description: |
+        Returns per-fraud-type counts of threat paths broken down by CFPF
+        phase, useful for gap analysis.
+      responses:
+        "200":
+          description: Envelope containing coverage matrix entries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CoverageEntry"
+              example:
+                meta:
+                  version: "1.0"
+                  generated_at: "2026-03-28T23:08:40.370268+00:00"
+                  total: 105
+                data:
+                  - fraud_type: account-takeover
+                    phases:
+                      P1: 15
+                      P2: 15
+                      P3: 15
+                      P4: 15
+                      P5: 15
+                    total_tps: 15
+
+  /api/taxii/discovery.json:
+    get:
+      operationId: taxiiDiscovery
+      tags: [TAXII]
+      summary: TAXII 2.1 discovery endpoint
+      description: |
+        Returns TAXII 2.1 server discovery information. This is a static
+        approximation of the TAXII discovery resource.
+      responses:
+        "200":
+          description: TAXII discovery document
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TAXIIDiscovery"
+              example:
+                title: "FLAME TAXII Server"
+                description: "Static TAXII 2.1 endpoint for FLAME fraud intelligence"
+                contact: "https://github.com/elchacal801/flame-fraud"
+                default: "https://flameintel.org/api/taxii/default/"
+                api_roots:
+                  - "https://flameintel.org/api/taxii/default/"
+
+  /api/taxii/default/collections/:
+    get:
+      operationId: taxiiListCollections
+      tags: [TAXII]
+      summary: List TAXII collections
+      description: |
+        Returns the available STIX 2.1 collections. Each collection contains
+        STIX domain objects (SDOs) derived from FLAME data.
+      responses:
+        "200":
+          description: TAXII collections list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  collections:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TAXIICollection"
+              example:
+                collections:
+                  - id: "7ab3848b-227c-54b1-aef1-4fc1faba6367"
+                    title: "FLAME Threat Paths"
+                    description: "Fraud scheme SDOs derived from FLAME threat paths"
+                    can_read: true
+                    can_write: false
+                    media_types: ["application/stix+json;version=2.1"]
+                  - id: "76b08f80-510d-5e76-9fe8-3cf7e64a5fe6"
+                    title: "FLAME Detection Rules"
+                    description: "Course-of-action SDOs for fraud detection"
+                    can_read: true
+                    can_write: false
+                    media_types: ["application/stix+json;version=2.1"]
+                  - id: "b392f843-9ea7-5b3a-83e1-d1ac300744ee"
+                    title: "FLAME Baselines"
+                    description: "Baseline control SDOs"
+                    can_read: true
+                    can_write: false
+                    media_types: ["application/stix+json;version=2.1"]
+
+components:
+  schemas:
+    Meta:
+      type: object
+      description: Standard envelope metadata present on all FLAME API responses
+      required: [version, generated_at, total]
+      properties:
+        version:
+          type: string
+          description: API schema version
+          example: "1.0"
+        generated_at:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp when the file was generated
+          example: "2026-03-28T23:08:38.350700+00:00"
+        total:
+          type: integer
+          description: Number of items in the data field (1 for single-object responses)
+          example: 69
+
+    ThreatPathSummary:
+      type: object
+      description: |
+        Threat path summary as returned in the list endpoint. Includes all
+        fields except the full markdown `body`.
+      required: [id, title, category, date, author, tlp]
+      properties:
+        id:
+          type: string
+          description: Unique threat path identifier
+          example: TP-0001
+        title:
+          type: string
+          description: Human-readable title
+          example: "Treasury Management ATO via Malvertising and Vishing"
+        category:
+          type: string
+          enum: [ThreatPath]
+          example: ThreatPath
+        date:
+          type: string
+          format: date
+          description: Publication or last-updated date
+          example: "2026-02-12"
+        author:
+          type: string
+          example: "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)"
+        source:
+          type: string
+          format: uri
+          description: Primary source URL
+          example: "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
+        tlp:
+          type: string
+          enum: [WHITE, GREEN, AMBER, RED]
+          example: WHITE
+        summary:
+          type: string
+          description: Brief plaintext summary of the threat path
+        confidence_score:
+          type: integer
+          nullable: true
+          description: "Analyst confidence score (0-100). Null if not assessed."
+          minimum: 0
+          maximum: 100
+          example: 82
+        source_reliability:
+          type: string
+          nullable: true
+          description: "NATO Admiralty Code source reliability (A-F). Null if not assessed."
+          enum: [A, B, C, D, E, F, null]
+          example: B
+        info_credibility:
+          type: integer
+          nullable: true
+          description: "NATO Admiralty Code information credibility (1-6). Null if not assessed."
+          minimum: 1
+          maximum: 6
+          example: 2
+        infrastructure_generation_method:
+          type: string
+          nullable: true
+          description: How threat infrastructure is generated
+          enum: [manual, dga-embedded, rdga-registered, ai-assisted, tds-routing, null]
+        geopolitical_timing:
+          type: string
+          nullable: true
+          description: Geopolitical timing context
+          enum: [none, election-cycle, sanctions-response, conflict-triggered, seasonal-political, null]
+        nation_state_nexus:
+          type: string
+          nullable: true
+          description: Nation-state involvement level
+          enum: [none, suspected, confirmed, hybrid, null]
+        sectors:
+          type: array
+          items:
+            type: string
+          description: Targeted sectors from the FLAME taxonomy
+          example: ["banking"]
+        fraud_types:
+          type: array
+          items:
+            type: string
+          description: Applicable fraud types from the FLAME taxonomy
+          example: ["account-takeover", "vishing", "wire-fraud"]
+        tags:
+          type: array
+          items:
+            type: string
+          description: Free-form tags for search and categorization
+          example: ["treasury-management", "commercial-banking"]
+        cfpf_phases:
+          type: array
+          items:
+            type: string
+            enum: [P1, P2, P3, P4, P5]
+          description: "CFPF phases covered (P1=Recon, P2=Initial Access, P3=Positioning, P4=Execution, P5=Monetization)"
+          example: ["P1", "P2", "P3", "P4", "P5"]
+        mitre_attack:
+          type: array
+          items:
+            type: string
+          description: MITRE ATT&CK technique IDs
+          example: ["T1583.001", "T1566.002"]
+        ft3_tactics:
+          type: array
+          items:
+            type: string
+          description: Stripe Fraud Taxonomy (FT3) tactic IDs
+          example: ["FTA001", "FTA002"]
+        mitre_f3:
+          type: array
+          items:
+            type: string
+          description: MITRE FiGHT (F3) technique IDs (if applicable)
+        groupib_stages:
+          type: array
+          items:
+            type: string
+          description: Group-IB fraud kill chain stages
+          example: ["Reconnaissance", "Resource Development", "Trust Abuse"]
+        regulatory_refs:
+          type: array
+          items:
+            type: string
+          description: Regulatory reference identifiers
+          example: ["REG-CFPB-REGE", "REG-DORA"]
+        ucff_domains:
+          $ref: "#/components/schemas/UcffDomains"
+        baseline_ids:
+          type: array
+          items:
+            type: string
+          description: Related baseline IDs
+          example: ["BL-0012"]
+        detection_rule_ids:
+          type: array
+          items:
+            type: string
+          description: Associated detection logic rule IDs
+          example: ["DL-0001", "DL-0002"]
+        related_tps:
+          type: array
+          items:
+            $ref: "#/components/schemas/RelatedTP"
+        evidence_count:
+          type: integer
+          description: Number of evidence items
+          example: 0
+
+    ThreatPathFull:
+      description: |
+        Complete threat path object including the full markdown body and evidence.
+        Extends ThreatPathSummary with `body` and `evidence` fields.
+      allOf:
+        - $ref: "#/components/schemas/ThreatPathSummary"
+        - type: object
+          properties:
+            evidence:
+              type: array
+              items:
+                type: object
+              description: Supporting evidence objects (available on individual TP endpoints only)
+        - type: object
+          properties:
+            body:
+              type: string
+              description: |
+                Full markdown body containing CFPF phase mapping tables,
+                detection approaches, evasion techniques, Look Left/Right
+                analysis, controls and mitigations, UCFF alignment, and
+                analyst notes.
+
+    DetectionRule:
+      type: object
+      description: A FLAME detection logic rule with optional native queries
+      required: [id, dl_id, title, status, cfpf_phase, level]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique UUID for the rule
+          example: "5a4b11f2-7b0b-4de0-8fb3-a8c3d7031911"
+        dl_id:
+          type: string
+          description: Human-readable detection logic identifier
+          example: DL-0001
+        title:
+          type: string
+          example: "Mule Account Velocity Pattern"
+        status:
+          type: string
+          enum: [experimental, test, stable]
+          example: experimental
+        description:
+          type: string
+          description: Human-readable description of what the rule detects
+        cfpf_phase:
+          type: string
+          enum: [P1, P2, P3, P4, P5]
+          description: CFPF phase this rule targets
+          example: P5
+        level:
+          type: string
+          enum: [informational, low, medium, high, critical]
+          description: Severity level
+          example: high
+        detection:
+          type: object
+          description: Sigma-style detection logic
+          properties:
+            selection_inbound:
+              type: object
+            timeframe:
+              type: string
+              example: "30d"
+            condition:
+              type: string
+              example: selection_inbound
+        logsource:
+          type: object
+          properties:
+            product:
+              type: string
+              example: banking
+            service:
+              type: string
+              example: transaction_monitoring
+        sigma_compatible:
+          type: boolean
+          description: Whether the rule can be expressed as standard Sigma
+          example: false
+        native_query_required:
+          type: boolean
+          description: Whether the rule needs platform-specific queries
+          example: true
+        data_sources:
+          type: object
+          properties:
+            native_fields:
+              type: array
+              items:
+                type: string
+              example: ["transaction_type"]
+        queries:
+          type: object
+          description: Platform-specific query implementations
+          properties:
+            cql:
+              type: string
+              description: CrowdStrike Query Language
+            splunk:
+              type: string
+              description: Splunk SPL query
+        references:
+          type: array
+          items:
+            type: string
+            format: uri
+        threat_path_ids:
+          type: array
+          items:
+            type: string
+          description: Threat path IDs this rule applies to
+          example: ["TP-0001", "TP-0002"]
+        fraud_types:
+          type: array
+          items:
+            type: string
+          example: ["money-mule"]
+        tags:
+          type: array
+          items:
+            type: string
+          example: ["attack.t1583", "cfpf.phase5.monetization", "flame.shared"]
+        falsepositives:
+          type: array
+          items:
+            type: string
+          description: Known false positive scenarios
+          example:
+            - "Legitimate payroll processing accounts receiving from multiple employers"
+
+    Baseline:
+      description: |
+        Fraud baseline measurement for benchmarking. Shares the same field
+        structure as ThreatPathSummary (with `category: Baseline` and id
+        format `BASE-NNN` or `BL-NNNN`). Most taxonomy and framework
+        mapping arrays will be empty for baselines.
+      allOf:
+        - $ref: "#/components/schemas/ThreatPathSummary"
+        - type: object
+          properties:
+            category:
+              type: string
+              enum: [Baseline]
+            id:
+              type: string
+              example: BASE-001
+
+    Stats:
+      type: object
+      description: Aggregate project statistics
+      properties:
+        total:
+          type: integer
+          description: Total number of threat paths
+          example: 69
+        fraudTypes:
+          type: integer
+          description: Count of distinct fraud types covered
+          example: 105
+        fraudTypeList:
+          type: array
+          items:
+            type: string
+          description: Sorted list of all fraud type slugs
+        sectors:
+          type: integer
+          description: Count of distinct sectors covered
+          example: 19
+        sectorList:
+          type: array
+          items:
+            type: string
+          description: Sorted list of all sector slugs
+          example: ["banking", "credit-union", "crypto", "insurance"]
+        phaseCoverage:
+          type: object
+          description: Number of threat paths covering each CFPF phase
+          properties:
+            P1:
+              type: integer
+            P2:
+              type: integer
+            P3:
+              type: integer
+            P4:
+              type: integer
+            P5:
+              type: integer
+          example:
+            P1: 69
+            P2: 67
+            P3: 69
+            P4: 67
+            P5: 67
+        topTags:
+          type: array
+          items:
+            type: object
+            properties:
+              tag:
+                type: string
+              count:
+                type: integer
+          description: Most frequently used tags, sorted by count descending
+        coverageMatrix:
+          type: array
+          items:
+            $ref: "#/components/schemas/CoverageEntry"
+
+    Taxonomy:
+      type: object
+      description: Controlled vocabulary enumerations for FLAME data fields
+      properties:
+        geopolitical_timing:
+          type: array
+          items:
+            type: string
+          example: ["none", "election-cycle", "sanctions-response", "conflict-triggered", "seasonal-political"]
+        nation_state_nexus:
+          type: array
+          items:
+            type: string
+          example: ["none", "suspected", "confirmed", "hybrid"]
+        infrastructure_generation_method:
+          type: array
+          items:
+            type: string
+          example: ["manual", "dga-embedded", "rdga-registered", "ai-assisted", "tds-routing"]
+        sectors:
+          type: array
+          items:
+            type: string
+          description: All valid sector values
+          example: ["banking", "credit-union", "cross-sector", "crypto", "insurance"]
+        fraud_types:
+          type: array
+          items:
+            type: string
+          description: All valid fraud type values (100+ entries)
+
+    CoverageEntry:
+      type: object
+      description: Per-fraud-type threat path coverage across CFPF phases
+      required: [fraud_type, phases, total_tps]
+      properties:
+        fraud_type:
+          type: string
+          example: account-takeover
+        phases:
+          type: object
+          properties:
+            P1:
+              type: integer
+            P2:
+              type: integer
+            P3:
+              type: integer
+            P4:
+              type: integer
+            P5:
+              type: integer
+          example:
+            P1: 15
+            P2: 15
+            P3: 15
+            P4: 15
+            P5: 15
+        total_tps:
+          type: integer
+          description: Total unique threat paths for this fraud type
+          example: 15
+
+    UcffDomains:
+      type: object
+      nullable: true
+      description: |
+        UCFF (Unified Cyber-Fraud Framework) maturity level requirements per
+        domain. Values are maturity level strings. Empty object if not assessed.
+      properties:
+        commit:
+          type: string
+          example: "Level 2"
+        assess:
+          type: string
+          example: "Level 3"
+        plan:
+          type: string
+          example: "Level 2"
+        act:
+          type: string
+          example: "Level 3"
+        monitor:
+          type: string
+          example: "Level 3"
+        report:
+          type: string
+          example: "Level 2"
+        improve:
+          type: string
+          example: "Level 2"
+
+    RelatedTP:
+      type: object
+      description: A relationship to another threat path
+      required: [id, relationship]
+      properties:
+        id:
+          type: string
+          description: Related threat path ID
+          example: TP-0007
+        relationship:
+          type: string
+          description: Nature of the relationship
+          enum:
+            - enhances
+            - enables
+            - provides-mules-for
+            - escalates-from
+            - feeds-into
+            - shared-infrastructure
+          example: enables
+
+    TAXIIDiscovery:
+      type: object
+      description: TAXII 2.1 discovery resource
+      properties:
+        title:
+          type: string
+          example: "FLAME TAXII Server"
+        description:
+          type: string
+        contact:
+          type: string
+          format: uri
+        default:
+          type: string
+          format: uri
+          description: Default API root URL
+        api_roots:
+          type: array
+          items:
+            type: string
+            format: uri
+
+    TAXIICollection:
+      type: object
+      description: TAXII 2.1 collection resource
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "7ab3848b-227c-54b1-aef1-4fc1faba6367"
+        title:
+          type: string
+          example: "FLAME Threat Paths"
+        description:
+          type: string
+        can_read:
+          type: boolean
+          example: true
+        can_write:
+          type: boolean
+          example: false
+        media_types:
+          type: array
+          items:
+            type: string
+          example: ["application/stix+json;version=2.1"]

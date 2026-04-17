@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:14.379773+00:00",
+    "generated_at": "2026-04-09T19:39:56.302279+00:00",
     "total": 1
   },
   "data": {
@@ -87,7 +87,18 @@
       "FT016",
       "FT017"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1020.001",
+      "F1009",
+      "F1018",
+      "F1025",
+      "F1027",
+      "F1031",
+      "F1032",
+      "F1033",
+      "F1040",
+      "F1045"
+    ],
     "groupib_stages": [
       "Reconnaissance",
       "Resource Development",
@@ -109,6 +120,9 @@
       "report": "Level 3",
       "improve": "Level 3"
     },
+    "baseline_ids": [
+      "BL-0006"
+    ],
     "detection_rule_ids": [
       "DL-0130",
       "DL-0131",

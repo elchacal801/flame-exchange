@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(tld matches regex "TOP|BOND|XYZ|SHOP|XIN|CFD|LOL" and domain_age_days <= 7 and registration_count_24h >= 5 and shared_nameserver =~ true) and (brand_keyword_match =~ true and random_string_pattern =~ true)

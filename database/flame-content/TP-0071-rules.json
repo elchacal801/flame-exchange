@@ -1,0 +1,10 @@
+{
+  "tp_id": "TP-0071",
+  "rules": [
+    {
+      "type": "sql",
+      "content": "-- SQL for Wangiri Callback Velocity Detection — DL-0183\n-- Detects high volume of short-duration outbound international calls from single source\nSELECT\n  c.calling_number,\n  c.source_system,\n  COUNT(*) AS callback_count,\n  COUNT(DISTINCT c.called_number) AS unique_destinations,\n  AVG(c.call_duration_seconds) AS avg_duration_seconds,\n  SUM(CASE WHEN c.call_duration_seconds < 5 THEN 1 ELSE 0 END) AS short_calls,\n  MIN(c.call_start_time) AS first_call,\n  MAX(c.call_start_time) AS last_call\nFROM call_detail_records c\nJOIN premium_rate_numbers p ON c.called_number LIKE p.number_prefix || '%'\nWHERE c.call_direction = 'outbound'\n  AND c.call_type = 'international'\n  AND c.call_start_time >= DATEADD(HOUR, -24, CURRENT_TIMESTAMP)\n  AND c.call_duration_seconds < 5\nGROUP BY c.calling_number, c.source_system\nHAVING COUNT(*) >= 10\n   AND COUNT(DISTINCT c.called_number) >= 3\nORDER BY callback_count DESC",
+      "title": "TP-0071 detection rule (sql)"
+    }
+  ]
+}

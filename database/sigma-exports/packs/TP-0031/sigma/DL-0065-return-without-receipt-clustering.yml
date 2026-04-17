@@ -1,40 +1,47 @@
 title: Return Without Receipt Clustering by Customer or Region
 id: df3d2c33-c298-4391-9025-9de286065c39
 status: experimental
-description: >
-  Detects clusters of product returns submitted without receipts or order references
-  from the same customer identity or geographic region. Organized return fraud rings
-  often exploit no-receipt return policies by using stolen merchandise or purchasing
-  items specifically for return, concentrating activity across nearby store locations
-  or using multiple accounts linked to the same region.
+description: 'Detects clusters of product returns submitted without receipts or order references from the same customer identity
+  or geographic region. Organized return fraud rings often exploit no-receipt return policies by using stolen merchandise
+  or purchasing items specifically for return, concentrating activity across nearby store locations or using multiple accounts
+  linked to the same region.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
-  - https://nrf.com/research/2023-retail-security-survey
+- https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf
+- https://nrf.com/research/2023-retail-security-survey
 threat_paths:
-  - TP-0031
+- TP-0031
 cfpf_phase: P5
 fraud_types:
-  - first-party-fraud
-  - refunding-as-a-service
+- first-party-fraud
+- refunding-as-a-service
 logsource:
   product: ecommerce
   service: returns_processing
 detection:
   selection:
-    event_type: 'return_processed'
+    event_type: return_processed
     receipt_provided: false
     order_reference_matched: false
   aggregation_customer:
     condition: selection | count() by customer_account_id > 4
   aggregation_region:
     condition: selection | count() by store_region_code > 15
-  condition: aggregation_customer or aggregation_region
+  condition: selection | aggregation_customer or selection | aggregation_region
   timeframe: 30d
+data_sources:
+  native_fields:
+  - condition
+  - event_type
+  - order_reference_matched
+  - receipt_provided
 falsepositives:
-  - Customers who frequently lose receipts for legitimate purchases
-  - Holiday season returns where gift recipients do not have original receipts
+- Customers who frequently lose receipts for legitimate purchases
+- Holiday season returns where gift recipients do not have original receipts
 level: medium
 tags:
-  - cfpf.phase5.monetization
-  - attack.t1565
-  - flame.ecommerce
+- cfpf.phase5.monetization
+- attack.t1565
+- flame.ecommerce

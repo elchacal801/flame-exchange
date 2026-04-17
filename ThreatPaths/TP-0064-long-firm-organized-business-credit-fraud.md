@@ -35,7 +35,7 @@ mitre_attack:
   - T1656      # Impersonation
   - T1585.001  # Establish Accounts: Social Media Accounts
 ft3_tactics: ["FTA003", "FT008.002", "FT028"]
-mitre_f3: []
+mitre_f3: ["F1020.001", "F1015", "F1016", "F1024", "F1027", "F1036", "F1037", "F1043", "F1046", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -62,6 +62,8 @@ regulatory_refs:
   - REG-UNODC-ORGANIZED-FRAUD-2024
   - REG-FINCEN-CDD
   - REG-OCC-FRAUD
+baseline_ids:
+  - BL-0032
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated_at": "2026-04-09T19:40:03.762524+00:00",
+    "total": 1
+  },
+  "data": {
+    "id": "c19927d8-084d-4ba3-85b1-74ff158074f4",
+    "dl_id": "DL-0172",
+    "title": "Sextortion-Investment Hybrid Fraud — Small Payment Escalation to Crypto Addresses with Communication Pattern Shift",
+    "status": "experimental",
+    "description": "Detects the sextortion-investment hybrid fraud pattern where a victim makes initial small payments followed by escalating amounts to cryptocurrency addresses, with the communication pattern showing a transition from social/romantic interaction to financial urgency. INTERPOL's 2026 Global Financial Fraud Threat Assessment documents this as a globally escalating pattern where scam centre operators systematically pivot from romance/investment scripts to sextortion as a scripted operational fallback. The hallmark behavioral signature is a first-ever crypto transaction within 30 days of a new social media contact, followed by rapid escalation in both payment frequency and amount, often accompanied by messaging patterns shifting from casual/romantic to urgent/threatening language. The hybrid structure maximizes total extraction while suppressing victim reporting through shame and blackmail leverage.\n",
+    "cfpf_phase": "P4",
+    "level": "high",
+    "detection": {
+      "selection": {
+        "payment_type": [
+          "cryptocurrency",
+          "crypto_deposit",
+          "wire_to_crypto_exchange"
+        ]
+      },
+      "filter_escalation_pattern": {
+        "transaction_count_30d|gte": 3,
+        "amount_increase_ratio_last_vs_first|gte": 3.0
+      },
+      "filter_first_crypto": {
+        "is_first_crypto_period": true,
+        "days_since_account_first_crypto|lte": 60
+      },
+      "filter_communication_shift": {
+        "social_contact_recency_days|lte": 30
+      },
+      "timeframe": "30d",
+      "condition": "selection AND filter_escalation_pattern AND filter_first_crypto AND filter_communication_shift\n"
+    },
+    "logsource": {
+      "product": "banking",
+      "service": "transaction_monitoring"
+    },
+    "sigma_compatible": false,
+    "native_query_required": true,
+    "data_sources": {
+      "native_fields": [
+        "account_id",
+        "transaction_id",
+        "payment_type",
+        "amount",
+        "currency",
+        "crypto_address",
+        "transaction_date",
+        "beneficiary_name"
+      ],
+      "enrichment_required": [
+        {
+          "field": "is_first_crypto_period",
+          "source": "Account transaction history analysis — true if customer had no crypto transactions prior to 60 days ago"
+        },
+        {
+          "field": "days_since_account_first_crypto",
+          "source": "Days since customer's first-ever cryptocurrency transaction"
+        },
+        {
+          "field": "social_contact_recency_days",
+          "source": "Days since last new social media or dating app contact event (requires platform data enrichment or customer-reported timeline)"
+        },
+        {
+          "field": "amount_increase_ratio_last_vs_first",
+          "source": "Ratio of most recent transaction amount to first transaction amount in the 30-day window"
+        },
+        {
+          "field": "transaction_count_30d",
+          "source": "Count of crypto transactions to same or related addresses in trailing 30 days"
+        }
+      ],
+      "derived_fields": [
+        "escalation_velocity",
+        "total_amount_30d",
+        "unique_crypto_addresses"
+      ]
+    },
+    "queries": {
+      "cql": "// CrowdStrike CQL for Sextortion-Investment Hybrid Escalation\n// Detects small-to-large crypto payment escalation following new social contact\n(payment_type=\"cryptocurrency\" OR payment_type=\"crypto_deposit\" OR payment_type=\"wire_to_crypto_exchange\")\nis_first_crypto_period=\"true\"\ndays_since_account_first_crypto<=60\n| transaction_count_30d := count(transaction_id, span=30d)\n| first_amount := min(amount, span=30d)\n| last_amount := max(amount, span=30d)\n| escalation_ratio := last_amount / first_amount\n| where transaction_count_30d >= 3 AND escalation_ratio >= 3.0\n| total_amount_30d := sum(amount, span=30d)\n| unique_crypto_addresses := count(distinct=crypto_address, span=30d)\n| groupBy(account_id, function=[\n    collect([total_amount_30d, transaction_count_30d, escalation_ratio,\n             first_amount, last_amount, unique_crypto_addresses,\n             days_since_account_first_crypto])\n  ])\n| sort(total_amount_30d, order=desc)",
+      "splunk": "`comment(\"Splunk SPL for Sextortion-Investment Hybrid Escalation\")`\n`comment(\"Detects escalating crypto payments following new social contact\")`\nindex=flame_banking sourcetype=flame:transaction_monitoring\n  (payment_type=\"cryptocurrency\" OR payment_type=\"crypto_deposit\" OR payment_type=\"wire_to_crypto_exchange\")\n  is_first_crypto_period=\"true\"\n  days_since_account_first_crypto<=60\n| stats count AS transaction_count,\n        min(amount) AS first_amount,\n        max(amount) AS last_amount,\n        sum(amount) AS total_amount,\n        dc(crypto_address) AS unique_crypto_addresses,\n        earliest(transaction_date) AS first_txn_date,\n        latest(transaction_date) AS last_txn_date\n  BY account_id\n| where transaction_count >= 3\n| eval escalation_ratio = last_amount / first_amount\n| where escalation_ratio >= 3.0\n| eval risk_score = case(\n    escalation_ratio > 10 AND total_amount > 50000, \"critical\",\n    escalation_ratio > 5 AND total_amount > 10000, \"high\",\n    1=1, \"medium\")\n| table account_id, transaction_count, first_amount, last_amount,\n        escalation_ratio, total_amount, unique_crypto_addresses,\n        first_txn_date, last_txn_date, risk_score\n| sort - total_amount",
+      "sql": "-- SQL for Sextortion-Investment Hybrid Escalation\n-- Detects escalating crypto payments pattern characteristic of hybrid sextortion-investment fraud\nWITH crypto_txns AS (\n  SELECT\n    t.account_id,\n    t.transaction_id,\n    t.amount,\n    t.crypto_address,\n    t.transaction_date,\n    ROW_NUMBER() OVER (PARTITION BY t.account_id ORDER BY t.transaction_date ASC) AS txn_seq,\n    COUNT(*) OVER (PARTITION BY t.account_id) AS txn_count,\n    MIN(t.amount) OVER (PARTITION BY t.account_id) AS first_amount,\n    MAX(t.amount) OVER (PARTITION BY t.account_id) AS last_amount,\n    SUM(t.amount) OVER (PARTITION BY t.account_id) AS total_amount,\n    COUNT(DISTINCT t.crypto_address) OVER (PARTITION BY t.account_id) AS unique_addresses\n  FROM transactions t\n  JOIN account_crypto_history h ON t.account_id = h.account_id\n  WHERE t.payment_type IN ('cryptocurrency', 'crypto_deposit', 'wire_to_crypto_exchange')\n    AND t.transaction_date > CURRENT_DATE - INTERVAL '30 days'\n    AND h.is_first_crypto_period = TRUE\n    AND h.days_since_first_crypto <= 60\n)\nSELECT\n  account_id,\n  txn_count AS transaction_count,\n  first_amount,\n  last_amount,\n  (last_amount / NULLIF(first_amount, 0)) AS escalation_ratio,\n  total_amount,\n  unique_addresses AS unique_crypto_addresses\nFROM crypto_txns\nWHERE txn_seq = 1\n  AND txn_count >= 3\n  AND (last_amount / NULLIF(first_amount, 0)) >= 3.0\nORDER BY total_amount DESC"
+    },
+    "references": [
+      "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026",
+      "INTERPOL GFFTA 2026 — Increasingly Hybrid Fraud Tactics and the Rise in Sextortion",
+      "FBI IC3: Internet Crime Report 2024 — sextortion statistics",
+      "Marasa & Ives, Deconstructing pig butchering, Journal of Economic Criminology, 2024"
+    ],
+    "threat_path_ids": [
+      "TP-0052"
+    ],
+    "fraud_types": [
+      "hybrid-fraud",
+      "investment-scam",
+      "romance-scam",
+      "sextortion"
+    ],
+    "tags": [
+      "attack.t1657",
+      "cfpf.phase4.execution",
+      "flame.hybrid-fraud",
+      "flame.investment-scam",
+      "flame.romance-scam",
+      "flame.sextortion"
+    ],
+    "falsepositives": [
+      "Legitimate new cryptocurrency investor making progressively larger purchases as they gain confidence",
+      "Customer gradually converting savings to crypto for planned overseas relocation or property purchase",
+      "Recurring crypto purchases via dollar-cost-averaging strategy that happen to coincide with new social media activity"
+    ]
+  }
+}

@@ -19,7 +19,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1566.001, T1078, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA008", "FTA009", "FTA010", "FT011.002", "FT028", "FT016", "FT003", "FT037.002", "FT038.002", "FT042.001", "FT001", "FT006.001", "FT008.002"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1006.002", "T1110.001", "T1555", "F1004", "T1185", "T1189", "T1451", "T1539", "T1557", "T1598"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -52,6 +52,7 @@ regulatory_refs:
   - REG-MAS-SRF
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+baseline_ids: []
 tags:
   - HR-portal
   - direct-deposit
@@ -125,6 +126,20 @@ Actors compromise employee self-service HR portals (Workday, ADP, UKG, etc.) to 
 | P3 | Lockout period: no direct deposit changes within 48hrs of contact info changes | Preventive |
 | P3 | HR/IT alert: flag multiple employees changing direct deposit in same time window | Detective |
 | P4 | Payroll team review of all deposit routing changes before processing | Preventive |
+
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Management recognition of payroll diversion as a fraud risk; budget allocation for MFA on HR self-service portals |
+| ASSESS | Level 2 (Developing) | Risk assessment of HR portal access controls and direct deposit change workflows; inventory of self-service capabilities exposed to employees |
+| PLAN | Level 2 (Developing) | Defined process for out-of-band confirmation of direct deposit changes; coordination plan between HR, IT security, and payroll teams for suspected compromise |
+| ACT | Level 3 (Established) | Phishing-resistant MFA enforced on all HR self-service portals; lockout periods preventing deposit changes within 48 hours of contact info changes; payroll team review of all routing changes before processing |
+| MONITOR | Level 3 (Established) | Alerting on bulk direct deposit modifications from anomalous IPs/devices; monitoring for HR portal credential stuffing and login anomalies; correlation of contact info changes with deposit changes |
+| REPORT | Level 2 (Developing) | Internal reporting from payroll to security team when multiple employees report missing deposits; employee notification procedures for confirmed payroll diversion |
+| IMPROVE | Level 2 (Developing) | Post-incident review of phishing campaigns that led to HR portal compromise; periodic assessment of HR portal authentication strength against current threat landscape |
 
 ## Detection Approaches
 

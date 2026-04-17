@@ -37,14 +37,14 @@ data_sources:
   - event_type
   - source_ip
 queries:
-  logscale: |-
-    // LogScale LQL for Login Velocity Anomaly
+  cql: |-
+    // CrowdStrike CQL for Login Velocity Anomaly
     // Repository: flame-banking-auth-logs
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection and not filter_internal | count() by source_ip > 50
     event_type="login_attempt"
     (source_ip="10.0.0.0/8" OR source_ip="172.16.0.0/12" OR source_ip="192.168.0.0/16")
-    | groupBy(source_ip, function=count(as=event_count))
+    | groupBy(source_ip, function=[count(as=event_count)])
     | event_count > 50
   splunk: |-
     `comment("Splunk SPL for Login Velocity Anomaly")`

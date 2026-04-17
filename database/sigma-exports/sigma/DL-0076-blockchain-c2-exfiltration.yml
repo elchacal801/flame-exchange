@@ -1,76 +1,82 @@
 title: Blockchain C2 and WebSocket Exfiltration from Payment Pages
 id: 7f4b28e6-1d93-4c5a-ae72-3e9d0f6b54a2
 status: experimental
-description: >
-  Detects payment page scripts making calls to blockchain RPC endpoints or
-  establishing WebSocket connections to unknown servers, indicating potential
-  e-skimmer data exfiltration via blockchain-based command-and-control
-  infrastructure. Advanced Magecart variants observed in 2025 use a loader
-  script on the compromised site that queries a blockchain smart contract
-  (Ethereum, BNB Chain) to retrieve the address of a second-stage payload
-  server, then establishes a WebSocket connection for both payload delivery and
-  data exfiltration. This technique provides censorship-resistant C2 that
-  cannot be disrupted through conventional domain seizure or hosting provider
-  takedown. Detection focuses on identifying JSON-RPC calls to blockchain node
-  endpoints (Infura, Alchemy, direct nodes) and WebSocket connections to
-  non-payment-related servers originating from payment page context.
+description: 'Detects payment page scripts making calls to blockchain RPC endpoints or establishing WebSocket connections
+  to unknown servers, indicating potential e-skimmer data exfiltration via blockchain-based command-and-control infrastructure.
+  Advanced Magecart variants observed in 2025 use a loader script on the compromised site that queries a blockchain smart
+  contract (Ethereum, BNB Chain) to retrieve the address of a second-stage payload server, then establishes a WebSocket connection
+  for both payload delivery and data exfiltration. This technique provides censorship-resistant C2 that cannot be disrupted
+  through conventional domain seizure or hosting provider takedown. Detection focuses on identifying JSON-RPC calls to blockchain
+  node endpoints (Infura, Alchemy, direct nodes) and WebSocket connections to non-payment-related servers originating from
+  payment page context.
+
+  '
+sigma_compatible: true
 references:
-  - https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
+- https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025
 threat_paths:
-  - TP-0035
+- TP-0035
 cfpf_phase: P4
 fraud_types:
-  - e-skimmer
-  - data-theft
+- e-skimmer
+- data-theft
 logsource:
   product: ecommerce
   service: network_traffic
 detection:
   selection_blockchain_rpc:
     src_page_uri|contains:
-      - '/checkout'
-      - '/payment'
-      - '/billing'
-      - '/cart/complete'
+    - /checkout
+    - /payment
+    - /billing
+    - /cart/complete
     dst_domain|contains:
-      - 'infura.io'
-      - 'alchemy.com'
-      - 'etherscan.io'
-      - 'bscscan.com'
-      - 'cloudflare-eth.com'
-      - 'ankr.com'
-    request_method: 'POST'
+    - infura.io
+    - alchemy.com
+    - etherscan.io
+    - bscscan.com
+    - cloudflare-eth.com
+    - ankr.com
+    request_method: POST
     request_body|contains:
-      - 'eth_call'
-      - 'eth_getStorageAt'
-      - 'eth_getLogs'
+    - eth_call
+    - eth_getStorageAt
+    - eth_getLogs
   selection_websocket_unknown:
     src_page_uri|contains:
-      - '/checkout'
-      - '/payment'
-      - '/billing'
-    connection_type: 'websocket'
+    - /checkout
+    - /payment
+    - /billing
+    connection_type: websocket
   filter_known_payment_processors:
     dst_domain|contains:
-      - 'stripe.com'
-      - 'paypal.com'
-      - 'braintreegateway.com'
-      - 'adyen.com'
-      - 'authorize.net'
-      - 'cybersource.com'
-      - 'worldpay.com'
-      - 'square.com'
-      - 'shopify.com'
+    - stripe.com
+    - paypal.com
+    - braintreegateway.com
+    - adyen.com
+    - authorize.net
+    - cybersource.com
+    - worldpay.com
+    - square.com
+    - shopify.com
   condition: selection_blockchain_rpc or (selection_websocket_unknown and not filter_known_payment_processors)
+data_sources:
+  native_fields:
+  - connection_type
+  - dst_domain
+  - request_body
+  - request_method
+  - src_page_uri
 falsepositives:
-  - Web3-native e-commerce platforms that legitimately interact with blockchain for payment processing (e.g., cryptocurrency payment acceptance)
-  - Customer support chat widgets using WebSocket connections on checkout pages
-  - Real-time inventory or pricing update feeds using WebSocket on payment pages
+- Web3-native e-commerce platforms that legitimately interact with blockchain for payment processing (e.g., cryptocurrency
+  payment acceptance)
+- Customer support chat widgets using WebSocket connections on checkout pages
+- Real-time inventory or pricing update feeds using WebSocket on payment pages
 level: high
 tags:
-  - cfpf.phase4.execution
-  - attack.t1041
-  - attack.t1059.007
-  - flame.ecommerce
-  - flame.eskimmer
-  - flame.blockchain_c2
+- cfpf.phase4.execution
+- attack.t1041
+- attack.t1059.007
+- flame.ecommerce
+- flame.eskimmer
+- flame.blockchain_c2

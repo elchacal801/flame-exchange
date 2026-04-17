@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-03-26T00:43:15.118777+00:00",
+    "generated_at": "2026-04-09T19:40:01.606711+00:00",
     "total": 1
   },
   "data": {
@@ -38,7 +38,7 @@
       ]
     },
     "queries": {
-      "logscale": "// LogScale LQL for Stolen Session Token Replay\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_same_context | count() by session_token > 1\nevent_type=\"session_activity\"\nsession_token=true\ngeo_country=\"%original_session_country%\"\ndevice_fingerprint=\"%original_device_fingerprint%\"\n| groupBy(session_token, function=count(as=event_count))\n| event_count > 1",
+      "cql": "// CrowdStrike CQL for Stolen Session Token Replay\n// Repository: flame-banking-auth-logs\n// Aggregation that cannot be expressed in Sigma:\n// Original condition: selection and not filter_same_context | count() by session_token > 1\nevent_type=\"session_activity\"\nsession_token=true\ngeo_country=\"%original_session_country%\"\ndevice_fingerprint=\"%original_device_fingerprint%\"\n| groupBy(session_token, function=[count(as=event_count)])\n| event_count > 1",
       "splunk": "`comment(\"Splunk SPL for Stolen Session Token Replay\")`\n`comment(\"Aggregation that cannot be expressed in Sigma\")`\n`comment(\"Original condition: selection and not filter_same_context | count() by session_token > 1\")`\nindex=flame_banking sourcetype=flame:auth_logs\nevent_type=\"session_activity\"\nsession_token=true\ngeo_country=\"%original_session_country%\"\ndevice_fingerprint=\"%original_device_fingerprint%\"\n| stats count as event_count by session_token\n| where event_count > 1"
     },
     "references": [

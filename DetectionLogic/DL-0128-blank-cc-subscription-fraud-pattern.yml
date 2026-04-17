@@ -61,12 +61,35 @@ data_sources:
   - merchant_id
   - merchant_registration_age_days
   - merchant_chargeback_ratio
+  derived_fields:
+  - days_after_initial
+  - same_card_hash
+  - same_merchant_group
   enrichment_required:
   - field: merchant_registration_age_days
     source: Merchant onboarding records (merchant account age)
   - field: merchant_chargeback_ratio
     source: Payment processor chargeback analytics
 queries:
+  cql: |-
+    // CrowdStrike CQL for Blank Credit Card Subscription Fraud Pattern Detection
+    // Identifies nominal-charge-to-recurring-subscription patterns (Ad Trafficko model)
+    transaction_type="CNP"
+    | is_nominal := if(amount<=2.99, 1, 0)
+    | is_recurring := if(transaction_type="recurring" AND amount>=6.99, 1, 0)
+    | groupBy(merchant_id, function=[
+        sum(is_nominal, as=nominal_charges),
+        sum(is_recurring, as=recurring_charges),
+        count(field=card_hash, distinct=true, as=unique_cards),
+        avg(amount, as=avg_amount),
+        max(amount, as=max_amount),
+        collect([merchant_descriptor]),
+        max(merchant_chargeback_ratio, as=chargeback_ratio)
+      ])
+    | nominal_charges > 10 AND recurring_charges > 5
+    | conversion_ratio := round(recurring_charges / nominal_charges * 100) / 100
+    | filter(conversion_ratio > 0.3 OR chargeback_ratio > 0.05)
+    | sort(recurring_charges, order=desc)
   splunk: |-
     `comment("Splunk SPL for Blank CC Subscription Fraud Pattern Detection")`
     `comment("Identifies nominal-charge-to-recurring-subscription patterns (Ad Trafficko model)")`
@@ -129,6 +152,7 @@ falsepositives:
 - Subscription box services with nominal initial trial charges
 level: high
 tags:
+- attack.t1657
 - cfpf.phase4.execution
 - blank-cc-submit
 - subscription-fraud

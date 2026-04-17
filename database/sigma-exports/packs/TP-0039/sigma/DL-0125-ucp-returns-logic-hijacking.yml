@@ -1,0 +1,69 @@
+title: UCP Returns Logic Hijacking — Void Return and Verify Step Bypass
+id: a7b8c9d0-e1f2-4a3b-5c6d-7e8f9a0b1c2d
+status: experimental
+description: 'Detects exploitation of the UCP returns state machine where AI agents skip the order.return.verify
+  step and trigger settlement.refund.instant() using fraudulent tracking IDs (e.g., void-000). Threat actors
+  embed hidden instructions in product page HTML metadata or invisible span tags that are ingested by the
+  agent when it reads return instructions. The agent then processes the malicious command as a high-priority
+  system update, bypassing return verification and issuing refunds without valid shipping confirmation. At
+  scale, organized crime groups deploy bot farms to initiate thousands of void returns per hour, potentially
+  liquidating a retailer''s cash reserves. This rule targets Phase 4 (Execution) by detecting refund
+  primitives triggered without proper verification, void tracking IDs, and anomalous refund velocity.
+
+  '
+references:
+- https://unit42.paloaltonetworks.com/retail-fraud-agentic-ai/
+date: 2026/03/21
+sigma_compatible: true
+threat_paths:
+- TP-0039
+- TP-0031
+cfpf_phase: P4
+fraud_types:
+- autonomous-ai-fraud
+- returns-fraud
+- refunding-as-a-service
+- unauthorized-transaction
+logsource:
+  product: ecommerce
+  service: ucp_returns
+detection:
+  selection_void_tracking:
+    return_tracking_id|startswith: "void-"
+  selection_verify_skip:
+    return_verify_step_completed: false
+    refund_method: "settlement.refund.instant"
+  selection_no_shipping_scan:
+    shipping_scan_validated: false
+    refund_issued: true
+  aggregation_velocity:
+    count|gte: 10
+    groupby: merchant_id
+    timeframe: 1h
+  condition: selection_void_tracking or selection_verify_skip or (selection_no_shipping_scan and aggregation_velocity)
+data_sources:
+  native_fields:
+  - return_tracking_id
+  - return_verify_step_completed
+  - refund_method
+  - shipping_scan_validated
+  - refund_issued
+  enrichment_required:
+  - field: shipping_scan_validated
+    source: Shipping carrier enrichment (validate tracking ID against carrier API for actual shipment confirmation)
+  - field: return_verify_step_completed
+    source: UCP state machine enrichment (verify order.return.verify step completion status)
+falsepositives:
+- Merchant-initiated refunds that bypass standard return flow (e.g., customer service overrides)
+- Digital product returns where physical shipping verification is not applicable
+- Promotional no-return-required refund policies
+level: critical
+tags:
+- cfpf.phase4.execution
+- attack.t1059
+- attack.t1657
+- flame.ecommerce
+- flame.agentic_commerce
+- flame.ucp
+- flame.returns_fraud
+- flame.organized_retail_crime

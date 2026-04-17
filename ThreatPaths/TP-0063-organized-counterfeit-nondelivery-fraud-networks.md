@@ -34,7 +34,7 @@ mitre_attack:
   - T1566.002  # Phishing: Spearphishing Link
   - T1059      # Command and Scripting Interpreter (malware in listings)
 ft3_tactics: ["FTA001", "FT006.001", "FT016"]
-mitre_f3: []
+mitre_f3: ["F1006", "F1009", "F1025", "F1029", "F1045", "F1047", "T1585"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -62,6 +62,7 @@ related_tps:
 regulatory_refs:
   - REG-NRF-RFT-V1
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids: []
 geopolitical_timing: none
 nation_state_nexus: none
 tags:

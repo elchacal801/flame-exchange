@@ -52,7 +52,12 @@
     "FTA003",
     "FTA004"
   ],
-  "mitre_f3": [],
+  "mitre_f3": [
+    "F1006",
+    "F1027",
+    "F1029",
+    "T1585"
+  ],
   "groupib_stages": [
     "Reconnaissance",
     "Resource Development",
@@ -74,7 +79,10 @@
     "report": "Level 2",
     "improve": "Level 2"
   },
-  "detection_rule_ids": [],
+  "baseline_ids": [],
+  "detection_rule_ids": [
+    "DL-0173"
+  ],
   "related_tps": [
     {
       "id": "TP-0018",

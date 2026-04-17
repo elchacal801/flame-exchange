@@ -19,7 +19,7 @@ fraud_types:
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1656, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT011.002", "FT016", "FT018", "FT021", "FT028", "FT008.002", "FT052.003", "FT001", "FT003", "FT007.009"]                  # Stripe FT3 (when mapped)
-mitre_f3: []                     # MITRE F3 (placeholder)
+mitre_f3: ["F1006.002", "F1032", "F1031", "F1034", "F1040.002", "T1110.001", "T1555", "F1004", "F1020", "T1185"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"
@@ -55,6 +55,7 @@ regulatory_refs:
   - REG-PSD3-SCA
   - REG-UK-PSR-APP
   - REG-UNODC-ORGANIZED-FRAUD-2024
+baseline_ids: []
 tags:
   - authorized-push-payment
   - APP-fraud
@@ -139,6 +140,45 @@ Actors contact victims impersonating bank fraud departments, tech support (Micro
 | P4 | Branch intervention: train tellers to recognize APP fraud indicators (elderly customer, large wire, on phone during transaction, visibly stressed) | Preventive |
 | P5 | UK PSR mandatory reimbursement (shifts liability, incentivizes bank prevention investment) | Responsive |
 
+## UCFF Alignment
+
+### Required Organizational Maturity for Effective Detection
+
+| UCFF Domain | Minimum Maturity | Key Deliverables for This Threat Path |
+|-------------|-----------------|--------------------------------------|
+| COMMIT | Level 2 (Developing) | Management recognition of APP fraud as a distinct loss category requiring investment in real-time transaction intervention and customer education targeting vulnerable demographics |
+| ASSESS | Level 3 (Established) | Risk assessment of customer base for APP fraud susceptibility including age demographics, transaction patterns, and exposure to impersonation vectors; evaluation of Confirmation of Payee capabilities and cooling-off period thresholds |
+| PLAN | Level 2 (Developing) | Defined intervention procedures for suspected APP fraud in-progress (branch teller protocols, call center scripts, in-app warnings); incident response plan incorporating UK PSR mandatory reimbursement obligations where applicable |
+| ACT | Level 3 (Established) | Real-time transaction risk scoring correlating active phone calls with new-beneficiary transfers; in-app warnings triggered during transactions ("Are you being asked to make this transfer by someone on the phone?"); branch staff training to recognize APP fraud indicators; mandatory cooling-off periods for first-time large transfers to new beneficiaries |
+| MONITOR | Level 3 (Established) | Monitoring for transfers to new beneficiaries during active phone calls; alerting on elderly customers making uncharacteristic large transfers; tracking of spoofed caller ID patterns via STIR/SHAKEN data; remote access tool installation detection correlated with banking sessions |
+| REPORT | Level 3 (Established) | SAR filing with APP fraud and impersonation indicators; reporting to carrier fraud teams on spoofed number patterns; internal escalation from frontline staff to fraud team for suspected in-progress APP scams |
+| IMPROVE | Level 3 (Established) | Post-incident analysis of APP fraud cases to refine real-time intervention triggers; review of customer warning effectiveness and branch intervention success rates; tracking of evolving impersonation vectors (physical collection, grandparent scams, AI voice cloning) |
+
+## Live Support / Remote Access Scam Infrastructure (2026)
+
+urlscan.io (March 2026) identified four distinct technical clusters used in live support scam campaigns targeting banking customers:
+
+### Kit Cluster Analysis
+
+| Cluster | Technique | Key Fingerprint |
+|---------|-----------|-----------------|
+| index/config.js | Paired `index.js` + `config.js` with OS detection via `navigator.platform` | Exports `WIN_DOWNLOAD_LINK` / `MAC_DOWNLOAD_LINK` |
+| OSName | Inspects `navigator.appVersion` for OS detection | Links directly to `download.anydesk.com` |
+| Direct-link | Static HTML templates linking to official AnyDesk downloads | Simplest implementation; easiest to identify |
+| "Killer" (most sophisticated) | Supabase backend with geo-filtering and custom allowlists | Token naming: brand shortcodes (e.g., `anzkiller`); config exports `ENTRY_FILE`, `ACCESS_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` |
+
+### Targeted Brands
+
+Chase, Bank of America, American Express, PayPal, Barclays, Santander, ANZ Bank, Westpac, Lloyds, Metro Bank, Revolut, Scotiabank, Comerica, Huntington Bank, US Bank, Bank of Ireland, Bank of Scotland, NAB, Virgin Money, Coinbase, Ledger, HaveIBeenPwned.
+
+### Key Evasion
+
+Activity originates from the victim's own device and browser after remote access tool installation (AnyDesk, TeamViewer, ConnectWise/ScreenConnect), making fraudulent transactions indistinguishable from normal user behavior to fraud detection systems.
+
+### Geographic Targeting
+
+Primary: Australia, UK, US.
+
 ## Detection Approaches
 
 **Real-Time Transaction Risk Scoring**
@@ -178,17 +218,21 @@ AND c.call_end >= t.timestamp;
 
 **IC3 2024 Data:** The FBI IC3 2024 Internet Crime Report (covering 2024 incidents, released April 2025) reported $1.46B in tech support scam losses, confirming it as one of the highest-loss fraud categories. Elderly victims (60+) are disproportionately impacted, contributing to $4.9B in total IC3-reported losses across all categories in 2024. Tech support and bank impersonation scams exploit the authority trust dynamic, making them particularly effective against older demographics who are more likely to respond to unsolicited phone calls.
 
+**IC3 2025 Data:** The FBI IC3 2025 Internet Crime Report reported $2.134 billion in tech/customer support fraud losses from 47,794 complaints — a 46% increase in losses from 2024's $1.465B. Transaction type breakdown: Cryptocurrency 43%, Wire Transfer/ACH 20%, Prepaid card/Gift card 14%, Check/Cashier's Check 12%, Cash 11%. The Financial Fraud Kill Chain (FFKC) was expanded in 2025 to cover tech support fraud (previously BEC-focused). Operation Chakra (December 2025) dismantled a Noida-based transnational cybercrime network in collaboration with India, resulting in 6 arrests, 600+ US victims, and $48.7M in attributed losses. FBI San Diego EJTF identified 500+ elder victims and $40M+ in losses from an international elder scam network. AI-enabled tech support fraud accounted for $19.5M in IC3 2025 AI category losses.
+
 **INTERPOL 2026 Update — Physical Impersonation Evolution**: INTERPOL has documented a significant shift in impersonation fraud in Eastern Asia: criminals posing as law enforcement or bank representatives now instruct victims to leave cash at their doorsteps, where physical accomplices collect it. This bridges virtual deception and real-world crime, creating a hybrid threat that requires coordination between cyber fraud and physical security teams. Additionally, "grandparent scams" (fabricated family emergencies demanding immediate payment) have surged across the Caribbean and Europe, exploiting emotional vulnerability rather than technical sophistication. These variants expand the TP-0012 threat surface beyond tech support impersonation to broader authority/family impersonation vectors.
 
 ## References
 
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter II, Fraud by Impersonation; Chapter IV, Mass-marketing
 - FBI IC3: "2024 Internet Crime Report" (April 2025) — annual loss and complaint statistics. [Link](https://www.ic3.gov/AnnualReport/Reports/2024_IC3Report.pdf)
+- FBI IC3: "2025 Internet Crime Report" — Tech/Customer Support fraud: $2.134B in losses, 47,794 complaints (46% loss increase from 2024's $1.465B). Transaction type breakdown: Cryptocurrency 43%, Wire Transfer/ACH 20%, Prepaid card/Gift card 14%, Check/Cashier's Check 12%, Cash 11%. AI-enabled tech support fraud: $19.5M in IC3 2025 AI category losses. [Link](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)
 - FBI IC3: Tech Support Fraud PSAs. [Link](https://www.ic3.gov/PSA/2023/PSA231019)
 - UK Payment Systems Regulator: APP Fraud Data (annual). [Link](https://www.psr.org.uk/)
 - FTC: Consumer Sentinel Data — Impersonation Scams. [Link](https://www.ftc.gov/enforcement/consumer-sentinel-network)
 - Which?: "Authorized Push Payment Scam" investigation
 - INTERPOL, *Global Financial Fraud Threat Assessment*, 2nd Edition, March 2026 — documents evolution of impersonation fraud from remote calls to physical theft in Eastern Asia (doorstep cash collection by accomplices); reports surge in "grandparent scams" / "shock calls" across Caribbean and Europe involving fabricated family emergencies
+- urlscan.io, "LiveSupportScams" (March 25, 2026) — four technical clusters of remote access scam kits targeting banking customers
 
 ## Revision History
 
@@ -197,3 +241,5 @@ AND c.call_end >= t.timestamp;
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — physical impersonation evolution and grandparent scam surge |
+| 2026-03-27 | FLAME Project | urlscan.io enrichment — four live support / remote access scam kit clusters targeting banking customers |
+| 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — tech support fraud $2.134B losses, Operation Chakra, FFKC expansion, AI-enabled losses |

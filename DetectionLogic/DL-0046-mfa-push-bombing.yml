@@ -37,15 +37,15 @@ data_sources:
   - mfa_method
   - mfa_result
 queries:
-  logscale: |-
-    // LogScale LQL for MFA Push Bombing
+  cql: |-
+    // CrowdStrike CQL for MFA Push Bombing
     // Repository: flame-banking-mfa-logs
     // Aggregation that cannot be expressed in Sigma:
     // Original condition: selection | count() by user_id > 5 and count(selection_denied) by user_id > 3
     event_type="mfa_push_sent"
     mfa_method="push"
     (mfa_result="denied" OR mfa_result="timeout" OR mfa_result="ignored")
-    | groupBy(user_id, function=count(as=event_count))
+    | groupBy(user_id, function=[count(as=event_count)])
     | event_count > 5
   splunk: |-
     `comment("Splunk SPL for MFA Push Bombing")`
