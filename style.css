@@ -35,6 +35,7 @@
     --color-mitre: #a78bfa;
     --color-groupib: #34d399;
     --color-ft3: #fbbf24;
+    --color-f3: #f97316;
     --color-ucff: #06b6d4;
     --color-general: #64748b;
     --color-success: #22c55e;
@@ -1295,6 +1296,27 @@ h4 {
 .detail-tag.ft3-tag {
     background: rgba(251, 191, 36, 0.12);
     color: var(--color-ft3);
+}
+
+.detail-tag.f3-tag {
+    background: rgba(249, 115, 22, 0.12);
+    color: var(--color-f3);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.mitre-card.f3-card {
+    color: var(--color-f3);
+    border-color: rgba(249, 115, 22, 0.25);
+}
+
+.mitre-card.f3-card:hover {
+    border-color: var(--color-f3);
+    background: rgba(249, 115, 22, 0.08);
+    color: var(--color-f3);
+}
+
+.mitre-card.f3-card-native {
+    cursor: default;
 }
 
 .detail-tag.ucff-tag {
