@@ -1119,16 +1119,10 @@
         }
         let html = '<div class="mitre-grid">';
         techniques.forEach(function (t) {
-            if (/^T\d/.test(t)) {
-                html += '<a class="mitre-card f3-card" href="https://attack.mitre.org/techniques/' + encodeURIComponent(t.replace('.', '/')) + '/" target="_blank" rel="noopener">';
-                html += '<span class="mitre-id">' + escapeHtml(t) + '</span>';
-                html += '<span class="mitre-link-icon">↗</span>';
-                html += '</a>';
-            } else {
-                html += '<span class="mitre-card f3-card f3-card-native">';
-                html += '<span class="mitre-id">' + escapeHtml(t) + '</span>';
-                html += '</span>';
-            }
+            html += '<a class="mitre-card f3-card" href="https://ctid.mitre.org/fraud#/technique/' + encodeURIComponent(t) + '" target="_blank" rel="noopener">';
+            html += '<span class="mitre-id">' + escapeHtml(t) + '</span>';
+            html += '<span class="mitre-link-icon">↗</span>';
+            html += '</a>';
         });
         html += '</div>';
         return html;
