@@ -140,11 +140,29 @@
     }
 
     // -----------------------------------------------------------------------
+    // Theme Toggle
+    // -----------------------------------------------------------------------
+
+    function initTheme() {
+        var btn = document.getElementById('theme-toggle-btn');
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+            var current = document.documentElement.getAttribute('data-theme') || 'dark';
+            var next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('flame-theme', next);
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', next === 'light' ? '#F5F3F1' : '#09090B');
+        });
+    }
+
+    // -----------------------------------------------------------------------
     // Initialization
     // -----------------------------------------------------------------------
 
     document.addEventListener('DOMContentLoaded', function () {
         cacheDom();
+        initTheme();
         bindEvents();
 
         FlameData.load().then(function (data) {
@@ -2370,7 +2388,7 @@
         filtered.forEach(function(rule) {
             var levelClass = (rule.level || '').toLowerCase();
             var tpCount = (rule.threat_path_ids || []).length;
-            html += '<div class="rule-card" data-dl-id="' + escapeHtml(rule.dl_id || '') + '">';
+            html += '<div class="rule-card" data-dl-id="' + escapeHtml(rule.dl_id || '') + '" data-level="' + escapeHtml(levelClass) + '">';
             html += '<div class="rule-card-header">';
             html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || '') + '</span>';
             html += '<span class="rule-level-badge rule-level-' + escapeHtml(levelClass) + '">' + escapeHtml(rule.level || '') + '</span>';
