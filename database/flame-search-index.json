@@ -1200,6 +1200,24 @@
     "text": "Detect cryptocurrency flows matching the DPRK 45-day laundering cycle pattern: initial rapid distancing through DeFi protocols (days 1-5), integration through no-KYC exchanges (days 5-14), and off-ramping through Chinese OTC brokers (days 20-45). Temporal pattern matching against known laundering cycle timelines.\n"
   },
   {
+    "id": "DL-0115",
+    "type": "detection_rule",
+    "title": "DaaS Platform Transaction Pattern",
+    "text": "Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.\n"
+  },
+  {
+    "id": "DL-0116",
+    "type": "detection_rule",
+    "title": "Real-Time Face/Voice Changer Detection During Video Interview",
+    "text": "Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.\n"
+  },
+  {
+    "id": "DL-0117",
+    "type": "detection_rule",
+    "title": "Multilingual Chatbot Scam Pattern Detection",
+    "text": "Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.\n"
+  },
+  {
     "id": "DL-0118",
     "type": "detection_rule",
     "title": "Automated Mule Account Creation Velocity",

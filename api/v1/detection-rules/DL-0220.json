@@ -1,11 +1,11 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-09T19:40:04.748630+00:00",
+    "generated_at": "2026-04-17T14:49:41.583881+00:00",
     "total": 1
   },
   "data": {
-    "id": "c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f",
+    "id": "0eb77f51-6784-440a-a425-5a91c8fd5dd3",
     "dl_id": "DL-0220",
     "title": "Rapid Certificate Issuance on Crisis-Themed Domain — Sub-48h Registration-to-Cert Velocity",
     "status": "experimental",
@@ -47,33 +47,18 @@
       "Certificate Transparency (RFC 6962) — Public CT log monitoring"
     ],
     "threat_path_ids": [
-      "TP-0017",
-      "TP-0058",
       "TP-0079",
       "TP-0086"
     ],
     "fraud_types": [
-      "chatbot-enabled-fraud",
       "fraud-enabling-infrastructure",
-      "phishing",
-      "scam-compound-operations",
-      "social-engineering"
+      "phishing"
     ],
     "tags": [
-      "TP-0017",
-      "TP-0058",
-      "attack.t1566",
-      "attack.t1656",
       "cfpf.phase2.initial_access",
-      "cfpf.phase2.initial_access",
-      "chatbot",
       "flame.cert-transparency",
       "flame.crisis-exploitation",
-      "flame.infrastructure",
-      "multilingual",
-      "scam-compound",
-      "scripted-fraud",
-      "social-engineering"
+      "flame.infrastructure"
     ],
     "falsepositives": [
       "Legitimate rapid-deployment sites using automated certificate provisioning",

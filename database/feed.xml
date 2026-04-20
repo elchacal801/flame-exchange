@@ -3870,6 +3870,46 @@ This threat path is distinct from general phishing infrastructure (TP-0079) beca
         <category>linked-TP-0049</category>
     </item>
     <item>
+      <title>[DL-0115] DaaS Platform Transaction Pattern</title>
+      <link>https://flameintel.org/#rules/DL-0115</link>
+      <guid isPermaLink="false">flame-dl-DL-0115</guid>
+      <description>Detect cryptocurrency transactions matching Deepfake-as-a-Service (DaaS) subscription patterns: recurring payments of $100-$1,000/month to wallets associated with known deepfake service providers, or one-time payments of $50-$500 for per-use deepfake generation services. These patterns indicate procurement of deepfake tooling used in downstream fraud operations including identity verification bypass and social engineering.
+</description>
+        <category>deepfake-as-a-service</category>
+        <category>fraud-as-a-service</category>
+        <category>severity-medium</category>
+        <category>CFPF-P1</category>
+        <category>linked-TP-0057</category>
+    </item>
+    <item>
+      <title>[DL-0116] Real-Time Face/Voice Changer Detection During Video Interview</title>
+      <link>https://flameintel.org/#rules/DL-0116</link>
+      <guid isPermaLink="false">flame-dl-DL-0116</guid>
+      <description>Detect real-time face and voice changing artifacts during video conferencing sessions: (1) virtual camera driver interception via OBS Virtual Camera, ManyCam, or DeepFaceLive, (2) audio spectral anomalies indicating synthetic voice generation or unnatural formant transitions, (3) temporal inconsistencies between lip movement and audio exceeding 200ms delta. These techniques are used by DPRK IT workers and other threat actors to impersonate identities during remote hiring interviews and ongoing employment.
+</description>
+        <category>ai-face-voice-changer</category>
+        <category>deepfake-fraud</category>
+        <category>dprk-it-worker-fraud</category>
+        <category>severity-high</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0034</category>
+        <category>linked-TP-0057</category>
+    </item>
+    <item>
+      <title>[DL-0117] Multilingual Chatbot Scam Pattern Detection</title>
+      <link>https://flameintel.org/#rules/DL-0117</link>
+      <guid isPermaLink="false">flame-dl-DL-0117</guid>
+      <description>Detect messaging patterns consistent with AI chatbot-initiated scam contact: (1) unusually consistent response timing with less than 2 second variance indicating automated replies, (2) scripted conversation progression matching known romance scam, investment scam, or pig-butchering templates, (3) language switching mid-conversation to target victims in their native language, (4) identical or near-identical phrasing across multiple reported conversation instances. These patterns are characteristic of scam compound operations using multilingual AI chatbots to scale social engineering.
+</description>
+        <category>chatbot-enabled-fraud</category>
+        <category>scam-compound-operations</category>
+        <category>social-engineering</category>
+        <category>severity-medium</category>
+        <category>CFPF-P2</category>
+        <category>linked-TP-0017</category>
+        <category>linked-TP-0058</category>
+    </item>
+    <item>
       <title>[DL-0118] Automated Mule Account Creation Velocity</title>
       <link>https://flameintel.org/#rules/DL-0118</link>
       <guid isPermaLink="false">flame-dl-DL-0118</guid>
@@ -5217,13 +5257,10 @@ This threat path is distinct from general phishing infrastructure (TP-0079) beca
       <description>Detects bulk registration of crisis-themed domains (5+ in 72h) matching government subsidy, energy relief, and commodity investment keyword patterns on cheap gTLDs. CrimsonVector research identified 846 crisis-themed domains registered in a single peak week during the 2026 Iran War oil shock, with 48-72h lag between government program announcements and domain activation. This rule targets the P1 infrastructure build-out phase where early detection can disrupt campaigns before victim-facing deployment.
 </description>
         <category>brand-impersonation</category>
-        <category>deepfake-as-a-service</category>
-        <category>fraud-as-a-service</category>
         <category>fraud-enabling-infrastructure</category>
         <category>phishing</category>
         <category>severity-high</category>
         <category>CFPF-P1</category>
-        <category>linked-TP-0057</category>
         <category>linked-TP-0079</category>
         <category>linked-TP-0086</category>
     </item>
@@ -5233,16 +5270,11 @@ This threat path is distinct from general phishing infrastructure (TP-0079) beca
       <guid isPermaLink="false">flame-dl-DL-0219</guid>
       <description>Detects newly registered domains (&lt; 30 days) matching government agency impersonation patterns combined with subsidy/relief keywords. Targets domains like gov*-subsidy*, dwp-*, hmrc-*, irs-*, fema-*, *-relief-payment, and country-agency combinations (uk-energy-*, us-fuel-*). CrimsonVector confirmed gov.dwp-subsidy.shop as a phishing site impersonating the UK Department for Work and Pensions during the 2026 oil shock. The NRD age filter (&lt; 30 days) eliminates legitimate government domains while catching the 48-72h post-announcement registration surge.
 </description>
-        <category>ai-face-voice-changer</category>
         <category>credential-harvesting</category>
-        <category>deepfake-fraud</category>
-        <category>dprk-it-worker-fraud</category>
         <category>impersonation</category>
         <category>phishing</category>
         <category>severity-critical</category>
         <category>CFPF-P2</category>
-        <category>linked-TP-0034</category>
-        <category>linked-TP-0057</category>
         <category>linked-TP-0084</category>
         <category>linked-TP-0086</category>
     </item>
@@ -5252,15 +5284,10 @@ This threat path is distinct from general phishing infrastructure (TP-0079) beca
       <guid isPermaLink="false">flame-dl-DL-0220</guid>
       <description>Detects TLS certificate issuance within 48 hours of domain registration on crisis-themed domains. Legitimate organizations typically register domains days to weeks before certificate provisioning, while crisis-exploitation infrastructure shows a characteristic sub-48h registration-to-cert velocity as threat actors race to deploy HTTPS-credible phishing pages before awareness develops. Certificate transparency logs provide the data source. CrimsonVector documented this rapid-cert pattern across 1,435 crisis-themed domains during the 2026 oil shock, with Let&apos;s Encrypt and ZeroSSL as the primary issuers.
 </description>
-        <category>chatbot-enabled-fraud</category>
         <category>fraud-enabling-infrastructure</category>
         <category>phishing</category>
-        <category>scam-compound-operations</category>
-        <category>social-engineering</category>
         <category>severity-high</category>
         <category>CFPF-P2</category>
-        <category>linked-TP-0017</category>
-        <category>linked-TP-0058</category>
         <category>linked-TP-0079</category>
         <category>linked-TP-0086</category>
     </item>
