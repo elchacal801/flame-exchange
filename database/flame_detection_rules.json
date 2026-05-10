@@ -15480,6 +15480,7 @@
     "native_query_required": true,
     "queries": {
       "sentinel": "SigninLogs\n| where TimeGenerated > ago(24h)\n| where ResultType == 0\n| summarize\n    UACount = dcount(UserAgent),\n    UAs = make_set(UserAgent),\n    IPs = make_set(IPAddress),\n    MinTime = min(TimeGenerated),\n    MaxTime = max(TimeGenerated)\n  by CorrelationId, UserPrincipalName\n| where UACount >= 2\n| where datetime_diff('minute', MaxTime, MinTime) <= 10\n| project UserPrincipalName, CorrelationId, UACount, UAs, IPs, MinTime, MaxTime",
+      "splunk": "index=identity sourcetype=azure:signinlogs ResultType=0 earliest=-24h\n| stats dc(UserAgent) as ua_count,\n        values(UserAgent) as UAs,\n        values(src_ip) as IPs,\n        min(_time) as min_time,\n        max(_time) as max_time\n  by CorrelationId, UserPrincipalName\n| where ua_count >= 2\n| eval duration_min=round((max_time - min_time) / 60, 2)\n| where duration_min <= 10\n| table UserPrincipalName, CorrelationId, ua_count, UAs, IPs, duration_min",
       "cql": "#event_simpleName=UserLogon\n| CorrelationId=*\n| groupBy([CorrelationId, UserPrincipalName], function=[\n    count(UserAgent, distinct=true, as=ua_count),\n    collect([UserAgent, RemoteAddressIP4])\n  ], span=10m)\n| ua_count >= 2"
     },
     "references": [
@@ -15541,6 +15542,8 @@
     "sigma_compatible": false,
     "native_query_required": true,
     "queries": {
+      "splunk": "index=blockchain sourcetype=crypto_transactions\n  (token_symbol=USDT OR token_symbol=USDC OR token_symbol=BTC)\n  amount_usd>=5000 earliest=-7d\n| eventstats sum(amount_usd) as total_inbound by wallet_address, direction\n| where direction=\"inbound\"\n| join wallet_address type=inner\n  [ search index=blockchain sourcetype=crypto_transactions direction=\"outbound\"\n    (token_symbol=USDT OR token_symbol=USDC OR token_symbol=BTC)\n    amount_usd>=5000 earliest=-7d\n    | stats sum(amount_usd) as total_outbound, dc(tx_hash) as outbound_count\n      by wallet_address ]\n| stats values(total_inbound) as total_inbound,\n        values(total_outbound) as total_outbound,\n        dc(tx_hash) as inbound_count,\n        values(outbound_count) as outbound_count\n  by wallet_address\n| where total_inbound > 0 AND total_outbound > 0\n| where round(total_outbound / total_inbound, 4) >= 0.93\n        AND round(total_outbound / total_inbound, 4) <= 0.97\n| sort - total_inbound\n| table wallet_address, total_inbound, total_outbound, inbound_count, outbound_count",
+      "cql": "#event_simpleName=CryptoTransaction\n| token_symbol in [USDT, USDC, BTC]\n| amount_usd >= 5000\n| groupBy([wallet_address], function=[\n    sum(amount_usd, where=direction=\"inbound\", as=total_inbound),\n    sum(amount_usd, where=direction=\"outbound\", as=total_outbound),\n    count(direction, where=direction=\"inbound\", as=inbound_count),\n    count(direction, where=direction=\"outbound\", as=outbound_count)\n  ], span=7d)\n| total_inbound > 0\n| total_outbound > 0\n| forwarding_ratio := total_outbound / total_inbound\n| forwarding_ratio >= 0.93\n| forwarding_ratio <= 0.97",
       "sql": "WITH wallet_flows AS (\n  SELECT\n    wallet_address,\n    SUM(CASE WHEN direction = 'inbound' THEN amount_usd ELSE 0 END) AS total_inbound,\n    SUM(CASE WHEN direction = 'outbound' THEN amount_usd ELSE 0 END) AS total_outbound,\n    COUNT(CASE WHEN direction = 'inbound' THEN 1 END) AS inbound_count,\n    COUNT(CASE WHEN direction = 'outbound' THEN 1 END) AS outbound_count,\n    MIN(first_seen) AS wallet_age_start\n  FROM blockchain_transactions\n  WHERE token_symbol IN ('USDT', 'USDC', 'BTC')\n    AND amount_usd >= 5000\n    AND block_timestamp >= CURRENT_TIMESTAMP - INTERVAL '7 days'\n  GROUP BY wallet_address\n)\nSELECT\n  wallet_address,\n  total_inbound,\n  total_outbound,\n  ROUND(total_outbound / NULLIF(total_inbound, 0), 4) AS forwarding_ratio,\n  ROUND((1 - total_outbound / NULLIF(total_inbound, 0)) * 100, 2) AS retained_pct,\n  inbound_count,\n  outbound_count,\n  wallet_age_start\nFROM wallet_flows\nWHERE total_inbound > 0\n  AND total_outbound > 0\n  AND (total_outbound / total_inbound) BETWEEN 0.93 AND 0.97\n  AND inbound_count >= 1\n  AND outbound_count >= 1\nORDER BY total_inbound DESC"
     },
     "references": [
@@ -15590,7 +15593,7 @@
         "time_receive_to_swap_hours|lte": 24
       },
       "filter_institutional": {
-        "wallet_address|in": "%institutional_rebalancing_allowlist%"
+        "wallet_address|contains": "%institutional_rebalancing_allowlist%"
       },
       "condition": "selection and not filter_institutional"
     },
@@ -15598,6 +15601,7 @@
       "product": "crypto",
       "service": "blockchain_analytics"
     },
+    "sigma_compatible": true,
     "references": [
       "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
     ],
@@ -15643,6 +15647,7 @@
       "product": "crypto",
       "service": "bridge_monitoring"
     },
+    "sigma_compatible": true,
     "references": [
       "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
     ],
@@ -15689,6 +15694,7 @@
       "product": "crypto",
       "service": "blockchain_analytics"
     },
+    "sigma_compatible": true,
     "references": [
       "CrowdStrike 2026 Global Threat Report (PRESSURE CHOLLIMA Bybit case)",
       "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
@@ -15741,6 +15747,7 @@
       "product": "crypto",
       "service": "transaction_monitoring"
     },
+    "sigma_compatible": true,
     "references": [
       "https://www.fatf-gafi.org/en/publications/Methodsandtrends/targeted-report-stablecoins-unhosted-wallets-2026.html"
     ],
@@ -15787,6 +15794,19 @@
     "logsource": {
       "product": "banking",
       "service": "domain_intelligence"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "domain_name",
+        "tld"
+      ],
+      "enrichment_required": [
+        {
+          "field": "domain_age_days",
+          "source": "WHOIS enrichment (domain registration date lookup)"
+        }
+      ]
     },
     "references": [
       "https://interisle.net/PhishingLandscape2025.pdf"
@@ -15851,6 +15871,7 @@
       "product": "banking",
       "service": "web_proxy"
     },
+    "sigma_compatible": true,
     "references": [
       "https://interisle.net/PhishingLandscape2025.pdf"
     ],
@@ -15904,6 +15925,7 @@
       "product": "banking",
       "service": "dns_monitoring"
     },
+    "sigma_compatible": true,
     "references": [
       "https://interisle.net/PhishingLandscape2025.pdf"
     ],
@@ -15957,6 +15979,7 @@
       "product": "banking",
       "service": "endpoint_monitoring"
     },
+    "sigma_compatible": true,
     "references": [
       "https://www.crowdstrike.com/en-us/global-threat-report/"
     ],
@@ -16573,6 +16596,7 @@
       "product": "banking",
       "service": "domain_intelligence"
     },
+    "sigma_compatible": true,
     "references": [
       "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — 1,435 crisis-themed domains",
       "Interisle Consulting Group, Phishing Landscape 2025 — Bulk registration patterns on cheap gTLDs"
@@ -16630,6 +16654,19 @@
     "logsource": {
       "product": "banking",
       "service": "domain_intelligence"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "domain_name",
+        "tld"
+      ],
+      "enrichment_required": [
+        {
+          "field": "domain_age_days",
+          "source": "WHOIS enrichment (domain registration date lookup)"
+        }
+      ]
     },
     "references": [
       "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — gov.dwp-subsidy.shop confirmed phishing",
@@ -16695,6 +16732,7 @@
       "product": "banking",
       "service": "domain_intelligence"
     },
+    "sigma_compatible": true,
     "references": [
       "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — rapid cert issuance pattern",
       "Certificate Transparency (RFC 6962) — Public CT log monitoring"
@@ -16741,6 +16779,19 @@
     "logsource": {
       "product": "banking",
       "service": "domain_intelligence"
+    },
+    "sigma_compatible": true,
+    "data_sources": {
+      "native_fields": [
+        "domain_name",
+        "tld"
+      ],
+      "enrichment_required": [
+        {
+          "field": "domain_age_days",
+          "source": "WHOIS enrichment (domain registration date lookup)"
+        }
+      ]
     },
     "references": [
       "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — dual-track exploitation model",
