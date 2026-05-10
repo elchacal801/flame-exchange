@@ -38,6 +38,14 @@ falsepositives:
   - "Legitimate commodity trading platforms launching new domains"
   - "Financial news or analysis sites covering commodity markets"
   - "Educational resources about commodity investment"
+sigma_compatible: true
+data_sources:
+  native_fields:
+    - domain_name
+    - tld
+  enrichment_required:
+    - field: domain_age_days
+      source: WHOIS enrichment (domain registration date lookup)
 level: high
 tags:
   - cfpf.phase2.initial_access

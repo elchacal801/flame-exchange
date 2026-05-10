@@ -48,6 +48,7 @@ falsepositives:
   - "Legitimate developer projects hosted on PaaS platforms"
   - "Documentation sites using brand names in context"
   - "Testing and staging environments on free-tier subdomains"
+sigma_compatible: true
 level: medium
 tags:
   - cfpf.phase2.initial_access

@@ -34,6 +34,14 @@ falsepositives:
   - "Domain portfolio investors acquiring multiple domains"
   - "Corporate brand protection bulk registrations"
   - "Legitimate product launches registering multiple TLD variants"
+data_sources:
+  native_fields:
+    - domain_name
+    - tld
+  enrichment_required:
+    - field: domain_age_days
+      source: WHOIS enrichment (domain registration date lookup)
+sigma_compatible: true
 level: high
 tags:
   - cfpf.phase1.recon
