@@ -76,6 +76,18 @@ queries:
     | where UACount >= 2
     | where datetime_diff('minute', MaxTime, MinTime) <= 10
     | project UserPrincipalName, CorrelationId, UACount, UAs, IPs, MinTime, MaxTime
+  splunk: |-
+    index=identity sourcetype=azure:signinlogs ResultType=0 earliest=-24h
+    | stats dc(UserAgent) as ua_count,
+            values(UserAgent) as UAs,
+            values(src_ip) as IPs,
+            min(_time) as min_time,
+            max(_time) as max_time
+      by CorrelationId, UserPrincipalName
+    | where ua_count >= 2
+    | eval duration_min=round((max_time - min_time) / 60, 2)
+    | where duration_min <= 10
+    | table UserPrincipalName, CorrelationId, ua_count, UAs, IPs, duration_min
   cql: |-
     #event_simpleName=UserLogon
     | CorrelationId=*
