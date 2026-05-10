@@ -9,7 +9,7 @@ for the static frontend.
 Usage:
     python scripts/build_database.py [--root /path/to/flame-fraud]
 
-The script scans ThreatPaths/, Baselines/, and DetectionLogic/
+The script scans ThreatPaths/ and Baselines/
 directories for markdown files, parses their YAML frontmatter
 (code-fenced blocks), and produces:
     - database/flame.db    (SQLite index)
@@ -304,46 +304,6 @@ CREATE INDEX IF NOT EXISTS idx_reg_source ON regulatory_alerts(source);
 CREATE INDEX IF NOT EXISTS idx_reg_date ON regulatory_alerts(date);
 CREATE INDEX IF NOT EXISTS idx_reg_tp ON regulatory_alert_tp_mapping(tp_id);
 
-CREATE TABLE IF NOT EXISTS detection_rules (
-    id TEXT PRIMARY KEY,
-    dl_id TEXT NOT NULL,
-    title TEXT NOT NULL,
-    status TEXT NOT NULL,
-    description TEXT,
-    cfpf_phase TEXT,
-    level TEXT,
-    logsource_product TEXT,
-    logsource_service TEXT,
-    detection_yaml TEXT,
-    file_path TEXT NOT NULL,
-    sigma_compatible BOOLEAN,
-    native_query_required BOOLEAN,
-    data_sources_json TEXT,
-    queries_json TEXT,
-    references_json TEXT
-);
-
-CREATE TABLE IF NOT EXISTS detection_rule_threat_paths (
-    rule_id TEXT NOT NULL,
-    tp_id TEXT NOT NULL,
-    FOREIGN KEY (rule_id) REFERENCES detection_rules(id)
-);
-
-CREATE TABLE IF NOT EXISTS detection_rule_fraud_types (
-    rule_id TEXT NOT NULL,
-    fraud_type TEXT NOT NULL,
-    FOREIGN KEY (rule_id) REFERENCES detection_rules(id)
-);
-
-CREATE TABLE IF NOT EXISTS detection_rule_tags (
-    rule_id TEXT NOT NULL,
-    tag TEXT NOT NULL,
-    FOREIGN KEY (rule_id) REFERENCES detection_rules(id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_dl_cfpf ON detection_rules(cfpf_phase);
-CREATE INDEX IF NOT EXISTS idx_dl_status ON detection_rules(status);
-CREATE INDEX IF NOT EXISTS idx_dl_tp ON detection_rule_threat_paths(tp_id);
 """
 
 
@@ -495,88 +455,7 @@ def load_techniques(conn: sqlite3.Connection, techniques_path: Path):
     return count
 
 
-# ---------------------------------------------------------------------------
-# Detection Logic (YAML) loading
-# ---------------------------------------------------------------------------
-
-def find_dl_files(root: Path) -> list[Path]:
-    """Scan DetectionLogic/ for .yml files and return a sorted list."""
-    dl_dir = root / "DetectionLogic"
-    if not dl_dir.exists():
-        return []
-    return sorted(dl_dir.glob("*.yml"))
-
-
-def load_detection_rule(conn: sqlite3.Connection, dl_data: dict, filepath: Path):
-    """Insert a detection rule and its related data into the database."""
-    # Extract dl_id from filename, e.g. "DL-0001" from "DL-0001-mule-account-velocity.yml"
-    stem = filepath.stem  # e.g. "DL-0001-mule-account-velocity"
-    dl_id_match = re.match(r"^(DL-\d{4})", stem)
-    dl_id = dl_id_match.group(1) if dl_id_match else stem
-
-    rule_id = str(dl_data.get("id", ""))
-    if not rule_id:
-        log.warning("Skipping %s: no 'id' in YAML", filepath)
-        return
-
-    logsource = dl_data.get("logsource", {}) or {}
-    detection = dl_data.get("detection", {}) or {}
-
-    # Serialize optional complex fields
-    data_sources = dl_data.get("data_sources")
-    queries = dl_data.get("queries")
-    references = dl_data.get("references")
-
-    conn.execute(
-        """INSERT OR REPLACE INTO detection_rules
-           (id, dl_id, title, status, description, cfpf_phase, level,
-            logsource_product, logsource_service, detection_yaml, file_path,
-            sigma_compatible, native_query_required,
-            data_sources_json, queries_json, references_json)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-        (
-            rule_id,
-            dl_id,
-            dl_data.get("title", ""),
-            dl_data.get("status", ""),
-            dl_data.get("description", ""),
-            str(dl_data.get("cfpf_phase", "")),
-            dl_data.get("level", ""),
-            logsource.get("product", ""),
-            logsource.get("service", ""),
-            json.dumps(detection, default=str),
-            str(filepath),
-            dl_data.get("sigma_compatible"),
-            dl_data.get("native_query_required"),
-            json.dumps(data_sources, default=str) if data_sources else None,
-            json.dumps(queries, default=str) if queries else None,
-            json.dumps(references, default=str) if references else None,
-        )
-    )
-
-    # Insert threat_paths
-    for tp in (dl_data.get("threat_paths") or []):
-        if tp:
-            conn.execute(
-                "INSERT INTO detection_rule_threat_paths (rule_id, tp_id) VALUES (?, ?)",
-                (rule_id, str(tp))
-            )
-
-    # Insert fraud_types
-    for ft in (dl_data.get("fraud_types") or []):
-        if ft:
-            conn.execute(
-                "INSERT INTO detection_rule_fraud_types (rule_id, fraud_type) VALUES (?, ?)",
-                (rule_id, str(ft))
-            )
-
-    # Insert tags
-    for tag in (dl_data.get("tags") or []):
-        if tag:
-            conn.execute(
-                "INSERT INTO detection_rule_tags (rule_id, tag) VALUES (?, ?)",
-                (rule_id, str(tag))
-            )
+# Detection rule ingestion removed — see github.com/elchacal801/flame-detections
 
 
 # ---------------------------------------------------------------------------
@@ -772,16 +651,6 @@ def _fetch_list(conn: sqlite3.Connection, table: str, col: str, sub_id: str) -> 
     return [r[0] for r in rows]
 
 
-def _fetch_detection_rule_ids(conn: sqlite3.Connection, tp_id: str) -> list[str]:
-    """Fetch DL rule dl_ids that reference a given TP."""
-    rows = conn.execute(
-        "SELECT dr.dl_id FROM detection_rules dr "
-        "JOIN detection_rule_threat_paths drtp ON dr.id = drtp.rule_id "
-        "WHERE drtp.tp_id = ? ORDER BY dr.dl_id",
-        (tp_id,)
-    ).fetchall()
-    return [r[0] for r in rows]
-
 
 def _build_full_entry(conn: sqlite3.Connection, entry: dict) -> dict:
     """Attach all multi-value lists to a submission entry dict."""
@@ -805,9 +674,6 @@ def _build_full_entry(conn: sqlite3.Connection, entry: dict) -> dict:
 
     # Baseline IDs
     entry["baseline_ids"] = _fetch_list(conn, "submission_baseline_ids", "baseline_id", sub_id)
-
-    # Cross-reference: detection rules that reference this TP
-    entry["detection_rule_ids"] = _fetch_detection_rule_ids(conn, sub_id)
 
     # Related TPs — typed cross-references
     related_rows = conn.execute(
@@ -1002,101 +868,6 @@ def export_evidence_index(evidence_map: dict, output_path: Path):
     return len(flat_entries)
 
 
-def export_detection_rules_json(conn: sqlite3.Connection, output_path: Path) -> int:
-    """Export all detection rules to a JSON file."""
-    cursor = conn.execute(
-        "SELECT id, dl_id, title, status, description, cfpf_phase, level, "
-        "logsource_product, logsource_service, detection_yaml, file_path, "
-        "sigma_compatible, native_query_required, "
-        "data_sources_json, queries_json, references_json "
-        "FROM detection_rules ORDER BY dl_id"
-    )
-    columns = [desc[0] for desc in cursor.description]
-    rules = []
-
-    for row in cursor.fetchall():
-        entry = dict(zip(columns, row))
-        rule_id = entry["id"]
-
-        # Parse detection_yaml back to dict
-        try:
-            entry["detection"] = json.loads(entry.pop("detection_yaml"))
-        except (json.JSONDecodeError, TypeError):
-            entry["detection"] = {}
-            entry.pop("detection_yaml", None)
-
-        # Reconstruct logsource object
-        entry["logsource"] = {
-            "product": entry.pop("logsource_product", ""),
-            "service": entry.pop("logsource_service", ""),
-        }
-
-        # Add sigma audit fields
-        sigma_compat = entry.pop("sigma_compatible", None)
-        if sigma_compat is not None:
-            entry["sigma_compatible"] = bool(sigma_compat)
-
-        native_req = entry.pop("native_query_required", None)
-        if native_req:
-            entry["native_query_required"] = bool(native_req)
-
-        # Parse JSON-serialized complex fields
-        for json_field, output_key in [
-            ("data_sources_json", "data_sources"),
-            ("queries_json", "queries"),
-            ("references_json", "references"),
-        ]:
-            raw = entry.pop(json_field, None)
-            if raw:
-                try:
-                    entry[output_key] = json.loads(raw)
-                except (json.JSONDecodeError, TypeError):
-                    pass
-
-        # Fetch related lists
-        tp_rows = conn.execute(
-            "SELECT tp_id FROM detection_rule_threat_paths WHERE rule_id = ? ORDER BY tp_id",
-            (rule_id,)
-        ).fetchall()
-        entry["threat_path_ids"] = [r[0] for r in tp_rows]
-
-        ft_rows = conn.execute(
-            "SELECT fraud_type FROM detection_rule_fraud_types WHERE rule_id = ? ORDER BY fraud_type",
-            (rule_id,)
-        ).fetchall()
-        entry["fraud_types"] = [r[0] for r in ft_rows]
-
-        tag_rows = conn.execute(
-            "SELECT tag FROM detection_rule_tags WHERE rule_id = ? ORDER BY tag",
-            (rule_id,)
-        ).fetchall()
-        entry["tags"] = [r[0] for r in tag_rows]
-
-        # Fetch falsepositives from the original YAML — stored in detection_yaml
-        # Since we don't store falsepositives in the DB, re-read from file
-        fp = Path(entry.get("file_path", ""))
-        if fp.exists():
-            try:
-                raw = yaml.safe_load(fp.read_text(encoding="utf-8"))
-                entry["falsepositives"] = raw.get("falsepositives", [])
-            except Exception:
-                entry["falsepositives"] = []
-        else:
-            entry["falsepositives"] = []
-
-        # Remove file_path from exported JSON
-        entry.pop("file_path", None)
-
-        rules.append(entry)
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(
-        json.dumps(rules, indent=2, ensure_ascii=False),
-        encoding="utf-8"
-    )
-    return len(rules)
-
-
 def export_search_index(conn: sqlite3.Connection, output_path: Path) -> int:
     """Export a unified search index covering TPs, DL rules, and Baselines."""
     entries = []
@@ -1110,18 +881,6 @@ def export_search_index(conn: sqlite3.Connection, output_path: Path) -> int:
         entries.append({
             "id": row[0],
             "type": "threat_path",
-            "title": row[1],
-            "text": row[2] or "",
-        })
-
-    # Detection rules
-    dl_rows = conn.execute(
-        "SELECT dl_id, title, description FROM detection_rules ORDER BY dl_id"
-    ).fetchall()
-    for row in dl_rows:
-        entries.append({
-            "id": row[0],
-            "type": "detection_rule",
             "title": row[1],
             "text": row[2] or "",
         })
@@ -1270,83 +1029,6 @@ def _write_api_json(filepath: Path, obj):
     )
 
 
-def _build_detection_rule_entry(conn, row, columns):
-    """Build a single detection rule dict from a DB row (shared helper)."""
-    entry = dict(zip(columns, row))
-    rule_id = entry["id"]
-
-    # Parse detection_yaml back to dict
-    try:
-        entry["detection"] = json.loads(entry.pop("detection_yaml"))
-    except (json.JSONDecodeError, TypeError):
-        entry["detection"] = {}
-        entry.pop("detection_yaml", None)
-
-    # Reconstruct logsource object
-    entry["logsource"] = {
-        "product": entry.pop("logsource_product", ""),
-        "service": entry.pop("logsource_service", ""),
-    }
-
-    # Add sigma audit fields
-    sigma_compat = entry.pop("sigma_compatible", None)
-    if sigma_compat is not None:
-        entry["sigma_compatible"] = bool(sigma_compat)
-
-    native_req = entry.pop("native_query_required", None)
-    if native_req:
-        entry["native_query_required"] = bool(native_req)
-
-    # Parse JSON-serialized complex fields
-    for json_field, output_key in [
-        ("data_sources_json", "data_sources"),
-        ("queries_json", "queries"),
-        ("references_json", "references"),
-    ]:
-        raw = entry.pop(json_field, None)
-        if raw:
-            try:
-                entry[output_key] = json.loads(raw)
-            except (json.JSONDecodeError, TypeError):
-                pass
-
-    # Fetch related lists
-    tp_rows = conn.execute(
-        "SELECT tp_id FROM detection_rule_threat_paths WHERE rule_id = ? ORDER BY tp_id",
-        (rule_id,)
-    ).fetchall()
-    entry["threat_path_ids"] = [r[0] for r in tp_rows]
-
-    ft_rows = conn.execute(
-        "SELECT fraud_type FROM detection_rule_fraud_types WHERE rule_id = ? ORDER BY fraud_type",
-        (rule_id,)
-    ).fetchall()
-    entry["fraud_types"] = [r[0] for r in ft_rows]
-
-    tag_rows = conn.execute(
-        "SELECT tag FROM detection_rule_tags WHERE rule_id = ? ORDER BY tag",
-        (rule_id,)
-    ).fetchall()
-    entry["tags"] = [r[0] for r in tag_rows]
-
-    # Fetch falsepositives from the original YAML file
-    fp = Path(entry.get("file_path", ""))
-    if fp.exists():
-        try:
-            raw = yaml.safe_load(fp.read_text(encoding="utf-8"))
-            entry["falsepositives"] = raw.get("falsepositives", [])
-        except Exception:
-            entry["falsepositives"] = []
-    else:
-        entry["falsepositives"] = []
-
-    # Remove file_path from exported JSON
-    entry.pop("file_path", None)
-
-    return entry
-
-
-
 
 def _xml_escape(text: str) -> str:
     """Escape special characters for safe XML embedding."""
@@ -1423,12 +1105,6 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
             "WHERE submission_id = ? ORDER BY technique_id",
             (tp_id,),
         ).fetchall()
-        # Detection rule count
-        dl_count = conn.execute(
-            "SELECT COUNT(*) FROM detection_rule_threat_paths WHERE tp_id = ?",
-            (tp_id,),
-        ).fetchone()[0]
-
         cats = []
         for (ft,) in ft_rows:
             cats.append(f"        <category>{_xml_escape(ft)}</category>")
@@ -1451,58 +1127,6 @@ def generate_rss_feed(conn: sqlite3.Connection, root: Path) -> int:
             parts.append(f"      <flame:confidence>{confidence}</flame:confidence>")
         if reliability:
             parts.append(f"      <flame:sourceReliability>{_xml_escape(str(reliability))}</flame:sourceReliability>")
-        if dl_count:
-            parts.append(f"      <flame:detectionRuleCount>{dl_count}</flame:detectionRuleCount>")
-        parts.extend(cats)
-        parts.append("    </item>")
-        items_xml.append("\n".join(parts))
-
-    # --- Detection Logic items ---
-    dl_cur = conn.execute(
-        "SELECT id, dl_id, title, description, level, cfpf_phase "
-        "FROM detection_rules ORDER BY dl_id"
-    )
-    dl_columns = [desc[0] for desc in dl_cur.description]
-    for row in dl_cur.fetchall():
-        entry = dict(zip(dl_columns, row))
-        rule_id = entry["id"]
-        dl_id = entry["dl_id"]
-        title = entry.get("title", "")
-        desc_raw = entry.get("description", "") or ""
-        desc_text = _xml_escape(desc_raw)  # Full description, not truncated
-        level = entry.get("level", "")
-        cfpf_phase = entry.get("cfpf_phase", "")
-        dl_link = f"{BASE_URL}/#rules/{dl_id}"
-
-        # Fraud types for DL rule
-        ft_rows = conn.execute(
-            "SELECT fraud_type FROM detection_rule_fraud_types "
-            "WHERE rule_id = ? ORDER BY fraud_type",
-            (rule_id,),
-        ).fetchall()
-        # Linked threat paths
-        tp_rows = conn.execute(
-            "SELECT tp_id FROM detection_rule_threat_paths "
-            "WHERE rule_id = ? ORDER BY tp_id",
-            (rule_id,),
-        ).fetchall()
-
-        cats = []
-        for (ft,) in ft_rows:
-            cats.append(f"        <category>{_xml_escape(ft)}</category>")
-        if level:
-            cats.append(f"        <category>severity-{_xml_escape(level)}</category>")
-        if cfpf_phase:
-            cats.append(f"        <category>CFPF-{_xml_escape(cfpf_phase)}</category>")
-        for (tp_id,) in tp_rows:
-            cats.append(f"        <category>linked-{_xml_escape(tp_id)}</category>")
-
-        parts = []
-        parts.append("    <item>")
-        parts.append(f"      <title>{_xml_escape(f'[{dl_id}] {title}')}</title>")
-        parts.append(f"      <link>{_xml_escape(dl_link)}</link>")
-        parts.append(f'      <guid isPermaLink="false">flame-dl-{_xml_escape(dl_id)}</guid>')
-        parts.append(f"      <description>{desc_text}</description>")
         parts.extend(cats)
         parts.append("    </item>")
         items_xml.append("\n".join(parts))
@@ -1587,50 +1211,7 @@ def export_api_v1(conn: sqlite3.Connection, root: Path,
         file_count += 1
 
     # -------------------------------------------------------------------
-    # 3. detection-rules.json — all DL rules
-    # -------------------------------------------------------------------
-    dl_cursor = conn.execute(
-        "SELECT id, dl_id, title, status, description, cfpf_phase, level, "
-        "logsource_product, logsource_service, detection_yaml, file_path, "
-        "sigma_compatible, native_query_required, "
-        "data_sources_json, queries_json, references_json "
-        "FROM detection_rules ORDER BY dl_id"
-    )
-    dl_columns = [desc[0] for desc in dl_cursor.description]
-    dl_list = []
-
-    for row in dl_cursor.fetchall():
-        entry = _build_detection_rule_entry(conn, row, dl_columns)
-        dl_list.append(entry)
-
-    _write_api_json(api_dir / "detection-rules.json", _api_envelope(dl_list))
-    file_count += 1
-
-    # -------------------------------------------------------------------
-    # 4. detection-rules/DL-XXXX.json — individual DL rules
-    # -------------------------------------------------------------------
-    dl_detail_dir = api_dir / "detection-rules"
-    dl_cursor = conn.execute(
-        "SELECT id, dl_id, title, status, description, cfpf_phase, level, "
-        "logsource_product, logsource_service, detection_yaml, file_path, "
-        "sigma_compatible, native_query_required, "
-        "data_sources_json, queries_json, references_json "
-        "FROM detection_rules ORDER BY dl_id"
-    )
-    dl_columns = [desc[0] for desc in dl_cursor.description]
-
-    for row in dl_cursor.fetchall():
-        entry = _build_detection_rule_entry(conn, row, dl_columns)
-        dl_id = entry["dl_id"]
-
-        _write_api_json(
-            dl_detail_dir / f"{dl_id}.json",
-            _api_envelope(entry, total=1),
-        )
-        file_count += 1
-
-    # -------------------------------------------------------------------
-    # 5. baselines.json — all baselines (metadata from DB)
+    # 3. baselines.json — all baselines (metadata from DB)
     # -------------------------------------------------------------------
     bl_cursor = conn.execute(
         "SELECT * FROM submissions WHERE lower(category) = 'baseline' ORDER BY id"
@@ -1649,7 +1230,7 @@ def export_api_v1(conn: sqlite3.Connection, root: Path,
     file_count += 1
 
     # -------------------------------------------------------------------
-    # 6. taxonomy.json — sectors + fraud types from flame_taxonomy.json
+    # 4. taxonomy.json — sectors + fraud types from flame_taxonomy.json
     # -------------------------------------------------------------------
     taxonomy_path = root / "data" / "flame_taxonomy.json"
     if taxonomy_path.exists():
@@ -1662,7 +1243,7 @@ def export_api_v1(conn: sqlite3.Connection, root: Path,
     file_count += 1
 
     # -------------------------------------------------------------------
-    # 7. coverage-matrix.json — phase x fraud-type coverage matrix
+    # 5. coverage-matrix.json — phase x fraud-type coverage matrix
     # -------------------------------------------------------------------
     coverage_matrix = stats.get("coverageMatrix", [])
     _write_api_json(
@@ -1672,7 +1253,7 @@ def export_api_v1(conn: sqlite3.Connection, root: Path,
     file_count += 1
 
     # -------------------------------------------------------------------
-    # 8. stats.json — aggregate statistics
+    # 6. stats.json — aggregate statistics
     # -------------------------------------------------------------------
     _write_api_json(api_dir / "stats.json", _api_envelope(stats, total=1))
     file_count += 1
@@ -1711,20 +1292,7 @@ def extract_contributors(conn: sqlite3.Connection, root: Path) -> list[dict]:
         elif sub_id.startswith("BL-") or sub_id.startswith("BASE-"):
             contributors[author]["baselines"] += 1
 
-    # Count DL rules - credit each rule to the author of its first linked TP
-    dl_rows = conn.execute(
-        "SELECT dr.id FROM detection_rules dr ORDER BY dr.dl_id"
-    ).fetchall()
-    for (rule_id,) in dl_rows:
-        tp_row = conn.execute(
-            "SELECT s.author FROM detection_rule_threat_paths drtp "
-            "JOIN submissions s ON drtp.tp_id = s.id "
-            "WHERE drtp.rule_id = ? ORDER BY drtp.tp_id LIMIT 1",
-            (rule_id,),
-        ).fetchone()
-        author = (tp_row[0] if tp_row and tp_row[0] else "Unknown")
-        _ensure(author)
-        contributors[author]["detection_rules"] += 1
+    # Detection rule contributor counting removed — see github.com/elchacal801/flame-detections
 
     # Count EPs from EmulationPlaybooks/ directory
     ep_dir = root / "EmulationPlaybooks"
@@ -1765,7 +1333,7 @@ def export_contributors_json(contributors: list[dict], root: Path) -> int:
 
 def find_markdown_files(root: Path) -> list[Path]:
     """Find all markdown files in submission directories."""
-    dirs = ["ThreatPaths", "Baselines", "DetectionLogic"]
+    dirs = ["ThreatPaths", "Baselines"]
     files = []
     for d in dirs:
         dir_path = root / d
@@ -1841,31 +1409,7 @@ def main():
     log.info("Extracted %d evidence entries across %d TPs",
              total_evidence, len(evidence_map))
 
-    # Process Detection Logic YAML files
-    dl_files = find_dl_files(root)
-    log.info("Found %d detection logic files", len(dl_files))
-    dl_loaded = 0
-    dl_errors = 0
-    for dl_filepath in dl_files:
-        try:
-            dl_data = yaml.safe_load(dl_filepath.read_text(encoding="utf-8"))
-            if not isinstance(dl_data, dict):
-                log.error("DL file %s is not a YAML mapping", dl_filepath)
-                dl_errors += 1
-                continue
-            load_detection_rule(conn, dl_data, dl_filepath)
-            dl_id_match = re.match(r"^(DL-\d{4})", dl_filepath.stem)
-            dl_id = dl_id_match.group(1) if dl_id_match else dl_filepath.stem
-            log.info("  Loaded DL: %s (%s)", dl_id, dl_data.get("title", "?"))
-            dl_loaded += 1
-        except yaml.YAMLError as e:
-            log.error("YAML parse error in %s: %s", dl_filepath, e)
-            dl_errors += 1
-        except Exception as e:
-            log.error("Error loading %s: %s", dl_filepath, e)
-            dl_errors += 1
-
-    conn.commit()
+    # Detection rule ingestion removed — see github.com/elchacal801/flame-detections
 
     # Load regulatory alerts
     reg_csv = root / "data" / "regulatory-alerts.csv"
@@ -1895,11 +1439,6 @@ def main():
     reg_json_path = root / "database" / "regulatory-alerts.json"
     reg_json_count = export_regulatory_json(conn, reg_json_path)
     log.info("Exported %d regulatory alerts to %s", reg_json_count, reg_json_path)
-
-    # Export detection rules JSON
-    dl_json_path = root / "database" / "flame_detection_rules.json"
-    dl_json_count = export_detection_rules_json(conn, dl_json_path)
-    log.info("Exported %d detection rules to %s", dl_json_count, dl_json_path)
 
     # Export search index
     search_index_path = root / "database" / "flame-search-index.json"
@@ -1933,10 +1472,10 @@ def main():
 
     # Summary
     log.info("---")
-    log.info("Build complete: %d loaded, %d errors, %d techniques, %d DL rules (%d DL errors)",
-             loaded, errors, tech_count, dl_loaded, dl_errors)
+    log.info("Build complete: %d loaded, %d errors, %d techniques",
+             loaded, errors, tech_count)
 
-    if errors > 0 or dl_errors > 0:
+    if errors > 0:
         sys.exit(1)
 
 
