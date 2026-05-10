@@ -47,6 +47,7 @@ detection:
 falsepositives:
   - "Legitimate rapid-deployment sites using automated certificate provisioning"
   - "CDN-provisioned certificates on legitimate customer domains"
+sigma_compatible: true
 level: high
 tags:
   - cfpf.phase2.initial_access
