@@ -45,6 +45,14 @@ falsepositives:
   - "Legitimate government contractor domains registered for program support"
   - "News aggregator or comparison sites covering government programs"
   - "Academic or research domains studying government policy"
+sigma_compatible: true
+data_sources:
+  native_fields:
+    - domain_name
+    - tld
+  enrichment_required:
+    - field: domain_age_days
+      source: WHOIS enrichment (domain registration date lookup)
 level: critical
 tags:
   - cfpf.phase2.initial_access

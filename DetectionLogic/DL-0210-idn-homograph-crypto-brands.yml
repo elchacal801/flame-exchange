@@ -37,6 +37,7 @@ detection:
 falsepositives:
   - "Legitimate internationalized domain names in non-Latin scripts"
   - "Localized crypto service providers using native-language domains"
+sigma_compatible: true
 level: high
 tags:
   - cfpf.phase2.initial_access

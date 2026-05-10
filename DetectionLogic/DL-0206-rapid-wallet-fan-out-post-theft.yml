@@ -34,6 +34,7 @@ falsepositives:
   - "Exchange hot wallet distributions to customer withdrawal addresses"
   - "Airdrop campaigns distributing tokens to large recipient lists"
   - "Payroll distributions from corporate treasury wallets"
+sigma_compatible: true
 level: critical
 tags:
   - cfpf.phase4.execution
