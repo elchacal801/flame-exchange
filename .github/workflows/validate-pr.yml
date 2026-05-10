@@ -5,7 +5,6 @@ on:
     paths:
       - 'ThreatPaths/**'
       - 'Baselines/**'
-      - 'DetectionLogic/**'
       - 'scripts/**'
       - 'requirements.txt'
 
@@ -41,7 +40,7 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.sha }}
         run: |
-          FILES=$(git diff --name-only --diff-filter=ACMR "$BASE_SHA" "$HEAD_SHA" -- 'ThreatPaths/*.md' 'Baselines/*.md' 'DetectionLogic/*.yml' | tr '\n' ' ')
+          FILES=$(git diff --name-only --diff-filter=ACMR "$BASE_SHA" "$HEAD_SHA" -- 'ThreatPaths/*.md' 'Baselines/*.md' | tr '\n' ' ')
           echo "files=$FILES" >> $GITHUB_OUTPUT
 
       # SECURITY FIX: File list moved to env: block and iterated safely with proper
@@ -55,8 +54,3 @@ jobs:
             [ -n "$file" ] && python scripts/validate_submission.py "$file"
           done
 
-      - name: Validate detection rules (CI)
-        run: python scripts/validate_rules.py
-
-      - name: Audit detection rule query content
-        run: python scripts/audit_queries.py

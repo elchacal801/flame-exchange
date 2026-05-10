@@ -8,7 +8,6 @@ on:
       - 'scripts/**'
       - 'tests/**'
       - 'Baselines/**'
-      - 'DetectionLogic/**'
       - 'config/**'
   pull_request:
     branches: [main]
@@ -83,9 +82,6 @@ jobs:
 
       - name: Export STIX bundle
         run: python scripts/export_flame_stix.py
-
-      - name: Export Sigma detection packs
-        run: python scripts/export_sigma.py
 
       - name: Export MISP galaxy and feed
         run: python scripts/export_misp.py

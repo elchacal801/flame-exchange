@@ -23,9 +23,6 @@ class FlameDataLoader:
         self.threat_paths: list[dict[str, Any]] = self._load_json(
             self._root / "flame-index.json"
         )
-        self.detection_rules: list[dict[str, Any]] = self._load_json(
-            self._root / "flame_detection_rules.json"
-        )
         self.stats: dict[str, Any] = self._load_json(
             self._root / "flame-stats.json"
         )
@@ -147,32 +144,6 @@ class FlameDataLoader:
                 continue
 
             results.append(tp)
-
-        return results
-
-    def get_detection_rules(
-        self,
-        tp_id: str = "",
-        fraud_type: str = "",
-        level: str = "",
-    ) -> list[dict[str, Any]]:
-        """Filter detection rules by tp_id, fraud_type, level."""
-        results: list[dict[str, Any]] = []
-
-        for rule in self.detection_rules:
-            # Filter by threat path ID
-            if tp_id and tp_id not in rule.get("threat_path_ids", []):
-                continue
-
-            # Filter by fraud type
-            if fraud_type and fraud_type not in rule.get("fraud_types", []):
-                continue
-
-            # Filter by severity level
-            if level and rule.get("level", "") != level:
-                continue
-
-            results.append(rule)
 
         return results
 
