@@ -25,7 +25,7 @@ detection:
     swap_venue_type: DEX
     time_receive_to_swap_hours|lte: 24
   filter_institutional:
-    wallet_address|in: "%institutional_rebalancing_allowlist%"
+    wallet_address|contains: "%institutional_rebalancing_allowlist%"
   condition: selection and not filter_institutional
 falsepositives:
   - "DeFi yield farming strategies that routinely swap between stablecoin types"
