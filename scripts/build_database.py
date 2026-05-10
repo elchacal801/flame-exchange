@@ -461,7 +461,7 @@ def _insert_multi(conn: sqlite3.Connection, table: str, sub_id: str, col: str, v
     for val in values:
         if val:  # skip empty strings/None
             conn.execute(
-                f"INSERT INTO {table} (submission_id, {col}) VALUES (?, ?)",
+                f"INSERT INTO {table} (submission_id, {col}) VALUES (?, ?)",  # nosec B608
                 (sub_id, str(val))
             )
 
@@ -766,7 +766,7 @@ def _fetch_list(conn: sqlite3.Connection, table: str, col: str, sub_id: str) -> 
     if (table, col) not in _VALID_MULTI_TABLES:
         raise ValueError(f"Invalid table/column pair: {table}.{col}")
     rows = conn.execute(
-        f"SELECT {col} FROM {table} WHERE submission_id = ? ORDER BY rowid",
+        f"SELECT {col} FROM {table} WHERE submission_id = ? ORDER BY rowid",  # nosec B608
         (sub_id,)
     ).fetchall()
     return [r[0] for r in rows]
