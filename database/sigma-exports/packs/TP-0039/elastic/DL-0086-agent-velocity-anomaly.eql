@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-initiated_by:ai_agent AND ((count:>=5 AND groupby:agent_session_id AND timeframe:1m) OR (dc(merchant_id):>=3 AND groupby:agent_session_id AND timeframe:1m))

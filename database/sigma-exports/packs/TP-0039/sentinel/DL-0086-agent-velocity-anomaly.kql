@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-initiated_by =~ "ai_agent" and ((count >= 5 and groupby =~ "agent_session_id" and timeframe =~ "1m") or ('dc(merchant_id)' >= 3 and groupby =~ "agent_session_id" and timeframe =~ "1m"))

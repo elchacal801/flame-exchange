@@ -13,7 +13,6 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DATABASE_DIR = REPO_ROOT / "database"
 API_V1_DIR = REPO_ROOT / "api" / "v1"
-FLAME_CONTENT_DIR = DATABASE_DIR / "flame-content"
 
 
 # ---------------------------------------------------------------------------
@@ -47,7 +46,7 @@ class TestFlameIndex:
         """Every TP entry must have the core fields."""
         required_fields = [
             "id", "title", "sectors", "fraud_types",
-            "detection_rule_ids", "baseline_ids",
+            "baseline_ids",
         ]
         data = _load_json(self.INDEX_PATH)
         for tp in data:
@@ -58,76 +57,12 @@ class TestFlameIndex:
 
 
 # ---------------------------------------------------------------------------
-# Detection rules JSON (build_database.py output)
-# ---------------------------------------------------------------------------
-
-class TestDetectionRulesJSON:
-    DR_PATH = API_V1_DIR / "detection-rules.json"
-
-    def test_detection_rules_json_exists(self) -> None:
-        assert self.DR_PATH.exists(), "api/v1/detection-rules.json must exist"
-
-    def test_detection_rules_is_valid_json(self) -> None:
-        data = _load_json(self.DR_PATH)
-        assert isinstance(data, dict), "detection-rules.json should be a dict"
-        assert "data" in data, "detection-rules.json must have 'data' key"
-
-    def test_detection_rules_count_matches_files(self) -> None:
-        """The number of rules in JSON should match DL files on disk."""
-        from pathlib import Path
-        dl_files = sorted((REPO_ROOT / "DetectionLogic").glob("DL-*.yml"))
-        data = _load_json(self.DR_PATH)
-        rules = data.get("data", [])
-        assert len(rules) == len(dl_files), (
-            f"detection-rules.json has {len(rules)} rules but "
-            f"{len(dl_files)} DL files exist on disk"
-        )
-
-    def test_detection_rule_entries_have_expected_fields(self) -> None:
-        """Each detection rule entry should have core fields."""
-        required_fields = ["id", "dl_id", "title", "status", "cfpf_phase"]
-        data = _load_json(self.DR_PATH)
-        for rule in data.get("data", []):
-            for field in required_fields:
-                assert field in rule, (
-                    f"DL rule {rule.get('dl_id', 'UNKNOWN')} missing field: {field}"
-                )
-
-
-# ---------------------------------------------------------------------------
-# TP-XXXX-rules.json (sync_tp_rules.py output)
-# ---------------------------------------------------------------------------
-
-class TestTPRulesJSON:
-    def _get_tp_rules_files(self) -> list[Path]:
-        """Return all TP-XXXX-rules.json files from flame-content."""
-        if not FLAME_CONTENT_DIR.exists():
-            return []
-        return sorted(FLAME_CONTENT_DIR.glob("TP-*-rules.json"))
-
-    def test_tp_rules_files_exist(self) -> None:
-        files = self._get_tp_rules_files()
-        assert len(files) > 0, "No TP-XXXX-rules.json files found in flame-content/"
-
-    def test_tp_rules_files_are_valid_json(self) -> None:
-        for rules_file in self._get_tp_rules_files():
-            try:
-                data = _load_json(rules_file)
-                assert isinstance(data, (list, dict)), (
-                    f"{rules_file.name} is not a JSON object or array"
-                )
-            except json.JSONDecodeError as exc:
-                pytest.fail(f"{rules_file.name} is invalid JSON: {exc}")
-
-
-# ---------------------------------------------------------------------------
 # API v1 JSON files
 # ---------------------------------------------------------------------------
 
 class TestAPIV1JSON:
     EXPECTED_FILES = [
         "threat-paths.json",
-        "detection-rules.json",
         "taxonomy.json",
         "stats.json",
         "baselines.json",
@@ -170,17 +105,6 @@ class TestAPIV1JSON:
             except json.JSONDecodeError as exc:
                 pytest.fail(f"{tp_file.name} is invalid JSON: {exc}")
 
-    def test_individual_dl_json_files_valid(self) -> None:
-        """All DL-XXXX.json files in api/v1/detection-rules/ must be valid JSON."""
-        dl_json_dir = API_V1_DIR / "detection-rules"
-        if not dl_json_dir.exists():
-            pytest.skip("api/v1/detection-rules/ not found")
-        for dl_file in sorted(dl_json_dir.glob("DL-*.json")):
-            try:
-                data = _load_json(dl_file)
-                assert isinstance(data, dict), f"{dl_file.name} is not a JSON object"
-            except json.JSONDecodeError as exc:
-                pytest.fail(f"{dl_file.name} is invalid JSON: {exc}")
 
 
 # ---------------------------------------------------------------------------

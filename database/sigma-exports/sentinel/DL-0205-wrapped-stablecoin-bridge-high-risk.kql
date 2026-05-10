@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-bridge_protocol startswith "" and source_chain startswith "" and destination_chain startswith "" and wrapped_token matches regex "wUSDT|wUSDC" and source_risk_score >= 70 and amount_usd >= 10000

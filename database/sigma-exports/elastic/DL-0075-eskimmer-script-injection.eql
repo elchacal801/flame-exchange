@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:csp_violation AND (page_uri:(*\/checkout* OR *\/payment* OR *\/billing* OR *\/cart\/complete*)) AND blocked_uri:/https?:\/\/[^\/]+\.[a-z]{2,}/) OR ((event_type:script_load AND (page_uri:(*\/checkout* OR *\/payment* OR *\/billing*)) AND script_domain_age_days:<=90) AND (NOT (script_domain:(*google\-analytics.com* OR *googletagmanager.com* OR *googleapis.com* OR *gstatic.com*)))) OR (event_type:gtm_container_update AND (change_type:(*tag_created* OR *tag_modified* OR *custom_html_added*)))

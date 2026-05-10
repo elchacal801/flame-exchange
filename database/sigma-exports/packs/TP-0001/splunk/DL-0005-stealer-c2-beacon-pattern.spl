@@ -1,3 +1,0 @@
-` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
-
-http_method="POST" url_path IN ("*/gate.php*", "*/index.php*id=*", "*/panel/gate*", "*/api/check*", "*/loader/*") OR (request_body_length>=5000 content_type="*application/x-www-form-urlencoded*" domain_age_days<=30)

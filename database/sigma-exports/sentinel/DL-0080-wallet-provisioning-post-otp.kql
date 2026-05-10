@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "wallet_card_provisioned" and device_first_seen =~ true) and ((otp_delivery_elapsed_seconds <= 600 and otp_to_provisioning_seconds <= 15) or ((preceding_event_type contains "phishing_click" or preceding_event_type contains "smishing_response" or preceding_event_type contains "suspicious_inbound_call" or preceding_event_type contains "social_engineering_indicator") and preceding_event_window == 1800))

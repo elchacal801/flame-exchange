@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "new_domain_registration" and lexical_nlp_score >= 0.75 and dga_entropy_score <= 3.5 and domain_word_count >= 2) and (count >= 10 and groupby =~ "registrar_id" and timeframe =~ "24h")

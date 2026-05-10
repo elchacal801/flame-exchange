@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(amount_usd >= 10 and amount_usd <= 500 and token_type matches regex "USDT|USDC|DAI" and destination_wallet_lifetime_tx_count <= 2 and destination_wallet_age_hours <= 168) and (function =~ "count()" and group_by =~ "sender_cluster" and timeframe =~ "7d" and threshold >= 5)

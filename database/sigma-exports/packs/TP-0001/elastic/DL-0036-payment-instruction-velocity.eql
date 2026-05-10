@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-event_type:(WIRE_INITIATION OR ACH_BATCH_SUBMIT OR INTERNAL_TRANSFER OR PAYMENT_INSTRUCTION)

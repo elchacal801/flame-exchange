@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-http_method =~ "POST" and ((url_path contains "/gate.php" or (url_path contains "/index.php" and url_path contains "id=") or url_path contains "/panel/gate" or url_path contains "/api/check" or url_path contains "/loader/") or ((request_body_length >= 5000 and content_type contains "application/x-www-form-urlencoded") and domain_age_days <= 30))

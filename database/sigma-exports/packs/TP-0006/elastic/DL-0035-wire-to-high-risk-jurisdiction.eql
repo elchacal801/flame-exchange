@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:WIRE_INITIATION AND wire_type:international AND (beneficiary_country:(MM OR KP OR IR OR YE OR SY OR HT OR VU OR PH OR NG OR SS)) AND transaction_amount:>=1000) AND (NOT (beneficiary_relationship_days:>=365 AND prior_transaction_count:>=10))

@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(transaction_type =~ "contactless" and (entry_mode contains "wallet_nfc" or entry_mode contains "contactless_emv" or entry_mode contains "tap_to_pay")) and (isnotempty(cardholder_last_known_lat) and isnotempty(cardholder_last_known_lon) and cardholder_last_activity_minutes <= 120) and geo_distance_km >= 100 and required_speed_kmh >= 500

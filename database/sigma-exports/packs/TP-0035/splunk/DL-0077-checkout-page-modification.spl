@@ -1,3 +1,0 @@
-` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
-
-event_type IN ("*dom_mutation*", "*element_injected*", "*form_modified*", "*iframe_created*") page_uri IN ("*/checkout*", "*/payment*", "*/billing*") target_element IN ("*payment-form*", "*card-number*", "*cc-number*", "*card-expiry*", "*card-cvc*", "*billing-address*", "*submit-payment*") NOT (deployment_id=* deployment_window=true) NOT (mutation_source IN ("*react*", "*angular*", "*vue*", "*next*", "*nuxt*"))

@@ -1,4 +1,4 @@
-"""FLAME MCP Server — exposes 7 fraud-intelligence tools via Model Context Protocol."""
+"""FLAME MCP Server — exposes 6 fraud-intelligence tools via Model Context Protocol."""
 
 from __future__ import annotations
 
@@ -74,24 +74,8 @@ def get_threat_path(tp_id: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Tool 3: get_detection_rules
+# get_detection_rules tool removed — see github.com/elchacal801/flame-detections
 # ---------------------------------------------------------------------------
-
-@mcp.tool()
-def get_detection_rules(
-    tp_id: str = "",
-    fraud_type: str = "",
-    level: str = "",
-) -> str:
-    """Get FLAME detection logic rules, optionally filtered by threat path, fraud type, or severity level.
-
-    Args:
-        tp_id: Filter by threat path ID (e.g., 'TP-0001')
-        fraud_type: Filter by fraud type (e.g., 'wire-fraud')
-        level: Filter by severity level ('informational', 'low', 'medium', 'high', 'critical')
-    """
-    rules = loader.get_detection_rules(tp_id, fraud_type, level)
-    return json.dumps(rules, indent=2)
 
 
 # ---------------------------------------------------------------------------
@@ -179,17 +163,6 @@ def assess_coverage(sectors: list[str], fraud_types: list[str]) -> str:
     # Find fraud types with no coverage
     gaps = [ft for ft, cov in coverage.items() if cov["threat_path_count"] == 0]
 
-    # Get recommended detection rules
-    relevant_tp_ids = {tp["id"] for tp in relevant_tps}
-    all_rules = loader.get_detection_rules()
-    recommended = [
-        r
-        for r in all_rules
-        if any(
-            tp_id in relevant_tp_ids for tp_id in r.get("threat_path_ids", [])
-        )
-    ]
-
     # Average confidence
     conf_scores = [
         tp["confidence_score"]
@@ -214,7 +187,6 @@ def assess_coverage(sectors: list[str], fraud_types: list[str]) -> str:
         "coverage_score": coverage_score,
         "coverage_by_fraud_type": coverage,
         "uncovered_fraud_types": gaps,
-        "recommended_detection_rules": len(recommended),
         "average_confidence": avg_confidence,
         "phase_weakness": _find_phase_weakness(relevant_tps),
     }

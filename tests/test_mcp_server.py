@@ -22,9 +22,6 @@ class TestDataLoaderLoading:
     def test_loads_threat_paths(self, loader: FlameDataLoader) -> None:
         assert len(loader.threat_paths) >= 50
 
-    def test_loads_detection_rules(self, loader: FlameDataLoader) -> None:
-        assert len(loader.detection_rules) >= 114
-
     def test_loads_stats(self, loader: FlameDataLoader) -> None:
         assert loader.stats["total"] == len(loader.threat_paths)
 
@@ -113,41 +110,6 @@ class TestSearchThreatPaths:
 
 
 # -----------------------------------------------------------------------
-# DataLoader — get_detection_rules
-# -----------------------------------------------------------------------
-
-class TestGetDetectionRules:
-    def test_get_all_rules(self, loader: FlameDataLoader) -> None:
-        rules = loader.get_detection_rules()
-        assert len(rules) >= 114
-
-    def test_filter_by_tp_id(self, loader: FlameDataLoader) -> None:
-        rules = loader.get_detection_rules(tp_id="TP-0001")
-        assert len(rules) > 0
-        for rule in rules:
-            assert "TP-0001" in rule.get("threat_path_ids", [])
-
-    def test_filter_by_level(self, loader: FlameDataLoader) -> None:
-        rules = loader.get_detection_rules(level="high")
-        assert len(rules) > 0
-        for rule in rules:
-            assert rule["level"] == "high"
-
-    def test_filter_by_fraud_type(self, loader: FlameDataLoader) -> None:
-        rules = loader.get_detection_rules(fraud_type="wire-fraud")
-        assert len(rules) > 0
-        for rule in rules:
-            assert "wire-fraud" in rule.get("fraud_types", [])
-
-    def test_combined_filters(self, loader: FlameDataLoader) -> None:
-        rules = loader.get_detection_rules(tp_id="TP-0001", level="high")
-        assert len(rules) > 0
-        for rule in rules:
-            assert "TP-0001" in rule.get("threat_path_ids", [])
-            assert rule["level"] == "high"
-
-
-# -----------------------------------------------------------------------
 # DataLoader — get_baseline
 # -----------------------------------------------------------------------
 
@@ -221,13 +183,6 @@ class TestToolFunctions:
         result = json.loads(gtp("TP-9999"))
         assert "error" in result
 
-    def test_get_detection_rules_tool(self) -> None:
-        from mcp_server.server import get_detection_rules as gdr
-
-        result = json.loads(gdr(tp_id="TP-0001"))
-        assert isinstance(result, list)
-        assert len(result) > 0
-
     def test_map_framework_cfpf(self) -> None:
         from mcp_server.server import map_framework
 
@@ -285,7 +240,6 @@ class TestToolFunctions:
         assert "coverage_score" in result
         assert "coverage_by_fraud_type" in result
         assert "phase_weakness" in result
-        assert "recommended_detection_rules" in result
 
     def test_assess_coverage_empty(self) -> None:
         from mcp_server.server import assess_coverage

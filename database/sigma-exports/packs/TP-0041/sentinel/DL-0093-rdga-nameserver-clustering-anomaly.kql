@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "domain_registration" and registration_source =~ "zone_file_diff") and (count >= 50 and groupby =~ "nameserver_fqdn" and timeframe =~ "24h") and (not((nameserver_fqdn endswith ".registrar-servers.com" or nameserver_fqdn endswith ".domaincontrol.com" or nameserver_fqdn endswith ".cloudflare.com" or nameserver_fqdn endswith ".awsdns-" or nameserver_fqdn endswith ".googledomains.com")))

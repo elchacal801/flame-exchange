@@ -1,4 +1,0 @@
-` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
-
-amount_usd>=10 amount_usd<=500 destination_wallet_lifetime_tx_count<=2 destination_wallet_age_hours<=168 function="count()" group_by="sender_cluster" timeframe="7d" threshold>=5
-| regex token_type="USDT|USDC|DAI"

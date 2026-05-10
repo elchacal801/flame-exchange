@@ -1,3 +1,0 @@
-` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
-
-event_type="MFA_METHOD_CHANGE" new_mfa_method IN ("sms_otp", "email_otp", "voice_call") event_type IN ("WIRE_INITIATION", "ACH_DEBIT") transaction_amount>=5000

@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(amount_usd:>=10 AND amount_usd:<=500 AND token_type:/USDT|USDC|DAI/ AND destination_wallet_lifetime_tx_count:<=2 AND destination_wallet_age_hours:<=168) AND (function:count\(\) AND group_by:sender_cluster AND timeframe:7d AND threshold:>=5)

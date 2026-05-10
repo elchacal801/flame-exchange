@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(transaction_amount:<1 AND (event_type:(*authorization* OR *auth_request*))) AND (count:>=50 AND groupby:merchant_id AND timeframe:1h) AND dc_card_number_hash:>=30 AND decline_rate:>=0.5

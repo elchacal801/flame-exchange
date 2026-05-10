@@ -15,13 +15,10 @@ const FlameData = (function () {
     let _regulatoryAlerts = [];
     let _searchIndex = null;
     let _searchDocs = {};
-    let _allDetectionRules = null;
-
     const INDEX_URL = 'database/flame-index.json';
     const STATS_URL = 'database/flame-stats.json';
     const CONTENT_BASE = 'database/flame-content/';
     const SEARCH_INDEX_URL = 'database/flame-search-index.json';
-    const DETECTION_RULES_URL = 'database/flame_detection_rules.json';
 
     /**
      * Load the index (metadata-only) and stats files.
@@ -186,23 +183,6 @@ const FlameData = (function () {
     }
 
     /**
-     * Load all detection rules without filtering.
-     */
-    async function loadAllDetectionRules() {
-        if (!_allDetectionRules) {
-            try {
-                var response = await fetch(DETECTION_RULES_URL);
-                if (!response.ok) throw new Error('DL rules load failed: ' + response.status);
-                _allDetectionRules = await response.json();
-            } catch (err) {
-                console.warn('Detection rules not available:', err.message);
-                _allDetectionRules = [];
-            }
-        }
-        return _allDetectionRules;
-    }
-
-    /**
      * Load baselines data.
      */
     var _baselines = null;
@@ -221,25 +201,6 @@ const FlameData = (function () {
         return _baselines;
     }
 
-    /**
-     * Load all standalone detection rules (one-time), then filter by TP.
-     */
-    async function loadDetectionRules(tpId) {
-        if (!_allDetectionRules) {
-            try {
-                var response = await fetch(DETECTION_RULES_URL);
-                if (!response.ok) throw new Error('DL rules load failed: ' + response.status);
-                _allDetectionRules = await response.json();
-            } catch (err) {
-                console.warn('Detection rules not available:', err.message);
-                _allDetectionRules = [];
-            }
-        }
-        return _allDetectionRules.filter(function (rule) {
-            return rule.threat_path_ids && rule.threat_path_ids.indexOf(tpId) !== -1;
-        });
-    }
-
     return {
         load: load,
         getData: getData,
@@ -250,8 +211,6 @@ const FlameData = (function () {
         getRegulatoryAlerts: getRegulatoryAlerts,
         loadSearchIndex: loadSearchIndex,
         search: search,
-        loadDetectionRules: loadDetectionRules,
-        loadAllDetectionRules: loadAllDetectionRules,
         loadBaselines: loadBaselines,
     };
 })();

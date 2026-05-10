@@ -157,13 +157,12 @@ class TestEPFiles:
                 assert step["cfpf_phase"] in VALID_CFPF_PHASES, \
                     f"{ep_file.name} step {step['step_number']} invalid phase: {step['cfpf_phase']}"
 
-    def test_all_ep_dl_refs_exist(self) -> None:
-        dl_dir = REPO_ROOT / "DetectionLogic"
+    def test_all_ep_dl_refs_have_valid_format(self) -> None:
+        import re
         for ep_file in self._get_ep_files():
             data = json.loads(ep_file.read_text(encoding="utf-8"))
             for step in data.get("steps", []):
                 dl_ref = step.get("detection_rule_ref")
                 if dl_ref:
-                    matches = list(dl_dir.glob(f"{dl_ref}-*.yml"))
-                    assert len(matches) > 0, \
-                        f"{ep_file.name} step {step['step_number']} references {dl_ref} which doesn't exist"
+                    assert re.match(r"DL-\d{4}$", dl_ref), \
+                        f"{ep_file.name} step {step['step_number']} has invalid detection_rule_ref format: {dl_ref}"

@@ -5,7 +5,7 @@ validate_submission.py - FLAME Submission Validator
 Validates the structure and frontmatter of FLAME submission
 markdown files, YAML detection-logic files, and JSON emulation playbook files. Designed to run
 in CI (GitHub Actions) on PRs that modify ThreatPaths/,
-Baselines/, or DetectionLogic/.
+Baselines/, or EmulationPlaybooks/.
 
 Usage:
     python scripts/validate_submission.py <file.md|file.yml|file.json> [...]
@@ -33,12 +33,11 @@ except ImportError:
 
 VALID_CFPF_PHASES = {"P1", "P2", "P3", "P4", "P5"}
 
-VALID_CATEGORIES = {"ThreatPath", "Baseline", "DetectionLogic", "EmulationPlaybook"}
+VALID_CATEGORIES = {"ThreatPath", "Baseline", "EmulationPlaybook"}
 
 VALID_ID_PREFIXES = {
     "ThreatPath": "TP-",
     "Baseline": "BL-",
-    "DetectionLogic": "DL-",
     "EmulationPlaybook": "EP-",
 }
 
@@ -343,7 +342,6 @@ def validate_ep_file(filepath: Path) -> ValidationResult:
         result.error("steps must not be empty")
 
     # --- Validate each step ---
-    dl_dir = repo_root / "DetectionLogic"
     for i, step in enumerate(steps):
         if not isinstance(step, dict):
             result.error(f"steps[{i}] must be an object")
@@ -369,17 +367,11 @@ def validate_ep_file(filepath: Path) -> ValidationResult:
                 f"Must be one of: {', '.join(sorted(VALID_CFPF_PHASES))}"
             )
 
-        # detection_rule_ref (optional)
+        # detection_rule_ref (optional) — opaque cross-repo ref to flame-detections
         dl_ref = step.get("detection_rule_ref")
         if dl_ref is not None:
             if not re.match(r"^DL-\d{4}$", str(dl_ref)):
                 result.error(f"steps[{i}] detection_rule_ref '{dl_ref}' must match DL-XXXX format")
-            else:
-                dl_matches = list(dl_dir.glob(f"{dl_ref}-*.yml"))
-                if not dl_matches:
-                    result.warn(
-                        f"steps[{i}] detection_rule_ref '{dl_ref}' does not match any file in DetectionLogic/"
-                    )
 
     return result
 

@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "refund_request" and (refund_reason contains "item_not_received" or refund_reason contains "return_in_transit")) and (tracking_delivery_address_match =~ false or (tracking_package_weight_oz < 4 and order_expected_weight_oz > 16) or tracking_id_pattern_match =~ "ftid_known_format")

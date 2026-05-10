@@ -5,8 +5,6 @@ export_flame_stix.py — FLAME STIX 2.1 Exporter
 Reads threat path content from database/flame-content/TP-XXXX.json and
 produces:
   1. database/flame_stix_bundle.json   — STIX 2.1 bundle with attack-patterns
-  2. database/flame_detection_rules.json — aggregated detection rules
-  3. database/flame-content/TP-XXXX-rules.json — per-TP detection rules
 
 All STIX IDs are deterministic (uuid5) so repeated builds produce identical
 output.  The bundle validates against the stix2 Python library before writing.
@@ -60,15 +58,6 @@ FLAME_PAGES_BASE = "https://flameintel.org"
 CONTENT_DIR = Path("database/flame-content")
 INDEX_FILE = Path("database/flame-index.json")
 OUTPUT_BUNDLE = Path("database/flame_stix_bundle.json")
-OUTPUT_RULES = Path("database/flame_stix_detection_rules.json")
-
-# Detection block regex — matches fenced code blocks with language tags
-# Captures: language tag and content
-DETECTION_BLOCK_RE = re.compile(
-    r"```(spl|sql|yaml|yara|pseudocode|sigma|kql)\s*\n(.*?)```",
-    re.DOTALL,
-)
-
 # Regex to find TP cross-references in body text
 TP_REF_RE = re.compile(r"\bTP-(\d{4})\b")
 
@@ -377,76 +366,6 @@ def build_fraud_actor_profile(tp: dict, content: dict | None = None) -> dict | N
 
 
 # ---------------------------------------------------------------------------
-# Detection Rule Extraction
-# ---------------------------------------------------------------------------
-
-def extract_detection_section(body: str) -> str:
-    """Extract the Detection Approaches section from a TP body."""
-    # Find the start of the section
-    start_match = re.search(r"^## Detection Approaches", body, re.MULTILINE)
-    if not start_match:
-        return ""
-
-    # Find the end (next ## header or end of string)
-    rest = body[start_match.start():]
-    end_match = re.search(r"\n## (?!Detection)", rest)
-    if end_match:
-        return rest[:end_match.start()]
-    return rest
-
-
-def extract_detection_rules(tp_id: str, body: str) -> List[Dict[str, str]]:
-    """Extract fenced code blocks from the Detection Approaches section."""
-    detection_section = extract_detection_section(body)
-    if not detection_section:
-        return []
-
-    rules = []
-    for match in DETECTION_BLOCK_RE.finditer(detection_section):
-        lang = match.group(1).strip().lower()
-        content = match.group(2).strip()
-
-        # Normalize yaml to sigma if content looks like a Sigma rule
-        rule_type = lang
-        if lang == "yaml" and ("detection:" in content or "logsource:" in content):
-            rule_type = "sigma"
-
-        # Try to extract a title from the content or surrounding context
-        title = ""
-        # Look for a title line before the code block
-        block_start = match.start()
-        preceding = detection_section[:block_start]
-        lines = preceding.rstrip().split("\n")
-        for line in reversed(lines[-5:]):
-            line = line.strip()
-            if line.startswith("**") and line.endswith("**"):
-                title = line.strip("*").strip()
-                break
-            elif line.startswith("### ") or line.startswith("#### "):
-                title = line.lstrip("#").strip()
-                break
-
-        rules.append({
-            "type": rule_type,
-            "content": content,
-            "title": title or f"{tp_id} detection rule ({rule_type})",
-        })
-
-    return rules
-
-
-def save_tp_rules(tp_id: str, rules: List[Dict[str, str]]) -> None:
-    """Save per-TP detection rules file."""
-    if not rules:
-        return
-    output = {"tp_id": tp_id, "rules": rules}
-    path = CONTENT_DIR / f"{tp_id}-rules.json"
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
-    print(f"    [{tp_id}] {len(rules)} detection rules -> {path.name}")
-
-
-# ---------------------------------------------------------------------------
 # STIX Object Construction
 # ---------------------------------------------------------------------------
 
@@ -544,25 +463,6 @@ def build_relationship(source_id: str, target_id: str,
     )
 
 
-def build_course_of_action(dl_id: str, title: str, description: str,
-                            fraud_types: list) -> stix2.CourseOfAction:
-    """Build a STIX course-of-action from a FLAME detection logic rule."""
-    return stix2.CourseOfAction(
-        id=deterministic_id("course-of-action", f"flame-{dl_id}"),
-        created_by_ref=FLAME_IDENTITY_ID,
-        name=title,
-        description=description,
-        labels=fraud_types if fraud_types else ["detection"],
-        external_references=[{
-            "source_name": "FLAME Project",
-            "description": f"Detection Logic {dl_id}",
-            "url": f"{FLAME_PAGES_BASE}/?dl={dl_id}",
-        }],
-        object_marking_refs=[TLP_CLEAR.id],
-        allow_custom=True,
-    )
-
-
 def parse_baseline_frontmatter(text: str) -> dict:
     """Extract YAML frontmatter from a baseline markdown file."""
     # Frontmatter is inside a ```yaml block
@@ -622,7 +522,6 @@ def main():
     attack_patterns = {}  # tp_id -> AttackPattern
     mitre_patterns = {}   # tech_id -> AttackPattern
     f3_patterns = {}      # tech_id -> AttackPattern (MITRE F3)
-    all_rules = []        # Aggregated detection rules
     relationships = []
     stix_relationships = []
     fraud_schemes = {}    # tp_id -> dict
@@ -638,17 +537,9 @@ def main():
         attack_patterns[tp_id] = ap
         print(f"    [+] {tp_id}: {tp.get('title', '?')}")
 
-        # Load full content for detection rules and cross-refs
+        # Load full content for cross-refs and extended SDOs
         content = load_tp_content(tp_id)
         body = content.get("body", "") if content else ""
-
-        # Extract detection rules
-        rules = extract_detection_rules(tp_id, body)
-        if rules:
-            save_tp_rules(tp_id, rules)
-            for r in rules:
-                r["tp_id"] = tp_id
-            all_rules.extend(rules)
 
         # Find cross-references for relationships
         # Prefer structured related_tps from frontmatter; fall back to regex body scan
@@ -741,45 +632,7 @@ def main():
             rel = build_relationship(ap.id, fs["id"], "enables")
             stix_relationships.append(rel)
 
-    # ----- Detection Logic -> course-of-action SDOs -----
-    DL_DIR = Path("DetectionLogic")
-    course_of_actions = {}
-    coa_relationships = []
-
-    if DL_DIR.is_dir():
-        dl_files = sorted(DL_DIR.glob("*.yml"))
-        print(f"\n[*] Processing {len(dl_files)} detection logic rules for CoA SDOs...")
-
-        for dl_path in dl_files:
-            try:
-                dl_text = dl_path.read_text(encoding="utf-8")
-                meta = yaml.safe_load(dl_text)
-                if not isinstance(meta, dict):
-                    continue
-
-                dl_stem = dl_path.stem
-                # Extract DL-XXXX id from filename
-                dl_id_match = re.match(r"(DL-\d+)", dl_stem)
-                dl_id = dl_id_match.group(1) if dl_id_match else dl_stem
-
-                title = meta.get("title", dl_id)
-                description = meta.get("description", "")
-                fraud_types = meta.get("fraud_types", [])
-                threat_paths = meta.get("threat_paths", []) or []
-
-                coa = build_course_of_action(dl_id, title, description, fraud_types)
-                course_of_actions[dl_id] = coa
-                print(f"    [+] {dl_id}: {title}")
-
-                # Create mitigates relationships: CoA -> attack-pattern
-                for tp_id in threat_paths:
-                    ap = attack_patterns.get(tp_id)
-                    if ap:
-                        rel = build_relationship(coa.id, ap.id, "mitigates")
-                        coa_relationships.append(rel)
-
-            except Exception as exc:
-                print(f"    [!] Error processing {dl_path.name}: {exc}")
+    # Detection rule SDOs removed — see github.com/elchacal801/flame-detections
 
     # ----- Baselines -> x-flame-baseline SDOs -----
     BL_DIR = Path("Baselines")
@@ -815,10 +668,8 @@ def main():
     all_objects.extend(fin_transactions.values())
     all_objects.extend(mule_networks.values())
     all_objects.extend(actor_profiles.values())
-    all_objects.extend(course_of_actions.values())
     all_objects.extend(baseline_sdos.values())
     all_objects.extend(stix_relationships)
-    all_objects.extend(coa_relationships)
 
     print(f"\n[*] Bundle summary:")
     print(f"    - Identity: 1")
@@ -828,11 +679,8 @@ def main():
     print(f"    - Financial transaction SDOs: {len(fin_transactions)}")
     print(f"    - Mule network SDOs: {len(mule_networks)}")
     print(f"    - Actor profile SDOs: {len(actor_profiles)}")
-    print(f"    - Course of action SDOs: {len(course_of_actions)}")
-    print(f"    - CoA relationships: {len(coa_relationships)}")
     print(f"    - Baseline SDOs: {len(baseline_sdos)}")
     print(f"    - Relationships: {len(stix_relationships)}")
-    print(f"    - Detection rules: {len(all_rules)}")
 
     # Build and validate bundle
     bundle = stix2.Bundle(
@@ -854,11 +702,6 @@ def main():
     with open(OUTPUT_BUNDLE, "w", encoding="utf-8") as f:
         f.write(bundle.serialize(pretty=True))
     print(f"[+] STIX bundle written to {OUTPUT_BUNDLE}")
-
-    # Write aggregated detection rules
-    with open(OUTPUT_RULES, "w", encoding="utf-8") as f:
-        json.dump(all_rules, f, indent=2, ensure_ascii=False)
-    print(f"[+] Detection rules written to {OUTPUT_RULES} ({len(all_rules)} rules)")
 
     print("[*] Done.")
 

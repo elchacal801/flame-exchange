@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type contains "extortion_communication" or event_type contains "data_leak_detected" or event_type contains "proprietary_code_public") and actor_employment_status =~ "terminated" and actor_termination_days <= 90

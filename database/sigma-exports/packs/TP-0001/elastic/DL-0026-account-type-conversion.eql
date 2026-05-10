@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:ACCOUNT_TYPE_CONVERSION AND (conversion_type:(savings_to_checking OR personal_to_business OR basic_to_premium))) AND days_since_last_credential_change:<=7

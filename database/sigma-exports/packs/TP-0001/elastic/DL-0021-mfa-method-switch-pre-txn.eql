@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:MFA_METHOD_CHANGE AND (new_mfa_method:(sms_otp OR email_otp OR voice_call))) AND ((event_type:(WIRE_INITIATION OR ACH_DEBIT)) AND transaction_amount:>=5000)
