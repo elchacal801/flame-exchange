@@ -1,3 +1,0 @@
-` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
-
-event_type="document_verification_scan" document_type IN ("*drivers_license*", "*passport*", "*national_id*", "*utility_bill*") (exif_data_present=false creation_tool_detected IN ("*stable-diffusion*", "*midjourney*", "*dall-e*", "*photoshop-generative*")) OR (gan_artifact_score>0.7 microprint_validation="failed") OR font_consistency_score<0.5

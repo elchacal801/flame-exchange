@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(billing_type =~ "recurring" and merchant_account_age_days <= 180) and (initial_charge_amount <= 10 and subsequent_charge_amount >= 50) and recurring_transaction_pct >= 30 and merchant_dispute_rate_pct >= 2

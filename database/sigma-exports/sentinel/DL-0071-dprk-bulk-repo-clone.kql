@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-((action contains "repo.clone" or action contains "repo.download" or action contains "repo.fork") and actor_account_age_days <= 14) and (repos_cloned_24h >= 5 or repo_team_match =~ false)

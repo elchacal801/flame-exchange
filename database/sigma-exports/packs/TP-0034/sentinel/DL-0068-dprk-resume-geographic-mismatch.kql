@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "application_submitted" and address_country =~ "US") and (education_country contains "SG" or education_country contains "JP" or education_country contains "HK" or education_country contains "CN" or education_country contains "KR" or education_country contains "IN" or education_country contains "MY") and linkedin_age_days < 365

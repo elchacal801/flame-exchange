@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "WIRE_INITIATION" and beneficiary_name_match =~ false and transaction_amount >= 1000) and (not(beneficiary_account_type =~ "DBA"))

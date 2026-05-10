@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(transaction_type:contactless AND (entry_mode:(*wallet_nfc* OR *contactless_emv* OR *tap_to_pay*))) AND (_exists_:cardholder_last_known_lat AND _exists_:cardholder_last_known_lon AND cardholder_last_activity_minutes:<=120) AND geo_distance_km:>=100 AND required_speed_kmh:>=500

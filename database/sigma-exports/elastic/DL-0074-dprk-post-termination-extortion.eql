@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:(*extortion_communication* OR *data_leak_detected* OR *proprietary_code_public*)) AND actor_employment_status:terminated AND actor_termination_days:<=90

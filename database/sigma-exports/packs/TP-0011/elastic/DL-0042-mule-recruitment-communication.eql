@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:(ACH_CREDIT OR P2P_CREDIT OR WIRE_CREDIT)) AND transaction_amount:<=100 AND transaction_amount:>=1

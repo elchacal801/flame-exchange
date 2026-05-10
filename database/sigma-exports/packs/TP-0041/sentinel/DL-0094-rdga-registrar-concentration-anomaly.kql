@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "domain_registration" and registration_source =~ "zone_file_diff") and (count >= 30 and groupby =~ "registrar_iana_id" and timeframe =~ "24h") and domain_cluster_similarity_score >= 0.7 and shared_nameserver_ratio >= 0.6

@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "video_kyc_session" and session_status =~ "in_progress") and (frame_rate_variance > 8 or lip_sync_offset_ms > 150 or blink_rate_per_minute < 3 or face_background_lighting_delta > 40)

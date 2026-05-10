@@ -1,3 +1,0 @@
-` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
-
-event_type="login_attempt" NOT (source_ip="10.0.0.0/8" OR source_ip="172.16.0.0/12" OR source_ip="192.168.0.0/16")

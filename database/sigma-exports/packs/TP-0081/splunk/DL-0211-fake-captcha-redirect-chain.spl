@@ -1,5 +1,0 @@
-` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
-
-referrer_page IN ("*captcha*", "*verify*", "*check*", "*human*") max_seconds=60 sequence IN ("browser_visit_suspicious_page", "clipboard_execution")
-| regex process_parent="chrome.exe|firefox.exe|msedge.exe|brave.exe|opera.exe"
-| regex process_child="powershell.exe|cmd.exe|mshta.exe"

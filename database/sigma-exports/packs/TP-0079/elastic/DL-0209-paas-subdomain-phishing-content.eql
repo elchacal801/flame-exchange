@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(url_domain:(*.pages.dev OR *.webflow.io OR *.vercel.app OR *.github.io OR *.gitbook.io OR *.workers.dev OR *.r2.dev)) AND url_contains_brand_keyword:true

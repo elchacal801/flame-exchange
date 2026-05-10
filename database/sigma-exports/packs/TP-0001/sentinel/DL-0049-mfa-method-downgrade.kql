@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type contains "mfa_method_change" or event_type contains "mfa_update" or event_type contains "authenticator_change") and ((previous_mfa_method contains "fido2" or previous_mfa_method contains "webauthn" or previous_mfa_method contains "hardware_token" or previous_mfa_method contains "authenticator_app" or previous_mfa_method contains "totp") and (new_mfa_method contains "sms" or new_mfa_method contains "voice" or new_mfa_method contains "email"))

@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:file_create AND (file_extension:(*.zip* OR *.rar* OR *.7z*))) AND ((archive_file_list:(*passwords* OR *Login\ Data* OR *Cookies* OR *autofill* OR *wallet.dat* OR *seed* OR *credit_cards*)) OR (process_signed:false AND (process_path:(*\\AppData\\Local\\Temp* OR *\\Users\\Public* OR *\\ProgramData*))))

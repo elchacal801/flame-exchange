@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-((file_path:(*\\Web\ Data OR *\\Web\ Data\-journal OR *\\formhistory.sqlite OR *\\Form\ History)) AND file_access_type:read) AND (NOT (process_name:(*\\chrome.exe OR *\\firefox.exe OR *\\msedge.exe OR *\\brave.exe))) AND (NOT process_integrity_level:System)

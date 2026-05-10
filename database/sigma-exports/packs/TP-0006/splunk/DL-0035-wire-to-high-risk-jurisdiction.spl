@@ -1,3 +1,0 @@
-` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
-
-event_type="WIRE_INITIATION" wire_type="international" beneficiary_country IN ("MM", "KP", "IR", "YE", "SY", "HT", "VU", "PH", "NG", "SS") transaction_amount>=1000 NOT (beneficiary_relationship_days>=365 prior_transaction_count>=10)

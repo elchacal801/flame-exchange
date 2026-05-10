@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-event_type:agent_content_ingestion AND ((content_contains_hidden_text:true AND hidden_text_pattern:/(?i)(\$?CartMandate|cart_mandate|line.?item|recipient.?email|display.?status.*hidden)/) OR (content_contains_hidden_text:true AND hidden_text_pattern:/(?i)(settlement\.refund|order\.return\.verify|refund\.instant|void-\d+|skip.*verify)/) OR (invisible_span_detected:true AND invisible_content_length:>50 AND invisible_content_contains_instructions:true) OR (metadata_contains_instructions:true AND metadata_instruction_pattern:/(?i)(system:|action:|observation:)/))

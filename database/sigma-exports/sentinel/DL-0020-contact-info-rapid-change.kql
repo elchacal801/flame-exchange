@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "CONTACT_CHANGE" and field_changed =~ "email") and (event_type =~ "CONTACT_CHANGE" and field_changed =~ "phone") and (event_type =~ "CONTACT_CHANGE" and field_changed =~ "mailing_address")

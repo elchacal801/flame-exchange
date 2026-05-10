@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-event_type:vpn_auth_success AND (src_ip_vpn_provider:Astrill OR src_ip_type:residential_proxy OR (connection_hops:>=3 AND (src_ip_type:(*vpn* OR *proxy*))))

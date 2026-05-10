@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "document_verification_scan" and (document_type contains "drivers_license" or document_type contains "passport" or document_type contains "national_id" or document_type contains "utility_bill")) and ((exif_data_present =~ false and (creation_tool_detected contains "stable-diffusion" or creation_tool_detected contains "midjourney" or creation_tool_detected contains "dall-e" or creation_tool_detected contains "photoshop-generative")) or (gan_artifact_score > 0.7 and microprint_validation =~ "failed") or font_consistency_score < 0.5)

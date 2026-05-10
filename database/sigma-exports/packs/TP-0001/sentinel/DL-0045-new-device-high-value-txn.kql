@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(device_trust_level =~ "new" and device_first_seen_days == 0) and (event_type =~ "wire_transfer" and transaction_amount >= 5000) and time_since_auth_minutes <= 30

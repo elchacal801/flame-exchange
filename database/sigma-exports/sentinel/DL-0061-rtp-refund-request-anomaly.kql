@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "instant_payment_completed" and (payment_rail contains "RTP" or payment_rail contains "FEDNOW")) and (event_type contains "refund_request" or event_type contains "return_request" or event_type contains "rrof_submitted")

@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "http_response_divergence" and target_domain_age_days <= 90) and (visitor_profile =~ "scanner" and (response_category contains "200_benign" or response_category contains "200_empty" or response_category contains "403_blocked")) and (visitor_profile =~ "residential" and (response_category contains "302_redirect" or response_category contains "301_redirect" or response_category contains "javascript_redirect" or response_category contains "malicious_content")) and response_similarity_score <= 0.2

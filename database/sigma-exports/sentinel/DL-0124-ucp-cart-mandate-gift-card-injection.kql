@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "cart_mandate_submission" and initiated_by =~ "ai_agent") and (((line_item_type contains "gift_card" or line_item_type contains "e_gift_card" or line_item_type contains "digital_gift_card") and display_status =~ "hidden") or ((line_item_type contains "gift_card" or line_item_type contains "e_gift_card" or line_item_type contains "digital_gift_card") and recipient_email_matches_user =~ false) or ((line_item_type contains "gift_card" or line_item_type contains "e_gift_card" or line_item_type contains "digital_gift_card") and line_item_added_by =~ "agent_auto" and user_intent_contains_gift_card =~ false))

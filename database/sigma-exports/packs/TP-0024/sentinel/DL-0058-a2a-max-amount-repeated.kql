@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(event_type =~ "a2a_payment_initiated" and (payment_rail contains "ZELLE" or payment_rail contains "FEDNOW" or payment_rail contains "RTP" or payment_rail contains "ACH_SAMEDAY")) and amount_pct_of_rail_limit >= 95

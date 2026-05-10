@@ -1,3 +1,0 @@
-// FLAME logsource mapping -- table names and field names require environment-specific tuning.
-
-(transaction_type =~ "ACH_IN" and transaction_category =~ "payroll") and ((outbound_type contains "crypto_exchange" or outbound_type contains "p2p_crypto" or outbound_type contains "wire_to_exchange") and time_since_deposit_hours <= 48)

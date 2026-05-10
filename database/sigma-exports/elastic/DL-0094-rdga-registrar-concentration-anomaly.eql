@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:domain_registration AND registration_source:zone_file_diff) AND (count:>=30 AND groupby:registrar_iana_id AND timeframe:24h) AND domain_cluster_similarity_score:>=0.7 AND shared_nameserver_ratio:>=0.6

@@ -1,3 +1,0 @@
-/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
-
-(event_type:payment_received AND (inbound_rail:(*ACH_IN* OR *WIRE_IN* OR *RTP_IN* OR *FEDNOW_IN*))) AND (event_type:instant_payment_initiated AND (outbound_rail:(*ZELLE* OR *FEDNOW* OR *RTP* OR *ACH_SAMEDAY*))) AND outbound_amount_pct_of_inbound:>=80
