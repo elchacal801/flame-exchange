@@ -68,6 +68,43 @@ tags:
   - TP-0078
   - TP-0049
 queries:
+  splunk: |-
+    index=blockchain sourcetype=crypto_transactions
+      (token_symbol=USDT OR token_symbol=USDC OR token_symbol=BTC)
+      amount_usd>=5000 earliest=-7d
+    | eventstats sum(amount_usd) as total_inbound by wallet_address, direction
+    | where direction="inbound"
+    | join wallet_address type=inner
+      [ search index=blockchain sourcetype=crypto_transactions direction="outbound"
+        (token_symbol=USDT OR token_symbol=USDC OR token_symbol=BTC)
+        amount_usd>=5000 earliest=-7d
+        | stats sum(amount_usd) as total_outbound, dc(tx_hash) as outbound_count
+          by wallet_address ]
+    | stats values(total_inbound) as total_inbound,
+            values(total_outbound) as total_outbound,
+            dc(tx_hash) as inbound_count,
+            values(outbound_count) as outbound_count
+      by wallet_address
+    | where total_inbound > 0 AND total_outbound > 0
+    | where round(total_outbound / total_inbound, 4) >= 0.93
+            AND round(total_outbound / total_inbound, 4) <= 0.97
+    | sort - total_inbound
+    | table wallet_address, total_inbound, total_outbound, inbound_count, outbound_count
+  cql: |-
+    #event_simpleName=CryptoTransaction
+    | token_symbol in [USDT, USDC, BTC]
+    | amount_usd >= 5000
+    | groupBy([wallet_address], function=[
+        sum(amount_usd, where=direction="inbound", as=total_inbound),
+        sum(amount_usd, where=direction="outbound", as=total_outbound),
+        count(direction, where=direction="inbound", as=inbound_count),
+        count(direction, where=direction="outbound", as=outbound_count)
+      ], span=7d)
+    | total_inbound > 0
+    | total_outbound > 0
+    | forwarding_ratio := total_outbound / total_inbound
+    | forwarding_ratio >= 0.93
+    | forwarding_ratio <= 0.97
   sql: |-
     WITH wallet_flows AS (
       SELECT

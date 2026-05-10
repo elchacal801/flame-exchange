@@ -49,6 +49,7 @@ falsepositives:
   - "Legitimate government agencies registering official program domains"
   - "News media or advocacy organizations registering crisis-related domains"
   - "Energy companies registering product-related domains during price events"
+sigma_compatible: true
 level: high
 tags:
   - cfpf.phase1.recon

@@ -37,6 +37,7 @@ detection:
 falsepositives:
   - "Legitimate CAPTCHA services followed by coincidental command execution"
   - "Developer workflows involving browser-based tools and terminal commands"
+sigma_compatible: true
 level: high
 tags:
   - cfpf.phase2.initial_access

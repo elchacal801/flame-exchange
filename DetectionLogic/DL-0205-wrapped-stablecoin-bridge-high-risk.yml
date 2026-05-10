@@ -30,6 +30,7 @@ detection:
 falsepositives:
   - "Cross-chain DeFi operations moving stablecoins between chains for yield optimization"
   - "Legitimate multi-chain treasury management by DAOs or protocols"
+sigma_compatible: true
 level: high
 tags:
   - cfpf.phase4.execution
