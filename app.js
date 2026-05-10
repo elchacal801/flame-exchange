@@ -38,11 +38,10 @@
         cfpf_phases: new Set(),
         sectors: new Set(),
         fraud_types: new Set(),
-        severity: new Set(),
     };
     let searchQuery = '';
     let activeTaxonomy = 'cfpf';
-    let viewState = 'browse'; // 'browse' | 'detail' | 'rules' | 'baselines'
+    let viewState = 'browse'; // 'browse' | 'detail' | 'baselines'
 
     // -----------------------------------------------------------------------
     // DOM References
@@ -104,12 +103,6 @@
         dom.ucffExportBtn = document.getElementById('ucff-export-btn');
         dom.ucffImportBtn = document.getElementById('ucff-import-btn');
         dom.ucffFileInput = document.getElementById('ucff-file-input');
-        dom.rulesView = document.getElementById('rules-view');
-        dom.rulesGrid = document.getElementById('rules-grid');
-        dom.rulesResults = document.getElementById('rules-results');
-        dom.rulesSearchInput = document.getElementById('rules-search-input');
-        dom.rulesFilterLevel = document.getElementById('rules-filter-level');
-        dom.rulesFilterPhase = document.getElementById('rules-filter-phase');
         dom.baselinesView = document.getElementById('baselines-view');
         dom.baselinesGrid = document.getElementById('baselines-grid');
         dom.baselinesSearchInput = document.getElementById('baselines-search-input');
@@ -340,22 +333,6 @@
         document.getElementById('nav-export-svg').addEventListener('click', exportNavigatorSVG);
         document.getElementById('nav-export-json').addEventListener('click', exportNavigatorATTCKJSON);
 
-        // Rules view search and filters
-        if (dom.rulesSearchInput) {
-            dom.rulesSearchInput.addEventListener('input', debounce(function() {
-                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
-            }, 200));
-        }
-        if (dom.rulesFilterLevel) {
-            dom.rulesFilterLevel.addEventListener('change', function() {
-                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
-            });
-        }
-        if (dom.rulesFilterPhase) {
-            dom.rulesFilterPhase.addEventListener('change', function() {
-                if (_cachedAllRules && viewState === 'rules') renderRulesGrid(_cachedAllRules);
-            });
-        }
         if (dom.baselinesSearchInput) {
             dom.baselinesSearchInput.addEventListener('input', debounce(function() {
                 if (viewState === 'baselines') {
@@ -396,33 +373,6 @@
             }
         });
 
-        // Severity filter chips
-        document.querySelectorAll('#filter-severity .chip').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var sev = btn.getAttribute('data-severity');
-                if (activeFilters.severity.has(sev)) {
-                    activeFilters.severity.delete(sev);
-                    btn.classList.remove('active');
-                } else {
-                    activeFilters.severity.add(sev);
-                    btn.classList.add('active');
-                }
-                updateFilterBadge();
-                // Re-render current view with severity filter
-                if (viewState === 'rules') {
-                    FlameData.loadAllDetectionRules().then(function(rules) {
-                        renderRulesGrid(rules);
-                    });
-                } else if (viewState === 'browse') {
-                    // Need detection rules loaded to map severity → TPs
-                    FlameData.loadAllDetectionRules().then(function(rules) {
-                        _buildTPSeverityMap(rules);
-                        applyFilters();
-                    });
-                }
-            });
-        });
-
         // Search-within for sidebar filter sections
         ['filter-sectors-search', 'filter-fraud-types-search'].forEach(function(inputId) {
             var input = document.getElementById(inputId);
@@ -459,9 +409,6 @@
         var hash = window.location.hash || '#browse';
         if (hash.startsWith('#detail/')) {
             showDetailView(hash.replace('#detail/', ''));
-        } else if (hash === '#rules' || hash.startsWith('#rules/')) {
-            var dlId = hash.startsWith('#rules/') ? hash.replace('#rules/', '') : null;
-            showRulesView(dlId);
         } else if (hash === '#baselines') {
             showBaselinesView();
         } else {
@@ -475,8 +422,6 @@
             window.location.hash = '#browse';
         } else if (target === 'detail' && id) {
             window.location.hash = '#detail/' + id;
-        } else if (target === 'rules') {
-            window.location.hash = id ? '#rules/' + id : '#rules';
         } else if (target === 'baselines') {
             window.location.hash = '#baselines';
         }
@@ -488,7 +433,6 @@
             tab.classList.remove('active');
             var view = tab.getAttribute('data-view');
             if ((hash === '#browse' || hash.startsWith('#detail/')) && view === 'browse') tab.classList.add('active');
-            else if (hash.startsWith('#rules') && view === 'rules') tab.classList.add('active');
             else if (hash.startsWith('#baselines') && view === 'baselines') tab.classList.add('active');
         });
     }
@@ -496,7 +440,6 @@
     function hideAllViews() {
         dom.browseView.style.display = 'none';
         dom.detailView.style.display = 'none';
-        if (dom.rulesView) dom.rulesView.style.display = 'none';
         if (dom.baselinesView) dom.baselinesView.style.display = 'none';
     }
 
@@ -580,7 +523,6 @@
         activeFilters.cfpf_phases.clear();
         activeFilters.sectors.clear();
         activeFilters.fraud_types.clear();
-        activeFilters.severity.clear();
         searchQuery = '';
         dom.searchInput.value = '';
 
@@ -593,7 +535,7 @@
     }
 
     function updateFilterBadge() {
-        const count = activeFilters.cfpf_phases.size + activeFilters.sectors.size + activeFilters.fraud_types.size + activeFilters.severity.size;
+        const count = activeFilters.cfpf_phases.size + activeFilters.sectors.size + activeFilters.fraud_types.size;
         if (count > 0) {
             dom.filterActions.style.display = 'flex';
             dom.filterCount.textContent = count;
@@ -608,20 +550,6 @@
     // -----------------------------------------------------------------------
     // Filtering & Rendering Cards
     // -----------------------------------------------------------------------
-
-    // Cache: TP ID → set of severity levels from its detection rules
-    var _tpSeverityMap = null;
-
-    function _buildTPSeverityMap(rules) {
-        _tpSeverityMap = {};
-        (rules || []).forEach(function(rule) {
-            var level = (rule.level || '').toLowerCase();
-            (rule.threat_path_ids || []).forEach(function(tpId) {
-                if (!_tpSeverityMap[tpId]) _tpSeverityMap[tpId] = new Set();
-                _tpSeverityMap[tpId].add(level);
-            });
-        });
-    }
 
     function applyFilters() {
         // If lunr search is available and query is present, get ranked results
@@ -680,17 +608,6 @@
                     if (ft.indexOf(f) !== -1) ftMatch = true;
                 });
                 if (!ftMatch) return false;
-            }
-
-            // Detection rule severity — filter TPs that have at least one rule at selected severity
-            if (activeFilters.severity.size > 0 && _tpSeverityMap) {
-                var tpSevs = _tpSeverityMap[item.id];
-                if (!tpSevs) return false;
-                var sevMatch = false;
-                activeFilters.severity.forEach(function (s) {
-                    if (tpSevs.has(s)) sevMatch = true;
-                });
-                if (!sevMatch) return false;
             }
 
             return true;
@@ -948,13 +865,14 @@
             html += '</div>';
         }
 
-        // Detection Logic placeholder
+        // Detection Rules — now in flame-detections repo
         html += '<div class="dl-section" id="dl-section">';
         html += '<h2 class="dl-section-title">';
         html += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>';
-        html += ' Detection Logic';
+        html += ' Detection Rules';
         html += '</h2>';
-        html += '<div id="dl-rules-container"><div class="dl-loading">Loading detection rules...</div></div>';
+        html += '<p style="color: var(--color-text-dim); font-size: 0.9rem;">Detection rules for this threat path are maintained in the ';
+        html += '<a href="https://github.com/elchacal801/flame-detections" target="_blank" rel="noopener" style="color: var(--color-accent);">flame-detections</a> repository.</p>';
         html += '</div>';
 
         dom.detailContent.innerHTML = html;
@@ -963,7 +881,6 @@
         bindTaxonomyToggle(item);
         addCopyButtons();
         highlightLookLeftRight();
-        loadAndRenderDetectionRules(item.id);
 
         // Bind STIX export
         var stixBtn = document.getElementById('export-stix-btn');
@@ -975,8 +892,7 @@
         if (item.body) {
             FlameViz.renderAttackFlow(
                 document.getElementById('attack-flow-container'),
-                item,
-                null
+                item
             );
         }
 
@@ -1000,98 +916,6 @@
         // Scroll to top
         dom.detailView.scrollTop = 0;
         window.scrollTo(0, 0);
-    }
-
-    function loadAndRenderDetectionRules(tpId) {
-        FlameData.loadDetectionRules(tpId).then(function (rules) {
-            var container = document.getElementById('dl-rules-container');
-            if (!container) return;
-
-            if (!rules || rules.length === 0) {
-                container.innerHTML = '<div class="dl-empty">No detection rules mapped to this threat path yet.</div>';
-                return;
-            }
-
-            var html = '';
-            rules.forEach(function (rule) {
-                html += '<div class="dl-rule-card">';
-                html += '<div class="dl-rule-header">';
-                html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || rule.id || '') + '</span>';
-                html += '<span class="dl-rule-level dl-level-' + escapeHtml((rule.level || '').toLowerCase()) + '">' + escapeHtml(rule.level || '') + '</span>';
-                html += '</div>';
-                html += '<h3 class="dl-rule-title">' + escapeHtml(rule.title || '') + '</h3>';
-                html += '<p class="dl-rule-desc">' + escapeHtml(rule.description || '') + '</p>';
-
-                // Detection logic code block
-                if (rule.detection) {
-                    var yamlStr = formatDetectionYaml(rule.detection);
-                    html += '<div class="dl-code-wrapper">';
-                    html += '<pre class="dl-code"><code>' + escapeHtml(yamlStr) + '</code></pre>';
-                    html += '<button class="dl-copy-btn" data-code="' + escapeHtml(yamlStr).replace(/"/g, '&quot;') + '">Copy</button>';
-                    html += '</div>';
-                }
-
-                // Tags
-                if (rule.tags && rule.tags.length > 0) {
-                    html += '<div class="dl-rule-tags">';
-                    rule.tags.forEach(function (t) {
-                        html += '<span class="dl-tag">' + escapeHtml(t) + '</span>';
-                    });
-                    html += '</div>';
-                }
-
-                html += '</div>';
-            });
-
-            container.innerHTML = html;
-
-            // Update attack flow with detection rule badges
-            FlameViz.updateAttackFlowRules(rules);
-
-            // Bind copy buttons
-            container.querySelectorAll('.dl-copy-btn').forEach(function (btn) {
-                btn.addEventListener('click', function () {
-                    var code = btn.getAttribute('data-code').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-                    navigator.clipboard.writeText(code).then(function () {
-                        btn.textContent = 'Copied!';
-                        btn.classList.add('copied');
-                        setTimeout(function () {
-                            btn.textContent = 'Copy';
-                            btn.classList.remove('copied');
-                        }, 2000);
-                    });
-                });
-            });
-        });
-    }
-
-    function formatDetectionYaml(detection) {
-        var lines = [];
-        Object.keys(detection).forEach(function (key) {
-            var val = detection[key];
-            if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
-                lines.push(key + ':');
-                Object.keys(val).forEach(function (subKey) {
-                    var subVal = val[subKey];
-                    if (Array.isArray(subVal)) {
-                        lines.push('  ' + subKey + ':');
-                        subVal.forEach(function (item) {
-                            lines.push('    - ' + JSON.stringify(item));
-                        });
-                    } else {
-                        lines.push('  ' + subKey + ': ' + JSON.stringify(subVal));
-                    }
-                });
-            } else if (Array.isArray(val)) {
-                lines.push(key + ':');
-                val.forEach(function (item) {
-                    lines.push('  - ' + JSON.stringify(item));
-                });
-            } else {
-                lines.push(key + ': ' + JSON.stringify(val));
-            }
-        });
-        return lines.join('\n');
     }
 
     // -----------------------------------------------------------------------
@@ -2324,216 +2148,6 @@
         };
         reader.readAsText(file);
         e.target.value = '';
-    }
-
-    // -----------------------------------------------------------------------
-    // Rules View
-    // -----------------------------------------------------------------------
-
-    var _cachedAllRules = null;
-
-    function showRulesView(dlId) {
-        viewState = 'rules';
-        hideAllViews();
-        dom.rulesView.style.display = 'block';
-        dom.filterPanel.classList.add('detail-active');
-
-        FlameData.loadAllDetectionRules().then(function(rules) {
-            _cachedAllRules = rules;
-            if (dlId) {
-                var rule = rules.find(function(r) { return r.dl_id === dlId; });
-                if (rule) {
-                    renderRuleDetail(rule);
-                    return;
-                }
-            }
-            renderRulesGrid(rules);
-        });
-    }
-
-    function filterRules(rules) {
-        var query = (dom.rulesSearchInput && dom.rulesSearchInput.value || '').trim().toLowerCase();
-        var levelFilter = dom.rulesFilterLevel ? dom.rulesFilterLevel.value : '';
-        var phaseFilter = dom.rulesFilterPhase ? dom.rulesFilterPhase.value : '';
-
-        return rules.filter(function(rule) {
-            if (query) {
-                var haystack = ((rule.dl_id || '') + ' ' + (rule.title || '') + ' ' + (rule.description || '')).toLowerCase();
-                if (haystack.indexOf(query) === -1) return false;
-            }
-            if (levelFilter && (rule.level || '').toLowerCase() !== levelFilter) return false;
-            if (phaseFilter && (!rule.cfpf_phase || rule.cfpf_phase !== phaseFilter)) return false;
-            // Severity filter from sidebar chips
-            if (activeFilters.severity.size > 0) {
-                var ruleLevel = (rule.level || '').toLowerCase();
-                if (!activeFilters.severity.has(ruleLevel)) return false;
-            }
-            return true;
-        });
-    }
-
-    function renderRulesGrid(rules) {
-        var filtered = filterRules(rules);
-        if (dom.rulesResults) {
-            dom.rulesResults.textContent = filtered.length + ' of ' + rules.length + ' detection rules';
-        }
-
-        if (filtered.length === 0) {
-            dom.rulesGrid.innerHTML = '<div class="empty-state">No matching detection rules found.</div>';
-            return;
-        }
-
-        // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
-        var html = '';
-        filtered.forEach(function(rule) {
-            var levelClass = (rule.level || '').toLowerCase();
-            var tpCount = (rule.threat_path_ids || []).length;
-            html += '<div class="rule-card" data-dl-id="' + escapeHtml(rule.dl_id || '') + '" data-level="' + escapeHtml(levelClass) + '">';
-            html += '<div class="rule-card-header">';
-            html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || '') + '</span>';
-            html += '<span class="rule-level-badge rule-level-' + escapeHtml(levelClass) + '">' + escapeHtml(rule.level || '') + '</span>';
-            html += '</div>';
-            html += '<h3 class="rule-card-title">' + escapeHtml(rule.title || '') + '</h3>';
-            html += '<p class="rule-card-desc">' + escapeHtml(truncate(rule.description || '', 120)) + '</p>';
-            html += '<div class="rule-card-meta">';
-            if (rule.cfpf_phase) {
-                var phaseInfo = PHASE_INFO[rule.cfpf_phase];
-                html += '<span class="rule-phase-tag" style="--chip-color: ' + (phaseInfo ? phaseInfo.color : 'var(--color-text-muted)') + '">' + escapeHtml(rule.cfpf_phase) + '</span>';
-            }
-            html += '<span class="rule-tp-count">' + tpCount + ' threat path' + (tpCount !== 1 ? 's' : '') + '</span>';
-            html += '</div>';
-            html += '</div>';
-        });
-        dom.rulesGrid.innerHTML = html;
-
-        // Bind card clicks
-        dom.rulesGrid.querySelectorAll('.rule-card').forEach(function(card) {
-            card.addEventListener('click', function() {
-                navigateTo('rules', card.dataset.dlId);
-            });
-        });
-    }
-
-    function renderRuleDetail(rule) {
-        // NOTE: All values are escaped via escapeHtml before insertion — safe from XSS
-        var html = '';
-        html += '<a href="#rules" class="back-link rules-back-link">';
-        html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">';
-        html += '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/>';
-        html += '</svg> All Detection Rules</a>';
-
-        html += '<div class="rule-detail">';
-        html += '<div class="rule-detail-header">';
-        html += '<span class="dl-rule-id">' + escapeHtml(rule.dl_id || '') + '</span>';
-        var levelClass = (rule.level || '').toLowerCase();
-        html += '<span class="rule-level-badge rule-level-' + escapeHtml(levelClass) + '">' + escapeHtml(rule.level || '') + '</span>';
-        html += '</div>';
-        html += '<h2 class="rule-detail-title">' + escapeHtml(rule.title || '') + '</h2>';
-
-        if (rule.description) {
-            html += '<p class="rule-detail-desc">' + escapeHtml(rule.description) + '</p>';
-        }
-
-        // Detection logic
-        if (rule.detection) {
-            html += '<div class="rule-detail-section">';
-            html += '<h3>Detection Logic</h3>';
-            var yamlStr = formatDetectionYaml(rule.detection);
-            html += '<div class="dl-code-wrapper">';
-            html += '<pre class="dl-code"><code>' + escapeHtml(yamlStr) + '</code></pre>';
-            html += '<button class="dl-copy-btn" data-code="' + escapeHtml(yamlStr).replace(/"/g, '&quot;') + '">Copy</button>';
-            html += '</div>';
-            html += '</div>';
-        }
-
-        // Native queries
-        if (rule.native_queries) {
-            html += '<div class="rule-detail-section">';
-            html += '<h3>Native Queries</h3>';
-            Object.keys(rule.native_queries).forEach(function(platform) {
-                html += '<h4 class="query-platform">' + escapeHtml(platform.toUpperCase()) + '</h4>';
-                var queryStr = rule.native_queries[platform];
-                html += '<div class="dl-code-wrapper">';
-                html += '<pre class="dl-code"><code>' + escapeHtml(queryStr) + '</code></pre>';
-                html += '<button class="dl-copy-btn" data-code="' + escapeHtml(queryStr).replace(/"/g, '&quot;') + '">Copy</button>';
-                html += '</div>';
-            });
-            html += '</div>';
-        }
-
-        // Linked threat paths
-        var tpIds = rule.threat_path_ids || [];
-        if (tpIds.length > 0) {
-            html += '<div class="rule-detail-section">';
-            html += '<h3>Linked Threat Paths</h3>';
-            html += '<div class="rule-tp-links">';
-            tpIds.forEach(function(tpId) {
-                html += '<a href="#detail/' + escapeHtml(tpId) + '" class="rule-tp-link">' + escapeHtml(tpId) + '</a>';
-            });
-            html += '</div>';
-            html += '</div>';
-        }
-
-        // False positives
-        if (rule.false_positives && rule.false_positives.length > 0) {
-            html += '<div class="rule-detail-section">';
-            html += '<h3>False Positives</h3>';
-            html += '<ul class="rule-fp-list">';
-            rule.false_positives.forEach(function(fp) {
-                html += '<li>' + escapeHtml(fp) + '</li>';
-            });
-            html += '</ul>';
-            html += '</div>';
-        }
-
-        // References
-        if (rule.references && rule.references.length > 0) {
-            html += '<div class="rule-detail-section">';
-            html += '<h3>References</h3>';
-            html += '<ul class="rule-ref-list">';
-            rule.references.forEach(function(ref) {
-                if (ref.startsWith('http')) {
-                    html += '<li><a href="' + escapeHtml(ref) + '" target="_blank" rel="noopener">' + escapeHtml(truncate(ref, 80)) + '</a></li>';
-                } else {
-                    html += '<li>' + escapeHtml(ref) + '</li>';
-                }
-            });
-            html += '</ul>';
-            html += '</div>';
-        }
-
-        // Tags
-        if (rule.tags && rule.tags.length > 0) {
-            html += '<div class="rule-detail-section">';
-            html += '<div class="dl-rule-tags">';
-            rule.tags.forEach(function(t) {
-                html += '<span class="dl-tag">' + escapeHtml(t) + '</span>';
-            });
-            html += '</div>';
-            html += '</div>';
-        }
-
-        html += '</div>';
-
-        dom.rulesGrid.innerHTML = html;
-        if (dom.rulesResults) dom.rulesResults.textContent = '';
-
-        // Bind copy buttons
-        dom.rulesGrid.querySelectorAll('.dl-copy-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var code = btn.getAttribute('data-code').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-                navigator.clipboard.writeText(code).then(function() {
-                    btn.textContent = 'Copied!';
-                    btn.classList.add('copied');
-                    setTimeout(function() {
-                        btn.textContent = 'Copy';
-                        btn.classList.remove('copied');
-                    }, 2000);
-                });
-            });
-        });
-
-        window.scrollTo(0, 0);
     }
 
     // -----------------------------------------------------------------------

@@ -157,23 +157,11 @@ const FlameViz = (function () {
         return phases;
     }
 
-    function renderAttackFlow(container, tpItem, detectionRules) {
+    function renderAttackFlow(container, tpItem) {
         if (!container || !tpItem || !tpItem.body) return;
 
         var phaseMapping = extractPhaseMapping(tpItem.body);
         var activePhases = tpItem.cfpf_phases || [];
-
-        // Map detection rules to phases
-        var rulesByPhase = {};
-        if (detectionRules && detectionRules.length > 0) {
-            detectionRules.forEach(function (rule) {
-                var phase = rule.cfpf_phase;
-                if (phase) {
-                    if (!rulesByPhase[phase]) rulesByPhase[phase] = [];
-                    rulesByPhase[phase].push(rule);
-                }
-            });
-        }
 
         var html = '<div class="attack-flow">';
 
@@ -181,7 +169,6 @@ const FlameViz = (function () {
             var info = PHASE_INFO[phase];
             var isActive = activePhases.indexOf(phase) !== -1;
             var mapping = phaseMapping[phase];
-            var rules = rulesByPhase[phase] || [];
 
             html += '<div class="af-phase' + (isActive ? '' : ' inactive') + '">';
             html += '<div class="af-phase-header" style="border-color: ' + info.color + '">';
@@ -201,19 +188,6 @@ const FlameViz = (function () {
             } else if (isActive) {
                 html += '<div class="af-techniques"><div class="af-technique af-placeholder">Active</div></div>';
             }
-
-            // Detection rule badges
-            html += '<div class="af-rules" data-phase="' + phase + '">';
-            if (rules.length > 0) {
-                rules.forEach(function (rule) {
-                    var dlId = rule.dl_id || rule.id || '';
-                    html += '<span class="af-rule-badge" title="' + escapeHtml(rule.title || dlId) + '">';
-                    html += '<svg class="af-rule-icon" viewBox="0 0 16 16" width="10" height="10"><path d="M8 1l6 3v4c0 3.3-2.6 6.4-6 7.5C4.6 14.4 2 11.3 2 8V4l6-3z" fill="currentColor"/></svg> ';
-                    html += escapeHtml(dlId);
-                    html += '</span>';
-                });
-            }
-            html += '</div>';
 
             html += '</div>'; // close af-phase
 
@@ -242,35 +216,6 @@ const FlameViz = (function () {
                     }
                 }
             });
-        });
-    }
-
-    function updateAttackFlowRules(rules) {
-        if (!rules || rules.length === 0) return;
-
-        var rulesByPhase = {};
-        rules.forEach(function (rule) {
-            var phase = rule.cfpf_phase;
-            if (phase) {
-                if (!rulesByPhase[phase]) rulesByPhase[phase] = [];
-                rulesByPhase[phase].push(rule);
-            }
-        });
-
-        PHASE_ORDER.forEach(function (phase) {
-            var container = document.querySelector('.af-rules[data-phase="' + phase + '"]');
-            if (!container) return;
-            var phaseRules = rulesByPhase[phase] || [];
-            if (phaseRules.length === 0) return;
-            var html = '';
-            phaseRules.forEach(function (rule) {
-                var dlId = rule.dl_id || rule.id || '';
-                html += '<span class="af-rule-badge" title="' + escapeHtml(rule.title || dlId) + '">';
-                html += '<svg class="af-rule-icon" viewBox="0 0 16 16" width="10" height="10"><path d="M8 1l6 3v4c0 3.3-2.6 6.4-6 7.5C4.6 14.4 2 11.3 2 8V4l6-3z" fill="currentColor"/></svg> ';
-                html += escapeHtml(dlId);
-                html += '</span>';
-            });
-            container.innerHTML = html;
         });
     }
 
@@ -1065,7 +1010,6 @@ const FlameViz = (function () {
         init: buildReverseRelationshipIndex,
         exportSVG: exportSVG,
         renderAttackFlow: renderAttackFlow,
-        updateAttackFlowRules: updateAttackFlowRules,
         renderEgoGraph: renderEgoGraph,
         renderGlobalGraph: renderGlobalGraph,
         renderRadarChart: renderRadarChart,

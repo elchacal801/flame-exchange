@@ -152,7 +152,7 @@
             </svg>
         </button>
         <a href="#browse" class="nav-tab active" data-view="browse">Threat Paths</a>
-        <a href="#rules" class="nav-tab" data-view="rules">Detection Rules</a>
+        <a href="https://github.com/elchacal801/flame-detections" class="nav-tab" target="_blank" rel="noopener">Detection Rules ↗</a>
         <a href="#baselines" class="nav-tab" data-view="baselines">Baselines</a>
     </nav>
 
@@ -179,7 +179,7 @@
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
-                    <input type="text" id="search-input" placeholder="Search threat paths, rules, baselines..." autocomplete="off">
+                    <input type="text" id="search-input" placeholder="Search threat paths, baselines..." autocomplete="off">
                 </div>
 
                 <!-- Active Filters Bar -->
@@ -193,18 +193,6 @@
                 <div class="filter-group">
                     <h3 class="filter-group-title">CFPF Phases</h3>
                     <div class="filter-chips" id="filter-cfpf-phases"></div>
-                </div>
-
-                <!-- Detection Rule Severity -->
-                <div class="filter-group">
-                    <h3 class="filter-group-title">Detection Rule Severity</h3>
-                    <div class="filter-chips" id="filter-severity">
-                        <button class="chip" data-severity="critical">Critical</button>
-                        <button class="chip" data-severity="high">High</button>
-                        <button class="chip" data-severity="medium">Medium</button>
-                        <button class="chip" data-severity="low">Low</button>
-                        <button class="chip" data-severity="informational">Info</button>
-                    </div>
                 </div>
 
                 <!-- Sectors -->
@@ -264,36 +252,6 @@
                 <div class="detail-content" id="detail-content">
                     <!-- Populated by JS -->
                 </div>
-            </div>
-
-            <!-- Rules View -->
-            <div class="rules-view" id="rules-view" style="display:none;">
-                <div class="rules-header">
-                    <h2>Detection Rules</h2>
-                    <div class="rules-search">
-                        <input type="text" id="rules-search-input" placeholder="Search rules...">
-                    </div>
-                    <div class="rules-filters" id="rules-filters">
-                        <select id="rules-filter-level">
-                            <option value="">All Levels</option>
-                            <option value="critical">Critical</option>
-                            <option value="high">High</option>
-                            <option value="medium">Medium</option>
-                            <option value="low">Low</option>
-                            <option value="informational">Informational</option>
-                        </select>
-                        <select id="rules-filter-phase">
-                            <option value="">All Phases</option>
-                            <option value="P1">P1 - Recon</option>
-                            <option value="P2">P2 - Initial Access</option>
-                            <option value="P3">P3 - Positioning</option>
-                            <option value="P4">P4 - Execution</option>
-                            <option value="P5">P5 - Monetization</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="rules-results" id="rules-results">Loading detection rules...</div>
-                <div class="rules-grid" id="rules-grid"></div>
             </div>
 
             <!-- Baselines View -->
