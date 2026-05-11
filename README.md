@@ -21,6 +21,7 @@ FLAME is an open-source, community-driven exchange for structured fraud intellig
 | Metric | Count |
 |--------|-------|
 | **Threat Paths** | 89 (TP-0001 -- TP-0089) |
+| **Fraud Families** | 11 (ATT&CK-style matrix taxonomy) |
 | **Detection Logic Rules** | 221 in [flame-detections](https://github.com/elchacal801/flame-detections) |
 | **Baselines** | 36 (49/89 TPs linked via `baseline_ids`) |
 | **Emulation Playbooks** | 14 adversary simulation scripts |
@@ -75,7 +76,7 @@ The ACAMS International Anti-Fraud and Technology Task Force [confirmed in March
 
 FLAME follows a **markdown-first, database-derived** architecture modeled on [HEARTH](https://github.com/THOR-Collective/HEARTH) by the THOR Collective.
 
-- **Markdown is the source of truth.** Threat paths, baselines, and detection rules are authored as structured files with YAML frontmatter. Detection rules currently live in this repo but are migrating to [flame-detections](https://github.com/elchacal801/flame-detections) for independent quality and contribution cadence.
+- **Markdown is the source of truth.** Threat paths, baselines, and detection rules are authored as structured files with YAML frontmatter including `fraud_family`, `primary_phase`, and `short_name` for matrix classification. Detection rules currently live in this repo but are migrating to [flame-detections](https://github.com/elchacal801/flame-detections) for independent quality and contribution cadence.
 - **The database is derived.** Python scripts parse the source files, build a SQLite index, and export JSON for the frontend.
 - **The frontend is static.** Vanilla HTML/CSS/JS served via GitHub Pages. No build step, no framework dependencies.
 - **Exports are standard.** Build-time pipelines produce STIX 2.1, MISP, TAXII 2.1, Sigma, and RSS artifacts.
@@ -237,6 +238,9 @@ FLAME ships with **89 threat paths** covering **141 fraud types** across **24 se
 | TP-0084 | Government Impersonation — Authority-Based APP Fraud | impersonation, authorized-push-payment, elder-exploitation |
 | TP-0085 | Crypto ATM/Kiosk Directed Fraud — Physical-to-Digital Monetization | crypto-laundering, authorized-push-payment, elder-exploitation |
 | TP-0086 | Crisis-Exploitation Domain Intelligence — Oil Shock Infrastructure | crisis-exploitation, phishing, fraud-enabling-infrastructure |
+| TP-0087 | Infostealer-to-Fraud Pipeline — MaaS Credential Harvesting | credential-harvesting, account-takeover, fraud-as-a-service |
+| TP-0088 | Logistics Sector Spearphishing — Carrier Impersonation | phishing, brand-impersonation, credential-harvesting |
+| TP-0089 | TAE Upstream Transit Provider Complicity | bulletproof-hosting, fraud-enabling-infrastructure, hosting-provider-complicity |
 
 <details>
 <summary><strong>View TP-0011 through TP-0050</strong></summary>
@@ -329,7 +333,17 @@ Playbooks follow a structured JSON schema with execution steps mapped to CFPF ph
 
 ## Frontend & Visualizations
 
-The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark theme, responsive design, and no build step. It features D3.js-powered visualizations and interactive analysis tools.
+The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark theme, responsive design, and no build step. The default browse experience is an **ATT&CK-style matrix view** organizing all 89 threat paths by 11 fraud families (rows) and 5 CFPF phases (columns), with sector tab filtering and scannable short-name chips with confidence-colored borders. A card grid view is available as an alternative toggle.
+
+### Threat Path Matrix
+
+The matrix view provides instant visual taxonomy of the fraud landscape:
+
+- **11 fraud family rows**: Account Takeover, Payment & Wire, Social Engineering, Identity & Synthetic, Investment & Romance, Insurance & Healthcare, Crypto & Laundering, Fraud Infrastructure & FaaS, Retail & E-Commerce, State-Linked & Geopolitical, Telecom & Specialized
+- **5 CFPF phase columns**: P1 Recon, P2 Initial Access, P3 Positioning, P4 Execution, P5 Monetization
+- **Sector tabs** filter TPs to Banking, Crypto, Insurance, Payments, Retail, and 19 more sectors
+- **Short-name chips** display curated labels (e.g., "Pig Butchering", "BEC Wire", "RDGA Domains") with confidence-colored left borders (green/amber/red)
+- **Matrix/Grid toggle** switches between matrix and card grid browse modes
 
 ### D3 Visualizations
 
@@ -353,13 +367,15 @@ The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark 
 
 ### Additional Features
 
+- **Matrix/Grid browse toggle** -- ATT&CK-style matrix as default, card grid as alternative
+- **Sector tab filtering** -- filter matrix by any of 24 sectors with live TP counts
 - **Full-text search** via lunr.js with wildcard fallback
 - **Multi-criteria filtering** by CFPF phase, sector, and fraud type
 - **Lazy content loading** -- metadata index loads first, TP content on demand
 - **Taxonomy toggle** -- switch between CFPF, MITRE ATT&CK, and Group-IB views in detail
 - **Hash-based routing** -- deep links via `#detail/TP-XXXX`
 - **Copy-to-clipboard** on all code blocks
-- **Mobile responsive** with collapsible filter panel
+- **Mobile responsive** with collapsible filter panel and horizontally scrollable matrix
 
 ---
 
@@ -614,6 +630,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 
 - ~~**MITRE F3 mapping**~~ -- Completed April 2026 (72/89 TPs mapped)
 - ~~**Detection rule decoupling**~~ -- Completed May 2026: 221 rules in [flame-detections](https://github.com/elchacal801/flame-detections)
+- ~~**Threat path matrix view**~~ -- Completed May 2026: ATT&CK-style matrix with 11 fraud families, sector tabs, short-name chips
 - **STIX SCO extensions** -- Observable-level extensions for fraud indicators
 - **Expanded emulation playbooks** -- Coverage for remaining threat path categories
 - **Community growth** -- Industry partnerships and contributor onboarding
