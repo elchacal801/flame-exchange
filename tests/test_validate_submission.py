@@ -35,6 +35,9 @@ sector:
   - banking
 fraud_types:
   - account-takeover
+fraud_family: account-takeover
+primary_phase: P2
+short_name: "Test TP"
 cfpf_phases: [P1, P2, P3]
 mitre_attack: [T1566.001]
 ft3_tactics: []
@@ -88,6 +91,9 @@ fraud_types:
   - impersonation
   - advance-fee-fraud
   - identity-theft
+fraud_family: social-engineering
+primary_phase: P1
+short_name: "Employment Fraud"
 cfpf_phases: [P1, P2, P3, P4, P5]
 mitre_attack: [T1566.001, T1583.001]
 ft3_tactics: []

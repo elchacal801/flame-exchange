@@ -9,7 +9,7 @@
         // FOUC prevention — set theme before CSS loads
         (function () {
             var t = localStorage.getItem('flame-theme');
-            if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            if (!t) t = 'dark';
             document.documentElement.setAttribute('data-theme', t);
             document.querySelector('meta[name="theme-color"]')
                 ?.setAttribute('content', t === 'light' ? '#F5F3F1' : '#09090B');

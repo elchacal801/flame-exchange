@@ -98,5 +98,6 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "chore: rebuild database, STIX bundle, and stats [skip ci]"
+            git pull --rebase
             git push
           fi

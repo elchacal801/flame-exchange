@@ -1,0 +1,69 @@
+# ======================================================================
+# FLAME Detection Rule: Unusual Large Cash Withdrawal with Precious Metals Merchant Transaction
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0082, TP-0027
+#
+# Description:
+#   Detects the gold courier scam pattern where victims — predominantly
+#   elderly — make large cash withdrawals or wire transfers to precious
+#   metals merchants with no prior history of such transactions. FBI IC3
+#   2025 documented 725 gold courier complaints with $311.8 million in
+#   losses, yielding an extraordinary average of ~$430,000 per victim.
+#   Victims are typically directed by government impersonation callers to
+#   purchase physical gold as "asset protection," which is then collected
+#   by couriers. The precious metals MCC codes (5094 for precious
+#   stones/metals, 5944 for jewelry/watch/clock stores) serve as the
+#   primary detection signal when combined with customer age and
+#   transaction history anomalies.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_withdrawal:
+#     transaction_type:
+#     - cash_withdrawal
+#     - wire_transfer
+#     transaction_amount|gte: 10000
+#   selection_precious_metals:
+#     merchant_category_code:
+#     - '5094'
+#     - '5944'
+#   filter_no_history:
+#     customer_precious_metals_history_12m: false
+#   filter_age:
+#     account_holder_age|gte: 60
+#   timeframe: 72h
+#   condition: '(selection_withdrawal AND selection_precious_metals AND filter_no_history)
+#     OR (selection_withdrawal AND selection_precious_metals AND filter_age)
+#   
+#     '
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Collectors and investors with established precious metals purchasing patterns
+#   - Jewelry purchases for weddings, anniversaries, or estate purposes
+#   - Business customers in the precious metals industry
+#   - Gift purchases from jewelry stores
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

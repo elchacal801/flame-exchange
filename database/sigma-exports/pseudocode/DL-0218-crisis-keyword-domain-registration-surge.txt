@@ -1,0 +1,68 @@
+# ======================================================================
+# FLAME Detection Rule: Crisis-Keyword Domain Registration Surge — Bulk NRD Detection within 72h Window
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P1
+# Threat Paths: TP-0086, TP-0079
+#
+# Description:
+#   Detects bulk registration of crisis-themed domains (5+ in 72h) matching
+#   government subsidy, energy relief, and commodity investment keyword
+#   patterns on cheap gTLDs. CrimsonVector research identified 846
+#   crisis-themed domains registered in a single peak week during the 2026
+#   Iran War oil shock, with 48-72h lag between government program
+#   announcements and domain activation. This rule targets the P1
+#   infrastructure build-out phase where early detection can disrupt
+#   campaigns before victim-facing deployment.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: domain_intelligence
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     domain_name|contains:
+#     - subsidy
+#     - relief
+#     - assistance
+#     - fuel-
+#     - petrol-
+#     - energy-emergency
+#     - oil-invest
+#     - crude-trad
+#     - commodity-trad
+#     - winter-fuel
+#     - cost-of-living
+#     - energy-grant
+#     - heating-allow
+#   filter_cheap_tld:
+#     tld|re: TOP|BOND|XYZ|SHOP|XIN|CFD|LOL|CLICK|BUZ|CYOU
+#   filter_burst:
+#     registration_count_72h_same_registrar|gte: 5
+#   timeframe: 72h
+#   condition: selection AND filter_cheap_tld AND filter_burst
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate government agencies registering official program domains
+#   - News media or advocacy organizations registering crisis-related domains
+#   - Energy companies registering product-related domains during price events
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

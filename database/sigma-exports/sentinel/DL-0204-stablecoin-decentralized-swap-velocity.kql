@@ -1,0 +1,3 @@
+// FLAME logsource mapping -- table names and field names require environment-specific tuning.
+
+(token_in matches regex "USDT|USDC" and token_out matches regex "DAI|sDAI|LUSD|RAI" and swap_venue_type =~ "DEX" and time_receive_to_swap_hours <= 24) and (not(wallet_address contains "%institutional_rebalancing_allowlist%"))

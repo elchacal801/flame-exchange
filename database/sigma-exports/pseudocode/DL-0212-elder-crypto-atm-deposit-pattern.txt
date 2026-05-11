@@ -1,0 +1,58 @@
+# ======================================================================
+# FLAME Detection Rule: Elder Account — Large Cash Withdrawal with Crypto ATM Deposit Indicators
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0027, TP-0085
+#
+# Description:
+#   Detects the elder-targeted crypto ATM fraud pattern where victims aged
+#   60+ make large cash withdrawals with no corresponding deposit or
+#   transfer activity within 48 hours — a strong indicator that funds were
+#   deposited at a crypto ATM/kiosk under the direction of a scammer. FBI
+#   IC3 2025 data shows 6,188 crypto ATM complaints and $257 million in
+#   losses from victims aged 60+ (66% of all crypto ATM fraud losses). The
+#   48-hour gap between bank withdrawal and lack of corresponding activity
+#   represents the detection window before funds become irrecoverable
+#   on-chain. This rule targets the P4 execution phase where bank-side
+#   intervention can still prevent loss.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     account_holder_age|gte: 60
+#     transaction_type: cash_withdrawal
+#     transaction_amount|gte: 5000
+#   filter_no_followup:
+#     followup_deposit_or_transfer_48h: false
+#   timeframe: 48h
+#   condition: selection AND filter_no_followup
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Elderly customers making large cash withdrawals for legitimate purposes (home purchases, estate settlements)
+#   - Snowbird customers withdrawing cash before extended travel
+#   - Cash-preferred customers with established patterns of large withdrawals
+#   - Customers withdrawing funds to deposit at another institution
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

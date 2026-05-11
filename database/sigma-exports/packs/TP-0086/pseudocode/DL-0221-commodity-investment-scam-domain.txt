@@ -1,0 +1,56 @@
+# ======================================================================
+# FLAME Detection Rule: Commodity Investment Scam Domain — Crisis-Themed Trading Platform on Cheap gTLD
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P2
+# Threat Paths: TP-0086, TP-0017, TP-0060
+#
+# Description:
+#   Detects newly registered domains on cheap gTLDs matching commodity
+#   investment scam patterns (oil-invest*, crude-trad*, commodity-trad*,
+#   petrol-fund*, energy-trad*). These domains typically deploy fake
+#   trading platforms soliciting cryptocurrency deposits during commodity
+#   price shocks. CrimsonVector identified a dual-track exploitation model
+#   during the 2026 Iran War oil shock: crisis events simultaneously
+#   generated government subsidy phishing (targeting relief seekers) and
+#   commodity investment scams (targeting opportunistic investors). The
+#   investment scam track used domains that mimicked legitimate trading
+#   platforms with fabricated profit dashboards.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: domain_intelligence
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     domain_name|re: oil.invest|crude.trad|commodity.trad|petrol.fund|energy.trad|oil.trad|fuel.invest|gas.invest|brent.trad|wti.trad
+#   filter_cheap_tld:
+#     tld|re: TOP|BOND|XYZ|SHOP|XIN|CFD|LOL|CLICK|BUZ|CYOU|COM|NET|ORG
+#   filter_nrd:
+#     domain_age_days|lte: 30
+#   condition: selection AND filter_nrd
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate commodity trading platforms launching new domains
+#   - Financial news or analysis sites covering commodity markets
+#   - Educational resources about commodity investment
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

@@ -1,0 +1,63 @@
+# ======================================================================
+# FLAME Detection Rule: Government Subsidy Impersonation Domain — NRD with Agency Keyword Pattern
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: critical
+# CFPF Phase: P2
+# Threat Paths: TP-0086, TP-0084
+#
+# Description:
+#   Detects newly registered domains (< 30 days) matching government agency
+#   impersonation patterns combined with subsidy/relief keywords. Targets
+#   domains like gov*-subsidy*, dwp-*, hmrc-*, irs-*, fema-*,
+#   *-relief-payment, and country-agency combinations (uk-energy-*,
+#   us-fuel-*). CrimsonVector confirmed gov.dwp-subsidy.shop as a phishing
+#   site impersonating the UK Department for Work and Pensions during the
+#   2026 oil shock. The NRD age filter (< 30 days) eliminates legitimate
+#   government domains while catching the 48-72h post-announcement
+#   registration surge.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: domain_intelligence
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_gov_pattern:
+#     domain_name|re: gov[.-]|dwp[.-]|hmrc[.-]|irs[.-]|fema[.-]|ssa[.-]|centrelink[.-]|service-canada[.-]|cra[.-]
+#   selection_subsidy_keyword:
+#     domain_name|contains:
+#     - subsidy
+#     - relief
+#     - assistance
+#     - allowance
+#     - benefit
+#     - grant
+#     - rebate
+#     - payment
+#   filter_nrd:
+#     domain_age_days|lte: 30
+#   condition: selection_gov_pattern AND selection_subsidy_keyword AND filter_nrd
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate government contractor domains registered for program support
+#   - News aggregator or comparison sites covering government programs
+#   - Academic or research domains studying government policy
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

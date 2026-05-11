@@ -1,0 +1,5 @@
+` FLAME logsource mapping -- field names, index, and sourcetype require environment-specific tuning. `
+
+swap_venue_type="DEX" time_receive_to_swap_hours<=24 NOT wallet_address="*%institutional_rebalancing_allowlist%*"
+| regex token_in="USDT|USDC"
+| regex token_out="DAI|sDAI|LUSD|RAI"

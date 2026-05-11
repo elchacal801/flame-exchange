@@ -1,0 +1,58 @@
+title: "Crisis-Keyword Domain Registration Surge — Bulk NRD Detection within 72h Window"
+id: "cceb819b-6b4f-4cef-9a22-51a23b4c176b"
+status: experimental
+description: >
+  Detects bulk registration of crisis-themed domains (5+ in 72h) matching
+  government subsidy, energy relief, and commodity investment keyword patterns
+  on cheap gTLDs. CrimsonVector research identified 846 crisis-themed domains
+  registered in a single peak week during the 2026 Iran War oil shock, with
+  48-72h lag between government program announcements and domain activation.
+  This rule targets the P1 infrastructure build-out phase where early detection
+  can disrupt campaigns before victim-facing deployment.
+references:
+  - "CrimsonVector, 2026 Iran War Oil Shock Domain Intelligence Report — 1,435 crisis-themed domains"
+  - "Interisle Consulting Group, Phishing Landscape 2025 — Bulk registration patterns on cheap gTLDs"
+threat_paths:
+  - TP-0086
+  - TP-0079
+cfpf_phase: P1
+fraud_types:
+  - fraud-enabling-infrastructure
+  - phishing
+  - brand-impersonation
+logsource:
+  product: banking
+  service: domain_intelligence
+detection:
+  selection:
+    domain_name|contains:
+      - subsidy
+      - relief
+      - assistance
+      - fuel-
+      - petrol-
+      - energy-emergency
+      - oil-invest
+      - crude-trad
+      - commodity-trad
+      - winter-fuel
+      - cost-of-living
+      - energy-grant
+      - heating-allow
+  filter_cheap_tld:
+    tld|re: "TOP|BOND|XYZ|SHOP|XIN|CFD|LOL|CLICK|BUZ|CYOU"
+  filter_burst:
+    registration_count_72h_same_registrar|gte: 5
+  timeframe: 72h
+  condition: selection AND filter_cheap_tld AND filter_burst
+falsepositives:
+  - "Legitimate government agencies registering official program domains"
+  - "News media or advocacy organizations registering crisis-related domains"
+  - "Energy companies registering product-related domains during price events"
+sigma_compatible: true
+level: high
+tags:
+  - cfpf.phase1.recon
+  - flame.infrastructure
+  - flame.crisis-exploitation
+  - flame.shared

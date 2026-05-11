@@ -1,0 +1,3 @@
+/* FLAME logsource mapping -- field names and index patterns require environment-specific tuning. */
+
+(token_in:/USDT|USDC/ AND token_out:/DAI|sDAI|LUSD|RAI/ AND swap_venue_type:DEX AND time_receive_to_swap_hours:<=24) AND (NOT wallet_address:*%institutional_rebalancing_allowlist%*)

@@ -14,6 +14,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P3",
+    "short_name": "Treasury ATO",
     "sectors": [
       "banking"
     ],
@@ -145,6 +148,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "BEC Wire",
     "sectors": [
       "banking",
       "cross-sector"
@@ -266,6 +272,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P3",
+    "short_name": "Synth ID Bust-Out",
     "sectors": [
       "banking",
       "fintech"
@@ -377,6 +386,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "Payroll Diversion",
     "sectors": [
       "cross-sector"
     ],
@@ -493,6 +505,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P3",
+    "short_name": "Premium Diversion",
     "sectors": [
       "insurance"
     ],
@@ -606,6 +621,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "Real Estate Wire",
     "sectors": [
       "banking",
       "cross-sector"
@@ -728,6 +746,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "Deepfake Voice Wire",
     "sectors": [
       "banking",
       "cross-sector"
@@ -869,6 +890,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P2",
+    "short_name": "SIM Swap ATO",
     "sectors": [
       "crypto",
       "fintech",
@@ -998,6 +1022,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "Check Washing",
     "sectors": [
       "banking",
       "credit-union"
@@ -1096,6 +1123,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P4",
+    "short_name": "Disability Fraud",
     "sectors": [
       "insurance"
     ],
@@ -1183,6 +1213,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "investment-romance",
+    "primary_phase": "P3",
+    "short_name": "Romance Mule Pipeline",
     "sectors": [
       "cross-sector"
     ],
@@ -1314,6 +1347,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "social-engineering",
+    "primary_phase": "P4",
+    "short_name": "APP Tech Support",
     "sectors": [
       "banking",
       "credit-union"
@@ -1438,6 +1474,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P2",
+    "short_name": "Cred Stuff Loyalty",
     "sectors": [
       "banking",
       "cross-sector",
@@ -1555,6 +1594,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P3",
+    "short_name": "Insider Fraud",
     "sectors": [
       "banking",
       "credit-union",
@@ -1681,6 +1723,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "social-engineering",
+    "primary_phase": "P3",
+    "short_name": "Employment Fraud",
     "sectors": [
       "healthcare",
       "staffing",
@@ -1794,6 +1839,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P4",
+    "short_name": "First-Party Bust-Out",
     "sectors": [
       "banking",
       "credit-union"
@@ -1890,6 +1938,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "investment-romance",
+    "primary_phase": "P3",
+    "short_name": "Pig Butchering",
     "sectors": [
       "banking",
       "crypto",
@@ -2013,6 +2064,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P2",
+    "short_name": "Deepfake Docs",
     "sectors": [
       "banking",
       "credit-union",
@@ -2111,6 +2165,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P2",
+    "short_name": "Business ID Theft",
     "sectors": [
       "banking",
       "investment"
@@ -2224,6 +2281,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "Supply Chain Wire",
     "sectors": [
       "banking",
       "cross-sector"
@@ -2336,6 +2396,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P4",
+    "short_name": "Healthcare Billing",
     "sectors": [
       "healthcare",
       "insurance",
@@ -2463,6 +2526,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P4",
+    "short_name": "Gov Program Fraud",
     "sectors": [
       "government",
       "banking"
@@ -2560,6 +2626,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P2",
+    "short_name": "Mobile Trojan",
     "sectors": [
       "banking",
       "fintech",
@@ -2678,6 +2747,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "A2A Payment Fraud",
     "sectors": [
       "banking",
       "fintech",
@@ -2810,6 +2882,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "social-engineering",
+    "primary_phase": "P3",
+    "short_name": "GenAI APP Romance",
     "sectors": [
       "banking",
       "cross-sector"
@@ -2942,6 +3017,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "investment-romance",
+    "primary_phase": "P3",
+    "short_name": "GenAI APP Investment",
     "sectors": [
       "banking",
       "crypto",
@@ -3075,6 +3153,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "social-engineering",
+    "primary_phase": "P4",
+    "short_name": "Elder Exploitation",
     "sectors": [
       "banking",
       "cross-sector"
@@ -3208,6 +3289,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "suspected",
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P4",
+    "short_name": "DME Phantom Billing",
     "sectors": [
       "healthcare",
       "insurance",
@@ -3346,6 +3430,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P2",
+    "short_name": "AI Synth ID Forgery",
     "sectors": [
       "banking",
       "fintech"
@@ -3459,6 +3546,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P3",
+    "short_name": "Triangulation Fraud",
     "sectors": [
       "retail"
     ],
@@ -3583,6 +3673,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P4",
+    "short_name": "Refund-as-a-Service",
     "sectors": [
       "retail"
     ],
@@ -3684,6 +3777,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P4",
+    "short_name": "Wallet Drainer",
     "sectors": [
       "web3",
       "crypto"
@@ -3807,6 +3903,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P3",
+    "short_name": "Ghost Student Aid",
     "sectors": [
       "education",
       "government"
@@ -3913,6 +4012,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P2",
+    "short_name": "DPRK IT Worker",
     "sectors": [
       "technology",
       "banking",
@@ -4080,6 +4182,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P2",
+    "short_name": "Magecart Skimmer",
     "sectors": [
       "retail",
       "payments",
@@ -4199,6 +4304,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P3",
+    "short_name": "Purchase Scam",
     "sectors": [
       "retail",
       "payments",
@@ -4317,6 +4425,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P4",
+    "short_name": "NFC Relay Fraud",
     "sectors": [
       "banking",
       "fintech",
@@ -4442,6 +4553,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P3",
+    "short_name": "Card Testing",
     "sectors": [
       "payments",
       "retail",
@@ -4549,6 +4663,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P4",
+    "short_name": "Agentic Commerce",
     "sectors": [
       "technology",
       "retail",
@@ -4695,6 +4812,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P3",
+    "short_name": "BNPL Stacking",
     "sectors": [
       "retail",
       "payments",
@@ -4824,6 +4944,9 @@
     "infrastructure_generation_method": "rdga-registered",
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "RDGA Domains",
     "sectors": [
       "cross-sector",
       "banking",
@@ -4924,6 +5047,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "TDS Chains",
     "sectors": [
       "cross-sector",
       "banking",
@@ -5069,6 +5195,9 @@
     "infrastructure_generation_method": "ai-assisted",
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "AI Infra Gen",
     "sectors": [
       "cross-sector",
       "banking",
@@ -5176,6 +5305,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "conflict-triggered",
     "nation_state_nexus": "hybrid",
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P1",
+    "short_name": "State-Criminal Infra",
     "sectors": [
       "banking",
       "crypto",
@@ -5302,6 +5434,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "sanctions-response",
     "nation_state_nexus": "confirmed",
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P3",
+    "short_name": "Sanctions Evasion",
     "sectors": [
       "crypto",
       "banking",
@@ -5402,6 +5537,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "election-cycle",
     "nation_state_nexus": "suspected",
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P1",
+    "short_name": "Geo-Timed Campaigns",
     "sectors": [
       "banking",
       "payments",
@@ -5490,6 +5628,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P1",
+    "short_name": "Trafficking Infra",
     "sectors": [
       "crypto",
       "banking",
@@ -5596,6 +5737,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "BPH Migration",
     "sectors": [
       "cross-sector"
     ],
@@ -5689,6 +5833,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Crypto Laundering",
     "sectors": [
       "crypto",
       "banking",
@@ -5794,6 +5941,9 @@
     "infrastructure_generation_method": "rdga-registered",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "social-engineering",
+    "primary_phase": "P2",
+    "short_name": "Calendar Phishing",
     "sectors": [
       "banking",
       "cross-sector"
@@ -5890,6 +6040,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "social-engineering",
+    "primary_phase": "P2",
+    "short_name": "Quishing",
     "sectors": [
       "banking",
       "payments",
@@ -5996,6 +6149,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "investment-romance",
+    "primary_phase": "P3",
+    "short_name": "Sextortion Hybrid",
     "sectors": [
       "banking",
       "crypto",
@@ -6112,6 +6268,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P4",
+    "short_name": "Vehicle Export Fraud",
     "sectors": [
       "banking",
       "cross-sector"
@@ -6209,6 +6368,9 @@
     "infrastructure_generation_method": "ai-assisted",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "FaaS Platforms",
     "sectors": [
       "cross-sector",
       "banking",
@@ -6350,6 +6512,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "suspected",
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Crypto Terror Nexus",
     "sectors": [
       "crypto",
       "banking",
@@ -6470,6 +6635,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P4",
+    "short_name": "Insurance Claims",
     "sectors": [
       "insurance",
       "healthcare",
@@ -6569,6 +6737,9 @@
     "infrastructure_generation_method": "ai-assisted",
     "geopolitical_timing": "none",
     "nation_state_nexus": "hybrid",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "DFaaS Marketplace",
     "sectors": [
       "cross-sector",
       "banking",
@@ -6686,6 +6857,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "suspected",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "Scam Compounds",
     "sectors": [
       "cross-sector",
       "banking",
@@ -6803,6 +6977,9 @@
     "infrastructure_generation_method": "ai-assisted",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P2",
+    "short_name": "Auto Mule Infra",
     "sectors": [
       "banking",
       "crypto",
@@ -6909,6 +7086,9 @@
     "infrastructure_generation_method": "tds-routing",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "Investment TDS",
     "sectors": [
       "banking",
       "investment",
@@ -7014,6 +7194,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "hybrid",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "TAE BPH Infra",
     "sectors": [
       "cross-sector",
       "technology",
@@ -7124,6 +7307,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "social-engineering",
+    "primary_phase": "P3",
+    "short_name": "Recovery Fraud",
     "sectors": [
       "cross-sector",
       "banking",
@@ -7230,6 +7416,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P3",
+    "short_name": "Counterfeit Networks",
     "sectors": [
       "retail",
       "payments",
@@ -7336,6 +7525,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P3",
+    "short_name": "Long-Firm Fraud",
     "sectors": [
       "banking",
       "cross-sector",
@@ -7444,6 +7636,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "Boiler Room Infra",
     "sectors": [
       "cross-sector",
       "banking",
@@ -7561,6 +7756,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P4",
+    "short_name": "Crash-for-Cash",
     "sectors": [
       "insurance",
       "healthcare"
@@ -7647,6 +7845,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "account-takeover",
+    "primary_phase": "P2",
+    "short_name": "AiTM Phishing Kit",
     "sectors": [
       "cross-sector",
       "banking",
@@ -7794,6 +7995,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P4",
+    "short_name": "Gift Card Fraud",
     "sectors": [
       "retail",
       "payments"
@@ -7892,6 +8096,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P2",
+    "short_name": "Smishing PhaaS",
     "sectors": [
       "cross-sector",
       "banking",
@@ -8020,6 +8227,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "seasonal-political",
     "nation_state_nexus": "none",
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P3",
+    "short_name": "Travel Booking Fraud",
     "sectors": [
       "travel",
       "payments",
@@ -8112,6 +8322,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "telecom-specialized",
+    "primary_phase": "P4",
+    "short_name": "IRSF Revenue Fraud",
     "sectors": [
       "telecommunications"
     ],
@@ -8201,6 +8414,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "telecom-specialized",
+    "primary_phase": "P3",
+    "short_name": "Telecom Sub Fraud",
     "sectors": [
       "telecommunications"
     ],
@@ -8286,6 +8502,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P3",
+    "short_name": "Title/Deed Theft",
     "sectors": [
       "real-estate"
     ],
@@ -8376,6 +8595,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P3",
+    "short_name": "Ghost Broking",
     "sectors": [
       "insurance"
     ],
@@ -8456,6 +8678,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P4",
+    "short_name": "Friendly Fraud",
     "sectors": [
       "payments",
       "ecommerce",
@@ -8533,6 +8758,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P3",
+    "short_name": "Affiliate Fraud",
     "sectors": [
       "ecommerce",
       "technology"
@@ -8617,6 +8845,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P3",
+    "short_name": "AI Claims Fraud",
     "sectors": [
       "insurance"
     ],
@@ -8701,6 +8932,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Stablecoin CEX Launder",
     "sectors": [
       "crypto",
       "banking",
@@ -8814,6 +9048,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "gTLD Subdomain Abuse",
     "sectors": [
       "cross-sector",
       "banking",
@@ -8917,6 +9154,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "sanctions-response",
     "nation_state_nexus": "confirmed",
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Freeze Evasion",
     "sectors": [
       "crypto",
       "banking",
@@ -9018,6 +9258,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "account-takeover",
+    "primary_phase": "P2",
+    "short_name": "Vishing Hybrid",
     "sectors": [
       "banking",
       "cross-sector",
@@ -9116,6 +9359,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "social-engineering",
+    "primary_phase": "P4",
+    "short_name": "Gold Courier Scam",
     "sectors": [
       "banking",
       "cross-sector"
@@ -9212,6 +9458,9 @@
     "infrastructure_generation_method": "ai-assisted",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "investment-romance",
+    "primary_phase": "P3",
+    "short_name": "Investment Club Scam",
     "sectors": [
       "investment",
       "banking",
@@ -9308,6 +9557,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "social-engineering",
+    "primary_phase": "P4",
+    "short_name": "Gov Impersonation APP",
     "sectors": [
       "banking",
       "cross-sector",
@@ -9416,6 +9668,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Crypto ATM Fraud",
     "sectors": [
       "banking",
       "crypto",
@@ -9506,6 +9761,9 @@
     "infrastructure_generation_method": "rdga-registered",
     "geopolitical_timing": "conflict-triggered",
     "nation_state_nexus": "suspected",
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P1",
+    "short_name": "Crisis Exploitation",
     "sectors": [
       "government",
       "banking",
@@ -9632,6 +9890,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "none",
     "nation_state_nexus": "suspected",
+    "fraud_family": "account-takeover",
+    "primary_phase": "P2",
+    "short_name": "Infostealer Pipeline",
     "sectors": [
       "banking",
       "crypto",
@@ -9757,6 +10018,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "social-engineering",
+    "primary_phase": "P2",
+    "short_name": "Logistics Spearphish",
     "sectors": [
       "logistics",
       "transportation",
@@ -9867,6 +10131,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "sanctions-response",
     "nation_state_nexus": "suspected",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "TAE Transit Complicity",
     "sectors": [
       "technology",
       "telecommunications",

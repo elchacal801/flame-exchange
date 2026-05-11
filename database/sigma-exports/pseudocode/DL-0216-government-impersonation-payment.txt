@@ -1,0 +1,77 @@
+# ======================================================================
+# FLAME Detection Rule: Government Impersonation — Multi-Channel Payment Under Duress Indicators
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0084, TP-0027
+#
+# Description:
+#   Detects government impersonation APP fraud by identifying payments with
+#   government agency references made via crypto, wire, or prepaid channels
+#   to non-historical payees. FBI IC3 2025 reported $797.9 million in
+#   losses from 32,424 government impersonation complaints — an 87%
+#   increase in complaints and 97% increase in losses from 2024. The
+#   payment channel distribution is distinctive: Cryptocurrency 40%, Wire
+#   Transfer/ACH 21%, Prepaid card/Gift card 15%, Cash 14%. This rule
+#   targets payment references containing government agency names or legal
+#   terminology from customers with no prior government- related payment
+#   history, as legitimate government payments follow established patterns
+#   and channels.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_payment:
+#     transaction_type:
+#     - wire_transfer
+#     - ach_credit
+#     - crypto_purchase
+#     - prepaid_card_purchase
+#     - gift_card_purchase
+#   selection_gov_reference:
+#     payment_reference|contains:
+#     - IRS
+#     - SSA
+#     - Social Security
+#     - DOJ
+#     - FBI
+#     - DEA
+#     - warrant
+#     - penalty
+#     - tax lien
+#     - federal
+#     - treasury
+#     - immigration
+#     - customs
+#     - marshal
+#   filter_non_historical:
+#     payee_in_historical_pattern: false
+#   condition: selection_payment AND selection_gov_reference AND filter_non_historical
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate tax payments to IRS via authorized payment processors
+#   - Attorney or legal service payments referencing government cases
+#   - Immigration service fees paid through authorized channels
+#   - Court-ordered payments referencing federal agencies
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

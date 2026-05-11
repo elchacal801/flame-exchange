@@ -1,0 +1,64 @@
+# ======================================================================
+# FLAME Detection Rule: Multiple Unrelated Customers Depositing to Same Novel Beneficiary — Investment Club Pattern
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0083, TP-0017
+#
+# Description:
+#   Detects investment club scam patterns where multiple unrelated victims
+#   deposit funds to the same fraudulent beneficiary within a short time
+#   window. FBI IC3 2025 documented approximately 1,600 investment club
+#   complaints with $160 million in losses, and PSA250703 specifically
+#   warned about fraudulent investment clubs on social media and messaging
+#   apps. The cluster deposit pattern — five or more unique, unrelated
+#   customers sending to the same novel beneficiary within 14 days —
+#   distinguishes investment club scams from 1:1 pig butchering (TP-0017)
+#   where victims typically deposit to unique beneficiary accounts. The
+#   group-based nature creates a detectable convergence signal absent from
+#   individual targeting schemes.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection:
+#     transaction_type:
+#     - wire_transfer
+#     - ach_credit
+#     - crypto_purchase
+#     - faster_payment
+#   filter_beneficiary_cluster:
+#     unique_depositors_to_beneficiary_14d|gte: 5
+#     depositors_in_common_payment_network: false
+#   filter_novel_beneficiary:
+#     beneficiary_first_seen_days|lte: 90
+#   timeframe: 14d
+#   condition: selection AND filter_beneficiary_cluster AND filter_novel_beneficiary
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate crowdfunding or group investment platforms receiving deposits from multiple customers
+#   - Business accounts receiving payments from multiple clients
+#   - Charity or event organizers receiving donations from multiple individuals
+#   - Shared household expense accounts
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================

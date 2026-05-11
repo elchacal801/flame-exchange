@@ -1,0 +1,39 @@
+title: Stablecoin-to-Decentralized-Stablecoin Swap Velocity
+id: e8c8e659-16cd-424b-82e1-9dfdd791d64d
+status: experimental
+description: >
+  Detects when a wallet receives USDT/USDC and swaps to decentralized stablecoins (DAI, sDAI, LUSD, RAI)
+  via a DEX within 24 hours, particularly when the source wallet has elevated risk scores. The IRGC's
+  documented USDT-to-DAI shift after mid-2025 Tether freezes is the direct intelligence basis. Centralized
+  stablecoins can be frozen by issuers; swapping to decentralized alternatives defeats this control.
+references:
+  - "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026)"
+threat_paths:
+  - TP-0080
+  - TP-0049
+cfpf_phase: P3
+fraud_types:
+  - crypto-laundering
+  - stablecoin-freeze-evasion
+logsource:
+  product: crypto
+  service: blockchain_analytics
+detection:
+  selection:
+    token_in|re: "USDT|USDC"
+    token_out|re: "DAI|sDAI|LUSD|RAI"
+    swap_venue_type: DEX
+    time_receive_to_swap_hours|lte: 24
+  filter_institutional:
+    wallet_address|contains: "%institutional_rebalancing_allowlist%"
+  condition: selection and not filter_institutional
+falsepositives:
+  - "DeFi yield farming strategies that routinely swap between stablecoin types"
+  - "Institutional portfolio rebalancing across stablecoin allocations"
+  - "Stablecoin arbitrage trading exploiting minor depegs"
+sigma_compatible: true
+level: high
+tags:
+  - cfpf.phase3.positioning
+  - flame.crypto
+  - flame.shared

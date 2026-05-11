@@ -1,0 +1,67 @@
+# ======================================================================
+# FLAME Detection Rule: Post-Fraud Victim Payment to Newly Registered Legal or Recovery Entity
+# ======================================================================
+#
+# This rule uses aggregation/correlation logic that requires
+# SIEM-native implementation. It cannot be auto-converted to
+# SPL/Lucene/KQL by pySigma backends.
+#
+# Level: high
+# CFPF Phase: P4
+# Threat Paths: TP-0062
+#
+# Description:
+#   Detects recovery fraud patterns where victims of prior fraud are
+#   targeted by fictitious law firms or recovery companies promising to
+#   retrieve lost funds. FBI IC3 2025 reported 10,516 recovery scam
+#   complaints with $1.4 billion in losses — making recovery fraud one of
+#   the largest IC3 loss categories. PSA250813 (August 2025) specifically
+#   warned about fictitious law firms targeting cryptocurrency scam
+#   victims. This rule identifies the characteristic pattern: a customer
+#   with a recent fraud complaint making payments to a newly established
+#   entity with legal or recovery terminology in the payee name. The
+#   180-day lookback window accounts for IC3 data showing longer
+#   re-targeting timelines than previously estimated.
+#
+# ----------------------------------------------------------------------
+# Log Source
+# ----------------------------------------------------------------------
+#   product: banking
+#   service: transaction_monitoring
+#
+# ----------------------------------------------------------------------
+# Detection Logic (Sigma YAML)
+# ----------------------------------------------------------------------
+#   selection_prior_victim:
+#     customer_fraud_complaint_180d: true
+#   selection_legal_payee:
+#     payee_name|contains:
+#     - law
+#     - legal
+#     - attorney
+#     - recovery
+#     - asset recovery
+#     - fund recovery
+#     - claims
+#     - restitution
+#     - litigation
+#   filter_new_entity:
+#     payee_account_age_days|lte: 90
+#   condition: selection_prior_victim AND selection_legal_payee AND filter_new_entity
+#
+# ----------------------------------------------------------------------
+# Known False Positives
+# ----------------------------------------------------------------------
+#   - Legitimate legal representation retained after a fraud incident
+#   - Insurance claim payments following documented fraud losses
+#   - Court-ordered restitution payments through established legal entities
+#   - Payments to established, long-standing law firms for legitimate services
+#
+# ======================================================================
+# Implementation Notes:
+#   - Review the condition syntax and implement using your SIEM's
+#     native aggregation/correlation capabilities
+#   - Splunk: Use 'stats' or 'transaction' commands
+#   - Elastic: Use EQL sequences or aggregation queries
+#   - Sentinel: Use KQL summarize/make-series operators
+# ======================================================================
