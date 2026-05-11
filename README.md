@@ -2,7 +2,7 @@
 [![License: MIT](https://img.shields.io/github/license/elchacal801/flame-fraud)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![Threat Paths](https://img.shields.io/badge/threat_paths-86-0078D4)](ThreatPaths/)
-[![Detection Rules](https://img.shields.io/badge/detection_rules-221_(migrating)-2ea44f)](DetectionLogic/)
+[![Detection Rules](https://img.shields.io/badge/detection_rules-221-2ea44f)](https://github.com/elchacal801/flame-detections)
 [![STIX 2.1](https://img.shields.io/badge/STIX-2.1-6c757d)](docs/STIX-FRAUD-EXTENSION.md)
 [![MCP Server](https://img.shields.io/badge/MCP-server-8A2BE2)](mcp_server/)
 
@@ -21,17 +21,17 @@ FLAME is an open-source, community-driven exchange for structured fraud intellig
 | Metric | Count |
 |--------|-------|
 | **Threat Paths** | 86 (TP-0001 -- TP-0086) |
-| **Detection Logic Rules** | 221 * (Sigma-based; migrating to [flame-detections](https://github.com/elchacal801/flame-detections) in v1.0) |
+| **Detection Logic Rules** | 221 in [flame-detections](https://github.com/elchacal801/flame-detections) |
 | **Baselines** | 36 (49/86 TPs linked via `baseline_ids`) |
 | **Emulation Playbooks** | 14 adversary simulation scripts |
 | **Fraud Types** | 141 in master taxonomy |
 | **Sectors Covered** | 22 |
 | **Framework Cross-Mappings** | 7 (CFPF, ATT&CK, MITRE F3, Group-IB FM, Stripe FT3, UCFF, Regulatory) |
 | **Regulatory Requirements** | 31 across 7 jurisdictions |
-| **Export Formats** | 8 (STIX, MISP, TAXII, Sigma/SPL, Sigma/EQL, Sigma/KQL, CQL, RSS) |
-| **MCP Server Tools** | 7 |
+| **Export Formats** | 5 (STIX, MISP, TAXII, RSS, JSON API) |
+| **MCP Server Tools** | 6 |
 | **CI/CD Workflows** | 7 |
-| **Tests** | 258 (pytest) |
+| **Tests** | 217 (pytest) |
 
 ---
 
@@ -43,7 +43,7 @@ Between April 2025 and April 2026, six organizations independently concluded tha
 |---|:---:|:---:|:---:|:---:|:---:|
 | Open source | Yes | No | Paper only | Abandoned | Yes |
 | Community contributed | Yes | No | No platform | No | Yes |
-| Structured detection logic | 221 rules * | Mobile-heavy | No | No | No |
+| Structured detection logic | [221 rules](https://github.com/elchacal801/flame-detections) | Mobile-heavy | No | No | No |
 | Multi-taxonomy mapping | 7 frameworks | Own only | Own only | Own only | ATT&CK only |
 | TIP interop (STIX/MISP/TAXII) | Yes | No | No | No | No |
 | AI-assisted intake | Yes | No | No | No | No |
@@ -87,7 +87,7 @@ FLAME follows a **markdown-first, database-derived** architecture modeled on [HE
 graph LR
     subgraph Sources
         TP["ThreatPaths/*.md"]
-        DL["DetectionLogic/*.yml"]
+        DL["flame-detections repo"]
         BL["Baselines/*.md"]
         EP["EmulationPlaybooks/*.json"]
     end
@@ -97,7 +97,7 @@ graph LR
         EX_STIX["export_flame_stix.py"]
         EX_MISP["export_misp.py"]
         EX_TAXII["export_taxii.py"]
-        EX_SIGMA["export_sigma.py"]
+        EX_SIGMA["flame-detections CI"]
     end
 
     subgraph Artifacts
@@ -149,7 +149,7 @@ graph TD
 
 ```
 ThreatPaths/           86 fraud scheme lifecycle mappings (TP-XXXX.md)
-DetectionLogic/        221 Sigma-based detection rules (DL-XXXX.yml)
+                       (Detection rules now in flame-detections repo)
 Baselines/             36 environmental profiling benchmarks (BL-XXXX.md)
 EmulationPlaybooks/    14 adversary simulation playbooks (EP-XXXX.json)
 Templates/             Submission templates (TP, DL, BL, EP)
@@ -157,15 +157,14 @@ config/                Regulatory requirements and source configs
 scripts/               Build, validation, and export scripts (22 modules)
   regulatory/          6-source regulatory data fetchers
 mcp_server/            FastMCP server exposing 7 fraud intelligence tools
-tests/                 258 tests across pytest test modules
+tests/                 217 tests across pytest test modules
 database/              Generated artifacts (auto-built by CI)
   flame-index.json           Metadata-only index (fast frontend load)
   flame-content/             Individual TP content files (lazy-loaded)
   flame-stats.json           Pre-computed aggregate statistics
   flame-contributors.json    Contributor leaderboard data
   flame_stix_bundle.json     STIX 2.1 bundle with fraud extensions
-  flame_detection_rules.json Aggregated detection rules
-  sigma-exports/             Sigma packs (SPL, EQL, KQL, CQL)
+                             (Detection exports now in flame-detections repo)
   misp-feed/                 Per-TP MISP event files + manifest
   regulatory-alerts.json     Automated regulatory alert feed (6 sources)
   feed.xml                   RSS 2.0 feed
@@ -293,7 +292,7 @@ See [ThreatPaths/INDEX.md](ThreatPaths/INDEX.md) for full cross-reference tables
 
 ## Detection Rules and FLAME
 
-FLAME currently ships **221 detection rules** under `DetectionLogic/`. Of these, 98 are pure Sigma-compatible and auto-convert to SPL, EQL, and KQL. The remaining 123 require hand-written native queries (CQL, SPL) for stateful correlation that Sigma cannot express.
+Detection rules are maintained in the [flame-detections](https://github.com/elchacal801/flame-detections) sibling repo. The collection includes **221 rules** — 98 pure Sigma-compatible (auto-convert to SPL, EQL, KQL) and 123 requiring hand-written native queries (CQL, SPL) for stateful correlation.
 
 Detection rules are migrating to [flame-detections](https://github.com/elchacal801/flame-detections) in v1.0. This decoupling allows the detection content to evolve on its own quality bar and contribution cadence, separate from the core exchange taxonomy.
 
@@ -393,11 +392,11 @@ Compatible with MISP, OpenCTI, ThreatConnect, and other TIPs. Configure your TIP
 
 ### Sigma Detection Packs
 
-221 detection rules exported to **Splunk SPL**, **Elasticsearch EQL**, **Microsoft Sentinel KQL**, and **CrowdStrike CQL** via pySigma. Rules using aggregation/correlation syntax include pseudocode fallback exports with SIEM-specific implementation guidance. Per-TP packs available in `database/sigma-exports/packs/`. Detection packs are migrating to [flame-detections](https://github.com/elchacal801/flame-detections) in v1.0.
+221 detection rules exported to Splunk SPL, Elasticsearch EQL, Microsoft Sentinel KQL, and CrowdStrike CQL. Detection packs are now maintained in [flame-detections](https://github.com/elchacal801/flame-detections).
 
 ### RSS Feed
 
-Auto-generated RSS 2.0 feed at `database/feed.xml` with threat paths and detection rules. Auto-discovery enabled in `index.html`.
+Auto-generated RSS 2.0 feed at `database/feed.xml` with threat paths. Auto-discovery enabled in `index.html`.
 
 ### Static JSON API
 
@@ -406,8 +405,6 @@ RESTful JSON endpoints at `api/v1/`:
 ```
 GET /threat-paths.json              All TPs with metadata
 GET /threat-paths/TP-XXXX.json      Individual TP details
-GET /detection-rules.json           All detection rules
-GET /detection-rules/DL-XXXX.json   Individual rule
 GET /baselines.json                 All baselines
 GET /coverage-matrix.json           Coverage analysis matrix
 GET /stats.json                     Aggregate statistics
@@ -433,13 +430,12 @@ GET /taxonomy.json                  Master taxonomy
 
 ## MCP Server
 
-FLAME includes a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server that exposes fraud intelligence through 7 tools, enabling AI assistants like Claude to query threat paths, detection rules, and framework mappings conversationally.
+FLAME includes a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server that exposes fraud intelligence through 6 tools, enabling AI assistants like Claude to query threat paths, framework mappings, and coverage assessments conversationally.
 
 | Tool | Description |
 |------|-------------|
 | `search_threat_paths` | Search by keyword, sector, fraud type, CFPF phase, infrastructure method, geopolitical timing, or nation-state nexus |
 | `get_threat_path` | Get full details of a specific threat path |
-| `get_detection_rules` | Get detection rules filtered by TP, fraud type, or severity |
 | `map_framework` | Get framework-specific mappings (cfpf, mitre, groupib, ft3, ucff) |
 | `assess_coverage` | Assess fraud detection coverage by sector and fraud type |
 | `get_baseline` | Get fraud baseline measurements for benchmarking |
@@ -520,7 +516,7 @@ python -m http.server 8000
 python scripts/export_flame_stix.py    # STIX 2.1 bundle
 python scripts/export_misp.py          # MISP galaxy & feed
 python scripts/export_taxii.py         # TAXII 2.1 endpoints
-python scripts/export_sigma.py         # Sigma detection packs (SPL, EQL, KQL)
+# Sigma detection packs are now in flame-detections repo
 ```
 
 ### Run the MCP server
@@ -573,7 +569,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines, frontmatter requirem
 
 ## Testing
 
-FLAME includes **258 tests** across the full pipeline:
+FLAME includes **217 tests** across the full pipeline:
 
 ```bash
 pytest tests/ -v
@@ -617,7 +613,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 ## Roadmap
 
 - ~~**MITRE F3 mapping**~~ -- Completed April 2026 (72/86 TPs mapped)
-- **Detection rule decoupling** -- Migrating 221 rules to [flame-detections](https://github.com/elchacal801/flame-detections) (v1.0)
+- ~~**Detection rule decoupling**~~ -- Completed May 2026: 221 rules in [flame-detections](https://github.com/elchacal801/flame-detections)
 - **STIX SCO extensions** -- Observable-level extensions for fraud indicators
 - **Expanded emulation playbooks** -- Coverage for remaining threat path categories
 - **Community growth** -- Industry partnerships and contributor onboarding

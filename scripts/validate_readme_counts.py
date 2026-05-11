@@ -25,7 +25,6 @@ def get_ground_truth() -> dict[str, int]:
     stats = json.loads(STATS.read_text(encoding="utf-8"))
     return {
         "threat_paths": count_files("ThreatPaths/TP-*.md"),
-        "detection_rules": count_files("DetectionLogic/DL-*.yml"),
         "baselines": count_files("Baselines/BL-*.md"),
         "emulation_playbooks": count_files("EmulationPlaybooks/EP-*.json"),
         "fraud_types": stats.get("fraudTypes", 0),

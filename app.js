@@ -744,7 +744,6 @@
         // Export bar
         html += '<div class="detail-export-bar">';
         html += '<a href="api/v1/threat-paths/' + escapeHtml(item.id) + '.json" download class="export-btn">Export JSON</a>';
-        html += '<a href="database/sigma-exports/packs/' + escapeHtml(item.id) + '/" class="export-btn" target="_blank">Sigma Pack</a>';
         html += '<button class="export-btn" id="export-stix-btn">Export STIX</button>';
         html += '</div>';
 
