@@ -2388,32 +2388,6 @@ h4 {
 }
 
 /* ---------------------------------------------------------------
-   Detection Logic Section
-   --------------------------------------------------------------- */
-
-.dl-section {
-    margin-top: var(--space-xl);
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-xl);
-}
-
-.dl-section-title {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    font-family: 'Manrope', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--color-text);
-    margin: 0 0 var(--space-lg) 0;
-}
-
-.dl-section-title svg {
-    color: var(--color-accent);
-    flex-shrink: 0;
-}
-
-/* ---------------------------------------------------------------
    Confidence Badges
    --------------------------------------------------------------- */
 

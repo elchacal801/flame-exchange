@@ -864,15 +864,7 @@
             html += '</div>';
         }
 
-        // Detection Rules — now in flame-detections repo
-        html += '<div class="dl-section" id="dl-section">';
-        html += '<h2 class="dl-section-title">';
-        html += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>';
-        html += ' Detection Rules';
-        html += '</h2>';
-        html += '<p style="color: var(--color-text-dim); font-size: 0.9rem;">Detection rules for this threat path are maintained in the ';
-        html += '<a href="https://github.com/elchacal801/flame-detections" target="_blank" rel="noopener" style="color: var(--color-accent);">flame-detections</a> repository.</p>';
-        html += '</div>';
+        // Detection rules removed — see github.com/elchacal801/flame-detections
 
         dom.detailContent.innerHTML = html;
 
