@@ -102,6 +102,12 @@ tags:
   - unodc
   - unodc-organized-fraud-2024
   - wci-geographic-attribution
+  - lummac2
+  - rhadamanthys
+  - ghostsocks
+  - castleloader
+  - mintsloader
+  - bulletproof-hosting
 ---
 ```
 
@@ -368,8 +374,15 @@ ORDER BY shared_domains DESC;
   - AI-enhanced fraud operations are 4.5x more profitable than traditional methods (Chainalysis via INTERPOL)
   - Bot-based verification circumvention and stolen/fabricated identity automation enabling industrial-scale fraud infrastructure (UNODC)
   - MaaS dominates the infostealer ecosystem — 8 of the top 10 infostealers operate under MaaS model; most rooted in Russia-linked cybercriminal ecosystems (Recorded Future)
+  - **Infostealer MaaS ecosystem dominance (2025):** Infostealers remained the primary infection vector in 2025 with MaaS offerings dominating. LummaC2 was #1, accounting for 35%+ of all detected C2 servers despite international law enforcement action in May 2025. Post-takedown, LummaC2 shifted from Cloudflare concealment to TAE-hosted infrastructure (Virtualine Technologies, Aeza, Proton66) (Recorded Future)
+  - **Rhadamanthys surge:** Rose from ~5% to ~30% market share in 2025 (5th to 2nd place), likely boosted by law enforcement operations targeting competitors in November 2025 (Recorded Future)
+  - **Lumma affiliate proxy infrastructure:** GhostSocks partnership (announced early 2024) enables affiliates to generate SOCKS5 proxies from infected hosts and route activity through victim devices. PIA Proxy emerged as the most frequently used residential proxy service among Lumma affiliates. Other proxy services used: ASocks, FACELESS, HotSocks, NSOCKS, ProxyLine, VN5Socks (Recorded Future)
+  - **CastleLoader as MaaS:** First identified March 2025, attributed to GrayBravo (formerly TAG-150). Functions as initial foothold enabling delivery of infostealers, loaders, and RATs. Multi-tiered C2 infrastructure. Likely operates under MaaS model based on multiple independent deployment clusters. Infections commonly initiated through Cloudflare-themed "ClickFix" attacks and fraudulent GitHub repositories (Recorded Future)
+  - **MintsLoader:** Used by TAG-124 and SocGholish-style delivery chains. Multi-stage infection: phishing → obfuscated JavaScript → PowerShell → sandbox/VM evasion → DGA-based domain → payload delivery (GhostWeaver, StealC, modified BOINC client). Shifted from anonymous VPS to resilient hosting via Stark Industries (AS44477) and Scalaxy (AS58061) (Recorded Future)
   - Phishing-as-a-Service (PhaaS) kits lowering entry barriers with sophisticated tooling — TAG-161 uses $15K/month premium Matanbuchus loader and bespoke phishing email management tools including "Redirect and Email Manager" and "Booking-Mailer V2.2" (Recorded Future)
+  - **Matanbuchus premium variant:** TAG-161 leverages the most advanced Matanbuchus variant at $15,000/month, supporting covert communication techniques designed to evade network monitoring (Recorded Future)
   - CastleLoader operates as MaaS despite no public marketplace advertising — multiple independent deployment clusters suggest private distribution model (Recorded Future)
+  - **Bulletproof hosting for affiliates:** Hosting providers catering to cybercriminal affiliates include AnonRDP (self-described bulletproof, no KYC), Bulletproof Hosting (offshore, cryptocurrency payments, no ID), and Hostcay (IBC registered in Seychelles, operated by Netacel Inc.) (Recorded Future)
   - Bulletproof hosting serves as critical FaaS enabler: CrazyRDP (no KYC, seized by Dutch LE November 2025), BEARHOST ecosystem (Recorded Future)
 - **CFPF Phase Coverage**: P1 through P5 — full lifecycle FaaS ecosystem
 - **Confidence**: High — multi-source from INTERPOL, UNODC, and Recorded Future
@@ -417,6 +430,7 @@ ORDER BY shared_domains DESC;
 - Anthropic, *Threat Intelligence Report: August 2025* — agentic AI capability for autonomous fraud campaign execution
 - UNODC, "Organized Fraud — Issue Paper" (Vienna, 2024) — Chapter III, Crime-as-a-Service; Chapter IV, Enabling Technology
 
+- Recorded Future Insikt Group, *2025 Year in Review: Malicious Infrastructure* (CTA-2026-0319), March 2026 — LummaC2 dominance (35%+ C2 servers), Rhadamanthys surge (~5% to ~30%), GhostSocks/Lumma proxy infrastructure, CastleLoader MaaS (GrayBravo/TAG-150), MintsLoader (TAG-124), Matanbuchus premium variant (TAG-161), bulletproof hosting ecosystem (AnonRDP, Hostcay)
 - "Organized fraud detection in 2026: a technical landscape report" — BEC and AiTM phishing section
 
 ---
@@ -440,3 +454,4 @@ ORDER BY shared_domains DESC;
 | 2026-03-17 | FLAME Project | Initial submission |
 | 2026-03-20 | FLAME Project | Enriched with INTERPOL $442B losses, UNODC bot verification data, Recorded Future MaaS/PhaaS professionalization intelligence, and bulletproof hosting enabler analysis |
 | 2026-03-21 | FLAME Project | Added VexTrio/Ad Trafficko blank CC subscription FaaS evidence (Black Hat USA 2025, Infoblox deanonymization); added fake mobile app FaaS evidence (self-referential scam cycle); added related TP-0057; added 8 new tags |
+| 2026-05-09 | FLAME Project | Enriched with Recorded Future CTA-2026-0319 intelligence: LummaC2 dominance and post-takedown infrastructure shift, Rhadamanthys market share surge, GhostSocks/Lumma affiliate proxy infrastructure, CastleLoader MaaS attribution to GrayBravo, MintsLoader multi-stage infection chain, Matanbuchus premium variant, bulletproof hosting ecosystem (AnonRDP, Hostcay) |

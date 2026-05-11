@@ -114,6 +114,9 @@ tags:
   - bybit-theft
   - crowdstrike-gtr-2026
   - fatf-stablecoin-2026
+  - golangghost
+  - pylangghost
+  - blnwx
 ---
 ```
 
@@ -310,8 +313,9 @@ The World Cybercrime Index (Bruce et al., PLoS ONE 2024) provides independent ac
 - Freelance platform accounts (Upwork, Fiverr, Toptal) — procured or fraudulently created
 - BeaverTail — infostealer/initial access malware used by PurpleBravo in developer-lure campaigns (Recorded Future CTA-2026-0319)
 - InvisibleFerret — RAT with dual HTTP+TCP C2 channels; persistent connection for interactive tasking (Recorded Future)
-- GolangGhost / PylangGhost — Go and Python-based backdoors with RC4-encrypted C2 communications (Recorded Future)
+- GolangGhost / PylangGhost — Go and Python-based backdoors with RC4-encrypted C2 communications; part of expanded C2 protocol repertoire enabling scalable phishing and credential harvesting operations (Recorded Future)
 - OtterCookie / HexEval — additional malware families in the PurpleBravo toolkit (Recorded Future)
+- BLNWX (AS399629) — hosting provider used by DPRK actors, consistent with broader TAE utilization patterns (Recorded Future CTA-2026-0319)
 
 ### Intelligence Sources
 
@@ -324,7 +328,7 @@ The World Cybercrime Index (Bruce et al., PLoS ONE 2024) provides independent ac
 - Palo Alto Unit 42 — "Global Companies Are Unknowingly Paying North Koreans" (2025)
 - SentinelOne — "DPRK IT Workers: A Network of Active Front Companies" (2025)
 - Flare / IBM X-Force — "Inside the North Korean Infiltrator Threat" (March 2026): Joint research documenting internal DPRK management platforms (RB Site, NetkeyRegister), Western collaborator recruitment via LinkedIn/GitHub, AI face/voice changers for interviews, OConnect/NetKey VPN, and multi-entity operational structure spanning 100,000+ operatives in 40+ countries generating $500M/year
-- Recorded Future CTA-2026-0319 — "2025 Year in Review: Malicious Infrastructure" (March 2026): Documents PurpleBravo/PurpleDelta infrastructure overlap confirming connection between DPRK developer-lure campaigns and IT worker operations; identifies BeaverTail, InvisibleFerret, GolangGhost, PylangGhost, and HexEval malware families; 759 PurpleAlpha credential harvesting domains in 2025; hosting infrastructure on Evoxt Enterprise (AS149440) with Astrill VPN for administration
+- Recorded Future CTA-2026-0319 — "2025 Year in Review: Malicious Infrastructure" (March 2026): Documents PurpleBravo/PurpleDelta infrastructure overlap confirming connection between DPRK developer-lure campaigns and IT worker operations; identifies BeaverTail, InvisibleFerret, GolangGhost, PylangGhost, and HexEval malware families; 759 PurpleAlpha credential harvesting domains in 2025; hosting infrastructure on Evoxt Enterprise (AS149440) and BLNWX (AS399629) with Astrill VPN for administration; expanded C2 protocols enabling scalable credential harvesting; BeaverTail ranked top-3 by victim count in Jamaica, Canada, and New Zealand; high-volume automated credential harvesting via standardized C2 infrastructure
 
 ---
 
@@ -503,9 +507,13 @@ tags:
   - Infrastructure overlap confirmed between PurpleBravo (DPRK developer-lure campaigns / Contagious Interview) and PurpleDelta (DPRK IT workers), establishing a direct connection between the two operational programs
   - Malware families deployed: BeaverTail (infostealer/initial access), InvisibleFerret (RAT with dual HTTP+TCP C2), OtterCookie, GolangGhost (Go-based), PylangGhost (Python-based), HexEval (first-stage loader)
   - PurpleAlpha (credential harvesting): 759 domains and 54 servers identified in 2025; heavy use of free DDNS services (mydomain.korea, MyDNS.jp, FreeDNS)
-  - Hosting infrastructure: Evoxt Enterprise (AS149440), Interserver (AS19318), Kaopu Cloud HK Limited (AS138915), Veesp (AS42532), Vultr (AS20473)
+  - Hosting infrastructure: Evoxt Enterprise (AS149440), Interserver (AS19318), Kaopu Cloud HK Limited (AS138915), Veesp (AS42532), Vultr (AS20473), BLNWX (AS399629)
   - Administration: Astrill VPN exit nodes for remote access; Namecheap for domain registration; Sectigo certificates
   - Candidates taking malicious coding challenges on corporate devices, compromising their employers — many in IT services and IT staff augmentation
+  - **Expanded C2 protocols (2025):** DPRK-linked threat actors expanded their IT software supply chain operations with new C2 protocols including GolangGhost (Go-based) and PylangGhost (Python-based), alongside the established InvisibleFerret cross-platform JavaScript implant. These standardized C2 implementations enable scalable phishing and credential harvesting operations
+  - **BeaverTail geographic prevalence:** BeaverTail (DPRK JavaScript-based infostealer) ranked among the top-3 malware families by victim count in Jamaica, Canada, and New Zealand in 2025, demonstrating the geographic reach of DPRK IT worker fraud campaigns beyond traditional targets
+  - **High-volume credential harvesting:** DPRK-linked groups conducted high-volume credential harvesting campaigns throughout 2025 using standardized C2 infrastructure, reflecting a shift toward more automated and scalable approaches compared to earlier individually-targeted operations
+  - **Infrastructure patterns:** DPRK actors used BLNWX (AS399629) for hosting, consistent with broader TAE utilization patterns. InvisibleFerret communicates over custom binary protocols; BeaverTail variants target both desktop and mobile platforms for credential and cryptocurrency wallet theft
 - **CFPF Phase Coverage**: P1 (infrastructure provisioning), P2 (malware delivery via developer lures), P3-P4 (credential access, data exfiltration via InvisibleFerret)
 - **Confidence**: Very High
 
@@ -580,7 +588,7 @@ tags:
 
 - **Flare / IBM X-Force — Inside the North Korean Infiltrator Threat** (March 2026): Joint research documenting internal DPRK management platforms (RB Site, NetkeyRegister), Western collaborator recruitment, AI face/voice changers, 100,000+ operatives in 40+ countries, $500M/year program revenue.
 
-- **Recorded Future CTA-2026-0319 — 2025 Year in Review: Malicious Infrastructure** (March 2026): Documents PurpleBravo/PurpleDelta infrastructure overlap, DPRK malware families (BeaverTail, InvisibleFerret, GolangGhost, PylangGhost, HexEval), 759 credential harvesting domains, hosting on Evoxt/Kaopu Cloud/Veesp. [Link](https://www.recordedfuture.com/)
+- **Recorded Future CTA-2026-0319 — 2025 Year in Review: Malicious Infrastructure** (March 2026): Documents PurpleBravo/PurpleDelta infrastructure overlap, DPRK malware families (BeaverTail, InvisibleFerret, GolangGhost, PylangGhost, HexEval), 759 credential harvesting domains, hosting on Evoxt/Kaopu Cloud/Veesp/BLNWX (AS399629). Expanded C2 protocols (GolangGhost, PylangGhost) enabling scalable credential harvesting. BeaverTail ranked top-3 by victim count in Jamaica, Canada, and New Zealand. High-volume automated credential harvesting campaigns via standardized C2 infrastructure. [Link](https://www.recordedfuture.com/)
 
 - **CrowdStrike 2026 Global Threat Report** (2026): Documents FAMOUS CHOLLIMA activity doubling in 2025, GenAI-driven persona fabrication (+109% increase), STARDUST CHOLLIMA operational tempo increase, PRESSURE CHOLLIMA $1.46B Bybit theft via Safe{Wallet} supply chain compromise, and 30+ malicious npm packages in BeaverTail campaigns. [Link](https://www.crowdstrike.com/global-threat-report/)
 
@@ -597,3 +605,4 @@ tags:
 | 2026-03-03 | FLAME Project | Initial submission |
 | 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — DPRK IT worker formally tracked by IC3, data extortion escalation confirmed, PSA250123/PSA250723 |
 | 2026-03-20 | FLAME Project | Major enrichment: Added Flare/IBM X-Force intelligence (RB Site, NetkeyRegister internal platforms; Western collaborator recruitment; AI face/voice changers; 100K+ operatives, $500M/year scale); Added Recorded Future CTA-2026-0319 intelligence (PurpleBravo/PurpleDelta infrastructure overlap; BeaverTail, InvisibleFerret, GolangGhost malware families; 759 credential harvesting domains; hosting infrastructure patterns). New techniques CFPF-P1-005, CFPF-P1-006 added. New evidence blocks EV-TP0034-2026-003, EV-TP0034-2026-004. |
+| 2026-05-09 | FLAME Project | Enriched EV-TP0034-2026-004 with Recorded Future CTA-2026-0319 intelligence: expanded C2 protocols (GolangGhost, PylangGhost) for scalable credential harvesting; BeaverTail top-3 prevalence in Jamaica, Canada, New Zealand; high-volume automated credential harvesting campaigns; BLNWX (AS399629) hosting infrastructure; InvisibleFerret custom binary protocols; BeaverTail desktop+mobile targeting |
