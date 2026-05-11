@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "identity-synthetic"
+primary_phase: "P2"
+short_name: "Business ID Theft"
 mitre_attack:
   - T1566  # Phishing
   - T1589  # Gather Victim Identity Information

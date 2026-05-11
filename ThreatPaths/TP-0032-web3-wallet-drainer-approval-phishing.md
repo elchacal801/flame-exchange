@@ -22,6 +22,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "crypto-laundering"
+primary_phase: "P4"
+short_name: "Wallet Drainer"
 mitre_attack:
   - T1566.002  # Phishing: Spearphishing Link
   - T1583.001  # Acquire Infrastructure: Domains

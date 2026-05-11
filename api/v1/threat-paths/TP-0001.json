@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.247538+00:00",
+    "generated_at": "2026-05-11T19:02:29.035149+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P3",
+    "short_name": "Treasury ATO",
     "sectors": [
       "banking"
     ],
@@ -115,41 +118,6 @@
     },
     "baseline_ids": [
       "BL-0012"
-    ],
-    "detection_rule_ids": [
-      "DL-0001",
-      "DL-0002",
-      "DL-0003",
-      "DL-0004",
-      "DL-0005",
-      "DL-0006",
-      "DL-0007",
-      "DL-0008",
-      "DL-0009",
-      "DL-0010",
-      "DL-0012",
-      "DL-0014",
-      "DL-0015",
-      "DL-0016",
-      "DL-0018",
-      "DL-0019",
-      "DL-0020",
-      "DL-0021",
-      "DL-0022",
-      "DL-0023",
-      "DL-0026",
-      "DL-0027",
-      "DL-0030",
-      "DL-0031",
-      "DL-0034",
-      "DL-0036",
-      "DL-0037",
-      "DL-0042",
-      "DL-0044",
-      "DL-0045",
-      "DL-0046",
-      "DL-0048",
-      "DL-0049"
     ],
     "related_tps": [
       {

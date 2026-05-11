@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "payment-wire"
+primary_phase: "P4"
+short_name: "A2A Payment Fraud"
 mitre_attack:
   - T1566.001  # Phishing: Spearphishing Attachment
   - T1566.002  # Phishing: Spearphishing Link

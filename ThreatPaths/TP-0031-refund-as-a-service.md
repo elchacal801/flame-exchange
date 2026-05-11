@@ -20,6 +20,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "retail-ecommerce"
+primary_phase: "P4"
+short_name: "Refund-as-a-Service"
 mitre_attack:
   - T1589.002  # Gather Victim Identity Information: Email Addresses
   - T1585.001  # Establish Accounts: Social Media Accounts

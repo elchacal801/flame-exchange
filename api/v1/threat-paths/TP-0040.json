@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.471958+00:00",
+    "generated_at": "2026-05-11T19:02:29.107217+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P3",
+    "short_name": "BNPL Stacking",
     "sectors": [
       "retail",
       "payments",
@@ -105,13 +108,6 @@
     },
     "baseline_ids": [
       "BL-0020"
-    ],
-    "detection_rule_ids": [
-      "DL-0087",
-      "DL-0088",
-      "DL-0089",
-      "DL-0090",
-      "DL-0091"
     ],
     "related_tps": [
       {

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.339026+00:00",
+    "generated_at": "2026-05-11T19:02:29.061417+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P4",
+    "short_name": "First-Party Bust-Out",
     "sectors": [
       "banking",
       "credit-union"
@@ -84,12 +87,6 @@
     },
     "baseline_ids": [
       "BL-0032"
-    ],
-    "detection_rule_ids": [
-      "DL-0151",
-      "DL-0155",
-      "DL-0156",
-      "DL-0157"
     ],
     "related_tps": [
       {

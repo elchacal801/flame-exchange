@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:41.742594+00:00",
+    "generated_at": "2026-05-11T19:02:29.245396+00:00",
     "total": 1
   },
   "data": {
@@ -25,6 +25,32 @@
       "ai-assisted",
       "tds-routing"
     ],
+    "fraud_families": [
+      "account-takeover",
+      "payment-wire",
+      "social-engineering",
+      "identity-synthetic",
+      "investment-romance",
+      "insurance-healthcare",
+      "crypto-laundering",
+      "fraud-infrastructure",
+      "retail-ecommerce",
+      "state-geopolitical",
+      "telecom-specialized"
+    ],
+    "fraud_family_labels": {
+      "account-takeover": "Account Takeover & Credential Theft",
+      "payment-wire": "Payment & Wire Fraud",
+      "social-engineering": "Social Engineering & APP",
+      "identity-synthetic": "Identity & Synthetic Fraud",
+      "investment-romance": "Investment & Romance Scams",
+      "insurance-healthcare": "Insurance & Healthcare Fraud",
+      "crypto-laundering": "Crypto & Laundering",
+      "fraud-infrastructure": "Fraud Infrastructure & FaaS",
+      "retail-ecommerce": "Retail & E-Commerce Fraud",
+      "state-geopolitical": "State-Linked & Geopolitical",
+      "telecom-specialized": "Telecom & Specialized Fraud"
+    },
     "sectors": [
       "banking",
       "credit-union",

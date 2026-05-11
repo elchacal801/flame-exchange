@@ -23,6 +23,9 @@ cfpf_phases:
   - P1
   - P2
   - P3
+fraud_family: "fraud-infrastructure"
+primary_phase: "P1"
+short_name: "TAE BPH Infra"
 confidence_score: 72
 source_reliability: B
 info_credibility: 2

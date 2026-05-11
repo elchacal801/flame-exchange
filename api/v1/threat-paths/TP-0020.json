@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.360117+00:00",
+    "generated_at": "2026-05-11T19:02:29.069773+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "Supply Chain Wire",
     "sectors": [
       "banking",
       "cross-sector"
@@ -104,12 +107,6 @@
     "baseline_ids": [
       "BL-0002",
       "BL-0012"
-    ],
-    "detection_rule_ids": [
-      "DL-0028",
-      "DL-0029",
-      "DL-0032",
-      "DL-0035"
     ],
     "related_tps": [
       {

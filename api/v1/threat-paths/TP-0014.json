@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.328893+00:00",
+    "generated_at": "2026-05-11T19:02:29.058016+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P3",
+    "short_name": "Insider Fraud",
     "sectors": [
       "banking",
       "credit-union",
@@ -111,9 +114,6 @@
       "improve": "Level 3"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0164"
-    ],
     "related_tps": [
       {
         "id": "TP-0001",

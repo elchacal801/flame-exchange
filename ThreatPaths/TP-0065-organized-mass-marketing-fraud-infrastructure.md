@@ -29,6 +29,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "fraud-infrastructure"
+primary_phase: "P1"
+short_name: "Boiler Room Infra"
 confidence_score: 78
 source_reliability: B
 info_credibility: 2

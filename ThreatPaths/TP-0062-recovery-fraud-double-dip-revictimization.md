@@ -25,6 +25,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "social-engineering"
+primary_phase: "P3"
+short_name: "Recovery Fraud"
 confidence_score: 72
 source_reliability: B
 info_credibility: 2

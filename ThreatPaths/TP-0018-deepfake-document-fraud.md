@@ -22,6 +22,9 @@ cfpf_phases:
   - P1
   - P2
   - P3
+fraud_family: "identity-synthetic"
+primary_phase: "P2"
+short_name: "Deepfake Docs"
 mitre_attack:
   - T1583  # Acquire Infrastructure
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FT052.002", "FT026.001", "FT020", "FT049", "FT005.001", "FT016.001", "FT010", "FT011.002", "FT018", "FT006"]

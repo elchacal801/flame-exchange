@@ -24,6 +24,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "social-engineering"
+primary_phase: "P4"
+short_name: "Gold Courier Scam"
 confidence_score: 78
 source_reliability: A
 info_credibility: 2

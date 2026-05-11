@@ -52,6 +52,7 @@ try:
         VALID_INFRA_GEN_METHODS = set(_tax.get("infrastructure_generation_method", []))
         VALID_GEO_TIMING = set(_tax.get("geopolitical_timing", []))
         VALID_NATION_STATE_NEXUS = set(_tax.get("nation_state_nexus", []))
+        VALID_FRAUD_FAMILIES = set(_tax.get("fraud_families", []))
 except Exception as _e:
     print(f"WARNING: Failed to load taxonomy from {TAXONOMY_FILE}: {_e}", file=sys.stderr)
     VALID_SECTORS = set()
@@ -59,6 +60,7 @@ except Exception as _e:
     VALID_INFRA_GEN_METHODS = set()
     VALID_GEO_TIMING = set()
     VALID_NATION_STATE_NEXUS = set()
+    VALID_FRAUD_FAMILIES = set()
 
 # Load regulatory requirements config for validation
 REGULATORY_CONFIG_FILE = Path(__file__).resolve().parent.parent / "config" / "regulatory_requirements.yaml"
@@ -522,6 +524,42 @@ def validate_file(filepath: Path) -> ValidationResult:
             result.error(
                 f"Invalid nation_state_nexus '{ns_nexus}'. "
                 f"Must be one of: {', '.join(sorted(VALID_NATION_STATE_NEXUS))}"
+            )
+
+    # Fraud family (required for ThreatPath)
+    fraud_family = meta.get("fraud_family")
+    if category == "ThreatPath":
+        if fraud_family is None:
+            result.error("Missing required field: fraud_family")
+        elif fraud_family not in VALID_FRAUD_FAMILIES:
+            result.error(
+                f"Invalid fraud_family '{fraud_family}'. "
+                f"Must be one of: {', '.join(sorted(VALID_FRAUD_FAMILIES))}"
+            )
+
+    # Primary phase (required for ThreatPath)
+    primary_phase = meta.get("primary_phase")
+    if category == "ThreatPath":
+        if primary_phase is None:
+            result.error("Missing required field: primary_phase")
+        elif str(primary_phase) not in VALID_CFPF_PHASES:
+            result.error(
+                f"Invalid primary_phase '{primary_phase}'. "
+                f"Must be one of: {', '.join(sorted(VALID_CFPF_PHASES))}"
+            )
+        elif phases and isinstance(phases, list) and str(primary_phase) not in [str(p) for p in phases]:
+            result.warn(
+                f"primary_phase '{primary_phase}' is not listed in cfpf_phases {phases}"
+            )
+
+    # Short name (required for ThreatPath)
+    short_name = meta.get("short_name")
+    if category == "ThreatPath":
+        if short_name is None:
+            result.error("Missing required field: short_name")
+        elif not isinstance(short_name, str) or len(short_name) < 2 or len(short_name) > 30:
+            result.error(
+                f"short_name must be a string of 2-30 characters, got '{short_name}'"
             )
 
     # MITRE ATT&CK format validation

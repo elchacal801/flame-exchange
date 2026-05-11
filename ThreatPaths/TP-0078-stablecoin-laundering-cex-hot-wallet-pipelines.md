@@ -24,6 +24,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "crypto-laundering"
+primary_phase: "P5"
+short_name: "Stablecoin CEX Launder"
 confidence_score: 82
 source_reliability: B
 info_credibility: 2

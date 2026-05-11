@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.323277+00:00",
+    "generated_at": "2026-05-11T19:02:29.056321+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P2",
+    "short_name": "Cred Stuff Loyalty",
     "sectors": [
       "banking",
       "cross-sector",
@@ -109,19 +112,6 @@
     "baseline_ids": [
       "BL-0009",
       "BL-0035"
-    ],
-    "detection_rule_ids": [
-      "DL-0012",
-      "DL-0013",
-      "DL-0015",
-      "DL-0016",
-      "DL-0017",
-      "DL-0018",
-      "DL-0062",
-      "DL-0063",
-      "DL-0064",
-      "DL-0066",
-      "DL-0067"
     ],
     "related_tps": [
       {

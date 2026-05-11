@@ -25,6 +25,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "account-takeover"
+primary_phase: "P4"
+short_name: "NFC Relay Fraud"
 mitre_attack:
   - T1111      # Multi-Factor Authentication Interception
   - T1656      # Impersonation

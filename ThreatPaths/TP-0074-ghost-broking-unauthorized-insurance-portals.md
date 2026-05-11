@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "insurance-healthcare"
+primary_phase: "P3"
+short_name: "Ghost Broking"
 confidence_score: 82
 source_reliability: A
 info_credibility: 2

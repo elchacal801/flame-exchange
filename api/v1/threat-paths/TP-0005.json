@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.271635+00:00",
+    "generated_at": "2026-05-11T19:02:29.042499+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "insurance-healthcare",
+    "primary_phase": "P3",
+    "short_name": "Premium Diversion",
     "sectors": [
       "insurance"
     ],
@@ -106,13 +109,6 @@
       "improve": "Level 2"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0020",
-      "DL-0021",
-      "DL-0023",
-      "DL-0025",
-      "DL-0026"
-    ],
     "related_tps": [
       {
         "id": "TP-0008",

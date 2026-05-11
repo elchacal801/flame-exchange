@@ -27,6 +27,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "investment-romance"
+primary_phase: "P3"
+short_name: "Sextortion Hybrid"
 confidence_score: 78
 source_reliability: B
 info_credibility: 2

@@ -27,6 +27,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "identity-synthetic"
+primary_phase: "P3"
+short_name: "Long-Firm Fraud"
 confidence_score: 70
 source_reliability: B
 info_credibility: 2

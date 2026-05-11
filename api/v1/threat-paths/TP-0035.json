@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.442430+00:00",
+    "generated_at": "2026-05-11T19:02:29.097941+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P2",
+    "short_name": "Magecart Skimmer",
     "sectors": [
       "retail",
       "payments",
@@ -107,12 +110,6 @@
     },
     "baseline_ids": [
       "BL-0015"
-    ],
-    "detection_rule_ids": [
-      "DL-0075",
-      "DL-0076",
-      "DL-0077",
-      "DL-0177"
     ],
     "related_tps": [
       {

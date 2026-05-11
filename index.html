@@ -234,10 +234,39 @@
         <!-- Content Area -->
         <div class="content-area" id="content-area">
 
-            <!-- Browse View (card grid) -->
+            <!-- Browse View (card grid + matrix) -->
             <div class="browse-view" id="browse-view">
-                <div class="results-bar" id="results-bar">Loading...</div>
-                <div class="card-grid" id="card-grid"></div>
+                <div class="browse-toolbar">
+                    <div class="results-bar" id="results-bar">Loading...</div>
+                    <div class="view-toggle" id="view-toggle">
+                        <button class="view-toggle-btn active" id="view-matrix-btn" data-view="matrix" title="Matrix view">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+                            </svg>
+                            Matrix
+                        </button>
+                        <button class="view-toggle-btn" id="view-grid-btn" data-view="grid" title="Card grid view">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+                                <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+                            </svg>
+                            Grid
+                        </button>
+                    </div>
+                </div>
+                <!-- Matrix View -->
+                <div class="matrix-view" id="matrix-view">
+                    <div class="matrix-sector-tabs" id="matrix-sector-tabs"></div>
+                    <div class="matrix-scroll">
+                        <table class="matrix-table" id="matrix-table">
+                            <thead id="matrix-thead"></thead>
+                            <tbody id="matrix-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Card Grid View -->
+                <div class="card-grid" id="card-grid" style="display:none;"></div>
             </div>
 
             <!-- Detail View -->

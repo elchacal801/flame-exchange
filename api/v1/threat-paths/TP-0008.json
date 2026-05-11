@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.290534+00:00",
+    "generated_at": "2026-05-11T19:02:29.047885+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "account-takeover",
+    "primary_phase": "P2",
+    "short_name": "SIM Swap ATO",
     "sectors": [
       "crypto",
       "fintech",
@@ -114,23 +117,6 @@
       "improve": "Level 3"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0003",
-      "DL-0006",
-      "DL-0008",
-      "DL-0009",
-      "DL-0011",
-      "DL-0013",
-      "DL-0014",
-      "DL-0017",
-      "DL-0044",
-      "DL-0045",
-      "DL-0046",
-      "DL-0047",
-      "DL-0048",
-      "DL-0049",
-      "DL-0141"
-    ],
     "related_tps": [
       {
         "id": "TP-0001",

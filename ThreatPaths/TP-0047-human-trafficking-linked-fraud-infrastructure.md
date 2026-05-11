@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "state-geopolitical"
+primary_phase: "P1"
+short_name: "Trafficking Infra"
 confidence_score: 80
 source_reliability: A
 info_credibility: 2

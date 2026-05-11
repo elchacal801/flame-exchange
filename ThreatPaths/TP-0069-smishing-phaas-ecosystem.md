@@ -29,6 +29,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "fraud-infrastructure"
+primary_phase: "P2"
+short_name: "Smishing PhaaS"
 confidence_score: 80
 source_reliability: A
 info_credibility: 2

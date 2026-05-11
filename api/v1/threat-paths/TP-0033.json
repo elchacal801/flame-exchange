@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.431285+00:00",
+    "generated_at": "2026-05-11T19:02:29.093564+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P3",
+    "short_name": "Ghost Student Aid",
     "sectors": [
       "education",
       "government"
@@ -98,9 +101,6 @@
     },
     "baseline_ids": [
       "BL-0011"
-    ],
-    "detection_rule_ids": [
-      "DL-0169"
     ],
     "related_tps": [
       {

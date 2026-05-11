@@ -22,6 +22,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "identity-synthetic"
+primary_phase: "P3"
+short_name: "Ghost Student Aid"
 mitre_attack:
   - T1585.001  # Establish Accounts: Social Media Accounts
   - T1136.001  # Create Account: Local Account

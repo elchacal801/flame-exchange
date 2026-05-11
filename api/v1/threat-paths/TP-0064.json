@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.613970+00:00",
+    "generated_at": "2026-05-11T19:02:29.155225+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P3",
+    "short_name": "Long-Firm Fraud",
     "sectors": [
       "banking",
       "cross-sector",
@@ -96,9 +99,6 @@
     },
     "baseline_ids": [
       "BL-0032"
-    ],
-    "detection_rule_ids": [
-      "DL-0135"
     ],
     "related_tps": [
       {

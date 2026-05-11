@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.687411+00:00",
+    "generated_at": "2026-05-11T19:02:29.181485+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Stablecoin CEX Launder",
     "sectors": [
       "crypto",
       "banking",
@@ -98,14 +101,6 @@
       "improve": "Level 3"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0040",
-      "DL-0174",
-      "DL-0196",
-      "DL-0197",
-      "DL-0198",
-      "DL-0203"
-    ],
     "related_tps": [
       {
         "id": "TP-0045",

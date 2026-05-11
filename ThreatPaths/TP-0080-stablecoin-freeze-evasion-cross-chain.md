@@ -25,6 +25,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "crypto-laundering"
+primary_phase: "P5"
+short_name: "Freeze Evasion"
 confidence_score: 85
 source_reliability: A
 info_credibility: 2

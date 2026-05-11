@@ -20,6 +20,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "identity-synthetic"
+primary_phase: "P4"
+short_name: "First-Party Bust-Out"
 mitre_attack: []
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT023", "FT035", "FT022", "FT036", "FT032", "FT011", "FT016", "FT012", "FT015", "FT017"]
 mitre_f3: ["F1024", "F1015", "F1043"]

@@ -16,6 +16,9 @@ fraud_types:
   - disability-fraud
   - provider-fraud
 cfpf_phases: [P1, P2, P3, P4, P5]
+fraud_family: "insurance-healthcare"
+primary_phase: "P4"
+short_name: "Disability Fraud"
 mitre_attack: []
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT026.001", "FT052", "FT051.002", "FT053.001", "FT006", "FT010", "FT016", "FT024", "FT025", "FT028"]                  # Stripe FT3 (when mapped)
 mitre_f3: []

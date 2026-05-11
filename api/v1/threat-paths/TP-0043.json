@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.489754+00:00",
+    "generated_at": "2026-05-11T19:02:29.113974+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "ai-assisted",
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "AI Infra Gen",
     "sectors": [
       "cross-sector",
       "banking",
@@ -95,12 +98,6 @@
     "baseline_ids": [
       "BL-0023",
       "BL-0033"
-    ],
-    "detection_rule_ids": [
-      "DL-0098",
-      "DL-0099",
-      "DL-0100",
-      "DL-0139"
     ],
     "related_tps": [
       {

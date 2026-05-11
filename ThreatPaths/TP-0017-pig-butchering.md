@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "investment-romance"
+primary_phase: "P3"
+short_name: "Pig Butchering"
 mitre_attack:
   - T1566.002 # Phishing: Spearphishing Link (often via messaging apps)
   - T1656     # Impersonation

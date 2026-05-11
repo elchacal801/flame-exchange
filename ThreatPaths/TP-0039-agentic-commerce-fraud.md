@@ -29,6 +29,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "retail-ecommerce"
+primary_phase: "P4"
+short_name: "Agentic Commerce"
 mitre_attack:
   - T1059       # Command and Scripting Interpreter
   - T1078       # Valid Accounts

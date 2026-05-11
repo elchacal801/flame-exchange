@@ -27,6 +27,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "account-takeover"
+primary_phase: "P2"
+short_name: "AiTM Phishing Kit"
 confidence_score: 82
 source_reliability: A
 info_credibility: 2

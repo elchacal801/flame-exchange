@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.720018+00:00",
+    "generated_at": "2026-05-11T19:02:29.192850+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "social-engineering",
+    "primary_phase": "P4",
+    "short_name": "Gov Impersonation APP",
     "sectors": [
       "banking",
       "cross-sector",
@@ -85,10 +88,6 @@
       "improve": "Level 2"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0216",
-      "DL-0219"
-    ],
     "related_tps": [
       {
         "id": "TP-0012",

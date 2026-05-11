@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.223257+00:00",
-    "total": 86
+    "generated_at": "2026-05-11T19:02:29.025275+00:00",
+    "total": 89
   },
   "data": [
     {
@@ -20,6 +20,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "account-takeover",
+      "primary_phase": "P3",
+      "short_name": "Treasury ATO",
       "sectors": [
         "banking"
       ],
@@ -116,41 +119,6 @@
       "baseline_ids": [
         "BL-0012"
       ],
-      "detection_rule_ids": [
-        "DL-0001",
-        "DL-0002",
-        "DL-0003",
-        "DL-0004",
-        "DL-0005",
-        "DL-0006",
-        "DL-0007",
-        "DL-0008",
-        "DL-0009",
-        "DL-0010",
-        "DL-0012",
-        "DL-0014",
-        "DL-0015",
-        "DL-0016",
-        "DL-0018",
-        "DL-0019",
-        "DL-0020",
-        "DL-0021",
-        "DL-0022",
-        "DL-0023",
-        "DL-0026",
-        "DL-0027",
-        "DL-0030",
-        "DL-0031",
-        "DL-0034",
-        "DL-0036",
-        "DL-0037",
-        "DL-0042",
-        "DL-0044",
-        "DL-0045",
-        "DL-0046",
-        "DL-0048",
-        "DL-0049"
-      ],
       "related_tps": [
         {
           "id": "TP-0007",
@@ -186,6 +154,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "payment-wire",
+      "primary_phase": "P4",
+      "short_name": "BEC Wire",
       "sectors": [
         "banking",
         "cross-sector"
@@ -276,21 +247,6 @@
       "baseline_ids": [
         "BL-0012"
       ],
-      "detection_rule_ids": [
-        "DL-0001",
-        "DL-0028",
-        "DL-0029",
-        "DL-0031",
-        "DL-0033",
-        "DL-0034",
-        "DL-0039",
-        "DL-0040",
-        "DL-0041",
-        "DL-0043",
-        "DL-0137",
-        "DL-0138",
-        "DL-0217"
-      ],
       "related_tps": [
         {
           "id": "TP-0007",
@@ -322,6 +278,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P3",
+      "short_name": "Synth ID Bust-Out",
       "sectors": [
         "banking",
         "fintech"
@@ -398,16 +357,6 @@
         "BL-0007",
         "BL-0032"
       ],
-      "detection_rule_ids": [
-        "DL-0151",
-        "DL-0152",
-        "DL-0153",
-        "DL-0154",
-        "DL-0157",
-        "DL-0158",
-        "DL-0160",
-        "DL-0184"
-      ],
       "related_tps": [
         {
           "id": "TP-0009",
@@ -443,6 +392,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "payment-wire",
+      "primary_phase": "P4",
+      "short_name": "Payroll Diversion",
       "sectors": [
         "cross-sector"
       ],
@@ -532,12 +484,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0019",
-        "DL-0022",
-        "DL-0024",
-        "DL-0025"
-      ],
       "related_tps": [
         {
           "id": "TP-0014",
@@ -565,6 +511,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "insurance-healthcare",
+      "primary_phase": "P3",
+      "short_name": "Premium Diversion",
       "sectors": [
         "insurance"
       ],
@@ -651,13 +600,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0020",
-        "DL-0021",
-        "DL-0023",
-        "DL-0025",
-        "DL-0026"
-      ],
       "related_tps": [
         {
           "id": "TP-0008",
@@ -685,6 +627,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "payment-wire",
+      "primary_phase": "P4",
+      "short_name": "Real Estate Wire",
       "sectors": [
         "banking",
         "cross-sector"
@@ -776,21 +721,6 @@
       "baseline_ids": [
         "BL-0012"
       ],
-      "detection_rule_ids": [
-        "DL-0019",
-        "DL-0021",
-        "DL-0024",
-        "DL-0025",
-        "DL-0027",
-        "DL-0029",
-        "DL-0030",
-        "DL-0031",
-        "DL-0032",
-        "DL-0033",
-        "DL-0035",
-        "DL-0036",
-        "DL-0186"
-      ],
       "related_tps": [
         {
           "id": "TP-0002",
@@ -822,6 +752,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "payment-wire",
+      "primary_phase": "P4",
+      "short_name": "Deepfake Voice Wire",
       "sectors": [
         "banking",
         "cross-sector"
@@ -920,12 +853,6 @@
       "baseline_ids": [
         "BL-0012"
       ],
-      "detection_rule_ids": [
-        "DL-0050",
-        "DL-0051",
-        "DL-0052",
-        "DL-0217"
-      ],
       "related_tps": [
         {
           "id": "TP-0001",
@@ -969,6 +896,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "account-takeover",
+      "primary_phase": "P2",
+      "short_name": "SIM Swap ATO",
       "sectors": [
         "crypto",
         "fintech",
@@ -1063,23 +993,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0003",
-        "DL-0006",
-        "DL-0008",
-        "DL-0009",
-        "DL-0011",
-        "DL-0013",
-        "DL-0014",
-        "DL-0017",
-        "DL-0044",
-        "DL-0045",
-        "DL-0046",
-        "DL-0047",
-        "DL-0048",
-        "DL-0049",
-        "DL-0141"
-      ],
       "related_tps": [
         {
           "id": "TP-0001",
@@ -1115,6 +1028,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "payment-wire",
+      "primary_phase": "P4",
+      "short_name": "Check Washing",
       "sectors": [
         "banking",
         "credit-union"
@@ -1186,9 +1102,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0162"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -1216,6 +1129,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "insurance-healthcare",
+      "primary_phase": "P4",
+      "short_name": "Disability Fraud",
       "sectors": [
         "insurance"
       ],
@@ -1280,9 +1196,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0163"
-      ],
       "related_tps": [
         {
           "id": "TP-0021",
@@ -1306,6 +1219,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "investment-romance",
+      "primary_phase": "P3",
+      "short_name": "Romance Mule Pipeline",
       "sectors": [
         "cross-sector"
       ],
@@ -1398,16 +1314,6 @@
         "BL-0003",
         "BL-0031"
       ],
-      "detection_rule_ids": [
-        "DL-0001",
-        "DL-0037",
-        "DL-0038",
-        "DL-0039",
-        "DL-0041",
-        "DL-0042",
-        "DL-0043",
-        "DL-0140"
-      ],
       "related_tps": [
         {
           "id": "TP-0001",
@@ -1447,6 +1353,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "social-engineering",
+      "primary_phase": "P4",
+      "short_name": "APP Tech Support",
       "sectors": [
         "banking",
         "credit-union"
@@ -1540,13 +1449,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0055",
-        "DL-0056",
-        "DL-0057",
-        "DL-0058",
-        "DL-0060"
-      ],
       "related_tps": [
         {
           "id": "TP-0007",
@@ -1578,6 +1480,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "account-takeover",
+      "primary_phase": "P2",
+      "short_name": "Cred Stuff Loyalty",
       "sectors": [
         "banking",
         "cross-sector",
@@ -1668,19 +1573,6 @@
         "BL-0009",
         "BL-0035"
       ],
-      "detection_rule_ids": [
-        "DL-0012",
-        "DL-0013",
-        "DL-0015",
-        "DL-0016",
-        "DL-0017",
-        "DL-0018",
-        "DL-0062",
-        "DL-0063",
-        "DL-0064",
-        "DL-0066",
-        "DL-0067"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -1708,6 +1600,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "account-takeover",
+      "primary_phase": "P3",
+      "short_name": "Insider Fraud",
       "sectors": [
         "banking",
         "credit-union",
@@ -1799,9 +1694,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0164"
-      ],
       "related_tps": [
         {
           "id": "TP-0001",
@@ -1837,6 +1729,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "social-engineering",
+      "primary_phase": "P3",
+      "short_name": "Employment Fraud",
       "sectors": [
         "healthcare",
         "staffing",
@@ -1923,9 +1818,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0143"
-      ],
       "related_tps": [
         {
           "id": "TP-0004",
@@ -1953,6 +1845,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P4",
+      "short_name": "First-Party Bust-Out",
       "sectors": [
         "banking",
         "credit-union"
@@ -2018,12 +1913,6 @@
       "baseline_ids": [
         "BL-0032"
       ],
-      "detection_rule_ids": [
-        "DL-0151",
-        "DL-0155",
-        "DL-0156",
-        "DL-0157"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -2055,6 +1944,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "investment-romance",
+      "primary_phase": "P3",
+      "short_name": "Pig Butchering",
       "sectors": [
         "banking",
         "crypto",
@@ -2151,12 +2043,6 @@
         "BL-0031",
         "BL-0034"
       ],
-      "detection_rule_ids": [
-        "DL-0117",
-        "DL-0142",
-        "DL-0215",
-        "DL-0221"
-      ],
       "related_tps": [
         {
           "id": "TP-0026",
@@ -2184,6 +2070,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P2",
+      "short_name": "Deepfake Docs",
       "sectors": [
         "banking",
         "credit-union",
@@ -2255,13 +2144,6 @@
       "baseline_ids": [
         "BL-0007"
       ],
-      "detection_rule_ids": [
-        "DL-0050",
-        "DL-0052",
-        "DL-0053",
-        "DL-0054",
-        "DL-0159"
-      ],
       "related_tps": [
         {
           "id": "TP-0002",
@@ -2289,6 +2171,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P2",
+      "short_name": "Business ID Theft",
       "sectors": [
         "banking",
         "investment"
@@ -2375,9 +2260,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0165"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -2405,6 +2287,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "payment-wire",
+      "primary_phase": "P4",
+      "short_name": "Supply Chain Wire",
       "sectors": [
         "banking",
         "cross-sector"
@@ -2490,12 +2375,6 @@
         "BL-0002",
         "BL-0012"
       ],
-      "detection_rule_ids": [
-        "DL-0028",
-        "DL-0029",
-        "DL-0032",
-        "DL-0035"
-      ],
       "related_tps": [
         {
           "id": "TP-0002",
@@ -2523,6 +2402,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "insurance-healthcare",
+      "primary_phase": "P4",
+      "short_name": "Healthcare Billing",
       "sectors": [
         "healthcare",
         "insurance",
@@ -2619,11 +2501,6 @@
       "baseline_ids": [
         "BL-0006"
       ],
-      "detection_rule_ids": [
-        "DL-0130",
-        "DL-0131",
-        "DL-0132"
-      ],
       "related_tps": [
         {
           "id": "TP-0010",
@@ -2655,6 +2532,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P4",
+      "short_name": "Gov Program Fraud",
       "sectors": [
         "government",
         "banking"
@@ -2721,16 +2601,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0001",
-        "DL-0037",
-        "DL-0038",
-        "DL-0039",
-        "DL-0040",
-        "DL-0041",
-        "DL-0043",
-        "DL-0179"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -2762,6 +2632,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "account-takeover",
+      "primary_phase": "P2",
+      "short_name": "Mobile Trojan",
       "sectors": [
         "banking",
         "fintech",
@@ -2836,7 +2709,8 @@
         "REG-DORA",
         "REG-FFIEC-AUTH",
         "REG-OCC-FRAUD",
-        "REG-PSD3-SCA"
+        "REG-PSD3-SCA",
+        "REG-RF-CTA-2026-0319"
       ],
       "ucff_domains": {
         "commit": "Level 3",
@@ -2848,14 +2722,6 @@
         "improve": "Level 4"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0002",
-        "DL-0004",
-        "DL-0005",
-        "DL-0007",
-        "DL-0010",
-        "DL-0011"
-      ],
       "related_tps": [
         {
           "id": "TP-0001",
@@ -2887,6 +2753,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "payment-wire",
+      "primary_phase": "P4",
+      "short_name": "A2A Payment Fraud",
       "sectors": [
         "banking",
         "fintech",
@@ -2988,15 +2857,6 @@
         "BL-0002",
         "BL-0012"
       ],
-      "detection_rule_ids": [
-        "DL-0055",
-        "DL-0056",
-        "DL-0057",
-        "DL-0058",
-        "DL-0059",
-        "DL-0060",
-        "DL-0061"
-      ],
       "related_tps": [
         {
           "id": "TP-0001",
@@ -3028,6 +2888,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "social-engineering",
+      "primary_phase": "P3",
+      "short_name": "GenAI APP Romance",
       "sectors": [
         "banking",
         "cross-sector"
@@ -3129,10 +2992,6 @@
         "BL-0003",
         "BL-0033"
       ],
-      "detection_rule_ids": [
-        "DL-0139",
-        "DL-0140"
-      ],
       "related_tps": [
         {
           "id": "TP-0007",
@@ -3164,6 +3023,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "investment-romance",
+      "primary_phase": "P3",
+      "short_name": "GenAI APP Investment",
       "sectors": [
         "banking",
         "crypto",
@@ -3266,9 +3128,6 @@
       "baseline_ids": [
         "BL-0004"
       ],
-      "detection_rule_ids": [
-        "DL-0166"
-      ],
       "related_tps": [
         {
           "id": "TP-0017",
@@ -3300,6 +3159,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "social-engineering",
+      "primary_phase": "P4",
+      "short_name": "Elder Exploitation",
       "sectors": [
         "banking",
         "cross-sector"
@@ -3402,12 +3264,6 @@
       "baseline_ids": [
         "BL-0005"
       ],
-      "detection_rule_ids": [
-        "DL-0167",
-        "DL-0212",
-        "DL-0213",
-        "DL-0216"
-      ],
       "related_tps": [
         {
           "id": "TP-0011",
@@ -3439,6 +3295,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "suspected",
+      "fraud_family": "insurance-healthcare",
+      "primary_phase": "P4",
+      "short_name": "DME Phantom Billing",
       "sectors": [
         "healthcare",
         "insurance",
@@ -3542,11 +3401,6 @@
       "baseline_ids": [
         "BL-0006"
       ],
-      "detection_rule_ids": [
-        "DL-0130",
-        "DL-0131",
-        "DL-0132"
-      ],
       "related_tps": [
         {
           "id": "TP-0021",
@@ -3582,6 +3436,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P2",
+      "short_name": "AI Synth ID Forgery",
       "sectors": [
         "banking",
         "fintech"
@@ -3668,14 +3525,6 @@
       "baseline_ids": [
         "BL-0007"
       ],
-      "detection_rule_ids": [
-        "DL-0152",
-        "DL-0154",
-        "DL-0158",
-        "DL-0159",
-        "DL-0160",
-        "DL-0161"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -3703,6 +3552,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P3",
+      "short_name": "Triangulation Fraud",
       "sectors": [
         "retail"
       ],
@@ -3788,10 +3640,6 @@
       "baseline_ids": [
         "BL-0008"
       ],
-      "detection_rule_ids": [
-        "DL-0064",
-        "DL-0067"
-      ],
       "related_tps": [
         {
           "id": "TP-0016",
@@ -3831,6 +3679,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P4",
+      "short_name": "Refund-as-a-Service",
       "sectors": [
         "retail"
       ],
@@ -3905,13 +3756,6 @@
       "baseline_ids": [
         "BL-0008"
       ],
-      "detection_rule_ids": [
-        "DL-0062",
-        "DL-0063",
-        "DL-0065",
-        "DL-0066",
-        "DL-0125"
-      ],
       "related_tps": [
         {
           "id": "TP-0016",
@@ -3939,6 +3783,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "crypto-laundering",
+      "primary_phase": "P4",
+      "short_name": "Wallet Drainer",
       "sectors": [
         "web3",
         "crypto"
@@ -4035,9 +3882,6 @@
       "baseline_ids": [
         "BL-0010"
       ],
-      "detection_rule_ids": [
-        "DL-0168"
-      ],
       "related_tps": [
         {
           "id": "TP-0017",
@@ -4065,6 +3909,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P3",
+      "short_name": "Ghost Student Aid",
       "sectors": [
         "education",
         "government"
@@ -4144,9 +3991,6 @@
       "baseline_ids": [
         "BL-0011"
       ],
-      "detection_rule_ids": [
-        "DL-0169"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -4174,6 +4018,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "state-geopolitical",
+      "primary_phase": "P2",
+      "short_name": "DPRK IT Worker",
       "sectors": [
         "technology",
         "banking",
@@ -4216,7 +4063,10 @@
         "stardust-chollima",
         "bybit-theft",
         "crowdstrike-gtr-2026",
-        "fatf-stablecoin-2026"
+        "fatf-stablecoin-2026",
+        "golangghost",
+        "pylangghost",
+        "blnwx"
       ],
       "cfpf_phases": [
         "P1",
@@ -4291,18 +4141,6 @@
         "BL-0013",
         "BL-0028"
       ],
-      "detection_rule_ids": [
-        "DL-0068",
-        "DL-0069",
-        "DL-0070",
-        "DL-0071",
-        "DL-0072",
-        "DL-0073",
-        "DL-0074",
-        "DL-0116",
-        "DL-0119",
-        "DL-0121"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -4350,6 +4188,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P2",
+      "short_name": "Magecart Skimmer",
       "sectors": [
         "retail",
         "payments",
@@ -4438,12 +4279,6 @@
       "baseline_ids": [
         "BL-0015"
       ],
-      "detection_rule_ids": [
-        "DL-0075",
-        "DL-0076",
-        "DL-0077",
-        "DL-0177"
-      ],
       "related_tps": [
         {
           "id": "TP-0013",
@@ -4475,6 +4310,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P3",
+      "short_name": "Purchase Scam",
       "sectors": [
         "retail",
         "payments",
@@ -4562,10 +4400,6 @@
         "BL-0016",
         "BL-0018"
       ],
-      "detection_rule_ids": [
-        "DL-0078",
-        "DL-0079"
-      ],
       "related_tps": [
         {
           "id": "TP-0012",
@@ -4597,6 +4431,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "account-takeover",
+      "primary_phase": "P4",
+      "short_name": "NFC Relay Fraud",
       "sectors": [
         "banking",
         "fintech",
@@ -4691,11 +4528,6 @@
       "baseline_ids": [
         "BL-0017"
       ],
-      "detection_rule_ids": [
-        "DL-0080",
-        "DL-0081",
-        "DL-0082"
-      ],
       "related_tps": [
         {
           "id": "TP-0008",
@@ -4727,6 +4559,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P3",
+      "short_name": "Card Testing",
       "sectors": [
         "payments",
         "retail",
@@ -4803,10 +4638,6 @@
         "BL-0016",
         "BL-0018"
       ],
-      "detection_rule_ids": [
-        "DL-0083",
-        "DL-0084"
-      ],
       "related_tps": [
         {
           "id": "TP-0013",
@@ -4838,6 +4669,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P4",
+      "short_name": "Agentic Commerce",
       "sectors": [
         "technology",
         "retail",
@@ -4945,13 +4779,6 @@
       "baseline_ids": [
         "BL-0019"
       ],
-      "detection_rule_ids": [
-        "DL-0085",
-        "DL-0086",
-        "DL-0124",
-        "DL-0125",
-        "DL-0126"
-      ],
       "related_tps": [
         {
           "id": "TP-0013",
@@ -4991,6 +4818,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P3",
+      "short_name": "BNPL Stacking",
       "sectors": [
         "retail",
         "payments",
@@ -5077,13 +4907,6 @@
       "baseline_ids": [
         "BL-0020"
       ],
-      "detection_rule_ids": [
-        "DL-0087",
-        "DL-0088",
-        "DL-0089",
-        "DL-0090",
-        "DL-0091"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -5127,6 +4950,9 @@
       "infrastructure_generation_method": "rdga-registered",
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "RDGA Domains",
       "sectors": [
         "cross-sector",
         "banking",
@@ -5196,14 +5022,6 @@
       "baseline_ids": [
         "BL-0021"
       ],
-      "detection_rule_ids": [
-        "DL-0092",
-        "DL-0093",
-        "DL-0094",
-        "DL-0099",
-        "DL-0100",
-        "DL-0208"
-      ],
       "related_tps": [
         {
           "id": "TP-0042",
@@ -5235,6 +5053,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "TDS Chains",
       "sectors": [
         "cross-sector",
         "banking",
@@ -5341,18 +5162,6 @@
         "BL-0022",
         "BL-0030"
       ],
-      "detection_rule_ids": [
-        "DL-0095",
-        "DL-0096",
-        "DL-0097",
-        "DL-0099",
-        "DL-0100",
-        "DL-0120",
-        "DL-0122",
-        "DL-0127",
-        "DL-0128",
-        "DL-0129"
-      ],
       "related_tps": [
         {
           "id": "TP-0041",
@@ -5392,6 +5201,9 @@
       "infrastructure_generation_method": "ai-assisted",
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "AI Infra Gen",
       "sectors": [
         "cross-sector",
         "banking",
@@ -5468,12 +5280,6 @@
         "BL-0023",
         "BL-0033"
       ],
-      "detection_rule_ids": [
-        "DL-0098",
-        "DL-0099",
-        "DL-0100",
-        "DL-0139"
-      ],
       "related_tps": [
         {
           "id": "TP-0029",
@@ -5505,6 +5311,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": "conflict-triggered",
       "nation_state_nexus": "hybrid",
+      "fraud_family": "state-geopolitical",
+      "primary_phase": "P1",
+      "short_name": "State-Criminal Infra",
       "sectors": [
         "banking",
         "crypto",
@@ -5600,11 +5409,6 @@
         "BL-0024",
         "BL-0036"
       ],
-      "detection_rule_ids": [
-        "DL-0101",
-        "DL-0123",
-        "DL-0206"
-      ],
       "related_tps": [
         {
           "id": "TP-0041",
@@ -5636,6 +5440,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": "sanctions-response",
       "nation_state_nexus": "confirmed",
+      "fraud_family": "state-geopolitical",
+      "primary_phase": "P3",
+      "short_name": "Sanctions Evasion",
       "sectors": [
         "crypto",
         "banking",
@@ -5705,12 +5512,6 @@
         "BL-0025",
         "BL-0036"
       ],
-      "detection_rule_ids": [
-        "DL-0102",
-        "DL-0103",
-        "DL-0104",
-        "DL-0106"
-      ],
       "related_tps": [
         {
           "id": "TP-0041",
@@ -5742,6 +5543,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": "election-cycle",
       "nation_state_nexus": "suspected",
+      "fraud_family": "state-geopolitical",
+      "primary_phase": "P1",
+      "short_name": "Geo-Timed Campaigns",
       "sectors": [
         "banking",
         "payments",
@@ -5803,11 +5607,6 @@
         "BL-0025",
         "BL-0036"
       ],
-      "detection_rule_ids": [
-        "DL-0105",
-        "DL-0106",
-        "DL-0107"
-      ],
       "related_tps": [
         {
           "id": "TP-0044",
@@ -5835,6 +5634,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "state-geopolitical",
+      "primary_phase": "P1",
+      "short_name": "Trafficking Infra",
       "sectors": [
         "crypto",
         "banking",
@@ -5906,10 +5708,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0108",
-        "DL-0109"
-      ],
       "related_tps": [
         {
           "id": "TP-0044",
@@ -5945,6 +5743,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "BPH Migration",
       "sectors": [
         "cross-sector"
       ],
@@ -6007,12 +5808,6 @@
         "BL-0026",
         "BL-0036"
       ],
-      "detection_rule_ids": [
-        "DL-0110",
-        "DL-0111",
-        "DL-0112",
-        "DL-0178"
-      ],
       "related_tps": [
         {
           "id": "TP-0041",
@@ -6044,6 +5839,9 @@
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
+      "fraud_family": "crypto-laundering",
+      "primary_phase": "P5",
+      "short_name": "Crypto Laundering",
       "sectors": [
         "crypto",
         "banking",
@@ -6114,15 +5912,6 @@
         "BL-0034",
         "BL-0036"
       ],
-      "detection_rule_ids": [
-        "DL-0113",
-        "DL-0114",
-        "DL-0142",
-        "DL-0203",
-        "DL-0204",
-        "DL-0205",
-        "DL-0206"
-      ],
       "related_tps": [
         {
           "id": "TP-0044",
@@ -6158,6 +5947,9 @@
       "infrastructure_generation_method": "rdga-registered",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "social-engineering",
+      "primary_phase": "P2",
+      "short_name": "Calendar Phishing",
       "sectors": [
         "banking",
         "cross-sector"
@@ -6227,9 +6019,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0170"
-      ],
       "related_tps": [
         {
           "id": "TP-0012",
@@ -6257,6 +6046,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "social-engineering",
+      "primary_phase": "P2",
+      "short_name": "Quishing",
       "sectors": [
         "banking",
         "payments",
@@ -6332,9 +6124,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0171"
-      ],
       "related_tps": [
         {
           "id": "TP-0012",
@@ -6366,6 +6155,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "investment-romance",
+      "primary_phase": "P3",
+      "short_name": "Sextortion Hybrid",
       "sectors": [
         "banking",
         "crypto",
@@ -6447,9 +6239,6 @@
         "BL-0003",
         "BL-0004"
       ],
-      "detection_rule_ids": [
-        "DL-0172"
-      ],
       "related_tps": [
         {
           "id": "TP-0011",
@@ -6485,6 +6274,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P4",
+      "short_name": "Vehicle Export Fraud",
       "sectors": [
         "banking",
         "cross-sector"
@@ -6551,9 +6343,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0173"
-      ],
       "related_tps": [
         {
           "id": "TP-0018",
@@ -6585,6 +6374,9 @@
       "infrastructure_generation_method": "ai-assisted",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "FaaS Platforms",
       "sectors": [
         "cross-sector",
         "banking",
@@ -6623,7 +6415,13 @@
         "infoblox-deanonymization",
         "unodc",
         "unodc-organized-fraud-2024",
-        "wci-geographic-attribution"
+        "wci-geographic-attribution",
+        "lummac2",
+        "rhadamanthys",
+        "ghostsocks",
+        "castleloader",
+        "mintsloader",
+        "bulletproof-hosting"
       ],
       "cfpf_phases": [
         "P1",
@@ -6681,10 +6479,6 @@
         "BL-0033",
         "BL-0036"
       ],
-      "detection_rule_ids": [
-        "DL-0128",
-        "DL-0129"
-      ],
       "related_tps": [
         {
           "id": "TP-0041",
@@ -6724,6 +6518,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "suspected",
+      "fraud_family": "crypto-laundering",
+      "primary_phase": "P5",
+      "short_name": "Crypto Terror Nexus",
       "sectors": [
         "crypto",
         "banking",
@@ -6809,12 +6606,6 @@
         "BL-0034",
         "BL-0036"
       ],
-      "detection_rule_ids": [
-        "DL-0174",
-        "DL-0196",
-        "DL-0198",
-        "DL-0207"
-      ],
       "related_tps": [
         {
           "id": "TP-0044",
@@ -6850,6 +6641,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "insurance-healthcare",
+      "primary_phase": "P4",
+      "short_name": "Insurance Claims",
       "sectors": [
         "insurance",
         "healthcare",
@@ -6914,9 +6708,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0175"
-      ],
       "related_tps": [
         {
           "id": "TP-0005",
@@ -6952,6 +6743,9 @@
       "infrastructure_generation_method": "ai-assisted",
       "geopolitical_timing": "none",
       "nation_state_nexus": "hybrid",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "DFaaS Marketplace",
       "sectors": [
         "cross-sector",
         "banking",
@@ -7030,10 +6824,6 @@
         "BL-0028",
         "BL-0033"
       ],
-      "detection_rule_ids": [
-        "DL-0115",
-        "DL-0116"
-      ],
       "related_tps": [
         {
           "id": "TP-0007",
@@ -7073,6 +6863,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "suspected",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "Scam Compounds",
       "sectors": [
         "cross-sector",
         "banking",
@@ -7155,9 +6948,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0117"
-      ],
       "related_tps": [
         {
           "id": "TP-0017",
@@ -7193,6 +6983,9 @@
       "infrastructure_generation_method": "ai-assisted",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P2",
+      "short_name": "Auto Mule Infra",
       "sectors": [
         "banking",
         "crypto",
@@ -7264,11 +7057,6 @@
       "baseline_ids": [
         "BL-0029"
       ],
-      "detection_rule_ids": [
-        "DL-0118",
-        "DL-0119",
-        "DL-0179"
-      ],
       "related_tps": [
         {
           "id": "TP-0017",
@@ -7304,6 +7092,9 @@
       "infrastructure_generation_method": "tds-routing",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "Investment TDS",
       "sectors": [
         "banking",
         "investment",
@@ -7374,12 +7165,6 @@
       "baseline_ids": [
         "BL-0030"
       ],
-      "detection_rule_ids": [
-        "DL-0120",
-        "DL-0122",
-        "DL-0127",
-        "DL-0221"
-      ],
       "related_tps": [
         {
           "id": "TP-0017",
@@ -7415,6 +7200,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "hybrid",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "TAE BPH Infra",
       "sectors": [
         "cross-sector",
         "technology",
@@ -7486,12 +7274,6 @@
       "baseline_ids": [
         "BL-0036"
       ],
-      "detection_rule_ids": [
-        "DL-0123",
-        "DL-0178",
-        "DL-0199",
-        "DL-0200"
-      ],
       "related_tps": [
         {
           "id": "TP-0042",
@@ -7531,6 +7313,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "social-engineering",
+      "primary_phase": "P3",
+      "short_name": "Recovery Fraud",
       "sectors": [
         "cross-sector",
         "banking",
@@ -7602,11 +7387,6 @@
       "baseline_ids": [
         "BL-0031"
       ],
-      "detection_rule_ids": [
-        "DL-0133",
-        "DL-0140",
-        "DL-0214"
-      ],
       "related_tps": [
         {
           "id": "TP-0011",
@@ -7642,6 +7422,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P3",
+      "short_name": "Counterfeit Networks",
       "sectors": [
         "retail",
         "payments",
@@ -7713,9 +7496,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0176"
-      ],
       "related_tps": [
         {
           "id": "TP-0030",
@@ -7751,6 +7531,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P3",
+      "short_name": "Long-Firm Fraud",
       "sectors": [
         "banking",
         "cross-sector",
@@ -7828,9 +7611,6 @@
       "baseline_ids": [
         "BL-0032"
       ],
-      "detection_rule_ids": [
-        "DL-0135"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -7862,6 +7642,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "Boiler Room Infra",
       "sectors": [
         "cross-sector",
         "banking",
@@ -7944,10 +7727,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0134",
-        "DL-0140"
-      ],
       "related_tps": [
         {
           "id": "TP-0012",
@@ -7983,6 +7762,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "insurance-healthcare",
+      "primary_phase": "P4",
+      "short_name": "Crash-for-Cash",
       "sectors": [
         "insurance",
         "healthcare"
@@ -8042,9 +7824,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0136"
-      ],
       "related_tps": [
         {
           "id": "TP-0010",
@@ -8072,6 +7851,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "account-takeover",
+      "primary_phase": "P2",
+      "short_name": "AiTM Phishing Kit",
       "sectors": [
         "cross-sector",
         "banking",
@@ -8180,18 +7962,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0137",
-        "DL-0138",
-        "DL-0146",
-        "DL-0147",
-        "DL-0148",
-        "DL-0150",
-        "DL-0200",
-        "DL-0201",
-        "DL-0202",
-        "DL-0209"
-      ],
       "related_tps": [
         {
           "id": "TP-0001",
@@ -8231,6 +8001,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P4",
+      "short_name": "Gift Card Fraud",
       "sectors": [
         "retail",
         "payments"
@@ -8298,10 +8071,6 @@
       "baseline_ids": [
         "BL-0035"
       ],
-      "detection_rule_ids": [
-        "DL-0144",
-        "DL-0145"
-      ],
       "related_tps": [
         {
           "id": "TP-0013",
@@ -8333,6 +8102,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P2",
+      "short_name": "Smishing PhaaS",
       "sectors": [
         "cross-sector",
         "banking",
@@ -8430,10 +8202,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0149",
-        "DL-0201"
-      ],
       "related_tps": [
         {
           "id": "TP-0008",
@@ -8465,6 +8233,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "seasonal-political",
       "nation_state_nexus": "none",
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P3",
+      "short_name": "Travel Booking Fraud",
       "sectors": [
         "travel",
         "payments",
@@ -8530,10 +8301,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0180",
-        "DL-0181"
-      ],
       "related_tps": [
         {
           "id": "TP-0013",
@@ -8561,6 +8328,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "telecom-specialized",
+      "primary_phase": "P4",
+      "short_name": "IRSF Revenue Fraud",
       "sectors": [
         "telecommunications"
       ],
@@ -8623,10 +8393,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0182",
-        "DL-0183"
-      ],
       "related_tps": [
         {
           "id": "TP-0008",
@@ -8654,6 +8420,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "telecom-specialized",
+      "primary_phase": "P3",
+      "short_name": "Telecom Sub Fraud",
       "sectors": [
         "telecommunications"
       ],
@@ -8712,10 +8481,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0184",
-        "DL-0185"
-      ],
       "related_tps": [
         {
           "id": "TP-0003",
@@ -8743,6 +8508,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "identity-synthetic",
+      "primary_phase": "P3",
+      "short_name": "Title/Deed Theft",
       "sectors": [
         "real-estate"
       ],
@@ -8806,10 +8574,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0186",
-        "DL-0187"
-      ],
       "related_tps": [
         {
           "id": "TP-0006",
@@ -8837,6 +8601,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "insurance-healthcare",
+      "primary_phase": "P3",
+      "short_name": "Ghost Broking",
       "sectors": [
         "insurance"
       ],
@@ -8890,10 +8657,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0188",
-        "DL-0189"
-      ],
       "related_tps": [
         {
           "id": "TP-0056",
@@ -8921,6 +8684,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P4",
+      "short_name": "Friendly Fraud",
       "sectors": [
         "payments",
         "ecommerce",
@@ -8971,10 +8737,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0190",
-        "DL-0191"
-      ],
       "related_tps": [
         {
           "id": "TP-0016",
@@ -9002,6 +8764,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "retail-ecommerce",
+      "primary_phase": "P3",
+      "short_name": "Affiliate Fraud",
       "sectors": [
         "ecommerce",
         "technology"
@@ -9059,10 +8824,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0192",
-        "DL-0193"
-      ],
       "related_tps": [
         {
           "id": "TP-0042",
@@ -9090,6 +8851,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "insurance-healthcare",
+      "primary_phase": "P3",
+      "short_name": "AI Claims Fraud",
       "sectors": [
         "insurance"
       ],
@@ -9143,10 +8907,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0194",
-        "DL-0195"
-      ],
       "related_tps": [
         {
           "id": "TP-0018",
@@ -9178,6 +8938,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "crypto-laundering",
+      "primary_phase": "P5",
+      "short_name": "Stablecoin CEX Launder",
       "sectors": [
         "crypto",
         "banking",
@@ -9256,14 +9019,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0040",
-        "DL-0174",
-        "DL-0196",
-        "DL-0197",
-        "DL-0198",
-        "DL-0203"
-      ],
       "related_tps": [
         {
           "id": "TP-0045",
@@ -9299,6 +9054,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "gTLD Subdomain Abuse",
       "sectors": [
         "cross-sector",
         "banking",
@@ -9367,13 +9125,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0208",
-        "DL-0209",
-        "DL-0210",
-        "DL-0218",
-        "DL-0220"
-      ],
       "related_tps": [
         {
           "id": "TP-0041",
@@ -9409,6 +9160,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "sanctions-response",
       "nation_state_nexus": "confirmed",
+      "fraud_family": "crypto-laundering",
+      "primary_phase": "P5",
+      "short_name": "Freeze Evasion",
       "sectors": [
         "crypto",
         "banking",
@@ -9475,12 +9229,6 @@
         "improve": "Level 3"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0204",
-        "DL-0205",
-        "DL-0206",
-        "DL-0207"
-      ],
       "related_tps": [
         {
           "id": "TP-0045",
@@ -9516,6 +9264,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "account-takeover",
+      "primary_phase": "P2",
+      "short_name": "Vishing Hybrid",
       "sectors": [
         "banking",
         "cross-sector",
@@ -9587,9 +9338,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0211"
-      ],
       "related_tps": [
         {
           "id": "TP-0002",
@@ -9617,6 +9365,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "social-engineering",
+      "primary_phase": "P4",
+      "short_name": "Gold Courier Scam",
       "sectors": [
         "banking",
         "cross-sector"
@@ -9678,9 +9429,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0213"
-      ],
       "related_tps": [
         {
           "id": "TP-0012",
@@ -9716,6 +9464,9 @@
       "infrastructure_generation_method": "ai-assisted",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "investment-romance",
+      "primary_phase": "P3",
+      "short_name": "Investment Club Scam",
       "sectors": [
         "investment",
         "banking",
@@ -9781,9 +9532,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0215"
-      ],
       "related_tps": [
         {
           "id": "TP-0017",
@@ -9815,6 +9563,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "social-engineering",
+      "primary_phase": "P4",
+      "short_name": "Gov Impersonation APP",
       "sectors": [
         "banking",
         "cross-sector",
@@ -9880,10 +9631,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0216",
-        "DL-0219"
-      ],
       "related_tps": [
         {
           "id": "TP-0012",
@@ -9927,6 +9674,9 @@
       "infrastructure_generation_method": "manual",
       "geopolitical_timing": "none",
       "nation_state_nexus": "none",
+      "fraud_family": "crypto-laundering",
+      "primary_phase": "P5",
+      "short_name": "Crypto ATM Fraud",
       "sectors": [
         "banking",
         "crypto",
@@ -9982,9 +9732,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0212"
-      ],
       "related_tps": [
         {
           "id": "TP-0012",
@@ -10020,6 +9767,9 @@
       "infrastructure_generation_method": "rdga-registered",
       "geopolitical_timing": "conflict-triggered",
       "nation_state_nexus": "suspected",
+      "fraud_family": "state-geopolitical",
+      "primary_phase": "P1",
+      "short_name": "Crisis Exploitation",
       "sectors": [
         "government",
         "banking",
@@ -10099,12 +9849,6 @@
         "improve": "Level 2"
       },
       "baseline_ids": [],
-      "detection_rule_ids": [
-        "DL-0218",
-        "DL-0219",
-        "DL-0220",
-        "DL-0221"
-      ],
       "related_tps": [
         {
           "id": "TP-0041",
@@ -10133,6 +9877,356 @@
         {
           "id": "TP-0084",
           "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0087",
+      "title": "Infostealer-to-Fraud Pipeline — MaaS Credential Harvesting to Financial Fraud",
+      "category": "ThreatPath",
+      "date": "2026-05-10",
+      "author": "FLAME Project (sourced from Recorded Future Insikt Group, CTA-2026-0319)",
+      "source": "Recorded Future Insikt Group, 2025 Year in Review: Malicious Infrastructure (CTA-2026-0319), March 2026",
+      "tlp": "WHITE",
+      "summary": "Infostealer malware-as-a-service (MaaS) has become the primary infection vector enabling financial fraud at scale. In 2025, LummaC2 accounted for more than 35% of all detected infostealer C2 servers despite international law enforcement action. Rhadamanthys surged from approximately 5% to roughly 30% market share. Eight of the top ten infostealers operate under MaaS models, and most are rooted in Russia-linked cybercriminal ecosystems.\n\nThe pipeline operates as a multi-actor supply chain: MaaS operators provide the stealer platform and C2 infrastructure; affiliates deploy the malware via phishing, malvertising, and ClickFix social engineering; harvested logs (browser credentials, session cookies, crypto wallet seeds, autofill data) are aggregated on management panels; logs are then sold on dark web markets (Russian Market, Telegram channels) or exploited directly for account takeover, wire fraud, and cryptocurrency theft. Lumma affiliates increasingly use residential proxy services (GhostSocks, PIA Proxy) to route activity through victim devices, evading geographic and behavioral fraud controls.\n\nThis threat path maps the full lifecycle from MaaS subscription through infection, log harvesting, dark web market sale, and credential exploitation for financial fraud. The multi-actor supply chain model means that the actor who deploys the stealer is frequently not the actor who monetizes the stolen credentials, creating a layered ecosystem where detection at any single phase only disrupts one segment of the pipeline.",
+      "confidence_score": 85,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "suspected",
+      "fraud_family": "account-takeover",
+      "primary_phase": "P2",
+      "short_name": "Infostealer Pipeline",
+      "sectors": [
+        "banking",
+        "crypto",
+        "e-commerce",
+        "technology",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "credential-harvesting",
+        "account-takeover",
+        "data-theft",
+        "fraud-as-a-service",
+        "crypto-laundering",
+        "unauthorized-transaction"
+      ],
+      "tags": [
+        "infostealer",
+        "maas",
+        "lummac2",
+        "rhadamanthys",
+        "vidar",
+        "metastealer",
+        "stealc",
+        "credential-harvesting",
+        "dark-web-markets",
+        "russian-market",
+        "session-cookie-theft",
+        "residential-proxy",
+        "ghostsocks",
+        "recorded-future"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1555",
+        "T1539",
+        "T1528",
+        "T1566.001",
+        "T1566.002",
+        "T1204"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA005",
+        "FTA009",
+        "FTA010",
+        "FT003",
+        "FT007",
+        "FT016"
+      ],
+      "mitre_f3": [
+        "T1555",
+        "T1539",
+        "T1189",
+        "T1598",
+        "F1004"
+      ],
+      "groupib_stages": [
+        "Resource Development",
+        "Initial Access",
+        "Credential Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-AML",
+        "REG-DORA",
+        "REG-CFPB-REGE",
+        "REG-RF-CTA-2026-0319"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 4",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0001",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0008",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0013",
+          "relationship": "variant-of"
+        },
+        {
+          "id": "TP-0054",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0067",
+          "relationship": "shares-infrastructure"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0088",
+      "title": "Logistics Sector Spearphishing — Carrier Impersonation and Freight Document Fraud",
+      "category": "ThreatPath",
+      "date": "2026-05-10",
+      "author": "FLAME Project (sourced from Recorded Future Insikt Group, CTA-2026-0319)",
+      "source": "Recorded Future Insikt Group, 2025 Year in Review: Malicious Infrastructure (CTA-2026-0319), March 2026",
+      "tlp": "WHITE",
+      "summary": "TAG-160 is a financially motivated threat cluster active since at least March 2025 that specifically targets the logistics and freight sector. The actor impersonates legitimate carriers (notably England Logistics) using a combination of spoofed legitimate email addresses and typosquatted domains. Victims receive fraudulent freight rate confirmations and are directed to information-harvesting landing pages, followed by ClickFix-style instructions (e.g., DocuSign-themed) that trick users into executing malicious PowerShell commands.\n\nA distinctive feature is TAG-160's pre-operational research: the actor deliberately re-registers expired domains previously owned by legitimate logistics companies (e.g., cdlfreightlogistics.com in August 2025, hometownlogisticsllc.com in June 2025), inheriting domain reputation and brand recognition. TAG-160 also abuses access to legitimate freight-matching platforms including DAT Freight & Analytics and Loadlink Technologies.\n\nThe attack chain delivers CastleLoader (by GrayBravo/TAG-150) and additional payloads. TAG-160's infrastructure overlaps with AS211659 (STIMUL-AS) and AS216341 (OPTIMA-AS), both linked to the TAE BEARHOST ecosystem. The use of premium malware tooling (including Matanbuchus at $15,000/month) indicates a well-resourced operation.",
+      "confidence_score": 80,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": "none",
+      "nation_state_nexus": "none",
+      "fraud_family": "social-engineering",
+      "primary_phase": "P2",
+      "short_name": "Logistics Spearphish",
+      "sectors": [
+        "logistics",
+        "transportation",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "phishing",
+        "brand-impersonation",
+        "social-engineering",
+        "credential-harvesting",
+        "fraud-enabling-infrastructure"
+      ],
+      "tags": [
+        "tag-160",
+        "logistics-fraud",
+        "carrier-impersonation",
+        "clickfix",
+        "castleloader",
+        "graybravo",
+        "freight-fraud",
+        "spearphishing",
+        "domain-reregistration",
+        "england-logistics",
+        "recorded-future"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1584.001",
+        "T1566.002",
+        "T1204.001",
+        "T1059.001"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA005",
+        "FTA009",
+        "FTA010",
+        "FT007"
+      ],
+      "mitre_f3": [
+        "T1189",
+        "T1555",
+        "T1598",
+        "T1660"
+      ],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Resource Development",
+        "Initial Access",
+        "Execution",
+        "Credential Access",
+        "Perform Fraud"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-AML",
+        "REG-DORA",
+        "REG-RF-CTA-2026-0319"
+      ],
+      "ucff_domains": {
+        "commit": "Level 3",
+        "assess": "Level 3",
+        "plan": "Level 3",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0002",
+          "relationship": "variant-of"
+        },
+        {
+          "id": "TP-0020",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0042",
+          "relationship": "shares-infrastructure"
+        },
+        {
+          "id": "TP-0054",
+          "relationship": "related-to"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0089",
+      "title": "TAE Upstream Transit Provider Complicity — Structural Enablement of Malicious Hosting",
+      "category": "ThreatPath",
+      "date": "2026-05-10",
+      "author": "FLAME Project (sourced from Recorded Future Insikt Group, CTA-2026-0319)",
+      "source": "Recorded Future Insikt Group, 2025 Year in Review: Malicious Infrastructure (CTA-2026-0319), March 2026",
+      "tlp": "WHITE",
+      "summary": "Threat Activity Enabler (TAE) networks — hosting providers that sustain malicious cyber operations through no-KYC policies, selective abuse response, and corporate obfuscation — depend on upstream transit providers for internet connectivity. Recorded Future's 2025 analysis reveals a critical structural vulnerability: approximately 70% of the most prominent high-risk TAE networks relied on a single upstream transit provider, aurologic GmbH, operating from the Tornado Datacenter facility in Langen, Germany.\n\naurologic provides IP transit, colocation, and hosting services marketed as legitimate and enterprise-focused. However, its downstream customer base consistently includes the highest-risk hosting providers: Virtualine Technologies (#1 by Threat Density), CrazyRDP (#2, disrupted by Operation Endgame November 2025), Aeza (sanctioned by OFAC July 2025, followed by joint US/UK/AU sanctions November 2025), and others. aurologic exemplifies how upstream neutrality — interpreting compliance obligations narrowly — functions as a structural enabler of persistent malicious infrastructure.\n\nThe upstream transit layer is strategically significant because disrupting a single upstream provider could degrade connectivity for multiple downstream TAEs simultaneously. However, current governance frameworks rarely hold upstream providers accountable for downstream abuse, creating a systemic gap that TAE operators exploit.",
+      "confidence_score": 82,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": "sanctions-response",
+      "nation_state_nexus": "suspected",
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P1",
+      "short_name": "TAE Transit Complicity",
+      "sectors": [
+        "technology",
+        "telecommunications",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "bulletproof-hosting",
+        "fraud-enabling-infrastructure",
+        "sanctions-evasion-infrastructure",
+        "hosting-provider-complicity",
+        "bph-migration"
+      ],
+      "tags": [
+        "tae",
+        "threat-activity-enabler",
+        "upstream-transit",
+        "aurologic",
+        "bulletproof-hosting",
+        "ripe-abuse",
+        "arin-abuse",
+        "lir-abuse",
+        "ip-prefix-rotation",
+        "sanctions-evasion",
+        "corporate-shell-games",
+        "tornado-datacenter",
+        "recorded-future"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.003",
+        "T1583.001",
+        "T1584.004",
+        "T1090"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA009",
+        "FTA010"
+      ],
+      "mitre_f3": [
+        "T1189",
+        "T1583"
+      ],
+      "groupib_stages": [
+        "Resource Development",
+        "Defence Evasion",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-FINCEN-AML",
+        "REG-DORA",
+        "REG-RF-CTA-2026-0319",
+        "REG-INTERPOL-GFFTA"
+      ],
+      "ucff_domains": {
+        "commit": "Level 4",
+        "assess": "Level 4",
+        "plan": "Level 3",
+        "act": "Level 4",
+        "monitor": "Level 4",
+        "report": "Level 3",
+        "improve": "Level 3"
+      },
+      "baseline_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0044",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0045",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0048",
+          "relationship": "enables"
+        },
+        {
+          "id": "TP-0061",
+          "relationship": "enables"
         }
       ],
       "evidence_count": 0

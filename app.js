@@ -42,6 +42,29 @@
     let searchQuery = '';
     let activeTaxonomy = 'cfpf';
     let viewState = 'browse'; // 'browse' | 'detail' | 'baselines'
+    let browseMode = 'matrix'; // 'matrix' | 'grid'
+    let matrixSector = 'all';  // active sector tab for matrix view
+
+    const FRAUD_FAMILY_ORDER = [
+        'account-takeover', 'payment-wire', 'social-engineering',
+        'identity-synthetic', 'investment-romance', 'insurance-healthcare',
+        'crypto-laundering', 'fraud-infrastructure', 'retail-ecommerce',
+        'state-geopolitical', 'telecom-specialized',
+    ];
+
+    const FRAUD_FAMILY_LABELS = {
+        'account-takeover': 'Account Takeover & Credential Theft',
+        'payment-wire': 'Payment & Wire Fraud',
+        'social-engineering': 'Social Engineering & APP',
+        'identity-synthetic': 'Identity & Synthetic Fraud',
+        'investment-romance': 'Investment & Romance Scams',
+        'insurance-healthcare': 'Insurance & Healthcare Fraud',
+        'crypto-laundering': 'Crypto & Laundering',
+        'fraud-infrastructure': 'Fraud Infrastructure & FaaS',
+        'retail-ecommerce': 'Retail & E-Commerce Fraud',
+        'state-geopolitical': 'State-Linked & Geopolitical',
+        'telecom-specialized': 'Telecom & Specialized Fraud',
+    };
 
     // -----------------------------------------------------------------------
     // DOM References
@@ -107,6 +130,13 @@
         dom.baselinesGrid = document.getElementById('baselines-grid');
         dom.baselinesSearchInput = document.getElementById('baselines-search-input');
         dom.mainNav = document.getElementById('main-nav');
+        dom.matrixView = document.getElementById('matrix-view');
+        dom.matrixTable = document.getElementById('matrix-table');
+        dom.matrixThead = document.getElementById('matrix-thead');
+        dom.matrixTbody = document.getElementById('matrix-tbody');
+        dom.matrixSectorTabs = document.getElementById('matrix-sector-tabs');
+        dom.viewMatrixBtn = document.getElementById('view-matrix-btn');
+        dom.viewGridBtn = document.getElementById('view-grid-btn');
     }
 
     // -----------------------------------------------------------------------
@@ -195,6 +225,9 @@
     // -----------------------------------------------------------------------
 
     function bindEvents() {
+        // View toggle (matrix / grid)
+        initViewToggle();
+
         // Search
         dom.searchInput.addEventListener('input', debounce(function () {
             searchQuery = dom.searchInput.value.trim().toLowerCase();
@@ -613,6 +646,9 @@
             return true;
         });
 
+        if (browseMode === 'matrix') {
+            renderMatrixView();
+        }
         renderCardGrid();
     }
 
@@ -695,6 +731,149 @@
 
         html += '</div>';
         return html;
+    }
+
+    // -----------------------------------------------------------------------
+    // Matrix View
+    // -----------------------------------------------------------------------
+
+    function initViewToggle() {
+        if (!dom.viewMatrixBtn || !dom.viewGridBtn) return;
+
+        dom.viewMatrixBtn.addEventListener('click', function () {
+            setBrowseMode('matrix');
+        });
+        dom.viewGridBtn.addEventListener('click', function () {
+            setBrowseMode('grid');
+        });
+    }
+
+    function setBrowseMode(mode) {
+        browseMode = mode;
+        dom.viewMatrixBtn.classList.toggle('active', mode === 'matrix');
+        dom.viewGridBtn.classList.toggle('active', mode === 'grid');
+        dom.matrixView.style.display = mode === 'matrix' ? 'block' : 'none';
+        dom.cardGrid.style.display = mode === 'grid' ? 'grid' : 'none';
+        if (mode === 'matrix') {
+            renderMatrixView();
+        }
+    }
+
+    function getMatrixSectors() {
+        var sectorCounts = {};
+        filteredSubmissions.forEach(function (item) {
+            (item.sectors || []).forEach(function (s) {
+                sectorCounts[s] = (sectorCounts[s] || 0) + 1;
+            });
+        });
+        return Object.keys(sectorCounts).sort(function (a, b) {
+            return sectorCounts[b] - sectorCounts[a] || a.localeCompare(b);
+        }).map(function (s) {
+            return { key: s, count: sectorCounts[s] };
+        });
+    }
+
+    function renderMatrixSectorTabs() {
+        if (!dom.matrixSectorTabs) return;
+        var sectors = getMatrixSectors();
+
+        // NOTE: All values passed to escapeHtml() come from the FLAME index
+        // JSON (authored data, not user input). The escapeHtml helper provides
+        // defence-in-depth against any unexpected content.
+        var html = '<button class="matrix-sector-tab' + (matrixSector === 'all' ? ' active' : '') + '" data-sector="all">All<span class="tab-count">' + escapeHtml(String(filteredSubmissions.length)) + '</span></button>';
+
+        sectors.forEach(function (s) {
+            html += '<button class="matrix-sector-tab' + (matrixSector === s.key ? ' active' : '') + '" data-sector="' + escapeHtml(s.key) + '">' + escapeHtml(formatLabel(s.key)) + '<span class="tab-count">' + escapeHtml(String(s.count)) + '</span></button>';
+        });
+
+        dom.matrixSectorTabs.innerHTML = html;
+
+        dom.matrixSectorTabs.querySelectorAll('.matrix-sector-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+                matrixSector = tab.dataset.sector;
+                renderMatrixView();
+            });
+        });
+    }
+
+    function renderMatrixView() {
+        if (!dom.matrixTbody) return;
+
+        renderMatrixSectorTabs();
+
+        // Filter TPs by sector tab
+        var tps = filteredSubmissions;
+        if (matrixSector !== 'all') {
+            tps = tps.filter(function (item) {
+                return (item.sectors || []).indexOf(matrixSector) !== -1;
+            });
+        }
+
+        dom.resultsBar.textContent = tps.length + ' of ' + allSubmissions.length + ' threat paths' + (matrixSector !== 'all' ? ' in ' + formatLabel(matrixSector) : '');
+
+        // Build header — phase labels are static constants, safe to interpolate
+        var thead = '<tr><th>Fraud Family</th>';
+        PHASE_ORDER.forEach(function (phase) {
+            thead += '<th class="phase-col" style="--phase-color: ' + PHASE_INFO[phase].color + '">' + escapeHtml(phase + ' ' + PHASE_INFO[phase].name) + '</th>';
+        });
+        thead += '</tr>';
+        dom.matrixThead.innerHTML = thead;
+
+        // Group TPs by fraud_family and primary_phase
+        var matrix = {};
+        FRAUD_FAMILY_ORDER.forEach(function (fam) {
+            matrix[fam] = { P1: [], P2: [], P3: [], P4: [], P5: [], total: 0 };
+        });
+
+        var visibleIds = new Set();
+        tps.forEach(function (item) { visibleIds.add(item.id); });
+
+        filteredSubmissions.forEach(function (item) {
+            var fam = item.fraud_family;
+            var phase = item.primary_phase;
+            if (!fam || !phase || !matrix[fam]) return;
+            matrix[fam][phase].push(item);
+            if (visibleIds.has(item.id)) {
+                matrix[fam].total++;
+            }
+        });
+
+        // Render rows — all interpolated values go through escapeHtml
+        var tbody = '';
+        FRAUD_FAMILY_ORDER.forEach(function (fam) {
+            var row = matrix[fam];
+            var label = FRAUD_FAMILY_LABELS[fam] || formatLabel(fam);
+            var count = row.total;
+
+            if (matrixSector !== 'all' && count === 0) return;
+
+            tbody += '<tr>';
+            tbody += '<td><div class="matrix-family-name">' + escapeHtml(label) + '</div>';
+            tbody += '<div class="matrix-family-count">' + escapeHtml(String(count)) + ' threat path' + (count !== 1 ? 's' : '') + '</div></td>';
+
+            PHASE_ORDER.forEach(function (phase) {
+                tbody += '<td><div class="matrix-cell-chips">';
+                row[phase].forEach(function (item) {
+                    var dimmed = !visibleIds.has(item.id) ? ' dimmed' : '';
+                    var chipLabel = item.short_name || item.id;
+                    var chipTitle = item.id + ': ' + (item.title || '');
+                    var confClass = '';
+                    if (item.confidence_score != null) {
+                        confClass = item.confidence_score >= 70 ? ' conf-high' : (item.confidence_score >= 40 ? ' conf-med' : ' conf-low');
+                    }
+                    tbody += '<a class="matrix-chip' + confClass + dimmed + '" href="#detail/' + escapeHtml(item.id) + '" title="' + escapeHtml(chipTitle) + '">' + escapeHtml(chipLabel) + '</a>';
+                });
+                tbody += '</div></td>';
+            });
+
+            tbody += '</tr>';
+        });
+
+        if (!tbody) {
+            tbody = '<tr class="matrix-empty-row"><td colspan="6">No threat paths match the current filters.</td></tr>';
+        }
+
+        dom.matrixTbody.innerHTML = tbody;
     }
 
     // -----------------------------------------------------------------------

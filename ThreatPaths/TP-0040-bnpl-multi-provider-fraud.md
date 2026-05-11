@@ -26,6 +26,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "retail-ecommerce"
+primary_phase: "P3"
+short_name: "BNPL Stacking"
 mitre_attack:
   - T1586       # Compromise Accounts
   - T1589.001  # Gather Victim Identity Information: Credentials

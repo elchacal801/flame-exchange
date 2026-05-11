@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "social-engineering"
+primary_phase: "P3"
+short_name: "GenAI APP Romance"
 mitre_attack:
   - T1566.001  # Phishing: Spearphishing Attachment
   - T1566.003  # Phishing: Spearphishing via Service

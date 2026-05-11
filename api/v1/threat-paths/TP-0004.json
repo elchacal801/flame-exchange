@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.265323+00:00",
+    "generated_at": "2026-05-11T19:02:29.040803+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "Payroll Diversion",
     "sectors": [
       "cross-sector"
     ],
@@ -109,12 +112,6 @@
       "improve": "Level 2"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0019",
-      "DL-0022",
-      "DL-0024",
-      "DL-0025"
-    ],
     "related_tps": [
       {
         "id": "TP-0014",

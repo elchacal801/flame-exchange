@@ -24,6 +24,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "identity-synthetic"
+primary_phase: "P4"
+short_name: "Vehicle Export Fraud"
 confidence_score: 80
 source_reliability: B
 info_credibility: 2

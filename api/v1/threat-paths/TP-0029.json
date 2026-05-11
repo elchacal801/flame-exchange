@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.409867+00:00",
+    "generated_at": "2026-05-11T19:02:29.086505+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P2",
+    "short_name": "AI Synth ID Forgery",
     "sectors": [
       "banking",
       "fintech"
@@ -105,14 +108,6 @@
     },
     "baseline_ids": [
       "BL-0007"
-    ],
-    "detection_rule_ids": [
-      "DL-0152",
-      "DL-0154",
-      "DL-0158",
-      "DL-0159",
-      "DL-0160",
-      "DL-0161"
     ],
     "related_tps": [
       {

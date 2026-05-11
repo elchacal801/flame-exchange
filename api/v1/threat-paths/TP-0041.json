@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.478036+00:00",
+    "generated_at": "2026-05-11T19:02:29.109018+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "rdga-registered",
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P1",
+    "short_name": "RDGA Domains",
     "sectors": [
       "cross-sector",
       "banking",
@@ -88,14 +91,6 @@
     },
     "baseline_ids": [
       "BL-0021"
-    ],
-    "detection_rule_ids": [
-      "DL-0092",
-      "DL-0093",
-      "DL-0094",
-      "DL-0099",
-      "DL-0100",
-      "DL-0208"
     ],
     "related_tps": [
       {

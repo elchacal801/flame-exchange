@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.586488+00:00",
+    "generated_at": "2026-05-11T19:02:29.145027+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "ai-assisted",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P2",
+    "short_name": "Auto Mule Infra",
     "sectors": [
       "banking",
       "crypto",
@@ -90,11 +93,6 @@
     },
     "baseline_ids": [
       "BL-0029"
-    ],
-    "detection_rule_ids": [
-      "DL-0118",
-      "DL-0119",
-      "DL-0179"
     ],
     "related_tps": [
       {

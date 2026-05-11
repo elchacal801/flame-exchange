@@ -27,6 +27,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "state-geopolitical"
+primary_phase: "P2"
+short_name: "DPRK IT Worker"
 mitre_attack:
   - T1583.001  # Acquire Infrastructure: Domains
   - T1589.001  # Gather Victim Identity Information: Credentials

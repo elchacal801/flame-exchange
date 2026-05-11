@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.373225+00:00",
+    "generated_at": "2026-05-11T19:02:29.073453+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P4",
+    "short_name": "Gov Program Fraud",
     "sectors": [
       "government",
       "banking"
@@ -86,16 +89,6 @@
       "improve": "Level 3"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0001",
-      "DL-0037",
-      "DL-0038",
-      "DL-0039",
-      "DL-0040",
-      "DL-0041",
-      "DL-0043",
-      "DL-0179"
-    ],
     "related_tps": [
       {
         "id": "TP-0003",

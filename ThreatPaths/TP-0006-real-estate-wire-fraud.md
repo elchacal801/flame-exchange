@@ -18,6 +18,9 @@ fraud_types:
   - payment-diversion
   - impersonation
 cfpf_phases: [P1, P2, P3, P4, P5]
+fraud_family: "payment-wire"
+primary_phase: "P4"
+short_name: "Real Estate Wire"
 mitre_attack: [T1566.001, T1114.003, T1534, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT052.003", "FT055", "FT012", "FT026.001", "FT031", "FT008.002", "FT016", "FT018", "FT020", "FT021"]                  # Stripe FT3 (when mapped)
 mitre_f3: ["F1005.006", "F1025.002", "F1016", "F1020", "F1031", "F1032", "F1037", "F1040", "F1044", "F1046"]

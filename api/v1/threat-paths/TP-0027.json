@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.398225+00:00",
+    "generated_at": "2026-05-11T19:02:29.082863+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "social-engineering",
+    "primary_phase": "P4",
+    "short_name": "Elder Exploitation",
     "sectors": [
       "banking",
       "cross-sector"
@@ -121,12 +124,6 @@
     },
     "baseline_ids": [
       "BL-0005"
-    ],
-    "detection_rule_ids": [
-      "DL-0167",
-      "DL-0212",
-      "DL-0213",
-      "DL-0216"
     ],
     "related_tps": [
       {

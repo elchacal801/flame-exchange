@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.725011+00:00",
+    "generated_at": "2026-05-11T19:02:29.194504+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Crypto ATM Fraud",
     "sectors": [
       "banking",
       "crypto",
@@ -75,9 +78,6 @@
       "improve": "Level 2"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0212"
-    ],
     "related_tps": [
       {
         "id": "TP-0012",

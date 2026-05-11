@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.502951+00:00",
+    "generated_at": "2026-05-11T19:02:29.118256+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "sanctions-response",
     "nation_state_nexus": "confirmed",
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P3",
+    "short_name": "Sanctions Evasion",
     "sectors": [
       "crypto",
       "banking",
@@ -88,12 +91,6 @@
     "baseline_ids": [
       "BL-0025",
       "BL-0036"
-    ],
-    "detection_rule_ids": [
-      "DL-0102",
-      "DL-0103",
-      "DL-0104",
-      "DL-0106"
     ],
     "related_tps": [
       {

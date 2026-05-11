@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.382621+00:00",
+    "generated_at": "2026-05-11T19:02:29.077089+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "payment-wire",
+    "primary_phase": "P4",
+    "short_name": "A2A Payment Fraud",
     "sectors": [
       "banking",
       "fintech",
@@ -120,15 +123,6 @@
     "baseline_ids": [
       "BL-0002",
       "BL-0012"
-    ],
-    "detection_rule_ids": [
-      "DL-0055",
-      "DL-0056",
-      "DL-0057",
-      "DL-0058",
-      "DL-0059",
-      "DL-0060",
-      "DL-0061"
     ],
     "related_tps": [
       {

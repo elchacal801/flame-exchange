@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "telecom-specialized"
+primary_phase: "P4"
+short_name: "IRSF Revenue Fraud"
 confidence_score: 80
 source_reliability: A
 info_credibility: 2

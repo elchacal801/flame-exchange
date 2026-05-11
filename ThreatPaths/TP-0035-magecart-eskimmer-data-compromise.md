@@ -24,6 +24,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "fraud-infrastructure"
+primary_phase: "P2"
+short_name: "Magecart Skimmer"
 mitre_attack:
   - T1059.007  # Command and Scripting Interpreter: JavaScript
   - T1189       # Drive-by Compromise

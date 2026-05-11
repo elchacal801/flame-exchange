@@ -21,6 +21,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "retail-ecommerce"
+primary_phase: "P3"
+short_name: "Triangulation Fraud"
 mitre_attack:
   - T1583.001  # Acquire Infrastructure: Domains
   - T1589.001  # Gather Victim Identity Information: Credentials

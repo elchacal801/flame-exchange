@@ -15,6 +15,9 @@ sector:
 fraud_types:
   - check-fraud
 cfpf_phases: [P1, P2, P3, P4, P5]
+fraud_family: "payment-wire"
+primary_phase: "P4"
+short_name: "Check Washing"
 mitre_attack: []
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT026.002", "FT052.001", "FT024", "FT041", "FT006", "FT010", "FT012", "FT015", "FT018", "FT023"]                  # Stripe FT3 (when mapped)
 mitre_f3: ["F1009.002", "F1014", "F1019", "F1035"]

@@ -18,6 +18,9 @@ fraud_types:
   - BEC
   - deepfake
 cfpf_phases: [P1, P2, P3, P4, P5]
+fraud_family: "payment-wire"
+primary_phase: "P4"
+short_name: "Deepfake Voice Wire"
 mitre_attack: [T1656, T1657]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT052.003", "FT026.001", "FT020", "FT007.009", "FT016", "FT028", "FT031", "FT055", "FT008.002", "FT018"]                  # Stripe FT3 (when mapped)
 mitre_f3: ["F1020.001", "F1025.002", "F1031", "F1032", "F1016", "F1037", "F1040", "F1044", "F1046", "F1047"]

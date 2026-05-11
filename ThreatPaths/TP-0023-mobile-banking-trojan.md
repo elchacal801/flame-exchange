@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "account-takeover"
+primary_phase: "P2"
+short_name: "Mobile Trojan"
 mitre_attack:
   - T1624     # Event Triggered Execution (Overlay)
   - T1626     # Device Lockout

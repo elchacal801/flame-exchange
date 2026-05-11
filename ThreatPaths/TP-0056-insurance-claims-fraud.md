@@ -26,6 +26,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "insurance-healthcare"
+primary_phase: "P4"
+short_name: "Insurance Claims"
 confidence_score: 72
 source_reliability: C
 info_credibility: 3

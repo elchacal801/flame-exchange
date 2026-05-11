@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.528039+00:00",
+    "generated_at": "2026-05-11T19:02:29.126025+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Crypto Laundering",
     "sectors": [
       "crypto",
       "banking",
@@ -89,15 +92,6 @@
       "BL-0027",
       "BL-0034",
       "BL-0036"
-    ],
-    "detection_rule_ids": [
-      "DL-0113",
-      "DL-0114",
-      "DL-0142",
-      "DL-0203",
-      "DL-0204",
-      "DL-0205",
-      "DL-0206"
     ],
     "related_tps": [
       {

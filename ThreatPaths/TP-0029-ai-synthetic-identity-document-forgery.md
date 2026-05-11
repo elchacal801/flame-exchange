@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "identity-synthetic"
+primary_phase: "P2"
+short_name: "AI Synth ID Forgery"
 mitre_attack:
   - T1585.001  # Establish Accounts: Social Media Accounts
   - T1588.005  # Obtain Capabilities: Exploits

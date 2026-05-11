@@ -15,6 +15,9 @@ fraud_types:
   - romance-scam
   - money-mule
 cfpf_phases: [P1, P2, P3, P4, P5]
+fraud_family: "investment-romance"
+primary_phase: "P3"
+short_name: "Romance Mule Pipeline"
 mitre_attack: [T1656]
 ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT021", "FT043", "FT007.009", "FT008.003", "FT010.003", "FT052.001", "FT018", "FT051.004", "FT016", "FT020"]                  # Stripe FT3 (when mapped)
 mitre_f3: ["F1009", "F1018", "F1020", "F1025", "F1031", "F1032", "F1045", "F1047", "T1585"]

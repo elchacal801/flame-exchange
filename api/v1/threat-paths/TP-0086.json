@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.729997+00:00",
+    "generated_at": "2026-05-11T19:02:29.196172+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "rdga-registered",
     "geopolitical_timing": "conflict-triggered",
     "nation_state_nexus": "suspected",
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P1",
+    "short_name": "Crisis Exploitation",
     "sectors": [
       "government",
       "banking",
@@ -99,12 +102,6 @@
       "improve": "Level 2"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0218",
-      "DL-0219",
-      "DL-0220",
-      "DL-0221"
-    ],
     "related_tps": [
       {
         "id": "TP-0041",

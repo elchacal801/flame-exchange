@@ -25,6 +25,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "retail-ecommerce"
+primary_phase: "P3"
+short_name: "Affiliate Fraud"
 confidence_score: 75
 source_reliability: B
 info_credibility: 2

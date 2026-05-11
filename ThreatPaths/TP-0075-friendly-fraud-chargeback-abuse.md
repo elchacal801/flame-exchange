@@ -22,6 +22,9 @@ sector:
 cfpf_phases:
   - P4
   - P5
+fraud_family: "retail-ecommerce"
+primary_phase: "P4"
+short_name: "Friendly Fraud"
 confidence_score: 85
 source_reliability: A
 info_credibility: 2

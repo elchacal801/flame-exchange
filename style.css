@@ -13,6 +13,9 @@
     --color-p3: #a855f7;
     --color-p4: #3b82f6;
     --color-p5: #22c55e;
+    --conf-high-color: #22c55e;
+    --conf-med-color: #eab308;
+    --conf-low-color: #ef4444;
     --color-sector: #0ea5e9;
     --color-fraud: #f43f5e;
     --color-mitre: #a78bfa;
@@ -900,6 +903,242 @@ h4 {
     background: var(--color-surface-1);
     border-radius: var(--radius-sm);
     border: 1px solid var(--color-border);
+}
+
+/* ---------------------------------------------------------------
+   Browse Toolbar & View Toggle
+   --------------------------------------------------------------- */
+.browse-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+.view-toggle {
+    display: flex;
+    gap: 2px;
+    background: var(--color-surface-2);
+    padding: 3px;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.view-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: calc(var(--radius-md) - 2px);
+    background: transparent;
+    color: var(--color-text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--duration) var(--ease);
+    font-family: inherit;
+}
+
+.view-toggle-btn:hover {
+    color: var(--color-text-dim);
+    background: var(--color-surface-3);
+}
+
+.view-toggle-btn.active {
+    background: var(--color-accent);
+    color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.view-toggle-btn svg {
+    flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------
+   Matrix View
+   --------------------------------------------------------------- */
+.matrix-view {
+    display: block;
+}
+
+.matrix-sector-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+}
+
+.matrix-sector-tab {
+    padding: 5px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--color-text-dim);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--duration) var(--ease);
+    font-family: inherit;
+    white-space: nowrap;
+}
+
+.matrix-sector-tab:hover {
+    border-color: var(--color-text-muted);
+    background: var(--color-surface-2);
+    color: var(--color-text);
+}
+
+.matrix-sector-tab.active {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: #fff;
+}
+
+.matrix-sector-tab .tab-count {
+    font-size: 0.72rem;
+    opacity: 0.7;
+    margin-left: 4px;
+}
+
+.matrix-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface-1);
+}
+
+.matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 800px;
+}
+
+.matrix-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--color-surface-2);
+    padding: 12px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-dim);
+    border-bottom: 2px solid var(--color-border);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.matrix-table th:first-child {
+    text-align: left;
+    padding-left: var(--space-md);
+    width: 220px;
+    min-width: 180px;
+    position: sticky;
+    left: 0;
+    z-index: 3;
+}
+
+.matrix-table th.phase-col {
+    border-bottom-color: var(--phase-color, var(--color-border));
+    border-bottom-width: 3px;
+}
+
+.matrix-table td {
+    padding: 10px 8px;
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+}
+
+.matrix-table td:last-child {
+    border-right: none;
+}
+
+.matrix-table td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--color-surface-1);
+    border-right: 2px solid var(--color-border);
+    padding-left: var(--space-md);
+}
+
+.matrix-table tr:hover td {
+    background: var(--color-surface-2);
+}
+
+.matrix-table tr:hover td:first-child {
+    background: var(--color-surface-2);
+}
+
+.matrix-family-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-text);
+    line-height: 1.3;
+}
+
+.matrix-family-count {
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+.matrix-cell-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.matrix-chip {
+    display: inline-block;
+    padding: 3px 8px 3px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--duration) var(--ease);
+    background: var(--color-surface-3);
+    color: var(--color-text-dim);
+    border: 1px solid transparent;
+    border-left: 3px solid transparent;
+    text-decoration: none;
+    line-height: 1.4;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.matrix-chip.conf-high { background: var(--color-surface-3); border-left-color: var(--conf-high-color); }
+.matrix-chip.conf-med  { background: var(--color-surface-3); border-left-color: var(--conf-med-color); }
+.matrix-chip.conf-low  { background: var(--color-surface-3); border-left-color: var(--conf-low-color); }
+
+.matrix-chip:hover {
+    background: var(--color-accent);
+    color: #fff;
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.matrix-chip.dimmed {
+    opacity: 0.25;
+}
+
+.matrix-empty-row td {
+    text-align: center;
+    color: var(--color-text-muted);
+    font-style: italic;
+    padding: var(--space-lg);
 }
 
 /* ---------------------------------------------------------------
@@ -2401,15 +2640,15 @@ h4 {
 }
 
 .conf-high {
-    background: #22c55e;
+    background: var(--conf-high-color);
 }
 
 .conf-med {
-    background: #eab308;
+    background: var(--conf-med-color);
 }
 
 .conf-low {
-    background: #ef4444;
+    background: var(--conf-low-color);
 }
 
 .conf-badge {
@@ -2422,16 +2661,16 @@ h4 {
 }
 
 .conf-badge.conf-high {
-    background: #22c55e;
+    background: var(--conf-high-color);
 }
 
 .conf-badge.conf-med {
-    background: #eab308;
+    background: var(--conf-med-color);
     color: #1a1a1a;
 }
 
 .conf-badge.conf-low {
-    background: #ef4444;
+    background: var(--conf-low-color);
 }
 
 /* ---------------------------------------------------------------
@@ -4018,6 +4257,48 @@ h4 {
 /* Light mode filter panel on mobile */
 [data-theme="light"] .filter-panel {
     background: var(--color-surface-3);
+}
+
+/* ---------------------------------------------------------------
+   Matrix View — Responsive
+   --------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .browse-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .view-toggle {
+        align-self: flex-end;
+    }
+
+    .matrix-sector-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: var(--space-sm);
+    }
+
+    .matrix-table {
+        min-width: 600px;
+    }
+
+    .matrix-table th:first-child,
+    .matrix-table td:first-child {
+        width: 140px;
+        min-width: 120px;
+    }
+
+    .matrix-view[style*="display: none"] + .card-grid {
+        display: grid !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .view-toggle-btn span,
+    .view-toggle-btn:not(.active) svg + * {
+        display: none;
+    }
 }
 
 /* ---------------------------------------------------------------

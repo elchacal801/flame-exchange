@@ -186,7 +186,10 @@ CREATE TABLE IF NOT EXISTS submissions (
     info_credibility INTEGER,
     infrastructure_generation_method TEXT,
     geopolitical_timing TEXT,
-    nation_state_nexus TEXT
+    nation_state_nexus TEXT,
+    fraud_family TEXT,
+    primary_phase TEXT,
+    short_name TEXT
 );
 
 CREATE TABLE IF NOT EXISTS submission_sectors (
@@ -257,6 +260,8 @@ CREATE TABLE IF NOT EXISTS techniques (
 CREATE INDEX IF NOT EXISTS idx_infra_gen ON submissions(infrastructure_generation_method);
 CREATE INDEX IF NOT EXISTS idx_geo_timing ON submissions(geopolitical_timing);
 CREATE INDEX IF NOT EXISTS idx_ns_nexus ON submissions(nation_state_nexus);
+CREATE INDEX IF NOT EXISTS idx_fraud_family ON submissions(fraud_family);
+CREATE INDEX IF NOT EXISTS idx_primary_phase ON submissions(primary_phase);
 CREATE INDEX IF NOT EXISTS idx_sectors ON submission_sectors(sector);
 CREATE INDEX IF NOT EXISTS idx_fraud_types ON submission_fraud_types(fraud_type);
 CREATE INDEX IF NOT EXISTS idx_cfpf ON submission_cfpf_phases(phase);
@@ -334,8 +339,9 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
         """INSERT OR REPLACE INTO submissions
            (id, title, category, date, author, source, tlp, summary, body, file_path,
             confidence_score, source_reliability, info_credibility,
-            infrastructure_generation_method, geopolitical_timing, nation_state_nexus)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            infrastructure_generation_method, geopolitical_timing, nation_state_nexus,
+            fraud_family, primary_phase, short_name)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             sub_id,
             meta.get("title", ""),
@@ -353,6 +359,9 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
             meta.get("infrastructure_generation_method"),
             meta.get("geopolitical_timing"),
             meta.get("nation_state_nexus"),
+            meta.get("fraud_family"),
+            meta.get("primary_phase"),
+            meta.get("short_name"),
         )
     )
 

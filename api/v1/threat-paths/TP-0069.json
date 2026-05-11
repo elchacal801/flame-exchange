@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.639389+00:00",
+    "generated_at": "2026-05-11T19:02:29.163899+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "none",
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P2",
+    "short_name": "Smishing PhaaS",
     "sectors": [
       "cross-sector",
       "banking",
@@ -117,10 +120,6 @@
       "improve": "Level 2"
     },
     "baseline_ids": [],
-    "detection_rule_ids": [
-      "DL-0149",
-      "DL-0201"
-    ],
     "related_tps": [
       {
         "id": "TP-0008",

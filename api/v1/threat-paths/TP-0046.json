@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.508910+00:00",
+    "generated_at": "2026-05-11T19:02:29.120141+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": "election-cycle",
     "nation_state_nexus": "suspected",
+    "fraud_family": "state-geopolitical",
+    "primary_phase": "P1",
+    "short_name": "Geo-Timed Campaigns",
     "sectors": [
       "banking",
       "payments",
@@ -80,11 +83,6 @@
     "baseline_ids": [
       "BL-0025",
       "BL-0036"
-    ],
-    "detection_rule_ids": [
-      "DL-0105",
-      "DL-0106",
-      "DL-0107"
     ],
     "related_tps": [
       {

@@ -22,6 +22,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "account-takeover"
+primary_phase: "P3"
+short_name: "Treasury ATO"
 mitre_attack:
   - T1583.001  # Acquire Infrastructure: Domains
   - T1566.002  # Phishing: Spearphishing Link

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.259530+00:00",
+    "generated_at": "2026-05-11T19:02:29.038734+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "identity-synthetic",
+    "primary_phase": "P3",
+    "short_name": "Synth ID Bust-Out",
     "sectors": [
       "banking",
       "fintech"
@@ -95,16 +98,6 @@
     "baseline_ids": [
       "BL-0007",
       "BL-0032"
-    ],
-    "detection_rule_ids": [
-      "DL-0151",
-      "DL-0152",
-      "DL-0153",
-      "DL-0154",
-      "DL-0157",
-      "DL-0158",
-      "DL-0160",
-      "DL-0184"
     ],
     "related_tps": [
       {

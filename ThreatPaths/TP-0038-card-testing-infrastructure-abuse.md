@@ -23,6 +23,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "fraud-infrastructure"
+primary_phase: "P3"
+short_name: "Card Testing"
 mitre_attack:
   - T1110.001  # Brute Force: Password Guessing (BIN enumeration)
   - T1583.001  # Acquire Infrastructure: Domains

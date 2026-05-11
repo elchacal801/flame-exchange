@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.563162+00:00",
+    "generated_at": "2026-05-11T19:02:29.137239+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": "manual",
     "geopolitical_timing": "none",
     "nation_state_nexus": "suspected",
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P5",
+    "short_name": "Crypto Terror Nexus",
     "sectors": [
       "crypto",
       "banking",
@@ -104,12 +107,6 @@
     "baseline_ids": [
       "BL-0034",
       "BL-0036"
-    ],
-    "detection_rule_ids": [
-      "DL-0174",
-      "DL-0196",
-      "DL-0198",
-      "DL-0207"
     ],
     "related_tps": [
       {

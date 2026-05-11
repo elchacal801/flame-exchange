@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.425869+00:00",
+    "generated_at": "2026-05-11T19:02:29.091813+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "crypto-laundering",
+    "primary_phase": "P4",
+    "short_name": "Wallet Drainer",
     "sectors": [
       "web3",
       "crypto"
@@ -115,9 +118,6 @@
     },
     "baseline_ids": [
       "BL-0010"
-    ],
-    "detection_rule_ids": [
-      "DL-0168"
     ],
     "related_tps": [
       {

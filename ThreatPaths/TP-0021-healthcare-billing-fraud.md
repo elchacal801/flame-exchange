@@ -28,6 +28,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "insurance-healthcare"
+primary_phase: "P4"
+short_name: "Healthcare Billing"
 mitre_attack:
   - T1589.001  # Gather Victim Identity Information: Credentials
   - T1656      # Impersonation

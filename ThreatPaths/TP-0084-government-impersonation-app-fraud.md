@@ -25,6 +25,9 @@ cfpf_phases:
   - P3
   - P4
   - P5
+fraud_family: "social-engineering"
+primary_phase: "P4"
+short_name: "Gov Impersonation APP"
 confidence_score: 85
 source_reliability: A
 info_credibility: 1

@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-04-17T14:49:38.420621+00:00",
+    "generated_at": "2026-05-11T19:02:29.090015+00:00",
     "total": 1
   },
   "data": {
@@ -20,6 +20,9 @@
     "infrastructure_generation_method": null,
     "geopolitical_timing": null,
     "nation_state_nexus": null,
+    "fraud_family": "retail-ecommerce",
+    "primary_phase": "P4",
+    "short_name": "Refund-as-a-Service",
     "sectors": [
       "retail"
     ],
@@ -93,13 +96,6 @@
     },
     "baseline_ids": [
       "BL-0008"
-    ],
-    "detection_rule_ids": [
-      "DL-0062",
-      "DL-0063",
-      "DL-0065",
-      "DL-0066",
-      "DL-0125"
     ],
     "related_tps": [
       {
