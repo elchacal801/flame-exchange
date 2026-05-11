@@ -1,7 +1,7 @@
 [![Build & Deploy](https://github.com/elchacal801/flame-fraud/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/elchacal801/flame-fraud/actions/workflows/build-and-deploy.yml)
 [![License: MIT](https://img.shields.io/github/license/elchacal801/flame-fraud)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
-[![Threat Paths](https://img.shields.io/badge/threat_paths-86-0078D4)](ThreatPaths/)
+[![Threat Paths](https://img.shields.io/badge/threat_paths-89-0078D4)](ThreatPaths/)
 [![Detection Rules](https://img.shields.io/badge/detection_rules-221-2ea44f)](https://github.com/elchacal801/flame-detections)
 [![STIX 2.1](https://img.shields.io/badge/STIX-2.1-6c757d)](docs/STIX-FRAUD-EXTENSION.md)
 [![MCP Server](https://img.shields.io/badge/MCP-server-8A2BE2)](mcp_server/)
@@ -20,12 +20,12 @@ FLAME is an open-source, community-driven exchange for structured fraud intellig
 
 | Metric | Count |
 |--------|-------|
-| **Threat Paths** | 86 (TP-0001 -- TP-0086) |
+| **Threat Paths** | 89 (TP-0001 -- TP-0089) |
 | **Detection Logic Rules** | 221 in [flame-detections](https://github.com/elchacal801/flame-detections) |
-| **Baselines** | 36 (49/86 TPs linked via `baseline_ids`) |
+| **Baselines** | 36 (49/89 TPs linked via `baseline_ids`) |
 | **Emulation Playbooks** | 14 adversary simulation scripts |
 | **Fraud Types** | 141 in master taxonomy |
-| **Sectors Covered** | 22 |
+| **Sectors Covered** | 24 |
 | **Framework Cross-Mappings** | 7 (CFPF, ATT&CK, MITRE F3, Group-IB FM, Stripe FT3, UCFF, Regulatory) |
 | **Regulatory Requirements** | 31 across 7 jurisdictions |
 | **Export Formats** | 5 (STIX, MISP, TAXII, RSS, JSON API) |
@@ -52,7 +52,7 @@ Between April 2025 and April 2026, six organizations independently concluded tha
 
 \* Detection rules are migrating to [flame-detections](https://github.com/elchacal801/flame-detections) for independent quality and contribution cadence.
 
-The ACAMS International Anti-Fraud and Technology Task Force [confirmed in March 2026](docs/COMPETITIVE-LANDSCAPE.md#cross-sector-information-sharing-landscape-acams-2026) that cross-sector fraud intelligence sharing is the #1 industry priority — yet remains systemically blocked by siloed data, incompatible formats, and lack of structured typologies. FLAME directly addresses each of these barriers through open-source structured threat paths, standardized exports (STIX/MISP/TAXII/Sigma), and a common taxonomy spanning 141 fraud types across 22 sectors.
+The ACAMS International Anti-Fraud and Technology Task Force [confirmed in March 2026](docs/COMPETITIVE-LANDSCAPE.md#cross-sector-information-sharing-landscape-acams-2026) that cross-sector fraud intelligence sharing is the #1 industry priority — yet remains systemically blocked by siloed data, incompatible formats, and lack of structured typologies. FLAME directly addresses each of these barriers through open-source structured threat paths, standardized exports (STIX/MISP/TAXII/Sigma), and a common taxonomy spanning 141 fraud types across 24 sectors.
 
 ---
 
@@ -60,11 +60,11 @@ The ACAMS International Anti-Fraud and Technology Task Force [confirmed in March
 
 | Framework | Status |
 |-----------|--------|
-| FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 86 TPs mapped |
+| FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 89 TPs mapped |
 | MITRE ATT&CK | Supplementary mapping where applicable |
-| MITRE F3 (Fight Fraud Framework) | Mapped (72/86 TPs) via `f3_mapper.py` -- shipped April 2026 |
+| MITRE F3 (Fight Fraud Framework) | Mapped (72/89 TPs) via `f3_mapper.py` -- shipped April 2026 |
 | Group-IB Fraud Matrix 2.0 | Cross-reference mapping (stage names) |
-| Stripe FT3 | Mapped (69/86 TPs) via `ft3_mapper.py` |
+| Stripe FT3 | Mapped (69/89 TPs) via `ft3_mapper.py` |
 | Group-IB UCFF | Defense-side maturity alignment (7 domains) |
 
 **What FLAME is not:** FLAME is not a taxonomy project. It is a knowledge exchange that sits on top of existing taxonomies, providing the operational intelligence -- threat paths, detection queries, investigation playbooks, and cross-team correlation guidance -- that no taxonomy alone delivers.
@@ -148,7 +148,7 @@ graph TD
 ## Repository Structure
 
 ```
-ThreatPaths/           86 fraud scheme lifecycle mappings (TP-XXXX.md)
+ThreatPaths/           89 fraud scheme lifecycle mappings (TP-XXXX.md)
                        (Detection rules now in flame-detections repo)
 Baselines/             36 environmental profiling benchmarks (BL-XXXX.md)
 EmulationPlaybooks/    14 adversary simulation playbooks (EP-XXXX.json)
@@ -182,7 +182,7 @@ docs/                  Project documentation and specifications
 
 ## Threat Path Collection
 
-FLAME ships with **86 threat paths** covering **141 fraud types** across **22 sectors**.
+FLAME ships with **89 threat paths** covering **141 fraud types** across **24 sectors**.
 
 | ID | Scheme | Key Fraud Types |
 |----|--------|-----------------|
@@ -337,7 +337,7 @@ The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark 
 |---|---|
 | **Attack Flow Diagram** | Horizontal CFPF phase flow (P1--P5) per threat path with MITRE technique cards and detection rule badges |
 | **Ego Neighborhood Graph** | Force-directed 1--2 hop subgraph showing related threat paths with typed relationships |
-| **Global Relationship Graph** | Full-network force layout of all 86 TPs, sector-clustered with 7 color-coded relationship types |
+| **Global Relationship Graph** | Full-network force layout of all 89 TPs, sector-clustered with 7 color-coded relationship types |
 | **UCFF Radar Chart** | 7-axis maturity profile for the UCFF self-assessment |
 | **Coverage Heat Map** | Fraud type x CFPF phase coverage matrix with intensity-based coloring |
 | **Framework Navigator** | Cross-framework coverage grid (CFPF, MITRE ATT&CK, MITRE F3, Group-IB, FT3) with SVG and ATT&CK Navigator JSON export |
@@ -378,7 +378,7 @@ The FLAME frontend is a vanilla HTML/CSS/JS single-page application with a dark 
 
 ### MISP Galaxy & Feed
 
-A subscribable MISP galaxy with **86 cluster entries** cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`. Point your MISP instance feed URL to `database/misp-feed/manifest.json` on the GitHub Pages site.
+A subscribable MISP galaxy with **89 cluster entries** cross-referenced to MITRE ATT&CK, plus a per-TP event feed at `database/misp-feed/`. Point your MISP instance feed URL to `database/misp-feed/manifest.json` on the GitHub Pages site.
 
 ### TAXII 2.1 Endpoints
 
@@ -595,7 +595,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 
 - [Architecture](docs/ARCHITECTURE.md) -- System architecture, data flow, and component overview
 - [STIX Fraud Extension](docs/STIX-FRAUD-EXTENSION.md) -- Custom SDO specification (4 SDOs, 5 relationship types)
-- [Taxonomy Reference](docs/TAXONOMY.md) -- 141 fraud types, 22 sectors, CFPF phases, cross-framework mappings
+- [Taxonomy Reference](docs/TAXONOMY.md) -- 141 fraud types, 24 sectors, CFPF phases, cross-framework mappings
 - [OpenAPI Specification](docs/openapi.yaml) -- REST API schema for programmatic integration
 - [MCP Tools Reference](docs/MCP-TOOLS.md) -- MCP server tool documentation and usage examples
 - [Competitive Landscape](docs/COMPETITIVE-LANDSCAPE.md) -- How FLAME relates to Group-IB, MITRE, Stripe, FS-ISAC
@@ -612,7 +612,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 
 ## Roadmap
 
-- ~~**MITRE F3 mapping**~~ -- Completed April 2026 (72/86 TPs mapped)
+- ~~**MITRE F3 mapping**~~ -- Completed April 2026 (72/89 TPs mapped)
 - ~~**Detection rule decoupling**~~ -- Completed May 2026: 221 rules in [flame-detections](https://github.com/elchacal801/flame-detections)
 - **STIX SCO extensions** -- Observable-level extensions for fraud indicators
 - **Expanded emulation playbooks** -- Coverage for remaining threat path categories
@@ -626,7 +626,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 - **FS-ISAC CFPF Working Group** -- Primary fraud lifecycle framework
 - **Group-IB** -- Fraud Matrix 2.0 stage names and UCFF governance domains referenced for cross-taxonomy interoperability
 - **Stripe** -- FT3 (MIT-licensed) taxonomy structure
-- **MITRE** -- ATT&CK framework; F3 Fight Fraud Framework (shipped April 2026, mapped to 72/86 TPs)
+- **MITRE** -- ATT&CK framework; F3 Fight Fraud Framework (shipped April 2026, mapped to 72/89 TPs)
 - **FBI IC3** -- 2025 Internet Crime Report ($20.877B losses) enriching 17 TPs with updated statistics
 - **OASIS** -- STIX 2.1 and TAXII 2.1 specifications
 - **Recorded Future** -- Source intelligence for payment fraud threat paths (TP-0035 -- TP-0039)
