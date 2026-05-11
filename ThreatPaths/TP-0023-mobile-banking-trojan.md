@@ -60,6 +60,7 @@ regulatory_refs:
   - REG-FFIEC-AUTH
   - REG-OCC-FRAUD
   - REG-PSD3-SCA
+  - REG-RF-CTA-2026-0319
 baseline_ids: []
 tags:
   - mbanking
@@ -214,6 +215,39 @@ The Thales Threat Landscape Report 2025 H2 identified four additional mobile ban
 
 Hook v3 and ToxicPanda follow the established overlay/Accessibility Services model, while Astaroth and Coyote represent capability evolution: Astaroth's GitHub-based C2 improves resilience against takedowns, and Coyote's abuse of the Microsoft UI Automation API is a novel technique that may evade behavioral biometrics tuned for traditional ATS navigation patterns.
 
+### 2025 Mobile Malware Landscape Update
+
+Recorded Future's Insikt Group analysis of 2025 malicious infrastructure (CTA-2026-0319, March 2026) provides a comprehensive view of the mobile malware C2 landscape, reinforcing and extending the family-specific intelligence above.
+
+**C2 Volume and Market Share Shifts:**
+
+- **SpyNote** emerged as the #1 mobile malware in 2025 based on C2 volume, accounting for roughly half of all mobile malware detections. Its dominance reflects both widespread adoption and prolific C2 infrastructure deployment.
+- **Octo** banking trojan surged from 6% to 18% C2 share in 2025, indicating rapid operator growth and increased targeting of financial institutions.
+- **Hook's** share declined sharply from over 40% to 14%, despite the release of Hook v3 (documented above). The decline may reflect market fragmentation following source code leaks and increased competition from SpyNote and Octo.
+
+**Source Code Leaks as Ecosystem Accelerant:**
+
+Source code leaks for SpyNote, Hook, and Octo accelerated adoption across the threat actor ecosystem, encouraged forking of established malware families, and pushed original developers to release new versions with enhanced capabilities to maintain competitive advantage in the MaaS marketplace. This dynamic mirrors the broader malware commoditization trend where leaked source code lowers the barrier to entry and expands the operator base.
+
+**Platform Targeting:**
+
+9 of the top 10 mobile malware families in 2025 targeted Android exclusively, reinforcing Android's position as the primary attack surface for mobile banking fraud. LightSpy was the only iOS-targeting family in the top 10, reflecting the continued effectiveness of Apple's App Store review and sideloading restrictions (though these are evolving with EU DMA requirements).
+
+**Key Mobile Banking Trojans (2025 Ranked by C2 Volume):**
+
+| Rank | Family | Notable Characteristics |
+|------|--------|------------------------|
+| 1 | SpyNote | ~50% of mobile malware C2 volume; source code leaked |
+| 2 | Octo | Surged from 6% to 18% share; banking overlay specialist |
+| 3 | MoqHao | SMS-based distribution; East Asian targeting |
+| 4 | Hook | Declined from 40%+ to 14%; source code leaked; v3 released |
+| 5 | Joker | Billing fraud and subscription abuse |
+| 6 | AlienBot Banker | Banking credential harvesting |
+| 7 | Hydra | Banking overlay attacks |
+| 8 | ERMAC | Banking credential theft; Android Accessibility abuse |
+| 9 | LightSpy | Only iOS-targeting family in top 10 |
+| 10 | PhantomCard | Payment card fraud capabilities |
+
 ---
 
 ## References
@@ -225,6 +259,7 @@ Hook v3 and ToxicPanda follow the established overlay/Accessibility Services mod
 - OWASP Mobile Security: "Mobile Application Security Verification Standard (MASVS)" — RASP and anti-tampering requirements. [Link](https://mas.owasp.org/MASVS/)
 - Europol: Internet Organised Crime Threat Assessment (IOCTA) — mobile malware as a service trends. [Link](https://www.europol.europa.eu/publications-events/main-reports/internet-organised-crime-threat-assessment-iocta)
 - Thales Group CTI, "Threat Landscape Report 2025 H2" — Finance sector mobile malware analysis (Hook v3, ToxicPanda, Astaroth, Coyote)
+- Recorded Future Insikt Group, "2025 Year in Review: Malicious Infrastructure" (CTA-2026-0319), March 2026 — Mobile malware C2 landscape analysis: SpyNote dominance (~50% C2 share), Octo surge (6%→18%), Hook decline (40%+→14%), source code leak ecosystem effects, Android exclusivity (9/10 top families), LightSpy as sole iOS entrant
 
 ---
 
@@ -246,3 +281,4 @@ Hook v3 and ToxicPanda follow the established overlay/Accessibility Services mod
 | 2026-02-20 | FLAME Project | Initial creation |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Analyst Notes, enriched References |
 | 2026-03-23 | FLAME Project | Enrichment: added Hook v3, ToxicPanda, Astaroth, Coyote from Thales 2025 H2 report; added TP-0069 relationship; added operational evidence |
+| 2026-05-09 | FLAME Project | Enrichment: added 2025 Mobile Malware Landscape Update from Recorded Future CTA-2026-0319 — SpyNote #1 by C2 volume, Octo surge, Hook decline, source code leak effects, Android exclusivity, top 10 family ranking table; added REG-RF-CTA-2026-0319 regulatory ref |
