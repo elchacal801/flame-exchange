@@ -4640,6 +4640,196 @@
           "type": "uses"
         }
       ]
+    },
+    {
+      "value": "Infostealer-to-Fraud Pipeline \u2014 MaaS Credential Harvesting to Financial Fraud",
+      "description": "Infostealer malware-as-a-service (MaaS) has become the primary infection vector enabling financial fraud at scale. In 2025, LummaC2 accounted for more than 35% of all detected infostealer C2 servers d...",
+      "uuid": "eb8ae2e3-4797-5047-a18e-c9d8f3af97a3",
+      "meta": {
+        "fraud_types": [
+          "credential-harvesting",
+          "account-takeover",
+          "data-theft",
+          "fraud-as-a-service",
+          "crypto-laundering",
+          "unauthorized-transaction"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 85,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0087"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "3a35d3d5-34a4-5af6-bfe2-398686db7548",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "f9213ee3-dd73-575c-9367-52e7feefd6ec",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "951da908-964a-5eae-9fa2-9804c7370d79",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "4b4350c1-4b4d-5a5a-a26a-6ee713521c9a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "282fe262-1d1a-5e03-937c-51df19e82607",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "Logistics Sector Spearphishing \u2014 Carrier Impersonation and Freight Document Fraud",
+      "description": "TAG-160 is a financially motivated threat cluster active since at least March 2025 that specifically targets the logistics and freight sector. The actor impersonates legitimate carriers (notably Engla...",
+      "uuid": "3c4cb629-6186-5d72-b9c4-6fa31efcc9eb",
+      "meta": {
+        "fraud_types": [
+          "phishing",
+          "brand-impersonation",
+          "social-engineering",
+          "credential-harvesting",
+          "fraud-enabling-infrastructure"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 80,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0088"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "e02671e7-b6f5-5485-bdb7-a2c0f9774a35",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c0e8e151-8491-522b-b32b-eaf6737d516b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "a6398401-2af9-563c-b6f7-b08570236575",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
+    },
+    {
+      "value": "TAE Upstream Transit Provider Complicity \u2014 Structural Enablement of Malicious Hosting",
+      "description": "Threat Activity Enabler (TAE) networks \u2014 hosting providers that sustain malicious cyber operations through no-KYC policies, selective abuse response, and corporate obfuscation \u2014 depend on upstream tra...",
+      "uuid": "fa4276f9-29b5-596c-8f7d-47236a586c1f",
+      "meta": {
+        "fraud_types": [
+          "bulletproof-hosting",
+          "fraud-enabling-infrastructure",
+          "sanctions-evasion-infrastructure",
+          "hosting-provider-complicity",
+          "bph-migration"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0089"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "1791118c-af37-57a0-a8fe-c0ede6922a0c",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "a556cf41-3d05-515b-aafa-59ef35d4d444",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "c39038a1-0738-5785-87de-0319c7362cbb",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
     }
   ]
 }

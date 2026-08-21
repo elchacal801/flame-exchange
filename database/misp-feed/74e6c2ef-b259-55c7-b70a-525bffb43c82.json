@@ -1,0 +1,98 @@
+{
+  "Event": {
+    "uuid": "74e6c2ef-b259-55c7-b70a-525bffb43c82",
+    "info": "FLAME: Infostealer-to-Fraud Pipeline \u2014 MaaS Credential Harvesting to Financial Fraud",
+    "date": "2026-05-10",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "344cd78b-2045-5708-8605-3af0ef6d6cc3",
+        "type": "text",
+        "category": "Other",
+        "value": "credential-harvesting",
+        "comment": "Fraud type for TP-0087"
+      },
+      {
+        "uuid": "d1339c7b-8c96-530d-9d9a-e6eda26fd25e",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0087"
+      },
+      {
+        "uuid": "bcd20080-fc79-5278-855b-6a8d7811077e",
+        "type": "text",
+        "category": "Other",
+        "value": "data-theft",
+        "comment": "Fraud type for TP-0087"
+      },
+      {
+        "uuid": "1e6e19ae-4365-5980-9515-861371ac3084",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-as-a-service",
+        "comment": "Fraud type for TP-0087"
+      },
+      {
+        "uuid": "5b779ca7-5a93-5249-9768-f0fc96f57769",
+        "type": "text",
+        "category": "Other",
+        "value": "crypto-laundering",
+        "comment": "Fraud type for TP-0087"
+      },
+      {
+        "uuid": "7c114418-10d9-564b-af36-e348c50b307a",
+        "type": "text",
+        "category": "Other",
+        "value": "unauthorized-transaction",
+        "comment": "Fraud type for TP-0087"
+      },
+      {
+        "uuid": "d9246e26-b113-5b81-a323-8f84f8efa3f9",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0087"
+      },
+      {
+        "uuid": "3ad98329-791d-5457-aced-52a3582994ca",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0087"
+      },
+      {
+        "uuid": "1ab72cef-2879-5e8e-97fb-162e87df5c39",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0087"
+      },
+      {
+        "uuid": "177bf3b8-12de-57f5-afa6-927724f28b8c",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0087"
+      },
+      {
+        "uuid": "27ae78d5-91b6-5b4d-acd6-9a81a83509d3",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0087"
+      }
+    ]
+  }
+}

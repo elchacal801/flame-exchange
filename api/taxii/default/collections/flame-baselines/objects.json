@@ -614,6 +614,43 @@
     },
     {
       "spec_version": "2.1",
+      "description": "Establishes normal behavioral patterns for crypto ATM/kiosk transactions, segmented by customer age cohort. FBI IC3 2025 data shows crypto ATM fraud generated 13,460 complaints with $389 million in losses (58% increase from 2024). The elder demographic (60+) is disproportionately impacted: 6,188 complaints (46%) and $257 million (66% of losses). These baselines help detection rules (DL-0212) distinguish legitimate crypto ATM usage from fraud-directed deposits.",
+      "id": "x-flame-baseline--b453527d-2728-5c12-80c8-501cd86907f0",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "crypto-atm",
+        "kiosk",
+        "elder-fraud",
+        "cryptocurrency",
+        "physical-to-digital"
+      ],
+      "name": "Crypto ATM Transaction Norms by Age Cohort",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
+      "description": "Establishes normal behavioral patterns for precious metals purchases (MCC 5094: Precious Stones/Metals, MCC 5944: Jewelry/Watch/Clock stores), segmented by customer type. FBI IC3 2025 data shows gold courier scams generated 725 complaints with $311.8 million in losses \u2014 an extraordinary average of ~$430,000 per victim. These baselines help detection rules (DL-0213) distinguish legitimate precious metals activity from scam-directed purchases.",
+      "id": "x-flame-baseline--8cb9da18-5637-5959-bf05-4cb6dc2e03b3",
+      "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",
+      "labels": [
+        "precious-metals",
+        "gold-courier",
+        "elder-fraud",
+        "physical-cashout",
+        "mcc-5094",
+        "mcc-5944"
+      ],
+      "name": "Precious Metals Purchase Norms by Customer Segment",
+      "type": "x-flame-baseline",
+      "object_marking_refs": [
+        "marking-definition--613f2e26-407d-48c7-9eca-b8e91df99dc9"
+      ]
+    },
+    {
+      "spec_version": "2.1",
       "description": "This baseline document defines the \"normal\" operating parameters for commercial wire transfers within the SME (Small to Medium Enterprise) banking sector, used to contextualize detection rules for TP-0002 (BEC), TP-0019 (Business Identity Theft), and TP-0020 (Supply Chain Payment Fraud).",
       "id": "x-flame-baseline--bfc0004f-9951-52ad-962a-6d91c1f5e59a",
       "created_by_ref": "identity--65554659-7398-56b2-af55-de72293f4025",

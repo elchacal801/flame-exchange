@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "584a5ff2-b22e-5e70-b09d-cb704e61150a",
+    "info": "FLAME: TAE Upstream Transit Provider Complicity \u2014 Structural Enablement of Malicious Hosting",
+    "date": "2026-05-10",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "c9702802-0044-5c8e-810a-40839c36d03d",
+        "type": "text",
+        "category": "Other",
+        "value": "bulletproof-hosting",
+        "comment": "Fraud type for TP-0089"
+      },
+      {
+        "uuid": "94c48367-20ad-5c3f-95b1-d0caeff2a461",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-enabling-infrastructure",
+        "comment": "Fraud type for TP-0089"
+      },
+      {
+        "uuid": "747137f7-5e39-5bb9-baf0-8c5e04582916",
+        "type": "text",
+        "category": "Other",
+        "value": "sanctions-evasion-infrastructure",
+        "comment": "Fraud type for TP-0089"
+      },
+      {
+        "uuid": "f6f2f59b-878d-551b-8393-b23b265bf1e6",
+        "type": "text",
+        "category": "Other",
+        "value": "hosting-provider-complicity",
+        "comment": "Fraud type for TP-0089"
+      },
+      {
+        "uuid": "0f9c48f1-b65d-5f49-9762-25634960316c",
+        "type": "text",
+        "category": "Other",
+        "value": "bph-migration",
+        "comment": "Fraud type for TP-0089"
+      },
+      {
+        "uuid": "5d28961a-7c4d-59ed-ae03-77b5c2da7f4d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0089"
+      },
+      {
+        "uuid": "cac43d28-e505-5352-b8d1-a000e6bbc1c8",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0089"
+      },
+      {
+        "uuid": "651586aa-32ce-592c-a940-ae59574cb96a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0089"
+      },
+      {
+        "uuid": "8aa5fa59-b709-5cbe-a043-0b3d77deca04",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0089"
+      },
+      {
+        "uuid": "f10578a3-e1b2-5666-b5a7-6eee96696347",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0089"
+      }
+    ]
+  }
+}

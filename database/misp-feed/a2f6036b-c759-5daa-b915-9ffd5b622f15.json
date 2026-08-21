@@ -1,0 +1,91 @@
+{
+  "Event": {
+    "uuid": "a2f6036b-c759-5daa-b915-9ffd5b622f15",
+    "info": "FLAME: Logistics Sector Spearphishing \u2014 Carrier Impersonation and Freight Document Fraud",
+    "date": "2026-05-10",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "c0ce0912-8fc4-5755-8d89-6872ff08bf50",
+        "type": "text",
+        "category": "Other",
+        "value": "phishing",
+        "comment": "Fraud type for TP-0088"
+      },
+      {
+        "uuid": "2d9f9429-bd2d-5a26-81cb-cf767667c018",
+        "type": "text",
+        "category": "Other",
+        "value": "brand-impersonation",
+        "comment": "Fraud type for TP-0088"
+      },
+      {
+        "uuid": "0fd9d535-969d-5333-8a7c-4892baebf5b0",
+        "type": "text",
+        "category": "Other",
+        "value": "social-engineering",
+        "comment": "Fraud type for TP-0088"
+      },
+      {
+        "uuid": "64fc7153-8fb5-5680-b778-5662c1765f8d",
+        "type": "text",
+        "category": "Other",
+        "value": "credential-harvesting",
+        "comment": "Fraud type for TP-0088"
+      },
+      {
+        "uuid": "15dad760-cb11-5a8f-8d6b-6e7dd674ccef",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-enabling-infrastructure",
+        "comment": "Fraud type for TP-0088"
+      },
+      {
+        "uuid": "51d2c973-2cff-5aef-8aa8-7f5eb080f77d",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0088"
+      },
+      {
+        "uuid": "c7a37226-fa5b-5f2e-b2e9-f61fe3785a92",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0088"
+      },
+      {
+        "uuid": "df4a1d21-2bd0-5d72-a143-dbddbbb32d7a",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0088"
+      },
+      {
+        "uuid": "14f284f9-b480-5160-a7a4-2a52b4707c98",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0088"
+      },
+      {
+        "uuid": "a3dd3d54-100c-55f0-ae8e-97e7d1216f57",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0088"
+      }
+    ]
+  }
+}
