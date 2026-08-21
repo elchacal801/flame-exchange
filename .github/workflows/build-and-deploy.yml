@@ -9,6 +9,7 @@ on:
       - 'tests/**'
       - 'Baselines/**'
       - 'config/**'
+      - 'data/cfpf_techniques.json'
       - 'mcp_server/**'
       - 'requirements.txt'
       - '.github/workflows/build-and-deploy.yml'
