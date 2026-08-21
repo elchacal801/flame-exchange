@@ -21,6 +21,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: build-and-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: write
 
@@ -104,6 +108,6 @@ jobs:
             echo "No changes to commit."
           else
             git commit -m "chore: rebuild database, STIX bundle, and stats [skip ci]"
-            git pull --rebase
+            git pull --rebase -X theirs
             git push
           fi
