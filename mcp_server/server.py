@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import json
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server import MCPServer
 
 from mcp_server.data_loader import FlameDataLoader
 
-mcp = FastMCP("FLAME Fraud Intelligence")
+mcp = MCPServer("FLAME Fraud Intelligence")
 loader = FlameDataLoader()
 
 

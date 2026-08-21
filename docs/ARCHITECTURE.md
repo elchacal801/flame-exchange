@@ -253,13 +253,12 @@ FLAME exposes a static TAXII 2.1 server at `api/taxii/`. This is not a live serv
 
 ### MCP Server (Model Context Protocol)
 
-The `mcp_server/server.py` module provides a local MCP server for LLM integration, built on the `FastMCP` framework. It exposes 7 tools:
+The `mcp_server/server.py` module provides a local MCP server for LLM integration, built on the `MCPServer` framework. It exposes 6 tools:
 
 | Tool | Purpose |
 |---|---|
 | `search_threat_paths` | Search by keyword, sector, fraud type, CFPF phase, infrastructure method, geopolitical timing, or nation-state nexus |
 | `get_threat_path` | Retrieve full details for a specific TP |
-| `get_detection_rules` | List detection rules, filterable by TP, fraud type, or severity level |
 | `map_framework` | Get framework-specific mappings (CFPF, MITRE, Group-IB, FT3, UCFF) for a TP |
 | `assess_coverage` | Assess detection coverage for given sectors and fraud types, returning gap analysis |
 | `get_baseline` | Retrieve fraud baseline measurements by baseline ID or related TP |
