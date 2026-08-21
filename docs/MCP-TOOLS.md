@@ -1,6 +1,6 @@
 # FLAME MCP Server Tools
 
-The FLAME MCP (Model Context Protocol) server exposes 7 tools that allow LLMs and AI agents to query the FLAME fraud intelligence knowledge base. The server is implemented in `mcp_server/server.py` using the FastMCP framework.
+The FLAME MCP (Model Context Protocol) server exposes 6 tools that allow LLMs and AI agents to query the FLAME fraud intelligence knowledge base. The server is implemented in `mcp_server/server.py` using the MCP Python SDK (`MCPServer`).
 
 **Server name**: `FLAME Fraud Intelligence`
 
@@ -88,50 +88,7 @@ Returns `{"error": "Threat path TP-XXXX not found"}` if the ID does not exist.
 
 ---
 
-## 3. get_detection_rules
-
-Get FLAME detection logic rules, optionally filtered by threat path, fraud type, or severity level.
-
-### Parameters
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `tp_id` | string | No | Filter by threat path ID (e.g., `TP-0001`) |
-| `fraud_type` | string | No | Filter by fraud type (e.g., `wire-fraud`, `money-mule`) |
-| `level` | string | No | Filter by severity level (`informational`, `low`, `medium`, `high`, `critical`) |
-
-### Returns
-
-JSON array of detection rule objects, each containing `dl_id`, `title`, `status`, `cfpf_phase`, `level`, `detection`, `queries` (with `cql` and `splunk` implementations), `threat_path_ids`, `fraud_types`, `tags`, and `falsepositives`.
-
-### Example
-
-**Prompt**: "What high-severity detection rules exist for TP-0001?"
-
-**Tool call**: `get_detection_rules(tp_id="TP-0001", level="high")`
-
-**Response structure**:
-```json
-[
-  {
-    "dl_id": "DL-0001",
-    "title": "Mule Account Velocity Pattern",
-    "status": "experimental",
-    "cfpf_phase": "P5",
-    "level": "high",
-    "queries": {
-      "cql": "transaction_type=\"ACH_IN\" | groupBy(...)",
-      "splunk": "index=flame_banking ..."
-    },
-    "threat_path_ids": ["TP-0001", "TP-0002"],
-    "fraud_types": ["money-mule"]
-  }
-]
-```
-
----
-
-## 4. map_framework
+## 3. map_framework
 
 Get framework-specific mappings for a FLAME threat path. Supports five frameworks.
 
@@ -170,7 +127,7 @@ Returns an error if the framework name is not recognized.
 
 ---
 
-## 5. assess_coverage
+## 4. assess_coverage
 
 Assess your organization's fraud detection coverage based on selected sectors and fraud types. Calculates coverage scores, identifies gaps, and recommends detection rules.
 
@@ -227,7 +184,7 @@ JSON object containing:
 
 ---
 
-## 6. get_baseline
+## 5. get_baseline
 
 Get fraud baseline measurements for benchmarking. Retrieve a specific baseline by ID or all baselines related to a threat path.
 
@@ -264,7 +221,7 @@ JSON array of baseline objects (or a single object if `baseline_id` is provided)
 
 ---
 
-## 7. look_left_right
+## 6. look_left_right
 
 Analyze upstream and downstream relationships for a threat path using the CFPF Look Left/Look Right methodology. Identifies threat paths that feed into, are enabled by, or share infrastructure with the target.
 

@@ -9,12 +9,16 @@ on:
       - 'tests/**'
       - 'Baselines/**'
       - 'config/**'
+      - 'mcp_server/**'
+      - 'requirements.txt'
+      - '.github/workflows/build-and-deploy.yml'
   pull_request:
     branches: [main]
   workflow_run:
     workflows: ["Fetch Regulatory Data"]
     types: [completed]
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -65,6 +69,7 @@ jobs:
     needs: validate
     if: >
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
@@ -93,7 +98,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add -A database/ api/ data/ flame-stix-bundle.json flame-stats.json docs/ 2>/dev/null || true
+          git add -A database/ api/ data/ docs/
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else

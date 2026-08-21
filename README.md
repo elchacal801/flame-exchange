@@ -157,7 +157,7 @@ Templates/             Submission templates (TP, DL, BL, EP)
 config/                Regulatory requirements and source configs
 scripts/               Build, validation, and export scripts (22 modules)
   regulatory/          6-source regulatory data fetchers
-mcp_server/            FastMCP server exposing 7 fraud intelligence tools
+mcp_server/            MCP server exposing 6 fraud intelligence tools
 tests/                 217 tests across pytest test modules
 database/              Generated artifacts (auto-built by CI)
   flame-index.json           Metadata-only index (fast frontend load)
