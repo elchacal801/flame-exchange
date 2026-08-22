@@ -1,17 +1,15 @@
 """
-fincen.py --- FinCEN SAR Statistics PDF source.
+fincen.py --- FinCEN Advisories and Alerts source.
 
-Downloads FinCEN SAR (Suspicious Activity Report) statistics PDF,
-extracts tables using pdfplumber, and normalises each row into a
-``RegulatoryAlert``.
+Fetches the FinCEN Advisories listing plus the Alerts/Notices hub page,
+parses their ``Title | Date | Description`` tables, and normalises each
+row into a ``RegulatoryAlert``.
 """
 
-import io
 import logging
 import re
 from typing import List
 
-import pdfplumber
 import requests
 
 from regulatory.base import RegulatorySource
@@ -21,19 +19,34 @@ logger = logging.getLogger(__name__)
 
 
 class FinCENSource(RegulatorySource):
-    """Financial Crimes Enforcement Network --- SAR Statistics PDF."""
+    """Financial Crimes Enforcement Network --- Advisories and Alerts."""
 
     name = "fincen"
 
+    DEFAULT_ADVISORIES_URL = "https://www.fincen.gov/resources/advisoriesbulletinsfact-sheets/advisories"
+    # The hub page carries the Alerts and Notices tables, which have no
+    # dedicated listing page of their own.
+    DEFAULT_ALERTS_URL = "https://www.fincen.gov/resources/advisoriesbulletinsfact-sheets"
+
     def fetch(self):
-        """Download FinCEN Advisories HTML page and return raw text."""
-        url = self.config.get("url", "https://www.fincen.gov/resources/advisoriesbulletinsfact-sheets/advisories")
+        """Download the Advisories listing and the Alerts hub page.
+
+        Returns the concatenated HTML; ``parse()`` walks every table row
+        regardless of which page it came from and dedupes by URL.
+        """
+        urls = [
+            self.config.get("url", self.DEFAULT_ADVISORIES_URL),
+            self.config.get("alerts_url", self.DEFAULT_ALERTS_URL),
+        ]
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         }
-        resp = requests.get(url, headers=headers, timeout=60)
-        resp.raise_for_status()
-        return resp.text
+        pages = []
+        for url in urls:
+            resp = requests.get(url, headers=headers, timeout=60)
+            resp.raise_for_status()
+            pages.append(resp.text)
+        return "\n".join(pages)
 
     def parse(self, raw_data) -> List[RegulatoryAlert]:
         """Parse extracted HTML into RegulatoryAlert objects.
@@ -79,6 +92,12 @@ class FinCENSource(RegulatorySource):
                 # Extract description
                 summary = desc_td.text.strip()[:300] if desc_td else "FinCEN Advisory"
 
+                # Hub-page Alerts rows link the identifier (e.g.
+                # "FIN-2026-Alert004") and put the human-readable title in
+                # the description column -- swap so titles stay meaningful.
+                if re.match(r"^FIN-\d{4}", title) and desc_td and desc_td.text.strip():
+                    title = desc_td.text.strip()[:150]
+
                 # Determine category from title + description keywords
                 text_lower = (title + " " + summary).lower()
                 if "money laundering" in text_lower or "lavado de dinero" in text_lower:
@@ -89,6 +108,8 @@ class FinCENSource(RegulatorySource):
                     category = "elder-fraud"
                 elif "ransomware" in text_lower or "ransom" in text_lower:
                     category = "ransomware"
+                elif "student aid" in text_lower or "student loan" in text_lower:
+                    category = "benefits-fraud"
                 elif "trafficking" in text_lower:
                     category = "human-trafficking"
                 elif "corruption" in text_lower or "kleptocracy" in text_lower:
@@ -119,4 +140,12 @@ class FinCENSource(RegulatorySource):
         except Exception as e:
             logger.error(f"Failed to parse FinCEN alerts: {e}")
 
-        return alerts
+        # Dedupe by URL: advisories may appear on both fetched pages.
+        seen = set()
+        unique = []
+        for x in alerts:
+            if x.url not in seen:
+                seen.add(x.url)
+                unique.append(x)
+
+        return unique
