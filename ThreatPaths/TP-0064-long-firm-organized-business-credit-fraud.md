@@ -6,6 +6,7 @@ id: TP-0064
 title: "Long-Firm and Organized Business Credit Fraud"
 category: ThreatPath
 date: 2026-03-22
+last_reviewed: 2026-03-22
 author: "FLAME Project"
 source: "UNODC Organized Fraud Issue Paper (Vienna, 2024)"
 tlp: WHITE

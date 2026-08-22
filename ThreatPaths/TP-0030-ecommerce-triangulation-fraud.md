@@ -6,6 +6,7 @@ id: TP-0030
 title: "E-Commerce Triangulation Fraud"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-04
 author: "FLAME Project"
 source: "https://www.chargebackgurus.com/blog/triangulation-fraud"
 tlp: WHITE

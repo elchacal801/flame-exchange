@@ -6,6 +6,7 @@ id: TP-0055
 title: "Crypto Fraud–Terrorism/Narco Financing Nexus"
 category: ThreatPath
 date: 2026-03-17
+last_reviewed: 2026-04-02
 author: "FLAME Project"
 source: "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026"
 tlp: WHITE

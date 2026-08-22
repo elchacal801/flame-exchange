@@ -6,6 +6,7 @@ id: TP-0049
 title: "Cryptocurrency Laundering Infrastructure"
 category: ThreatPath
 date: 2026-03-05
+last_reviewed: 2026-04-02
 author: "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs)"
 source: "https://www.chainalysis.com/blog/crypto-crime-midyear-2025/"
 tlp: WHITE

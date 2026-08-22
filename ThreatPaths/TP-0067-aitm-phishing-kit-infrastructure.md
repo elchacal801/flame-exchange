@@ -6,6 +6,7 @@ id: TP-0067
 title: "AiTM Phishing Kit Infrastructure and Session Token Hijacking"
 category: ThreatPath
 date: 2026-03-22
+last_reviewed: 2026-04-02
 author: "FLAME Project"
 source: "Organized fraud detection in 2026: a technical landscape report; Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026); Bluekit PhaaS Threat Intelligence Report (CrimsonVector, March 2026)"
 tlp: WHITE

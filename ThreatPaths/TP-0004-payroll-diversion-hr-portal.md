@@ -6,6 +6,7 @@ id: TP-0004
 title: "Payroll Diversion via HR Portal Compromise"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "FBI IC3 PSA I-091819-PSA / multiple industry reports"
 tlp: WHITE

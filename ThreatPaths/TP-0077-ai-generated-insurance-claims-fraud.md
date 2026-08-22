@@ -6,6 +6,7 @@ id: TP-0077
 title: "AI-Generated Insurance Claims Fraud"
 category: ThreatPath
 date: 2026-03-27
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "Shift Technology (2025); USI (2025); Utah Insurance Dept; Insurance Journal (2026); Debener et al. (2023, J. Risk & Insurance, doi:10.1111/jori.12427)"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0032
 title: "Web3 Wallet Drainer / Approval Phishing"
 category: ThreatPath
 date: 2026-03-02
+last_reviewed: 2026-03-02
 author: "FLAME Project"
 source: "Original Research — aggregated from ScamSniffer, Chainalysis, Elliptic, and on-chain analysis"
 tlp: WHITE

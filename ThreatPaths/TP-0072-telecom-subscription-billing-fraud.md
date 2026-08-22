@@ -6,6 +6,7 @@ id: TP-0072
 title: "Telecom Subscription & Billing Fraud"
 category: ThreatPath
 date: 2026-03-29
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "Subex Telecom Fraud Intelligence (2025, 2026); TransUnion Consumer Pulse (2025); SEON Telecom Fraud Guide; Vonage Communications Fraud Report"
 tlp: WHITE

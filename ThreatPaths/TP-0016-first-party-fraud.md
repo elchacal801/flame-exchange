@@ -6,6 +6,7 @@ id: TP-0016
 title: "First-Party Fraud (Bust-Out)"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "Internal Knowledge Base"
 tlp: WHITE

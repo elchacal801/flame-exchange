@@ -900,6 +900,9 @@
         html += '<div class="detail-meta">';
         html += '<span><strong>Author:</strong> ' + escapeHtml(item.author || 'Unknown') + '</span>';
         html += '<span><strong>Date:</strong> ' + escapeHtml(item.date || 'N/A') + '</span>';
+        if (item.last_reviewed) {
+            html += '<span><strong>Last reviewed:</strong> ' + escapeHtml(item.last_reviewed) + '</span>';
+        }
         html += '<span><strong>TLP:</strong> <span class="tlp-badge">' + escapeHtml(item.tlp || 'WHITE') + '</span></span>';
         if (item.confidence_score != null) {
             var detailConfClass = item.confidence_score >= 70 ? 'conf-high' : (item.confidence_score >= 40 ? 'conf-med' : 'conf-low');

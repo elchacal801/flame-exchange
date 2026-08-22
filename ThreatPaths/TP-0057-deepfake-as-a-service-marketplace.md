@@ -6,6 +6,7 @@ id: TP-0057
 title: "Deepfake-as-a-Service Marketplace Ecosystem"
 category: ThreatPath
 date: 2026-03-20
+last_reviewed: 2026-03-25
 author: "FLAME Project"
 source: "INTERPOL GFFTA 2026, UNODC Emerging Threats Sept 2025, Flare/IBM X-Force March 2026"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0010
 title: "Disability Insurance Fraud via Fabricated Medical Documentation"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "DOJ prosecution records / Coalition Against Insurance Fraud / industry experience"
 tlp: WHITE

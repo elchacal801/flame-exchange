@@ -28,6 +28,7 @@ id: TP-9999
 title: "Test Threat Path"
 category: ThreatPath
 date: 2026-01-01
+last_reviewed: 2026-01-01
 author: "Test Author"
 source: "https://example.com"
 tlp: WHITE
@@ -80,6 +81,7 @@ id: TP-0015
 title: "Employment Fraud via Brand Impersonation"
 category: ThreatPath
 date: 2026-02-19
+last_reviewed: 2026-02-19
 author: "FLAME Project"
 source: "https://example.com"
 tlp: WHITE

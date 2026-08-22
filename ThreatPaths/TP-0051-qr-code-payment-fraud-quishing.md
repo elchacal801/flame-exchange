@@ -6,6 +6,7 @@ id: TP-0051
 title: "QR Code Payment Fraud / Quishing"
 category: ThreatPath
 date: 2026-03-17
+last_reviewed: 2026-03-17
 author: "FLAME Project"
 source: "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026"
 tlp: WHITE

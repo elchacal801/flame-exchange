@@ -6,6 +6,7 @@ id: TP-0087
 title: "Infostealer-to-Fraud Pipeline — MaaS Credential Harvesting to Financial Fraud"
 category: ThreatPath
 date: 2026-05-10
+last_reviewed: 2026-05-10
 author: "FLAME Project (sourced from Recorded Future Insikt Group, CTA-2026-0319)"
 source: "Recorded Future Insikt Group, 2025 Year in Review: Malicious Infrastructure (CTA-2026-0319), March 2026"
 tlp: WHITE

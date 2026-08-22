@@ -15,6 +15,7 @@ id: TP-XXXX                     # Assigned by maintainers
 title: "[Descriptive title]"
 category: ThreatPath             # ThreatPath | Baseline | DetectionLogic
 date: YYYY-MM-DD
+last_reviewed: YYYY-MM-DD        # Same as date for a new submission
 author: "[Name or Handle]"
 source: "[URL or 'Original Research']"
 tlp: WHITE                       # WHITE only for public submissions
@@ -22,6 +23,9 @@ sector:                          # Primary sector(s) affected
   - banking
 fraud_types:                     # See taxonomy — at least one required
   - account-takeover
+fraud_family: account-takeover   # Matrix row — see taxonomy fraud_families
+primary_phase: P3                # Dominant CFPF phase for matrix placement
+short_name: "Short Chip Name"    # <= 20 chars, shown on matrix chips
 
 # Multi-taxonomy mapping (map to all frameworks that apply)
 cfpf_phases:                     # FS-ISAC CFPF (primary structure)

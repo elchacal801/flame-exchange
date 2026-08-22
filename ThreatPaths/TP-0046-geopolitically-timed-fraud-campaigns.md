@@ -6,6 +6,7 @@ id: TP-0046
 title: "Geopolitically-Timed Fraud Campaigns"
 category: ThreatPath
 date: 2026-03-05
+last_reviewed: 2026-03-25
 author: "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Finance Derivative 2026, Radware, Orange Cyberdefense)"
 source: "https://www.radware.com/threat-analysis/"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0026
 title: "GenAI-Enhanced Authorized Push Payment Fraud — Investment Variant"
 category: ThreatPath
 date: 2026-03-02
+last_reviewed: 2026-03-17
 author: "FLAME Project"
 source: "Original Research — multi-source intelligence compilation"
 tlp: WHITE

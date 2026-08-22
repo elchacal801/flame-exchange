@@ -6,6 +6,7 @@ id: TP-0070
 title: "Travel Booking Fraud & Fake OTA Networks"
 category: ThreatPath
 date: 2026-03-29
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "Sumsub Travel Fraud Report (2026); NordVPN/Saily Travel Scam Intelligence (2026); Riskified OTA Fraud Analysis; Trustwave Threat Briefing; HackerNews (Nov 2025)"
 tlp: WHITE

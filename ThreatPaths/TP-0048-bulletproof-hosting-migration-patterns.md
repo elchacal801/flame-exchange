@@ -6,6 +6,7 @@ id: TP-0048
 title: "Bulletproof Hosting Migration Patterns"
 category: ThreatPath
 date: 2026-03-05
+last_reviewed: 2026-05-10
 author: "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, OFAC, CISA)"
 source: "https://www.cisa.gov/topics/cyber-threats-and-advisories"
 tlp: WHITE

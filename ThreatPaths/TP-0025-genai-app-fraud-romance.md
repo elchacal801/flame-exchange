@@ -6,6 +6,7 @@ id: TP-0025
 title: "GenAI-Enhanced Authorized Push Payment Fraud — Romance Variant"
 category: ThreatPath
 date: 2026-03-02
+last_reviewed: 2026-03-17
 author: "FLAME Project"
 source: "Original Research — multi-source intelligence compilation"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0074
 title: "Ghost Broking & Unauthorized Insurance Portals"
 category: ThreatPath
 date: 2026-03-27
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "Aviva ghost broking intelligence (Nov 2025); City of London Police (2025); Insurance Times (2025); ABI (2025); FraudOps (2026); NICB"
 tlp: WHITE

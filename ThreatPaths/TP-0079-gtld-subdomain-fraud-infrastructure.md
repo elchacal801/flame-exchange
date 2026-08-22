@@ -6,6 +6,7 @@ id: TP-0079
 title: "Cheap gTLD and PaaS Subdomain Abuse for Fraud Infrastructure at Scale"
 category: ThreatPath
 date: 2026-04-01
+last_reviewed: 2026-04-02
 author: "FLAME Project"
 source: "Interisle Consulting Group — Phishing Landscape 2025 (September 2025)"
 tlp: WHITE

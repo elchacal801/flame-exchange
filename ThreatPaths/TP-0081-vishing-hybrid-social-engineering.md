@@ -6,6 +6,7 @@ id: TP-0081
 title: "Vishing-Led Identity Abuse and Hybrid Social Engineering for Financial Fraud"
 category: ThreatPath
 date: 2026-04-01
+last_reviewed: 2026-04-02
 author: "FLAME Project"
 source: "CrowdStrike 2026 Global Threat Report"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0078
 title: "Stablecoin Laundering via Centralized Exchange Hot Wallet Pipelines"
 category: ThreatPath
 date: 2026-03-30
+last_reviewed: 2026-03-30
 author: "FLAME Project"
 source: "ICIJ Coin Laundry Investigation (2024-2025); FinCEN Huione Group Designation (May 2025); ICIJ/OpenCorporates 'The Modern Money Trail' Webinar (2026); Cybercrime Diaries — 'From Dirty Crypto to Clean Money' (Oleg, June 2025)"
 tlp: WHITE

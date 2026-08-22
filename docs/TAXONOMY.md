@@ -227,6 +227,7 @@ id: TP-XXXX
 title: "Descriptive title"
 category: ThreatPath
 date: YYYY-MM-DD
+last_reviewed: YYYY-MM-DD          # date content was last reviewed for currency
 author: "Name or Handle"
 source: "URL or 'Original Research'"
 tlp: WHITE

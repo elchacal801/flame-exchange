@@ -6,6 +6,7 @@ id: TP-0002
 title: "Business Email Compromise — Vendor Impersonation Wire Fraud"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "FBI IC3 / FinCEN Advisory FIN-2019-A005 / multiple public reporting"
 tlp: WHITE

@@ -570,6 +570,16 @@ def validate_file(filepath: Path) -> ValidationResult:
             if t_str and not re.match(r"^T\d{4}(\.\d{3})?$", t_str):
                 result.warn(f"MITRE ATT&CK ID '{t_str}' may not match expected format (T####[.###])")
 
+    # --- Review lifecycle ---
+    last_reviewed = meta.get("last_reviewed")
+    if last_reviewed is not None:
+        # yaml.safe_load parses unquoted dates as datetime.date, so
+        # validate the string form rather than the type.
+        if not re.match(r"^\d{4}-\d{2}-\d{2}$", str(last_reviewed)):
+            result.error(
+                f"last_reviewed must be an ISO date (YYYY-MM-DD), got '{last_reviewed}'"
+            )
+
     # --- Confidence scoring (optional, Admiralty Code) ---
     confidence_score = meta.get("confidence_score")
     if confidence_score is not None:

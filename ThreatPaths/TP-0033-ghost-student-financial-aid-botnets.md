@@ -6,6 +6,7 @@ id: TP-0033
 title: "Ghost Student Financial Aid Botnets"
 category: ThreatPath
 date: 2026-03-02
+last_reviewed: 2026-03-02
 author: "FLAME Project"
 source: "Original Research — aggregated from Equifax, California Community Colleges Chancellor's Office, DOE-OIG, and GAO reporting"
 tlp: WHITE
