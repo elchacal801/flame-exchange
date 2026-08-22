@@ -46,6 +46,27 @@ FINCEN_HTML = """
 </table>
 """
 
+# Shaped like the Alerts table on the hub page: the link text is the
+# FIN identifier and the human-readable title sits in the description.
+FINCEN_ALERTS_HTML = """
+<table class="usa-table">
+  <thead><tr><th>Title</th><th>Date</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><a href="/system/files/2026-07/FinCEN-Alert-Student-Aid.pdf">FIN-2026-Alert004</a></td>
+      <td>07/24/2026</td>
+      <td>FinCEN Alert on Fraud Schemes Targeting Federal Student Aid</td>
+    </tr>
+    <tr>
+      <td><a href="/advisory/fake.pdf">FinCEN Advisory on Money Laundering</a></td>
+      <td><time>2026-02-15</time></td>
+      <td>Duplicate of the advisories listing entry</td>
+    </tr>
+  </tbody>
+</table>
+"""
+
+
 class TestFinCENSource:
     def test_name(self):
         src = FinCENSource(_make_config())
@@ -79,16 +100,40 @@ class TestFinCENSource:
         assert src.parse("") == []
 
     @patch("regulatory.sources.fincen.requests.get")
-    def test_fetch_downloads_html(self, mock_get):
+    def test_fetch_downloads_both_listings(self, mock_get):
         mock_resp = MagicMock()
         mock_resp.text = FINCEN_HTML
         mock_get.return_value = mock_resp
 
-        src = FinCENSource(_make_config({"url": "https://test.gov"}))
+        src = FinCENSource(_make_config({
+            "url": "https://test.gov/advisories",
+            "alerts_url": "https://test.gov/hub",
+        }))
         result = src.fetch()
 
-        mock_get.assert_called_once()
-        assert result == FINCEN_HTML
+        called = [c.args[0] for c in mock_get.call_args_list]
+        assert called == ["https://test.gov/advisories", "https://test.gov/hub"]
+        assert FINCEN_HTML in result
+
+    def test_parse_alerts_hub_rows(self):
+        src = FinCENSource(_make_config())
+        alerts = src.parse(FINCEN_ALERTS_HTML)
+        assert len(alerts) == 2
+
+        # FIN-id link text is replaced by the description-column title
+        a0 = alerts[0]
+        assert a0.title == "FinCEN Alert on Fraud Schemes Targeting Federal Student Aid"
+        assert a0.date == "07/24/2026"
+        assert a0.category == "benefits-fraud"
+        assert a0.url == "https://www.fincen.gov/system/files/2026-07/FinCEN-Alert-Student-Aid.pdf"
+
+    def test_parse_dedupes_by_url_across_pages(self):
+        src = FinCENSource(_make_config())
+        alerts = src.parse(FINCEN_HTML + FINCEN_ALERTS_HTML)
+        urls = [a.url for a in alerts]
+        assert len(urls) == len(set(urls))
+        # fake.pdf appears in both fixtures but survives only once
+        assert urls.count("https://www.fincen.gov/advisory/fake.pdf") == 1
 
 
 FBI_IC3_HTML = """

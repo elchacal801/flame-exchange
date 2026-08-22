@@ -13,6 +13,7 @@ sources:
     enabled: true
     url: "https://www.fincen.gov/resources/advisoriesbulletinsfact-sheets/advisories"
     category_mapping:
+      benefits-fraud: [TP-0033]
       synthetic-identity:
         - TP-0012
         - TP-0034
