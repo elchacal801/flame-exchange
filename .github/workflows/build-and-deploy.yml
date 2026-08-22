@@ -68,6 +68,9 @@ jobs:
             python scripts/validate_submission.py "$f"
           done
 
+      - name: Validate README counts
+        run: python scripts/validate_readme_counts.py
+
   build:
     name: Build Database & STIX
     runs-on: ubuntu-latest

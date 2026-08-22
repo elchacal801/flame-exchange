@@ -63,9 +63,9 @@ The ACAMS International Anti-Fraud and Technology Task Force [confirmed in March
 |-----------|--------|
 | FS-ISAC Cyber Fraud Prevention Framework (CFPF) | Primary structure -- all 89 TPs mapped |
 | MITRE ATT&CK | Supplementary mapping where applicable |
-| MITRE F3 (Fight Fraud Framework) | Mapped (72/89 TPs) via `f3_mapper.py` -- shipped April 2026 |
+| MITRE F3 (Fight Fraud Framework) | Mapped (89/89 TPs) via `f3_mapper.py` -- shipped April 2026, full coverage August 2026 |
 | Group-IB Fraud Matrix 2.0 | Cross-reference mapping (stage names) |
-| Stripe FT3 | Mapped (69/89 TPs) via `ft3_mapper.py` |
+| Stripe FT3 | Mapped (89/89 TPs) via `ft3_mapper.py` |
 | Group-IB UCFF | Defense-side maturity alignment (7 domains) |
 
 **What FLAME is not:** FLAME is not a taxonomy project. It is a knowledge exchange that sits on top of existing taxonomies, providing the operational intelligence -- threat paths, detection queries, investigation playbooks, and cross-team correlation guidance -- that no taxonomy alone delivers.
@@ -158,7 +158,7 @@ config/                Regulatory requirements and source configs
 scripts/               Build, validation, and export scripts (22 modules)
   regulatory/          6-source regulatory data fetchers
 mcp_server/            MCP server exposing 6 fraud intelligence tools
-tests/                 217 tests across pytest test modules
+tests/                 251 tests across pytest test modules
 database/              Generated artifacts (auto-built by CI)
   flame-index.json           Metadata-only index (fast frontend load)
   flame-content/             Individual TP content files (lazy-loaded)
@@ -585,7 +585,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines, frontmatter requirem
 
 ## Testing
 
-FLAME includes **217 tests** across the full pipeline:
+FLAME includes **251 tests** across the full pipeline:
 
 ```bash
 pytest tests/ -v
@@ -628,7 +628,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 
 ## Roadmap
 
-- ~~**MITRE F3 mapping**~~ -- Completed April 2026 (72/89 TPs mapped)
+- ~~**MITRE F3 mapping**~~ -- Completed April 2026; full 89/89 coverage August 2026
 - ~~**Detection rule decoupling**~~ -- Completed May 2026: 221 rules in [flame-detections](https://github.com/elchacal801/flame-detections)
 - ~~**Threat path matrix view**~~ -- Completed May 2026: ATT&CK-style matrix with 11 fraud families, sector tabs, short-name chips
 - **STIX SCO extensions** -- Observable-level extensions for fraud indicators
@@ -643,7 +643,7 @@ Evidence is currently sourced from the [domain_intel](https://github.com/elchaca
 - **FS-ISAC CFPF Working Group** -- Primary fraud lifecycle framework
 - **Group-IB** -- Fraud Matrix 2.0 stage names and UCFF governance domains referenced for cross-taxonomy interoperability
 - **Stripe** -- FT3 (MIT-licensed) taxonomy structure
-- **MITRE** -- ATT&CK framework; F3 Fight Fraud Framework (shipped April 2026, mapped to 72/89 TPs)
+- **MITRE** -- ATT&CK framework; F3 Fight Fraud Framework (shipped April 2026, mapped to 89/89 TPs)
 - **FBI IC3** -- 2025 Internet Crime Report ($20.877B losses) enriching 17 TPs with updated statistics
 - **OASIS** -- STIX 2.1 and TAXII 2.1 specifications
 - **Recorded Future** -- Source intelligence for payment fraud threat paths (TP-0035 -- TP-0039)
