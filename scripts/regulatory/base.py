@@ -81,7 +81,7 @@ class RegulatorySource(ABC):
         parse.
         """
         key = f"{url}|{title}|{date}".encode("utf-8", "replace")
-        digest = hashlib.sha1(key).hexdigest()[:10]
+        digest = hashlib.sha1(key, usedforsecurity=False).hexdigest()[:10]
         n = self._id_seen.get(digest, 0)
         self._id_seen[digest] = n + 1
         return f"{self.name}-{digest}" if n == 0 else f"{self.name}-{digest}-{n}"
