@@ -5,6 +5,7 @@ Defines the RegulatoryAlert dataclass for normalised alerts from any
 regulatory source, plus YAML config loading utilities.
 """
 
+from regulatory.dates import normalize_date_to_iso
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -53,7 +54,7 @@ class RegulatoryAlert:
             self.title,
             date(self.date.year, self.date.month, self.date.day).isoformat()
             if isinstance(self.date, date)
-            else str(self.date),
+            else normalize_date_to_iso(str(self.date)),
             self.category,
             "|".join(self.mapped_tp_ids),
             self.url,
