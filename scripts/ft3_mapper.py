@@ -236,6 +236,44 @@ FRAUD_TYPE_KEYWORDS: dict[str, list[str]] = {
 }
 
 
+# Extension (2026-08): fraud types the FT3 mapper (last run against the
+# 23-TP corpus) had no keyword coverage for. Terms grounded in the FT3
+# technique-name vocabulary (data/ft3/FT3_Techniques.json).
+FRAUD_TYPE_KEYWORDS.update({
+    "state-criminal-convergence": ["acquire access", "shell companies", "supply chain compromise"],
+    "sanctions-evasion-infrastructure": ["shell companies", "falsifying business documents", "acquire access"],
+    "human-trafficking-facilitation": ["establish accounts", "falsifying identity documents", "social media"],
+    "scam-compound-operations": ["establish accounts", "social media", "phishing", "telegram"],
+    "bph-migration": ["acquire access", "virtual private server", "dns server"],
+    "crypto-laundering-infrastructure": ["scheduled payout", "scheduled transfer", "shell companies", "account manipulation"],
+    "cmln-operations": ["scheduled payout", "shell companies", "account manipulation"],
+    "ghost-broking": ["fake merchant account", "website cloning", "fake e-commerce website", "falsifying business documents"],
+    "ghost-portal": ["website cloning", "fake e-commerce website", "fake payment gateway"],
+    "insurance-policy-fraud": ["falsifying business documents", "falsifying identity documents"],
+    "unlicensed-insurance": ["fake merchant account", "shell companies", "falsifying business documents"],
+    "friendly-fraud": ["refund fraud", "dispute", "no shipping"],
+    "chargeback-abuse": ["refund fraud", "dispute avoidance", "fraudulent purchases"],
+    "first-party-misuse": ["refund fraud", "dispute", "policy and procedure abuse"],
+    "dispute-fraud": ["dispute avoidance", "refund fraud", "fabricating shipping evidence"],
+    "affiliate-fraud": ["ad fraud", "fake review fraud", "malvertising"],
+    "click-fraud": ["ad fraud", "malvertising", "botnet"],
+    "ad-fraud": ["ad fraud", "malvertising"],
+    "cookie-stuffing": ["ad fraud", "exposed user session"],
+    "invalid-traffic": ["ad fraud", "botnet", "ddos"],
+    "ai-generated-claims": ["falsifying business documents", "falsifying identity documents", "fabricating shipping evidence"],
+    "deepfake-claims": ["falsifying identity documents", "fake id"],
+    "document-fraud": ["falsifying business documents", "falsifying identity documents"],
+    "insurance-fraud": ["falsifying business documents", "refund fraud", "policy and procedure abuse"],
+    "brand-impersonation": ["website cloning", "fake e-commerce website", "phishing", "spearphishing"],
+    "credential-harvesting": ["phishing", "credential scanning", "gather victim identity information", "credential dumps"],
+    "fraud-enabling-infrastructure": ["acquire access", "virtual private server", "dns server", "botnet"],
+    "paas-subdomain-abuse": ["acquire access", "website cloning", "phishing"],
+    "elder-exploitation": ["phishing", "gather victim identity information", "social media attack"],
+    "fake-captcha-fraud": ["phishing", "website cloning", "malvertising"],
+})
+
+
+
 # ---------------------------------------------------------------------------
 # FT3 data loading
 # ---------------------------------------------------------------------------
@@ -625,6 +663,17 @@ def main():
         default=None,
         help="Output JSON path (default: <root>/data/ft3_mapping_suggestions.json)",
     )
+    parser.add_argument(
+        "--only",
+        type=str,
+        default=None,
+        help="Comma-separated TP ids (e.g. TP-0010,TP-0041) to restrict the run to",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="With --apply: overwrite non-empty existing mappings (default: skip them)",
+    )
     args = parser.parse_args()
 
     root = args.root.resolve()
@@ -668,6 +717,11 @@ def main():
     tp_dir = root / "ThreatPaths"
     tp_files = sorted(tp_dir.glob("TP-*.md"))
     log.info("Found %d threat path files", len(tp_files))
+    if args.only:
+        wanted = {t.strip() for t in args.only.split(",") if t.strip()}
+        tp_files = [f for f in tp_files if f.name[:7] in wanted]
+        log.info("Restricted to %d file(s) via --only", len(tp_files))
+
 
     if not tp_files:
         log.error("No threat path files found in %s", tp_dir)
@@ -741,6 +795,11 @@ def main():
                 continue
             tp_id = meta.get("id", filepath.stem)
             if tp_id not in results:
+                continue
+            existing = meta.get("ft3_tactics") or []
+            if existing and not args.force:
+                log.info("  Skipping %s: ft3_tactics already populated (%d ids); use --force to overwrite",
+                         tp_id, len(existing))
                 continue
             tactic_ids = results[tp_id]["suggested_ft3_tactics"]
             technique_ids = results[tp_id]["suggested_ft3_techniques"]

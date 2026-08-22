@@ -266,6 +266,58 @@ FRAUD_TYPE_KEYWORDS: dict[str, list[str]] = {
 }
 
 
+# Extension (2026-08): fraud types introduced after the April 2026 mapping
+# run had no keyword coverage, so signal 3 produced zero technique matches
+# and --apply wrote empty mitre_f3 lists. Terms below are grounded in the
+# actual F3 technique-name vocabulary (data/f3/F3_Techniques.json).
+FRAUD_TYPE_KEYWORDS.update({
+    "fraudulent-claim": ["falsify business documents", "fake documents", "dispute legitimate transaction"],
+    "disability-fraud": ["falsify business documents", "fake documents"],
+    "provider-fraud": ["falsify business documents", "fraudulent merchant account", "invoice"],
+    "rdga-infrastructure": ["acquire infrastructure", "domains", "seo poisoning"],
+    "traffic-distribution-system": ["acquire infrastructure", "domains", "seo poisoning", "malvertising", "drive-by"],
+    "cloaking": ["geolocation spoofing", "device fingerprint spoofing", "seo poisoning"],
+    "geo-routing": ["geolocation spoofing"],
+    "investment-fraud": ["convert to cryptocurrency", "fake website", "electronic funds transfer", "gather customer information"],
+    "state-criminal-convergence": ["acquire infrastructure", "convert to cryptocurrency", "structuring", "supply chain compromise"],
+    "crypto-laundering-infrastructure": ["convert to cryptocurrency", "structuring", "peer-to-peer transfer", "transfer of funds"],
+    "cmln-operations": ["convert to cryptocurrency", "structuring", "transfer of funds"],
+    "money-laundering": ["structuring", "convert to cryptocurrency", "money order", "bank deposit", "transfer of funds"],
+    "automated-mule-accounts": ["establish accounts", "fake documents", "device fingerprint spoofing", "test deposit"],
+    "bot-driven-account-opening": ["establish accounts", "fake documents", "abuse of public-facing api"],
+    "kyc-circumvention": ["fake documents", "device fingerprint spoofing", "geolocation spoofing"],
+    "bulletproof-hosting": ["acquire infrastructure", "virtual private network", "stage capabilities"],
+    "fraud-enabling-infrastructure": ["acquire infrastructure", "domains", "virtual private network", "stage capabilities"],
+    "hosting-provider-complicity": ["acquire infrastructure", "virtual private network"],
+    "infrastructure-rotation": ["acquire infrastructure", "domains", "indicator removal"],
+    "travel-booking-fraud": ["fradulent purchasing", "fake website", "use virtual cards"],
+    "fake-ota": ["fake website", "fraudulent merchant account"],
+    "buy-for-you-fraud": ["fradulent purchasing", "use virtual cards", "card testing"],
+    "loyalty-point-laundering": ["account manipulation", "transfer of funds"],
+    "irsf": ["phone number spoofing", "interactive voice response", "abuse sms"],
+    "premium-rate-fraud": ["phone number spoofing", "abuse sms", "interactive voice response"],
+    "telecom-revenue-fraud": ["phone number spoofing", "abuse sms", "sim card swap"],
+    "wangiri": ["phone number spoofing", "interactive voice"],
+    "subscription-fraud": ["establish accounts", "fake documents", "churning"],
+    "telecom-billing-fraud": ["abuse sms", "account manipulation", "sim card swap"],
+    "premium-sms-fraud": ["abuse sms", "phone number spoofing"],
+    "title-fraud": ["falsify business documents", "fake documents", "impersonate account holder", "email spoofing"],
+    "deed-theft": ["falsify business documents", "fake documents", "impersonate account holder"],
+    "seller-impersonation": ["impersonate account holder", "email spoofing", "fake documents"],
+    "appraisal-fraud": ["falsify business documents", "fake documents"],
+    "ghost-broking": ["fake website", "fraudulent merchant account", "impersonate official", "fake documents"],
+    "ghost-portal": ["fake website", "fraudulent merchant account"],
+    "insurance-policy-fraud": ["falsify business documents", "fake documents"],
+    "unlicensed-insurance": ["fake website", "impersonate official"],
+    "affiliate-fraud": ["malvertising", "seo poisoning", "malicious browser extension"],
+    "click-fraud": ["malvertising", "malicious browser extension", "abuse of public-facing api"],
+    "ad-fraud": ["malvertising", "seo poisoning"],
+    "cookie-stuffing": ["steal web session cookie", "malicious browser extension", "session cookie"],
+    "invalid-traffic": ["malvertising", "device fingerprint spoofing"],
+})
+
+
+
 # ---------------------------------------------------------------------------
 # F3 data loading
 # ---------------------------------------------------------------------------
@@ -544,6 +596,17 @@ def main():
         default=None,
         help="Output JSON path (default: <root>/data/f3_mapping_suggestions.json)",
     )
+    parser.add_argument(
+        "--only",
+        type=str,
+        default=None,
+        help="Comma-separated TP ids (e.g. TP-0010,TP-0041) to restrict the run to",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="With --apply: overwrite non-empty existing mappings (default: skip them)",
+    )
     args = parser.parse_args()
 
     root = args.root.resolve()
@@ -573,6 +636,11 @@ def main():
     tp_dir = root / "ThreatPaths"
     tp_files = sorted(tp_dir.glob("TP-*.md"))
     log.info("Found %d threat path files", len(tp_files))
+    if args.only:
+        wanted = {t.strip() for t in args.only.split(",") if t.strip()}
+        tp_files = [f for f in tp_files if f.name[:7] in wanted]
+        log.info("Restricted to %d file(s) via --only", len(tp_files))
+
 
     if not tp_files:
         log.error("No threat path files found in %s", tp_dir)
@@ -636,6 +704,11 @@ def main():
                 continue
             tp_id = meta.get("id", filepath.stem)
             if tp_id not in results:
+                continue
+            existing = meta.get("mitre_f3") or []
+            if existing and not args.force:
+                log.info("  Skipping %s: mitre_f3 already populated (%d ids); use --force to overwrite",
+                         tp_id, len(existing))
                 continue
             technique_ids = results[tp_id]["suggested_f3_techniques"]
             if apply_f3_techniques(filepath, technique_ids):
