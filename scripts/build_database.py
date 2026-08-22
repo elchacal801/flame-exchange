@@ -13,7 +13,6 @@ The script scans ThreatPaths/ and Baselines/
 directories for markdown files, parses their YAML frontmatter
 (code-fenced blocks), and produces:
     - database/flame.db    (SQLite index)
-    - database/flame-data.json (flat JSON for frontend)
 """
 
 import argparse
@@ -564,47 +563,6 @@ def export_regulatory_json(conn: sqlite3.Connection, output_path: Path) -> int:
 # ---------------------------------------------------------------------------
 # JSON export
 # ---------------------------------------------------------------------------
-
-def export_json(conn: sqlite3.Connection, output_path: Path):
-    """Export the database to a flat JSON array for the frontend."""
-    cursor = conn.execute("SELECT * FROM submissions WHERE lower(category) = 'threatpath' ORDER BY id")
-    columns = [desc[0] for desc in cursor.description]
-    submissions = []
-
-    for row in cursor.fetchall():
-        entry = dict(zip(columns, row))
-        sub_id = entry["id"]
-
-        # Attach multi-value lists
-        entry["sectors"] = _fetch_list(conn, "submission_sectors", "sector", sub_id)
-        entry["fraud_types"] = _fetch_list(conn, "submission_fraud_types", "fraud_type", sub_id)
-        entry["tags"] = _fetch_list(conn, "submission_tags", "tag", sub_id)
-        entry["cfpf_phases"] = _fetch_list(conn, "submission_cfpf_phases", "phase", sub_id)
-        entry["mitre_attack"] = _fetch_list(conn, "submission_mitre_attack", "technique_id", sub_id)
-        entry["ft3_tactics"] = _fetch_list(conn, "submission_ft3_tactics", "tactic_id", sub_id)
-        entry["mitre_f3"] = _fetch_list(conn, "submission_mitre_f3", "technique_id", sub_id)
-        entry["groupib_stages"] = _fetch_list(conn, "submission_groupib_stages", "stage", sub_id)
-        entry["regulatory_refs"] = _fetch_list(conn, "submission_regulatory_refs", "reg_id", sub_id)
-
-        # UCFF domains (object, not array)
-        ucff_row = conn.execute(
-            "SELECT domains_json FROM submission_ucff_domains WHERE submission_id = ?",
-            (sub_id,)
-        ).fetchone()
-        entry["ucff_domains"] = json.loads(ucff_row[0]) if ucff_row else {}
-
-        # Remove full body from JSON export (too large for frontend)
-        entry.pop("body", None)
-
-        submissions.append(entry)
-
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(
-        json.dumps(submissions, indent=2, ensure_ascii=False),
-        encoding="utf-8"
-    )
-    return len(submissions)
-
 
 def _fetch_list(conn: sqlite3.Connection, table: str, col: str, sub_id: str) -> list:
     """Fetch a list of values from a multi-value table."""
@@ -1381,11 +1339,6 @@ def main():
     reg_csv = root / "data" / "regulatory_alerts.csv"
     reg_count = build_regulatory_alerts(conn, reg_csv)
     log.info("Loaded %d regulatory alerts", reg_count)
-
-    # Export JSON (legacy — backward compatibility)
-    json_path = root / "database" / "flame-data.json"
-    count = export_json(conn, json_path)
-    log.info("Exported %d submissions to %s (legacy)", count, json_path)
 
     # Export v2 data files
     index_path = root / "database" / "flame-index.json"

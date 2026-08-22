@@ -123,7 +123,7 @@ Source Files                    Build Script                     Output Artifact
 ThreatPaths/*.md ──┐
 Baselines/*.md ────┤            build_database.py
 DetectionLogic/*.yml ──┤        ├─ extract_frontmatter()         database/flame.db (SQLite)
-data/cfpf_techniques.json ─┤   ├─ extract_body()                database/flame-data.json (legacy)
+data/cfpf_techniques.json ─┤   ├─ extract_body()
 data/regulatory_alerts.csv ─┘  ├─ load_submission()              database/flame-index.json
                                 ├─ load_detection_rule()          database/flame-content/*.json
                                 ├─ build_regulatory_alerts()      database/flame-stats.json
@@ -149,9 +149,9 @@ After `build_database.py`, the CI pipeline runs four additional export scripts t
 
 | Script | Input | Output |
 |---|---|---|
-| `scripts/export_flame_stix.py` | `database/flame.db` | `flame-stix-bundle.json` (STIX 2.1 bundle) |
+| `scripts/export_flame_stix.py` | `database/flame-index.json` + `flame-content/` | `database/flame_stix_bundle.json` (STIX 2.1 bundle) |
 | `scripts/export_sigma.py` | Detection rules | Sigma YAML rule packs |
-| `scripts/export_misp.py` | `database/flame.db` | MISP galaxy and MISP feed files |
+| `scripts/export_misp.py` | `database/flame-index.json` + `flame-content/` | MISP galaxy and MISP feed files |
 | `scripts/export_taxii.py` | STIX bundle | `api/taxii/` static TAXII 2.1 endpoints |
 
 ---
@@ -362,7 +362,7 @@ flame-fraud/
 ### Adding a New Export Format
 
 1. Create a new script at `scripts/export_<format>.py`.
-2. Read from `database/flame.db` (SQLite) or the JSON exports in `database/`.
+2. Read from the JSON exports in `database/` (`flame.db` is the build's internal working store, recreated on every run and not tracked).
 3. Write output to the appropriate directory (e.g., `api/<format>/` or a top-level file).
 4. Add the export step to `.github/workflows/build-and-deploy.yml` in the `build` job, after `build_database.py`.
 5. Add the output path to the `git add` line in the commit step.
