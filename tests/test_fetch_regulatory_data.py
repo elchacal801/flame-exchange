@@ -24,6 +24,7 @@ from regulatory.base import RegulatorySource
 from fetch_regulatory_data import (
     SOURCE_REGISTRY,
     collect_alerts,
+    load_existing_alerts,
     write_csv,
 )
 
@@ -53,20 +54,32 @@ class _MockSource(RegulatorySource):
 
 
 class _EmptySource(RegulatorySource):
-    """A source that always returns an empty list (simulates failure)."""
+    """A source that succeeds with zero alerts (empty is NOT failure)."""
 
     name = "empty"
 
     def __init__(self):
-        pass
+        self._id_seen = {}
+
+    def fetch(self) -> str:
+        return ""
+
+    def parse(self, raw: str) -> List[RegulatoryAlert]:
+        return []
+
+
+class _FailingSource(RegulatorySource):
+    """A source whose fetch raises -- run() must report failure, not []."""
+
+    name = "failing"
+
+    def __init__(self):
+        self._id_seen = {}
 
     def fetch(self) -> str:
         raise RuntimeError("simulated failure")
 
     def parse(self, raw: str) -> List[RegulatoryAlert]:
-        return []
-
-    def run(self) -> List[RegulatoryAlert]:
         return []
 
 
@@ -125,36 +138,42 @@ class TestCollectAlerts:
             "src_b": _MockSource([alert_b, alert_c]),
         }
 
-        result = collect_alerts(sources)
+        result, failed = collect_alerts(sources)
         assert len(result) == 3
+        assert failed == []
         ids = {a.alert_id for a in result}
         assert ids == {"A-001", "B-001", "B-002"}
 
-    def test_collect_alerts_handles_empty_source(self):
-        """A source returning empty should not break collection."""
+    def test_collect_alerts_empty_source_is_not_failure(self):
+        """A source that succeeds with zero alerts is not reported failed."""
         alert = _make_alert(source="good", alert_id="G-001")
         sources = {
             "good": _MockSource([alert]),
-            "bad": _EmptySource(),
+            "empty": _EmptySource(),
         }
 
-        result = collect_alerts(sources)
+        result, failed = collect_alerts(sources)
         assert len(result) == 1
+        assert failed == []
         assert result[0].alert_id == "G-001"
 
-    def test_collect_alerts_all_empty(self):
-        """When all sources return empty, result should be empty list."""
+    def test_collect_alerts_reports_failed_sources(self):
+        """A raising source is reported by name, others still collected."""
+        alert = _make_alert(source="good", alert_id="G-001")
         sources = {
-            "empty1": _EmptySource(),
-            "empty2": _EmptySource(),
+            "good": _MockSource([alert]),
+            "failing": _FailingSource(),
         }
-        result = collect_alerts(sources)
-        assert result == []
+
+        result, failed = collect_alerts(sources)
+        assert len(result) == 1
+        assert failed == ["failing"]
 
     def test_collect_alerts_empty_sources_dict(self):
-        """An empty sources dict should return an empty list."""
-        result = collect_alerts({})
+        """An empty sources dict should return an empty list, no failures."""
+        result, failed = collect_alerts({})
         assert result == []
+        assert failed == []
 
 
 # ---------------------------------------------------------------------------
@@ -266,3 +285,94 @@ class TestWriteCsv:
             rows = list(reader)
             assert rows[0]["date"] == "2026-03-15"
             assert rows[1]["date"] == "January 2026"
+
+
+# ---------------------------------------------------------------------------
+# Failure-preservation and stable-id tests
+# ---------------------------------------------------------------------------
+
+class TestLoadExistingAlerts:
+    def test_carries_forward_failed_source_rows(self, tmp_path):
+        """Rows from a failed source survive a rewrite via carry-forward."""
+        csv_path = tmp_path / "alerts.csv"
+        old_rows = [
+            _make_alert(source="occ", alert_id="occ-aaaa"),
+            _make_alert(source="sec", alert_id="sec-bbbb"),
+        ]
+        write_csv(old_rows, csv_path)
+
+        carried = load_existing_alerts(csv_path, ["occ"])
+        assert len(carried) == 1
+        assert carried[0].source == "occ"
+        assert carried[0].alert_id == "occ-aaaa"
+
+    def test_missing_file_returns_empty(self, tmp_path):
+        assert load_existing_alerts(tmp_path / "nope.csv", ["occ"]) == []
+
+    def test_no_failed_sources_returns_empty(self, tmp_path):
+        csv_path = tmp_path / "alerts.csv"
+        write_csv([_make_alert(source="occ", alert_id="occ-aaaa")], csv_path)
+        assert load_existing_alerts(csv_path, []) == []
+
+    def test_round_trips_mapped_tp_ids(self, tmp_path):
+        csv_path = tmp_path / "alerts.csv"
+        write_csv(
+            [_make_alert(source="occ", alert_id="occ-aaaa",
+                         mapped_tp_ids=["TP-0001", "TP-0060"])],
+            csv_path,
+        )
+        carried = load_existing_alerts(csv_path, ["occ"])
+        assert carried[0].mapped_tp_ids == ["TP-0001", "TP-0060"]
+
+
+class TestStableIds:
+    def _source(self):
+        class _S(RegulatorySource):
+            name = "stub"
+
+            def __init__(self):
+                self._id_seen = {}
+
+            def fetch(self):
+                return ""
+
+            def parse(self, raw):
+                return []
+
+        return _S()
+
+    def test_same_input_same_id(self):
+        a = self._source()
+        b = self._source()
+        id_a = a._stable_id("https://x/1.html", "Title", "2026-01-01")
+        id_b = b._stable_id("https://x/1.html", "Title", "2026-01-01")
+        assert id_a == id_b
+        assert id_a.startswith("stub-")
+
+    def test_different_input_different_id(self):
+        s = self._source()
+        assert (s._stable_id("https://x/1.html", "T", "2026-01-01")
+                != s._stable_id("https://x/2.html", "T", "2026-01-01"))
+
+    def test_duplicate_rows_get_suffix(self):
+        s = self._source()
+        first = s._stable_id("https://x/1.html", "T", "2026-01-01")
+        second = s._stable_id("https://x/1.html", "T", "2026-01-01")
+        assert second == first + "-1"
+
+    def test_run_resets_duplicate_counter(self):
+        s = self._source()
+        first = s._stable_id("https://x/1.html", "T", "2026-01-01")
+        s.run()
+        again = s._stable_id("https://x/1.html", "T", "2026-01-01")
+        assert again == first
+
+
+class TestFailureSemantics:
+    def test_run_returns_none_on_fetch_exception(self):
+        src = _FailingSource()
+        assert src.run() is None
+
+    def test_run_returns_list_on_success(self):
+        src = _EmptySource()
+        assert src.run() == []

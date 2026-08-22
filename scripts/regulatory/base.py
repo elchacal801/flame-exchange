@@ -6,9 +6,10 @@ and implements ``fetch()`` and ``parse()``.  The concrete ``run()`` method
 orchestrates both steps with error handling.
 """
 
+import hashlib
 import logging
 from abc import ABC, abstractmethod
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from regulatory.models import RegulatoryAlert
 
@@ -34,6 +35,7 @@ class RegulatorySource(ABC):
             e.g. ``{"enabled": true, "url": "...", "category_mapping": {...}}``.
         """
         self.config = config
+        self._id_seen = {}
         self.enabled: bool = config.get("enabled", False)
         self.category_mapping: Dict[str, List[str]] = config.get("category_mapping", {})
 
@@ -69,14 +71,33 @@ class RegulatorySource(ABC):
             Parsed alerts.
         """
 
-    def run(self) -> List[RegulatoryAlert]:
+    def _stable_id(self, url: str = "", title: str = "", date: str = "") -> str:
+        """Return a deterministic alert id derived from row content.
+
+        Index-based ids (``occ-0000``) renumbered whenever the upstream
+        page changed, so the same alert got a new identity every run.
+        Hashing url|title|date gives the same id for the same row across
+        runs; a numeric suffix disambiguates exact duplicates within one
+        parse.
+        """
+        key = f"{url}|{title}|{date}".encode("utf-8", "replace")
+        digest = hashlib.sha1(key).hexdigest()[:10]
+        n = self._id_seen.get(digest, 0)
+        self._id_seen[digest] = n + 1
+        return f"{self.name}-{digest}" if n == 0 else f"{self.name}-{digest}-{n}"
+
+    def run(self) -> Optional[List[RegulatoryAlert]]:
         """Execute the full fetch-and-parse pipeline.
 
-        Returns an empty list on any failure and logs the error.
+        Returns ``None`` on failure (fetch or parse raised) so callers can
+        distinguish a broken source from one that genuinely had nothing --
+        conflating the two is how a 404ing source went unnoticed for
+        months.
         """
+        self._id_seen = {}
         try:
             raw = self.fetch()
             return self.parse(raw)
         except Exception:
             logger.exception("Error running source %s", self.name)
-            return []
+            return None

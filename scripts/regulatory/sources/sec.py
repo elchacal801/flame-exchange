@@ -78,7 +78,7 @@ class SECSource(RegulatorySource):
                     alerts.append(
                         RegulatoryAlert(
                             source=self.name,
-                            alert_id=f"sec-{len(alerts):04d}",
+                            alert_id=self._stable_id(link, title, date),
                             title=title[:250],
                             date=date,
                             category=category,

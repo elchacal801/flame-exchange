@@ -77,7 +77,7 @@ class FBIC3Source(RegulatorySource):
                     alerts.append(
                         RegulatoryAlert(
                             source=self.name,
-                            alert_id=f"ic3-{len(alerts):04d}",
+                            alert_id=self._stable_id(href, title, date),
                             title=title,
                             date=date,
                             category=category,

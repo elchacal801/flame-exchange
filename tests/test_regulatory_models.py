@@ -292,12 +292,16 @@ class TestRegulatorySourceBase:
         assert src.map_category_to_tps("fraud") == ["TP-0001"]
         assert src.map_category_to_tps("unknown-cat") == []
 
-    def test_run_returns_empty_on_fetch_exception(self):
-        """run() should catch exceptions and return an empty list."""
+    def test_run_returns_none_on_fetch_exception(self):
+        """run() should catch exceptions and return None (failure marker).
+
+        None is distinguishable from a successful-but-empty run; conflating
+        the two is how a 404ing source went unnoticed for months.
+        """
         config = {"enabled": True, "category_mapping": {}}
         src = _FailingFetchSource(config)
         result = src.run()
-        assert result == []
+        assert result is None
 
     def test_abc_enforcement(self):
         """Cannot instantiate RegulatorySource without implementing fetch/parse."""
