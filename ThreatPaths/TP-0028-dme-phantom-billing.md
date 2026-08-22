@@ -6,6 +6,7 @@ id: TP-0028
 title: "DME Phantom Billing (Medicare Fraud)"
 category: ThreatPath
 date: 2026-03-02
+last_reviewed: 2026-03-21
 author: "FLAME Project"
 source: "https://oig.hhs.gov/reports-and-publications/featured-topics/dme/"
 tlp: WHITE

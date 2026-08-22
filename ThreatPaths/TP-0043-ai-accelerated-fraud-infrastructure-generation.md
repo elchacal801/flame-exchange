@@ -6,6 +6,7 @@ id: TP-0043
 title: "AI-Accelerated Fraud Infrastructure Generation"
 category: ThreatPath
 date: 2026-03-05
+last_reviewed: 2026-03-05
 author: "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report — multi-source synthesis)"
 source: "https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/"
 tlp: WHITE

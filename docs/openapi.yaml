@@ -409,6 +409,11 @@ components:
           format: date
           description: Publication or last-updated date
           example: "2026-02-12"
+        last_reviewed:
+          type: string
+          format: date
+          description: Date the threat path content was last reviewed for currency
+          example: "2026-08-22"
         author:
           type: string
           example: "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)"

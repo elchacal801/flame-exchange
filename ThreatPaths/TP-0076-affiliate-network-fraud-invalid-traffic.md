@@ -6,6 +6,7 @@ id: TP-0076
 title: "Affiliate Network Fraud & Invalid Traffic"
 category: ThreatPath
 date: 2026-03-27
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "TrafficGuard (2025); Tapper (2025, 2026); BluePear (2025); Anura (2025); SearchEngineLand (2026)"
 tlp: WHITE

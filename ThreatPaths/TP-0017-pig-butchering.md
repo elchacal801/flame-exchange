@@ -6,6 +6,7 @@ id: TP-0017
 title: "Pig Butchering (Investment Scam)"
 category: ThreatPath
 date: 2026-02-20
+last_reviewed: 2026-03-25
 author: "FLAME Project"
 source: "Internal Knowledge Base"
 tlp: WHITE

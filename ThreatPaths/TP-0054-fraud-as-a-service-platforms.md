@@ -6,6 +6,7 @@ id: TP-0054
 title: "Fraud-as-a-Service (FaaS) Platforms"
 category: ThreatPath
 date: 2026-03-17
+last_reviewed: 2026-05-10
 author: "FLAME Project"
 source: "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026"
 tlp: WHITE

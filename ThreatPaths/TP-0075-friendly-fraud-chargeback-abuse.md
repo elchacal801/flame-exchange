@@ -6,6 +6,7 @@ id: TP-0075
 title: "Friendly Fraud & Chargeback Abuse"
 category: ThreatPath
 date: 2026-03-27
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "Chargebacks911 (2026); Chargeflow (2025); Payscout (2025); Chargeback.io (2026); Alloy; Offenso Academy (2026)"
 tlp: WHITE

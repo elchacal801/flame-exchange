@@ -6,6 +6,7 @@ id: TP-0068
 title: "Gift Card Fraud Lifecycle — Generation, Tampering, and Monetization"
 category: ThreatPath
 date: 2026-03-22
+last_reviewed: 2026-03-22
 author: "FLAME Project"
 source: "NRF Retail Fraud Taxonomy v1.0 (November 2024)"
 tlp: WHITE

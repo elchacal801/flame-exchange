@@ -6,6 +6,7 @@ id: TP-0080
 title: "Stablecoin Freeze-Evasion via Wrapped Tokens, Decentralized Stablecoins, and Cross-Chain Bridges"
 category: ThreatPath
 date: 2026-04-01
+last_reviewed: 2026-04-02
 author: "FLAME Project"
 source: "FATF Targeted Report on Stablecoins and Unhosted Wallets (March 2026); CrowdStrike 2026 Global Threat Report; Chainalysis 2026 Crypto Crime Report"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0011
 title: "Romance Scam to Money Mule Recruitment Pipeline"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-30
 author: "FLAME Project"
 source: "FBI IC3 / FinCEN Advisory FIN-2020-A008 / INTERPOL"
 tlp: WHITE

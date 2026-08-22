@@ -6,6 +6,7 @@ id: TP-0050
 title: "Calendar/Invite Injection Phishing"
 category: ThreatPath
 date: 2026-03-10
+last_reviewed: 2026-03-15
 author: "FLAME Project"
 source: "Malwarebytes Labs / Google Workspace security advisories"
 tlp: WHITE

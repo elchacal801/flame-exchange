@@ -6,6 +6,7 @@ id: TP-0082
 title: "Gold Courier Scam — Physical Precious Metal Cash-Out"
 category: ThreatPath
 date: 2026-04-06
+last_reviewed: 2026-04-07
 author: "FLAME Project"
 source: "FBI IC3, 2025 Internet Crime Report"
 tlp: WHITE

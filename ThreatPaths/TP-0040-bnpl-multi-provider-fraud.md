@@ -6,6 +6,7 @@ id: TP-0040
 title: "BNPL Multi-Provider Fraud — Synthetic Stacking, ATO & Friendly Fraud"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-04
 author: "FLAME Project (sourced from LexisNexis Risk Solutions, Experian, ACI Worldwide, MRC, CFPB, FCA, ASIC research)"
 source: "https://www.lexisnexis.com/risk/global-fraud-identity-report"
 tlp: WHITE

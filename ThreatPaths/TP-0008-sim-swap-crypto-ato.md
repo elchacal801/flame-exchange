@@ -6,6 +6,7 @@ id: TP-0008
 title: "SIM Swap to Cryptocurrency Exchange ATO"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "FBI IC3 / DOJ SIM swap prosecutions / industry reporting"
 tlp: WHITE

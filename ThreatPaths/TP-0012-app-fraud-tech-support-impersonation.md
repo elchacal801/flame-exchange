@@ -6,6 +6,7 @@ id: TP-0012
 title: "Authorized Push Payment Fraud — Tech Support / Bank Impersonation"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "FBI IC3 / UK PSR APP fraud data / FTC consumer reports"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0041
 title: "RDGA-Based Infrastructure Campaigns"
 category: ThreatPath
 date: 2026-03-05
+last_reviewed: 2026-03-21
 author: "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Infoblox DNS Intelligence)"
 source: "https://www.infoblox.com/threat-intel/threat-reports/"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0061
 title: "Threat Actor Enabling Bulletproof Hosting Infrastructure"
 category: ThreatPath
 date: 2026-03-20
+last_reviewed: 2026-05-10
 author: "FLAME Project"
 source: "Recorded Future CTA-2026-0319, INTERPOL GFFTA 2026; Flare Academy BPH Webinar (Oleg O, 2026); Cybercrime Diaries — BPH Landscape and Black Basta Chat Leak posts (2024-2025)"
 tlp: WHITE

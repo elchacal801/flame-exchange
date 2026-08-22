@@ -6,6 +6,7 @@ id: TP-0029
 title: "AI Synthetic Identity & Document Forgery"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-04
 author: "FLAME Project"
 source: "https://www.federalreserve.gov/newsevents/pressreleases/bcreg20240715a.htm"
 tlp: WHITE

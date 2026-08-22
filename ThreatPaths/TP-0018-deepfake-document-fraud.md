@@ -6,6 +6,7 @@ id: TP-0018
 title: "Deepfake Document Fraud"
 category: ThreatPath
 date: 2026-02-20
+last_reviewed: 2026-02-28
 author: "FLAME Project"
 source: "Internal Knowledge Base"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0020
 title: "Supply Chain Payment Fraud"
 category: ThreatPath
 date: 2026-02-20
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "Internal Knowledge Base"
 tlp: WHITE

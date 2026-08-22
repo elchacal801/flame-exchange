@@ -6,6 +6,7 @@ id: TP-0071
 title: "IRSF & Telecom Revenue Share Fraud"
 category: ThreatPath
 date: 2026-03-29
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "Subex Telecom Fraud Intelligence (2025, 2026); TNS/CFCA Global Fraud Loss Survey (2026); Akamai Telecom Threat Report; NDSS Symposium"
 tlp: WHITE

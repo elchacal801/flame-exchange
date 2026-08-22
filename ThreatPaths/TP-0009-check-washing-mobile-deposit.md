@@ -6,6 +6,7 @@ id: TP-0009
 title: "Check Washing and Fraudulent Mobile Deposit"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "USPS OIG / FinCEN / banking industry reporting"
 tlp: WHITE

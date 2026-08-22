@@ -6,6 +6,7 @@ id: TP-0014
 title: "Insider-Enabled Account Fraud at Financial Institution"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "DOJ prosecution records / ACFE / FinCEN SAR data / FDIC enforcement actions"
 tlp: WHITE

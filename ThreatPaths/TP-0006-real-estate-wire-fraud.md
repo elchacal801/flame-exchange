@@ -6,6 +6,7 @@ id: TP-0006
 title: "Real Estate Wire Fraud — Closing Scam"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "FBI IC3 / American Land Title Association (ALTA) reporting"
 tlp: WHITE

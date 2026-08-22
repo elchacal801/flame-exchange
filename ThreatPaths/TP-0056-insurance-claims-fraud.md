@@ -6,6 +6,7 @@ id: TP-0056
 title: "Insurance Claims Fraud (Motor/Medical)"
 category: ThreatPath
 date: 2026-03-17
+last_reviewed: 2026-03-17
 author: "FLAME Project"
 source: "INTERPOL Global Financial Fraud Threat Assessment, 2nd Edition, March 2026 / FLAME gap analysis"
 tlp: WHITE

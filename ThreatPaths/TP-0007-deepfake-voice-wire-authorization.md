@@ -6,6 +6,7 @@ id: TP-0007
 title: "Deepfake Voice Authorization for Wire Transfer"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-03-21
 author: "FLAME Project"
 source: "Wall Street Journal (2019 UK energy firm case) / Regula AI deepfake fraud surveys"
 tlp: WHITE

@@ -192,7 +192,8 @@ CREATE TABLE IF NOT EXISTS submissions (
     nation_state_nexus TEXT,
     fraud_family TEXT,
     primary_phase TEXT,
-    short_name TEXT
+    short_name TEXT,
+    last_reviewed TEXT
 );
 
 CREATE TABLE IF NOT EXISTS submission_sectors (
@@ -343,8 +344,8 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
            (id, title, category, date, author, source, tlp, summary, body, file_path,
             confidence_score, source_reliability, info_credibility,
             infrastructure_generation_method, geopolitical_timing, nation_state_nexus,
-            fraud_family, primary_phase, short_name)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            fraud_family, primary_phase, short_name, last_reviewed)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             sub_id,
             meta.get("title", ""),
@@ -365,6 +366,7 @@ def load_submission(conn: sqlite3.Connection, meta: dict, body: str, summary: st
             meta.get("fraud_family"),
             meta.get("primary_phase"),
             meta.get("short_name"),
+            str(meta.get("last_reviewed", "")) or None,
         )
     )
 

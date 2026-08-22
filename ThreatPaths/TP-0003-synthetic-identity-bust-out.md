@@ -6,6 +6,7 @@ id: TP-0003
 title: "Synthetic Identity — Credit Card Bust-Out"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-04
 author: "FLAME Project"
 source: "Federal Reserve / FinCEN / ACFE reporting"
 tlp: WHITE

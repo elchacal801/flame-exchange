@@ -6,6 +6,7 @@ id: TP-0073
 title: "Real Estate Title Fraud & Deed Theft"
 category: ThreatPath
 date: 2026-03-29
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "First American Title Fraud Report; HousingWire (2025); ALTA Best Practices; Virginia Deed Fraud Study (2025); NAR Fraud Advisory; CertifID Wire Fraud Report; Entrust Identity Fraud Report (2026)"
 tlp: WHITE

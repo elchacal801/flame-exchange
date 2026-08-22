@@ -6,6 +6,7 @@ id: TP-0058
 title: "Scam Compound Operational Infrastructure"
 category: ThreatPath
 date: 2026-03-20
+last_reviewed: 2026-04-07
 author: "FLAME Project"
 source: "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026"
 tlp: WHITE

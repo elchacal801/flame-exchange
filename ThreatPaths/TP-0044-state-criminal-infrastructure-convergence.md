@@ -6,6 +6,7 @@ id: TP-0044
 title: "State-Criminal Infrastructure Convergence"
 category: ThreatPath
 date: 2026-03-05
+last_reviewed: 2026-04-02
 author: "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Microsoft Threat Intelligence, Gen Digital, Atlantic Council)"
 source: "https://www.microsoft.com/en-us/security/blog/topic/threat-intelligence/"
 tlp: WHITE

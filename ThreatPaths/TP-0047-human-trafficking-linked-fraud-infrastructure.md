@@ -6,6 +6,7 @@ id: TP-0047
 title: "Human Trafficking-Linked Fraud Infrastructure"
 category: ThreatPath
 date: 2026-03-05
+last_reviewed: 2026-04-07
 author: "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, FBI IC3, Chainalysis, OFAC)"
 source: "https://www.chainalysis.com/blog/crypto-crime-midyear-2025/"
 tlp: WHITE

@@ -6,6 +6,7 @@ id: TP-0015
 title: "Employment Fraud via Brand Impersonation"
 category: ThreatPath
 date: 2026-02-19
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "domain_intel DEA investigation / FBI IC3 employment scam advisories"
 tlp: WHITE

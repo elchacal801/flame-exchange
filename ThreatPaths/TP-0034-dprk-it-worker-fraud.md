@@ -6,6 +6,7 @@ id: TP-0034
 title: "DPRK State-Sponsored IT Worker Fraud & Data Extortion"
 category: ThreatPath
 date: 2026-03-03
+last_reviewed: 2026-05-10
 author: "FLAME Project"
 source: "Original Research — aggregated from FBI IC3 PSAs, DOJ enforcement actions, Google Threat Intelligence, Microsoft Threat Intelligence (Jasper Sleet), CrowdStrike, CrowdStrike 2026 GTR, Palo Alto Unit 42, SentinelOne, Flare/IBM X-Force (March 2026), Recorded Future CTA-2026-0319 (March 2026), FATF 2026 Stablecoin Report"
 tlp: WHITE

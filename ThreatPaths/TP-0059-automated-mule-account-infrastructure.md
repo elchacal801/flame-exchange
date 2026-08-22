@@ -6,6 +6,7 @@ id: TP-0059
 title: "Automated Mule Account Infrastructure"
 category: ThreatPath
 date: 2026-03-20
+last_reviewed: 2026-03-28
 author: "FLAME Project"
 source: "UNODC Emerging Threats Sept 2025, INTERPOL GFFTA 2026, Recorded Future CTA-2026-0319, Group-IB Cloud Phones 2026"
 tlp: WHITE

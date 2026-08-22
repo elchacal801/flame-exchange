@@ -6,6 +6,7 @@ id: TP-0036
 title: "Purchase Scam Merchant Networks"
 category: ThreatPath
 date: 2026-03-04
+last_reviewed: 2026-03-04
 author: "FLAME Project (sourced from Recorded Future Payment Fraud Intelligence Report 2025)"
 source: "https://www.recordedfuture.com/research/annual-payment-fraud-intelligence-report-2025"
 tlp: WHITE

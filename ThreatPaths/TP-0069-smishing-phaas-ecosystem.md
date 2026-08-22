@@ -6,6 +6,7 @@ id: TP-0069
 title: "Smishing PhaaS Ecosystem — Darcula, Smishing Triad, and Mass-Messaging Credential Harvest"
 category: ThreatPath
 date: 2026-03-23
+last_reviewed: 2026-04-02
 author: "FLAME Project"
 source: "Phishing kits and AiTM platforms: a comprehensive threat intelligence reference (2026)"
 tlp: WHITE

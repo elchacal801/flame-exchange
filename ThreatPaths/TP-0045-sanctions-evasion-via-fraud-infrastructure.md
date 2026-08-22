@@ -6,6 +6,7 @@ id: TP-0045
 title: "Sanctions Evasion via Fraud Infrastructure"
 category: ThreatPath
 date: 2026-03-05
+last_reviewed: 2026-04-07
 author: "FLAME Project (sourced from CrimsonVector Strategic Intelligence Report, Chainalysis, TRM Labs, OFAC)"
 source: "https://www.chainalysis.com/blog/crypto-crime-midyear-2025/"
 tlp: WHITE

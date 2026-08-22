@@ -6,6 +6,7 @@ id: TP-0023
 title: "Mobile Banking Trojan / Overlay Attack"
 category: ThreatPath
 date: 2026-02-20
+last_reviewed: 2026-05-10
 author: "FLAME Project"
 source: "Internal Knowledge Base; Thales Threat Landscape Report 2025 H2 — Finance sector mobile malware analysis"
 tlp: WHITE

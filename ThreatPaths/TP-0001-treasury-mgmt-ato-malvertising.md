@@ -6,6 +6,7 @@ id: TP-0001
 title: "Treasury Management ATO via Malvertising and Vishing"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-02-28
 author: "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)"
 source: "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
 tlp: WHITE

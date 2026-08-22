@@ -6,6 +6,7 @@ id: TP-0013
 title: "Credential Stuffing to Loyalty Point / Gift Card Account Drain"
 category: ThreatPath
 date: 2026-02-12
+last_reviewed: 2026-03-29
 author: "FLAME Project"
 source: "Akamai State of the Internet reports / industry reporting"
 tlp: WHITE

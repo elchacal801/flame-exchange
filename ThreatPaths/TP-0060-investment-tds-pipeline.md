@@ -6,6 +6,7 @@ id: TP-0060
 title: "Investment Fraud TDS Pipeline"
 category: ThreatPath
 date: 2026-03-20
+last_reviewed: 2026-03-21
 author: "FLAME Project"
 source: "Recorded Future CTA-2026-0319, Infoblox Keitaro/Binom Analysis 2025, INTERPOL GFFTA 2026"
 tlp: WHITE

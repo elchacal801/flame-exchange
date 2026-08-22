@@ -246,6 +246,7 @@ The YAML block inside the code fence must contain these fields:
 - title: string (descriptive, professional)
 - category: "ThreatPath"
 - date: string (YYYY-MM-DD, today's date provided to you)
+- last_reviewed: string (YYYY-MM-DD, same as date for a new submission)
 - author: string (provided to you)
 - source: string (the source URL)
 - tlp: "WHITE"
