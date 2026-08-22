@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-08-22T23:28:30.852653+00:00",
+    "generated_at": "2026-08-22T23:43:55.264081+00:00",
     "total": 1
   },
   "data": {
@@ -1796,20 +1796,21 @@
       }
     ],
     "regulatoryAlerts": {
-      "total": 19486,
+      "total": 19640,
       "bySeverity": {
-        "high": 19386,
-        "medium": 100
+        "high": 19462,
+        "medium": 178
       },
       "bySource": {
         "cfpb": 100,
         "fbi_ic3": 22,
-        "fincen": 15,
+        "fincen": 91,
+        "occ": 78,
         "ofac": 19249,
         "sec": 100
       },
       "lastUpdated": "2026-08-22"
     },
-    "generatedAt": "2026-08-22T23:28:30.746436+00:00"
+    "generatedAt": "2026-08-22T23:43:55.101301+00:00"
   }
 }

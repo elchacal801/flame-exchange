@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-08-22T23:28:30.779388+00:00",
+    "generated_at": "2026-08-22T23:43:55.155196+00:00",
     "total": 89
   },
   "data": [
@@ -23,6 +23,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P3",
       "short_name": "Treasury ATO",
+      "last_reviewed": "2026-02-28",
       "sectors": [
         "banking"
       ],
@@ -157,6 +158,7 @@
       "fraud_family": "payment-wire",
       "primary_phase": "P4",
       "short_name": "BEC Wire",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "cross-sector"
@@ -281,6 +283,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P3",
       "short_name": "Synth ID Bust-Out",
+      "last_reviewed": "2026-03-04",
       "sectors": [
         "banking",
         "fintech"
@@ -395,6 +398,7 @@
       "fraud_family": "payment-wire",
       "primary_phase": "P4",
       "short_name": "Payroll Diversion",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "cross-sector"
       ],
@@ -514,6 +518,7 @@
       "fraud_family": "insurance-healthcare",
       "primary_phase": "P3",
       "short_name": "Premium Diversion",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "insurance"
       ],
@@ -630,6 +635,7 @@
       "fraud_family": "payment-wire",
       "primary_phase": "P4",
       "short_name": "Real Estate Wire",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "cross-sector"
@@ -755,6 +761,7 @@
       "fraud_family": "payment-wire",
       "primary_phase": "P4",
       "short_name": "Deepfake Voice Wire",
+      "last_reviewed": "2026-03-21",
       "sectors": [
         "banking",
         "cross-sector"
@@ -899,6 +906,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P2",
       "short_name": "SIM Swap ATO",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "crypto",
         "fintech",
@@ -1031,6 +1039,7 @@
       "fraud_family": "payment-wire",
       "primary_phase": "P4",
       "short_name": "Check Washing",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "credit-union"
@@ -1132,6 +1141,7 @@
       "fraud_family": "insurance-healthcare",
       "primary_phase": "P4",
       "short_name": "Disability Fraud",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "insurance"
       ],
@@ -1222,6 +1232,7 @@
       "fraud_family": "investment-romance",
       "primary_phase": "P3",
       "short_name": "Romance Mule Pipeline",
+      "last_reviewed": "2026-03-30",
       "sectors": [
         "cross-sector"
       ],
@@ -1356,6 +1367,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P4",
       "short_name": "APP Tech Support",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "credit-union"
@@ -1483,6 +1495,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P2",
       "short_name": "Cred Stuff Loyalty",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "banking",
         "cross-sector",
@@ -1603,6 +1616,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P3",
       "short_name": "Insider Fraud",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "credit-union",
@@ -1732,6 +1746,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P3",
       "short_name": "Employment Fraud",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "healthcare",
         "staffing",
@@ -1848,6 +1863,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P4",
       "short_name": "First-Party Bust-Out",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "credit-union"
@@ -1947,6 +1963,7 @@
       "fraud_family": "investment-romance",
       "primary_phase": "P3",
       "short_name": "Pig Butchering",
+      "last_reviewed": "2026-03-25",
       "sectors": [
         "banking",
         "crypto",
@@ -2073,6 +2090,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P2",
       "short_name": "Deepfake Docs",
+      "last_reviewed": "2026-02-28",
       "sectors": [
         "banking",
         "credit-union",
@@ -2174,6 +2192,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P2",
       "short_name": "Business ID Theft",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "investment"
@@ -2290,6 +2309,7 @@
       "fraud_family": "payment-wire",
       "primary_phase": "P4",
       "short_name": "Supply Chain Wire",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "cross-sector"
@@ -2405,6 +2425,7 @@
       "fraud_family": "insurance-healthcare",
       "primary_phase": "P4",
       "short_name": "Healthcare Billing",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "healthcare",
         "insurance",
@@ -2535,6 +2556,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P4",
       "short_name": "Gov Program Fraud",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "government",
         "banking"
@@ -2635,6 +2657,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P2",
       "short_name": "Mobile Trojan",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "banking",
         "fintech",
@@ -2756,6 +2779,7 @@
       "fraud_family": "payment-wire",
       "primary_phase": "P4",
       "short_name": "A2A Payment Fraud",
+      "last_reviewed": "2026-03-04",
       "sectors": [
         "banking",
         "fintech",
@@ -2891,6 +2915,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P3",
       "short_name": "GenAI APP Romance",
+      "last_reviewed": "2026-03-17",
       "sectors": [
         "banking",
         "cross-sector"
@@ -3026,6 +3051,7 @@
       "fraud_family": "investment-romance",
       "primary_phase": "P3",
       "short_name": "GenAI APP Investment",
+      "last_reviewed": "2026-03-17",
       "sectors": [
         "banking",
         "crypto",
@@ -3162,6 +3188,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P4",
       "short_name": "Elder Exploitation",
+      "last_reviewed": "2026-03-02",
       "sectors": [
         "banking",
         "cross-sector"
@@ -3298,6 +3325,7 @@
       "fraud_family": "insurance-healthcare",
       "primary_phase": "P4",
       "short_name": "DME Phantom Billing",
+      "last_reviewed": "2026-03-21",
       "sectors": [
         "healthcare",
         "insurance",
@@ -3439,6 +3467,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P2",
       "short_name": "AI Synth ID Forgery",
+      "last_reviewed": "2026-03-04",
       "sectors": [
         "banking",
         "fintech"
@@ -3555,6 +3584,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P3",
       "short_name": "Triangulation Fraud",
+      "last_reviewed": "2026-03-04",
       "sectors": [
         "retail"
       ],
@@ -3682,6 +3712,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P4",
       "short_name": "Refund-as-a-Service",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "retail"
       ],
@@ -3786,6 +3817,7 @@
       "fraud_family": "crypto-laundering",
       "primary_phase": "P4",
       "short_name": "Wallet Drainer",
+      "last_reviewed": "2026-03-02",
       "sectors": [
         "web3",
         "crypto"
@@ -3912,6 +3944,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P3",
       "short_name": "Ghost Student Aid",
+      "last_reviewed": "2026-03-02",
       "sectors": [
         "education",
         "government"
@@ -4021,6 +4054,7 @@
       "fraud_family": "state-geopolitical",
       "primary_phase": "P2",
       "short_name": "DPRK IT Worker",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "technology",
         "banking",
@@ -4191,6 +4225,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P2",
       "short_name": "Magecart Skimmer",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "retail",
         "payments",
@@ -4313,6 +4348,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P3",
       "short_name": "Purchase Scam",
+      "last_reviewed": "2026-03-04",
       "sectors": [
         "retail",
         "payments",
@@ -4434,6 +4470,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P4",
       "short_name": "NFC Relay Fraud",
+      "last_reviewed": "2026-03-04",
       "sectors": [
         "banking",
         "fintech",
@@ -4562,6 +4599,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P3",
       "short_name": "Card Testing",
+      "last_reviewed": "2026-03-04",
       "sectors": [
         "payments",
         "retail",
@@ -4672,6 +4710,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P4",
       "short_name": "Agentic Commerce",
+      "last_reviewed": "2026-03-21",
       "sectors": [
         "technology",
         "retail",
@@ -4821,6 +4860,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P3",
       "short_name": "BNPL Stacking",
+      "last_reviewed": "2026-03-04",
       "sectors": [
         "retail",
         "payments",
@@ -4953,6 +4993,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "RDGA Domains",
+      "last_reviewed": "2026-03-21",
       "sectors": [
         "cross-sector",
         "banking",
@@ -5056,6 +5097,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "TDS Chains",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "cross-sector",
         "banking",
@@ -5204,6 +5246,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "AI Infra Gen",
+      "last_reviewed": "2026-03-05",
       "sectors": [
         "cross-sector",
         "banking",
@@ -5314,6 +5357,7 @@
       "fraud_family": "state-geopolitical",
       "primary_phase": "P1",
       "short_name": "State-Criminal Infra",
+      "last_reviewed": "2026-04-02",
       "sectors": [
         "banking",
         "crypto",
@@ -5443,6 +5487,7 @@
       "fraud_family": "state-geopolitical",
       "primary_phase": "P3",
       "short_name": "Sanctions Evasion",
+      "last_reviewed": "2026-04-07",
       "sectors": [
         "crypto",
         "banking",
@@ -5546,6 +5591,7 @@
       "fraud_family": "state-geopolitical",
       "primary_phase": "P1",
       "short_name": "Geo-Timed Campaigns",
+      "last_reviewed": "2026-03-25",
       "sectors": [
         "banking",
         "payments",
@@ -5637,6 +5683,7 @@
       "fraud_family": "state-geopolitical",
       "primary_phase": "P1",
       "short_name": "Trafficking Infra",
+      "last_reviewed": "2026-04-07",
       "sectors": [
         "crypto",
         "banking",
@@ -5746,6 +5793,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "BPH Migration",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "cross-sector"
       ],
@@ -5842,6 +5890,7 @@
       "fraud_family": "crypto-laundering",
       "primary_phase": "P5",
       "short_name": "Crypto Laundering",
+      "last_reviewed": "2026-04-02",
       "sectors": [
         "crypto",
         "banking",
@@ -5950,6 +5999,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P2",
       "short_name": "Calendar Phishing",
+      "last_reviewed": "2026-03-15",
       "sectors": [
         "banking",
         "cross-sector"
@@ -6049,6 +6099,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P2",
       "short_name": "Quishing",
+      "last_reviewed": "2026-03-17",
       "sectors": [
         "banking",
         "payments",
@@ -6158,6 +6209,7 @@
       "fraud_family": "investment-romance",
       "primary_phase": "P3",
       "short_name": "Sextortion Hybrid",
+      "last_reviewed": "2026-03-21",
       "sectors": [
         "banking",
         "crypto",
@@ -6277,6 +6329,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P4",
       "short_name": "Vehicle Export Fraud",
+      "last_reviewed": "2026-03-17",
       "sectors": [
         "banking",
         "cross-sector"
@@ -6377,6 +6430,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "FaaS Platforms",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "cross-sector",
         "banking",
@@ -6521,6 +6575,7 @@
       "fraud_family": "crypto-laundering",
       "primary_phase": "P5",
       "short_name": "Crypto Terror Nexus",
+      "last_reviewed": "2026-04-02",
       "sectors": [
         "crypto",
         "banking",
@@ -6644,6 +6699,7 @@
       "fraud_family": "insurance-healthcare",
       "primary_phase": "P4",
       "short_name": "Insurance Claims",
+      "last_reviewed": "2026-03-17",
       "sectors": [
         "insurance",
         "healthcare",
@@ -6746,6 +6802,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "DFaaS Marketplace",
+      "last_reviewed": "2026-03-25",
       "sectors": [
         "cross-sector",
         "banking",
@@ -6866,6 +6923,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "Scam Compounds",
+      "last_reviewed": "2026-04-07",
       "sectors": [
         "cross-sector",
         "banking",
@@ -6986,6 +7044,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P2",
       "short_name": "Auto Mule Infra",
+      "last_reviewed": "2026-03-28",
       "sectors": [
         "banking",
         "crypto",
@@ -7095,6 +7154,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "Investment TDS",
+      "last_reviewed": "2026-03-21",
       "sectors": [
         "banking",
         "investment",
@@ -7203,6 +7263,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "TAE BPH Infra",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "cross-sector",
         "technology",
@@ -7316,6 +7377,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P3",
       "short_name": "Recovery Fraud",
+      "last_reviewed": "2026-03-22",
       "sectors": [
         "cross-sector",
         "banking",
@@ -7425,6 +7487,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P3",
       "short_name": "Counterfeit Networks",
+      "last_reviewed": "2026-03-22",
       "sectors": [
         "retail",
         "payments",
@@ -7534,6 +7597,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P3",
       "short_name": "Long-Firm Fraud",
+      "last_reviewed": "2026-03-22",
       "sectors": [
         "banking",
         "cross-sector",
@@ -7645,6 +7709,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "Boiler Room Infra",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "cross-sector",
         "banking",
@@ -7765,6 +7830,7 @@
       "fraud_family": "insurance-healthcare",
       "primary_phase": "P4",
       "short_name": "Crash-for-Cash",
+      "last_reviewed": "2026-03-22",
       "sectors": [
         "insurance",
         "healthcare"
@@ -7854,6 +7920,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P2",
       "short_name": "AiTM Phishing Kit",
+      "last_reviewed": "2026-04-02",
       "sectors": [
         "cross-sector",
         "banking",
@@ -8004,6 +8071,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P4",
       "short_name": "Gift Card Fraud",
+      "last_reviewed": "2026-03-22",
       "sectors": [
         "retail",
         "payments"
@@ -8105,6 +8173,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P2",
       "short_name": "Smishing PhaaS",
+      "last_reviewed": "2026-04-02",
       "sectors": [
         "cross-sector",
         "banking",
@@ -8236,6 +8305,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P3",
       "short_name": "Travel Booking Fraud",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "travel",
         "payments",
@@ -8331,6 +8401,7 @@
       "fraud_family": "telecom-specialized",
       "primary_phase": "P4",
       "short_name": "IRSF Revenue Fraud",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "telecommunications"
       ],
@@ -8423,6 +8494,7 @@
       "fraud_family": "telecom-specialized",
       "primary_phase": "P3",
       "short_name": "Telecom Sub Fraud",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "telecommunications"
       ],
@@ -8511,6 +8583,7 @@
       "fraud_family": "identity-synthetic",
       "primary_phase": "P3",
       "short_name": "Title/Deed Theft",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "real-estate"
       ],
@@ -8604,6 +8677,7 @@
       "fraud_family": "insurance-healthcare",
       "primary_phase": "P3",
       "short_name": "Ghost Broking",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "insurance"
       ],
@@ -8687,6 +8761,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P4",
       "short_name": "Friendly Fraud",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "payments",
         "ecommerce",
@@ -8767,6 +8842,7 @@
       "fraud_family": "retail-ecommerce",
       "primary_phase": "P3",
       "short_name": "Affiliate Fraud",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "ecommerce",
         "technology"
@@ -8854,6 +8930,7 @@
       "fraud_family": "insurance-healthcare",
       "primary_phase": "P3",
       "short_name": "AI Claims Fraud",
+      "last_reviewed": "2026-03-29",
       "sectors": [
         "insurance"
       ],
@@ -8941,6 +9018,7 @@
       "fraud_family": "crypto-laundering",
       "primary_phase": "P5",
       "short_name": "Stablecoin CEX Launder",
+      "last_reviewed": "2026-03-30",
       "sectors": [
         "crypto",
         "banking",
@@ -9057,6 +9135,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "gTLD Subdomain Abuse",
+      "last_reviewed": "2026-04-02",
       "sectors": [
         "cross-sector",
         "banking",
@@ -9163,6 +9242,7 @@
       "fraud_family": "crypto-laundering",
       "primary_phase": "P5",
       "short_name": "Freeze Evasion",
+      "last_reviewed": "2026-04-02",
       "sectors": [
         "crypto",
         "banking",
@@ -9267,6 +9347,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P2",
       "short_name": "Vishing Hybrid",
+      "last_reviewed": "2026-04-02",
       "sectors": [
         "banking",
         "cross-sector",
@@ -9368,6 +9449,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P4",
       "short_name": "Gold Courier Scam",
+      "last_reviewed": "2026-04-07",
       "sectors": [
         "banking",
         "cross-sector"
@@ -9467,6 +9549,7 @@
       "fraud_family": "investment-romance",
       "primary_phase": "P3",
       "short_name": "Investment Club Scam",
+      "last_reviewed": "2026-04-07",
       "sectors": [
         "investment",
         "banking",
@@ -9566,6 +9649,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P4",
       "short_name": "Gov Impersonation APP",
+      "last_reviewed": "2026-04-07",
       "sectors": [
         "banking",
         "cross-sector",
@@ -9677,6 +9761,7 @@
       "fraud_family": "crypto-laundering",
       "primary_phase": "P5",
       "short_name": "Crypto ATM Fraud",
+      "last_reviewed": "2026-04-07",
       "sectors": [
         "banking",
         "crypto",
@@ -9770,6 +9855,7 @@
       "fraud_family": "state-geopolitical",
       "primary_phase": "P1",
       "short_name": "Crisis Exploitation",
+      "last_reviewed": "2026-04-09",
       "sectors": [
         "government",
         "banking",
@@ -9899,6 +9985,7 @@
       "fraud_family": "account-takeover",
       "primary_phase": "P2",
       "short_name": "Infostealer Pipeline",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "banking",
         "crypto",
@@ -10027,6 +10114,7 @@
       "fraud_family": "social-engineering",
       "primary_phase": "P2",
       "short_name": "Logistics Spearphish",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "logistics",
         "transportation",
@@ -10140,6 +10228,7 @@
       "fraud_family": "fraud-infrastructure",
       "primary_phase": "P1",
       "short_name": "TAE Transit Complicity",
+      "last_reviewed": "2026-05-10",
       "sectors": [
         "technology",
         "telecommunications",
