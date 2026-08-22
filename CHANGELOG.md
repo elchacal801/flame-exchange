@@ -10,6 +10,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 _Every PR adds its line here; entries roll into a version heading at release._
 
+### Changed
+
+- **TP-0033 enriched** with FinCEN Alert FIN-2026-Alert004 (federal student aid fraud): banking-side red-flag indicators, SAR filing guidance (`FIN-2026-FSAFRAUD`), ED's $1B-prevented statistic; new `REG-FINCEN-FSA` regulatory reference
+
 ---
 
 ## [0.13.0] — 2026-08-22

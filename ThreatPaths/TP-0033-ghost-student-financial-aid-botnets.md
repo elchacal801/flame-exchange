@@ -6,7 +6,7 @@ id: TP-0033
 title: "Ghost Student Financial Aid Botnets"
 category: ThreatPath
 date: 2026-03-02
-last_reviewed: 2026-03-02
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "Original Research — aggregated from Equifax, California Community Colleges Chancellor's Office, DOE-OIG, and GAO reporting"
 tlp: WHITE
@@ -53,7 +53,7 @@ ucff_domains:
   improve: "Level 3"
 confidence_score: 68
 source_reliability: B
-info_credibility: 3
+info_credibility: 2
 related_tps:
   - id: TP-0003
     relationship: feeds-into
@@ -61,6 +61,7 @@ related_tps:
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
+  - REG-FINCEN-FSA
 baseline_ids:
   - BL-0011
 tags:
@@ -295,6 +296,19 @@ Ghost student fraud operations are discussed on English-language fraud forums, T
 
 ## Detection Approaches
 
+### FinCEN Red Flag Indicators — FIN-2026-Alert004 (Phase 5, banking-side)
+
+FinCEN's July 2026 Alert (issued with ED-OIG and the FBI) shifts part of the detection burden to the financial institutions receiving aid refunds. Key indicators for deposit-side monitoring:
+
+- Student aid refund credited to a customer with no profile consistent with educational enrollment, or where the stated refund recipient is unrelated to the account holder — followed by rapid P2P/wire out-transfers, digital-asset purchases, or international MSB activity
+- Multiple unrelated students' refunds deposited into a single account (personal or business)
+- Newly opened account funded solely by a student aid refund with no other activity
+- Multiple refund-receiving accounts accessed from the same out-of-state or international IP address or device
+- Batches of accounts opened within a short window, each receiving exactly one refund (one-to-one distribution to defeat velocity rules)
+- Accounts aggregating P2P/wire transfers from many accounts that recently received aid refunds (second-hop consolidation)
+
+SAR filings should reference key term **FIN-2026-FSAFRAUD** in field 2 and the narrative, and select field 34(z) (Fraud — Other) with "Federal Student Aid Fraud".
+
 ### Queries / Rules
 
 **SQL — Ghost Student Identification: Zero Academic Activity with Active Financial Aid (Phase 4)**
@@ -401,6 +415,8 @@ index=financial_aid sourcetype=disbursements
 
 - **GAO — Federal Student Aid Program Integrity Reports**: Government accountability analysis of financial aid fraud controls and recommendations for systemic improvements. [Link](https://www.gao.gov/education)
 
+- **FinCEN Alert FIN-2026-Alert004 — Fraud Schemes Targeting Federal Student Aid** (2026-07-24): Issued with ED-OIG and the FBI; documents refund-flow mechanics via payment intermediaries, nine red-flag indicators for financial institutions, and SAR filing instructions (key term FIN-2026-FSAFRAUD). Notes ED prevented $1B in federal student aid fraud in 2025 across a $120B/13M-student program, under the policy framework of E.O. 14249. [Link](https://www.fincen.gov/system/files/2026-07/FinCEN-Alert-Fraud-Schemes-Targeting-Federal-Student-Aid.pdf)
+
 - **Related FLAME Threat Paths**: [TP-0022: Government Program Fraud](TP-0022-government-program-fraud.md) (broader government benefit fraud patterns); [TP-0003: Synthetic Identity](TP-0003-synthetic-identity-bust-out.md) (synthetic identity creation techniques used for ghost student personas).
 
 ---
@@ -426,3 +442,4 @@ index=financial_aid sourcetype=disbursements
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-03-02 | FLAME Project | Initial submission |
+| 2026-08-22 | FLAME Project | Enriched with FinCEN Alert FIN-2026-Alert004: banking-side red flags, SAR guidance, ED $1B prevention statistic; added REG-FINCEN-FSA; info_credibility 3 -> 2 on federal LE corroboration |
