@@ -1,4 +1,14 @@
 regulations:
+  - id: REG-FINCEN-FSA
+    name: "FinCEN Alert FIN-2026-Alert004: Fraud Schemes Targeting Federal Student Aid"
+    jurisdiction: US
+    category: fraud-reporting
+    description: "Urges financial institutions to detect and report suspicious activity tied to federal student aid fraud; SAR filings reference key term FIN-2026-FSAFRAUD and field 34(z) with 'Federal Student Aid Fraud'"
+    relevant_fraud_types:
+      - ghost-student-fraud
+      - synthetic-identity
+      - benefit-fraud
+
   - id: REG-PSD3-SCA
     name: "PSD3 Strong Customer Authentication"
     jurisdiction: EU
