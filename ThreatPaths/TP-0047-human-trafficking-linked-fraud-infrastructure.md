@@ -36,7 +36,7 @@ mitre_attack:
   - T1566.002
   - T1071.001
   - T1048
-ft3_tactics: []
+ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT043", "FT010.003", "FT018", "FT044", "FT052.001", "FT007.010", "FT008.003", "FT016.001", "FT021", "FT038.002"]
 mitre_f3: ["F1018", "F1025", "F1045", "F1047"]
 groupib_stages:
   - "Reconnaissance"

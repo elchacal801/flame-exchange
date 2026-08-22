@@ -688,8 +688,12 @@
     }
   },
   "TP-0010": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1021",
+      "F1024",
+      "F1027"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -707,7 +711,23 @@
         "TA0042",
         "TA0043"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1021",
+          "name": "Create Fraudulent Merchant Account",
+          "score": 3.0
+        },
+        {
+          "id": "F1024",
+          "name": "Dispute Legitimate Transaction",
+          "score": 3.0
+        },
+        {
+          "id": "F1027",
+          "name": "Falsify Business Documents",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0011": {
@@ -1446,6 +1466,7 @@
   "TP-0021": {
     "suggested_f3_techniques": [
       "F1009",
+      "F1021",
       "F1025",
       "F1027",
       "F1033",
@@ -1475,6 +1496,11 @@
         {
           "id": "F1009",
           "name": "Bank Deposit",
+          "score": 3.0
+        },
+        {
+          "id": "F1021",
+          "name": "Create Fraudulent Merchant Account",
           "score": 3.0
         },
         {
@@ -1974,13 +2000,13 @@
       "F1020.001",
       "F1009",
       "F1018",
+      "F1021",
       "F1025",
       "F1027",
       "F1031",
       "F1032",
       "F1033",
-      "F1040",
-      "F1045"
+      "F1040"
     ],
     "confidence": "high",
     "_detail": {
@@ -2018,6 +2044,11 @@
           "score": 3.0
         },
         {
+          "id": "F1021",
+          "name": "Create Fraudulent Merchant Account",
+          "score": 3.0
+        },
+        {
           "id": "F1025",
           "name": "Electronic Funds Transfer",
           "score": 3.0
@@ -2045,11 +2076,6 @@
         {
           "id": "F1040",
           "name": "Phone Number Spoofing",
-          "score": 3.0
-        },
-        {
-          "id": "F1045",
-          "name": "Structuring",
           "score": 3.0
         }
       ]
@@ -2863,8 +2889,11 @@
     }
   },
   "TP-0041": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "T1583.001",
+      "T1593"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -2883,7 +2912,18 @@
         "TA0042",
         "TA0043"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "T1583.001",
+          "name": "Acquire Infrastructure: Domains",
+          "score": 6.0
+        },
+        {
+          "id": "T1593",
+          "name": "Search Open Websites/Domains",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0042": {
@@ -3006,7 +3046,9 @@
       "F1045",
       "F1047",
       "T1113",
-      "T1219"
+      "T1195",
+      "T1219",
+      "T1583"
     ],
     "confidence": "high",
     "_detail": {
@@ -3059,8 +3101,18 @@
           "score": 3.0
         },
         {
+          "id": "T1195",
+          "name": "Supply Chain Compromise",
+          "score": 3.0
+        },
+        {
           "id": "T1219",
           "name": "Remote Access Tools",
+          "score": 3.0
+        },
+        {
+          "id": "T1583",
+          "name": "Acquire Infrastructure",
           "score": 3.0
         }
       ]
@@ -3116,8 +3168,13 @@
     }
   },
   "TP-0046": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1018",
+      "F1045",
+      "T1195",
+      "T1583"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -3134,7 +3191,28 @@
         "TA0042",
         "TA0043"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1018",
+          "name": "Convert to Cryptocurrency",
+          "score": 3.0
+        },
+        {
+          "id": "F1045",
+          "name": "Structuring",
+          "score": 3.0
+        },
+        {
+          "id": "T1195",
+          "name": "Supply Chain Compromise",
+          "score": 3.0
+        },
+        {
+          "id": "T1583",
+          "name": "Acquire Infrastructure",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0047": {
@@ -3228,8 +3306,12 @@
     }
   },
   "TP-0049": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1018",
+      "F1045",
+      "F1047"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -3243,7 +3325,23 @@
       "groupib_tactics": [
         "FA0002"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1018",
+          "name": "Convert to Cryptocurrency",
+          "score": 3.0
+        },
+        {
+          "id": "F1045",
+          "name": "Structuring",
+          "score": 3.0
+        },
+        {
+          "id": "F1047",
+          "name": "Transfer of funds",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0050": {
@@ -3578,7 +3676,8 @@
       "F1032",
       "F1045",
       "F1047",
-      "T1585"
+      "T1195",
+      "T1583"
     ],
     "confidence": "high",
     "_detail": {
@@ -3640,8 +3739,13 @@
           "score": 3.0
         },
         {
-          "id": "T1585",
-          "name": "Establish Accounts",
+          "id": "T1195",
+          "name": "Supply Chain Compromise",
+          "score": 3.0
+        },
+        {
+          "id": "T1583",
+          "name": "Acquire Infrastructure",
           "score": 3.0
         }
       ]
@@ -3651,6 +3755,7 @@
     "suggested_f3_techniques": [
       "F1020.001",
       "F1006",
+      "F1024",
       "F1027",
       "F1029",
       "T1585"
@@ -3682,6 +3787,11 @@
         {
           "id": "F1006",
           "name": "Account Takeover",
+          "score": 3.0
+        },
+        {
+          "id": "F1024",
+          "name": "Dispute Legitimate Transaction",
           "score": 3.0
         },
         {
@@ -3823,8 +3933,18 @@
     }
   },
   "TP-0059": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1009.004",
+      "F1002",
+      "F1010",
+      "F1018",
+      "F1023",
+      "F1030",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -3841,12 +3961,67 @@
         "TA0002",
         "TA0042"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1009.004",
+          "name": "Bank Deposit: Test Deposit",
+          "score": 6.0
+        },
+        {
+          "id": "F1002",
+          "name": "Abuse of Public-Facing API",
+          "score": 3.0
+        },
+        {
+          "id": "F1010",
+          "name": "Buy Money Order",
+          "score": 3.0
+        },
+        {
+          "id": "F1018",
+          "name": "Convert to Cryptocurrency",
+          "score": 3.0
+        },
+        {
+          "id": "F1023",
+          "name": "Device Fingerprint Spoofing",
+          "score": 3.0
+        },
+        {
+          "id": "F1030",
+          "name": "Geolocation Spoofing",
+          "score": 3.0
+        },
+        {
+          "id": "F1045",
+          "name": "Structuring",
+          "score": 3.0
+        },
+        {
+          "id": "F1047",
+          "name": "Transfer of funds",
+          "score": 3.0
+        },
+        {
+          "id": "T1585",
+          "name": "Establish Accounts",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0060": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "T1583.001",
+      "F1018",
+      "F1023",
+      "F1025",
+      "F1029",
+      "F1030",
+      "T1189",
+      "T1593"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -3862,12 +4037,58 @@
         "TA0002",
         "TA0042"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "T1583.001",
+          "name": "Acquire Infrastructure: Domains",
+          "score": 6.0
+        },
+        {
+          "id": "F1018",
+          "name": "Convert to Cryptocurrency",
+          "score": 3.0
+        },
+        {
+          "id": "F1023",
+          "name": "Device Fingerprint Spoofing",
+          "score": 3.0
+        },
+        {
+          "id": "F1025",
+          "name": "Electronic Funds Transfer",
+          "score": 3.0
+        },
+        {
+          "id": "F1029",
+          "name": "Gather Customer Information",
+          "score": 3.0
+        },
+        {
+          "id": "F1030",
+          "name": "Geolocation Spoofing",
+          "score": 3.0
+        },
+        {
+          "id": "T1189",
+          "name": "Drive-by Compromise",
+          "score": 3.0
+        },
+        {
+          "id": "T1593",
+          "name": "Search Open Websites/Domains",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0061": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "T1583.001",
+      "T1070",
+      "T1593",
+      "T1608"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -3879,7 +4100,28 @@
         "TA0001",
         "TA0042"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "T1583.001",
+          "name": "Acquire Infrastructure: Domains",
+          "score": 6.0
+        },
+        {
+          "id": "T1070",
+          "name": "Indicator Removal",
+          "score": 3.0
+        },
+        {
+          "id": "T1593",
+          "name": "Search Open Websites/Domains",
+          "score": 3.0
+        },
+        {
+          "id": "T1608",
+          "name": "Stage Capabilities",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0062": {
@@ -4182,6 +4424,7 @@
   "TP-0066": {
     "suggested_f3_techniques": [
       "F1020.001",
+      "F1024",
       "F1027"
     ],
     "confidence": "high",
@@ -4207,6 +4450,11 @@
           "id": "F1020.001",
           "name": "Create Fake Materials: Fake Documents",
           "score": 9.0
+        },
+        {
+          "id": "F1024",
+          "name": "Dispute Legitimate Transaction",
+          "score": 3.0
         },
         {
           "id": "F1027",
@@ -4456,8 +4704,15 @@
     }
   },
   "TP-0070": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1005",
+      "F1012",
+      "F1021",
+      "F1028",
+      "F1047",
+      "F1048"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -4476,12 +4731,48 @@
         "TA0042",
         "TA0043"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1005",
+          "name": "Account Manipulation",
+          "score": 3.0
+        },
+        {
+          "id": "F1012",
+          "name": "Card Testing",
+          "score": 3.0
+        },
+        {
+          "id": "F1021",
+          "name": "Create Fraudulent Merchant Account",
+          "score": 3.0
+        },
+        {
+          "id": "F1028",
+          "name": "Fradulent Purchasing",
+          "score": 3.0
+        },
+        {
+          "id": "F1047",
+          "name": "Transfer of funds",
+          "score": 3.0
+        },
+        {
+          "id": "F1048",
+          "name": "Use Virtual Cards",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0071": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1034",
+      "F1003",
+      "F1040",
+      "T1451"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -4499,12 +4790,40 @@
         "TA0042",
         "TA0043"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1034",
+          "name": "Interactive Voice Response Mapping",
+          "score": 6.0
+        },
+        {
+          "id": "F1003",
+          "name": "Abuse SMS verification",
+          "score": 3.0
+        },
+        {
+          "id": "F1040",
+          "name": "Phone Number Spoofing",
+          "score": 3.0
+        },
+        {
+          "id": "T1451",
+          "name": "SIM Card Swap",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0072": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1003",
+      "F1005",
+      "F1015",
+      "F1040",
+      "T1451",
+      "T1585"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -4520,12 +4839,47 @@
         "TA0002",
         "TA0042"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1003",
+          "name": "Abuse SMS verification",
+          "score": 3.0
+        },
+        {
+          "id": "F1005",
+          "name": "Account Manipulation",
+          "score": 3.0
+        },
+        {
+          "id": "F1015",
+          "name": "Churning",
+          "score": 3.0
+        },
+        {
+          "id": "F1040",
+          "name": "Phone Number Spoofing",
+          "score": 3.0
+        },
+        {
+          "id": "T1451",
+          "name": "SIM Card Swap",
+          "score": 3.0
+        },
+        {
+          "id": "T1585",
+          "name": "Establish Accounts",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0073": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1027",
+      "F1031",
+      "T1672"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -4543,12 +4897,32 @@
         "TA0042",
         "TA0043"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1027",
+          "name": "Falsify Business Documents",
+          "score": 3.0
+        },
+        {
+          "id": "F1031",
+          "name": "Impersonate Account Holder",
+          "score": 3.0
+        },
+        {
+          "id": "T1672",
+          "name": "Email Spoofing",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0074": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "F1021",
+      "F1027",
+      "F1032"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -4566,7 +4940,23 @@
         "TA0042",
         "TA0043"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "F1021",
+          "name": "Create Fraudulent Merchant Account",
+          "score": 3.0
+        },
+        {
+          "id": "F1027",
+          "name": "Falsify Business Documents",
+          "score": 3.0
+        },
+        {
+          "id": "F1032",
+          "name": "Impersonate Official",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0075": {
@@ -4606,8 +4996,13 @@
     }
   },
   "TP-0076": {
-    "suggested_f3_techniques": [],
-    "confidence": "medium",
+    "suggested_f3_techniques": [
+      "T1539",
+      "F1002",
+      "F1004",
+      "F1023"
+    ],
+    "confidence": "high",
     "_detail": {
       "cfpf_tactics": [
         "FA0001",
@@ -4625,7 +5020,28 @@
         "TA0042",
         "TA0043"
       ],
-      "technique_scores": []
+      "technique_scores": [
+        {
+          "id": "T1539",
+          "name": "Steal Web Session Cookie",
+          "score": 6.0
+        },
+        {
+          "id": "F1002",
+          "name": "Abuse of Public-Facing API",
+          "score": 3.0
+        },
+        {
+          "id": "F1004",
+          "name": "Access with Stolen Session Cookie",
+          "score": 3.0
+        },
+        {
+          "id": "F1023",
+          "name": "Device Fingerprint Spoofing",
+          "score": 3.0
+        }
+      ]
     }
   },
   "TP-0077": {
@@ -4656,8 +5072,10 @@
   },
   "TP-0078": {
     "suggested_f3_techniques": [
+      "F1025.001",
+      "F1009",
+      "F1010",
       "F1018",
-      "F1025",
       "F1045",
       "F1047"
     ],
@@ -4680,13 +5098,23 @@
       ],
       "technique_scores": [
         {
-          "id": "F1018",
-          "name": "Convert to Cryptocurrency",
+          "id": "F1025.001",
+          "name": "Electronic Funds Transfer: Peer-to-Peer Transfer",
+          "score": 6.0
+        },
+        {
+          "id": "F1009",
+          "name": "Bank Deposit",
           "score": 3.0
         },
         {
-          "id": "F1025",
-          "name": "Electronic Funds Transfer",
+          "id": "F1010",
+          "name": "Buy Money Order",
+          "score": 3.0
+        },
+        {
+          "id": "F1018",
+          "name": "Convert to Cryptocurrency",
           "score": 3.0
         },
         {
@@ -4704,10 +5132,13 @@
   },
   "TP-0079": {
     "suggested_f3_techniques": [
+      "T1583.001",
       "T1189",
       "T1555",
       "T1557",
+      "T1593",
       "T1598",
+      "T1608",
       "T1660"
     ],
     "confidence": "high",
@@ -4728,6 +5159,11 @@
       ],
       "technique_scores": [
         {
+          "id": "T1583.001",
+          "name": "Acquire Infrastructure: Domains",
+          "score": 6.0
+        },
+        {
           "id": "T1189",
           "name": "Drive-by Compromise",
           "score": 3.0
@@ -4743,8 +5179,18 @@
           "score": 3.0
         },
         {
+          "id": "T1593",
+          "name": "Search Open Websites/Domains",
+          "score": 3.0
+        },
+        {
           "id": "T1598",
           "name": "Phishing for Information",
+          "score": 3.0
+        },
+        {
+          "id": "T1608",
+          "name": "Stage Capabilities",
           "score": 3.0
         },
         {
@@ -4757,6 +5203,8 @@
   },
   "TP-0080": {
     "suggested_f3_techniques": [
+      "F1009",
+      "F1010",
       "F1018",
       "F1025",
       "F1045",
@@ -4779,6 +5227,16 @@
         "TA0042"
       ],
       "technique_scores": [
+        {
+          "id": "F1009",
+          "name": "Bank Deposit",
+          "score": 3.0
+        },
+        {
+          "id": "F1010",
+          "name": "Buy Money Order",
+          "score": 3.0
+        },
         {
           "id": "F1018",
           "name": "Convert to Cryptocurrency",
@@ -5197,6 +5655,321 @@
         {
           "id": "F1047",
           "name": "Transfer of funds",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0086": {
+    "suggested_f3_techniques": [
+      "F1020.002",
+      "F1031",
+      "F1032",
+      "T1583.001",
+      "F1018",
+      "F1025",
+      "F1040",
+      "T1189",
+      "T1555",
+      "T1557"
+    ],
+    "confidence": "high",
+    "_detail": {
+      "cfpf_tactics": [
+        "FA0001",
+        "FA0002",
+        "TA0001",
+        "TA0002",
+        "TA0005",
+        "TA0042",
+        "TA0043"
+      ],
+      "groupib_tactics": [
+        "FA0001",
+        "TA0001",
+        "TA0002",
+        "TA0042",
+        "TA0043"
+      ],
+      "technique_scores": [
+        {
+          "id": "F1020.002",
+          "name": "Create Fake Materials: Fake Website",
+          "score": 6.0
+        },
+        {
+          "id": "F1031",
+          "name": "Impersonate Account Holder",
+          "score": 6.0
+        },
+        {
+          "id": "F1032",
+          "name": "Impersonate Official",
+          "score": 6.0
+        },
+        {
+          "id": "T1583.001",
+          "name": "Acquire Infrastructure: Domains",
+          "score": 6.0
+        },
+        {
+          "id": "F1018",
+          "name": "Convert to Cryptocurrency",
+          "score": 3.0
+        },
+        {
+          "id": "F1025",
+          "name": "Electronic Funds Transfer",
+          "score": 3.0
+        },
+        {
+          "id": "F1040",
+          "name": "Phone Number Spoofing",
+          "score": 3.0
+        },
+        {
+          "id": "T1189",
+          "name": "Drive-by Compromise",
+          "score": 3.0
+        },
+        {
+          "id": "T1555",
+          "name": "Credentials from Password Stores",
+          "score": 3.0
+        },
+        {
+          "id": "T1557",
+          "name": "Adversary-in-the-Middle",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0087": {
+    "suggested_f3_techniques": [
+      "F1006.002",
+      "T1110.001",
+      "T1555",
+      "F1004",
+      "F1018",
+      "F1025",
+      "F1045",
+      "F1047",
+      "T1185",
+      "T1451"
+    ],
+    "confidence": "high",
+    "_detail": {
+      "cfpf_tactics": [
+        "FA0001",
+        "FA0002",
+        "TA0001",
+        "TA0002",
+        "TA0005",
+        "TA0042",
+        "TA0043"
+      ],
+      "groupib_tactics": [
+        "FA0001",
+        "FA0002",
+        "TA0001",
+        "TA0002",
+        "TA0042"
+      ],
+      "technique_scores": [
+        {
+          "id": "F1006.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 9.0
+        },
+        {
+          "id": "T1110.001",
+          "name": "Brute Force: Password Guessing",
+          "score": 6.0
+        },
+        {
+          "id": "T1555",
+          "name": "Credentials from Password Stores",
+          "score": 6.0
+        },
+        {
+          "id": "F1004",
+          "name": "Access with Stolen Session Cookie",
+          "score": 3.0
+        },
+        {
+          "id": "F1018",
+          "name": "Convert to Cryptocurrency",
+          "score": 3.0
+        },
+        {
+          "id": "F1025",
+          "name": "Electronic Funds Transfer",
+          "score": 3.0
+        },
+        {
+          "id": "F1045",
+          "name": "Structuring",
+          "score": 3.0
+        },
+        {
+          "id": "F1047",
+          "name": "Transfer of funds",
+          "score": 3.0
+        },
+        {
+          "id": "T1185",
+          "name": "Browser Session Hijacking",
+          "score": 3.0
+        },
+        {
+          "id": "T1451",
+          "name": "SIM Card Swap",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0088": {
+    "suggested_f3_techniques": [
+      "F1020.002",
+      "T1583.001",
+      "F1031",
+      "F1032",
+      "F1040",
+      "T1189",
+      "T1555",
+      "T1557",
+      "T1593",
+      "T1598"
+    ],
+    "confidence": "high",
+    "_detail": {
+      "cfpf_tactics": [
+        "FA0001",
+        "FA0002",
+        "TA0001",
+        "TA0002",
+        "TA0005",
+        "TA0042",
+        "TA0043"
+      ],
+      "groupib_tactics": [
+        "FA0001",
+        "TA0001",
+        "TA0002",
+        "TA0042",
+        "TA0043"
+      ],
+      "technique_scores": [
+        {
+          "id": "F1020.002",
+          "name": "Create Fake Materials: Fake Website",
+          "score": 6.0
+        },
+        {
+          "id": "T1583.001",
+          "name": "Acquire Infrastructure: Domains",
+          "score": 6.0
+        },
+        {
+          "id": "F1031",
+          "name": "Impersonate Account Holder",
+          "score": 3.0
+        },
+        {
+          "id": "F1032",
+          "name": "Impersonate Official",
+          "score": 3.0
+        },
+        {
+          "id": "F1040",
+          "name": "Phone Number Spoofing",
+          "score": 3.0
+        },
+        {
+          "id": "T1189",
+          "name": "Drive-by Compromise",
+          "score": 3.0
+        },
+        {
+          "id": "T1555",
+          "name": "Credentials from Password Stores",
+          "score": 3.0
+        },
+        {
+          "id": "T1557",
+          "name": "Adversary-in-the-Middle",
+          "score": 3.0
+        },
+        {
+          "id": "T1593",
+          "name": "Search Open Websites/Domains",
+          "score": 3.0
+        },
+        {
+          "id": "T1598",
+          "name": "Phishing for Information",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0089": {
+    "suggested_f3_techniques": [
+      "T1583.001",
+      "F1018",
+      "F1025",
+      "F1045",
+      "T1593",
+      "T1608"
+    ],
+    "confidence": "high",
+    "_detail": {
+      "cfpf_tactics": [
+        "FA0001",
+        "FA0002",
+        "TA0001",
+        "TA0002",
+        "TA0005",
+        "TA0042",
+        "TA0043"
+      ],
+      "groupib_tactics": [
+        "FA0002",
+        "TA0002",
+        "TA0005",
+        "TA0042"
+      ],
+      "technique_scores": [
+        {
+          "id": "T1583.001",
+          "name": "Acquire Infrastructure: Domains",
+          "score": 6.0
+        },
+        {
+          "id": "F1018",
+          "name": "Convert to Cryptocurrency",
+          "score": 3.0
+        },
+        {
+          "id": "F1025",
+          "name": "Electronic Funds Transfer",
+          "score": 3.0
+        },
+        {
+          "id": "F1045",
+          "name": "Structuring",
+          "score": 3.0
+        },
+        {
+          "id": "T1593",
+          "name": "Search Open Websites/Domains",
+          "score": 3.0
+        },
+        {
+          "id": "T1608",
+          "name": "Stage Capabilities",
           "score": 3.0
         }
       ]

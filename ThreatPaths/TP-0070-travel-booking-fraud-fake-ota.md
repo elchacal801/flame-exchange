@@ -40,7 +40,7 @@ mitre_attack:
   - T1598      # Phishing for Information
   - T1059      # Command and Scripting Interpreter (automated booking bots)
 ft3_tactics: ["FTA001", "FT007.009", "FT011.003"]
-mitre_f3: []
+mitre_f3: ["F1005", "F1012", "F1021", "F1028", "F1047", "F1048"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

@@ -38,7 +38,7 @@ mitre_attack:
   - T1571      # Non-Standard Port
   - T1205      # Traffic Signaling
 ft3_tactics: ["FTA001", "FT011.002"]
-mitre_f3: []
+mitre_f3: ["F1034", "F1003", "F1040", "T1451"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

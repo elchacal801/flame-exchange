@@ -38,8 +38,8 @@ mitre_attack:
   - T1059      # Command and Scripting Interpreter
   - T1571      # Non-Standard Port
   - T1036      # Masquerading
-ft3_tactics: []
-mitre_f3: []
+ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FTA011", "FT007.001", "FT045", "FT017", "FT025", "FT006", "FT009", "FT046"]
+mitre_f3: ["T1539", "F1002", "F1004", "F1023"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

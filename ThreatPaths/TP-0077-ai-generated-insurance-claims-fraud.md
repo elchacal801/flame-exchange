@@ -33,7 +33,7 @@ mitre_attack:
   - T1036      # Masquerading
   - T1027      # Obfuscated Files or Information
   - T1589      # Gather Victim Identity Information
-ft3_tactics: []
+ft3_tactics: ["FTA002", "FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT052", "FT015", "FT024", "FT026", "FT036"]
 mitre_f3: ["F1027"]
 groupib_stages:
   - "Resource Development"

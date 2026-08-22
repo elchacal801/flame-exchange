@@ -184,3 +184,30 @@ class TestRegulatoryRefs:
                 assert ref in valid_ids, (
                     f"{tp['id']} references unknown regulatory entry: {ref}"
                 )
+
+
+class TestFrameworkMappingCoverage:
+    """Every TP must carry non-empty F3 and FT3 mappings.
+
+    Empty lists are what a failed mapper run looks like (the template
+    placeholder and a zero-keyword-match --apply write the same []), so
+    a TP landing unmapped is a regression, not a choice.
+    """
+
+    def _empty(self, field):
+        import glob, io, re
+        out = []
+        for f in sorted(glob.glob(str(REPO_ROOT / "ThreatPaths" / "TP-*.md"))):
+            text = io.open(f, encoding="utf-8", errors="replace").read()
+            m = re.search(rf"^{field}:\s*(\[.*?\])", text, re.M)
+            if m and '"' not in m.group(1) and "'" not in m.group(1):
+                out.append(f)
+        return out
+
+    def test_all_tps_have_f3_mappings(self):
+        empty = self._empty("mitre_f3")
+        assert not empty, f"TPs with empty mitre_f3: {empty}"
+
+    def test_all_tps_have_ft3_mappings(self):
+        empty = self._empty("ft3_tactics")
+        assert not empty, f"TPs with empty ft3_tactics: {empty}"
