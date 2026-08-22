@@ -32,3 +32,10 @@ validation_output.txt
 
 # Worktrees
 .worktrees/
+
+# Build-internal SQLite working store (recreated by every build)
+database/flame.db
+
+# Agent/browser tool workspaces
+.playwright-mcp/
+.superpowers/
