@@ -124,7 +124,7 @@ ThreatPaths/*.md ──┐
 Baselines/*.md ────┤            build_database.py
 DetectionLogic/*.yml ──┤        ├─ extract_frontmatter()         database/flame.db (SQLite)
 data/cfpf_techniques.json ─┤   ├─ extract_body()                database/flame-data.json (legacy)
-data/regulatory-alerts.csv ─┘  ├─ load_submission()              database/flame-index.json
+data/regulatory_alerts.csv ─┘  ├─ load_submission()              database/flame-index.json
                                 ├─ load_detection_rule()          database/flame-content/*.json
                                 ├─ build_regulatory_alerts()      database/flame-stats.json
                                 ├─ export_json()                  database/flame-search-index.json
@@ -311,7 +311,7 @@ Initiates the peer review workflow when submissions are flagged for review.
 
 **Triggers:** Cron schedule (weekdays at 06:00 and 18:00 UTC), manual dispatch.
 
-Fetches regulatory alerts from external sources and updates `data/regulatory-alerts.csv`. On completion, triggers the Build & Deploy workflow.
+Fetches regulatory alerts from external sources and updates `data/regulatory_alerts.csv`. On completion, triggers the Build & Deploy workflow.
 
 ### 7. Update Database (`update-database.yml`)
 
@@ -339,7 +339,7 @@ flame-fraud/
 ├── Baselines/            # Source markdown (BASE-XXX.md)
 ├── DetectionLogic/       # Source YAML (DL-XXXX.yml)
 ├── EmulationPlaybooks/   # JSON playbooks (EP-XXXX.json)
-├── data/                 # Reference data (cfpf_techniques.json, regulatory-alerts.csv)
+├── data/                 # Reference data (cfpf_techniques.json, regulatory_alerts.csv)
 ├── database/             # Build outputs (SQLite, JSON index, content files, stats)
 ├── api/
 │   ├── v1/              # Static JSON API
