@@ -1421,7 +1421,7 @@ def main():
     # Detection rule ingestion removed — see github.com/elchacal801/flame-detections
 
     # Load regulatory alerts
-    reg_csv = root / "data" / "regulatory-alerts.csv"
+    reg_csv = root / "data" / "regulatory_alerts.csv"
     reg_count = build_regulatory_alerts(conn, reg_csv)
     log.info("Loaded %d regulatory alerts", reg_count)
 
