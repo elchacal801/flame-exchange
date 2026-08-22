@@ -6,6 +6,69 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ---
 
+## [Unreleased]
+
+_Every PR adds its line here; entries roll into a version heading at release._
+
+---
+
+## [0.13.0] — 2026-08-22
+
+### Fixed
+
+- **CI pipeline repair** — `mcp` 2.0 migration (`FastMCP` → `MCPServer`) after 48 consecutive failed runs; build job's commit step was a silent no-op (bad pathspecs swallowed by `|| true`), leaving `api/` and TAXII exports unpublished since May — restored 385 STIX objects and 1,145 MITRE F3 references to the published feed
+- **Workflow consolidation** — removed `update-database.yml` (raced the main pipeline, published unvalidated artifacts, discarded its own `api/` output); concurrency groups + conflict-proof rebase serialize artifact publishing
+- **Regulatory pipeline** — build read a stale March CSV (hyphen/underscore filename split); OCC fetcher repointed after a ~3-month silent 404 (site restructure); FinCEN source now covers Alerts (captures the 2026-07-24 federal student-aid fraud alert); dates normalized to ISO 8601 at ingest; failures now exit non-zero with per-source history preserved and content-derived stable alert ids
+
+### Added
+
+- **`last_reviewed` frontmatter field** (required) — review-lifecycle metadata across all 89 TPs, backfilled from each file's last substantive commit; surfaced in exports, API schema, and the site detail view
+- **Full framework coverage** — F3 and FT3 mappings closed to 89/89 (keyword-table gap closure + guarded `--only`/`--force` mapper runs); data-quality regression forbids unmapped TPs
+- **CI-enforced README counts** — `validate_readme_counts.py` extended to F3/FT3 coverage and test-count claims, wired into the deploy pipeline
+
+---
+
+## [0.12.0] — 2026-05-11
+
+### Added
+
+- **ATT&CK-style matrix view** — default browse experience: 89 TPs across 11 fraud families × 5 CFPF phases, sector tab filtering, confidence-colored short-name chips; `fraud_family`/`primary_phase`/`short_name` frontmatter across the corpus
+- **TP-0087–TP-0089** from Recorded Future 2025 malicious-infrastructure intelligence (infostealer-to-fraud pipeline, logistics spearphishing, TAE upstream transit complicity), plus 6 TP enrichments
+
+### Changed
+
+- **Detection decoupling** — 221 detection rules moved to the dedicated [flame-detections](https://github.com/elchacal801/flame-detections) repository; build, exports, MCP server, UI, and CI reframed around threat-path intelligence
+- **README reframed** as a fraud intelligence exchange
+
+---
+
+## [0.11.0] — 2026-04-20
+
+### Added
+
+- **MITRE F3 (Fight Fraud Framework) integration** — mapped across all 85 then-current TPs via `f3_mapper.py` within days of MITRE CTID's April 9 release; F3 techniques rendered in the TP detail view, linked to the CTID portal
+- **FBI IC3 2025 Annual Report** — 4 new TPs, 6 detection rules, 17 TP enrichments ($20.877B reported losses)
+- **TP-0079–TP-0086** — cheap-gTLD/PaaS abuse, stablecoin freeze-evasion, vishing-led identity abuse, gold courier, investment club, government impersonation, crypto-ATM-directed fraud, crisis-exploitation infrastructure (Interisle, FATF, CrowdStrike, Guardian/OCCRP sourcing)
+
+### Changed
+
+- **UI visual refresh** — warm surfaces, card elevation, light/dark mode toggle
+
+---
+
+## [0.10.0] — 2026-03-30
+
+### Added
+
+- **TP-0062–TP-0078** — organized-crime and specialized-sector expansion: counterfeit goods networks, long-firm credit fraud, mass-marketing infrastructure, crash-for-cash rings, AiTM kits, gift-card lifecycle, smishing PhaaS (Darcula), travel booking fraud, IRSF/telecom fraud, title fraud, ghost broking, friendly fraud, affiliate fraud, AI-generated claims, stablecoin laundering
+- **Mobile responsiveness + PWA** — installable app with service worker, mobile-first layout fixes
+
+### Changed
+
+- BPH, PhaaS, and crypto-laundering enrichments across 6 TPs; 5 new detection rules
+
+---
+
 ## [0.9.0] — 2026-03-20
 
 ### Added
