@@ -65,7 +65,7 @@ SOURCE_REGISTRY: Dict[str, type] = {
 # ---------------------------------------------------------------------------
 
 
-def collect_alerts(sources: dict) -> List[RegulatoryAlert]:
+def collect_alerts(sources: dict) -> tuple:
     """Run all source instances and merge results into a single list.
 
     Parameters
@@ -75,17 +75,55 @@ def collect_alerts(sources: dict) -> List[RegulatoryAlert]:
 
     Returns
     -------
-    list[RegulatoryAlert]
-        Merged alerts from every source.  Sources that fail return empty
-        lists (handled internally by ``RegulatorySource.run()``).
+    tuple[list[RegulatoryAlert], list[str]]
+        Merged alerts from every successful source, and the names of
+        sources that failed (``run()`` returned ``None``). A source that
+        succeeds with zero alerts is not a failure.
     """
     all_alerts: List[RegulatoryAlert] = []
+    failed: List[str] = []
     for name, source in sources.items():
         logger.info("Collecting alerts from %s ...", name)
         alerts = source.run()
+        if alerts is None:
+            logger.error("  -> source %s FAILED", name)
+            failed.append(name)
+            continue
         logger.info("  -> %d alert(s) from %s", len(alerts), name)
         all_alerts.extend(alerts)
-    return all_alerts
+    return all_alerts, failed
+
+
+def load_existing_alerts(csv_path: Path, sources: List[str]) -> List[RegulatoryAlert]:
+    """Load rows for the given sources from an existing output CSV.
+
+    Used to carry a failed source's history forward: ``write_csv`` fully
+    replaces the file, so without this a source that breaks silently
+    erases every row it ever contributed (OCC went 5 -> 0 this way).
+    """
+    csv_path = Path(csv_path)
+    if not csv_path.exists() or not sources:
+        return []
+    wanted = set(sources)
+    carried: List[RegulatoryAlert] = []
+    with open(csv_path, newline="", encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            if row.get("source") not in wanted:
+                continue
+            carried.append(
+                RegulatoryAlert(
+                    source=row.get("source", ""),
+                    alert_id=row.get("alert_id", ""),
+                    title=row.get("title", ""),
+                    date=row.get("date", ""),
+                    category=row.get("category", ""),
+                    mapped_tp_ids=[t for t in (row.get("mapped_tp_ids") or "").split("|") if t],
+                    url=row.get("url", ""),
+                    severity=row.get("severity", ""),
+                    summary=row.get("summary", ""),
+                )
+            )
+    return carried
 
 
 def write_csv(alerts: List[RegulatoryAlert], output_path: Path) -> None:
@@ -199,8 +237,18 @@ def main(argv: List[str] | None = None) -> None:
 
     # ---- Collect alerts ----------------------------------------------------
     logger.info("Running %d source(s): %s", len(active_sources), ", ".join(active_sources))
-    alerts = collect_alerts(active_sources)
+    alerts, failed = collect_alerts(active_sources)
     logger.info("Total alerts collected: %d", len(alerts))
+
+    # Preserve history for failed sources rather than erasing it on rewrite.
+    if failed:
+        carried = load_existing_alerts(args.output, failed)
+        if carried:
+            logger.warning(
+                "Carrying forward %d existing alert(s) for failed source(s): %s",
+                len(carried), ", ".join(failed),
+            )
+            alerts.extend(carried)
 
     # ---- Output ------------------------------------------------------------
     if args.dry_run:
@@ -215,6 +263,10 @@ def main(argv: List[str] | None = None) -> None:
     else:
         write_csv(alerts, args.output)
         logger.info("Wrote %d alert(s) to %s", len(alerts), args.output)
+
+    if failed:
+        logger.error("%d source(s) failed: %s", len(failed), ", ".join(failed))
+        sys.exit(1)
 
 
 if __name__ == "__main__":

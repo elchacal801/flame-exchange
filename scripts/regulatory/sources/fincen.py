@@ -127,7 +127,7 @@ class FinCENSource(RegulatorySource):
                 alerts.append(
                     RegulatoryAlert(
                         source=self.name,
-                        alert_id=f"fincen-{len(alerts):04d}",
+                        alert_id=self._stable_id(link, title, date),
                         title=title,
                         date=date,
                         category=category,

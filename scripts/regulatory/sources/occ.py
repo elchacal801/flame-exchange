@@ -111,7 +111,7 @@ class OCCSource(RegulatorySource):
                 alerts.append(
                     RegulatoryAlert(
                         source=self.name,
-                        alert_id=f"occ-{len(alerts):04d}",
+                        alert_id=self._stable_id(href, title, alert_date),
                         title=title,
                         date=alert_date,
                         category=category,

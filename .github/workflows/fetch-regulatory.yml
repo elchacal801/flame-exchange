@@ -31,9 +31,9 @@ jobs:
       - name: Fetch regulatory data
         run: python scripts/fetch_regulatory_data.py --output data/regulatory_alerts.csv
         timeout-minutes: 15
-        continue-on-error: true
 
       - name: Commit updated data
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
