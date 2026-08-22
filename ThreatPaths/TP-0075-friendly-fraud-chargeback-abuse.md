@@ -31,7 +31,7 @@ source_reliability: A
 info_credibility: 2
 mitre_attack:
   - T1657      # Financial Theft
-ft3_tactics: []
+ft3_tactics: ["FTA003", "FTA005", "FTA007", "FTA009", "FTA010", "FT033.004", "FT023", "FT035", "FT024", "FT015", "FT036", "FT051"]
 mitre_f3: ["F1015", "F1024", "F1043"]
 groupib_stages:
   - "Perform Fraud"

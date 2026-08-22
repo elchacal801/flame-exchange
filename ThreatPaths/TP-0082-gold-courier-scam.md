@@ -34,7 +34,7 @@ info_credibility: 2
 mitre_attack:
   - T1656
   - T1598
-ft3_tactics: []
+ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT028", "FT016", "FT021", "FT052.008", "FT018", "FT055", "FT007.009", "FT019", "FT020", "FT025"]
 mitre_f3: ["F1025.003", "F1031", "F1032", "F1017", "F1018", "F1020", "F1040", "F1047", "T1598", "T1660"]
 groupib_stages:
   - "Social Engineering"

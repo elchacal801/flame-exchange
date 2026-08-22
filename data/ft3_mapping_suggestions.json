@@ -2116,7 +2116,10 @@
   },
   "TP-0021": {
     "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
       "FTA003",
+      "FTA004",
       "FTA005",
       "FTA006",
       "FTA007",
@@ -2124,21 +2127,25 @@
       "FTA010"
     ],
     "suggested_ft3_techniques": [
-      "FT026.001",
       "FT051.002",
+      "FT026.001",
+      "FT043",
+      "FT052.001",
       "FT053.001",
-      "FT052",
-      "FT016",
-      "FT024",
-      "FT025",
-      "FT028",
-      "FT029",
-      "FT031"
+      "FT007.008",
+      "FT044",
+      "FT020",
+      "FT040",
+      "FT041"
     ],
     "confidence": "high",
-    "notes": "Tactics FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA005, FTA006, FTA009 from CFPF phases only; Tactics FTA003 from Group-IB stages only; Top technique matches: FT026.001 (Falsifying Business Documents: Fake Business Registration Certificate, score=5), FT051.002 (Fraudulent Purchases: SMS Services, score=5), FT053.001 (Card Holder Details Collection: Billing Information, score=5); Fraud types: healthcare-fraud, phantom-billing, upcoding",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT051.002 (Fraudulent Purchases: SMS Services, score=8), FT026.001 (Falsifying Business Documents: Fake Business Registration Certificate, score=7), FT043 (Scheduled Transfer, score=6); Fraud types: healthcare-fraud, phantom-billing, upcoding, hospice-fraud, aba-therapy-fraud, provider-fraud, money-mule",
     "_detail": {
       "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
         "FTA005",
         "FTA006",
         "FTA007",
@@ -2146,27 +2153,38 @@
         "FTA010"
       ],
       "groupib_tactics": [
+        "FTA001",
+        "FTA002",
         "FTA003",
         "FTA007",
         "FTA010"
       ],
       "technique_implied_tactics": [
-        "FTA003",
+        "FTA002",
         "FTA005",
-        "FTA006",
         "FTA007",
         "FTA010"
       ],
       "technique_scores": [
         {
-          "id": "FT026.001",
-          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
-          "score": 5.0
-        },
-        {
           "id": "FT051.002",
           "name": "Fraudulent Purchases: SMS Services",
-          "score": 5.0
+          "score": 8.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 7.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 6.0
+        },
+        {
+          "id": "FT052.001",
+          "name": "Falsifying Identity Documents: Fake Passport",
+          "score": 6.0
         },
         {
           "id": "FT053.001",
@@ -2174,39 +2192,29 @@
           "score": 5.0
         },
         {
-          "id": "FT052",
-          "name": "Falsifying Identity Documents",
+          "id": "FT007.008",
+          "name": "Acquire Access: Cloud Accounts",
           "score": 4.0
         },
         {
-          "id": "FT016",
-          "name": "Phishing",
-          "score": 2.0
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 4.0
         },
         {
-          "id": "FT024",
-          "name": "Fabricating shipping evidence",
-          "score": 2.0
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 3.0
         },
         {
-          "id": "FT025",
-          "name": "Fake Review Fraud",
-          "score": 2.0
+          "id": "FT040",
+          "name": "Carding Markets",
+          "score": 3.0
         },
         {
-          "id": "FT028",
-          "name": "Spearphishing",
-          "score": 2.0
-        },
-        {
-          "id": "FT029",
-          "name": "Cross Account Permissions",
-          "score": 2.0
-        },
-        {
-          "id": "FT031",
-          "name": "Compromised Payment Gateway",
-          "score": 2.0
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 3.0
         }
       ]
     }
@@ -2411,6 +2419,6235 @@
           "id": "FT031",
           "name": "Compromised Payment Gateway",
           "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0024": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT031",
+      "FT007.002",
+      "FT012",
+      "FT027",
+      "FT039",
+      "FT042.001",
+      "FT043",
+      "FT052.003",
+      "FT055",
+      "FT016"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA005, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA006, FTA009 from CFPF phases only; Top technique matches: FT031 (Compromised Payment Gateway, score=6), FT007.002 (Acquire Access: DNS Server, score=5), FT012 (Cross-Site Scripting (XSS) Redirection for Financial Fraud, score=5); Fraud types: authorized-push-payment, wire-fraud, payment-diversion",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT031",
+          "name": "Compromised Payment Gateway",
+          "score": 6.0
+        },
+        {
+          "id": "FT007.002",
+          "name": "Acquire Access: DNS Server",
+          "score": 5.0
+        },
+        {
+          "id": "FT012",
+          "name": "Cross-Site Scripting (XSS) Redirection for Financial Fraud",
+          "score": 5.0
+        },
+        {
+          "id": "FT027",
+          "name": "Account Enumeration",
+          "score": 5.0
+        },
+        {
+          "id": "FT039",
+          "name": "Data Transfer",
+          "score": 5.0
+        },
+        {
+          "id": "FT042.001",
+          "name": "Account Manipulation: Additional Payment Methods",
+          "score": 5.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 5.0
+        },
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 5.0
+        },
+        {
+          "id": "FT055",
+          "name": "Fake Payment Gateway",
+          "score": 5.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 4.0
+        }
+      ]
+    }
+  },
+  "TP-0025": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT021",
+      "FT008.003",
+      "FT010.003",
+      "FT016",
+      "FT007.010",
+      "FT018",
+      "FT052.008",
+      "FT001",
+      "FT031"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA005, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=11), FT021 (Social Media Attacks, score=8), FT008.003 (Compromise Accounts: Social Media Accounts, score=7); Fraud types: authorized-push-payment, romance-scam, deepfake-fraud, social-engineering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 11.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 8.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT010.003",
+          "name": "Establish Accounts: Social Media Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT007.010",
+          "name": "Acquire Access: Social Media Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT052.008",
+          "name": "Falsifying Identity Documents: Fake Passport Card",
+          "score": 6.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 5.0
+        },
+        {
+          "id": "FT031",
+          "name": "Compromised Payment Gateway",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0026": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT044",
+      "FT051",
+      "FT041",
+      "FT038.002",
+      "FT039.001",
+      "FT042.001",
+      "FT052.003",
+      "FT007.009",
+      "FT008.003"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA005, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA006, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=12), FT044 (Scheduled Payout, score=7), FT051 (Fraudulent Purchases, score=7); Fraud types: authorized-push-payment, investment-scam, deepfake-fraud, crypto-laundering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA005",
+        "FTA009",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 12.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 7.0
+        },
+        {
+          "id": "FT051",
+          "name": "Fraudulent Purchases",
+          "score": 7.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 6.0
+        },
+        {
+          "id": "FT038.002",
+          "name": "Data Exfiltration: Payout",
+          "score": 5.0
+        },
+        {
+          "id": "FT039.001",
+          "name": "Data Transfer: Data Pipeline",
+          "score": 5.0
+        },
+        {
+          "id": "FT042.001",
+          "name": "Account Manipulation: Additional Payment Methods",
+          "score": 5.0
+        },
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 5.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 4.0
+        }
+      ]
+    }
+  },
+  "TP-0027": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT011.002",
+      "FT016",
+      "FT008.003",
+      "FT021",
+      "FT018",
+      "FT007.010",
+      "FT003",
+      "FT010.003",
+      "FT052.008"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=14), FT011.002 (Account Takeover: Exposed Login Credential, score=13), FT016 (Phishing, score=11); Fraud types: social-engineering, authorized-push-payment, account-takeover, romance-scam",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 14.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 13.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 11.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 10.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 10.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 9.0
+        },
+        {
+          "id": "FT007.010",
+          "name": "Acquire Access: Social Media Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 7.0
+        },
+        {
+          "id": "FT010.003",
+          "name": "Establish Accounts: Social Media Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT052.008",
+          "name": "Falsifying Identity Documents: Fake Passport Card",
+          "score": 7.0
+        }
+      ]
+    }
+  },
+  "TP-0028": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052",
+      "FT026.001",
+      "FT043",
+      "FT051",
+      "FT007.009",
+      "FT041",
+      "FT044",
+      "FT020",
+      "FT042.004",
+      "FT011.002"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052 (Falsifying Identity Documents, score=13), FT026.001 (Falsifying Business Documents: Fake Business Registration Certificate, score=11), FT043 (Scheduled Transfer, score=9); Fraud types: healthcare-fraud, phantom-billing, provider-fraud, synthetic-medical-fraud, deepfake, money-mule, crypto-laundering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052",
+          "name": "Falsifying Identity Documents",
+          "score": 13.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 11.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 9.0
+        },
+        {
+          "id": "FT051",
+          "name": "Fraudulent Purchases",
+          "score": 8.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 7.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 7.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT042.004",
+          "name": "Account Manipulation: Additional Payout Schedule",
+          "score": 6.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0029": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.002",
+      "FT026.004",
+      "FT049",
+      "FT010",
+      "FT011.005",
+      "FT020",
+      "FT025",
+      "FT033.004",
+      "FT005",
+      "FT012"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.002 (Falsifying Identity Documents: Fake Drivers License , score=20), FT026.004 (Falsifying Business Documents: Fake IRS Letter 147C, score=14), FT049 (Fake Merchant Account, score=7); Fraud types: synthetic-identity, ai-document-fraud, new-account-fraud, application-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.002",
+          "name": "Falsifying Identity Documents: Fake Drivers License ",
+          "score": 20.0
+        },
+        {
+          "id": "FT026.004",
+          "name": "Falsifying Business Documents: Fake IRS Letter 147C",
+          "score": 14.0
+        },
+        {
+          "id": "FT049",
+          "name": "Fake Merchant Account",
+          "score": 7.0
+        },
+        {
+          "id": "FT010",
+          "name": "Establish Accounts",
+          "score": 5.0
+        },
+        {
+          "id": "FT011.005",
+          "name": "Account Takeover: Fake ID",
+          "score": 5.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 4.0
+        },
+        {
+          "id": "FT033.004",
+          "name": "No Shipping: Fabricating shipping evidence",
+          "score": 4.0
+        },
+        {
+          "id": "FT005",
+          "name": "Gather Victim Identity Information",
+          "score": 3.0
+        },
+        {
+          "id": "FT012",
+          "name": "Cross-Site Scripting (XSS) Redirection for Financial Fraud",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0030": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.003",
+      "FT011.002",
+      "FT016.001",
+      "FT020",
+      "FT031",
+      "FT039",
+      "FT005.001",
+      "FT012",
+      "FT026.001",
+      "FT023"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.003 (Falsifying Identity Documents: Fake National Identity Card, score=12), FT011.002 (Account Takeover: Exposed Login Credential, score=8), FT016.001 (Phishing: Phishing for Merchant Credentials, score=8); Fraud types: first-party-fraud, identity-theft, payment-diversion",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 12.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 8.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 8.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT031",
+          "name": "Compromised Payment Gateway",
+          "score": 7.0
+        },
+        {
+          "id": "FT039",
+          "name": "Data Transfer",
+          "score": 7.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 6.0
+        },
+        {
+          "id": "FT012",
+          "name": "Cross-Site Scripting (XSS) Redirection for Financial Fraud",
+          "score": 6.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 6.0
+        },
+        {
+          "id": "FT023",
+          "name": "Dispute Avoidance",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0031": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT023",
+      "FT035",
+      "FT022",
+      "FT036",
+      "FT011",
+      "FT015",
+      "FT016",
+      "FT024",
+      "FT029"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT023 (Dispute Avoidance, score=4), FT035 (Dispute Avoidance, score=4), FT022 (Churning, score=3); Fraud types: first-party-fraud, refunding-as-a-service",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT023",
+          "name": "Dispute Avoidance",
+          "score": 4.0
+        },
+        {
+          "id": "FT035",
+          "name": "Dispute Avoidance",
+          "score": 4.0
+        },
+        {
+          "id": "FT022",
+          "name": "Churning",
+          "score": 3.0
+        },
+        {
+          "id": "FT036",
+          "name": "Refund Fraud",
+          "score": 3.0
+        },
+        {
+          "id": "FT011",
+          "name": "Account Takeover",
+          "score": 1.0
+        },
+        {
+          "id": "FT015",
+          "name": "Policy and Procedure Abuse",
+          "score": 1.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 1.0
+        },
+        {
+          "id": "FT024",
+          "name": "Fabricating shipping evidence",
+          "score": 1.0
+        },
+        {
+          "id": "FT029",
+          "name": "Cross Account Permissions",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0032": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA008",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT028",
+      "FT001",
+      "FT016.001",
+      "FT038.002",
+      "FT011.002",
+      "FT018",
+      "FT037",
+      "FT044",
+      "FT005.001"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=8), FT028 (Spearphishing, score=7), FT001 (Phishing for Information, score=6); Fraud types: approval-phishing, crypto-laundering, phishing",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA006",
+        "FTA008",
+        "FTA009",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 8.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 6.0
+        },
+        {
+          "id": "FT038.002",
+          "name": "Data Exfiltration: Payout",
+          "score": 6.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 5.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 5.0
+        },
+        {
+          "id": "FT037",
+          "name": "Account Manipulation",
+          "score": 5.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 5.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 4.0
+        }
+      ]
+    }
+  },
+  "TP-0033": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.001",
+      "FT026.004",
+      "FT025",
+      "FT011.005",
+      "FT024",
+      "FT033.004",
+      "FT007.007",
+      "FT010",
+      "FT016",
+      "FT018"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.001 (Falsifying Identity Documents: Fake Passport, score=15), FT026.004 (Falsifying Business Documents: Fake IRS Letter 147C, score=10), FT025 (Fake Review Fraud, score=6); Fraud types: ghost-student-fraud, synthetic-identity, benefit-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.001",
+          "name": "Falsifying Identity Documents: Fake Passport",
+          "score": 15.0
+        },
+        {
+          "id": "FT026.004",
+          "name": "Falsifying Business Documents: Fake IRS Letter 147C",
+          "score": 10.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 6.0
+        },
+        {
+          "id": "FT011.005",
+          "name": "Account Takeover: Fake ID",
+          "score": 5.0
+        },
+        {
+          "id": "FT024",
+          "name": "Fabricating shipping evidence",
+          "score": 5.0
+        },
+        {
+          "id": "FT033.004",
+          "name": "No Shipping: Fabricating shipping evidence",
+          "score": 5.0
+        },
+        {
+          "id": "FT007.007",
+          "name": "Acquire Access: Virtual Private Server",
+          "score": 4.0
+        },
+        {
+          "id": "FT010",
+          "name": "Establish Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 4.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 4.0
+        }
+      ]
+    }
+  },
+  "TP-0034": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.003",
+      "FT020",
+      "FT038",
+      "FT039.001",
+      "FT005.001",
+      "FT011.002",
+      "FT016.001",
+      "FT053",
+      "FT003",
+      "FT006"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.003 (Falsifying Identity Documents: Fake National Identity Card, score=12), FT020 (Identity Theft for Merchant Accounts, score=10), FT038 (Data Exfiltration, score=10); Fraud types: dprk-it-worker-fraud, employment-fraud, identity-theft, data-theft",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 12.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 10.0
+        },
+        {
+          "id": "FT038",
+          "name": "Data Exfiltration",
+          "score": 10.0
+        },
+        {
+          "id": "FT039.001",
+          "name": "Data Transfer: Data Pipeline",
+          "score": 8.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 7.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT053",
+          "name": "Card Holder Details Collection",
+          "score": 7.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 6.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0035": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.003",
+      "FT020",
+      "FT038",
+      "FT016.001",
+      "FT011.002",
+      "FT039.001",
+      "FT013",
+      "FT018",
+      "FT003",
+      "FT005.001"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA004, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.003 (Falsifying Identity Documents: Fake National Identity Card, score=12), FT020 (Identity Theft for Merchant Accounts, score=11), FT038 (Data Exfiltration, score=11); Fraud types: e-skimmer, data-theft, malware, identity-theft",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA009"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 12.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 11.0
+        },
+        {
+          "id": "FT038",
+          "name": "Data Exfiltration",
+          "score": 11.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 10.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 9.0
+        },
+        {
+          "id": "FT039.001",
+          "name": "Data Transfer: Data Pipeline",
+          "score": 9.0
+        },
+        {
+          "id": "FT013",
+          "name": "Resource Hijacking",
+          "score": 8.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 8.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 7.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 7.0
+        }
+      ]
+    }
+  },
+  "TP-0036": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT016",
+      "FT001",
+      "FT019",
+      "FT007.009",
+      "FT010.003",
+      "FT011",
+      "FT021",
+      "FT023",
+      "FT035"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=8), FT016 (Phishing, score=7), FT001 (Phishing for Information, score=5); Fraud types: purchase-scam, brand-impersonation, first-party-fraud, social-engineering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 8.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 5.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 5.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT010.003",
+          "name": "Establish Accounts: Social Media Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT011",
+          "name": "Account Takeover",
+          "score": 4.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 4.0
+        },
+        {
+          "id": "FT023",
+          "name": "Dispute Avoidance",
+          "score": 4.0
+        },
+        {
+          "id": "FT035",
+          "name": "Dispute Avoidance",
+          "score": 4.0
+        }
+      ]
+    }
+  },
+  "TP-0037": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT011.002",
+      "FT028",
+      "FT016",
+      "FT003",
+      "FT001",
+      "FT008.002",
+      "FT018",
+      "FT021",
+      "FT005.001",
+      "FT006.002"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA005, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA006, FTA009 from CFPF phases only; Top technique matches: FT011.002 (Account Takeover: Exposed Login Credential, score=11), FT028 (Spearphishing, score=11), FT016 (Phishing, score=10); Fraud types: digital-wallet-fraud, nfc-relay, account-takeover, social-engineering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 11.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 11.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 10.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT008.002",
+          "name": "Compromise Accounts: Email Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 6.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 5.0
+        },
+        {
+          "id": "FT006.002",
+          "name": "Credential Scanning: Websites",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0038": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.003",
+      "FT020",
+      "FT038",
+      "FT039.001",
+      "FT005.001",
+      "FT011.002",
+      "FT016.001",
+      "FT053",
+      "FT003",
+      "FT006"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA004, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA003, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.003 (Falsifying Identity Documents: Fake National Identity Card, score=12), FT020 (Identity Theft for Merchant Accounts, score=10), FT038 (Data Exfiltration, score=10); Fraud types: card-testing, identity-theft, data-theft",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA004",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 12.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 10.0
+        },
+        {
+          "id": "FT038",
+          "name": "Data Exfiltration",
+          "score": 10.0
+        },
+        {
+          "id": "FT039.001",
+          "name": "Data Transfer: Data Pipeline",
+          "score": 8.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 7.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT053",
+          "name": "Card Holder Details Collection",
+          "score": 7.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 6.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0039": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT011.001",
+      "FT016",
+      "FT028",
+      "FT003",
+      "FT008.002",
+      "FT006",
+      "FT013",
+      "FT015",
+      "FT018",
+      "FT021"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT011.001 (Account Takeover: Exposed Credential, score=13), FT016 (Phishing, score=13), FT028 (Spearphishing, score=12); Fraud types: autonomous-ai-fraud, social-engineering, account-takeover, unauthorized-transaction, gift-card-fraud, returns-fraud, refunding-as-a-service",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT011.001",
+          "name": "Account Takeover: Exposed Credential",
+          "score": 13.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 13.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 12.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 10.0
+        },
+        {
+          "id": "FT008.002",
+          "name": "Compromise Accounts: Email Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 7.0
+        },
+        {
+          "id": "FT013",
+          "name": "Resource Hijacking",
+          "score": 7.0
+        },
+        {
+          "id": "FT015",
+          "name": "Policy and Procedure Abuse",
+          "score": 7.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 7.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 7.0
+        }
+      ]
+    }
+  },
+  "TP-0040": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT011.002",
+      "FT052",
+      "FT016",
+      "FT028",
+      "FT005.001",
+      "FT018",
+      "FT020",
+      "FT003",
+      "FT008.002",
+      "FT001"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA004, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT011.002 (Account Takeover: Exposed Login Credential, score=14), FT052 (Falsifying Identity Documents, score=14), FT016 (Phishing, score=13); Fraud types: bnpl-fraud, first-party-fraud, identity-theft, account-takeover, social-engineering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 14.0
+        },
+        {
+          "id": "FT052",
+          "name": "Falsifying Identity Documents",
+          "score": 14.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 13.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 11.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 8.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 8.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 7.0
+        },
+        {
+          "id": "FT008.002",
+          "name": "Compromise Accounts: Email Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0041": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [],
+    "confidence": "medium",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA005, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA006, FTA009 from CFPF phases only; Fraud types: rdga-infrastructure",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [],
+      "technique_scores": []
+    }
+  },
+  "TP-0042": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT001",
+      "FT016.001",
+      "FT007.003",
+      "FT017",
+      "FT018",
+      "FT005.001",
+      "FT011.001",
+      "FT003",
+      "FT006"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA005, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=7), FT001 (Phishing for Information, score=6), FT016.001 (Phishing: Phishing for Merchant Credentials, score=6); Fraud types: tds-exploitation, malvertising, phishing",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 6.0
+        },
+        {
+          "id": "FT007.003",
+          "name": "Acquire Access: Malvertising",
+          "score": 5.0
+        },
+        {
+          "id": "FT017",
+          "name": "Ad Fraud",
+          "score": 5.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 5.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 4.0
+        },
+        {
+          "id": "FT011.001",
+          "name": "Account Takeover: Exposed Credential",
+          "score": 4.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 3.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0043": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT001",
+      "FT016.001",
+      "FT019",
+      "FT005.001",
+      "FT011.001",
+      "FT018",
+      "FT003",
+      "FT006",
+      "FT021"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=7), FT001 (Phishing for Information, score=6), FT016.001 (Phishing: Phishing for Merchant Credentials, score=6); Fraud types: ai-accelerated-fraud-infrastructure, phishing, brand-impersonation",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 6.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 5.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 4.0
+        },
+        {
+          "id": "FT011.001",
+          "name": "Account Takeover: Exposed Credential",
+          "score": 4.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 4.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 3.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 3.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0044": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT041",
+      "FT007.007",
+      "FT013",
+      "FT044",
+      "FT042.004",
+      "FT008.001",
+      "FT011.003",
+      "FT014",
+      "FT018"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=11), FT041 (Shell Companies, score=8), FT007.007 (Acquire Access: Virtual Private Server, score=7); Fraud types: state-criminal-convergence, crypto-laundering, malware",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 11.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 8.0
+        },
+        {
+          "id": "FT007.007",
+          "name": "Acquire Access: Virtual Private Server",
+          "score": 7.0
+        },
+        {
+          "id": "FT013",
+          "name": "Resource Hijacking",
+          "score": 6.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 6.0
+        },
+        {
+          "id": "FT042.004",
+          "name": "Account Manipulation: Additional Payout Schedule",
+          "score": 5.0
+        },
+        {
+          "id": "FT008.001",
+          "name": "Compromise Accounts: Cloud Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT011.003",
+          "name": "Account Takeover: Exposed User Session/Token",
+          "score": 4.0
+        },
+        {
+          "id": "FT014",
+          "name": "Supply Chain Compromise",
+          "score": 4.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 4.0
+        }
+      ]
+    }
+  },
+  "TP-0045": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA008",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT041",
+      "FT007.008",
+      "FT044",
+      "FT026.001",
+      "FT042.004",
+      "FT051",
+      "FT037",
+      "FT018",
+      "FT020"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA005, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA003, FTA004, FTA006, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=9), FT041 (Shell Companies, score=7), FT007.008 (Acquire Access: Cloud Accounts, score=5); Fraud types: sanctions-evasion-infrastructure, crypto-laundering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA008",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 9.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 7.0
+        },
+        {
+          "id": "FT007.008",
+          "name": "Acquire Access: Cloud Accounts",
+          "score": 5.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 5.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 4.0
+        },
+        {
+          "id": "FT042.004",
+          "name": "Account Manipulation: Additional Payout Schedule",
+          "score": 4.0
+        },
+        {
+          "id": "FT051",
+          "name": "Fraudulent Purchases",
+          "score": 3.0
+        },
+        {
+          "id": "FT037",
+          "name": "Account Manipulation",
+          "score": 2.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 1.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0046": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT007",
+      "FT014",
+      "FT041",
+      "FT043"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT007 (Acquire Access, score=3), FT014 (Supply Chain Compromise, score=3), FT041 (Shell Companies, score=3); Fraud types: state-criminal-convergence",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT007",
+          "name": "Acquire Access",
+          "score": 3.0
+        },
+        {
+          "id": "FT014",
+          "name": "Supply Chain Compromise",
+          "score": 3.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 3.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0047": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT010.003",
+      "FT018",
+      "FT044",
+      "FT052.001",
+      "FT007.010",
+      "FT008.003",
+      "FT016.001",
+      "FT021",
+      "FT038.002"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=8), FT010.003 (Establish Accounts: Social Media Accounts, score=7), FT018 (Social Media Attack, score=5); Fraud types: human-trafficking-facilitation, scam-compound-operations, crypto-laundering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA009",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 8.0
+        },
+        {
+          "id": "FT010.003",
+          "name": "Establish Accounts: Social Media Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 5.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 5.0
+        },
+        {
+          "id": "FT052.001",
+          "name": "Falsifying Identity Documents: Fake Passport",
+          "score": 5.0
+        },
+        {
+          "id": "FT007.010",
+          "name": "Acquire Access: Social Media Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 4.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 4.0
+        },
+        {
+          "id": "FT038.002",
+          "name": "Data Exfiltration: Payout",
+          "score": 4.0
+        }
+      ]
+    }
+  },
+  "TP-0048": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT007.002",
+      "FT026",
+      "FT041",
+      "FT043"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA005, FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA003, FTA004, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT007.002 (Acquire Access: DNS Server, score=6), FT026 (Falsifying Business Documents, score=3), FT041 (Shell Companies, score=3); Fraud types: bph-migration, sanctions-evasion-infrastructure",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA005",
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA005",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT007.002",
+          "name": "Acquire Access: DNS Server",
+          "score": 6.0
+        },
+        {
+          "id": "FT026",
+          "name": "Falsifying Business Documents",
+          "score": 3.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 3.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0049": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA008",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT037",
+      "FT041",
+      "FT042",
+      "FT044",
+      "FT006"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA002, FTA003, FTA004, FTA005, FTA006, FTA007, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=4), FT037 (Account Manipulation, score=3), FT041 (Shell Companies, score=3); Fraud types: crypto-laundering-infrastructure, cmln-operations",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA008",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 4.0
+        },
+        {
+          "id": "FT037",
+          "name": "Account Manipulation",
+          "score": 3.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 3.0
+        },
+        {
+          "id": "FT042",
+          "name": "Account Manipulation",
+          "score": 3.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 3.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0050": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT016",
+      "FT001",
+      "FT007.009",
+      "FT010.003",
+      "FT021",
+      "FT052",
+      "FT011",
+      "FT018",
+      "FT032"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=8), FT016 (Phishing, score=6), FT001 (Phishing for Information, score=5); Fraud types: calendar-phishing, social-engineering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 8.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 6.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 5.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT010.003",
+          "name": "Establish Accounts: Social Media Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 4.0
+        },
+        {
+          "id": "FT052",
+          "name": "Falsifying Identity Documents",
+          "score": 4.0
+        },
+        {
+          "id": "FT011",
+          "name": "Account Takeover",
+          "score": 3.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 3.0
+        },
+        {
+          "id": "FT032",
+          "name": "Credit Card Skimming",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0051": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FTA012"
+    ],
+    "suggested_ft3_techniques": [
+      "FT011.002",
+      "FT028",
+      "FT003",
+      "FT016",
+      "FT008.003",
+      "FT001",
+      "FT018",
+      "FT021",
+      "FT048",
+      "FT005.001"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT011.002 (Account Takeover: Exposed Login Credential, score=12), FT028 (Spearphishing, score=11), FT003 (Seaching Credential Dumps, score=10); Fraud types: quishing, credential-stuffing, account-takeover, social-engineering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA012"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 12.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 11.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 10.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 10.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 6.0
+        },
+        {
+          "id": "FT048",
+          "name": "Account Access Removal",
+          "score": 6.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0052": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052",
+      "FT028",
+      "FT008.003",
+      "FT007.010",
+      "FT021",
+      "FT010.003",
+      "FT016",
+      "FT018",
+      "FT051.003",
+      "FT053.002"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052 (Falsifying Identity Documents, score=11), FT028 (Spearphishing, score=10), FT008.003 (Compromise Accounts: Social Media Accounts, score=9); Fraud types: sextortion, investment-scam, deepfake, social-engineering, romance-scam",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052",
+          "name": "Falsifying Identity Documents",
+          "score": 11.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 10.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 9.0
+        },
+        {
+          "id": "FT007.010",
+          "name": "Acquire Access: Social Media Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 8.0
+        },
+        {
+          "id": "FT010.003",
+          "name": "Establish Accounts: Social Media Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 7.0
+        },
+        {
+          "id": "FT051.003",
+          "name": "Fraudulent Purchases: LLM Services",
+          "score": 6.0
+        },
+        {
+          "id": "FT053.002",
+          "name": "Card Holder Details Collection: Shipping Information",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0053": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052",
+      "FT026.001",
+      "FT020",
+      "FT005.001",
+      "FT011.002",
+      "FT016.001",
+      "FT006",
+      "FT003",
+      "FT018",
+      "FT031"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052 (Falsifying Identity Documents, score=13), FT026.001 (Falsifying Business Documents: Fake Business Registration Certificate, score=9), FT020 (Identity Theft for Merchant Accounts, score=7); Fraud types: vehicle-export-fraud, identity-theft, application-fraud, loan-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052",
+          "name": "Falsifying Identity Documents",
+          "score": 13.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 9.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 6.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 5.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 5.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 4.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 3.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 3.0
+        },
+        {
+          "id": "FT031",
+          "name": "Compromised Payment Gateway",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0054": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT001",
+      "FT016.001",
+      "FT019",
+      "FT005.001",
+      "FT011.001",
+      "FT018",
+      "FT003",
+      "FT006",
+      "FT021"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=7), FT001 (Phishing for Information, score=6), FT016.001 (Phishing: Phishing for Merchant Credentials, score=6); Fraud types: fraud-as-a-service, ai-accelerated-fraud-infrastructure, phishing, brand-impersonation",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 6.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 5.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 4.0
+        },
+        {
+          "id": "FT011.001",
+          "name": "Account Takeover: Exposed Credential",
+          "score": 4.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 4.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 3.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 3.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0055": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA008",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT041",
+      "FT051.004",
+      "FT007.009",
+      "FT044",
+      "FT042.004",
+      "FT037",
+      "FT038.002",
+      "FT052.003",
+      "FT014"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=10), FT041 (Shell Companies, score=8), FT051.004 (Fraudulent Purchases: Discord, score=8); Fraud types: crypto-laundering, investment-scam, state-criminal-convergence, money-mule",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA008",
+        "FTA009",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 10.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 8.0
+        },
+        {
+          "id": "FT051.004",
+          "name": "Fraudulent Purchases: Discord",
+          "score": 8.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 6.0
+        },
+        {
+          "id": "FT042.004",
+          "name": "Account Manipulation: Additional Payout Schedule",
+          "score": 5.0
+        },
+        {
+          "id": "FT037",
+          "name": "Account Manipulation",
+          "score": 4.0
+        },
+        {
+          "id": "FT038.002",
+          "name": "Data Exfiltration: Payout",
+          "score": 4.0
+        },
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 4.0
+        },
+        {
+          "id": "FT014",
+          "name": "Supply Chain Compromise",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0056": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.003",
+      "FT026.004",
+      "FT016.001",
+      "FT011.002",
+      "FT020",
+      "FT005.001",
+      "FT018",
+      "FT025",
+      "FT051.001",
+      "FT053.001"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA003, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.003 (Falsifying Identity Documents: Fake National Identity Card, score=21), FT026.004 (Falsifying Business Documents: Fake IRS Letter 147C, score=16), FT016.001 (Phishing: Phishing for Merchant Credentials, score=8); Fraud types: insurance-fraud, fraudulent-claim, identity-theft, documentary-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 21.0
+        },
+        {
+          "id": "FT026.004",
+          "name": "Falsifying Business Documents: Fake IRS Letter 147C",
+          "score": 16.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 8.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 7.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 6.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 6.0
+        },
+        {
+          "id": "FT051.001",
+          "name": "Fraudulent Purchases: Subscriptions",
+          "score": 6.0
+        },
+        {
+          "id": "FT053.001",
+          "name": "Card Holder Details Collection: Billing Information",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0057": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT018",
+      "FT021",
+      "FT026.001",
+      "FT052.001",
+      "FT016",
+      "FT019",
+      "FT020",
+      "FT025",
+      "FT049",
+      "FT054"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT018 (Social Media Attack, score=5), FT021 (Social Media Attacks, score=5), FT026.001 (Falsifying Business Documents: Fake Business Registration Certificate, score=4); Fraud types: deepfake-as-a-service, deepfake-fraud, ai-face-voice-changer, fraud-as-a-service, impersonation",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA003",
+        "FTA005"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 5.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 5.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 4.0
+        },
+        {
+          "id": "FT052.001",
+          "name": "Falsifying Identity Documents: Fake Passport",
+          "score": 4.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 3.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 3.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 3.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 3.0
+        },
+        {
+          "id": "FT049",
+          "name": "Fake Merchant Account",
+          "score": 3.0
+        },
+        {
+          "id": "FT054",
+          "name": "Fake e-Commerce Website",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0058": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT010.003",
+      "FT028",
+      "FT007.010",
+      "FT008.003",
+      "FT021",
+      "FT052.004",
+      "FT016",
+      "FT018",
+      "FT001",
+      "FT051.002"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT010.003 (Establish Accounts: Social Media Accounts, score=10), FT028 (Spearphishing, score=9), FT007.010 (Acquire Access: Social Media Accounts, score=8); Fraud types: scam-compound-operations, chatbot-enabled-fraud, social-engineering, romance-scam, investment-scam, sextortion, human-trafficking-facilitation",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT010.003",
+          "name": "Establish Accounts: Social Media Accounts",
+          "score": 10.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 9.0
+        },
+        {
+          "id": "FT007.010",
+          "name": "Acquire Access: Social Media Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 8.0
+        },
+        {
+          "id": "FT052.004",
+          "name": "Falsifying Identity Documents: Fake U.S. Visa Card",
+          "score": 8.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 6.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 5.0
+        },
+        {
+          "id": "FT051.002",
+          "name": "Fraudulent Purchases: SMS Services",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0059": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT040",
+      "FT041",
+      "FT051"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT040 (Carding Markets, score=1), FT041 (Shell Companies, score=1), FT051 (Fraudulent Purchases, score=1); Fraud types: automated-mule-accounts, money-laundering, bot-driven-account-opening, kyc-circumvention",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT040",
+          "name": "Carding Markets",
+          "score": 1.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 1.0
+        },
+        {
+          "id": "FT051",
+          "name": "Fraudulent Purchases",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0060": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [],
+    "confidence": "medium",
+    "notes": "Tactics FTA002, FTA003, FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Fraud types: traffic-distribution-system, investment-fraud, cloaking, geo-routing, rdga-infrastructure",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007"
+      ],
+      "technique_implied_tactics": [],
+      "technique_scores": []
+    }
+  },
+  "TP-0061": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA011"
+    ],
+    "suggested_ft3_techniques": [
+      "FT007.001",
+      "FT006",
+      "FT009",
+      "FT045"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA003 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006 from CFPF phases only; Top technique matches: FT007.001 (Acquire Access: Botnet, score=6), FT006 (Credential Scanning, score=1), FT009 (Compromise Infrastructure, score=1); Fraud types: bulletproof-hosting, fraud-enabling-infrastructure, hosting-provider-complicity, infrastructure-rotation",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA011"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT007.001",
+          "name": "Acquire Access: Botnet",
+          "score": 6.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 1.0
+        },
+        {
+          "id": "FT009",
+          "name": "Compromise Infrastructure",
+          "score": 1.0
+        },
+        {
+          "id": "FT045",
+          "name": "DDoS",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0062": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT016",
+      "FT021",
+      "FT018",
+      "FT052.001",
+      "FT055",
+      "FT025",
+      "FT007.009",
+      "FT019",
+      "FT020"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA002, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=10), FT016 (Phishing, score=9), FT021 (Social Media Attacks, score=9); Fraud types: recovery-fraud, impersonation, advance-fee-fraud, social-engineering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 10.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 9.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 9.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 8.0
+        },
+        {
+          "id": "FT052.001",
+          "name": "Falsifying Identity Documents: Fake Passport",
+          "score": 8.0
+        },
+        {
+          "id": "FT055",
+          "name": "Fake Payment Gateway",
+          "score": 8.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 7.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 6.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0063": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.003",
+      "FT020",
+      "FT016.001",
+      "FT005.001",
+      "FT026.001",
+      "FT028",
+      "FT051.003",
+      "FT011.002",
+      "FT043",
+      "FT001"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.003 (Falsifying Identity Documents: Fake National Identity Card, score=13), FT020 (Identity Theft for Merchant Accounts, score=9), FT016.001 (Phishing: Phishing for Merchant Credentials, score=8); Fraud types: purchase-scam, auction-fraud, brand-impersonation, identity-theft, money-mule",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 13.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 9.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 8.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 7.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT051.003",
+          "name": "Fraudulent Purchases: LLM Services",
+          "score": 7.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 6.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 6.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0064": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.001",
+      "FT026.001",
+      "FT033.004",
+      "FT055",
+      "FT007.009",
+      "FT011.005",
+      "FT020",
+      "FT023",
+      "FT035",
+      "FT041"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.001 (Falsifying Identity Documents: Fake Passport, score=20), FT026.001 (Falsifying Business Documents: Fake Business Registration Certificate, score=15), FT033.004 (No Shipping: Fabricating shipping evidence, score=8); Fraud types: long-firm-fraud, bust-out, application-fraud, loan-fraud, invoice-fraud, documentary-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.001",
+          "name": "Falsifying Identity Documents: Fake Passport",
+          "score": 20.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 15.0
+        },
+        {
+          "id": "FT033.004",
+          "name": "No Shipping: Fabricating shipping evidence",
+          "score": 8.0
+        },
+        {
+          "id": "FT055",
+          "name": "Fake Payment Gateway",
+          "score": 7.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT011.005",
+          "name": "Account Takeover: Fake ID",
+          "score": 6.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT023",
+          "name": "Dispute Avoidance",
+          "score": 6.0
+        },
+        {
+          "id": "FT035",
+          "name": "Dispute Avoidance",
+          "score": 6.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0065": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT021",
+      "FT016",
+      "FT052.004",
+      "FT007.009",
+      "FT018",
+      "FT055",
+      "FT008.003",
+      "FT025",
+      "FT051.003"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=12), FT021 (Social Media Attacks, score=10), FT016 (Phishing, score=9); Fraud types: social-engineering, impersonation, vishing, robodialling-fraud, advance-fee-fraud, investment-scam, fraud-as-a-service",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 12.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 10.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 9.0
+        },
+        {
+          "id": "FT052.004",
+          "name": "Falsifying Identity Documents: Fake U.S. Visa Card",
+          "score": 9.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 8.0
+        },
+        {
+          "id": "FT055",
+          "name": "Fake Payment Gateway",
+          "score": 8.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 7.0
+        },
+        {
+          "id": "FT051.003",
+          "name": "Fraudulent Purchases: LLM Services",
+          "score": 7.0
+        }
+      ]
+    }
+  },
+  "TP-0066": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA008",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT026.004",
+      "FT052.001",
+      "FT024",
+      "FT025",
+      "FT053.001",
+      "FT011.005",
+      "FT028",
+      "FT033.004",
+      "FT037.001",
+      "FT049"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT026.004 (Falsifying Business Documents: Fake IRS Letter 147C, score=16), FT052.001 (Falsifying Identity Documents: Fake Passport, score=14), FT024 (Fabricating shipping evidence, score=6); Fraud types: crash-for-cash, insurance-fraud, fraudulent-claim, collusion, documentary-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA008"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT026.004",
+          "name": "Falsifying Business Documents: Fake IRS Letter 147C",
+          "score": 16.0
+        },
+        {
+          "id": "FT052.001",
+          "name": "Falsifying Identity Documents: Fake Passport",
+          "score": 14.0
+        },
+        {
+          "id": "FT024",
+          "name": "Fabricating shipping evidence",
+          "score": 6.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 6.0
+        },
+        {
+          "id": "FT053.001",
+          "name": "Card Holder Details Collection: Billing Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT011.005",
+          "name": "Account Takeover: Fake ID",
+          "score": 5.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 5.0
+        },
+        {
+          "id": "FT033.004",
+          "name": "No Shipping: Fabricating shipping evidence",
+          "score": 5.0
+        },
+        {
+          "id": "FT037.001",
+          "name": "Account Manipulation: Additional User Account",
+          "score": 5.0
+        },
+        {
+          "id": "FT049",
+          "name": "Fake Merchant Account",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0067": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FTA012"
+    ],
+    "suggested_ft3_techniques": [
+      "FT011.002",
+      "FT003",
+      "FT028",
+      "FT016",
+      "FT001",
+      "FT008.003",
+      "FT018",
+      "FT048",
+      "FT005.001",
+      "FT006.002"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT011.002 (Account Takeover: Exposed Login Credential, score=12), FT003 (Seaching Credential Dumps, score=9), FT028 (Spearphishing, score=9); Fraud types: aitm-phishing, phishing, account-takeover, credential-stuffing, fraud-as-a-service",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA006",
+        "FTA012"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 12.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 9.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 9.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 8.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT048",
+          "name": "Account Access Removal",
+          "score": 6.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 5.0
+        },
+        {
+          "id": "FT006.002",
+          "name": "Credential Scanning: Websites",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0068": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT016",
+      "FT001",
+      "FT007.009",
+      "FT010.003",
+      "FT021",
+      "FT052",
+      "FT011",
+      "FT018",
+      "FT032"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=8), FT016 (Phishing, score=6), FT001 (Phishing for Information, score=5); Fraud types: gift-card-fraud, gift-card-tampering, loyalty-point-fraud, social-engineering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 8.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 6.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 5.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT010.003",
+          "name": "Establish Accounts: Social Media Accounts",
+          "score": 4.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 4.0
+        },
+        {
+          "id": "FT052",
+          "name": "Falsifying Identity Documents",
+          "score": 4.0
+        },
+        {
+          "id": "FT011",
+          "name": "Account Takeover",
+          "score": 3.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 3.0
+        },
+        {
+          "id": "FT032",
+          "name": "Credit Card Skimming",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0069": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052.003",
+      "FT016.001",
+      "FT020",
+      "FT005.001",
+      "FT028",
+      "FT001",
+      "FT011.002",
+      "FT018",
+      "FT026.001",
+      "FT032"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT052.003 (Falsifying Identity Documents: Fake National Identity Card, score=12), FT016.001 (Phishing: Phishing for Merchant Credentials, score=9), FT020 (Identity Theft for Merchant Accounts, score=8); Fraud types: smishing, phishing, card-not-present-fraud, identity-theft, fraud-as-a-service",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 12.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 9.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 6.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT026.001",
+          "name": "Falsifying Business Documents: Fake Business Registration Certificate",
+          "score": 5.0
+        },
+        {
+          "id": "FT032",
+          "name": "Credit Card Skimming",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0070": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [],
+    "confidence": "medium",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Fraud types: travel-booking-fraud, buy-for-you-fraud, fake-ota, loyalty-point-laundering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [],
+      "technique_scores": []
+    }
+  },
+  "TP-0071": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [],
+    "confidence": "medium",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Fraud types: irsf, premium-rate-fraud, telecom-revenue-fraud, wangiri",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [],
+      "technique_scores": []
+    }
+  },
+  "TP-0072": {
+    "suggested_ft3_tactics": [
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [],
+    "confidence": "medium",
+    "notes": "Tactics FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Tactics FTA002 from Group-IB stages only; Fraud types: subscription-fraud, telecom-billing-fraud, premium-sms-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [],
+      "technique_scores": []
+    }
+  },
+  "TP-0073": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [],
+    "confidence": "medium",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Fraud types: title-fraud, deed-theft, seller-impersonation, appraisal-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [],
+      "technique_scores": []
+    }
+  },
+  "TP-0074": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT019",
+      "FT026",
+      "FT041",
+      "FT049",
+      "FT052",
+      "FT054",
+      "FT055",
+      "FT043"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT019 (Website Cloning, score=3), FT026 (Falsifying Business Documents, score=3), FT041 (Shell Companies, score=3); Fraud types: ghost-broking, ghost-portal, insurance-policy-fraud, unlicensed-insurance",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 3.0
+        },
+        {
+          "id": "FT026",
+          "name": "Falsifying Business Documents",
+          "score": 3.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 3.0
+        },
+        {
+          "id": "FT049",
+          "name": "Fake Merchant Account",
+          "score": 3.0
+        },
+        {
+          "id": "FT052",
+          "name": "Falsifying Identity Documents",
+          "score": 3.0
+        },
+        {
+          "id": "FT054",
+          "name": "Fake e-Commerce Website",
+          "score": 3.0
+        },
+        {
+          "id": "FT055",
+          "name": "Fake Payment Gateway",
+          "score": 3.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0075": {
+    "suggested_ft3_tactics": [
+      "FTA003",
+      "FTA005",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT033.004",
+      "FT023",
+      "FT035",
+      "FT024",
+      "FT015",
+      "FT036",
+      "FT051"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA009 from CFPF phases only; Top technique matches: FT033.004 (No Shipping: Fabricating shipping evidence, score=7), FT023 (Dispute Avoidance, score=6), FT035 (Dispute Avoidance, score=6); Fraud types: friendly-fraud, chargeback-abuse, first-party-misuse, dispute-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT033.004",
+          "name": "No Shipping: Fabricating shipping evidence",
+          "score": 7.0
+        },
+        {
+          "id": "FT023",
+          "name": "Dispute Avoidance",
+          "score": 6.0
+        },
+        {
+          "id": "FT035",
+          "name": "Dispute Avoidance",
+          "score": 6.0
+        },
+        {
+          "id": "FT024",
+          "name": "Fabricating shipping evidence",
+          "score": 4.0
+        },
+        {
+          "id": "FT015",
+          "name": "Policy and Procedure Abuse",
+          "score": 3.0
+        },
+        {
+          "id": "FT036",
+          "name": "Refund Fraud",
+          "score": 3.0
+        },
+        {
+          "id": "FT051",
+          "name": "Fraudulent Purchases",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0076": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FTA011"
+    ],
+    "suggested_ft3_techniques": [
+      "FT007.001",
+      "FT045",
+      "FT017",
+      "FT025",
+      "FT006",
+      "FT009",
+      "FT046"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT007.001 (Acquire Access: Botnet, score=4), FT045 (DDoS, score=4), FT017 (Ad Fraud, score=3); Fraud types: affiliate-fraud, click-fraud, ad-fraud, cookie-stuffing, invalid-traffic",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA011"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT007.001",
+          "name": "Acquire Access: Botnet",
+          "score": 4.0
+        },
+        {
+          "id": "FT045",
+          "name": "DDoS",
+          "score": 4.0
+        },
+        {
+          "id": "FT017",
+          "name": "Ad Fraud",
+          "score": 3.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 3.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 1.0
+        },
+        {
+          "id": "FT009",
+          "name": "Compromise Infrastructure",
+          "score": 1.0
+        },
+        {
+          "id": "FT046",
+          "name": "DoS",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0077": {
+    "suggested_ft3_tactics": [
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT052",
+      "FT015",
+      "FT024",
+      "FT026",
+      "FT036"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA005, FTA006, FTA009 from CFPF phases only; Tactics FTA002 from Group-IB stages only; Top technique matches: FT052 (Falsifying Identity Documents, score=4), FT015 (Policy and Procedure Abuse, score=3), FT024 (Fabricating shipping evidence, score=3); Fraud types: ai-generated-claims, deepfake-claims, document-fraud, insurance-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA007"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT052",
+          "name": "Falsifying Identity Documents",
+          "score": 4.0
+        },
+        {
+          "id": "FT015",
+          "name": "Policy and Procedure Abuse",
+          "score": 3.0
+        },
+        {
+          "id": "FT024",
+          "name": "Fabricating shipping evidence",
+          "score": 3.0
+        },
+        {
+          "id": "FT026",
+          "name": "Falsifying Business Documents",
+          "score": 3.0
+        },
+        {
+          "id": "FT036",
+          "name": "Refund Fraud",
+          "score": 3.0
+        }
+      ]
+    }
+  },
+  "TP-0078": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA008",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT041",
+      "FT044",
+      "FT042.004",
+      "FT037",
+      "FT051",
+      "FT040",
+      "FT006",
+      "FT018",
+      "FT020"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=9), FT041 (Shell Companies, score=8), FT044 (Scheduled Payout, score=8); Fraud types: crypto-laundering, crypto-laundering-infrastructure, money-laundering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA008",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 9.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 8.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 8.0
+        },
+        {
+          "id": "FT042.004",
+          "name": "Account Manipulation: Additional Payout Schedule",
+          "score": 7.0
+        },
+        {
+          "id": "FT037",
+          "name": "Account Manipulation",
+          "score": 5.0
+        },
+        {
+          "id": "FT051",
+          "name": "Fraudulent Purchases",
+          "score": 4.0
+        },
+        {
+          "id": "FT040",
+          "name": "Carding Markets",
+          "score": 2.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 1.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 1.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0079": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT007.002",
+      "FT005.001",
+      "FT006",
+      "FT028",
+      "FT001",
+      "FT003",
+      "FT016.001",
+      "FT019",
+      "FT011.001",
+      "FT018"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA003, FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT007.002 (Acquire Access: DNS Server, score=9), FT005.001 (Gather Victim Identity Information: Credentials, score=7), FT006 (Credential Scanning, score=7); Fraud types: phishing, brand-impersonation, credential-harvesting, fraud-enabling-infrastructure, paas-subdomain-abuse",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT007.002",
+          "name": "Acquire Access: DNS Server",
+          "score": 9.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 7.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 6.0
+        },
+        {
+          "id": "FT016.001",
+          "name": "Phishing: Phishing for Merchant Credentials",
+          "score": 6.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 5.0
+        },
+        {
+          "id": "FT011.001",
+          "name": "Account Takeover: Exposed Credential",
+          "score": 4.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 4.0
+        }
+      ]
+    }
+  },
+  "TP-0080": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA008",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT041",
+      "FT007.008",
+      "FT026.002",
+      "FT044",
+      "FT042.004",
+      "FT051",
+      "FT037",
+      "FT040",
+      "FT018"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA003, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=9), FT041 (Shell Companies, score=8), FT007.008 (Acquire Access: Cloud Accounts, score=5); Fraud types: crypto-laundering, stablecoin-freeze-evasion, sanctions-evasion-infrastructure, money-laundering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA008",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 9.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 8.0
+        },
+        {
+          "id": "FT007.008",
+          "name": "Acquire Access: Cloud Accounts",
+          "score": 5.0
+        },
+        {
+          "id": "FT026.002",
+          "name": "Falsifying Business Documents: Fake Business License",
+          "score": 5.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 5.0
+        },
+        {
+          "id": "FT042.004",
+          "name": "Account Manipulation: Additional Payout Schedule",
+          "score": 4.0
+        },
+        {
+          "id": "FT051",
+          "name": "Fraudulent Purchases",
+          "score": 4.0
+        },
+        {
+          "id": "FT037",
+          "name": "Account Manipulation",
+          "score": 2.0
+        },
+        {
+          "id": "FT040",
+          "name": "Carding Markets",
+          "score": 2.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 1.0
+        }
+      ]
+    }
+  },
+  "TP-0081": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT011.002",
+      "FT028",
+      "FT016",
+      "FT003",
+      "FT001",
+      "FT007.009",
+      "FT008.002",
+      "FT019",
+      "FT018",
+      "FT021"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA003, FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA002, FTA004, FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT011.002 (Account Takeover: Exposed Login Credential, score=12), FT028 (Spearphishing, score=12), FT016 (Phishing, score=10); Fraud types: vishing, account-takeover, social-engineering, BEC, fake-captcha-fraud",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA003",
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT011.002",
+          "name": "Account Takeover: Exposed Login Credential",
+          "score": 12.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 12.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 10.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 8.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 7.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT008.002",
+          "name": "Compromise Accounts: Email Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 7.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0082": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT016",
+      "FT021",
+      "FT052.008",
+      "FT018",
+      "FT055",
+      "FT007.009",
+      "FT019",
+      "FT020",
+      "FT025"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA002, FTA003, FTA004, FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=12), FT016 (Phishing, score=9), FT021 (Social Media Attacks, score=9); Fraud types: social-engineering, impersonation, authorized-push-payment, elder-exploitation",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 12.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 9.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 9.0
+        },
+        {
+          "id": "FT052.008",
+          "name": "Falsifying Identity Documents: Fake Passport Card",
+          "score": 9.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 8.0
+        },
+        {
+          "id": "FT055",
+          "name": "Fake Payment Gateway",
+          "score": 7.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 6.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0083": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT028",
+      "FT051.003",
+      "FT007.009",
+      "FT016",
+      "FT044",
+      "FT052.003",
+      "FT008.003",
+      "FT021",
+      "FT031"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA002, FTA003, FTA004, FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=12), FT028 (Spearphishing, score=11), FT051.003 (Fraudulent Purchases: LLM Services, score=8); Fraud types: investment-scam, social-engineering, authorized-push-payment, crypto-laundering",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 12.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 11.0
+        },
+        {
+          "id": "FT051.003",
+          "name": "Fraudulent Purchases: LLM Services",
+          "score": 8.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 7.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 7.0
+        },
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 7.0
+        },
+        {
+          "id": "FT008.003",
+          "name": "Compromise Accounts: Social Media Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 6.0
+        },
+        {
+          "id": "FT031",
+          "name": "Compromised Payment Gateway",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0084": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT028",
+      "FT016",
+      "FT021",
+      "FT052.008",
+      "FT018",
+      "FT055",
+      "FT007.009",
+      "FT019",
+      "FT020",
+      "FT025"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA002, FTA003, FTA004, FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT028 (Spearphishing, score=12), FT016 (Phishing, score=9), FT021 (Social Media Attacks, score=9); Fraud types: impersonation, authorized-push-payment, social-engineering, elder-exploitation",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 12.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 9.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 9.0
+        },
+        {
+          "id": "FT052.008",
+          "name": "Falsifying Identity Documents: Fake Passport Card",
+          "score": 9.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 8.0
+        },
+        {
+          "id": "FT055",
+          "name": "Fake Payment Gateway",
+          "score": 7.0
+        },
+        {
+          "id": "FT007.009",
+          "name": "Acquire Access: Email Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 6.0
+        },
+        {
+          "id": "FT020",
+          "name": "Identity Theft for Merchant Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT025",
+          "name": "Fake Review Fraud",
+          "score": 6.0
+        }
+      ]
+    }
+  },
+  "TP-0085": {
+    "suggested_ft3_tactics": [
+      "FTA003",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT043",
+      "FT044",
+      "FT018",
+      "FT021",
+      "FT028",
+      "FT038.002",
+      "FT041",
+      "FT042.005",
+      "FT016",
+      "FT031"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT043 (Scheduled Transfer, score=12), FT044 (Scheduled Payout, score=7), FT018 (Social Media Attack, score=6); Fraud types: crypto-laundering, authorized-push-payment, elder-exploitation",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 12.0
+        },
+        {
+          "id": "FT044",
+          "name": "Scheduled Payout",
+          "score": 7.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 6.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 6.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 6.0
+        },
+        {
+          "id": "FT038.002",
+          "name": "Data Exfiltration: Payout",
+          "score": 6.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 6.0
+        },
+        {
+          "id": "FT042.005",
+          "name": "Account Manipulation: Additional Bank Accounts",
+          "score": 6.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 5.0
+        },
+        {
+          "id": "FT031",
+          "name": "Compromised Payment Gateway",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0086": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT007.007",
+      "FT028",
+      "FT018",
+      "FT021",
+      "FT016",
+      "FT052.003",
+      "FT005.001",
+      "FT006",
+      "FT051.003",
+      "FT054"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA004, FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT007.007 (Acquire Access: Virtual Private Server, score=10), FT028 (Spearphishing, score=10), FT018 (Social Media Attack, score=9); Fraud types: phishing, brand-impersonation, credential-harvesting, investment-scam, impersonation, fraud-enabling-infrastructure",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT007.007",
+          "name": "Acquire Access: Virtual Private Server",
+          "score": 10.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 10.0
+        },
+        {
+          "id": "FT018",
+          "name": "Social Media Attack",
+          "score": 9.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 9.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 8.0
+        },
+        {
+          "id": "FT052.003",
+          "name": "Falsifying Identity Documents: Fake National Identity Card",
+          "score": 8.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 7.0
+        },
+        {
+          "id": "FT051.003",
+          "name": "Fraudulent Purchases: LLM Services",
+          "score": 7.0
+        },
+        {
+          "id": "FT054",
+          "name": "Fake e-Commerce Website",
+          "score": 7.0
+        }
+      ]
+    }
+  },
+  "TP-0087": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT003",
+      "FT011.001",
+      "FT038.002",
+      "FT006",
+      "FT016",
+      "FT005.001",
+      "FT039.001",
+      "FT043",
+      "FT008.001",
+      "FT013"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA003, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA004, FTA005, FTA006, FTA009 from CFPF phases only; Top technique matches: FT003 (Seaching Credential Dumps, score=15), FT011.001 (Account Takeover: Exposed Credential, score=15), FT038.002 (Data Exfiltration: Payout, score=15); Fraud types: credential-harvesting, account-takeover, data-theft, fraud-as-a-service, crypto-laundering, unauthorized-transaction",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA009",
+        "FTA010"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 15.0
+        },
+        {
+          "id": "FT011.001",
+          "name": "Account Takeover: Exposed Credential",
+          "score": 15.0
+        },
+        {
+          "id": "FT038.002",
+          "name": "Data Exfiltration: Payout",
+          "score": 15.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 12.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 12.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 9.0
+        },
+        {
+          "id": "FT039.001",
+          "name": "Data Transfer: Data Pipeline",
+          "score": 9.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 9.0
+        },
+        {
+          "id": "FT008.001",
+          "name": "Compromise Accounts: Cloud Accounts",
+          "score": 8.0
+        },
+        {
+          "id": "FT013",
+          "name": "Resource Hijacking",
+          "score": 8.0
+        }
+      ]
+    }
+  },
+  "TP-0088": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010"
+    ],
+    "suggested_ft3_techniques": [
+      "FT007.002",
+      "FT028",
+      "FT003",
+      "FT005.001",
+      "FT006",
+      "FT016",
+      "FT001",
+      "FT019",
+      "FT021",
+      "FT052.004"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA001, FTA002, FTA003, FTA004, FTA007 confirmed by both CFPF and Group-IB signals; Tactics FTA005, FTA006, FTA009, FTA010 from CFPF phases only; Top technique matches: FT007.002 (Acquire Access: DNS Server, score=9), FT028 (Spearphishing, score=9), FT003 (Seaching Credential Dumps, score=7); Fraud types: phishing, brand-impersonation, social-engineering, credential-harvesting, fraud-enabling-infrastructure",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA007"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT007.002",
+          "name": "Acquire Access: DNS Server",
+          "score": 9.0
+        },
+        {
+          "id": "FT028",
+          "name": "Spearphishing",
+          "score": 9.0
+        },
+        {
+          "id": "FT003",
+          "name": "Seaching Credential Dumps",
+          "score": 7.0
+        },
+        {
+          "id": "FT005.001",
+          "name": "Gather Victim Identity Information: Credentials",
+          "score": 7.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 7.0
+        },
+        {
+          "id": "FT016",
+          "name": "Phishing",
+          "score": 7.0
+        },
+        {
+          "id": "FT001",
+          "name": "Phishing for Information",
+          "score": 6.0
+        },
+        {
+          "id": "FT019",
+          "name": "Website Cloning",
+          "score": 6.0
+        },
+        {
+          "id": "FT021",
+          "name": "Social Media Attacks",
+          "score": 5.0
+        },
+        {
+          "id": "FT052.004",
+          "name": "Falsifying Identity Documents: Fake U.S. Visa Card",
+          "score": 5.0
+        }
+      ]
+    }
+  },
+  "TP-0089": {
+    "suggested_ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA009",
+      "FTA010",
+      "FTA011"
+    ],
+    "suggested_ft3_techniques": [
+      "FT007.001",
+      "FT026",
+      "FT041",
+      "FT006",
+      "FT009",
+      "FT043",
+      "FT045"
+    ],
+    "confidence": "high",
+    "notes": "Tactics FTA002, FTA005, FTA007, FTA010 confirmed by both CFPF and Group-IB signals; Tactics FTA001, FTA003, FTA004, FTA006, FTA009 from CFPF phases only; Top technique matches: FT007.001 (Acquire Access: Botnet, score=6), FT026 (Falsifying Business Documents, score=3), FT041 (Shell Companies, score=3); Fraud types: bulletproof-hosting, fraud-enabling-infrastructure, sanctions-evasion-infrastructure, hosting-provider-complicity, bph-migration",
+    "_detail": {
+      "cfpf_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010"
+      ],
+      "groupib_tactics": [
+        "FTA002",
+        "FTA005",
+        "FTA007",
+        "FTA010"
+      ],
+      "technique_implied_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA005",
+        "FTA010",
+        "FTA011"
+      ],
+      "technique_scores": [
+        {
+          "id": "FT007.001",
+          "name": "Acquire Access: Botnet",
+          "score": 6.0
+        },
+        {
+          "id": "FT026",
+          "name": "Falsifying Business Documents",
+          "score": 3.0
+        },
+        {
+          "id": "FT041",
+          "name": "Shell Companies",
+          "score": 3.0
+        },
+        {
+          "id": "FT006",
+          "name": "Credential Scanning",
+          "score": 1.0
+        },
+        {
+          "id": "FT009",
+          "name": "Compromise Infrastructure",
+          "score": 1.0
+        },
+        {
+          "id": "FT043",
+          "name": "Scheduled Transfer",
+          "score": 1.0
+        },
+        {
+          "id": "FT045",
+          "name": "DDoS",
+          "score": 1.0
         }
       ]
     }

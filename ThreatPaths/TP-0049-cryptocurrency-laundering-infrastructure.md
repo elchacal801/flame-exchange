@@ -34,8 +34,8 @@ mitre_attack:
   - T1071.001
   - T1048
   - T1565.003
-ft3_tactics: []
-mitre_f3: []
+ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA008", "FTA009", "FTA010", "FT043", "FT037", "FT041", "FT042", "FT044", "FT006"]
+mitre_f3: ["F1018", "F1045", "F1047"]
 groupib_stages:
   - "Monetization"
   - "Laundering"

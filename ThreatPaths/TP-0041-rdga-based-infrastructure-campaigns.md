@@ -37,7 +37,7 @@ mitre_attack:
   - T1071.001  # Application Layer Protocol: Web Protocols
   - T1090       # Proxy
 ft3_tactics: ["FTA010", "FTA009", "FT007", "FT016"]
-mitre_f3: []
+mitre_f3: ["T1583.001", "T1593"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

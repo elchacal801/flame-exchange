@@ -37,7 +37,7 @@ mitre_attack:
   - T1583.006  # Acquire Infrastructure: Web Services
   - T1584.004  # Compromise Infrastructure: Server
 ft3_tactics: ["FTA015"]
-mitre_f3: []
+mitre_f3: ["T1583.001", "T1070", "T1593", "T1608"]
 groupib_stages:
   - "Resource Development"
   - "Initial Access"

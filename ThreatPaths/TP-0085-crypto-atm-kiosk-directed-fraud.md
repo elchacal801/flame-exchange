@@ -31,7 +31,7 @@ source_reliability: A
 info_credibility: 1
 mitre_attack:
   - T1656
-ft3_tactics: []
+ft3_tactics: ["FTA003", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT043", "FT044", "FT018", "FT021", "FT028", "FT038.002", "FT041", "FT042.005", "FT016", "FT031"]
 mitre_f3: ["F1025.003", "F1032", "F1017", "F1018", "F1031", "F1040", "F1045", "F1047"]
 groupib_stages:
   - "Perform Fraud"

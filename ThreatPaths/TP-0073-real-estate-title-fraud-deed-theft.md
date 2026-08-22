@@ -38,7 +38,7 @@ mitre_attack:
   - T1136      # Create Account
   - T1583.001  # Acquire Infrastructure: Domains
 ft3_tactics: ["FTA001", "FT007.009", "FT011.001"]
-mitre_f3: []
+mitre_f3: ["F1027", "F1031", "T1672"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

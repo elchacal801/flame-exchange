@@ -36,8 +36,8 @@ mitre_attack:
   - T1078      # Valid Accounts
   - T1589      # Gather Victim Identity Information
   - T1656      # Impersonation
-ft3_tactics: []
-mitre_f3: []
+ft3_tactics: ["FTA001", "FTA002", "FTA003", "FTA004", "FTA005", "FTA006", "FTA007", "FTA009", "FTA010", "FT019", "FT026", "FT041", "FT049", "FT052", "FT054", "FT055", "FT043"]
+mitre_f3: ["F1021", "F1027", "F1032"]
 groupib_stages:
   - "Reconnaissance"
   - "Resource Development"

@@ -41,7 +41,7 @@ mitre_attack:
   - T1036       # Masquerading
   - T1568.002  # Dynamic Resolution: Domain Generation Algorithms
 ft3_tactics: ["FTA001", "FTA009", "FT016"]
-mitre_f3: []
+mitre_f3: ["T1583.001", "F1018", "F1023", "F1025", "F1029", "F1030", "T1189", "T1593"]
 groupib_stages:
   - "Resource Development"
   - "Initial Access"
