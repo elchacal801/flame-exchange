@@ -130,7 +130,7 @@ sources:
 
   occ:
     enabled: true
-    url: "https://www.occ.gov/news-issuances/bulletins/index-bulletin-issuances.html"
+    url: "https://www.occ.gov/news-events/newsroom/news-issuances-by-year/bulletins/{year}-bulletins.html"
     feed_url: "https://www.occ.gov/rss/bulletins.xml"
     category_mapping:
       bsa-aml:

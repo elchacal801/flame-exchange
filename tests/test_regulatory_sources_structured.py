@@ -137,20 +137,30 @@ class TestCFPBSource:
 # OCCSource tests
 # ===========================================================================
 
+# Shaped like the post-2026-restructure year-index pages:
+# a table of Date | ID | Title rows.
 OCC_HTML = '''
-<ul>
-  <li>
-    <time>Jan 15, 2026</time>
-    <a href="/news-issuances/bulletins/2026/bulletin-2026-01.html">OCC Bulletin 2026-01: BSA/AML Compliance</a>
-  </li>
-  <li>
-    <div>Feb 01, 2026</div>
-    <a href="/news-issuances/enforcement-2026-01.html">Enforcement Action Against National Bank</a>
-  </li>
-  <li>
-    <a href="ignore.html"><img src="icon.png"/></a>
-  </li>
-</ul>
+<table>
+  <thead><tr><th>Date</th><th>ID</th><th>Title</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>01/15/2026</td>
+      <td>OCC 2026-1</td>
+      <td><a href="/news-issuances/bulletins/2026/bulletin-2026-1.html">BSA/AML Compliance: Updated Examination Procedures</a></td>
+    </tr>
+    <tr>
+      <td>02/01/2026</td>
+      <td>OCC 2026-2</td>
+      <td><a href="/news-issuances/bulletins/2026/bulletin-2026-2.html">Enforcement Actions and Civil Money Penalties</a></td>
+    </tr>
+    <tr>
+      <td>03/01/2026</td>
+      <td>OCC 2026-3</td>
+      <td><a href="/about/leadership.html">Not a bulletin link</a></td>
+    </tr>
+    <tr><td>only-two</td><td>cells</td></tr>
+  </tbody>
+</table>
 '''
 
 class TestOCCSource:
@@ -159,28 +169,52 @@ class TestOCCSource:
         assert src.name == "occ"
 
     @patch("regulatory.sources.occ.requests.get")
-    def test_fetch_downloads_html(self, mock_get):
+    def test_fetch_uses_configured_url(self, mock_get):
         mock_resp = MagicMock()
         mock_resp.text = OCC_HTML
+        mock_resp.status_code = 200
         mock_get.return_value = mock_resp
 
-        src = OCCSource(_make_config({"url": "https://occ.test"}))
+        src = OCCSource(_make_config({"url": "https://occ.test/bulletins.html"}))
         result = src.fetch()
+        # A plain URL (no {year} placeholder) is fetched exactly once, as-is.
         mock_get.assert_called_once()
+        assert mock_get.call_args[0][0] == "https://occ.test/bulletins.html"
         assert result == OCC_HTML
+
+    @patch("regulatory.sources.occ.requests.get")
+    def test_fetch_expands_year_template(self, mock_get):
+        from datetime import date as _date
+        mock_resp = MagicMock()
+        mock_resp.text = OCC_HTML
+        mock_resp.status_code = 200
+        mock_get.return_value = mock_resp
+
+        src = OCCSource(_make_config({"url": "https://occ.test/{year}-bulletins.html"}))
+        src.fetch()
+        year = _date.today().year
+        called = [c.args[0] for c in mock_get.call_args_list]
+        assert called == [
+            f"https://occ.test/{year}-bulletins.html",
+            f"https://occ.test/{year - 1}-bulletins.html",
+        ]
 
     def test_parse_produces_correct_alerts(self):
         src = OCCSource(_make_config())
         alerts = src.parse(OCC_HTML)
 
-        assert len(alerts) == 1
+        # Row 3 links outside bulletins, row 4 has too few cells.
+        assert len(alerts) == 2
 
         a0 = alerts[0]
         assert a0.source == "occ"
         assert a0.alert_id.startswith("occ-")
-        assert a0.title == "OCC Bulletin 2026-01: BSA/AML Compliance"
-        assert a0.date == "Jan 15, 2026"
-        assert a0.url == "https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-01.html"
+        assert a0.title == "BSA/AML Compliance: Updated Examination Procedures"
+        assert a0.date == "01/15/2026"
+        assert a0.url == "https://www.occ.gov/news-issuances/bulletins/2026/bulletin-2026-1.html"
+        assert "OCC 2026-1" in a0.summary
+
+        assert alerts[1].category == "Enforcement Action"
 
     def test_severity_with_tp_mapping(self):
         config = _make_config({
@@ -191,8 +225,7 @@ class TestOCCSource:
         src = OCCSource(config)
         alerts = src.parse(OCC_HTML)
 
-        assert len(alerts) == 1
-        # entry1 has category "Bulletin" which maps to TP-0001
+        # First row has category "Bulletin" which maps to TP-0001
         assert alerts[0].severity == "medium"
         assert alerts[0].mapped_tp_ids == ["TP-0001"]
 
