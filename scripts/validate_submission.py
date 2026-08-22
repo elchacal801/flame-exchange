@@ -81,7 +81,7 @@ REQUIRED_FRONTMATTER_FIELDS = [
 # Category-aware required fields for markdown submissions
 REQUIRED_TP_FIELDS = [
     "id", "title", "category", "date", "author", "source",
-    "tlp", "sector", "fraud_types", "cfpf_phases",
+    "tlp", "sector", "fraud_types", "cfpf_phases", "last_reviewed",
 ]
 
 REQUIRED_BASELINE_FIELDS = [

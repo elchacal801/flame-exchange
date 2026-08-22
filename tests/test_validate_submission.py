@@ -273,3 +273,30 @@ class TestRegulatoryRefs:
         fp.write_text(VALID_CONTENT_WITH_BAD_REG_REFS, encoding="utf-8")
         result = validate_file(fp)
         assert any("regulatory_refs" in e.lower() or "INVALID-REG" in e for e in result.errors)
+
+
+class TestLastReviewed:
+    def test_missing_last_reviewed_fails(self, tmp_path):
+        content = VALID_CONTENT.replace("last_reviewed: 2026-01-01\n", "")
+        f = tmp_path / "TP-9999-test.md"
+        f.write_text(content, encoding="utf-8")
+        result = validate_file(f)
+        assert not result.passed
+        assert any("last_reviewed" in e for e in result.errors)
+
+    def test_bad_last_reviewed_format_fails(self, tmp_path):
+        content = VALID_CONTENT.replace(
+            "last_reviewed: 2026-01-01", "last_reviewed: January 2026"
+        )
+        f = tmp_path / "TP-9999-test.md"
+        f.write_text(content, encoding="utf-8")
+        result = validate_file(f)
+        assert not result.passed
+        assert any("ISO date" in e for e in result.errors)
+
+    def test_unquoted_yaml_date_accepted(self, tmp_path):
+        # yaml parses an unquoted date as datetime.date -- must still pass
+        f = tmp_path / "TP-9999-test.md"
+        f.write_text(VALID_CONTENT, encoding="utf-8")
+        result = validate_file(f)
+        assert result.passed
