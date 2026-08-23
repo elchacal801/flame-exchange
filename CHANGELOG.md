@@ -10,6 +10,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 _Every PR adds its line here; entries roll into a version heading at release._
 
+### Added
+
+- **TP-0090: Phantom Hacker — Layered Impostor Account Drain** — FBI-named three-actor impostor chain (tech support → bank fraud department → government official) draining elder accounts via "safe account" coercion; from IC3 PSA230929 and the 2025 Annual Report ($2.13B tech-support losses); new fraud types `phantom-hacker`, `tech-support-scam`; new `REG-FINCEN-EFE` reference
+
 ### Changed
 
 - **TP-0033 enriched** with FinCEN Alert FIN-2026-Alert004 (federal student aid fraud): banking-side red-flag indicators, SAR filing guidance (`FIN-2026-FSAFRAUD`), ED's $1B-prevented statistic; new `REG-FINCEN-FSA` regulatory reference

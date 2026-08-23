@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-08-22T23:43:55.209549+00:00",
+    "generated_at": "2026-08-23T00:05:23.389972+00:00",
     "total": 1
   },
   "data": {
@@ -67,8 +67,29 @@
       "T1048",
       "T1565.003"
     ],
-    "ft3_tactics": [],
-    "mitre_f3": [],
+    "ft3_tactics": [
+      "FTA001",
+      "FTA002",
+      "FTA003",
+      "FTA004",
+      "FTA005",
+      "FTA006",
+      "FTA007",
+      "FTA008",
+      "FTA009",
+      "FTA010",
+      "FT043",
+      "FT037",
+      "FT041",
+      "FT042",
+      "FT044",
+      "FT006"
+    ],
+    "mitre_f3": [
+      "F1018",
+      "F1045",
+      "F1047"
+    ],
     "groupib_stages": [
       "Monetization",
       "Laundering"

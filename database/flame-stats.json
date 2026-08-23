@@ -1,6 +1,6 @@
 {
-  "total": 89,
-  "fraudTypes": 141,
+  "total": 90,
+  "fraudTypes": 143,
   "fraudTypeList": [
     "BEC",
     "aba-therapy-fraud",
@@ -104,6 +104,7 @@
     "payment-diversion",
     "payroll-diversion",
     "phantom-billing",
+    "phantom-hacker",
     "phishing",
     "premium-diversion",
     "premium-rate-fraud",
@@ -130,6 +131,7 @@
     "synthetic-medical-fraud",
     "tax-fraud",
     "tds-exploitation",
+    "tech-support-scam",
     "telecom-billing-fraud",
     "telecom-revenue-fraud",
     "title-fraud",
@@ -172,11 +174,11 @@
     "web3"
   ],
   "phaseCoverage": {
-    "P1": 85,
-    "P2": 84,
-    "P3": 88,
-    "P4": 87,
-    "P5": 87
+    "P1": 86,
+    "P2": 85,
+    "P3": 89,
+    "P4": 88,
+    "P5": 88
   },
   "topTags": [
     {
@@ -192,16 +194,16 @@
       "count": 21
     },
     {
+      "tag": "elder-fraud",
+      "count": 7
+    },
+    {
       "tag": "interpol-gffta",
       "count": 7
     },
     {
       "tag": "social-engineering",
       "count": 7
-    },
-    {
-      "tag": "elder-fraud",
-      "count": 6
     },
     {
       "tag": "recorded-future",
@@ -427,13 +429,13 @@
     {
       "fraud_type": "authorized-push-payment",
       "phases": {
-        "P1": 8,
-        "P2": 8,
-        "P3": 9,
-        "P4": 9,
-        "P5": 9
+        "P1": 9,
+        "P2": 9,
+        "P3": 10,
+        "P4": 10,
+        "P5": 10
       },
-      "total_tps": 9
+      "total_tps": 10
     },
     {
       "fraud_type": "automated-mule-accounts",
@@ -868,13 +870,13 @@
     {
       "fraud_type": "elder-exploitation",
       "phases": {
-        "P1": 2,
-        "P2": 2,
-        "P3": 3,
-        "P4": 3,
-        "P5": 3
+        "P1": 3,
+        "P2": 3,
+        "P3": 4,
+        "P4": 4,
+        "P5": 4
       },
-      "total_tps": 3
+      "total_tps": 4
     },
     {
       "fraud_type": "employment-fraud",
@@ -1093,13 +1095,13 @@
     {
       "fraud_type": "impersonation",
       "phases": {
-        "P1": 10,
-        "P2": 10,
-        "P3": 10,
-        "P4": 10,
-        "P5": 10
+        "P1": 11,
+        "P2": 11,
+        "P3": 11,
+        "P4": 11,
+        "P5": 11
       },
-      "total_tps": 10
+      "total_tps": 11
     },
     {
       "fraud_type": "infrastructure-rotation",
@@ -1362,6 +1364,17 @@
         "P5": 2
       },
       "total_tps": 2
+    },
+    {
+      "fraud_type": "phantom-hacker",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
     },
     {
       "fraud_type": "phishing",
@@ -1647,6 +1660,17 @@
       "total_tps": 1
     },
     {
+      "fraud_type": "tech-support-scam",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
       "fraud_type": "telecom-billing-fraud",
       "phases": {
         "P2": 1,
@@ -1758,13 +1782,13 @@
     {
       "fraud_type": "vishing",
       "phases": {
-        "P1": 4,
-        "P2": 4,
-        "P3": 4,
-        "P4": 4,
-        "P5": 4
+        "P1": 5,
+        "P2": 5,
+        "P3": 5,
+        "P4": 5,
+        "P5": 5
       },
-      "total_tps": 4
+      "total_tps": 5
     },
     {
       "fraud_type": "wangiri",
@@ -1780,13 +1804,13 @@
     {
       "fraud_type": "wire-fraud",
       "phases": {
-        "P1": 6,
-        "P2": 6,
-        "P3": 6,
-        "P4": 6,
-        "P5": 6
+        "P1": 7,
+        "P2": 7,
+        "P3": 7,
+        "P4": 7,
+        "P5": 7
       },
-      "total_tps": 6
+      "total_tps": 7
     }
   ],
   "regulatoryAlerts": {
@@ -1803,7 +1827,7 @@
       "ofac": 19249,
       "sec": 100
     },
-    "lastUpdated": "2026-08-22"
+    "lastUpdated": "2026-08-23"
   },
-  "generatedAt": "2026-08-22T23:43:55.101301+00:00"
+  "generatedAt": "2026-08-23T00:05:23.074308+00:00"
 }

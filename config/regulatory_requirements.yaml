@@ -1,4 +1,14 @@
 regulations:
+  - id: REG-FINCEN-EFE
+    name: "FinCEN Advisory FIN-2022-A002: Elder Financial Exploitation"
+    jurisdiction: US
+    category: fraud-reporting
+    description: "Advisory on elder financial exploitation; SAR filings reference key term EFE FIN-2022-A002; behavioral and transactional red flags for scams and theft targeting older adults"
+    relevant_fraud_types:
+      - elder-exploitation
+      - authorized-push-payment
+      - impersonation
+
   - id: REG-FINCEN-FSA
     name: "FinCEN Alert FIN-2026-Alert004: Fraud Schemes Targeting Federal Student Aid"
     jurisdiction: US

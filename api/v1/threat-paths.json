@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-08-22T23:43:55.155196+00:00",
-    "total": 89
+    "generated_at": "2026-08-23T00:05:23.208250+00:00",
+    "total": 90
   },
   "data": [
     {
@@ -1187,7 +1187,11 @@
         "FT025",
         "FT028"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "F1021",
+        "F1024",
+        "F1027"
+      ],
       "groupib_stages": [
         "Reconnaissance",
         "Resource Development",
@@ -3937,14 +3941,14 @@
       "summary": "Organized fraud networks exploit the open-enrollment admissions model of community colleges and universities to create thousands of \"ghost student\" identities — synthetic or stolen identities enrolled solely to siphon federal financial aid (primarily Pell Grants via FAFSA). Bot-driven application systems submit fraudulent enrollment applications at industrial scale, with California community colleges alone flagging 31-34% of applications as potentially fraudulent. Equifax reported preventing $180M in ghost student fraud in a single year, and nationwide detection systems have prevented over $1B in fraudulent disbursements. The monetization path follows Pell Grant disbursement to student accounts, with funds immediately withdrawn or transferred before the institution can detect non-attendance, creating a systematic drain on federal education funding that simultaneously inflates enrollment figures and degrades institutional resources.\n\n---",
       "confidence_score": 68,
       "source_reliability": "B",
-      "info_credibility": 3,
+      "info_credibility": 2,
       "infrastructure_generation_method": null,
       "geopolitical_timing": null,
       "nation_state_nexus": null,
       "fraud_family": "identity-synthetic",
       "primary_phase": "P3",
       "short_name": "Ghost Student Aid",
-      "last_reviewed": "2026-03-02",
+      "last_reviewed": "2026-08-22",
       "sectors": [
         "education",
         "government"
@@ -4010,7 +4014,8 @@
         "Laundering"
       ],
       "regulatory_refs": [
-        "REG-FINCEN-CDD"
+        "REG-FINCEN-CDD",
+        "REG-FINCEN-FSA"
       ],
       "ucff_domains": {
         "commit": "Level 2",
@@ -5039,7 +5044,10 @@
         "FT007",
         "FT016"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "T1583.001",
+        "T1593"
+      ],
       "groupib_stages": [
         "Reconnaissance",
         "Resource Development",
@@ -5411,7 +5419,27 @@
         "T1486",
         "T1071.001"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT043",
+        "FT041",
+        "FT007.007",
+        "FT013",
+        "FT044",
+        "FT042.004",
+        "FT008.001",
+        "FT011.003",
+        "FT014",
+        "FT018"
+      ],
       "mitre_f3": [
         "F1007.001",
         "F1018",
@@ -5526,7 +5554,28 @@
         "T1071.001",
         "T1048"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA008",
+        "FTA009",
+        "FTA010",
+        "FT043",
+        "FT041",
+        "FT007.008",
+        "FT044",
+        "FT026.001",
+        "FT042.004",
+        "FT051",
+        "FT037",
+        "FT018",
+        "FT020"
+      ],
       "mitre_f3": [
         "F1018",
         "F1025",
@@ -5628,8 +5677,27 @@
         "T1566.001",
         "T1591.004"
       ],
-      "ft3_tactics": [],
-      "mitre_f3": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT007",
+        "FT014",
+        "FT041",
+        "FT043"
+      ],
+      "mitre_f3": [
+        "F1018",
+        "F1045",
+        "T1195",
+        "T1583"
+      ],
       "groupib_stages": [
         "Reconnaissance",
         "Resource Development",
@@ -5724,7 +5792,27 @@
         "T1071.001",
         "T1048"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT043",
+        "FT010.003",
+        "FT018",
+        "FT044",
+        "FT052.001",
+        "FT007.010",
+        "FT008.003",
+        "FT016.001",
+        "FT021",
+        "FT038.002"
+      ],
       "mitre_f3": [
         "F1018",
         "F1025",
@@ -5828,7 +5916,21 @@
         "T1036",
         "T1578"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT007.002",
+        "FT026",
+        "FT041",
+        "FT043"
+      ],
       "mitre_f3": [
         "F1018",
         "F1025",
@@ -5934,8 +6036,29 @@
         "T1048",
         "T1565.003"
       ],
-      "ft3_tactics": [],
-      "mitre_f3": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA008",
+        "FTA009",
+        "FTA010",
+        "FT043",
+        "FT037",
+        "FT041",
+        "FT042",
+        "FT044",
+        "FT006"
+      ],
+      "mitre_f3": [
+        "F1018",
+        "F1045",
+        "F1047"
+      ],
       "groupib_stages": [
         "Monetization",
         "Laundering"
@@ -7090,7 +7213,17 @@
         "FTA005",
         "FTA015"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "F1009.004",
+        "F1002",
+        "F1010",
+        "F1018",
+        "F1023",
+        "F1030",
+        "F1045",
+        "F1047",
+        "T1585"
+      ],
       "groupib_stages": [
         "Resource Development",
         "Initial Access",
@@ -7201,7 +7334,16 @@
         "FTA009",
         "FT016"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "T1583.001",
+        "F1018",
+        "F1023",
+        "F1025",
+        "F1029",
+        "F1030",
+        "T1189",
+        "T1593"
+      ],
       "groupib_stages": [
         "Resource Development",
         "Initial Access",
@@ -7313,7 +7455,12 @@
       "ft3_tactics": [
         "FTA015"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "T1583.001",
+        "T1070",
+        "T1593",
+        "T1608"
+      ],
       "groupib_stages": [
         "Resource Development",
         "Initial Access"
@@ -8348,7 +8495,14 @@
         "FT007.009",
         "FT011.003"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "F1005",
+        "F1012",
+        "F1021",
+        "F1028",
+        "F1047",
+        "F1048"
+      ],
       "groupib_stages": [
         "Reconnaissance",
         "Resource Development",
@@ -8442,7 +8596,12 @@
         "FTA001",
         "FT011.002"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "F1034",
+        "F1003",
+        "F1040",
+        "T1451"
+      ],
       "groupib_stages": [
         "Reconnaissance",
         "Resource Development",
@@ -8531,7 +8690,14 @@
         "FT007.003",
         "FT011.001"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "F1003",
+        "F1005",
+        "F1015",
+        "F1040",
+        "T1451",
+        "T1585"
+      ],
       "groupib_stages": [
         "Resource Development",
         "Initial Access",
@@ -8625,7 +8791,11 @@
         "FT007.009",
         "FT011.001"
       ],
-      "mitre_f3": [],
+      "mitre_f3": [
+        "F1027",
+        "F1031",
+        "T1672"
+      ],
       "groupib_stages": [
         "Reconnaissance",
         "Resource Development",
@@ -8711,8 +8881,30 @@
         "T1589",
         "T1656"
       ],
-      "ft3_tactics": [],
-      "mitre_f3": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT019",
+        "FT026",
+        "FT041",
+        "FT049",
+        "FT052",
+        "FT054",
+        "FT055",
+        "FT043"
+      ],
+      "mitre_f3": [
+        "F1021",
+        "F1027",
+        "F1032"
+      ],
       "groupib_stages": [
         "Reconnaissance",
         "Resource Development",
@@ -8791,7 +8983,20 @@
       "mitre_attack": [
         "T1657"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT033.004",
+        "FT023",
+        "FT035",
+        "FT024",
+        "FT015",
+        "FT036",
+        "FT051"
+      ],
       "mitre_f3": [
         "F1015",
         "F1024",
@@ -8880,8 +9085,31 @@
         "T1571",
         "T1036"
       ],
-      "ft3_tactics": [],
-      "mitre_f3": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FTA011",
+        "FT007.001",
+        "FT045",
+        "FT017",
+        "FT025",
+        "FT006",
+        "FT009",
+        "FT046"
+      ],
+      "mitre_f3": [
+        "T1539",
+        "F1002",
+        "F1004",
+        "F1023"
+      ],
       "groupib_stages": [
         "Reconnaissance",
         "Resource Development",
@@ -8964,7 +9192,20 @@
         "T1027",
         "T1589"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT052",
+        "FT015",
+        "FT024",
+        "FT026",
+        "FT036"
+      ],
       "mitre_f3": [
         "F1027"
       ],
@@ -9178,7 +9419,27 @@
         "T1566.002",
         "T1608.005"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT007.002",
+        "FT005.001",
+        "FT006",
+        "FT028",
+        "FT001",
+        "FT003",
+        "FT016.001",
+        "FT019",
+        "FT011.001",
+        "FT018"
+      ],
       "mitre_f3": [
         "T1189",
         "T1555",
@@ -9387,7 +9648,27 @@
         "T1219",
         "T1567"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT011.002",
+        "FT028",
+        "FT016",
+        "FT003",
+        "FT001",
+        "FT007.009",
+        "FT008.002",
+        "FT019",
+        "FT018",
+        "FT021"
+      ],
       "mitre_f3": [
         "F1006.002",
         "F1032",
@@ -9479,7 +9760,27 @@
         "T1656",
         "T1598"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT028",
+        "FT016",
+        "FT021",
+        "FT052.008",
+        "FT018",
+        "FT055",
+        "FT007.009",
+        "FT019",
+        "FT020",
+        "FT025"
+      ],
       "mitre_f3": [
         "F1025.003",
         "F1031",
@@ -9582,7 +9883,27 @@
         "T1566.003",
         "T1656"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT043",
+        "FT028",
+        "FT051.003",
+        "FT007.009",
+        "FT016",
+        "FT044",
+        "FT052.003",
+        "FT008.003",
+        "FT021",
+        "FT031"
+      ],
       "mitre_f3": [
         "F1020.002",
         "F1025.003",
@@ -9682,7 +10003,27 @@
         "T1656",
         "T1598"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT028",
+        "FT016",
+        "FT021",
+        "FT052.008",
+        "FT018",
+        "FT055",
+        "FT007.009",
+        "FT019",
+        "FT020",
+        "FT025"
+      ],
       "mitre_f3": [
         "F1025.003",
         "F1031",
@@ -9788,7 +10129,24 @@
       "mitre_attack": [
         "T1656"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT043",
+        "FT044",
+        "FT018",
+        "FT021",
+        "FT028",
+        "FT038.002",
+        "FT041",
+        "FT042.005",
+        "FT016",
+        "FT031"
+      ],
       "mitre_f3": [
         "F1025.003",
         "F1032",
@@ -9900,7 +10258,27 @@
         "T1608.006",
         "T1598"
       ],
-      "ft3_tactics": [],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA002",
+        "FTA003",
+        "FTA004",
+        "FTA005",
+        "FTA006",
+        "FTA007",
+        "FTA009",
+        "FTA010",
+        "FT007.007",
+        "FT028",
+        "FT018",
+        "FT021",
+        "FT016",
+        "FT052.003",
+        "FT005.001",
+        "FT006",
+        "FT051.003",
+        "FT054"
+      ],
       "mitre_f3": [
         "F1020.002",
         "F1032",
@@ -10316,6 +10694,129 @@
         {
           "id": "TP-0061",
           "relationship": "enables"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0090",
+      "title": "Phantom Hacker — Layered Impostor Account Drain",
+      "category": "ThreatPath",
+      "date": "2026-08-22",
+      "author": "FLAME Project",
+      "source": "https://www.ic3.gov/PSA/2023/PSA230929",
+      "tlp": "WHITE",
+      "summary": "The Phantom Hacker scam — the FBI's name for a three-actor impostor chain first described in IC3 PSA230929 — is an industrialized evolution of the tech support scam in which victims are handed off between a fake technology support worker, a fake financial-institution fraud department, and finally a fake government official, each escalation engineered to deepen trust and isolate the victim. The scheme's signature is the \"safe account\" fiction: victims are persuaded their savings are exposed to a foreign hacker and must be moved — by wire, cash, or cryptocurrency — to a \"protected\" account at the Federal Reserve or another government agency that is in fact actor-controlled.\n\nThe scheme sits inside the IC3's largest loss categories: tech/customer support fraud recorded 47,794 complaints and $2.13B in reported losses in 2025, with individuals over 60 accounting for roughly half of victims and losses. In the 2023 baseline period that prompted the FBI's PSA, half of victims were over 60 and bore 66% of losses; many lost entire banking, savings, retirement, or investment balances \"protecting\" them.\n\nWhat distinguishes this path from generic tech support fraud (TP-0012) or government impersonation APP fraud (TP-0084) is the **layered, sequential structure**: an internal reconnaissance phase (the \"tech support\" actor has the victim open every financial account while screen-sharing, so the ring can select the most lucrative target), followed by role-segregated social engineering where each successive impostor validates the previous one's story.",
+      "confidence_score": 82,
+      "source_reliability": "A",
+      "info_credibility": 2,
+      "infrastructure_generation_method": null,
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "fraud_family": "social-engineering",
+      "primary_phase": "P3",
+      "short_name": "Phantom Hacker",
+      "last_reviewed": "2026-08-22",
+      "sectors": [
+        "banking",
+        "credit-union",
+        "investment",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "phantom-hacker",
+        "tech-support-scam",
+        "impersonation",
+        "vishing",
+        "authorized-push-payment",
+        "elder-exploitation",
+        "wire-fraud"
+      ],
+      "tags": [
+        "phantom-hacker",
+        "tech-support-scam",
+        "layered-impostor",
+        "safe-account",
+        "remote-access",
+        "elder-fraud",
+        "wire-fraud",
+        "crypto-atm"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1566.002",
+        "T1219",
+        "T1656",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA001",
+        "FTA003",
+        "FTA005",
+        "FTA009",
+        "FT001",
+        "FT005",
+        "FT016"
+      ],
+      "mitre_f3": [
+        "F1029",
+        "F1032",
+        "F1040.002",
+        "T1219",
+        "F1025.003",
+        "F1018",
+        "F1017.001",
+        "F1044"
+      ],
+      "groupib_stages": [
+        "Reconnaissance",
+        "Trust Abuse",
+        "End-user Interaction",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [
+        "REG-FBI-IC3",
+        "REG-FINCEN-EFE"
+      ],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 3",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [
+        "BL-0037"
+      ],
+      "related_tps": [
+        {
+          "id": "TP-0012",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0062",
+          "relationship": "feeds-into"
+        },
+        {
+          "id": "TP-0082",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0084",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0085",
+          "relationship": "enhances"
         }
       ],
       "evidence_count": 0

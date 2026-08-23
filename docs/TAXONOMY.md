@@ -73,6 +73,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `payment-diversion` | Redirecting legitimate payments |
 | `payroll-diversion` | Redirecting employee payroll deposits |
 | `phantom-billing` | Billing for services or goods never provided |
+| `phantom-hacker` | Three-actor impostor chain (tech support, bank, government) coercing safe-account transfers |
 | `phishing` | Email/SMS/voice phishing campaigns |
 | `premium-diversion` | Insurance premium payment redirection |
 | `provider-fraud` | Healthcare or service provider collusion |
@@ -86,6 +87,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 | `state-criminal-convergence` | Threat paths where nation-state actors and criminal organizations share infrastructure, tools, or operational relationships, crossing the traditional APT/criminal boundary |
 | `synthetic-identity` | Fabricated identities using real + fake PII |
 | `synthetic-medical-fraud` | AI-generated medical records for healthcare billing fraud |
+| `tech-support-scam` | Fake technical support personas obtaining device access or payments |
 | `tds-exploitation` | Traffic Distribution System exploitation as an infrastructure-layer threat, including multi-hop redirect chains with cloaking capabilities |
 | `tax-fraud` | Fraudulent tax filings or refund claims |
 | `unauthorized-transaction` | Transactions executed without account holder authorization |
