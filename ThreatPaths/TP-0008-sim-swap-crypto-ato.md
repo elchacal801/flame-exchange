@@ -6,7 +6,7 @@ id: TP-0008
 title: "SIM Swap to Cryptocurrency Exchange ATO"
 category: ThreatPath
 date: 2026-03-04
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "FBI IC3 / DOJ SIM swap prosecutions / industry reporting"
 tlp: WHITE
@@ -54,6 +54,8 @@ related_tps:
     relationship: enables
   - id: TP-0037
     relationship: enables
+  - id: TP-0091
+    relationship: related-to
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
@@ -247,3 +249,4 @@ SIM swap attacks represent a critical intersection of telecommunications and fin
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Underground Ecosystem Context |
 | 2026-03-04 | FLAME Project | Enhanced with Recorded Future 2025 intelligence — OTP interception techniques, TP-0037 cross-reference |
 | 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — SIM swap losses declined to $17.4M (from $26M), possible carrier control improvement |
+| 2026-08-22 | FLAME Project | Currency review: IC3 2025 SIM-swap figures ($17.4M / 971 complaints, down from $26M) confirmed against full-year report; cross-referenced TP-0091 (agentic acceleration of the downstream crypto-exchange ATO). No statistical changes required. |

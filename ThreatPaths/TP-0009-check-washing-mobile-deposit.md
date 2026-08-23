@@ -6,7 +6,7 @@ id: TP-0009
 title: "Check Washing and Fraudulent Mobile Deposit"
 category: ThreatPath
 date: 2026-03-04
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "USPS OIG / FinCEN / banking industry reporting"
 tlp: WHITE
@@ -183,3 +183,4 @@ ORDER BY d.device_fingerprint, d.deposit_date;
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures |
 | 2026-03-04 | FLAME Project | Enhanced with Recorded Future 2025 intelligence — deurbanization trend, Midwest geographic shift |
 | 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — check fraud $282.7M losses (41% increase), PSA250127 mail theft warning |
+| 2026-08-22 | FLAME Project | Currency review: IC3 2025 credit-card/check figures ($282.7M / 18,774 complaints, +41%) and the FinCEN 200%+ check-fraud SAR surge confirmed as most recent authoritative figures; mail-theft check fraud remains a top-growth category. No statistical changes required. |

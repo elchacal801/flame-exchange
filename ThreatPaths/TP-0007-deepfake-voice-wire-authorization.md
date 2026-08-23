@@ -6,7 +6,7 @@ id: TP-0007
 title: "Deepfake Voice Authorization for Wire Transfer"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-03-21
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "Wall Street Journal (2019 UK energy firm case) / Regula AI deepfake fraud surveys"
 tlp: WHITE
@@ -57,6 +57,8 @@ related_tps:
   - id: TP-0025
     relationship: related-to
   - id: TP-0057
+    relationship: related-to
+  - id: TP-0091
     relationship: related-to
 regulatory_refs:
   - REG-DORA
@@ -309,3 +311,4 @@ This threat path is evolving rapidly. In 2019, deepfake voice was novel and expe
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — Asia-Pacific deepfake BEC intelligence |
 | 2026-03-20 | FLAME Project | Enriched with INTERPOL GFFTA 2026 and UNODC Sept 2025 deepfake intelligence; confidence upgraded from 68 to 75 based on multi-source corroboration |
 | 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — AI fraud category $893.3M total losses, AI loss breakdown by crime type, PSA250904 deepfake infographic |
+| 2026-08-22 | FLAME Project | Currency review: IC3 2025 AI-fraud category ($893.3M / 22,364 complaints; deepfake/voice sub-losses) confirmed against full-year report; cross-referenced TP-0091 (agentic AI operationalizing voice-clone authorization at scale). Figures current; no changes required. |
