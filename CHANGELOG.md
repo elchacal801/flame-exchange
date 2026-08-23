@@ -14,6 +14,7 @@ _Every PR adds its line here; entries roll into a version heading at release._
 
 - **Currency review: TP-0001–TP-0006** (Feb-2026 cohort, batch 1 of 3) — verified IC3 2025 loss figures against the full-year report (BEC $3.046B, ATO $359.7M, real-estate $275.1M all confirmed current); added forward cross-references to TP-0090 (phantom hacker) and TP-0091 (agentic AI) where the relationship is substantive; refreshed `last_reviewed`. No statistics required correction.
 - **Currency review: TP-0007–TP-0012** (Feb-2026 cohort, batch 2 of 3) — verified IC3 2025 figures for deepfake/AI fraud ($893.3M category), SIM-swap ($17.4M), check fraud ($282.7M, +41%), and tech-support ($2.134B, +46%); established `escalates-from` link recognizing TP-0090 (phantom hacker) as the three-actor evolution of TP-0012; added TP-0091 cross-references. No statistics required correction.
+- **Currency review: TP-0013–TP-0018** (Feb-2026 cohort, batch 3 of 3) — verified IC3 2025 figures for employment fraud ($362.9M, +37%) and investment fraud ($8.65B / 72,984 complaints, +32%, largest category for the third year; 72% crypto); added TP-0091 cross-references to the credential-stuffing, employment-fraud, and deepfake-document paths agentic AI most directly accelerates. Completes the currency review of the 18-TP February 2026 cohort. No statistics required correction.
 
 ### Added
 

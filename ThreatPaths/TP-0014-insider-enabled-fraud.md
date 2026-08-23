@@ -6,7 +6,7 @@ id: TP-0014
 title: "Insider-Enabled Account Fraud at Financial Institution"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "DOJ prosecution records / ACFE / FinCEN SAR data / FDIC enforcement actions"
 tlp: WHITE
@@ -212,3 +212,4 @@ Insider fraud is the hardest threat path to detect because the actor has legitim
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings |
+| 2026-08-22 | FLAME Project | Currency review: insider-enabled account-fraud mechanics and controls remain accurate against 2026 reporting; no statistical claims requiring update. Reviewed for currency. |

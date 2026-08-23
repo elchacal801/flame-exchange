@@ -6,7 +6,7 @@ id: TP-0013
 title: "Credential Stuffing to Loyalty Point / Gift Card Account Drain"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-03-29
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "Akamai State of the Internet reports / industry reporting"
 tlp: WHITE
@@ -47,6 +47,8 @@ related_tps:
     relationship: feeds-into
   - id: TP-0008
     relationship: enables
+  - id: TP-0091
+    relationship: related-to
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
@@ -263,3 +265,4 @@ Credential stuffing remains one of the highest-volume attack patterns in financi
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section |
+| 2026-08-22 | FLAME Project | Currency review: credential-stuffing-to-loyalty-drain mechanics remain accurate; cross-referenced TP-0091 (agentic AI is the primary 2026 accelerant of credential stuffing, which lists this path as an enhancement target). No statistical changes required. |
