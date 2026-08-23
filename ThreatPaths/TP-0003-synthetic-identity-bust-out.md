@@ -6,7 +6,7 @@ id: TP-0003
 title: "Synthetic Identity — Credit Card Bust-Out"
 category: ThreatPath
 date: 2026-03-04
-last_reviewed: 2026-03-04
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "Federal Reserve / FinCEN / ACFE reporting"
 tlp: WHITE
@@ -50,6 +50,8 @@ related_tps:
     relationship: related-to
   - id: TP-0040
     relationship: variant-of
+  - id: TP-0091
+    relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
   - REG-UNODC-ORGANIZED-FRAUD-2024
@@ -277,3 +279,4 @@ Thin-file exploitation is a growing concern: digitally fluent young people and n
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section, Underground Ecosystem Context, IC3 2024 loss figures |
+| 2026-08-22 | FLAME Project | Currency review: synthetic-identity loss framing ($3.3B, 29% of identity fraud) confirmed as most recent authoritative figure; cross-referenced TP-0091 (agentic application farming as a scaling vector for synthetic-identity onboarding). No statistical changes required. |

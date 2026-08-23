@@ -6,7 +6,7 @@ id: TP-0002
 title: "Business Email Compromise — Vendor Impersonation Wire Fraud"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "FBI IC3 / FinCEN Advisory FIN-2019-A005 / multiple public reporting"
 tlp: WHITE
@@ -50,6 +50,8 @@ related_tps:
   - id: TP-0011
     relationship: provides-mules-for
   - id: TP-0020
+    relationship: related-to
+  - id: TP-0091
     relationship: related-to
 regulatory_refs:
   - REG-FATF-R16
@@ -221,3 +223,4 @@ OfficeActivity
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, IC3 2024 loss figures in Analyst Notes |
+| 2026-08-22 | FLAME Project | Currency review: BEC $3.046B / 24,768 complaints confirmed against full-year IC3 2025 report; AI-enabled BEC ($30M) cross-referenced to new TP-0091 (agentic automation of BEC pipelines). Figures current; no changes required. |
