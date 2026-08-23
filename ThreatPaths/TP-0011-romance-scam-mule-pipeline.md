@@ -6,7 +6,7 @@ id: TP-0011
 title: "Romance Scam to Money Mule Recruitment Pipeline"
 category: ThreatPath
 date: 2026-03-04
-last_reviewed: 2026-03-30
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "FBI IC3 / FinCEN Advisory FIN-2020-A008 / INTERPOL"
 tlp: WHITE
@@ -53,6 +53,10 @@ related_tps:
     relationship: provides-mules-for
   - id: TP-0025
     relationship: escalates-from
+  - id: TP-0090
+    relationship: related-to
+  - id: TP-0091
+    relationship: related-to
 regulatory_refs:
   - REG-AU-SPF
   - REG-EU-AMLD6
@@ -327,3 +331,4 @@ Mule recruitment increasingly targets youth: 35% of Gen Z say they would conside
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — MENA and European mule recruitment patterns |
 | 2026-03-30 | FLAME Project | Enrichment: drops recruitment ecosystem context — sourced from Cybercrime Diaries forum analysis |
 | 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — romance fraud $929.3M losses, elder fraud $584M, transaction type breakdown |
+| 2026-08-22 | FLAME Project | Currency review: romance/confidence and mule-recruitment mechanics remain accurate; cross-referenced TP-0090 (phantom hacker as an adjacent elder social-engineering scheme) and TP-0091 (agentic automated mule provisioning). No statistical changes required. |

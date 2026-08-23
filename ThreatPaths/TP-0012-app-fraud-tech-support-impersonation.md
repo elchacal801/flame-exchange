@@ -6,7 +6,7 @@ id: TP-0012
 title: "Authorized Push Payment Fraud — Tech Support / Bank Impersonation"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "FBI IC3 / UK PSR APP fraud data / FTC consumer reports"
 tlp: WHITE
@@ -50,6 +50,8 @@ related_tps:
     relationship: enables
   - id: TP-0024
     relationship: related-to
+  - id: TP-0090
+    relationship: escalates-from
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
@@ -247,3 +249,4 @@ AND c.call_end >= t.timestamp;
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — physical impersonation evolution and grandparent scam surge |
 | 2026-03-27 | FLAME Project | urlscan.io enrichment — four live support / remote access scam kit clusters targeting banking customers |
 | 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — tech support fraud $2.134B losses, Operation Chakra, FFKC expansion, AI-enabled losses |
+| 2026-08-22 | FLAME Project | Currency review: IC3 2025 tech/customer-support figures ($2.134B / 47,794 complaints, +46%; channel breakdown) confirmed against full-year report; established escalates-from link to the new TP-0090 (phantom hacker), which is the three-actor evolution of this single/dual-persona scheme. No statistical changes required. |
