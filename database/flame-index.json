@@ -17,7 +17,7 @@
     "fraud_family": "account-takeover",
     "primary_phase": "P3",
     "short_name": "Treasury ATO",
-    "last_reviewed": "2026-02-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking"
     ],
@@ -130,6 +130,14 @@
       {
         "id": "TP-0014",
         "relationship": "enables"
+      },
+      {
+        "id": "TP-0090",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 0
@@ -152,7 +160,7 @@
     "fraud_family": "payment-wire",
     "primary_phase": "P4",
     "short_name": "BEC Wire",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "cross-sector"
@@ -255,6 +263,10 @@
       {
         "id": "TP-0020",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 2
@@ -277,7 +289,7 @@
     "fraud_family": "identity-synthetic",
     "primary_phase": "P3",
     "short_name": "Synth ID Bust-Out",
-    "last_reviewed": "2026-03-04",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "fintech"
@@ -370,6 +382,10 @@
       {
         "id": "TP-0040",
         "relationship": "variant-of"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 4
@@ -392,7 +408,7 @@
     "fraud_family": "payment-wire",
     "primary_phase": "P4",
     "short_name": "Payroll Diversion",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "cross-sector"
     ],
@@ -490,6 +506,10 @@
       {
         "id": "TP-0015",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 0
@@ -512,7 +532,7 @@
     "fraud_family": "insurance-healthcare",
     "primary_phase": "P3",
     "short_name": "Premium Diversion",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "insurance"
     ],
@@ -629,7 +649,7 @@
     "fraud_family": "payment-wire",
     "primary_phase": "P4",
     "short_name": "Real Estate Wire",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "cross-sector"
@@ -733,6 +753,10 @@
       {
         "id": "TP-0011",
         "relationship": "provides-mules-for"
+      },
+      {
+        "id": "TP-0090",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 0
@@ -755,7 +779,7 @@
     "fraud_family": "payment-wire",
     "primary_phase": "P4",
     "short_name": "Deepfake Voice Wire",
-    "last_reviewed": "2026-03-21",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "cross-sector"
@@ -878,6 +902,10 @@
       {
         "id": "TP-0057",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 2
@@ -900,7 +928,7 @@
     "fraud_family": "account-takeover",
     "primary_phase": "P2",
     "short_name": "SIM Swap ATO",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "crypto",
       "fintech",
@@ -1011,6 +1039,10 @@
       {
         "id": "TP-0037",
         "relationship": "enables"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 1
@@ -1033,7 +1065,7 @@
     "fraud_family": "payment-wire",
     "primary_phase": "P4",
     "short_name": "Check Washing",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "credit-union"
@@ -1135,7 +1167,7 @@
     "fraud_family": "insurance-healthcare",
     "primary_phase": "P4",
     "short_name": "Disability Fraud",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "insurance"
     ],
@@ -1230,7 +1262,7 @@
     "fraud_family": "investment-romance",
     "primary_phase": "P3",
     "short_name": "Romance Mule Pipeline",
-    "last_reviewed": "2026-03-30",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "cross-sector"
     ],
@@ -1343,6 +1375,14 @@
       {
         "id": "TP-0025",
         "relationship": "escalates-from"
+      },
+      {
+        "id": "TP-0090",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 1
@@ -1365,7 +1405,7 @@
     "fraud_family": "social-engineering",
     "primary_phase": "P4",
     "short_name": "APP Tech Support",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "credit-union"
@@ -1471,6 +1511,10 @@
       {
         "id": "TP-0024",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0090",
+        "relationship": "escalates-from"
       }
     ],
     "evidence_count": 2
@@ -1493,7 +1537,7 @@
     "fraud_family": "account-takeover",
     "primary_phase": "P2",
     "short_name": "Cred Stuff Loyalty",
-    "last_reviewed": "2026-03-29",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "cross-sector",
@@ -1592,6 +1636,10 @@
       {
         "id": "TP-0008",
         "relationship": "enables"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 1
@@ -1614,7 +1662,7 @@
     "fraud_family": "account-takeover",
     "primary_phase": "P3",
     "short_name": "Insider Fraud",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "credit-union",
@@ -1744,7 +1792,7 @@
     "fraud_family": "social-engineering",
     "primary_phase": "P3",
     "short_name": "Employment Fraud",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "healthcare",
       "staffing",
@@ -1839,6 +1887,10 @@
       {
         "id": "TP-0029",
         "relationship": "related-to"
+      },
+      {
+        "id": "TP-0091",
+        "relationship": "related-to"
       }
     ],
     "evidence_count": 3
@@ -1861,7 +1913,7 @@
     "fraud_family": "identity-synthetic",
     "primary_phase": "P4",
     "short_name": "First-Party Bust-Out",
-    "last_reviewed": "2026-03-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "credit-union"
@@ -1961,7 +2013,7 @@
     "fraud_family": "investment-romance",
     "primary_phase": "P3",
     "short_name": "Pig Butchering",
-    "last_reviewed": "2026-03-25",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "crypto",
@@ -2088,7 +2140,7 @@
     "fraud_family": "identity-synthetic",
     "primary_phase": "P2",
     "short_name": "Deepfake Docs",
-    "last_reviewed": "2026-02-28",
+    "last_reviewed": "2026-08-22",
     "sectors": [
       "banking",
       "credit-union",
@@ -2167,6 +2219,10 @@
       },
       {
         "id": "TP-0020",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0091",
         "relationship": "related-to"
       }
     ],
