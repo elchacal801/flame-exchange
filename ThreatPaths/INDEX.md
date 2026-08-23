@@ -1,6 +1,6 @@
 # FLAME Threat Path Index
 
-> 89 threat paths covering 141 fraud types across 24 sectors
+> 90 threat paths covering 143 fraud types across 24 sectors
 > Framework-agnostic: mapped to CFPF phases with cross-references to FT3, ATT&CK, and Group-IB Fraud Matrix
 
 ## Coverage Summary
@@ -96,6 +96,7 @@
 | TP-0087 | Infostealer-to-Fraud Pipeline — MaaS Credential Harvesting to Financial Fraud | credential-harvesting, account-takeover, data-theft, fraud-as-a-service, crypto-laundering, unauthorized-transaction | Banking, Crypto, E-commerce, Technology, Cross-sector | P1-P5 |
 | TP-0088 | Logistics Sector Spearphishing — Carrier Impersonation and Freight Document Fraud | phishing, brand-impersonation, social-engineering, credential-harvesting, fraud-enabling-infrastructure | Logistics, Transportation, Cross-sector | P1-P5 |
 | TP-0089 | TAE Upstream Transit Provider Complicity — Structural Enablement of Malicious Hosting | bulletproof-hosting, fraud-enabling-infrastructure, sanctions-evasion-infrastructure, hosting-provider-complicity, bph-migration | Technology, Telecommunications, Cross-sector | P1-P5 |
+| TP-0090 | Phantom Hacker — Layered Impostor Account Drain | phantom-hacker, tech-support-scam, impersonation, vishing, authorized-push-payment, elder-exploitation, wire-fraud | Banking, Credit-union, Investment, Cross-sector | P1-P5 |
 
 ## Coverage by Fraud Type
 
@@ -116,7 +117,7 @@
 | Appraisal Fraud | TP-0073 |
 | Approval Phishing | TP-0032 |
 | Auction Fraud | TP-0063 |
-| Authorized Push Payment | TP-0017, TP-0024, TP-0025, TP-0026, TP-0027, TP-0082, TP-0083, TP-0084, TP-0085 |
+| Authorized Push Payment | TP-0017, TP-0024, TP-0025, TP-0026, TP-0027, TP-0082, TP-0083, TP-0084, TP-0085, TP-0090 |
 | Automated Mule Accounts | TP-0059 |
 | Autonomous Ai Fraud | TP-0039 |
 | Benefit Fraud | TP-0022, TP-0033 |
@@ -157,7 +158,7 @@
 | Documentary Fraud | TP-0018, TP-0056, TP-0064, TP-0066 |
 | Dprk It Worker Fraud | TP-0034 |
 | E Skimmer | TP-0035 |
-| Elder Exploitation | TP-0082, TP-0084, TP-0085 |
+| Elder Exploitation | TP-0082, TP-0084, TP-0085, TP-0090 |
 | Employment Fraud | TP-0034 |
 | Fake Captcha Fraud | TP-0081 |
 | Fake Ota | TP-0070 |
@@ -178,7 +179,7 @@
 | Hosting Provider Complicity | TP-0061, TP-0089 |
 | Human Trafficking Facilitation | TP-0047, TP-0058 |
 | Identity Theft | TP-0015, TP-0018, TP-0019, TP-0022, TP-0030, TP-0034, TP-0035, TP-0038, TP-0040, TP-0053, TP-0056, TP-0063, TP-0069 |
-| Impersonation | TP-0006, TP-0007, TP-0012, TP-0015, TP-0057, TP-0062, TP-0065, TP-0082, TP-0084, TP-0086 |
+| Impersonation | TP-0006, TP-0007, TP-0012, TP-0015, TP-0057, TP-0062, TP-0065, TP-0082, TP-0084, TP-0086, TP-0090 |
 | Infrastructure Rotation | TP-0061 |
 | Insider Threat | TP-0014 |
 | Insurance Fraud | TP-0056, TP-0066, TP-0077 |
@@ -203,6 +204,7 @@
 | Payment Diversion | TP-0002, TP-0006, TP-0024, TP-0030 |
 | Payroll Diversion | TP-0004 |
 | Phantom Billing | TP-0021, TP-0028 |
+| Phantom Hacker | TP-0090 |
 | Phishing | TP-0004, TP-0005, TP-0032, TP-0042, TP-0043, TP-0054, TP-0067, TP-0069, TP-0079, TP-0086, TP-0088 |
 | Premium Diversion | TP-0005 |
 | Premium Rate Fraud | TP-0071 |
@@ -229,6 +231,7 @@
 | Synthetic Medical Fraud | TP-0028 |
 | Tax Fraud | TP-0022 |
 | Tds Exploitation | TP-0042 |
+| Tech Support Scam | TP-0090 |
 | Telecom Billing Fraud | TP-0072 |
 | Telecom Revenue Fraud | TP-0071 |
 | Title Fraud | TP-0073 |
@@ -239,17 +242,17 @@
 | Upcoding | TP-0021 |
 | Vehicle Export Fraud | TP-0053 |
 | Vendor Impersonation | TP-0020 |
-| Vishing | TP-0001, TP-0012, TP-0065, TP-0081 |
+| Vishing | TP-0001, TP-0012, TP-0065, TP-0081, TP-0090 |
 | Wangiri | TP-0071 |
-| Wire Fraud | TP-0001, TP-0002, TP-0006, TP-0007, TP-0020, TP-0024 |
+| Wire Fraud | TP-0001, TP-0002, TP-0006, TP-0007, TP-0020, TP-0024, TP-0090 |
 
 ## Coverage by Sector
 
 | Sector | Threat Paths |
 |--------|-------------|
-| Banking | TP-0001, TP-0002, TP-0003, TP-0006, TP-0007, TP-0008, TP-0009, TP-0012, TP-0013, TP-0014, TP-0016, TP-0017, TP-0018, TP-0019, TP-0020, TP-0022, TP-0023, TP-0024, TP-0025, TP-0026, TP-0027, TP-0029, TP-0034, TP-0036, TP-0037, TP-0040, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0056, TP-0057, TP-0058, TP-0059, TP-0060, TP-0062, TP-0064, TP-0065, TP-0067, TP-0069, TP-0078, TP-0079, TP-0080, TP-0081, TP-0082, TP-0083, TP-0084, TP-0085, TP-0086, TP-0087 |
-| Credit Union | TP-0009, TP-0012, TP-0014, TP-0016, TP-0018 |
-| Cross Sector | TP-0002, TP-0004, TP-0006, TP-0007, TP-0011, TP-0013, TP-0017, TP-0020, TP-0025, TP-0027, TP-0039, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0048, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0057, TP-0058, TP-0061, TP-0062, TP-0063, TP-0064, TP-0065, TP-0067, TP-0069, TP-0070, TP-0078, TP-0079, TP-0080, TP-0081, TP-0082, TP-0084, TP-0085, TP-0086, TP-0087, TP-0088, TP-0089 |
+| Banking | TP-0001, TP-0002, TP-0003, TP-0006, TP-0007, TP-0008, TP-0009, TP-0012, TP-0013, TP-0014, TP-0016, TP-0017, TP-0018, TP-0019, TP-0020, TP-0022, TP-0023, TP-0024, TP-0025, TP-0026, TP-0027, TP-0029, TP-0034, TP-0036, TP-0037, TP-0040, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0056, TP-0057, TP-0058, TP-0059, TP-0060, TP-0062, TP-0064, TP-0065, TP-0067, TP-0069, TP-0078, TP-0079, TP-0080, TP-0081, TP-0082, TP-0083, TP-0084, TP-0085, TP-0086, TP-0087, TP-0090 |
+| Credit Union | TP-0009, TP-0012, TP-0014, TP-0016, TP-0018, TP-0090 |
+| Cross Sector | TP-0002, TP-0004, TP-0006, TP-0007, TP-0011, TP-0013, TP-0017, TP-0020, TP-0025, TP-0027, TP-0039, TP-0041, TP-0042, TP-0043, TP-0044, TP-0045, TP-0046, TP-0047, TP-0048, TP-0049, TP-0050, TP-0051, TP-0052, TP-0053, TP-0054, TP-0055, TP-0057, TP-0058, TP-0061, TP-0062, TP-0063, TP-0064, TP-0065, TP-0067, TP-0069, TP-0070, TP-0078, TP-0079, TP-0080, TP-0081, TP-0082, TP-0084, TP-0085, TP-0086, TP-0087, TP-0088, TP-0089, TP-0090 |
 | Crypto | TP-0008, TP-0017, TP-0023, TP-0026, TP-0032, TP-0034, TP-0041, TP-0043, TP-0044, TP-0045, TP-0047, TP-0049, TP-0052, TP-0054, TP-0055, TP-0058, TP-0059, TP-0060, TP-0078, TP-0079, TP-0080, TP-0083, TP-0085, TP-0087 |
 | E Commerce | TP-0087 |
 | Ecommerce | TP-0075, TP-0076 |
@@ -259,7 +262,7 @@
 | Government | TP-0021, TP-0022, TP-0028, TP-0033, TP-0034, TP-0056, TP-0069, TP-0079, TP-0084, TP-0086 |
 | Healthcare | TP-0015, TP-0021, TP-0028, TP-0034, TP-0056, TP-0066 |
 | Insurance | TP-0005, TP-0010, TP-0014, TP-0021, TP-0028, TP-0056, TP-0060, TP-0066, TP-0074, TP-0077, TP-0081, TP-0086 |
-| Investment | TP-0019, TP-0026, TP-0041, TP-0052, TP-0058, TP-0060, TP-0062, TP-0065, TP-0083 |
+| Investment | TP-0019, TP-0026, TP-0041, TP-0052, TP-0058, TP-0060, TP-0062, TP-0065, TP-0083, TP-0090 |
 | Logistics | TP-0088 |
 | Payments | TP-0024, TP-0035, TP-0036, TP-0037, TP-0038, TP-0039, TP-0040, TP-0042, TP-0043, TP-0046, TP-0051, TP-0054, TP-0059, TP-0063, TP-0068, TP-0069, TP-0070, TP-0075, TP-0079 |
 | Real Estate | TP-0073 |
@@ -276,12 +279,12 @@
 
 | Framework | Mapping Status | Notes |
 |-----------|---------------|-------|
-| FS-ISAC CFPF | All 89 TPs mapped | Primary organizational structure |
-| MITRE ATT&CK | 84 of 89 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
-| Stripe FT3 | Mapped (72/89) | MIT-licensed JSON vendored in data/ft3/ |
+| FS-ISAC CFPF | All 90 TPs mapped | Primary organizational structure |
+| MITRE ATT&CK | 85 of 90 TPs mapped | Where applicable (some fraud-only TPs lack ATT&CK equivalents) |
+| Stripe FT3 | Mapped (90/90) | MIT-licensed JSON vendored in data/ft3/ |
 | MITRE F3 | Awaiting release | Will map when F3 ships |
-| Group-IB Fraud Matrix | 89 of 89 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
-| Group-IB UCFF | 89 of 89 TPs aligned | 7-domain lifecycle maturity assessment |
+| Group-IB Fraud Matrix | 90 of 90 TPs mapped | 10-stage lifecycle; stage names referenced for interoperability |
+| Group-IB UCFF | 90 of 90 TPs aligned | 7-domain lifecycle maturity assessment |
 
 ## Cross-Threat Path Connections
 

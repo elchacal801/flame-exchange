@@ -2444,5 +2444,38 @@ The upstream transit layer is strategically significant because disrupting a sin
         <category>attack-T1583.003</category>
         <category>attack-T1584.004</category>
     </item>
+    <item>
+      <title>[TP-0090] Phantom Hacker — Layered Impostor Account Drain</title>
+      <link>https://flameintel.org/#detail/TP-0090</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0090</guid>
+      <description>The Phantom Hacker scam — the FBI&apos;s name for a three-actor impostor chain first described in IC3 PSA230929 — is an industrialized evolution of the tech support scam in which victims are handed off between a fake technology support worker, a fake financial-institution fraud department, and finally a fake government official, each escalation engineered to deepen trust and isolate the victim. The scheme&apos;s signature is the &quot;safe account&quot; fiction: victims are persuaded their savings are exposed to a foreign hacker and must be moved — by wire, cash, or cryptocurrency — to a &quot;protected&quot; account at the Federal Reserve or another government agency that is in fact actor-controlled.
+
+The scheme sits inside the IC3&apos;s largest loss categories: tech/customer support fraud recorded 47,794 complaints and $2.13B in reported losses in 2025, with individuals over 60 accounting for roughly half of victims and losses. In the 2023 baseline period that prompted the FBI&apos;s PSA, half of victims were over 60 and bore 66% of losses; many lost entire banking, savings, retirement, or investment balances &quot;protecting&quot; them.
+
+What distinguishes this path from generic tech support fraud (TP-0012) or government impersonation APP fraud (TP-0084) is the **layered, sequential structure**: an internal reconnaissance phase (the &quot;tech support&quot; actor has the victim open every financial account while screen-sharing, so the ring can select the most lucrative target), followed by role-segregated social engineering where each successive impostor validates the previous one&apos;s story.</description>
+      <pubDate>Sat, 22 Aug 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>82</flame:confidence>
+      <flame:sourceReliability>A</flame:sourceReliability>
+        <category>authorized-push-payment</category>
+        <category>elder-exploitation</category>
+        <category>impersonation</category>
+        <category>phantom-hacker</category>
+        <category>tech-support-scam</category>
+        <category>vishing</category>
+        <category>wire-fraud</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-credit-union</category>
+        <category>sector-cross-sector</category>
+        <category>sector-investment</category>
+        <category>attack-T1219</category>
+        <category>attack-T1566.002</category>
+        <category>attack-T1656</category>
+        <category>attack-T1657</category>
+    </item>
   </channel>
 </rss>

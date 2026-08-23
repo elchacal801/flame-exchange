@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-08-22T23:43:55.219039+00:00",
+    "generated_at": "2026-08-23T00:05:23.422156+00:00",
     "total": 1
   },
   "data": {
@@ -69,7 +69,17 @@
       "FTA005",
       "FTA015"
     ],
-    "mitre_f3": [],
+    "mitre_f3": [
+      "F1009.004",
+      "F1002",
+      "F1010",
+      "F1018",
+      "F1023",
+      "F1030",
+      "F1045",
+      "F1047",
+      "T1585"
+    ],
     "groupib_stages": [
       "Resource Development",
       "Initial Access",
