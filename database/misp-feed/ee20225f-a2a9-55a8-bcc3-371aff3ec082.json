@@ -1,0 +1,105 @@
+{
+  "Event": {
+    "uuid": "ee20225f-a2a9-55a8-bcc3-371aff3ec082",
+    "info": "FLAME: Phantom Hacker \u2014 Layered Impostor Account Drain",
+    "date": "2026-08-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "a4c17e37-a4d1-5c79-913f-c56ef7e12f68",
+        "type": "text",
+        "category": "Other",
+        "value": "phantom-hacker",
+        "comment": "Fraud type for TP-0090"
+      },
+      {
+        "uuid": "e7de8b21-360f-5d21-8be5-5e24094e955e",
+        "type": "text",
+        "category": "Other",
+        "value": "tech-support-scam",
+        "comment": "Fraud type for TP-0090"
+      },
+      {
+        "uuid": "d5c50eec-3fdb-5018-a42c-167a2bdc6c4f",
+        "type": "text",
+        "category": "Other",
+        "value": "impersonation",
+        "comment": "Fraud type for TP-0090"
+      },
+      {
+        "uuid": "c98c71ec-7484-58a6-aa6a-551e9ebb7bc4",
+        "type": "text",
+        "category": "Other",
+        "value": "vishing",
+        "comment": "Fraud type for TP-0090"
+      },
+      {
+        "uuid": "686f10ca-8bee-552a-a2f9-90961b5d7e2a",
+        "type": "text",
+        "category": "Other",
+        "value": "authorized-push-payment",
+        "comment": "Fraud type for TP-0090"
+      },
+      {
+        "uuid": "0a9b00fb-d1fb-5c55-a1dc-e54357d389a2",
+        "type": "text",
+        "category": "Other",
+        "value": "elder-exploitation",
+        "comment": "Fraud type for TP-0090"
+      },
+      {
+        "uuid": "1d9b79fe-b630-5ac1-b743-1c699b775a76",
+        "type": "text",
+        "category": "Other",
+        "value": "wire-fraud",
+        "comment": "Fraud type for TP-0090"
+      },
+      {
+        "uuid": "e19d37dc-8a03-5b5f-8ba4-d52537267710",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0090"
+      },
+      {
+        "uuid": "54c75eb8-9a76-5a0c-be97-ac8358d7adfa",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0090"
+      },
+      {
+        "uuid": "99d1f756-ec8c-5aa9-9285-abf060fad684",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0090"
+      },
+      {
+        "uuid": "c0006702-98bf-5376-9b50-0ceee6931844",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0090"
+      },
+      {
+        "uuid": "7fee8e38-3474-50ed-9d0e-6ca9bed3f1f2",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0090"
+      }
+    ]
+  }
+}

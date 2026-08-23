@@ -4830,6 +4830,64 @@
           "type": "uses"
         }
       ]
+    },
+    {
+      "value": "Phantom Hacker \u2014 Layered Impostor Account Drain",
+      "description": "The Phantom Hacker scam \u2014 the FBI's name for a three-actor impostor chain first described in IC3 PSA230929 \u2014 is an industrialized evolution of the tech support scam in which victims are handed off bet...",
+      "uuid": "23d5eeda-7333-523a-9f98-76af2a64624f",
+      "meta": {
+        "fraud_types": [
+          "phantom-hacker",
+          "tech-support-scam",
+          "impersonation",
+          "vishing",
+          "authorized-push-payment",
+          "elder-exploitation",
+          "wire-fraud"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 82,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0090"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "db44d0c4-d14e-557d-a410-6c932ddf96ce",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "7a707873-76f6-5a68-972e-53ccb2b7654b",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "0639c8e5-85dd-5005-ac9f-446815ef501a",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
     }
   ]
 }
