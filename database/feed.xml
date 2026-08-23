@@ -2477,5 +2477,38 @@ What distinguishes this path from generic tech support fraud (TP-0012) or govern
         <category>attack-T1656</category>
         <category>attack-T1657</category>
     </item>
+    <item>
+      <title>[TP-0091] Agentic AI Fraud Automation</title>
+      <link>https://flameintel.org/#detail/TP-0091</link>
+      <guid isPermaLink="true">https://flameintel.org/#detail/TP-0091</guid>
+      <description>Agentic AI fraud is the use of autonomous, goal-directed AI agents — LLM-driven systems that observe, plan, and act with minimal human supervision — to execute end-to-end fraud pipelines that previously required human operators at each step. Unlike scripted bots that replay fixed sequences, an agent reasons about the live environment: it adapts to a changed login flow, solves or routes around a challenge, reads an error message and retries differently, and chains sub-tasks (harvest credentials → validate them → enumerate account value → move funds) without a human in the loop. Both Experian&apos;s 2026 Fraud Forecast and Javelin&apos;s 2026 Fraud Management Trends name agentic AI among the year&apos;s defining fraud threats; vendor telemetry already reports agent impersonation at scale (millions of spoofed agent requests in early 2026).
+
+The result is a qualitative shift in the economics of fraud rather than a new fraud *type*: agentic automation compresses hours of manual effort into seconds, runs continuously, improves across attempts, and lowers the labor cost of the parts of a scheme that used to bound its scale — credential validation, account triage, application farming, and rapid post-compromise fund dispersion. This TP models agentic automation as a **cross-cutting accelerant** applied to existing schemes (account takeover, card testing, synthetic-identity application fraud, mule provisioning), and catalogs the behavioral signatures that distinguish agent-driven activity from both humans and conventional bots.
+
+Because this is an emerging, fast-moving vector documented primarily through vendor and forecast reporting rather than settled law-enforcement casework, confidence is deliberately moderate (62); the path will need review as primary-source casework accumulates.</description>
+      <pubDate>Sat, 22 Aug 2026 00:00:00 +0000</pubDate>
+      <flame:confidence>62</flame:confidence>
+      <flame:sourceReliability>B</flame:sourceReliability>
+        <category>account-takeover</category>
+        <category>agentic-ai-fraud</category>
+        <category>card-testing</category>
+        <category>credential-stuffing</category>
+        <category>fraud-as-a-service</category>
+        <category>synthetic-identity</category>
+        <category>CFPF-P1</category>
+        <category>CFPF-P2</category>
+        <category>CFPF-P3</category>
+        <category>CFPF-P4</category>
+        <category>CFPF-P5</category>
+        <category>sector-banking</category>
+        <category>sector-cross-sector</category>
+        <category>sector-crypto</category>
+        <category>sector-fintech</category>
+        <category>sector-payments</category>
+        <category>attack-T1110.004</category>
+        <category>attack-T1583.001</category>
+        <category>attack-T1651</category>
+        <category>attack-T1657</category>
+    </item>
   </channel>
 </rss>

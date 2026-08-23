@@ -4888,6 +4888,63 @@
           "type": "uses"
         }
       ]
+    },
+    {
+      "value": "Agentic AI Fraud Automation",
+      "description": "Agentic AI fraud is the use of autonomous, goal-directed AI agents \u2014 LLM-driven systems that observe, plan, and act with minimal human supervision \u2014 to execute end-to-end fraud pipelines that previous...",
+      "uuid": "c19b9928-1165-5bc4-8223-2a7804522b61",
+      "meta": {
+        "fraud_types": [
+          "agentic-ai-fraud",
+          "account-takeover",
+          "credential-stuffing",
+          "card-testing",
+          "synthetic-identity",
+          "fraud-as-a-service"
+        ],
+        "sectors": [],
+        "cfpf_phases": [
+          "P1",
+          "P2",
+          "P3",
+          "P4",
+          "P5"
+        ],
+        "confidence_score": 62,
+        "refs": [
+          "https://flameintel.org/?tp=TP-0091"
+        ]
+      },
+      "related": [
+        {
+          "dest-uuid": "178936a4-e0b2-5d3f-973f-fa274ccbf9dd",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "a784d4ae-5037-59e8-8ee8-574cf3c41ff0",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "44170f36-5f20-529c-95ca-ee67a1c14ebf",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        },
+        {
+          "dest-uuid": "cfcee68a-4d46-5596-ad24-3f9b164ff09d",
+          "tags": [
+            "estimative-language:likelihood-probability=\"likely\""
+          ],
+          "type": "uses"
+        }
+      ]
     }
   ]
 }

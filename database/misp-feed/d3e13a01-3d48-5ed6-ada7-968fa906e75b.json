@@ -1,0 +1,98 @@
+{
+  "Event": {
+    "uuid": "d3e13a01-3d48-5ed6-ada7-968fa906e75b",
+    "info": "FLAME: Agentic AI Fraud Automation",
+    "date": "2026-08-22",
+    "analysis": "2",
+    "threat_level_id": "2",
+    "published": true,
+    "Orgc": {
+      "name": "FLAME Project",
+      "uuid": "03c54486-68b2-52f4-805f-c12a8109744c"
+    },
+    "Tag": [
+      {
+        "name": "flame:type=\"threat-path\""
+      }
+    ],
+    "Attribute": [
+      {
+        "uuid": "cdac0029-035c-5cd8-8d56-618e7f78a8e8",
+        "type": "text",
+        "category": "Other",
+        "value": "agentic-ai-fraud",
+        "comment": "Fraud type for TP-0091"
+      },
+      {
+        "uuid": "b0cfe680-23a7-5655-a1d4-22b9df2be5ba",
+        "type": "text",
+        "category": "Other",
+        "value": "account-takeover",
+        "comment": "Fraud type for TP-0091"
+      },
+      {
+        "uuid": "536c699e-4497-5d49-bd10-7e29f527a09c",
+        "type": "text",
+        "category": "Other",
+        "value": "credential-stuffing",
+        "comment": "Fraud type for TP-0091"
+      },
+      {
+        "uuid": "f2a20a35-1f83-5a83-88eb-bb2e03c5908a",
+        "type": "text",
+        "category": "Other",
+        "value": "card-testing",
+        "comment": "Fraud type for TP-0091"
+      },
+      {
+        "uuid": "14bde337-e8a6-51a9-b45b-135b441a1967",
+        "type": "text",
+        "category": "Other",
+        "value": "synthetic-identity",
+        "comment": "Fraud type for TP-0091"
+      },
+      {
+        "uuid": "1e6a719c-c518-58d4-bade-1cb74ec27dd0",
+        "type": "text",
+        "category": "Other",
+        "value": "fraud-as-a-service",
+        "comment": "Fraud type for TP-0091"
+      },
+      {
+        "uuid": "5198adb1-073a-5c58-96df-86e1db4fe36f",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P1",
+        "comment": "CFPF phase for TP-0091"
+      },
+      {
+        "uuid": "6b7af3b6-1080-59f2-879d-af30ce287c8e",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P2",
+        "comment": "CFPF phase for TP-0091"
+      },
+      {
+        "uuid": "8b7610a8-ea7f-5174-8ff4-984dc1aeeb10",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P3",
+        "comment": "CFPF phase for TP-0091"
+      },
+      {
+        "uuid": "42e0ee07-ab15-599a-aa94-310bbf05cd67",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P4",
+        "comment": "CFPF phase for TP-0091"
+      },
+      {
+        "uuid": "a302be5f-6a16-571a-b2da-59cac85a5744",
+        "type": "text",
+        "category": "Other",
+        "value": "CFPF-P5",
+        "comment": "CFPF phase for TP-0091"
+      }
+    ]
+  }
+}
