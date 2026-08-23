@@ -10,6 +10,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 _Every PR adds its line here; entries roll into a version heading at release._
 
+### Changed
+
+- **Currency review: TP-0001–TP-0006** (Feb-2026 cohort, batch 1 of 3) — verified IC3 2025 loss figures against the full-year report (BEC $3.046B, ATO $359.7M, real-estate $275.1M all confirmed current); added forward cross-references to TP-0090 (phantom hacker) and TP-0091 (agentic AI) where the relationship is substantive; refreshed `last_reviewed`. No statistics required correction.
+
 ### Added
 
 - **TP-0091: Agentic AI Fraud Automation** — autonomous LLM agents running end-to-end fraud pipelines (credential validation → account triage → value extraction → rapid dispersion) that adapt to defenses in real time; modeled as a cross-cutting accelerant of existing schemes with agent-vs-bot detection signatures; from the Experian 2026 and Javelin 2026 forecasts; new fraud type `agentic-ai-fraud`

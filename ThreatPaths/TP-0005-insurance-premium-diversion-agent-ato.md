@@ -6,7 +6,7 @@ id: TP-0005
 title: "Insurance Premium Diversion via Agent Portal ATO"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "Coalition Against Insurance Fraud / industry reporting"
 tlp: WHITE
@@ -178,3 +178,4 @@ This threat path is particularly relevant for insurance carriers because the age
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings |
+| 2026-08-22 | FLAME Project | Currency review: insurance premium-diversion mechanics and controls remain accurate against 2026 reporting; no statistical claims requiring update. Reviewed for currency. |

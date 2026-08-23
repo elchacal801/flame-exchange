@@ -6,7 +6,7 @@ id: TP-0004
 title: "Payroll Diversion via HR Portal Compromise"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "FBI IC3 PSA I-091819-PSA / multiple industry reports"
 tlp: WHITE
@@ -46,6 +46,8 @@ related_tps:
   - id: TP-0014
     relationship: enables
   - id: TP-0015
+    relationship: related-to
+  - id: TP-0091
     relationship: related-to
 regulatory_refs:
   - REG-CFPB-REGE
@@ -182,3 +184,4 @@ Payroll diversion is a high-confidence, low-complexity variant of BEC that explo
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, Analyst Notes |
+| 2026-08-22 | FLAME Project | Currency review: payroll-diversion mechanics remain accurate; cross-referenced TP-0091 (agent-driven self-service-portal credential abuse). No statistical changes required. |

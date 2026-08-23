@@ -6,7 +6,7 @@ id: TP-0001
 title: "Treasury Management ATO via Malvertising and Vishing"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-02-28
+last_reviewed: 2026-08-22
 author: "FLAME Project (adapted from FS-ISAC CFPF Working Group case study)"
 source: "https://www.fsisac.com/hubfs/Knowledge/Fraud/CyberFraudPreventionFramework.pdf"
 tlp: WHITE
@@ -63,6 +63,10 @@ related_tps:
     relationship: provides-mules-for
   - id: TP-0014
     relationship: enables
+  - id: TP-0090
+    relationship: related-to
+  - id: TP-0091
+    relationship: related-to
 regulatory_refs:
   - REG-CFPB-REGE
   - REG-DORA
@@ -332,3 +336,4 @@ This threat path represents a "textbook" CFPF case — it's the framework's flag
 | 2026-02-12 | FLAME Project | Initial submission, adapted from FS-ISAC CFPF case study |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section |
 | 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — ATO $359.7M losses, FFKC expansion to cover ATO |
+| 2026-08-22 | FLAME Project | Currency review: IC3 2025 ATO figures ($359.7M) confirmed against full-year report; cross-referenced TP-0090 (phantom hacker — shared vishing+ATO chain) and TP-0091 (agentic AI accelerating credential-stuffing/ATO). No statistical changes required. |

@@ -6,7 +6,7 @@ id: TP-0006
 title: "Real Estate Wire Fraud — Closing Scam"
 category: ThreatPath
 date: 2026-02-12
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "FBI IC3 / American Land Title Association (ALTA) reporting"
 tlp: WHITE
@@ -51,6 +51,8 @@ related_tps:
     relationship: enhances
   - id: TP-0011
     relationship: provides-mules-for
+  - id: TP-0090
+    relationship: related-to
 regulatory_refs:
   - REG-FATF-R16
   - REG-FBI-IC3
@@ -210,3 +212,4 @@ detection:
 |------|--------|--------|
 | 2026-02-12 | FLAME Project | Initial submission |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section, IC3 2024 loss figures |
+| 2026-08-22 | FLAME Project | Currency review: IC3 2025 real-estate figures ($275.1M / 12,368 complaints, +58%) confirmed against full-year report; cross-referenced TP-0090 (phantom hacker — overlapping elder wire coercion). No statistical changes required. |
