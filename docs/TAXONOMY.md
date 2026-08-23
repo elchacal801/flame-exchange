@@ -24,6 +24,7 @@ Standardized lowercase-hyphenated labels. Each threat path must have at least on
 |-----------|-------------|
 | `ACH-fraud` | Fraudulent ACH transfer schemes |
 | `account-takeover` | Unauthorized control of legitimate accounts |
+| `agentic-ai-fraud` | Autonomous AI agents executing end-to-end fraud pipelines that adapt to defenses |
 | `advance-fee-fraud` | Schemes requiring upfront payment for promised returns |
 | `ai-accelerated-fraud-infrastructure` | AI-assisted generation of fraud infrastructure at scale, including domain registration, content generation, and campaign orchestration |
 | `ai-document-fraud` | AI-generated fraudulent documents for KYC bypass or claims |

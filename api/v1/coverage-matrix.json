@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-08-23T00:11:56.201850+00:00",
-    "total": 143
+    "generated_at": "2026-08-23T00:25:26.448945+00:00",
+    "total": 144
   },
   "data": [
     {
@@ -30,13 +30,13 @@
     {
       "fraud_type": "account-takeover",
       "phases": {
-        "P1": 17,
-        "P2": 17,
-        "P3": 17,
-        "P4": 17,
-        "P5": 17
+        "P1": 18,
+        "P2": 18,
+        "P3": 18,
+        "P4": 18,
+        "P5": 18
       },
-      "total_tps": 17
+      "total_tps": 18
     },
     {
       "fraud_type": "ad-fraud",
@@ -62,6 +62,17 @@
     },
     {
       "fraud_type": "affiliate-fraud",
+      "phases": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1,
+        "P4": 1,
+        "P5": 1
+      },
+      "total_tps": 1
+    },
+    {
+      "fraud_type": "agentic-ai-fraud",
       "phases": {
         "P1": 1,
         "P2": 1,
@@ -325,13 +336,13 @@
     {
       "fraud_type": "card-testing",
       "phases": {
-        "P1": 1,
-        "P2": 1,
-        "P3": 1,
-        "P4": 1,
-        "P5": 1
+        "P1": 2,
+        "P2": 2,
+        "P3": 2,
+        "P4": 2,
+        "P5": 2
       },
-      "total_tps": 1
+      "total_tps": 2
     },
     {
       "fraud_type": "chargeback-abuse",
@@ -443,13 +454,13 @@
     {
       "fraud_type": "credential-stuffing",
       "phases": {
-        "P1": 3,
-        "P2": 3,
-        "P3": 3,
-        "P4": 3,
-        "P5": 3
+        "P1": 4,
+        "P2": 4,
+        "P3": 4,
+        "P4": 4,
+        "P5": 4
       },
-      "total_tps": 3
+      "total_tps": 4
     },
     {
       "fraud_type": "crypto-laundering",
@@ -675,13 +686,13 @@
     {
       "fraud_type": "fraud-as-a-service",
       "phases": {
-        "P1": 6,
-        "P2": 6,
-        "P3": 6,
-        "P4": 6,
-        "P5": 6
+        "P1": 7,
+        "P2": 7,
+        "P3": 7,
+        "P4": 7,
+        "P5": 7
       },
-      "total_tps": 6
+      "total_tps": 7
     },
     {
       "fraud_type": "fraud-enabling-infrastructure",
@@ -1361,13 +1372,13 @@
     {
       "fraud_type": "synthetic-identity",
       "phases": {
-        "P1": 5,
-        "P2": 4,
-        "P3": 5,
-        "P4": 4,
-        "P5": 4
+        "P1": 6,
+        "P2": 5,
+        "P3": 6,
+        "P4": 5,
+        "P5": 5
       },
-      "total_tps": 5
+      "total_tps": 6
     },
     {
       "fraud_type": "synthetic-medical-fraud",

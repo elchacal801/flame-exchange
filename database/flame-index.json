@@ -10814,5 +10814,128 @@
       }
     ],
     "evidence_count": 0
+  },
+  {
+    "id": "TP-0091",
+    "title": "Agentic AI Fraud Automation",
+    "category": "ThreatPath",
+    "date": "2026-08-22",
+    "author": "FLAME Project",
+    "source": "Original Research — aggregated from Experian 2026 Fraud Forecast, Javelin 2026 Fraud Management Trends, and vendor agentic-fraud telemetry (Sardine, DataDome, Arkose Labs)",
+    "tlp": "WHITE",
+    "summary": "Agentic AI fraud is the use of autonomous, goal-directed AI agents — LLM-driven systems that observe, plan, and act with minimal human supervision — to execute end-to-end fraud pipelines that previous...",
+    "confidence_score": 62,
+    "source_reliability": "B",
+    "info_credibility": 3,
+    "infrastructure_generation_method": "ai-assisted",
+    "geopolitical_timing": null,
+    "nation_state_nexus": null,
+    "fraud_family": "fraud-infrastructure",
+    "primary_phase": "P4",
+    "short_name": "Agentic AI Fraud",
+    "last_reviewed": "2026-08-22",
+    "sectors": [
+      "banking",
+      "fintech",
+      "payments",
+      "crypto",
+      "cross-sector"
+    ],
+    "fraud_types": [
+      "agentic-ai-fraud",
+      "account-takeover",
+      "credential-stuffing",
+      "card-testing",
+      "synthetic-identity",
+      "fraud-as-a-service"
+    ],
+    "tags": [
+      "agentic-ai",
+      "autonomous-agents",
+      "llm-abuse",
+      "credential-stuffing",
+      "card-testing",
+      "account-takeover",
+      "browser-agent",
+      "fraud-as-a-service"
+    ],
+    "cfpf_phases": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "mitre_attack": [
+      "T1583.001",
+      "T1110.004",
+      "T1651",
+      "T1657"
+    ],
+    "ft3_tactics": [
+      "FTA002",
+      "FTA003",
+      "FTA005",
+      "FTA006",
+      "FTA009",
+      "FT006",
+      "FT007",
+      "FT010",
+      "FT011",
+      "FT027",
+      "FT030",
+      "FT051"
+    ],
+    "mitre_f3": [
+      "F1002.002",
+      "T1110.004",
+      "F1006.002",
+      "F1023",
+      "T1585",
+      "F1006",
+      "F1002"
+    ],
+    "groupib_stages": [
+      "Resource Development",
+      "Reconnaissance",
+      "Credential Access",
+      "Account Access",
+      "Perform Fraud",
+      "Monetization"
+    ],
+    "regulatory_refs": [],
+    "ucff_domains": {
+      "commit": "Level 2",
+      "assess": "Level 2",
+      "plan": "Level 2",
+      "act": "Level 2",
+      "monitor": "Level 3",
+      "report": "Level 2",
+      "improve": "Level 2"
+    },
+    "baseline_ids": [],
+    "related_tps": [
+      {
+        "id": "TP-0013",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0043",
+        "relationship": "related-to"
+      },
+      {
+        "id": "TP-0054",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0059",
+        "relationship": "enhances"
+      },
+      {
+        "id": "TP-0067",
+        "relationship": "enhances"
+      }
+    ],
+    "evidence_count": 0
   }
 ]

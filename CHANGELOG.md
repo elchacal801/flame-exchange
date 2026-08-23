@@ -12,6 +12,7 @@ _Every PR adds its line here; entries roll into a version heading at release._
 
 ### Added
 
+- **TP-0091: Agentic AI Fraud Automation** — autonomous LLM agents running end-to-end fraud pipelines (credential validation → account triage → value extraction → rapid dispersion) that adapt to defenses in real time; modeled as a cross-cutting accelerant of existing schemes with agent-vs-bot detection signatures; from the Experian 2026 and Javelin 2026 forecasts; new fraud type `agentic-ai-fraud`
 - **TP-0090: Phantom Hacker — Layered Impostor Account Drain** — FBI-named three-actor impostor chain (tech support → bank fraud department → government official) draining elder accounts via "safe account" coercion; from IC3 PSA230929 and the 2025 Annual Report ($2.13B tech-support losses); new fraud types `phantom-hacker`, `tech-support-scam`; new `REG-FINCEN-EFE` reference
 
 ### Changed

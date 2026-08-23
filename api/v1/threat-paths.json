@@ -1,8 +1,8 @@
 {
   "meta": {
     "version": "1.0",
-    "generated_at": "2026-08-23T00:11:56.092480+00:00",
-    "total": 90
+    "generated_at": "2026-08-23T00:25:26.082024+00:00",
+    "total": 91
   },
   "data": [
     {
@@ -10816,6 +10816,129 @@
         },
         {
           "id": "TP-0085",
+          "relationship": "enhances"
+        }
+      ],
+      "evidence_count": 0
+    },
+    {
+      "id": "TP-0091",
+      "title": "Agentic AI Fraud Automation",
+      "category": "ThreatPath",
+      "date": "2026-08-22",
+      "author": "FLAME Project",
+      "source": "Original Research — aggregated from Experian 2026 Fraud Forecast, Javelin 2026 Fraud Management Trends, and vendor agentic-fraud telemetry (Sardine, DataDome, Arkose Labs)",
+      "tlp": "WHITE",
+      "summary": "Agentic AI fraud is the use of autonomous, goal-directed AI agents — LLM-driven systems that observe, plan, and act with minimal human supervision — to execute end-to-end fraud pipelines that previously required human operators at each step. Unlike scripted bots that replay fixed sequences, an agent reasons about the live environment: it adapts to a changed login flow, solves or routes around a challenge, reads an error message and retries differently, and chains sub-tasks (harvest credentials → validate them → enumerate account value → move funds) without a human in the loop. Both Experian's 2026 Fraud Forecast and Javelin's 2026 Fraud Management Trends name agentic AI among the year's defining fraud threats; vendor telemetry already reports agent impersonation at scale (millions of spoofed agent requests in early 2026).\n\nThe result is a qualitative shift in the economics of fraud rather than a new fraud *type*: agentic automation compresses hours of manual effort into seconds, runs continuously, improves across attempts, and lowers the labor cost of the parts of a scheme that used to bound its scale — credential validation, account triage, application farming, and rapid post-compromise fund dispersion. This TP models agentic automation as a **cross-cutting accelerant** applied to existing schemes (account takeover, card testing, synthetic-identity application fraud, mule provisioning), and catalogs the behavioral signatures that distinguish agent-driven activity from both humans and conventional bots.\n\nBecause this is an emerging, fast-moving vector documented primarily through vendor and forecast reporting rather than settled law-enforcement casework, confidence is deliberately moderate (62); the path will need review as primary-source casework accumulates.",
+      "confidence_score": 62,
+      "source_reliability": "B",
+      "info_credibility": 3,
+      "infrastructure_generation_method": "ai-assisted",
+      "geopolitical_timing": null,
+      "nation_state_nexus": null,
+      "fraud_family": "fraud-infrastructure",
+      "primary_phase": "P4",
+      "short_name": "Agentic AI Fraud",
+      "last_reviewed": "2026-08-22",
+      "sectors": [
+        "banking",
+        "fintech",
+        "payments",
+        "crypto",
+        "cross-sector"
+      ],
+      "fraud_types": [
+        "agentic-ai-fraud",
+        "account-takeover",
+        "credential-stuffing",
+        "card-testing",
+        "synthetic-identity",
+        "fraud-as-a-service"
+      ],
+      "tags": [
+        "agentic-ai",
+        "autonomous-agents",
+        "llm-abuse",
+        "credential-stuffing",
+        "card-testing",
+        "account-takeover",
+        "browser-agent",
+        "fraud-as-a-service"
+      ],
+      "cfpf_phases": [
+        "P1",
+        "P2",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "mitre_attack": [
+        "T1583.001",
+        "T1110.004",
+        "T1651",
+        "T1657"
+      ],
+      "ft3_tactics": [
+        "FTA002",
+        "FTA003",
+        "FTA005",
+        "FTA006",
+        "FTA009",
+        "FT006",
+        "FT007",
+        "FT010",
+        "FT011",
+        "FT027",
+        "FT030",
+        "FT051"
+      ],
+      "mitre_f3": [
+        "F1002.002",
+        "T1110.004",
+        "F1006.002",
+        "F1023",
+        "T1585",
+        "F1006",
+        "F1002"
+      ],
+      "groupib_stages": [
+        "Resource Development",
+        "Reconnaissance",
+        "Credential Access",
+        "Account Access",
+        "Perform Fraud",
+        "Monetization"
+      ],
+      "regulatory_refs": [],
+      "ucff_domains": {
+        "commit": "Level 2",
+        "assess": "Level 2",
+        "plan": "Level 2",
+        "act": "Level 2",
+        "monitor": "Level 3",
+        "report": "Level 2",
+        "improve": "Level 2"
+      },
+      "baseline_ids": [],
+      "related_tps": [
+        {
+          "id": "TP-0013",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0043",
+          "relationship": "related-to"
+        },
+        {
+          "id": "TP-0054",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0059",
+          "relationship": "enhances"
+        },
+        {
+          "id": "TP-0067",
           "relationship": "enhances"
         }
       ],
