@@ -6,7 +6,7 @@ id: TP-0016
 title: "First-Party Fraud (Bust-Out)"
 category: ThreatPath
 date: 2026-03-04
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "Internal Knowledge Base"
 tlp: WHITE
@@ -224,3 +224,4 @@ Consortium intelligence (cross-institutional data sharing) lifts fraud capture r
 |------|--------|--------|
 | 2026-02-20 | FLAME Project | Initial creation |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings |
+| 2026-08-22 | FLAME Project | Currency review: first-party bust-out mechanics and detection signals remain accurate against 2026 reporting; no statistical claims requiring update. Reviewed for currency. |

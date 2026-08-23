@@ -6,7 +6,7 @@ id: TP-0017
 title: "Pig Butchering (Investment Scam)"
 category: ThreatPath
 date: 2026-02-20
-last_reviewed: 2026-03-25
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "Internal Knowledge Base"
 tlp: WHITE
@@ -333,3 +333,4 @@ WHERE c.age >= 60
 | 2026-02-28 | FLAME Project | Enriched with RF 2026 TCO intelligence, Underground Ecosystem Context, ghost-tapping variant |
 | 2026-03-17 | FLAME Project | INTERPOL GFFTA 2026 enrichment — investment fraud scale, AI dashboard intelligence, sextortion-hybrid convergence |
 | 2026-03-20 | FLAME Project | Enriched with INTERPOL/UNODC loss estimates: $18-37B East/SE Asia losses, $40B annual scam centre profits |
+| 2026-08-22 | FLAME Project | Currency review: IC3 2025 investment-fraud figures ($8.65B / 72,984 complaints, +32%; 72% crypto; crypto-investment sub $7.228B; Operation Level Up $225.9M prevented; SE Asia scam-compound nexus) confirmed against full-year report -- the largest IC3 category for the third consecutive year. No statistical changes required. |

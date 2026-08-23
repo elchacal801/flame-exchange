@@ -6,7 +6,7 @@ id: TP-0018
 title: "Deepfake Document Fraud"
 category: ThreatPath
 date: 2026-02-20
-last_reviewed: 2026-02-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "Internal Knowledge Base"
 tlp: WHITE
@@ -49,6 +49,8 @@ related_tps:
   - id: TP-0002
     relationship: related-to
   - id: TP-0020
+    relationship: related-to
+  - id: TP-0091
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
@@ -237,3 +239,4 @@ The WEF "Deepfake Identity Verification" paper (January 2026) identifies five ac
 |------|--------|--------|
 | 2026-02-20 | FLAME Project | Initial creation |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings, UCFF Alignment section, Underground Ecosystem Context, WEF deepfake intelligence |
+| 2026-08-22 | FLAME Project | Currency review: deepfake document-fraud mechanics remain accurate; cross-referenced TP-0091 (agentic AI generating and adapting fraudulent documents at scale to pass KYC). No statistical changes required. |

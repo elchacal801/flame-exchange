@@ -6,7 +6,7 @@ id: TP-0015
 title: "Employment Fraud via Brand Impersonation"
 category: ThreatPath
 date: 2026-02-19
-last_reviewed: 2026-03-28
+last_reviewed: 2026-08-22
 author: "FLAME Project"
 source: "domain_intel DEA investigation / FBI IC3 employment scam advisories"
 tlp: WHITE
@@ -47,6 +47,8 @@ related_tps:
   - id: TP-0004
     relationship: related-to
   - id: TP-0029
+    relationship: related-to
+  - id: TP-0091
     relationship: related-to
 regulatory_refs:
   - REG-FINCEN-CDD
@@ -233,3 +235,4 @@ Employment fraud has surged alongside the normalization of remote work, as job s
 | 2026-02-19 | FLAME Project | Initial submission with DEA investigation evidence |
 | 2026-02-28 | FLAME Project | v1.5 enrichment: added Stripe FT3 tactic mappings |
 | 2026-04-06 | FLAME Project | FBI IC3 2025 enrichment — employment fraud $362.9M losses (37% increase), AI-enabled $12.6M, PSA250424 self-service website impersonation |
+| 2026-08-22 | FLAME Project | Currency review: IC3 2025 employment-fraud figures ($362.9M / 24,688 complaints, +37%; AI-enabled $12.6M with deepfake-interview indicators) confirmed against full-year report; cross-referenced TP-0091 (agentic AI / deepfake job-candidate vector, an Experian-2026 top threat). No statistical changes required. |
