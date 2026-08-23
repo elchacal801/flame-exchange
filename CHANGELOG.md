@@ -10,20 +10,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 _Every PR adds its line here; entries roll into a version heading at release._
 
-### Changed
+---
 
-- **Currency review: TP-0001–TP-0006** (Feb-2026 cohort, batch 1 of 3) — verified IC3 2025 loss figures against the full-year report (BEC $3.046B, ATO $359.7M, real-estate $275.1M all confirmed current); added forward cross-references to TP-0090 (phantom hacker) and TP-0091 (agentic AI) where the relationship is substantive; refreshed `last_reviewed`. No statistics required correction.
-- **Currency review: TP-0007–TP-0012** (Feb-2026 cohort, batch 2 of 3) — verified IC3 2025 figures for deepfake/AI fraud ($893.3M category), SIM-swap ($17.4M), check fraud ($282.7M, +41%), and tech-support ($2.134B, +46%); established `escalates-from` link recognizing TP-0090 (phantom hacker) as the three-actor evolution of TP-0012; added TP-0091 cross-references. No statistics required correction.
-- **Currency review: TP-0013–TP-0018** (Feb-2026 cohort, batch 3 of 3) — verified IC3 2025 figures for employment fraud ($362.9M, +37%) and investment fraud ($8.65B / 72,984 complaints, +32%, largest category for the third year; 72% crypto); added TP-0091 cross-references to the credential-stuffing, employment-fraud, and deepfake-document paths agentic AI most directly accelerates. Completes the currency review of the 18-TP February 2026 cohort. No statistics required correction.
+## [0.14.0] — 2026-08-23
+
+Content-audit remediation, content track: two new threat paths, a regulatory enrichment, and a currency review of the 18-TP February 2026 cohort. Corpus 89 → 91 TPs, 141 → 144 fraud types, F3/FT3 coverage 89/89 → 91/91.
 
 ### Added
 
-- **TP-0091: Agentic AI Fraud Automation** — autonomous LLM agents running end-to-end fraud pipelines (credential validation → account triage → value extraction → rapid dispersion) that adapt to defenses in real time; modeled as a cross-cutting accelerant of existing schemes with agent-vs-bot detection signatures; from the Experian 2026 and Javelin 2026 forecasts; new fraud type `agentic-ai-fraud`
 - **TP-0090: Phantom Hacker — Layered Impostor Account Drain** — FBI-named three-actor impostor chain (tech support → bank fraud department → government official) draining elder accounts via "safe account" coercion; from IC3 PSA230929 and the 2025 Annual Report ($2.13B tech-support losses); new fraud types `phantom-hacker`, `tech-support-scam`; new `REG-FINCEN-EFE` reference
+- **TP-0091: Agentic AI Fraud Automation** — autonomous LLM agents running end-to-end fraud pipelines (credential validation → account triage → value extraction → rapid dispersion) that adapt to defenses in real time; modeled as a cross-cutting accelerant of existing schemes with agent-vs-bot detection signatures; from the Experian 2026 and Javelin 2026 forecasts; new fraud type `agentic-ai-fraud`
 
 ### Changed
 
 - **TP-0033 enriched** with FinCEN Alert FIN-2026-Alert004 (federal student aid fraud): banking-side red-flag indicators, SAR filing guidance (`FIN-2026-FSAFRAUD`), ED's $1B-prevented statistic; new `REG-FINCEN-FSA` regulatory reference
+- **Currency review: TP-0001–TP-0018** (the full February 2026 cohort, in three batches) — verified IC3 2025 loss figures against the full-year report (BEC $3.046B, ATO $359.7M, real-estate $275.1M, employment $362.9M, investment $8.65B, tech-support $2.134B all confirmed current); added forward cross-references to TP-0090 and TP-0091 where substantive (incl. an `escalates-from` link marking TP-0090 as the three-actor evolution of TP-0012); refreshed `last_reviewed` on all 18. No statistics required correction.
 
 ---
 
