@@ -1,5 +1,18 @@
 [
   {
+    "alert_id": "cfpb-26456068",
+    "source": "cfpb",
+    "title": "Problem with fraud alerts or security freezes",
+    "date": "2026-09-04",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
     "alert_id": "fincen-e07e2e55d4",
     "source": "fincen",
     "title": "FinCEN Alert on Money Laundering Activity Associated with Digital Asset Investment Scam Centers",
@@ -280117,7 +280130,20 @@
     ]
   },
   {
-    "alert_id": "cfpb-26368452",
+    "alert_id": "cfpb-26408550",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26408618",
     "source": "cfpb",
     "title": "Problem with a company's investigation into an existing problem",
     "date": "2026-09-03",
@@ -280130,150 +280156,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26368684",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26368721",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26368769",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26368607",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26369315",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26368632",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26368843",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26368686",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26368687",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26369023",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26369021",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26369028",
+    "alert_id": "cfpb-26415113",
     "source": "cfpb",
     "title": "Problem with a company's investigation into an existing problem",
     "date": "2026-09-03",
@@ -280286,7 +280169,33 @@
     ]
   },
   {
-    "alert_id": "cfpb-26369146",
+    "alert_id": "cfpb-26410057",
+    "source": "cfpb",
+    "title": "Managing the loan or lease",
+    "date": "2026-09-03",
+    "category": "auto-loan",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26408845",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26408932",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280299,7 +280208,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26369034",
+    "alert_id": "cfpb-26409092",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280312,9 +280221,9 @@
     ]
   },
   {
-    "alert_id": "cfpb-26369125",
+    "alert_id": "cfpb-26408996",
     "source": "cfpb",
-    "title": "Improper use of your report",
+    "title": "Incorrect information on your report",
     "date": "2026-09-03",
     "category": "credit-reporting",
     "severity": "medium",
@@ -280325,7 +280234,33 @@
     ]
   },
   {
-    "alert_id": "cfpb-26369144",
+    "alert_id": "cfpb-26410273",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26409106",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26409053",
     "source": "cfpb",
     "title": "Problem with a company's investigation into an existing problem",
     "date": "2026-09-03",
@@ -280338,7 +280273,33 @@
     ]
   },
   {
-    "alert_id": "cfpb-26369066",
+    "alert_id": "cfpb-26410602",
+    "source": "cfpb",
+    "title": "Improper use of your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26409475",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26409197",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280351,33 +280312,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26369133",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26369076",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26369157",
+    "alert_id": "cfpb-26409266",
     "source": "cfpb",
     "title": "Problem with a company's investigation into an existing problem",
     "date": "2026-09-03",
@@ -280390,7 +280325,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26370721",
+    "alert_id": "cfpb-26409391",
     "source": "cfpb",
     "title": "Improper use of your report",
     "date": "2026-09-03",
@@ -280403,7 +280338,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26370040",
+    "alert_id": "cfpb-26409274",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280416,7 +280351,60 @@
     ]
   },
   {
-    "alert_id": "cfpb-26370059",
+    "alert_id": "cfpb-26409434",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26409485",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26409644",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26410463",
+    "source": "cfpb",
+    "title": "Closing an account",
+    "date": "2026-09-03",
+    "category": "account-fraud",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26410550",
     "source": "cfpb",
     "title": "Improper use of your report",
     "date": "2026-09-03",
@@ -280429,7 +280417,321 @@
     ]
   },
   {
-    "alert_id": "cfpb-26370150",
+    "alert_id": "cfpb-26410490",
+    "source": "cfpb",
+    "title": "Took or threatened to take negative or legal action",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26410618",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26410590",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26410979",
+    "source": "cfpb",
+    "title": "Opening an account",
+    "date": "2026-09-03",
+    "category": "account-fraud",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26412722",
+    "source": "cfpb",
+    "title": "Repossession",
+    "date": "2026-09-03",
+    "category": "auto-loan",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26411327",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26411328",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26411351",
+    "source": "cfpb",
+    "title": "Problem with additional add-on products or services",
+    "date": "2026-09-03",
+    "category": "payday-loan",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0012"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26411758",
+    "source": "cfpb",
+    "title": "Managing an account",
+    "date": "2026-09-03",
+    "category": "account-fraud",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413321",
+    "source": "cfpb",
+    "title": "Didn't provide services promised",
+    "date": "2026-09-03",
+    "category": "consumer-complaint",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0012"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26411560",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26412625",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26411955",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26412127",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413161",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26412581",
+    "source": "cfpb",
+    "title": "Written notification about debt",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26412617",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26412811",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413009",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413372",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26412956",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26412902",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413066",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413475",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413743",
     "source": "cfpb",
     "title": "Improper use of your report",
     "date": "2026-09-03",
@@ -280442,7 +280744,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26369972",
+    "alert_id": "cfpb-26413514",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280455,7 +280757,256 @@
     ]
   },
   {
-    "alert_id": "cfpb-26370018",
+    "alert_id": "cfpb-26415154",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413536",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413935",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413674",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26413866",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26414310",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26415089",
+    "source": "cfpb",
+    "title": "Written notification about debt",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26415168",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26416068",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26420637",
+    "source": "cfpb",
+    "title": "Written notification about debt",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26417580",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26417525",
+    "source": "cfpb",
+    "title": "Problem with fraud alerts or security freezes",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26418505",
+    "source": "cfpb",
+    "title": "Managing an account",
+    "date": "2026-09-03",
+    "category": "account-fraud",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26417917",
+    "source": "cfpb",
+    "title": "Problem with fraud alerts or security freezes",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26418565",
+    "source": "cfpb",
+    "title": "Incorrect information on your report",
+    "date": "2026-09-03",
+    "category": "credit-reporting",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0003"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26423075",
+    "source": "cfpb",
+    "title": "Struggling to pay your loan",
+    "date": "2026-09-03",
+    "category": "auto-loan",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26418818",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26421881",
+    "source": "cfpb",
+    "title": "Managing an account",
+    "date": "2026-09-03",
+    "category": "account-fraud",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26420585",
+    "source": "cfpb",
+    "title": "Written notification about debt",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26422662",
     "source": "cfpb",
     "title": "Improper use of your report",
     "date": "2026-09-03",
@@ -280468,72 +281019,33 @@
     ]
   },
   {
-    "alert_id": "cfpb-26370522",
+    "alert_id": "cfpb-26421959",
     "source": "cfpb",
-    "title": "Incorrect information on your report",
+    "title": "Written notification about debt",
     "date": "2026-09-03",
-    "category": "credit-reporting",
+    "category": "debt-collection",
     "severity": "medium",
     "url": "",
     "summary": "",
     "mapped_tp_ids": [
-      "TP-0003"
+      "TP-0062"
     ]
   },
   {
-    "alert_id": "cfpb-26370434",
+    "alert_id": "cfpb-26423813",
     "source": "cfpb",
-    "title": "Incorrect information on your report",
+    "title": "Problems at the end of the loan or lease",
     "date": "2026-09-03",
-    "category": "credit-reporting",
+    "category": "auto-loan",
     "severity": "medium",
     "url": "",
     "summary": "",
     "mapped_tp_ids": [
-      "TP-0003"
+      "TP-0016"
     ]
   },
   {
-    "alert_id": "cfpb-26370541",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26371088",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26371306",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26371305",
+    "alert_id": "cfpb-26422520",
     "source": "cfpb",
     "title": "Problem with a company's investigation into an existing problem",
     "date": "2026-09-03",
@@ -280546,7 +281058,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371303",
+    "alert_id": "cfpb-26422744",
     "source": "cfpb",
     "title": "Problem with a company's investigation into an existing problem",
     "date": "2026-09-03",
@@ -280559,7 +281071,61 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371915",
+    "alert_id": "cfpb-26423031",
+    "source": "cfpb",
+    "title": "Applying for a mortgage or refinancing an existing mortgage",
+    "date": "2026-09-03",
+    "category": "mortgage-fraud",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0006",
+      "TP-0073"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26423219",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26426782",
+    "source": "cfpb",
+    "title": "Struggling to pay your loan",
+    "date": "2026-09-03",
+    "category": "auto-loan",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26427593",
+    "source": "cfpb",
+    "title": "Fraud or scam",
+    "date": "2026-09-03",
+    "category": "wire-fraud",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0001",
+      "TP-0002"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26424907",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280572,7 +281138,85 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371662",
+    "alert_id": "cfpb-26424786",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26426739",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26425680",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26425407",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26425615",
+    "source": "cfpb",
+    "title": "False statements or representation",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26427157",
+    "source": "cfpb",
+    "title": "Repossession",
+    "date": "2026-09-03",
+    "category": "auto-loan",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0016"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26427205",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280585,9 +281229,9 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371752",
+    "alert_id": "cfpb-26427011",
     "source": "cfpb",
-    "title": "Improper use of your report",
+    "title": "Problem with fraud alerts or security freezes",
     "date": "2026-09-03",
     "category": "credit-reporting",
     "severity": "medium",
@@ -280598,20 +281242,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371705",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26371674",
+    "alert_id": "cfpb-26427706",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280624,7 +281255,46 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371724",
+    "alert_id": "cfpb-26429449",
+    "source": "cfpb",
+    "title": "Charged fees or interest you didn't expect",
+    "date": "2026-09-03",
+    "category": "payday-loan",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0012"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26430018",
+    "source": "cfpb",
+    "title": "Written notification about debt",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26430477",
+    "source": "cfpb",
+    "title": "Written notification about debt",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26431830",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280637,20 +281307,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371678",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26371695",
+    "alert_id": "cfpb-26434484",
     "source": "cfpb",
     "title": "Problem with a company's investigation into an existing problem",
     "date": "2026-09-03",
@@ -280663,9 +281320,9 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371700",
+    "alert_id": "cfpb-26434761",
     "source": "cfpb",
-    "title": "Problem with a company's investigation into an existing problem",
+    "title": "Problem with fraud alerts or security freezes",
     "date": "2026-09-03",
     "category": "credit-reporting",
     "severity": "medium",
@@ -280676,9 +281333,9 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371786",
+    "alert_id": "cfpb-26435207",
     "source": "cfpb",
-    "title": "Problem with a company's investigation into an existing problem",
+    "title": "Problem with fraud alerts or security freezes",
     "date": "2026-09-03",
     "category": "credit-reporting",
     "severity": "medium",
@@ -280689,9 +281346,9 @@
     ]
   },
   {
-    "alert_id": "cfpb-26371712",
+    "alert_id": "cfpb-26435070",
     "source": "cfpb",
-    "title": "Incorrect information on your report",
+    "title": "Problem with fraud alerts or security freezes",
     "date": "2026-09-03",
     "category": "credit-reporting",
     "severity": "medium",
@@ -280702,9 +281359,48 @@
     ]
   },
   {
-    "alert_id": "cfpb-26373505",
+    "alert_id": "cfpb-26436550",
     "source": "cfpb",
-    "title": "Incorrect information on your report",
+    "title": "False statements or representation",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26439616",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26441536",
+    "source": "cfpb",
+    "title": "Attempts to collect debt not owed",
+    "date": "2026-09-03",
+    "category": "debt-collection",
+    "severity": "medium",
+    "url": "",
+    "summary": "",
+    "mapped_tp_ids": [
+      "TP-0062"
+    ]
+  },
+  {
+    "alert_id": "cfpb-26440526",
+    "source": "cfpb",
+    "title": "Problem with fraud alerts or security freezes",
     "date": "2026-09-03",
     "category": "credit-reporting",
     "severity": "medium",
@@ -280715,137 +281411,7 @@
     ]
   },
   {
-    "alert_id": "cfpb-26374105",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26373409",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26373359",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26373623",
-    "source": "cfpb",
-    "title": "Problem with a company's investigation into an existing problem",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26373696",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26374039",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26373619",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26373574",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26375560",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26375240",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-03",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26375490",
+    "alert_id": "cfpb-26443914",
     "source": "cfpb",
     "title": "Incorrect information on your report",
     "date": "2026-09-03",
@@ -280885,565 +281451,6 @@
     "mapped_tp_ids": [
       "TP-0001",
       "TP-0060"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343321",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343463",
-    "source": "cfpb",
-    "title": "Problem with a company's investigation into an existing problem",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343337",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343124",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343127",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343138",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343403",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343146",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343147",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343145",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343255",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343149",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343150",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26344137",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343388",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26344565",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343350",
-    "source": "cfpb",
-    "title": "Problem with a company's investigation into an existing problem",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343351",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343502",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343490",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26344182",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343487",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343390",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343553",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26344577",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26344186",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343407",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343411",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343523",
-    "source": "cfpb",
-    "title": "Written notification about debt",
-    "date": "2026-09-02",
-    "category": "debt-collection",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0062"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343451",
-    "source": "cfpb",
-    "title": "Improper use of your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343460",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26343923",
-    "source": "cfpb",
-    "title": "Problem with a company's investigation into an existing problem",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26344926",
-    "source": "cfpb",
-    "title": "Communication tactics",
-    "date": "2026-09-02",
-    "category": "debt-collection",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0062"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26347354",
-    "source": "cfpb",
-    "title": "Electronic communications",
-    "date": "2026-09-02",
-    "category": "debt-collection",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0062"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26347791",
-    "source": "cfpb",
-    "title": "Problem with a company's investigation into an existing problem",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26349006",
-    "source": "cfpb",
-    "title": "Attempts to collect debt not owed",
-    "date": "2026-09-02",
-    "category": "debt-collection",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0062"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26348464",
-    "source": "cfpb",
-    "title": "Problem with fraud alerts or security freezes",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26349480",
-    "source": "cfpb",
-    "title": "Attempts to collect debt not owed",
-    "date": "2026-09-02",
-    "category": "debt-collection",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0062"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26352522",
-    "source": "cfpb",
-    "title": "Attempts to collect debt not owed",
-    "date": "2026-09-02",
-    "category": "debt-collection",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0062"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26353552",
-    "source": "cfpb",
-    "title": "Took or threatened to take negative or legal action",
-    "date": "2026-09-02",
-    "category": "debt-collection",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0062"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26355340",
-    "source": "cfpb",
-    "title": "Incorrect information on your report",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26354805",
-    "source": "cfpb",
-    "title": "Attempts to collect debt not owed",
-    "date": "2026-09-02",
-    "category": "debt-collection",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0062"
-    ]
-  },
-  {
-    "alert_id": "cfpb-26356314",
-    "source": "cfpb",
-    "title": "Problem with a company's investigation into an existing problem",
-    "date": "2026-09-02",
-    "category": "credit-reporting",
-    "severity": "medium",
-    "url": "",
-    "summary": "",
-    "mapped_tp_ids": [
-      "TP-0003"
     ]
   },
   {
