@@ -38,11 +38,11 @@ FLAME is an open-source, community-driven exchange for structured fraud intellig
 
 ## Why FLAME Exists
 
-Between April 2025 and April 2026, six organizations independently concluded that fraud needs structured taxonomy frameworks. Stripe published FT3 (then abandoned it). MITRE shipped F3 (April 2026). Group-IB released Fraud Matrix 2.0 (commercially gated). FS-ISAC assembled 300+ members for the Cyber Fraud Prevention Framework. The taxonomy layer is converging. The **community knowledge exchange layer** remains entirely unserved in open source.
+Between April 2025 and April 2026, six organizations independently concluded that fraud needs structured taxonomy frameworks. Stripe published the public FT3 1.0 catalog; FT3 2.0 has since been documented and is distributed through vetted practitioner trust communities rather than an unrestricted public GitHub repository. MITRE shipped F3 (April 2026), whose methodology identifies FT3 as one of the prior fraud frameworks analyzed and fused into its source base. Group-IB released Fraud Matrix 2.0 (commercially gated). FS-ISAC assembled 300+ members for the Cyber Fraud Prevention Framework. The taxonomy layer is converging. The **community knowledge exchange layer** remains entirely unserved in open source.
 
 | Capability | FLAME | Group-IB FM 2.0 | FS-ISAC CFPF | Stripe FT3 | MITRE F3 |
 |---|:---:|:---:|:---:|:---:|:---:|
-| Open source | Yes | No | Paper only | Abandoned | Yes |
+| Open source | Yes | No | Paper only | v1 public; v2 trust groups | Yes |
 | Community contributed | Yes | No | No platform | No | Yes |
 | Structured detection logic | [221 rules](https://github.com/elchacal801/flame-detections) | Mobile-heavy | No | No | No |
 | Multi-taxonomy mapping | 7 frameworks | Own only | Own only | Own only | ATT&CK only |

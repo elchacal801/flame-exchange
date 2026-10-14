@@ -1,13 +1,14 @@
 # FLAME Competitive Landscape — Fraud Framework Ecosystem
 
 > Last updated: February 2026
+> FT3/F3 status note updated: September 2026
 > This document analyzes the fraud taxonomy and intelligence platform landscape to position FLAME within the ecosystem.
 
 ---
 
 ## The Convergence
 
-Between April 2025 and February 2026, five organizations independently concluded that fraud needs structured taxonomy frameworks — an "ATT&CK for fraud." This convergence validates the problem space but also clarifies where the gap remains.
+Between April 2025 and April 2026, six organizations independently concluded that fraud needs structured taxonomy frameworks — an "ATT&CK for fraud." This convergence validates the problem space but also clarifies where the gap remains.
 
 **The gap: everyone is building the dictionary. Nobody is building the library.**
 
@@ -141,45 +142,49 @@ UCFF is Group-IB's defense-side complement to their attack-side Fraud Matrix. Wh
 
 ---
 
-### Stripe FT3 (Fraud Tactics, Techniques & Transfers)
+### Stripe FT3 (Fraud Tools, Tactics & Techniques)
 
 | Attribute | Detail |
 |-----------|--------|
 | **Owner** | Stripe |
-| **Published** | ~2024 |
-| **Type** | ATT&CK-style tactics/techniques JSON |
-| **Access** | MIT license, open source |
-| **Status** | Abandoned (1 commit, no activity) |
+| **Public catalog** | FT3 1.0 (~2024) |
+| **Type** | ATT&CK-style fraud tactics/techniques JSON; FT3 2.0 is documented as a multidimensional fraud taxonomy |
+| **Access** | FT3 1.0 is MIT-licensed and open source; FT3 2.0 is distributed through vetted practitioner trust communities and direct request |
+| **Status** | Active lineage; FLAME maps the public FT3 1.0 catalog |
 
-**Structure:** JSON-based taxonomy following MITRE ATT&CK's tactic → technique hierarchy. Includes tactic IDs (FT.TA0001+) and technique IDs.
+**Structure:** The public FT3 1.0 catalog is a JSON-based taxonomy following MITRE ATT&CK's tactic -> technique hierarchy. It includes tactic IDs and technique IDs suitable for machine parsing. FT3 2.0 has been documented publicly as a multidimensional model that separates lifecycle position, authorization state, and abuse family.
 
-**Strengths:** MIT-licensed structured data, machine-parseable JSON format, ATT&CK-familiar structure.
+**Strengths:** MIT-licensed structured data in the public FT3 1.0 release; machine-parseable JSON format; ATT&CK-familiar structure; documented FT3 2.0 evolution toward a governed, multidimensional fraud model.
 
-**Limitations:** Abandoned after a single commit. No community, no tooling, no updates. A taxonomy without any operational content built on top of it.
+**Limitations:** FLAME's current FT3 mappings are against the public FT3 1.0 catalog. FT3 2.0 is not distributed through an unrestricted public repository, so public projects should distinguish FT3 1.0 mapping support from FT3 2.0 trust-community distribution.
 
-**FLAME relationship:** FLAME parses FT3's MIT-licensed JSON and auto-maps FT3 tactics and techniques to all 23 threat paths via `ft3_mapper.py`. FT3 is a fully integrated mapping layer in FLAME's multi-taxonomy model.
+**FLAME relationship:** FLAME parses FT3 1.0's MIT-licensed JSON and auto-maps FT3 tactics and techniques to all 91 threat paths via `ft3_mapper.py`. FT3 is a fully integrated mapping layer in FLAME's multi-taxonomy model.
+
+**References:** [FT3 2.0 overview](https://www.vincentpassaro.com/blog/ft3-2-0-dimensional-fraud-taxonomy); [FT3 distribution rationale](https://www.vincentpassaro.com/blog/open-source-was-the-mechanism-it-was-never-the-mission).
 
 ---
 
-### MITRE F3 (Fraud Framework for MITRE ATT&CK)
+### MITRE F3 (Fight Fraud Framework)
 
 | Attribute | Detail |
 |-----------|--------|
-| **Owner** | MITRE |
-| **Announced** | May 2025 |
-| **Type** | ATT&CK extension for fraud |
-| **Access** | Will be public (MITRE standard) |
-| **Status** | Not yet shipped as of February 2026 |
+| **Owner** | MITRE Center for Threat-Informed Defense |
+| **Published** | April 2026 |
+| **Type** | Behavior-based model of fraud actor tactics and techniques |
+| **Access** | Public |
+| **Status** | Shipped April 2026; mapped in FLAME |
 
-**What we know:** MITRE announced F3 as a fraud-specific extension to the ATT&CK framework. Given MITRE's track record, it will likely be a taxonomy with technique IDs, descriptions, and potentially procedure examples — similar to how ATT&CK covers enterprise, mobile, and ICS domains.
+**What we know:** MITRE F3 is a behavior-based model of fraud actor tactics and techniques, developed for cyber-based financial fraud incidents and modeled after ATT&CK's design principles. It includes fraud-specific tactics and techniques while referencing existing ATT&CK techniques where applicable.
 
-**What we don't know:** Release timeline, scope (financial services only or broader), technique count, whether it will include detection/mitigation mappings.
+**Provenance note:** MITRE F3's Design Principles and Methodology says F3 includes "derivation from prior work," and that fraud activities documented in other fraud models were "analyzed through empirical use examples and fused." The listed prior sources include FS-ISAC CFPF, the NRF Retail Fraud Taxonomy, Group-IB Cyber Fraud Intelligence, and Stripe Fraud Tools Tactics and Techniques (FT3). The methodology later summarizes that existing fraud frameworks were used as foundational inputs.
 
-**Strengths (projected):** MITRE brand authority, interoperability with existing ATT&CK ecosystem (Navigator, STIX, Sigma mappings), likely to become an industry standard.
+**Strengths:** MITRE brand authority, public methodology, ATT&CK-aligned structure, interoperability with the broader threat-informed defense ecosystem.
 
-**Risk to FLAME:** If MITRE ships F3 with a community platform (like ATT&CK Navigator for fraud), it could overlap FLAME's frontend. However, MITRE historically publishes frameworks and lets the community build tooling — they didn't build HEARTH, Sigma, ATT&CK Navigator (originally by the community), or major threat intel platforms. Most likely outcome: F3 gives FLAME a better taxonomy to map to, not a competing platform.
+**Limitations:** F3 is primarily a taxonomy/reference layer. FLAME still differentiates as an operational knowledge exchange for threat paths, detection queries, baselines, emulation playbooks, and cross-framework correlation guidance.
 
-**FLAME relationship:** FLAME will add `mitre_f3` as a mapping field when F3 ships. F3 technique IDs become another cross-reference layer in FLAME's multi-taxonomy model.
+**FLAME relationship:** FLAME maps all 91 threat paths to MITRE F3 via `f3_mapper.py`. F3 technique IDs are another cross-reference layer in FLAME's multi-taxonomy model.
+
+**Reference:** [MITRE F3 Design Principles and Methodology](https://ctid.mitre.org/fightfraud/MITRE%20F3%20Design%20Principles%20and%20Methodology.pdf).
 
 ---
 
@@ -220,8 +225,8 @@ UCFF is Group-IB's defense-side complement to their attack-side Fraud Matrix. Wh
 | **Group-IB Fraud Matrix** | ❌ | ❌ | ✅ (mobile-heavy) | ❌ (own taxonomy) | ❌ |
 | **Group-IB UCFF** | ✅ (whitepaper) | ❌ | ❌ (governance only) | ❌ (defense-side) | ❌ |
 | **FS-ISAC CFPF** | ✅ (paper) | ❌ (no platform) | ❌ | ❌ | ❌ |
-| **Stripe FT3** | ✅ | ❌ (abandoned) | ❌ | ❌ | ❌ |
-| **MITRE F3** | TBD | TBD | TBD | TBD | ❌ |
+| **Stripe FT3** | ✅ (FT3 1.0) | Limited (FT3 2.0 trust groups) | ❌ (public v1) | ❌ (public v1) | ❌ |
+| **MITRE F3** | ✅ | ✅ | ❌ | ATT&CK-linked | ❌ |
 | **HEARTH** | ✅ | ✅ | ✅ | ✅ (ATT&CK) | N/A (threat hunting) |
 
 ---
